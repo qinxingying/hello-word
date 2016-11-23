@@ -1,0 +1,82 @@
+<RCC>
+    <qresource prefix="/icon/toolbar">
+        <file>resource/toobar/0-01.png</file>
+        <file>resource/toobar/0-02.png</file>
+        <file>resource/toobar/0-03.png</file>
+        <file>resource/toobar/0-04.png</file>
+        <file>resource/toobar/0-05.png</file>
+        <file>resource/toobar/0-06.png</file>
+        <file>resource/toobar/0-07.png</file>
+        <file>resource/toobar/0-08.png</file>
+        <file>resource/toobar/0-09.png</file>
+        <file>resource/toobar/0-10.png</file>
+        <file>resource/toobar/0-11.png</file>
+        <file>resource/toobar/0-12.png</file>
+        <file>resource/toobar/0-13.png</file>
+        <file>resource/toobar/0-14.png</file>
+        <file>resource/toobar/0-15.png</file>
+        <file>resource/toobar/0-16.png</file>
+        <file>resource/toobar/0-17.png</file>
+        <file>resource/toobar/0-18.png</file>
+        <file>resource/toobar/0-19.png</file>
+        <file>resource/toobar/0-20.png</file>
+        <file>resource/toobar/0-21.png</file>
+    </qresource>
+    <qresource prefix="/icon/notebook">
+        <file>resource/notebook/0-01.png</file>
+        <file>resource/notebook/0-02.png</file>
+        <file>resource/notebook/0-03.png</file>
+        <file>resource/notebook/0-04.png</file>
+        <file>resource/notebook/0-05.png</file>
+        <file>resource/notebook/0-06.png</file>
+        <file>resource/notebook/0-07.png</file>
+        <file>resource/notebook/0-27.png</file>
+        <file>resource/notebook/0-28.png</file>
+        <file>resource/notebook/0-36.png</file>
+    </qresource>
+    <qresource prefix="/icon/menu">
+        <file>resource/Menu/0-01.png</file>
+        <file>resource/Menu/0-02.png</file>
+        <file>resource/Menu/0-03.png</file>
+        <file>resource/Menu/0-04.png</file>
+        <file>resource/Menu/0-05.png</file>
+        <file>resource/Menu/0-06.png</file>
+        <file>resource/Menu/0-07.png</file>
+        <file>resource/Menu/0-08.png</file>
+        <file>resource/Menu/0-09.png</file>
+        <file>resource/Menu/0-10.png</file>
+        <file>resource/Menu/0-11.png</file>
+        <file>resource/Menu/0-20.png</file>
+        <file>resource/Menu/0-21.png</file>
+    </qresource>
+    <qresource prefix="/icon/Main">
+        <file>resource/Main/0-01.png</file>
+    </qresource>
+    <qresource prefix="/icon/display">
+        <file>resource/Display/0-01.png</file>
+        <file>resource/Display/0-02.png</file>
+        <file>resource/Display/0-03.png</file>
+        <file>resource/Display/0-04.png</file>
+        <file>resource/Display/0-05.png</file>
+        <file>resource/Display/0-06.png</file>
+        <file>resource/Display/0-07.png</file>
+        <file>resource/Display/0-08.png</file>
+        <file>resource/Display/0-09.png</file>
+        <file>resource/Display/0-10.png</file>
+        <file>resource/Display/0-11.png</file>
+        <file>resource/Display/0-12.png</file>
+        <file>resource/Display/0-13.png</file>
+        <file>resource/Display/0-14.png</file>
+        <file>resource/Display/0-15.png</file>
+        <file>resource/Display/0-16.png</file>
+        <file>resource/Display/0-17.png</file>
+        <file>resource/Display/0-18.png</file>
+        <file>resource/Display/0-19.png</file>
+        <file>resource/Display/0-20.png</file>
+        <file>resource/Display/0-21.png</file>
+        <file>resource/Display/0-22.png</file>
+        <file>resource/Display/0-23.png</file>
+        <file>resource/Display/0-24.png</file>
+        <file>resource/Display/0-25.png</file>
+    </qresource>
+</RCC>

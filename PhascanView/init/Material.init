@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="gb2312"?>
+
+<Materials>
+<Material VelocityL="6300" VelocityT="3100" Density="1" EN="Aluminum"          CHS="铝"         KOR="" JP=""></Material>
+<Material VelocityL="5890" VelocityT="3240" Density="1" EN="Steel common"      CHS="普通钢"     KOR="" JP=""></Material>
+<Material VelocityL="5800" VelocityT="3100" Density="1" EN="Steel stainless"   CHS="不锈钢"     KOR="" JP=""></Material>
+<Material VelocityL="4300" VelocityT="2000" Density="1" EN="Brass"             CHS="黄铜"       KOR="" JP=""></Material>
+<Material VelocityL="4700" VelocityT="2300" Density="1" EN="Copper"            CHS="铜"         KOR="" JP=""></Material>
+<Material VelocityL="5900" VelocityT="3200" Density="1" EN="Iron"              CHS="铁"         KOR="" JP=""></Material>
+<Material VelocityL="2200" VelocityT="2200" Density="1" EN="Lead"              CHS="铅"         KOR="" JP=""></Material>
+<Material VelocityL="2600" VelocityT="2600" Density="1" EN="Nylon"             CHS="尼龙"       KOR="" JP=""></Material>
+<Material VelocityL="3600" VelocityT="1600" Density="1" EN="Silver"            CHS="银"         KOR="" JP=""></Material>
+<Material VelocityL="3200" VelocityT="3200" Density="1" EN="Gold"              CHS="金"         KOR="" JP=""></Material>
+<Material VelocityL="4200" VelocityT="2400" Density="1" EN="Zinc"              CHS="锌"         KOR="" JP=""></Material>
+<Material VelocityL="6100" VelocityT="3100" Density="1" EN="Titanium"          CHS="钛"         KOR="" JP=""></Material>
+<Material VelocityL="3300" VelocityT="1700" Density="1" EN="Tin"               CHS="锡"         KOR="" JP=""></Material>
+<Material VelocityL="2540" VelocityT="1100" Density="1" EN="Epoxy resin"       CHS="环氧树脂"   KOR="" JP=""></Material>
+<Material VelocityL="4000" VelocityT="2000" Density="1" EN="Ice"               CHS="冰"         KOR="" JP=""></Material>
+<Material VelocityL="5600" VelocityT="3000" Density="1" EN="Nickel"            CHS="镍"         KOR="" JP=""></Material>
+<Material VelocityL="2700" VelocityT="1460" Density="1" EN="Plexiglass"        CHS="树脂玻璃"   KOR="" JP=""></Material>
+<Material VelocityL="2400" VelocityT="1150" Density="1" EN="Polystyrene"       CHS="聚苯乙烯"   KOR="" JP=""></Material>
+<Material VelocityL="5842" VelocityT="5842" Density="1" EN="Porcelain"         CHS="瓷器"       KOR="" JP=""></Material>
+<Material VelocityL="2388" VelocityT="2388" Density="1" EN="PVC"               CHS="聚氯乙烯"   KOR="" JP=""></Material>
+<Material VelocityL="5639" VelocityT="5639" Density="1" EN="Quartz glass"      CHS="石英玻璃"   KOR="" JP=""></Material>
+<Material VelocityL="2311" VelocityT="2311" Density="1" EN="Rubber vulcanized" CHS="硫化橡胶"   KOR="" JP=""></Material>
+<Material VelocityL="1400" VelocityT="1400" Density="1" EN="Teflon"            CHS="聚四氟乙烯" KOR="" JP=""></Material>
+<Material VelocityL="1480" VelocityT="1480" Density="1" EN="Water"             CHS="水"         KOR="" JP=""></Material>
+</Materials>
