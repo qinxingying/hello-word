@@ -1,4 +1,11 @@
 /Win32
 /ipch
 /PhascanView/GeneratedFiles
+/PhascanView/data/DPL DEFECTS
+/PhascanView/data/Report
 *.obj
+*.opensdf
+*.sdf
+*.vcxproj
+*.user
+*.filters
