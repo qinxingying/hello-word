@@ -1,2 +1,4 @@
 /Win32
+/ipch
+/PhascanView/GeneratedFiles
 *.obj
