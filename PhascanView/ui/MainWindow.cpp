@@ -876,7 +876,7 @@ void MainWindow::NewConfigure()
 		DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
 		_pConfig->InitCommonConfig();
 		UpdateTableLeft() ;
-		this->setWindowTitle(QString("Doppler : New Setting"));
+		this->setWindowTitle(QString("Doppler V1.1.1: New Setting"));
 	}
 	// refresh status bar information
 	UpdateStatusBarInfo();
@@ -917,7 +917,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
 		m_iCurGroup = 0;
 	}
 
-	this->setWindowTitle(QString("Doppler : ") + strFileName_);
+	this->setWindowTitle(QString("Doppler V1.1.1: ") + strFileName_);
 }
 
 void MainWindow::SaveFile()
@@ -927,7 +927,7 @@ void MainWindow::SaveFile()
 								   "data",
 								   "Doppler Files(*.cfg)");
 	if(_strFileName.isEmpty())  return ;
-	this->setWindowTitle(QString("Doppler : ") + _strFileName);
+	this->setWindowTitle(QString("Doppler V1.1.1: ") + _strFileName);
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
 	_pConfig->SaveConfig(_strFileName);
 }
