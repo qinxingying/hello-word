@@ -444,7 +444,7 @@ const char* g_strDefect[][4] =
 	{"Position start" , "起始位置" , "", ""},
 	{"Length"   ,       "长   度" , "", ""},
 	{"Depth start"	,   "起始深度" , "", ""},
-	{"Heigth"   ,       "高   度" , "", ""},
+	{"Height"   ,       "高   度" , "", ""},
 	{"Index pos",       "步进位置" , "", ""},
 	{"Width"	,       "宽   度" , "", ""},
 } ;
