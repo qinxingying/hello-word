@@ -11,6 +11,7 @@
 #include "DopplerLawMarker.h"
 
 #include <QMainWindow>
+#include <QTranslator>
 
 #define MAX_LIST_QTY     10
 class DataRefreshThread ;
@@ -105,6 +106,9 @@ private:
     Ui::MainWindow *ui;
     DataRefreshThread* m_pThreadDraw ;
 
+    QTranslator *translator;
+    bool UI_LanguageSwitch;
+
     QWidget* m_pCurrentDataView;
     QLabel* m_pStatusCell[3]  ;
 
@@ -153,7 +157,8 @@ protected slots:
   void on_actionTOFD_Depth_Measurement_triggered();
   void on_actionSave_Defect_triggered();
   void on_actionLanguage_triggered();
-
+  void on_actionEnglish_triggered();
+  void on_actionChinese_triggered();
 };
 
 extern MainWindow* g_pMainWnd;

@@ -315,29 +315,29 @@ void InstrumentSettingWidget::SetWndName(setup_LANG eLang)
 
 		break;
 	case setup_LANG_CHINESS:
-        ui->LabelScanType->setText(QString::fromLocal8Bit("É¨²é·½Ê½:"));
-        ui->LabelEncoderType->setText(QString::fromLocal8Bit("±àÂëÆ÷:"));
-        ui->LabelPrf->setText(QString::fromLocal8Bit("ÖØ¸´ÆµÂÊ:"));
+        ui->LabelScanType->setText(QString::fromLocal8Bit("É¨ï¿½é·½Ê½:"));
+        ui->LabelEncoderType->setText(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:"));
+        ui->LabelPrf->setText(QString::fromLocal8Bit("ï¿½Ø¸ï¿½Æµï¿½ï¿½:"));
 
-        ui->BoxScanArea->setTitle(QString::fromLocal8Bit("É¨²éÇøÓò"));
-        ui->LabelPaValtage_2->setText(QString::fromLocal8Bit("É¨²éÖá"));
-        ui->LabelPaValtage_3->setText(QString::fromLocal8Bit("²½½øÖá"));
-        ui->LabelScanStart->setText(QString::fromLocal8Bit("Æðµã:"));
-        ui->LabelScanEnd->setText(QString::fromLocal8Bit("ÖÕµã:"));
-        ui->LabelScanResolution->setText(QString::fromLocal8Bit("·Ö±æÂÊ:"));
+        ui->BoxScanArea->setTitle(QString::fromLocal8Bit("É¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
+        ui->LabelPaValtage_2->setText(QString::fromLocal8Bit("É¨ï¿½ï¿½ï¿½ï¿½"));
+        ui->LabelPaValtage_3->setText(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
+        ui->LabelScanStart->setText(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½:"));
+        ui->LabelScanEnd->setText(QString::fromLocal8Bit("ï¿½Õµï¿½:"));
+        ui->LabelScanResolution->setText(QString::fromLocal8Bit("ï¿½Ö±ï¿½ï¿½ï¿½:"));
 
-        ui->BoxEncoderMode->setTitle(QString::fromLocal8Bit("±àÂëÆ÷ÀàÐÍ"));
-        ui->LabelEncoderType_2->setText(QString::fromLocal8Bit("±àÂëÆ÷:"));
-        ui->LabelResolution->setText(QString::fromLocal8Bit("¾«¶È:"));
-        ui->LabelEncoderPolarity->setText(QString::fromLocal8Bit("¼«ÐÔ:"));
-        ui->LabelEncoderDirection->setText(QString::fromLocal8Bit("ÀàÐÍ:"));
-        ui->LabelEncoderOrg->setText(QString::fromLocal8Bit("±àÂëÆ÷Æðµã:"));
+        ui->BoxEncoderMode->setTitle(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
+        ui->LabelEncoderType_2->setText(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:"));
+        ui->LabelResolution->setText(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½:"));
+        ui->LabelEncoderPolarity->setText(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½:"));
+        ui->LabelEncoderDirection->setText(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½:"));
+        ui->LabelEncoderOrg->setText(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:"));
 
-        ui->LabelPaValtage->setText(QString::fromLocal8Bit("PA ·¢ÉäµçÑ¹:"));
-        ui->LabelUtVolatage->setText(QString::fromLocal8Bit("UT ·¢ÉäµçÑ¹:"));
+        ui->LabelPaValtage->setText(QString::fromLocal8Bit("PA ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹:"));
+        ui->LabelUtVolatage->setText(QString::fromLocal8Bit("UT ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹:"));
 
-        ui->LabelScanPos->setText(QString::fromLocal8Bit("É¨ÃèÖáµ±Ç°Î»ÖÃ:"));
-        ui->LabelIndexPos->setText(QString::fromLocal8Bit("²½½øÖáµ±Ç°Î»ÖÃ:"));
+        ui->LabelScanPos->setText(QString::fromLocal8Bit("É¨ï¿½ï¿½ï¿½áµ±Ç°Î»ï¿½ï¿½:"));
+        ui->LabelIndexPos->setText(QString::fromLocal8Bit("ï¿½ï¿½ï¿½ï¿½ï¿½áµ±Ç°Î»ï¿½ï¿½:"));
 
 		break;
 
@@ -371,6 +371,11 @@ void InstrumentSettingWidget::SetWndName(setup_LANG eLang)
 	ui->ComEncoderDirection->clear();
 	for(int i = 0; i < 3; i++) {
 		ui->ComEncoderDirection->addItem(g_strDirection[i][iLang]);
-	}
+    }
+}
+
+void InstrumentSettingWidget::retranslateUi()
+{
+    ui->retranslateUi(this);
 }
 

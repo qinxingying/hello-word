@@ -22,8 +22,6 @@ namespace Ui {
     class DopplerGroupTab;
 }
 
-
-
 class DopplerGroupTab : public QWidget
 {
     Q_OBJECT
@@ -42,6 +40,8 @@ public:
 	void UpdateCurrentAngleCom();
 	void UpdateTofdParam();
 	void UpdateSizeingCurves();
+    void retranslateUi();
+
 protected:
     //##### ֻ��������ʾʱ ���ڲ�ʹ��
     void SetWidgetInvalide();

@@ -58,7 +58,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>4</number>
      </property>
      <property name="tabSpacing">
       <number>3</number>
@@ -5069,7 +5069,7 @@
              <item row="5" column="0">
               <widget class="QLabel" name="LabelTofdPcsCal">
                <property name="text">
-                <string>PCS:</string>
+                <string>Cal PCS:</string>
                </property>
               </widget>
              </item>

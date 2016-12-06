@@ -1335,7 +1335,12 @@ void DopplerGroupTab::UpdateSizeingCurves()
 		sprintf(strBuf, "%d", i+1);
 		ui->ComCurvePointId->addItem(QString(QObject::tr(strBuf)));
 	}
-	ui->ComCurvePointId->setCurrentIndex(_curve.nPointPos);
+    ui->ComCurvePointId->setCurrentIndex(_curve.nPointPos);
+}
+
+void DopplerGroupTab::retranslateUi()
+{
+    ui->retranslateUi(this);
 }
 
 /****************************************************************************

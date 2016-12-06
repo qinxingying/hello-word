@@ -55,15 +55,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pThreadDraw  = DataRefreshThread::Instance()  ;
     m_bParamBackMode = false;
 
-    //   ui->splitter	main window splitter; actually not useful now
-    ui->splitter->setHandleWidth(3) ;
-    ui->splitter->setCollapsible(0 , false );
-    ui->splitter->setCollapsible(1 , false );
-
     ui->TabWidgetRight->SetHideAble(false) ;
 
     // tool bar
- //   CreateToolBar();
     ui->actionNew->setDisabled(true);
     ui->actionSaveFile->setDisabled(true);
 
@@ -93,6 +87,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_bCursorSel = true;
     m_nAlloff	= 0;
     SetDispTabText();
+
+    //------------ Language----------------//
+    translator = new QTranslator(this);
+    qApp->installTranslator(translator);
+    on_actionChinese_triggered(); // default Chinese
+    UI_LanguageSwitch = true;
 }
 
 MainWindow::~MainWindow()
@@ -743,17 +743,6 @@ void MainWindow::SetToolBarName(setup_LANG eLang)
         {
         m_actions[i]->setText(QString::fromLocal8Bit(g_strToolBarName[i][_idx]));
         }
-/*	switch(eLang)
-        {
-        case setup_LANG_ENGLISH:
-                //m_actions[0]->whatsThis(QString(tr("超声设置")));
-                m_actions[0]->setText(QString(tr("New")));
-                //m_actions[0]->setToolTip(QString(tr("New")));
-                break;
-        case setup_LANG_CHINESS:
-                m_actions[0]->setText(QString(tr("新建")));
-                break;
-        }*/
 }
 
 void MainWindow::UpdateCombinationDisplay(void)
@@ -1422,7 +1411,33 @@ void MainWindow::on_actionSave_Defect_triggered()
 
 void MainWindow::on_actionLanguage_triggered()
 {
+    if(!UI_LanguageSwitch)
+    {
+      on_actionChinese_triggered();
+    }else{
+      on_actionEnglish_triggered();
+    }
+    UI_LanguageSwitch = !UI_LanguageSwitch;
+}
 
+void MainWindow::on_actionEnglish_triggered()
+{
+    ui->actionEnglish->setChecked(true);
+    ui->actionChinese->setChecked(false);
+    ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-20.png"));
+    translator->load(":/file/translator/phascan_view_english.qm");
+}
+
+void MainWindow::on_actionChinese_triggered()
+{
+    ui->actionChinese->setChecked(true);
+    ui->actionEnglish->setChecked(false);
+    ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-22.png"));
+    translator->load(":/file/translator/phascan_view_chinese.qm");
+
+    ui->retranslateUi(this);
+    ui->Group1->retranslateUi();
+    ui->ScanHardware->retranslateUi();
 }
 
 /****************************************************************************

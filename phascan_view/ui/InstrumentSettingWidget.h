@@ -19,6 +19,8 @@ public:
     ~InstrumentSettingWidget();
     void UpdateScanPos();
     void SetWndName(setup_LANG eLang);
+    void retranslateUi();
+
 protected:
     //**************************
     void SetItemInvalide() ;

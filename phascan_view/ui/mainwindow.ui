@@ -196,9 +196,9 @@
      <string>Language</string>
     </property>
     <addaction name="actionEnglish"/>
-    <addaction name="action_2"/>
-    <addaction name="action_3"/>
-    <addaction name="action_4"/>
+    <addaction name="actionChinese"/>
+    <addaction name="actionJapanese"/>
+    <addaction name="actionKorean"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -266,18 +266,27 @@
    <addaction name="actionLanguage"/>
   </widget>
   <action name="actionNew_Config">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>New Configure</string>
+    <string>New File</string>
    </property>
   </action>
   <action name="actionOpen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Open Configure</string>
+    <string>Open File</string>
    </property>
   </action>
   <action name="actionSave">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Save Configure</string>
+    <string>Save File</string>
    </property>
   </action>
   <action name="actionClose">
@@ -291,26 +300,41 @@
    </property>
   </action>
   <action name="actionClose_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Close</string>
    </property>
   </action>
   <action name="actionEnglish">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>English</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="actionChinese">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Chinese</string>
    </property>
   </action>
-  <action name="action_3">
+  <action name="actionJapanese">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Japanese</string>
    </property>
   </action>
-  <action name="action_4">
+  <action name="actionKorean">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Korean</string>
    </property>
@@ -343,19 +367,19 @@
   <action name="actionOpenFile">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-02.png</normaloff>:/file/resource/toobar/0-02.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-02.png</normaloff>:/file/resource/toolbar/0-02.png</iconset>
    </property>
    <property name="text">
     <string>OpenFile</string>
    </property>
    <property name="toolTip">
-    <string>Open File</string>
+    <string>Open</string>
    </property>
   </action>
   <action name="actionNew">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-01.png</normaloff>:/file/resource/toobar/0-01.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-01.png</normaloff>:/file/resource/toolbar/0-01.png</iconset>
    </property>
    <property name="text">
     <string>New</string>
@@ -367,7 +391,7 @@
   <action name="actionSaveFile">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-03.png</normaloff>:/file/resource/toobar/0-03.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-03.png</normaloff>:/file/resource/toolbar/0-03.png</iconset>
    </property>
    <property name="text">
     <string>SaveFile</string>
@@ -379,7 +403,7 @@
   <action name="actionRepoet_Add_One_Item">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-04.png</normaloff>:/file/resource/toobar/0-04.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-04.png</normaloff>:/file/resource/toolbar/0-04.png</iconset>
    </property>
    <property name="text">
     <string>Repoet Add One Item</string>
@@ -391,7 +415,7 @@
   <action name="actionRepoet_Del_One_Item">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-05.png</normaloff>:/file/resource/toobar/0-05.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-05.png</normaloff>:/file/resource/toolbar/0-05.png</iconset>
    </property>
    <property name="text">
     <string>Repoet Del One Item</string>
@@ -403,7 +427,7 @@
   <action name="actionRepoet_Setting">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-06.png</normaloff>:/file/resource/toobar/0-06.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-06.png</normaloff>:/file/resource/toolbar/0-06.png</iconset>
    </property>
    <property name="text">
     <string>Repoet Setting</string>
@@ -415,7 +439,7 @@
   <action name="actionSave_Report">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-07.png</normaloff>:/file/resource/toobar/0-07.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-07.png</normaloff>:/file/resource/toolbar/0-07.png</iconset>
    </property>
    <property name="text">
     <string>Save Report</string>
@@ -427,7 +451,7 @@
   <action name="actionTOFD_LW_Straitening">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-10.png</normaloff>:/file/resource/toobar/0-10.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-10.png</normaloff>:/file/resource/toolbar/0-10.png</iconset>
    </property>
    <property name="text">
     <string>TOFD LW Straitening</string>
@@ -439,7 +463,7 @@
   <action name="actionTOFD_BW_Straitening">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-11.png</normaloff>:/file/resource/toobar/0-11.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-11.png</normaloff>:/file/resource/toolbar/0-11.png</iconset>
    </property>
    <property name="text">
     <string>TOFD BW Straitening</string>
@@ -451,7 +475,7 @@
   <action name="actionTOFD_LW_Removal">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-12.png</normaloff>:/file/resource/toobar/0-12.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-12.png</normaloff>:/file/resource/toolbar/0-12.png</iconset>
    </property>
    <property name="text">
     <string>TOFD LW Removal</string>
@@ -463,7 +487,7 @@
   <action name="actionTOFD_SAFT">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-13.png</normaloff>:/file/resource/toobar/0-13.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-13.png</normaloff>:/file/resource/toolbar/0-13.png</iconset>
    </property>
    <property name="text">
     <string>TOFD SAFT</string>
@@ -475,7 +499,7 @@
   <action name="actionTOFD_Repeal">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-14.png</normaloff>:/file/resource/toobar/0-14.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-14.png</normaloff>:/file/resource/toolbar/0-14.png</iconset>
    </property>
    <property name="text">
     <string>TOFD Repeal</string>
@@ -487,7 +511,7 @@
   <action name="actionTOFD_Redo">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-15.png</normaloff>:/file/resource/toobar/0-15.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-15.png</normaloff>:/file/resource/toolbar/0-15.png</iconset>
    </property>
    <property name="text">
     <string>TOFD Redo</string>
@@ -499,7 +523,7 @@
   <action name="actionTOFD_Length_Measurement">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-16.png</normaloff>:/file/resource/toobar/0-16.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-16.png</normaloff>:/file/resource/toolbar/0-16.png</iconset>
    </property>
    <property name="text">
     <string>TOFD Length Measurement</string>
@@ -511,7 +535,7 @@
   <action name="actionTOFD_Height_Measurement">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-17.png</normaloff>:/file/resource/toobar/0-17.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-17.png</normaloff>:/file/resource/toolbar/0-17.png</iconset>
    </property>
    <property name="text">
     <string>TOFD Height Measurement</string>
@@ -523,7 +547,7 @@
   <action name="actionTOFD_Depth_Measurement">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-18.png</normaloff>:/file/resource/toobar/0-18.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-18.png</normaloff>:/file/resource/toolbar/0-18.png</iconset>
    </property>
    <property name="text">
     <string>TOFD Depth Measurement</string>
@@ -535,7 +559,7 @@
   <action name="actionSave_Defect">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-19.png</normaloff>:/file/resource/toobar/0-19.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-19.png</normaloff>:/file/resource/toolbar/0-19.png</iconset>
    </property>
    <property name="text">
     <string>Save Defect</string>
@@ -547,7 +571,7 @@
   <action name="actionLanguage">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toobar/0-20.png</normaloff>:/file/resource/toobar/0-20.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-22.png</normaloff>:/file/resource/toolbar/0-22.png</iconset>
    </property>
    <property name="text">
     <string>Language</string>
