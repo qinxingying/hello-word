@@ -31,7 +31,16 @@
    <property name="sizeConstraint">
     <enum>QLayout::SetDefaultConstraint</enum>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -49,7 +58,7 @@
       </size>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>6</number>
      </property>
      <property name="tabSpacing">
       <number>3</number>
@@ -64,8 +73,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../res.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-01.png</normaloff>:/icon/notebook/resource/notebook/0-01.png</iconset>
+       <iconset resource="../mainwindow.qrc">
+        <normaloff>:/file/resource/main_menu/0-01.png</normaloff>:/file/resource/main_menu/0-01.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Ut Setting</string>
@@ -74,7 +83,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -1309,8 +1327,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../res.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-02.png</normaloff>:/icon/notebook/resource/notebook/0-02.png</iconset>
+       <iconset resource="../mainwindow.qrc">
+        <normaloff>:/file/resource/main_menu/0-02.png</normaloff>:/file/resource/main_menu/0-02.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Probe/Wedge</string>
@@ -1319,7 +1337,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -1686,8 +1713,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../res.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-03.png</normaloff>:/icon/notebook/resource/notebook/0-03.png</iconset>
+       <iconset resource="../mainwindow.qrc">
+        <normaloff>:/file/resource/main_menu/0-03.png</normaloff>:/file/resource/main_menu/0-03.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Focallaw</string>
@@ -1696,7 +1723,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -1715,8 +1751,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>326</width>
-            <height>703</height>
+            <width>328</width>
+            <height>705</height>
            </rect>
           </property>
           <widget class="QGroupBox" name="BoxFocalPoint">
@@ -2946,8 +2982,8 @@
        <string/>
       </property>
       <attribute name="icon">
-       <iconset resource="../res.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-04.png</normaloff>:/icon/notebook/resource/notebook/0-04.png</iconset>
+       <iconset resource="../mainwindow.qrc">
+        <normaloff>:/file/resource/main_menu/0-04.png</normaloff>:/file/resource/main_menu/0-04.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Gate and Sizing Curves</string>
@@ -2956,7 +2992,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -2975,8 +3020,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>326</width>
-            <height>703</height>
+            <width>328</width>
+            <height>705</height>
            </rect>
           </property>
           <widget class="Line" name="line_8">
@@ -4364,14 +4409,14 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-93</y>
         <width>313</width>
         <height>800</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../res.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-05.png</normaloff>:/icon/notebook/resource/notebook/0-05.png</iconset>
+       <iconset resource="../mainwindow.qrc">
+        <normaloff>:/file/resource/main_menu/0-05.png</normaloff>:/file/resource/main_menu/0-05.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Geometry</string>
@@ -4380,7 +4425,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -4399,8 +4453,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>309</width>
-            <height>796</height>
+            <width>311</width>
+            <height>798</height>
            </rect>
           </property>
           <widget class="QWidget" name="layoutWidget15">
@@ -5330,8 +5384,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../res.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-06.png</normaloff>:/icon/notebook/resource/notebook/0-06.png</iconset>
+       <iconset resource="../mainwindow.qrc">
+        <normaloff>:/file/resource/main_menu/0-06.png</normaloff>:/file/resource/main_menu/0-06.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Measurement</string>
@@ -5340,7 +5394,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -5359,8 +5422,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>309</width>
-            <height>846</height>
+            <width>311</width>
+            <height>848</height>
            </rect>
           </property>
           <widget class="QLabel" name="LabelMeasureValue">
@@ -6955,8 +7018,8 @@
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../res.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-07.png</normaloff>:/icon/notebook/resource/notebook/0-07.png</iconset>
+       <iconset resource="../mainwindow.qrc">
+        <normaloff>:/file/resource/main_menu/0-07.png</normaloff>:/file/resource/main_menu/0-07.png</iconset>
       </attribute>
       <attribute name="label">
        <string>Display</string>
@@ -6965,7 +7028,16 @@
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -6984,8 +7056,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>309</width>
-            <height>746</height>
+            <width>311</width>
+            <height>748</height>
            </rect>
           </property>
           <widget class="QTreeView" name="treeView">
@@ -7638,7 +7710,7 @@
   <tabstop>scrollAreaProbeWedge</tabstop>
  </tabstops>
  <resources>
-  <include location="../res.qrc"/>
+  <include location="../mainwindow.qrc"/>
  </resources>
  <connections/>
  <slots>

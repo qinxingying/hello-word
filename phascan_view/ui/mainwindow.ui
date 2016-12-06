@@ -23,7 +23,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../mainwindow.qrc">
-    <normaloff>:/icon/Main/resource/Main/0-01.png</normaloff>:/icon/Main/resource/Main/0-01.png</iconset>
+    <normaloff>:/file/resource/main/0-01.png</normaloff>:/file/resource/main/0-01.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QSplitter" name="splitter">
@@ -85,7 +85,7 @@
      <widget class="DopplerGroupTab" name="Group1">
       <attribute name="icon">
        <iconset resource="../mainwindow.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-27.png</normaloff>:/icon/notebook/resource/notebook/0-27.png</iconset>
+        <normaloff>:/file/resource/main_menu/0-27.png</normaloff>:/file/resource/main_menu/0-27.png</iconset>
       </attribute>
       <attribute name="title">
        <string>Group 1</string>
@@ -94,7 +94,7 @@
      <widget class="InstrumentSettingWidget" name="ScanHardware">
       <attribute name="icon">
        <iconset resource="../mainwindow.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-28.png</normaloff>:/icon/notebook/resource/notebook/0-28.png</iconset>
+        <normaloff>:/file/resource/main_menu/0-28.png</normaloff>:/file/resource/main_menu/0-28.png</iconset>
       </attribute>
       <attribute name="title">
        <string>Scan</string>
@@ -103,7 +103,7 @@
      <widget class="QWidget" name="GroupAdd">
       <attribute name="icon">
        <iconset resource="../mainwindow.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-36.png</normaloff>:/icon/notebook/resource/notebook/0-36.png</iconset>
+        <normaloff>:/file/resource/main_menu/0-36.png</normaloff>:/file/resource/main_menu/0-36.png</iconset>
       </attribute>
       <attribute name="title">
        <string/>
@@ -158,7 +158,7 @@
      <widget class="QWidget" name="AddDisplay">
       <attribute name="icon">
        <iconset resource="../mainwindow.qrc">
-        <normaloff>:/icon/notebook/resource/notebook/0-36.png</normaloff>:/icon/notebook/resource/notebook/0-36.png</iconset>
+        <normaloff>:/file/resource/main_menu/0-36.png</normaloff>:/file/resource/main_menu/0-36.png</iconset>
       </attribute>
       <attribute name="title">
        <string/>
@@ -241,6 +241,29 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionNew"/>
+   <addaction name="actionOpenFile"/>
+   <addaction name="actionSaveFile"/>
+   <addaction name="separator"/>
+   <addaction name="actionRepoet_Add_One_Item"/>
+   <addaction name="actionRepoet_Del_One_Item"/>
+   <addaction name="actionRepoet_Setting"/>
+   <addaction name="actionSave_Report"/>
+   <addaction name="separator"/>
+   <addaction name="actionTOFD_LW_Straitening"/>
+   <addaction name="actionTOFD_BW_Straitening"/>
+   <addaction name="actionTOFD_LW_Removal"/>
+   <addaction name="actionTOFD_SAFT"/>
+   <addaction name="separator"/>
+   <addaction name="actionTOFD_Repeal"/>
+   <addaction name="actionTOFD_Redo"/>
+   <addaction name="separator"/>
+   <addaction name="actionTOFD_Length_Measurement"/>
+   <addaction name="actionTOFD_Height_Measurement"/>
+   <addaction name="actionTOFD_Depth_Measurement"/>
+   <addaction name="actionSave_Defect"/>
+   <addaction name="separator"/>
+   <addaction name="actionLanguage"/>
   </widget>
   <action name="actionNew_Config">
    <property name="text">
@@ -279,17 +302,17 @@
   </action>
   <action name="action_2">
    <property name="text">
-    <string>中文</string>
+    <string>Chinese</string>
    </property>
   </action>
   <action name="action_3">
    <property name="text">
-    <string>日语</string>
+    <string>Japanese</string>
    </property>
   </action>
   <action name="action_4">
    <property name="text">
-    <string>韩语</string>
+    <string>Korean</string>
    </property>
   </action>
   <action name="actionMenu">
@@ -315,6 +338,222 @@
   <action name="actionSave_2">
    <property name="text">
     <string>Save </string>
+   </property>
+  </action>
+  <action name="actionOpenFile">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-02.png</normaloff>:/file/resource/toobar/0-02.png</iconset>
+   </property>
+   <property name="text">
+    <string>OpenFile</string>
+   </property>
+   <property name="toolTip">
+    <string>Open File</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-01.png</normaloff>:/file/resource/toobar/0-01.png</iconset>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="toolTip">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionSaveFile">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-03.png</normaloff>:/file/resource/toobar/0-03.png</iconset>
+   </property>
+   <property name="text">
+    <string>SaveFile</string>
+   </property>
+   <property name="toolTip">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionRepoet_Add_One_Item">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-04.png</normaloff>:/file/resource/toobar/0-04.png</iconset>
+   </property>
+   <property name="text">
+    <string>Repoet Add One Item</string>
+   </property>
+   <property name="toolTip">
+    <string>Repoet Add One Item</string>
+   </property>
+  </action>
+  <action name="actionRepoet_Del_One_Item">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-05.png</normaloff>:/file/resource/toobar/0-05.png</iconset>
+   </property>
+   <property name="text">
+    <string>Repoet Del One Item</string>
+   </property>
+   <property name="toolTip">
+    <string>Repoet Del One Item</string>
+   </property>
+  </action>
+  <action name="actionRepoet_Setting">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-06.png</normaloff>:/file/resource/toobar/0-06.png</iconset>
+   </property>
+   <property name="text">
+    <string>Repoet Setting</string>
+   </property>
+   <property name="toolTip">
+    <string>Repoet Setting</string>
+   </property>
+  </action>
+  <action name="actionSave_Report">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-07.png</normaloff>:/file/resource/toobar/0-07.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Report</string>
+   </property>
+   <property name="toolTip">
+    <string>Save Report</string>
+   </property>
+  </action>
+  <action name="actionTOFD_LW_Straitening">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-10.png</normaloff>:/file/resource/toobar/0-10.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD LW Straitening</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD LW Straitening</string>
+   </property>
+  </action>
+  <action name="actionTOFD_BW_Straitening">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-11.png</normaloff>:/file/resource/toobar/0-11.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD BW Straitening</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD BW Straitening</string>
+   </property>
+  </action>
+  <action name="actionTOFD_LW_Removal">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-12.png</normaloff>:/file/resource/toobar/0-12.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD LW Removal</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD LW Removal</string>
+   </property>
+  </action>
+  <action name="actionTOFD_SAFT">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-13.png</normaloff>:/file/resource/toobar/0-13.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD SAFT</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD SAFT</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Repeal">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-14.png</normaloff>:/file/resource/toobar/0-14.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Repeal</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Repeal</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Redo">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-15.png</normaloff>:/file/resource/toobar/0-15.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Redo</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Redo</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Length_Measurement">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-16.png</normaloff>:/file/resource/toobar/0-16.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Length Measurement</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Length Measurement</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Height_Measurement">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-17.png</normaloff>:/file/resource/toobar/0-17.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Height Measurement</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Height Measurement</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Depth_Measurement">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-18.png</normaloff>:/file/resource/toobar/0-18.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Depth Measurement</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Depth Measurement</string>
+   </property>
+  </action>
+  <action name="actionSave_Defect">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-19.png</normaloff>:/file/resource/toobar/0-19.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Defect</string>
+   </property>
+   <property name="toolTip">
+    <string>Save Defect</string>
+   </property>
+  </action>
+  <action name="actionLanguage">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toobar/0-20.png</normaloff>:/file/resource/toobar/0-20.png</iconset>
+   </property>
+   <property name="text">
+    <string>Language</string>
+   </property>
+   <property name="toolTip">
+    <string>CH/EN</string>
    </property>
   </action>
  </widget>

@@ -132,7 +132,28 @@ private slots:
     void slotCurrentDispChanged(int) ;
     void slotItemMoved(DopplerDataView* , DopplerGraphicsItem*);
     void slotDataViewResized(DopplerDataView*) ;
-    void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_) ;
+    void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_);
+
+protected slots:
+  void on_actionNew_triggered();                    // (1).ToolBar
+  void on_actionOpenFile_triggered();
+  void on_actionSaveFile_triggered();
+  void on_actionRepoet_Add_One_Item_triggered();
+  void on_actionRepoet_Del_One_Item_triggered();
+  void on_actionRepoet_Setting_triggered();
+  void on_actionSave_Report_triggered();
+  void on_actionTOFD_LW_Straitening_triggered();
+  void on_actionTOFD_BW_Straitening_triggered();
+  void on_actionTOFD_LW_Removal_triggered();
+  void on_actionTOFD_SAFT_triggered();
+  void on_actionTOFD_Repeal_triggered();
+  void on_actionTOFD_Redo_triggered();
+  void on_actionTOFD_Length_Measurement_triggered();
+  void on_actionTOFD_Height_Measurement_triggered();
+  void on_actionTOFD_Depth_Measurement_triggered();
+  void on_actionSave_Defect_triggered();
+  void on_actionLanguage_triggered();
+
 };
 
 extern MainWindow* g_pMainWnd;

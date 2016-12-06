@@ -48,47 +48,51 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-        ui->setupUi(this);
-        setContextMenuPolicy( Qt::NoContextMenu );
-        setMinimumSize(1024 , 720);
-        m_pThreadDraw  = DataRefreshThread::Instance()  ;
-        m_bParamBackMode = false;
-        //################################
-        //   ui->splitter	main window splitter; actually not useful now
-        ui->splitter->setHandleWidth(3) ;
-        ui->splitter->setCollapsible(0 , false );
-        ui->splitter->setCollapsible(1 , false );
-        //################################
-        ui->TabWidgetRight->SetHideAble(false) ;
-        //################################
-        // create tool bar
-        CreateToolBar();
-        //############## init right display widget list ########
-        for(int i = 0 ; i < MAX_LIST_QTY ; i++)
-        {
-                m_pViewList[i] = new QList<QWidget*>   ;
-                m_pViewList[i]->clear();
-        }
-        //###############################
-        // status bar
-        CreateStatusBar() ;
-        //#################################
-        //CreateInstrumentSettingWidget(ui->Group1);
-        connect(ui->TabWidgetLeft  , SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)) , this , SLOT(slotsLeftTabButton(Qt::MouseButton))) ;
-        connect(ui->TabWidgetLeft  , SIGNAL(signalRightButtonDoubleClicked(int)) , this , SLOT(slotLeftTabRightButtonDoubleClicked(int)));
-        connect(ui->TabWidgetRight , SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)) , this , SLOT(slotsRightTabButton(Qt::MouseButton))) ;
-        connect(ui->TabWidgetRight , SIGNAL(signalRightButtonDoubleClicked(int)) , this , SLOT(slotRightTabRightButtonDoubleClicked(int))) ;
-        connect(ui->TabWidgetLeft  , SIGNAL(currentChanged(int)) , SLOT(slotCurrentGroupChanged(int))) ;
-        connect(ui->TabWidgetRight , SIGNAL(currentChanged(int)) , SLOT(slotCurrentDispChanged(int))) ;
-        //#################################
-        // hide menu currently
-        ui->menubar->hide();
-        // tofd setting dialog
-        m_iCurGroup  = 0;
-        m_nLawIdSel  = 0;
-        m_bCursorSel = true;
-        m_nAlloff	= 0;
-        SetDispTabText();
+    ui->setupUi(this);
+    setContextMenuPolicy(Qt::NoContextMenu);
+    setMinimumSize(1024 , 720);
+
+    m_pThreadDraw  = DataRefreshThread::Instance()  ;
+    m_bParamBackMode = false;
+
+    //   ui->splitter	main window splitter; actually not useful now
+    ui->splitter->setHandleWidth(3) ;
+    ui->splitter->setCollapsible(0 , false );
+    ui->splitter->setCollapsible(1 , false );
+
+    ui->TabWidgetRight->SetHideAble(false) ;
+
+    // tool bar
+ //   CreateToolBar();
+    ui->actionNew->setDisabled(true);
+    ui->actionSaveFile->setDisabled(true);
+
+    // init right display widget list
+    for(int i = 0 ; i < MAX_LIST_QTY ; i++)
+    {
+        m_pViewList[i] = new QList<QWidget*>;
+        m_pViewList[i]->clear();
+    }
+
+    // status bar
+    CreateStatusBar() ;
+
+    //CreateInstrumentSettingWidget(ui->Group1);
+    connect(ui->TabWidgetLeft  , SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)) , this , SLOT(slotsLeftTabButton(Qt::MouseButton))) ;
+    connect(ui->TabWidgetLeft  , SIGNAL(signalRightButtonDoubleClicked(int)) , this , SLOT(slotLeftTabRightButtonDoubleClicked(int)));
+    connect(ui->TabWidgetRight , SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)) , this , SLOT(slotsRightTabButton(Qt::MouseButton))) ;
+    connect(ui->TabWidgetRight , SIGNAL(signalRightButtonDoubleClicked(int)) , this , SLOT(slotRightTabRightButtonDoubleClicked(int))) ;
+    connect(ui->TabWidgetLeft  , SIGNAL(currentChanged(int)) , SLOT(slotCurrentGroupChanged(int))) ;
+    connect(ui->TabWidgetRight , SIGNAL(currentChanged(int)) , SLOT(slotCurrentDispChanged(int))) ;
+
+//    ui->menubar->hide();
+
+    // tofd setting dialog
+    m_iCurGroup  = 0;
+    m_nLawIdSel  = 0;
+    m_bCursorSel = true;
+    m_nAlloff	= 0;
+    SetDispTabText();
 }
 
 MainWindow::~MainWindow()
@@ -122,15 +126,7 @@ void MainWindow::resizeEvent(QResizeEvent* )
         int _nHeight  = ui->centralwidget->height();
         ui->splitter->setGeometry(0 , 0 , _nWidth , _nHeight);
 }
-/*
-void MainWindow::keyPressEvent(QKeyEvent *event)
-{
-}
 
-void MainWindow::keyReleaseEvent (QKeyEvent *event)
-{
-}
-*/
 //  creat tool bar
 void MainWindow::CreateToolBar()
 {
@@ -139,8 +135,6 @@ void MainWindow::CreateToolBar()
         toolbar->setAutoFillBackground(true);
         toolbar->setMovable(false);
         setToolButtonStyle( Qt::ToolButtonIconOnly );
-        //QAction* actions[26] ;
-        // new configure
 
         int _nId = ACTION_ID_START_TOOLBAR;
         m_nTBCnt = ToolBarCnt()-1;
@@ -155,7 +149,7 @@ void MainWindow::CreateToolBar()
 
         m_actions[0]->setEnabled(false);
         m_actions[2]->setEnabled(false);
-        //**************************************************************
+
         connect(toolbar ,SIGNAL(actionTriggered(QAction*)) , this , SLOT(slotActionTriggered(QAction*))) ;
 
         DopplerConfigure* _pConfig = DopplerConfigure::Instance()  ;
@@ -553,7 +547,7 @@ void MainWindow::AddOneGroup()
 
         QString str(tr("Group ")) ; QString str1 ; str1.sprintf("%d", _nGroupQty + 1) ;
         str += str1 ;
-        QIcon icon(":/icon/notebook/resource/notebook/0-27.png");
+        QIcon icon(":/file/resource/main_menu/0-27.png");
         ui->TabWidgetLeft->insertTab(_nGroupQty , _pGroup , icon, str);
         ui->TabWidgetLeft->setCurrentIndex(_nGroupQty);
 }
@@ -708,7 +702,7 @@ void MainWindow::UpdateTableLeft()
                 _pGroup->SetGroupId(i)  ;
                 QString str(tr("Group ")) ; QString str1 ; str1.sprintf("%d", i + 1) ;
                 str += str1 ;
-                QIcon icon(":/icon/notebook/resource/notebook/0-27.png");
+                QIcon icon(":/file/resource/main_menu/0-27.png");
                 ui->TabWidgetLeft->insertTab(i , _pGroup , icon, str)  ;
         }
 
@@ -1340,6 +1334,97 @@ void MainWindow::slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF
         _process.UpdateAllViewCursorOfGroup(_nGroupId) ;
         RunDrawThreadOnce(true);
 }
+
+void MainWindow::on_actionNew_triggered()
+{
+    NewConfigure();
+}
+
+void MainWindow::on_actionOpenFile_triggered()
+{
+    OpenFile();
+}
+
+void MainWindow::on_actionSaveFile_triggered()
+{
+    SaveFile();
+}
+
+void MainWindow::on_actionRepoet_Add_One_Item_triggered()
+{
+    ReportAddOneItem();
+}
+
+void MainWindow::on_actionRepoet_Del_One_Item_triggered()
+{
+    ReportDelOneItem();
+}
+
+void MainWindow::on_actionRepoet_Setting_triggered()
+{
+    ReportSetting();
+}
+
+void MainWindow::on_actionSave_Report_triggered()
+{
+    ReportSave();
+}
+
+void MainWindow::on_actionTOFD_LW_Straitening_triggered()
+{
+    TofdDataPro(TOFD_PRO_STRAIGHT);
+}
+
+void MainWindow::on_actionTOFD_BW_Straitening_triggered()
+{
+    TofdDataPro(TOFD_PRO_BOTTOM);
+}
+
+void MainWindow::on_actionTOFD_LW_Removal_triggered()
+{
+    TofdDataPro(TOFD_PRO_DIFFERENC);
+}
+
+void MainWindow::on_actionTOFD_SAFT_triggered()
+{
+    TofdDataPro(TOFD_PRO_SAFT);
+}
+
+void MainWindow::on_actionTOFD_Repeal_triggered()
+{
+    TofdDataPro(TOFD_PRO_REPEAL);
+}
+
+void MainWindow::on_actionTOFD_Redo_triggered()
+{
+    TofdDataPro(TOFD_PRO_REDO);
+}
+
+void MainWindow::on_actionTOFD_Length_Measurement_triggered()
+{
+    DefectSign(DEFECT_SIGN_LENGTH);
+}
+
+void MainWindow::on_actionTOFD_Height_Measurement_triggered()
+{
+    DefectSign(DEFECT_SIGN_HEIGHT);
+}
+
+void MainWindow::on_actionTOFD_Depth_Measurement_triggered()
+{
+    DefectSign(DEFECT_SIGN_DEPTH);
+}
+
+void MainWindow::on_actionSave_Defect_triggered()
+{
+    DefectSign(DEFECT_SIGN_SAVE);
+}
+
+void MainWindow::on_actionLanguage_triggered()
+{
+
+}
+
 /****************************************************************************
   Description: 窗口尺寸变化后  数据显示需要刷新
 *****************************************************************************/

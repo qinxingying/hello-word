@@ -866,7 +866,7 @@ void DopplerGroupTab::SetWidgetInvalide()
 	ui->BoxFocalPoint->setEnabled(false);
 	ui->BoxFocalPoint->setEnabled(false);
 	ui->BoxAperture->setEnabled(false);
-	ui->ValueGateHeight->setEnabled(false);
+//	ui->ValueGateHeight->setEnabled(false);
 //	ui->ValueGateStart->setEnabled(false);
 //	ui->ValueGateWidth->setEnabled(false);
 	ui->ComGateMeasure->setEnabled(false);
