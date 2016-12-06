@@ -1,0 +1,771 @@
+#include "DopplerDataView.h"
+#include "DopplerRulerBar.h"
+#include "DopplerTitleBar.h"
+#include "DopplerColorBar.h"
+#include "DopplerGraphicView.h"
+#include "DopplerGraphicsItem.h"
+#include "DopplerViewItems.h"
+#include <QGridLayout>
+#include <QMouseEvent>
+#include <gHeader.h>
+#include <QMenu>
+
+static const QSize DEFAULT_SIZE( 800 , 600);
+static const QSize MINIMUM_SIZE( 150 , 150);
+
+DopplerDataView::DopplerDataView(QWidget *parent , DATA_VIEW_COMPONENT eComponent_) :
+	QWidget(parent)
+{
+	m_nGroupId = 0  ;
+	m_nLaw	 = 0  ;
+	m_eDisplayMode  = 0  ;
+	m_nIdentify	 = 0  ;
+
+	m_pLayout	   = NULL  ;
+	m_pTitleBar	 = NULL  ;
+	m_pColorBar	 = NULL  ;
+	m_pGraphicView  = NULL  ;
+	m_eComponent	= eComponent_  ;
+	m_bSelected	 = false ;
+
+	for(int i = 0; i < DATA_VIEW_RULER_MAX ; i++)
+	{
+		m_pRulers[i] = NULL ;
+		RulerRange[i].first  = 0	 ;
+		RulerRange[i].second = 0	 ;
+	}
+
+	setMinimumSize(MINIMUM_SIZE);
+	resize(DEFAULT_SIZE);
+	//************ set back ground color
+	QPalette pal = this->palette() ;
+	pal.setColor(QPalette::Background , QColor(0 , 0 , 0));
+	setPalette(pal);
+	setAutoFillBackground(true);
+	setFont(QFont("simsun" ,9));
+	//*********** create widgets of this view
+	CreateComponent() ;
+	//connect(this, SIGNAL(signalMousePressed(QWidget*)) , g_pMainWnd , SLOT(slotViewFrameButtonClicked(QWidget*)));
+	//connect(this, SIGNAL(signalViewFrameMenuSelection(DopplerDataView* , int)) , g_pMainWnd , SLOT(slotViewFrameMenuSelection(DopplerDataView* , int))) ;
+
+	m_pItemsGroup = new DopplerViewItems(this);
+}
+
+
+DopplerDataView::~DopplerDataView()
+{
+	delete m_pItemsGroup ;
+	DeleteAllWidget()	;
+}
+
+void DopplerDataView::DeleteAllWidget()
+{
+	for(int i = 0; i < DATA_VIEW_RULER_MAX ; i++)
+	{
+		delete m_pRulers[i] ;
+		m_pRulers[i] = NULL ;
+	}
+
+	if(m_pTitleBar	 != NULL)  {delete m_pTitleBar	 ;   m_pTitleBar  =  NULL ;}
+	if(m_pColorBar	 != NULL)  {delete m_pColorBar	 ;   m_pColorBar  =  NULL ;}
+	if(m_pGraphicView  != NULL)  {delete m_pGraphicView  ;   m_pGraphicView  =  NULL ;}
+	if(m_pLayout	   != NULL)  {delete m_pLayout	   ;   m_pLayout  =  NULL ;}
+}
+
+void DopplerDataView::SetDataViewConfigure(int nGroupId_ , int nLaw_ , int eDisplayMode_)
+{
+	m_nGroupId = nGroupId_  ;
+	m_nLaw	 = nLaw_	  ;
+	m_eDisplayMode  = eDisplayMode_  ;
+
+}
+
+void DopplerDataView::GetDataViewConfigure(int* nGroupId_ , int* nLaw_ , int* eDisplayMode_) const
+{
+	*nGroupId_  =  m_nGroupId  ;
+	*nLaw_	  =  m_nLaw	  ;
+	*eDisplayMode_ = m_eDisplayMode  ;
+}
+
+int DopplerDataView::GetDataViewDrawType()
+{
+	return m_eDisplayMode ;
+}
+
+int DopplerDataView::GetGroupId()
+{
+	return m_nGroupId ;
+}
+
+int DopplerDataView::GetLawId()
+{
+	return m_nLaw ;
+}
+
+void DopplerDataView::SetLawIdentify(int nId_)
+{
+	m_nIdentify = nId_ ;
+}
+
+int DopplerDataView::GetLawIdentify() const
+{
+	return m_nIdentify ;
+}
+
+int DopplerDataView::GetSScanLawQty()
+{
+	return m_pItemsGroup->GetLawMarkerQty();
+}
+
+int DopplerDataView::GetSScanLaw(int index_)
+{
+	return m_pItemsGroup->GetLawMarkerPos(index_);
+}
+
+void DopplerDataView::EnableComponent(DATA_VIEW_COMPONENT eComponent_)
+{
+	m_eComponent	= eComponent_  ;
+	CreateComponent() ;
+}
+
+void DopplerDataView::SetRulerRange(double nStart_ , double nStop_ , double nSliderStart_ , double nSliderStop_ , DATA_VIEW_RULER eRuler_ )
+{
+	if(eRuler_ >= DATA_VIEW_RULER_MAX)  return ;
+
+	// if value not changed , return ,
+	// for  slotResetView will zoom the display view
+	if((FLOAT_EQ(RulerRange[eRuler_].first , nStart_))
+	   && (FLOAT_EQ(RulerRange[eRuler_].second ,nStop_ )))
+		return ;
+
+	RulerRange[eRuler_].first  = nStart_  ;
+	RulerRange[eRuler_].second = nStop_   ;
+
+	SliderRange[eRuler_].first  = nSliderStart_  ;
+	SliderRange[eRuler_].second = nSliderStop_  ;
+
+	if(m_pRulers[eRuler_]) {
+		m_pRulers[eRuler_]->SetMarkerRange(nStart_ , nStop_, nSliderStart_, nSliderStop_);
+	}
+
+	if(m_pGraphicView) {
+		m_pGraphicView->slotResetView();
+	}
+}
+
+void DopplerDataView::GetRulerRange(double* nStart_ , double* nStop_ , double *nSliderStart_ , double *nSliderStop_ , DATA_VIEW_RULER eRuler_ )
+{
+	if(eRuler_ >= DATA_VIEW_RULER_MAX)  return ;
+	*nStart_  = RulerRange[eRuler_].first ;
+	*nStop_   = RulerRange[eRuler_].second ;
+
+	*nSliderStart_  = SliderRange[eRuler_].first ;
+	*nSliderStop_   = SliderRange[eRuler_].second ;
+}
+
+void DopplerDataView::SetRulerColor(QColor* color , DATA_VIEW_RULER eRuler_)
+{
+	if(m_pRulers[eRuler_])
+		m_pRulers[eRuler_]->SetBackgroudColor(color);
+}
+void DopplerDataView::SetRulerMarkerColor(QColor* color , DATA_VIEW_RULER eRuler_ )
+{
+	if(m_pRulers[eRuler_])
+		m_pRulers[eRuler_]->SetMarkerColor(color);
+}
+
+void DopplerDataView::SetRulerUnit(QString* unit  , DATA_VIEW_RULER eRuler_)
+{
+	if(m_pRulers[eRuler_])
+		m_pRulers[eRuler_]->SetMarkerUnit(unit);
+}
+
+void DopplerDataView::SetTitleBarColor(QColor& color_)
+{
+	if(m_pTitleBar)
+		m_pTitleBar->SetBackgroudColor(color_);
+}
+
+void DopplerDataView::SetTitleBarString(QString& str_)
+{
+	if(m_pTitleBar)
+		m_pTitleBar->SetTitle(str_);
+}
+
+void DopplerDataView::SetTitleBarStringColor(QColor color_)
+{
+	if(m_pTitleBar)
+		m_pTitleBar->SetTextColor(color_);
+}
+
+void DopplerDataView::SetColorBarColorIndex(void* index)
+{
+	if(m_pColorBar)
+		m_pColorBar->setColorIndex(index);
+}
+
+void DopplerDataView::AddOverlayItems(QGraphicsItem* item_)
+{
+	if(m_pGraphicView)
+		m_pGraphicView->AddOverlayItems(item_);
+}
+
+
+QSize DopplerDataView::GetViewSize()
+{
+	return m_pGraphicView->GetSceneSize();
+}
+
+void DopplerDataView::SetDrawScan(DopplerDrawScan* pDraw_)
+{
+	m_pGraphicView->SetDrawScan(pDraw_);
+}
+
+DopplerDrawScan* DopplerDataView::GetDrawScan() const
+{
+	return m_pGraphicView->GetDrawScan() ;
+}
+
+#include <configure/DopplerConfigure.h>
+#include <process/CalcMeasurement.h>
+void DopplerDataView::UpdateDrawing()
+{
+	UpdateMeasure() ;
+	m_pGraphicView->UpdateDrawing();
+}
+
+#include <process/ParameterProcess.h>
+void DopplerDataView::UpdateMeasure()
+{
+	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+
+	if(_pConfig->group[m_nGroupId].bShowMeasure)
+	{
+		int* _pMeasure = _pConfig->group[m_nGroupId].aeMeasureType ;
+		int _nQty = 0 ;
+		if(m_eDisplayMode >= setup_DISPLAY_MODE_S) {
+			int _nLawNum = m_pItemsGroup->GetLawMarkerQty();
+			int _nLaw;
+
+			for(int i = 0; i < _nLawNum; i++) {
+				_nLaw = m_pItemsGroup->GetLawMarkerPos(i);
+				for(int k = 0; k < 5; k++) {
+					if(_pMeasure[k]) {
+						QString _str = CalcMeasurement::GetMeasureValueString(m_nGroupId , _nLaw , (FEILD_VALUE_INDEX)_pMeasure[k] );
+						m_pGraphicView->SetMeasureString(_nQty , &_str);
+						_nQty++;
+					}
+				}
+			}
+			m_pGraphicView->SetMeasureStringQty(_nQty);
+
+		} else {
+			for(int i = 0 ; i < 5 ; i++) {
+				if(_pMeasure[i]) {
+					QString _str = CalcMeasurement::GetMeasureValueString(m_nGroupId , m_nLaw , (FEILD_VALUE_INDEX)_pMeasure[i] );
+					m_pGraphicView->SetMeasureString(_nQty , &_str);
+					_nQty++  ;
+				}
+			}
+			m_pGraphicView->SetMeasureStringQty(_nQty);
+		}
+	}
+	else
+		m_pGraphicView->SetMeasureStringQty(0);
+}
+
+
+/****************************************************************************
+  Name:  SetItemGeometry
+  Copyright: shensheng
+  Author: Sheng Shen
+  Description: 换算ITEM位置
+*****************************************************************************/
+void DopplerDataView::SetItemGeometry(DopplerGraphicsItem* item , QRectF& rect_)
+{
+	QPointF _pos1 = rect_.topLeft() ;
+	QPointF _pos2 = rect_.bottomRight() ;
+	_pos1 = TranslateToScenePlan(&_pos1)  ;
+	_pos2 = TranslateToScenePlan(&_pos2)  ;
+	QRectF _rect ( _pos1 ,  _pos2) ;
+	item->SetItemGeometry(_rect);
+	item->SetItemGeometryReal(rect_);
+}
+
+/****************************************************************************
+  Name:  TranslateToScenePlan
+  Copyright: shensheng
+  Author: Sheng Shen
+  Description: 换算实际坐标到场景坐标
+  Input:  的实际坐标
+  Output: 坐标，以像素作单位
+*****************************************************************************/
+QPointF DopplerDataView::TranslateToScenePlan(QPointF* pPos_)
+{
+	double _nVStart = RulerRange[DATA_VIEW_RULER_LEFT].first  ;
+	double _nVStop  = RulerRange[DATA_VIEW_RULER_LEFT].second ;
+	double _nVHeight= _nVStop - _nVStart ;
+
+	double _nHStart = RulerRange[DATA_VIEW_RULER_BOTTOM].first  ;
+	double _nHStop  = RulerRange[DATA_VIEW_RULER_BOTTOM].second ;
+	double _nHWidth = _nHStop - _nHStart ;
+
+	int _nSceneWidth = m_pGraphicView->GetSceneSize().width()  ;
+	int _nSceneHeight= m_pGraphicView->GetSceneSize().height() ;
+
+	double _fX   = pPos_->x()  ;
+	double _fY   = pPos_->y()  ;
+	_fX = _nSceneWidth * (_fX - _nHStart) / _nHWidth  ;
+	_fY   = _nSceneHeight * (_fY - _nVStart) / _nVHeight  ;
+
+	return QPointF(_fX , _fY);
+}
+
+/****************************************************************************
+  Name:  CreateComponent
+  Copyright: Sheng Shen
+  Author: Sheng Shen
+  Description: 创建所有的DATAVIEW部件 ， TITLE , RULERS , COLORBAR , CENTER VIEW
+*****************************************************************************/
+void DopplerDataView::CreateComponent()
+{
+	DeleteAllWidget();
+	m_pLayout =new QGridLayout(this) ;
+	//***** space between widget
+	m_pLayout->setSpacing(0);
+	//***** space offset of layout in parent window
+	m_pLayout->setContentsMargins(0 , 0 , 0 , 0);
+
+	QSize _size = this->size() ;
+	int _nWidth = _size.width() ;
+	int _nHeight= _size.height() ;
+	//***************************
+	//*   create widget of each cell
+	//***************************
+	if(m_eComponent & DATA_VIEW_COMPONENT_TITLE)
+	{
+		m_pTitleBar  = new DopplerTitleBar(this) ;
+		m_pLayout->addWidget(m_pTitleBar , 0 , 0 , 1 , 4);
+		_nHeight -=  m_pTitleBar->height() ;
+	}
+
+	if(m_eComponent & DATA_VIEW_COMPONENT_LEFTRULER)
+	{
+		m_pRulers[DATA_VIEW_RULER_LEFT] = new DopplerRulerBar(this , DopplerRulerBar::RULER_BAR_LEFT) ;
+		m_pLayout->addWidget(m_pRulers[DATA_VIEW_RULER_LEFT] , 1 , 0);
+		m_pRulers[DATA_VIEW_RULER_LEFT]->SetMarkerRange(
+					RulerRange[DATA_VIEW_RULER_LEFT].first,
+					RulerRange[DATA_VIEW_RULER_LEFT].second,
+					SliderRange[DATA_VIEW_RULER_LEFT].first,
+					SliderRange[DATA_VIEW_RULER_LEFT].second);
+		_nWidth -= m_pRulers[DATA_VIEW_RULER_LEFT]->width() ;
+	}
+
+	if(m_eComponent & DATA_VIEW_COMPONENT_RIGHTRULER)
+	{
+		m_pRulers[DATA_VIEW_RULER_RIGHT] = new DopplerRulerBar(this , DopplerRulerBar::RULER_BAR_RIGHT) ;
+		m_pLayout->addWidget(m_pRulers[DATA_VIEW_RULER_RIGHT] , 1 , 3);
+		m_pRulers[DATA_VIEW_RULER_RIGHT]->SetMarkerRange(
+					RulerRange[DATA_VIEW_RULER_RIGHT].first,
+					RulerRange[DATA_VIEW_RULER_RIGHT].second,
+					SliderRange[DATA_VIEW_RULER_RIGHT].first,
+					SliderRange[DATA_VIEW_RULER_RIGHT].second);
+		_nWidth -= m_pRulers[DATA_VIEW_RULER_RIGHT]->width() ;
+	}
+
+	if(m_eComponent & DATA_VIEW_COMPONENT_BOTTOMRULER)
+	{
+		m_pRulers[DATA_VIEW_RULER_BOTTOM] = new DopplerRulerBar(this , DopplerRulerBar::RULER_BAR_BOTTOM) ;
+		m_pLayout->addWidget(m_pRulers[DATA_VIEW_RULER_BOTTOM] , 2 , 1);
+		m_pRulers[DATA_VIEW_RULER_BOTTOM]->SetMarkerRange(
+					RulerRange[DATA_VIEW_RULER_BOTTOM].first,
+					RulerRange[DATA_VIEW_RULER_BOTTOM].second,
+					SliderRange[DATA_VIEW_RULER_BOTTOM].first,
+					SliderRange[DATA_VIEW_RULER_BOTTOM].second);
+		_nHeight -=  m_pRulers[DATA_VIEW_RULER_BOTTOM]->height() ;
+	}
+
+	if(m_eComponent & DATA_VIEW_COMPONENT_COLORBAR)
+	{
+		m_pColorBar = new DopplerColorBar(this) ;
+		m_pLayout->addWidget(m_pColorBar , 1, 2);
+		_nWidth -= m_pColorBar->width() ;
+	}
+
+	//***************************************
+	//** center widget for data displaying
+	//***************************************
+	m_pGraphicView = new DopplerGraphicView(this , QSize(_nWidth , _nHeight)) ;
+	m_pLayout->addWidget(m_pGraphicView , 1 , 1)  ;
+	connect(m_pGraphicView , SIGNAL(signalViewChanged(QRectF)) , SLOT(slotZoomAction(QRectF)));
+	connect(m_pGraphicView , SIGNAL(signalItemMoved(DopplerGraphicsItem*)) , SLOT(slotItemMoved(DopplerGraphicsItem*)));
+	connect(m_pGraphicView , SIGNAL(signalButtonRelease(QMouseEvent*)) , SLOT(slotViewMouseRelease(QMouseEvent*)));
+	connect(m_pGraphicView , SIGNAL(signalButtonPressed(QMouseEvent*)) , SLOT(slotViewMousePressed(QMouseEvent*)));
+	connect(m_pGraphicView , SIGNAL(signalButtonDoubleClicked(QPointF)) , SLOT(slotMouseDoubleClicked(QPointF))) ;
+
+	connect(m_pGraphicView , SIGNAL(signalTofdDragProAction(QPointF, QPointF)) , SLOT(slotTofdDragProAction(QPointF, QPointF))) ;
+
+	connect(m_pRulers[DATA_VIEW_RULER_LEFT]   , SIGNAL(signalRulerMoved(double, double)) , SLOT(slotLeftRulerMoved(double, double))) ;
+	connect(m_pRulers[DATA_VIEW_RULER_BOTTOM] , SIGNAL(signalRulerMoved(double, double)) , SLOT(slotBottomRulerMoved(double, double))) ;
+	setLayout(m_pLayout);
+}
+
+
+void DopplerDataView::resizeEvent(QResizeEvent *event)
+{
+	QWidget::resizeEvent(event);
+
+	QSize _size = size() ;
+	int _nWidth = _size.width() ;
+	int _nHeight= _size.height() ;
+	//***************************
+	//*   create widget of each cell
+	//***************************
+	if(m_pTitleBar)
+		_nHeight -=  m_pTitleBar->height() ;
+
+	if(m_pRulers[DATA_VIEW_RULER_LEFT])
+		_nWidth -= m_pRulers[DATA_VIEW_RULER_LEFT]->width() ;
+
+	if(m_pRulers[DATA_VIEW_RULER_RIGHT])
+		_nWidth -= m_pRulers[DATA_VIEW_RULER_RIGHT]->width() ;
+
+	if(m_pRulers[DATA_VIEW_RULER_BOTTOM])
+		_nHeight -=  m_pRulers[DATA_VIEW_RULER_BOTTOM]->height() ;
+
+	if(m_pColorBar)
+		_nWidth -= m_pColorBar->width() ;
+
+	m_pGraphicView->resize(_nWidth , _nHeight);
+
+	emit signalDataViewResized(this);
+}
+
+void DopplerDataView::paintEvent(QPaintEvent* event)
+{
+	QWidget::paintEvent(event) ;
+}
+
+void DopplerDataView::slotViewMouseRelease(QMouseEvent *event)
+{
+	mouseReleaseEvent(event);
+}
+void DopplerDataView::slotViewMousePressed(QMouseEvent* event)
+{
+	mousePressEvent(event);
+}
+
+void DopplerDataView::slotMouseDoubleClicked(QPointF pos_)
+{
+	QPointF _pos = PixTransferToReal(pos_) ;
+	emit signalMouseDoubleClicked(this , _pos) ;
+}
+
+#include "DopplerTofdOpp.h"
+void DopplerDataView::slotTofdDragProAction(QPointF ptS_, QPointF ptE_)
+{
+	QPointF _pt1 = PixTransferToReal(ptS_);
+	QPointF _pt2 = PixTransferToReal(ptE_);
+
+	AREAF _area;
+	DopplerTofdOpp opp ;
+
+	if(m_eDisplayMode == setup_DISPLAY_MODE_B_H)
+	{
+	_area.x = (_pt1.x() < _pt2.x()) ? _pt1.x() : _pt2.x();
+	_area.y = (_pt1.y() < _pt2.y()) ? _pt1.y() : _pt2.y();
+	_area.width  = fabs(_pt2.x() - _pt1.x());
+	_area.height = fabs(_pt2.y() - _pt1.y());
+	}
+	else if(m_eDisplayMode == setup_DISPLAY_MODE_B_V)
+	{
+	_area.x = (_pt1.y() < _pt2.y()) ? _pt1.y() : _pt2.y();
+	_area.y = (_pt1.x() < _pt2.x()) ? _pt1.x() : _pt2.x();
+	_area.width  = fabs(_pt2.y() - _pt1.y());
+	_area.height = fabs(_pt2.x() - _pt1.x());
+	}
+	else
+	{
+	opp.TofdClearDragStatus(m_nGroupId);
+	return;
+	}
+
+	opp.TofdDragProcess(m_nGroupId, _area);
+	g_pMainWnd->RunDrawThreadOnce(false);
+}
+
+void DopplerDataView::slotLeftRulerMoved(double nStart_, double nStop_)
+{
+/*	if(m_pGraphicView->GetZoomStatus())
+	{
+		double _nStart , _nStop, _nSliderStart , _nSliderStop;
+		//m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+		m_pRulers[DATA_VIEW_RULER_BOTTOM]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+		QRect rect = m_pGraphicView->GetZoomRect();
+		int _iH = rect.height();
+		m_pGraphicView->slotResetView();
+
+		QPointF _pt1 = QPointF(_nStart, nStart_);
+		QPointF _pt2 = QPointF(_nStop, nStop_);
+		_pt1 = TranslateToScenePlan(&_pt1);
+		_pt2 = TranslateToScenePlan(&_pt2);
+
+		float x1 = GYMIN(_pt1.x(), _pt2.x());
+		float x2 = GYMAX(_pt1.x(), _pt2.x());
+		float y1 = GYMIN(_pt1.y(), _pt2.y());
+		float y2 = GYMAX(_pt1.y(), _pt2.y());
+
+		//QRect rect(x1, y1, x2 - x1, y2 - y1);
+		rect.setTop(y1);
+		//rect.setBottom(y2);
+		rect.setHeight(_iH);
+		m_pGraphicView->zoomAction(rect);
+	}*/
+}
+
+void DopplerDataView::slotBottomRulerMoved(double nStart_, double nStop_)
+{
+/*	if(m_pGraphicView->GetZoomStatus())
+	{
+		double _nStart , _nStop, _nSliderStart , _nSliderStop;
+		m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+		QRect rect = m_pGraphicView->GetZoomRect();
+		int _iW = rect.width();
+		m_pGraphicView->slotResetView();
+
+		QPointF _pt1 = QPointF(nStart_, _nStart);
+		QPointF _pt2 = QPointF(nStop_, _nStop);
+		_pt1 = TranslateToScenePlan(&_pt1);
+		_pt2 = TranslateToScenePlan(&_pt2);
+
+		float x1 = GYMIN(_pt1.x(), _pt2.x());
+		float x2 = GYMAX(_pt1.x(), _pt2.x());
+		float y1 = GYMIN(_pt1.y(), _pt2.y());
+		float y2 = GYMAX(_pt1.y(), _pt2.y());
+
+		//QRect rect(x1, y1, x2 - x1, y2 - y1);
+		rect.setLeft(x1);
+		//rect.setBottom(y2);
+		rect.setWidth(_iW);
+		m_pGraphicView->zoomAction(rect);
+	}*/
+
+}
+
+void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
+{
+	if(m_pGraphicView->GetZoomStatus())
+		return;
+	ParameterProcess* _process = ParameterProcess::Instance();
+	double _nStart = _process->SAxisIndexToDist(nStart_);
+	double _nStop  = _process->SAxisIndexToDist(nStop_);
+
+	//DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+	//GROUP_CONFIG& _group = _pConfig->group[m_nGroupId];
+	//float      _fScanOff = _group.fScanOffset;
+
+	//_nStart += _fScanOff;
+	//_nStop  += _fScanOff;
+
+	double _nSliderStart , _nSliderStop;
+
+	switch(nType_)
+	{
+	case 0:
+	case 3:
+		RulerRange[DATA_VIEW_RULER_LEFT].first  = _nStop;
+		RulerRange[DATA_VIEW_RULER_LEFT].second = _nStart;
+		if(m_pRulers[DATA_VIEW_RULER_LEFT]) {
+			m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+			m_pRulers[DATA_VIEW_RULER_LEFT]->SetMarkerRange(
+						RulerRange[DATA_VIEW_RULER_LEFT].first ,
+						RulerRange[DATA_VIEW_RULER_LEFT].second,
+						_nSliderStart , _nSliderStop);
+		}
+		break;
+	case 1:
+	case 2:
+		RulerRange[DATA_VIEW_RULER_BOTTOM].first  = _nStart;
+		RulerRange[DATA_VIEW_RULER_BOTTOM].second = _nStop;
+		if(m_pRulers[DATA_VIEW_RULER_BOTTOM]) {
+			m_pRulers[DATA_VIEW_RULER_BOTTOM]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+			m_pRulers[DATA_VIEW_RULER_BOTTOM]->SetMarkerRange(
+						RulerRange[DATA_VIEW_RULER_BOTTOM].first ,
+						RulerRange[DATA_VIEW_RULER_BOTTOM].second,
+						_nSliderStart , _nSliderStop);
+		}
+		break;
+	}
+	this->update();
+}
+
+
+const char* g_strMenuItem[4][2] =
+{
+	{QT_TR_NOOP("Setting") , ":/icon/menu/resource/Menu/0-27.png"} ,
+	{QT_TR_NOOP("Delete")  , ":/icon/menu/resource/Menu/0-28.png"} ,
+	{QT_TR_NOOP("Splitter V") , ":/icon/menu/resource/Menu/0-29.png"} ,
+	{QT_TR_NOOP("Splitter H") , ":/icon/menu/resource/Menu/0-30.png"}
+} ;
+
+void DopplerDataView::mouseReleaseEvent(QMouseEvent* event)
+{
+	if(Qt::RightButton != event->button()) return ;
+
+	if(m_pItemsGroup) {
+		m_pItemsGroup->UpdateItems();
+	}
+
+	//QMenu menu(this);
+	//for(int i = 0 ; i < 4 ; i++)
+	//{
+	//	QAction* _action = menu.addAction(QIcon(g_strMenuItem[i][1]) , QString(g_strMenuItem[i][0]));
+	//	_action->setData(i);
+	//}
+
+	//QAction* action = menu.exec(event->globalPos());
+	//if(action)
+	//{
+	//	emit signalViewFrameMenuSelection(this , action->data().toInt());
+	//}
+}
+
+void DopplerDataView::mousePressEvent (QMouseEvent* )
+{
+	g_pMainWnd->SetCurGroup(m_nGroupId);
+	emit signalMousePressed(this) ;
+}
+
+void DopplerDataView::RangeTransfer(QPair<double , double> range_ , QPair<double , double>* pos_)
+{
+	double _nRange = range_.second  - range_.first  ;
+	pos_->first = _nRange * pos_->first + range_.first  ;
+	pos_->second= _nRange * pos_->second + range_.first ;
+}
+
+void DopplerDataView::slotZoomAction(QRectF rect)
+{
+	double _nStart , _nStop, _nSliderStart , _nSliderStop;
+
+	if(m_eComponent & DATA_VIEW_COMPONENT_LEFTRULER)
+	{
+		QPair<double , double> _marker ;
+		_marker.first = rect.top() ;
+		_marker.second= rect.bottom() ;
+		RangeTransfer(RulerRange[DATA_VIEW_RULER_LEFT] , &_marker) ;
+
+		//ZoomRange[DATA_VIEW_RULER_LEFT].first = _marker.first;
+		//ZoomRange[DATA_VIEW_RULER_LEFT].second = _marker.second;
+		m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+		m_pRulers[DATA_VIEW_RULER_LEFT]->SetMarkerRange(_marker.first , _marker.second, _nSliderStart , _nSliderStop);
+	}
+
+	if(m_eComponent & DATA_VIEW_COMPONENT_BOTTOMRULER)
+	{
+		QPair<double , double> _marker ;
+		_marker.first = rect.left() ;
+		_marker.second= rect.right() ;
+		RangeTransfer(RulerRange[DATA_VIEW_RULER_BOTTOM] , &_marker) ;
+
+		//ZoomRange[DATA_VIEW_RULER_BOTTOM].first = _marker.first;
+		//ZoomRange[DATA_VIEW_RULER_BOTTOM].second = _marker.second;
+		m_pRulers[DATA_VIEW_RULER_BOTTOM]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+		m_pRulers[DATA_VIEW_RULER_BOTTOM]->SetMarkerRange(_marker.first , _marker.second, _nSliderStart , _nSliderStop);
+	}
+
+	if(m_pItemsGroup) {
+		m_pItemsGroup->UpdateItems();
+	}
+
+}
+
+void DopplerDataView::slotItemMoved(DopplerGraphicsItem* item_)
+{
+	QPointF _pos1 = item_->GetItemScenePos()  ;
+	QPointF _pos2 = PixTransferToReal(_pos1)  ;
+	QRectF _rect = item_->GetItemGeometryReal();
+	_rect = QRectF(_pos2.x() , _pos2.y() , _rect.width() , _rect.height())  ;
+	item_->SetItemGeometryReal(_rect)   ;
+	emit signalItemMoved(this , item_)  ;
+}
+/****************************************************************************
+  Name:  PixTransferToReal
+  Copyright: Sheng Shen
+  Author: Sheng Shen
+  Description: 换算  在场景中的像素位置 到  标尺刻度对应的位置
+  Input:	 场景位置
+  Output:	标尺对应位置
+*****************************************************************************/
+QPointF DopplerDataView::PixTransferToReal(QPointF& pos_)
+{
+	double _nPosX = pos_.x() ;
+	double _nPosY = pos_.y() ;
+
+	double _nVStart = RulerRange[DATA_VIEW_RULER_LEFT].first  ;
+	double _nVStop  = RulerRange[DATA_VIEW_RULER_LEFT].second ;
+	double _nVHeight= _nVStop - _nVStart ;
+
+	double _nHStart = RulerRange[DATA_VIEW_RULER_BOTTOM].first  ;
+	double _nHStop  = RulerRange[DATA_VIEW_RULER_BOTTOM].second ;
+	double _nHWidth = _nHStop - _nHStart ;
+
+	int _nSceneWidth = m_pGraphicView->GetSceneSize().width()  ;
+	int _nSceneHeight= m_pGraphicView->GetSceneSize().height() ;
+
+	_nPosX  = _nHWidth * _nPosX / _nSceneWidth +  _nHStart  ;
+	_nPosY  = _nVHeight* _nPosY / _nSceneHeight + _nVStart  ;
+
+
+	return QPointF(_nPosX , _nPosY) ;
+}
+
+void DopplerDataView::SetWidgetSelected(bool bSelect_)
+{
+	if(bSelect_ != m_bSelected)
+	{
+		m_bSelected = bSelect_;
+		setBackgroundRole(m_bSelected ? QPalette::Highlight : QPalette::Background);
+	}
+}
+
+
+void DopplerDataView::UpdateScene()
+{
+	m_pGraphicView->UpdateSceneRegion();
+}
+
+
+DopplerViewItems* DopplerDataView::GetItemGroup() const
+{
+	return m_pItemsGroup ;
+}
+
+QRect DopplerDataView::GetZoomRect()
+{
+	QRect _rect(0,0,0,0);
+	if(m_pGraphicView) {
+		if(m_pGraphicView->GetZoomStatus()) {
+			_rect = m_pGraphicView->GetZoomRect();
+		} else {
+			_rect.setLeft(0);
+			_rect.setTop(0);
+			_rect.setWidth(m_pGraphicView->width());
+			_rect.setHeight(m_pGraphicView->height());
+		}
+	}
+	int _nWidth  = _rect.width();
+	int _nHeight = _rect.height();
+	_rect.setLeft(_rect.left());
+	_rect.setTop(_rect.top());
+	_rect.setWidth(_nWidth - 4);
+	_rect.setHeight(_nHeight - 4);
+	/*
+	int _nWidth  = _rect.width();
+	int _nHeight = _rect.height();
+	_rect.setLeft(_rect.left()+1);
+	_rect.setTop(_rect.top()+1);
+	_rect.setWidth(_nWidth - 4);
+	_rect.setHeight(_nHeight - 4);
+	*/
+	return _rect;
+}
