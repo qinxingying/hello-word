@@ -7,12 +7,9 @@
 #include <gHeader.h>
 #include <QtGui>
 
-
-
 const int MAX_ITEM_QTY = 50 ;
-/****************************************************************************
-  Description: 所有显示窗口类型
-*****************************************************************************/
+
+//  Description: 所有显示窗口类型
 static const char* g_strDisplayMode[] =
 {
 	//**************************	HEADER
@@ -27,9 +24,6 @@ static const char* g_strDisplayMode[] =
 	"S-A-C SCAN"  , "S-A-C SCAN"  ,
 	"S-A-C-C SCAN"  , "S-A-C-C SCAN"
 }  ;
-
-
-
 
 DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 	QWidget(parent),
@@ -404,283 +398,6 @@ void DopplerGroupTab::UpdateSampleRange()
 
 void DopplerGroupTab::SetWndName(setup_LANG eLang)
 {
-	switch(eLang)
-	{
-	case setup_LANG_ENGLISH:
-		ui->toolBox->setItemText(0, QString(tr("Ut Setting")));
-		ui->toolBox->setItemText(1, QString(tr("Probe/Wedge")));
-		ui->toolBox->setItemText(2, QString(tr("Focallaw")));
-		ui->toolBox->setItemText(3, QString(tr("Gate and Sizing Curves")));
-		ui->toolBox->setItemText(4, QString(tr("Geometry")));
-		ui->toolBox->setItemText(5, QString(tr("Measurement")));
-		ui->toolBox->setItemText(6, QString(tr("Display")));
-
-		// Ut Setting
-		ui->BoxGeneral->setTitle(QString(tr("General")));
-		ui->LabelGain->setText(QString(tr("Gain:")));
-		ui->LabelStart->setText(QString(tr("Start:")));
-		ui->LabelCurrentAngle->setText(QString(tr("Current Angle:")));
-		ui->LabelRange->setText(QString(tr("Range:")));
-		ui->LabelVelocity->setText(QString(tr("Velocity:")));
-		ui->LabelWedgeDelay->setText(QString(tr("WedgeDelay:")));
-		ui->LabelTravelMode->setText(QString(tr("Travel Mode:")));
-
-		ui->BoxPulserReceiver->setTitle(QString(tr("Pulser/Receiver")));
-		ui->LabelPulser->setText(QString(tr("Pulser:")));
-		ui->LabelReceiver->setText(QString(tr("Receiver:")));
-		ui->LabelFilter->setText(QString(tr("Filter:")));
-		ui->LabelTxRxMode->setText(QString(tr("TX RX mode:")));
-		ui->LabelRectifier->setText(QString(tr("Rectifier:")));
-		ui->LabelViedoFilter->setText(QString(tr("Video Filter:")));
-		ui->CheckVideoFilter->setText(QString(tr("on/off")));
-
-		ui->LabelPointQty->setText(QString(tr("Point Qty:")));
-		ui->CheckPointQtyAuto->setText(QString(tr("Auto")));
-		ui->LabelSumGain->setText(QString(tr("Sum Gain:")));
-		ui->CheckSumGainAuto->setText(QString(tr("Auto")));
-		ui->LabelAverage->setText(QString(tr("Average:")));
-		ui->LabelGroupMode->setText(QString(tr("Group Mode:")));
-		ui->BoxProbeTrigger->setTitle(QString(tr("Tx Probe")));
-		ui->BoxWedgeTrigger->setTitle(QString(tr("Tx Wedge")));
-		ui->BoxProbeTrigger_2->setTitle(QString(tr("Rx Probe")));
-		ui->BoxWedgeTrigger_2->setTitle(QString(tr("Rx Wedge")));
-		ui->LabelLawType->setText(QString(tr("Law Type:")));
-		ui->BtnProcessLaw->setText(QString(tr("Process")));
-		ui->BoxAngle->setTitle(QString(tr("Angle")));
-		ui->LabelAngleType->setText(QString(tr("Angle Type:")));
-		ui->LabelAngStart->setText(QString(tr("Start")));
-		ui->LabelAngStop->setText(QString(tr("Stop")));
-		ui->LabelAngStep->setText(QString(tr("Step")));
-		ui->LabelPriSteering->setText(QString(tr("Pri Steering:")));
-		ui->LabelSecSteering->setText(QString(tr("Sec Steering:")));
-		ui->LlabelRefract->setText(QString(tr("Refract:")));
-		ui->LlabelBeamSkew->setText(QString(tr("Beam Skew:")));
-
-		ui->BoxFocalPoint->setTitle(QString(tr("Focal Point")));
-		ui->LabelFocalType->setText(QString(tr("Focal Type:")));
-		ui->LabelFocalStart->setText(QString(tr("Start")));
-		ui->LabelFocalStop->setText(QString(tr("Stop")));
-		ui->LabelFocalStep->setText(QString(tr("Step")));
-		ui->LabelFocalPosition->setText(QString(tr("Position:")));
-		ui->LabelFocalOffset->setText(QString(tr("Offset:")));
-		ui->LabelFocalDepth->setText(QString(tr("Depth:")));
-
-		ui->BoxAperture->setTitle(QString(tr("Aperture")));
-		ui->LlabelPriAxis->setText(QString(tr("PriAxis")));
-		ui->LlabelSecAxis->setText(QString(tr("SecAxis")));
-		ui->LabelElementSelect->setText(QString(tr("Element Selected:")));
-		ui->LabelElementStart->setText(QString(tr("Start Element:")));
-		ui->LabelElementStop->setText(QString(tr("Stop Element:")));
-		ui->LabelElementStep->setText(QString(tr("Step Element:")));
-		ui->LabelGate->setText(QString(tr("Gate")));
-		ui->CheckGateShow->setText(QString(tr("Show")));
-		ui->LabelGateSelect->setText(QString(tr("Select:")));
-		ui->LabelGateStart->setText(QString(tr("Start:")));
-		ui->LabelGateWidth->setText(QString(tr("Width:")));
-		ui->LabelGateHeight->setText(QString(tr("Height:")));
-		ui->LabelGateSync->setText(QString(tr("Synchro.:")));
-		ui->LabelGateMeasure->setText(QString(tr("Measure:")));
-
-		ui->LabelSizingCurves->setText(QString(tr("Sizing Curves")));
-		ui->LabelCurveSel->setText(QString(tr("Select:")));
-		ui->DacPointPos->setText(QString(tr("Point No.:")));
-		ui->BtnAddPoint->setText(QString(tr("ADD")));
-		ui->BtnDelPoint->setText(QString(tr("DEL")));
-		for(int i = 0; i < setup_DAC_POINT_QTY; i++) {
-			m_pSizingCurveName[i]->setText(QString(tr("RefAmplitude:")));
-		}
-		ui->BoxPart->setTitle(QString(tr("Part")));
-		ui->LabelGeometry->setText(QString(tr("Geometry:")));
-		ui->LabelMaterial->setText(QString(tr("Material:")));
-		ui->LabelPartSize1->setText(QString(tr("Thickness:")));
-		ui->CheckShowThickness->setText(QString(tr("Show")));
-		ui->LabelPartSize2->setText(QString(tr("Length:")));
-		ui->LabelPartSize3->setText(QString(tr("Width:")));
-		ui->CheckUnifiedPartSetting->setText(QString(tr("Unified Part setting")));
-
-		ui->BoxPartPosition->setTitle(QString(tr("Position")));
-		ui->LabelScanOffset->setText(QString(tr("Scan Offset:")));
-		ui->LabelIndexOffset->setText(QString(tr("Index Offset:")));
-		ui->LabelSkewAngle->setText(QString(tr("Skew Angle:")));
-
-		ui->LabelPartFile->setText(QString(tr("Weld & Part File")));
-		ui->LabelPartFileLoad->setText(QString(tr("Load:")));
-		ui->BtnLoadPartFile->setText(QString(tr("Weld")));
-		ui->CheckPartFileShow->setText(QString(tr("Show")));
-		ui->CheckLwBwShow->setText(QString(tr("Show")));
-		ui->LabelTofdScanMode->setText(QString(tr("Scan Mode:")));
-		ui->LabelTofdProMode->setText(QString(tr("Process Mode:")));
-		ui->LabelTofdWedgeSep->setText(QString(tr("Wedge Seperation:")));
-		ui->LabelTofdPcs->setText(QString(tr("PCS:")));
-		ui->LabelTofdPcsCal->setText(QString(tr("Cal PCS:")));
-		ui->BoxDepthCal->setTitle(QString(tr("Depth Calibration")));
-		ui->LabelDepthCal->setText(QString(tr("Depth:")));
-		ui->BtnDepthCal->setText(QString(tr("Calibration")));
-		ui->LabelMeasureValue->setText(QString(tr("Measure Value")));
-		ui->CheckMeasureShow->setText(QString(tr("Show")));
-		ui->CheckBackShow->setText(QString(tr("Background")));
-		ui->LabelField1->setText(QString(tr("Field 1:")));
-		ui->LabelField2->setText(QString(tr("Field 2:")));
-		ui->LabelField3->setText(QString(tr("Field 3:")));
-		ui->LabelField4->setText(QString(tr("Field 4:")));
-		ui->LabelField5->setText(QString(tr("Field 5:")));
-		ui->LabelCursor->setText(QString(tr("Cursor")));
-		ui->CheckCursorShow->setText(QString(tr("Show")));
-		ui->CheckCursorSync->setText(QString(tr("Cursor sync")));
-		ui->LabelZeroOff->setText(QString(tr("Wedge delay correction:")));
-		ui->LabelDepthStart->setText(QString(tr("Depth start:")));
-		ui->LabelDepthEnd->setText(QString(tr("Depth end:")));
-		ui->CheckDefectShow->setText(QString(tr("Show")));
-		ui->groupBox->setTitle(QString(tr("ColorSetting")));
-		ui->LabelAmpColor->setText(QString(tr("Amplitude:")));
-		ui->LabelColorRF->setText(QString(tr("RF:")));
-		ui->label_5->setText(QString(tr("Thickness:")));
-		ui->LabelCScanSource1->setText(QString(tr("C Scan 1 Source:")));
-		ui->LabelCScanSource2->setText(QString(tr("C Scan 2 Source:")));
-		ui->LabelCScanThickness->setText(QString(tr("C Scan Thickness")));
-		ui->LabelCScanThicknessMin->setText(QString(tr("Min:")));
-		ui->LabelCScanThicknessMax->setText(QString(tr("Max:")));
-		ui->LabelLanguage->setText(QString(tr("Language:")));
-		ui->groupBoxComDisp->setTitle(QString(tr("Combination Display")));
-		ui->BtnRefurbishComDisp->setText(QString(tr("Refresh")));
-		break;
-	case setup_LANG_CHINESS:
-        ui->toolBox->setItemText(0, QString::fromLocal8Bit("超声设置"));
-        ui->toolBox->setItemText(1, QString::fromLocal8Bit("探头/楔块"));
-        ui->toolBox->setItemText(2, QString::fromLocal8Bit("聚焦法则"));
-        ui->toolBox->setItemText(3, QString::fromLocal8Bit("闸门和曲线"));
-        ui->toolBox->setItemText(4, QString::fromLocal8Bit("几何结构"));
-        ui->toolBox->setItemText(5, QString::fromLocal8Bit("测量"));
-        ui->toolBox->setItemText(6, QString::fromLocal8Bit("显示"));
-        ui->BoxGeneral->setTitle(QString::fromLocal8Bit("常规"));
-        ui->LabelGain->setText(QString::fromLocal8Bit("增益:"));
-        ui->LabelStart->setText(QString::fromLocal8Bit("起点:"));
-        ui->LabelCurrentAngle->setText(QString::fromLocal8Bit("当前角度:"));
-        ui->LabelRange->setText(QString::fromLocal8Bit("范围:"));
-        ui->LabelVelocity->setText(QString::fromLocal8Bit("声速:"));
-        ui->LabelWedgeDelay->setText(QString::fromLocal8Bit("楔块延迟:"));
-        ui->LabelTravelMode->setText(QString::fromLocal8Bit("声轴单位:"));//"跟踪模式:";
-        ui->BoxPulserReceiver->setTitle(QString::fromLocal8Bit("发射/接收"));
-        ui->LabelPulser->setText(QString::fromLocal8Bit("脉冲:"));
-        ui->LabelReceiver->setText(QString::fromLocal8Bit("接收:"));
-        ui->LabelFilter->setText(QString::fromLocal8Bit("滤波:"));
-        ui->LabelTxRxMode->setText(QString::fromLocal8Bit("TX RX 模式:"));
-        ui->LabelRectifier->setText(QString::fromLocal8Bit("检波方式:"));//(QString("整流器:")));
-        ui->LabelViedoFilter->setText(QString::fromLocal8Bit("视频滤波:"));
-        ui->CheckVideoFilter->setText(QString::fromLocal8Bit("开/关"));
-        ui->LabelPointQty->setText(QString::fromLocal8Bit("采样点:"));//"点数:";
-        ui->CheckPointQtyAuto->setText(QString::fromLocal8Bit("自动"));
-        ui->LabelSumGain->setText(QString::fromLocal8Bit("总增益:"));
-        ui->CheckSumGainAuto->setText(QString::fromLocal8Bit("自动"));
-        ui->LabelAverage->setText(QString::fromLocal8Bit("平均:"));//(QString("平均值:")));
-        ui->LabelGroupMode->setText(QString::fromLocal8Bit("组模式:"));
-        ui->BoxProbeTrigger->setTitle(QString::fromLocal8Bit("Tx 探头"));
-        ui->BoxWedgeTrigger->setTitle(QString::fromLocal8Bit("Tx 楔块"));
-        ui->BoxProbeTrigger_2->setTitle(QString::fromLocal8Bit("Rx 探头"));
-        ui->BoxWedgeTrigger_2->setTitle(QString::fromLocal8Bit("Rx 楔块"));
-        ui->LabelLawType->setText(QString::fromLocal8Bit("聚焦法则类型:"));
-        ui->BtnProcessLaw->setText(QString::fromLocal8Bit("进行"));
-        ui->BoxAngle->setTitle(QString::fromLocal8Bit("角度"));
-        ui->LabelAngleType->setText(QString::fromLocal8Bit("角度类型:"));
-        ui->LabelAngStart->setText(QString::fromLocal8Bit("起始角"));
-        ui->LabelAngStop->setText(QString::fromLocal8Bit("终止角"));
-        ui->LabelAngStep->setText(QString::fromLocal8Bit("步进"));
-        ui->LabelPriSteering->setText(QString::fromLocal8Bit("主轴偏转角:"));
-        ui->LabelSecSteering->setText(QString::fromLocal8Bit("次轴偏转角:"));
-        ui->LlabelRefract->setText(QString::fromLocal8Bit("折射角:"));
-        ui->LlabelBeamSkew->setText(QString::fromLocal8Bit("声束转向角:"));
-        ui->BoxFocalPoint->setTitle(QString::fromLocal8Bit("焦点"));
-        ui->LabelFocalType->setText(QString::fromLocal8Bit("聚焦类型:"));
-        ui->LabelFocalStart->setText(QString::fromLocal8Bit("起点"));
-        ui->LabelFocalStop->setText(QString::fromLocal8Bit("终点"));
-        ui->LabelFocalStep->setText(QString::fromLocal8Bit("步距"));
-        ui->LabelFocalPosition->setText(QString::fromLocal8Bit("位置:"));
-        ui->LabelFocalOffset->setText(QString::fromLocal8Bit("偏移:"));
-        ui->LabelFocalDepth->setText(QString::fromLocal8Bit("深度:"));
-        ui->BoxAperture->setTitle(QString::fromLocal8Bit("孔径"));
-        ui->LlabelPriAxis->setText(QString::fromLocal8Bit("主轴"));
-        ui->LlabelSecAxis->setText(QString::fromLocal8Bit("次轴"));
-        ui->LabelElementSelect->setText(QString::fromLocal8Bit("阵元数:"));
-        ui->LabelElementStart->setText(QString::fromLocal8Bit("起始阵元:"));
-        ui->LabelElementStop->setText(QString::fromLocal8Bit("末阵元:"));
-        ui->LabelElementStep->setText(QString::fromLocal8Bit("阵元步进:"));
-        ui->LabelGate->setText(QString::fromLocal8Bit("闸门"));
-        ui->CheckGateShow->setText(QString::fromLocal8Bit("显示"));
-        ui->LabelGateSelect->setText(QString::fromLocal8Bit("选择:"));
-        ui->LabelGateStart->setText(QString::fromLocal8Bit("起点:"));
-        ui->LabelGateWidth->setText(QString::fromLocal8Bit("宽度:"));
-        ui->LabelGateHeight->setText(QString::fromLocal8Bit("阈值"));//"高度:";
-        ui->LabelGateSync->setText(QString::fromLocal8Bit("同步.:"));
-        ui->LabelGateMeasure->setText(QString::fromLocal8Bit("测量:"));
-
-        ui->LabelSizingCurves->setText(QString::fromLocal8Bit("曲线"));
-        ui->LabelCurveSel->setText(QString::fromLocal8Bit("类型:"));
-        ui->DacPointPos->setText(QString::fromLocal8Bit("序号:"));
-        ui->BtnAddPoint->setText(QString::fromLocal8Bit("增加"));
-        ui->BtnDelPoint->setText(QString::fromLocal8Bit("删除"));
-		for(int i = 0; i < setup_DAC_POINT_QTY; i++) {
-            m_pSizingCurveName[i]->setText(QString::fromLocal8Bit("参考幅度:"));
-		}
-        ui->BoxPart->setTitle(QString::fromLocal8Bit("模块"));
-        ui->LabelGeometry->setText(QString::fromLocal8Bit("结构:"));
-        ui->LabelMaterial->setText(QString::fromLocal8Bit("材料:"));
-        ui->LabelPartSize1->setText(QString::fromLocal8Bit("厚度:"));
-        ui->CheckShowThickness->setText(QString::fromLocal8Bit("显示"));
-        ui->LabelPartSize2->setText(QString::fromLocal8Bit("长度:"));
-        ui->LabelPartSize3->setText(QString::fromLocal8Bit("宽度:"));
-        ui->CheckUnifiedPartSetting->setText(QString::fromLocal8Bit("统一模块设置"));
-        ui->BoxPartPosition->setTitle(QString::fromLocal8Bit("位置"));
-        ui->LabelScanOffset->setText(QString::fromLocal8Bit("扫查偏置:"));
-        ui->LabelIndexOffset->setText(QString::fromLocal8Bit("步进偏置:"));
-        ui->LabelSkewAngle->setText(QString::fromLocal8Bit("转向角:"));
-
-        ui->LabelPartFile->setText(QString::fromLocal8Bit("焊缝 & 模块文件"));
-        ui->LabelPartFileLoad->setText(QString::fromLocal8Bit("加载:"));
-        ui->BtnLoadPartFile->setText(QString::fromLocal8Bit("焊缝"));
-        ui->CheckPartFileShow->setText(QString::fromLocal8Bit("显示"));
-        ui->CheckLwBwShow->setText(QString::fromLocal8Bit("显示"));
-        ui->LabelTofdScanMode->setText(QString::fromLocal8Bit("扫描模式:"));
-        ui->LabelTofdProMode->setText(QString::fromLocal8Bit("数据处理模式:"));
-        ui->LabelTofdWedgeSep->setText(QString::fromLocal8Bit("楔块间距:"));
-        ui->LabelTofdPcs->setText(QString::fromLocal8Bit("探头中心间距:"));
-        ui->LabelTofdPcsCal->setText(QString::fromLocal8Bit("计算中心间距:"));
-        ui->BoxDepthCal->setTitle(QString::fromLocal8Bit("深度校准"));
-        ui->LabelDepthCal->setText(QString::fromLocal8Bit("深度:"));
-        ui->BtnDepthCal->setText(QString::fromLocal8Bit("校准"));
-        ui->LabelMeasureValue->setText(QString::fromLocal8Bit("测量值"));
-        ui->CheckMeasureShow->setText(QString::fromLocal8Bit("显示"));
-        ui->CheckBackShow->setText(QString::fromLocal8Bit("背景"));
-        ui->LabelField1->setText(QString::fromLocal8Bit("区域 1:"));
-        ui->LabelField2->setText(QString::fromLocal8Bit("区域 2:"));
-        ui->LabelField3->setText(QString::fromLocal8Bit("区域 3:"));
-        ui->LabelField4->setText(QString::fromLocal8Bit("区域 4:"));
-        ui->LabelField5->setText(QString::fromLocal8Bit("区域 5:"));
-        ui->LabelCursor->setText(QString::fromLocal8Bit("光标"));
-        ui->CheckCursorShow->setText(QString::fromLocal8Bit("显示"));
-        ui->CheckCursorSync->setText(QString::fromLocal8Bit("光标同步"));
-        ui->LabelZeroOff->setText(QString::fromLocal8Bit("楔块延时修正值:"));
-        ui->LabelDepthStart->setText(QString::fromLocal8Bit("分层起点:"));
-        ui->LabelDepthEnd->setText(QString::fromLocal8Bit("分层终点:"));
-        ui->CheckDefectShow->setText(QString::fromLocal8Bit("显示"));
-        ui->BtnDefectDelete->setText(QString::fromLocal8Bit("删 除"));
-        ui->groupBox->setTitle(QString::fromLocal8Bit("颜色设置"));
-        ui->LabelAmpColor->setText(QString::fromLocal8Bit("波幅:"));
-        ui->LabelColorRF->setText(QString::fromLocal8Bit("射频:"));
-        ui->label_5->setText(QString::fromLocal8Bit("厚度:"));
-        ui->LabelCScanSource1->setText(QString::fromLocal8Bit("C扫查1数据源:"));
-        ui->LabelCScanSource2->setText(QString::fromLocal8Bit("C扫查2数据源:"));
-        ui->LabelCScanThickness->setText(QString::fromLocal8Bit("C扫查厚度"));
-        ui->LabelCScanThicknessMin->setText(QString::fromLocal8Bit("最小值:"));
-        ui->LabelCScanThicknessMax->setText(QString::fromLocal8Bit("最大值:"));
-        ui->LabelLanguage->setText(QString::fromLocal8Bit("语言:"));
-        ui->groupBoxComDisp->setTitle(QString::fromLocal8Bit("组合显示"));
-        ui->BtnRefurbishComDisp->setText(QString::fromLocal8Bit("刷 新"));
-		break;
-	case setup_LANG_JAPEN:
-		break;
-	case setup_LANG_KOREA:
-		break;
-	}
 	int iLang = eLang;
 
 	ui->LabelDefect->setText(g_strDefect[0][eLang]);
@@ -692,6 +409,7 @@ void DopplerGroupTab::SetWndName(setup_LANG eLang)
 	ui->labelDefectHeight->setText(g_strDefect[6][eLang]);
 	ui->labelDefectOffset->setText(g_strDefect[7][eLang]);
 	ui->labelDefectWidth->setText(g_strDefect[8][eLang]);
+
 	if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD ) {
 		ui->labelDefectOffset->hide();
 		ui->labelDefectWidth->hide();
@@ -787,12 +505,7 @@ void DopplerGroupTab::SetWndName(setup_LANG eLang)
 	for(int i = 0; i < 2; i++) {
 		ui->ComBoxProMode->addItem(g_strTofdProMode[i][iLang]);
 	}
-	//--------------------------------------------------
-	//ui->ComLanguage->clear();
-	//for(int i = 0; i < 2; i++) {
-	//	ui->ComLanguage->addItem(g_strLanguageName[i]);
-	//}
-	//ui->ComLanguage->setCurrentIndex(iLang);
+
 	QComboBox* _comboxTab[4];
 	_comboxTab[0] = ui->ComComDisp1;
 	_comboxTab[1] = ui->ComComDisp2;

@@ -121,12 +121,7 @@ void DialogWeldPartLoad::SetWndName(setup_LANG eLang)
 			ui->ComWeldType->addItem(g_strWeldType[i][iLang]);
 		}
 	}
-	//for(int i = 0; i < setup_WELD_MAX-1; i++) {
-	//	ui->ComWeldType->addItem(g_strWeldType[i][iLang]);
-	//}
-	//if(_bPartFile) {
-	//	ui->ComWeldType->addItem(g_strWeldType[setup_WELD_MAX-1][iLang]);
-	//}
+
 	ui->ComWeldType->setCurrentIndex(m_cPart.weld.eType);
 
 	ui->LabelPartFilePath->setText(QString(tr(m_pConfig->AppEvn.strNccFilePath)));

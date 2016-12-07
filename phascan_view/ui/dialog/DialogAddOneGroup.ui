@@ -14,7 +14,7 @@
    <string> Dialog : Add Group Configure</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../res.qrc">
+   <iconset>
     <normaloff>:/icon/Main/resource/Main/0-01.png</normaloff>:/icon/Main/resource/Main/0-01.png</iconset>
   </property>
   <widget class="QLabel" name="label">
@@ -95,8 +95,6 @@
    </property>
   </widget>
  </widget>
- <resources>
-  <include location="../../res.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

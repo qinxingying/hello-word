@@ -4,7 +4,6 @@ HEADERS += \
     $$PWD/util/GYSplitter.h \
     $$PWD/dialog/DialogAddOneGroup.h \
     $$PWD/dialog/DialogColorSelect.h \
-    $$PWD/dialog/DialogRegister.h \
     $$PWD/dialog/DialogReportSetting.h \
     $$PWD/dialog/DialogWeldPartLoad.h \
     $$PWD/DataViewSettingWidget.h \
@@ -23,7 +22,6 @@ SOURCES += \
     $$PWD/util/GYSplitter.cpp \
     $$PWD/dialog/DialogAddOneGroup.cpp \
     $$PWD/dialog/DialogColorSelect.cpp \
-    $$PWD/dialog/DialogRegister.cpp \
     $$PWD/dialog/DialogReportSetting.cpp \
     $$PWD/dialog/DialogWeldPartLoad.cpp \
     $$PWD/DataViewSettingWidget.cpp \
@@ -41,7 +39,6 @@ SOURCES += \
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
     $$PWD/dialog/DialogColorSelect.ui \
-    $$PWD/dialog/DialogRegister.ui \
     $$PWD/dialog/DialogReportSetting.ui \
     $$PWD/dialog/DialogWeldPartLoad.ui \
     $$PWD/DopplerGroupTab.ui \

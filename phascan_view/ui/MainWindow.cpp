@@ -17,33 +17,6 @@
 #include <QLabel>
 #include <QFileDialog>
 
-//static const int ACTION_ID_START_MENUM   =  0  ;
-//static const int ACTION_ID_START_TOOLBAR = 100 ;
-//static const int ACTION_ID_NEW_CONFIGURE = ACTION_ID_START_TOOLBAR	  ;
-//static const int ACTION_ID_OPEN_FILE	 = ACTION_ID_START_TOOLBAR + 1  ;
-//static const int ACTION_ID_SAVE_FILE	 = ACTION_ID_OPEN_FILE	 + 1  ;
-//static const int ACTION_ID_ADD_REPORT	= ACTION_ID_SAVE_FILE	 + 1  ;
-//static const int ACTION_ID_DEL_REPORT	= ACTION_ID_ADD_REPORT	+ 1  ;
-//static const int ACTION_ID_SET_REPORT	= ACTION_ID_DEL_REPORT	+ 1  ;
-//static const int ACTION_ID_SAVE_REPORT   = ACTION_ID_SET_REPORT	+ 1  ;
-//static const int ACTION_ID_TOFD_STRAIGHTWAV_ALIGN  = ACTION_ID_SAVE_REPORT   + 1  ;
-//static const int ACTION_ID_TOFD_BOTTOMWAV_ALIGN	= ACTION_ID_TOFD_STRAIGHTWAV_ALIGN   + 1  ;
-//static const int ACTION_ID_TOFD_DIFFERENCE		 = ACTION_ID_TOFD_BOTTOMWAV_ALIGN   + 1  ;
-//static const int ACTION_ID_TOFD_SAFT			   = ACTION_ID_TOFD_DIFFERENCE   + 1  ;
-//static const int ACTION_ID_TOFD_REPEAL			 = ACTION_ID_TOFD_SAFT + 1  ;
-//static const int ACTION_ID_TOFD_REDO			   = ACTION_ID_TOFD_REPEAL + 1  ;
-////-------------------------------------------------------------------------------------------------
-////
-//static const int ACTION_ID_TOFD_MEASURE_LENGTH	 = ACTION_ID_TOFD_REDO + 1  ;
-//static const int ACTION_ID_TOFD_MEASURE_HEIGHT	 = ACTION_ID_TOFD_MEASURE_LENGTH + 1  ;
-//static const int ACTION_ID_TOFD_MEASURE_DEPTH	  = ACTION_ID_TOFD_MEASURE_HEIGHT + 1  ;
-//static const int ACTION_ID_TOFD_SAVE_DEFECT		= ACTION_ID_TOFD_MEASURE_DEPTH + 1  ;
-
-//static const int ACTION_ID_TOFD_LANGUAGE		   = ACTION_ID_TOFD_SAVE_DEFECT + 1  ;
-////-------------------------------------------------------------------------------------------------
-//static const int ACTION_ID_SCREEN_SHOT		   = ACTION_ID_TOFD_LANGUAGE + 1  ;
-
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -79,8 +52,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->TabWidgetLeft  , SIGNAL(currentChanged(int)) , SLOT(slotCurrentGroupChanged(int))) ;
     connect(ui->TabWidgetRight , SIGNAL(currentChanged(int)) , SLOT(slotCurrentDispChanged(int))) ;
 
-//    ui->menubar->hide();
-
     // tofd setting dialog
     m_iCurGroup  = 0;
     m_nLawIdSel  = 0;
@@ -91,8 +62,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //------------ Language----------------//
     translator = new QTranslator(this);
     qApp->installTranslator(translator);
-    on_actionChinese_triggered(); // default Chinese
+    slot_actionChinese_triggered(); // default Chinese
     UI_LanguageSwitch = true;
+
+    connect(ui->actionEnglish, SIGNAL(triggered()), this, SLOT(slot_actionEnglish_triggered()));
+    connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(slot_actionChinese_triggered()));
 }
 
 MainWindow::~MainWindow()
@@ -300,28 +274,15 @@ void MainWindow::slotRightTabRightButtonDoubleClicked(int)
         QAbstractButton* _pBtnYes;
         QAbstractButton* _pBtnNo;
 
-        switch(_pConfig->AppEvn.eLanguage)
-        {
-        case setup_LANG_ENGLISH:
-                messageBox.setText(tr("Delete Current Display Table ?"));
-                _pBtnYes = (QAbstractButton*)messageBox.addButton(tr("YES"), QMessageBox::ActionRole);
-                _pBtnNo  = (QAbstractButton*)messageBox.addButton(tr("NO"), QMessageBox::ActionRole);
-                break;
-        case setup_LANG_CHINESS:
-        messageBox.setText(QString::fromLocal8Bit("要删除当前视图吗？"));
-        _pBtnYes = (QAbstractButton*)messageBox.addButton(QString::fromLocal8Bit("确定"), QMessageBox::ActionRole);
-        _pBtnNo  = (QAbstractButton*)messageBox.addButton(QString::fromLocal8Bit("取消"), QMessageBox::ActionRole);
-                break;
-        default:
-                return;
-        }
-
+        messageBox.setText(tr("Delete Current Display Table ?"));
+        _pBtnYes = (QAbstractButton*)messageBox.addButton(tr("YES"), QMessageBox::ActionRole);
+        _pBtnNo  = (QAbstractButton*)messageBox.addButton(tr("NO"), QMessageBox::ActionRole);
 
         messageBox.exec();
         if (messageBox.clickedButton() == _pBtnYes)
-        {// clear list
-                int _nIndex = GetDisplayTableIndex() ;
-                DestroyDisplayTab(_nIndex);
+        {
+            int _nIndex = GetDisplayTableIndex() ;
+            DestroyDisplayTab(_nIndex); // clear list
         }
         else if(messageBox.clickedButton() == _pBtnNo)
         {
@@ -354,38 +315,25 @@ void MainWindow::DestroyAllDisplay()
 
 void MainWindow::slotsRightTabButton(Qt::MouseButton btn_)
 {
-        if(btn_ == Qt::LeftButton)
+    if(btn_ == Qt::LeftButton)
+    {
+        QMessageBox messageBox(this);
+        QAbstractButton* _pBtnYes;
+        QAbstractButton* _pBtnNo;
+
+        messageBox.setText(tr("Add One View ?"));
+        _pBtnYes = (QAbstractButton*)messageBox.addButton(tr("YES"), QMessageBox::ActionRole);
+        _pBtnNo  = (QAbstractButton*)messageBox.addButton(tr("NO"), QMessageBox::ActionRole);
+
+        messageBox.exec();
+        if (messageBox.clickedButton() == _pBtnYes)
         {
-                QMessageBox messageBox(this);
-                QAbstractButton* _pBtnYes;
-                QAbstractButton* _pBtnNo;
-
-                DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
-                switch(_pConfig->AppEvn.eLanguage)
-                {
-                case setup_LANG_ENGLISH:
-                        messageBox.setText(tr("Add One View ?"));
-                        _pBtnYes = (QAbstractButton*)messageBox.addButton(tr("YES"), QMessageBox::ActionRole);
-                        _pBtnNo  = (QAbstractButton*)messageBox.addButton(tr("NO"), QMessageBox::ActionRole);
-                        break;
-                case setup_LANG_CHINESS:
-            messageBox.setText(QString::fromLocal8Bit("要添加新视图吗？"));
-            _pBtnYes = (QAbstractButton*)messageBox.addButton(QString::fromLocal8Bit("确定"), QMessageBox::ActionRole);
-            _pBtnNo  = (QAbstractButton*)messageBox.addButton(QString::fromLocal8Bit("取消"), QMessageBox::ActionRole);
-                        break;
-                default:
-                        return;
-                }
-
-                messageBox.exec();
-                if (messageBox.clickedButton() == _pBtnYes)
-                {
-                        InsertRightTab();
-                }
-                else if(messageBox.clickedButton() == _pBtnNo)
-                {
-                }
+                InsertRightTab();
         }
+        else if(messageBox.clickedButton() == _pBtnNo)
+        {
+        }
+    }
 }
 
 /****************************************************************************
@@ -495,16 +443,6 @@ void MainWindow::slotCurrentGroupChanged(int nIndex_)
                 _toolBox->setCurrentIndex(_nId);
         }
         }
-
-        /*
-        int _nId = _pWidget->GetToolBox()->currentIndex()  ;
-
-        _pWidget = (DopplerGroupTab*)ui->TabWidgetLeft->widget(nIndex_)  ;
-        _nOldIndex = nIndex_ ;
-        if(_pWidget)
-                _pWidget->GetToolBox()->setCurrentIndex(_nId);
-        */
-        //------------------------------------------------------
 }
 
 void MainWindow::SetCurGroup(int nGroupID_)
@@ -908,9 +846,7 @@ void MainWindow::TofdDataPro(TOFD_PRO_STATUS proSt_)
         }
         RunDrawThreadOnce(false);
 }
-/***************************************************************************
 
-***************************************************************************/
 void MainWindow::DefectSign(DEFECT_SIGN_TYPE signType_)
 {
         DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
@@ -1291,9 +1227,9 @@ void MainWindow::on_actionLanguage_triggered()
 {
     if(!UI_LanguageSwitch)
     {
-      on_actionChinese_triggered();
+      slot_actionChinese_triggered();
     }else{
-      on_actionEnglish_triggered();
+      slot_actionEnglish_triggered();
     }
     UI_LanguageSwitch = !UI_LanguageSwitch;
 }
@@ -1303,15 +1239,19 @@ void MainWindow::on_actionScreenShot_triggered()
     ScreenShot();
 }
 
-void MainWindow::on_actionEnglish_triggered()
+void MainWindow::slot_actionEnglish_triggered()
 {
     ui->actionEnglish->setChecked(true);
     ui->actionChinese->setChecked(false);
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-20.png"));
     translator->load(":/file/translator/phascan_view_english.qm");
+
+    ui->retranslateUi(this);
+    ui->Group1->retranslateUi();
+    ui->ScanHardware->retranslateUi();
 }
 
-void MainWindow::on_actionChinese_triggered()
+void MainWindow::slot_actionChinese_triggered()
 {
     ui->actionChinese->setChecked(true);
     ui->actionEnglish->setChecked(false);

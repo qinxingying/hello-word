@@ -156,8 +156,8 @@ protected slots:
   void on_actionSave_Defect_triggered();
   void on_actionLanguage_triggered();
   void on_actionScreenShot_triggered();
-  void on_actionEnglish_triggered();
-  void on_actionChinese_triggered();
+  void slot_actionEnglish_triggered();
+  void slot_actionChinese_triggered();
 
 };
 
