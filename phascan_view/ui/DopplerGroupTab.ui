@@ -52,7 +52,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>2</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -101,7 +101,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-50</y>
+            <y>0</y>
             <width>300</width>
             <height>540</height>
            </rect>
@@ -1594,7 +1594,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-90</y>
+        <y>0</y>
         <width>313</width>
         <height>618</height>
        </rect>
@@ -1842,13 +1842,13 @@
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="frame">
@@ -1991,13 +1991,13 @@
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="frame">
@@ -2113,13 +2113,13 @@
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="frame">
@@ -2235,13 +2235,13 @@
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>16777215</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="frame">
@@ -2462,6 +2462,18 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>20</height>
+                   </size>
+                  </property>
                   <property name="frame">
                    <bool>true</bool>
                   </property>
@@ -2560,6 +2572,18 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>20</height>
+                   </size>
+                  </property>
                   <property name="frame">
                    <bool>true</bool>
                   </property>
@@ -2635,6 +2659,18 @@
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>20</height>
+                   </size>
                   </property>
                   <property name="frame">
                    <bool>true</bool>
@@ -4540,7 +4576,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-290</y>
+        <y>0</y>
         <width>313</width>
         <height>800</height>
        </rect>
