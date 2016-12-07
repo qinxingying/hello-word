@@ -69,7 +69,6 @@ public:
     void SaveCurScreenshot(QString strPath_);
 
 protected:
-    void CreateToolBar()  ;
     void CreateStatusBar() ;
     void DestroyDisplayTab(int);
     void DestroyAllDisplay();
@@ -126,7 +125,6 @@ signals:
 private slots:
     void slotsLeftTabButton(Qt::MouseButton) ;
     void slotsRightTabButton(Qt::MouseButton) ;
-    void slotActionTriggered(QAction* action_) ;
     void slotLeftTabRightButtonDoubleClicked(int);
     void SetDispTabText();
     void slotRightTabRightButtonDoubleClicked(int nId_);
@@ -157,8 +155,10 @@ protected slots:
   void on_actionTOFD_Depth_Measurement_triggered();
   void on_actionSave_Defect_triggered();
   void on_actionLanguage_triggered();
+  void on_actionScreenShot_triggered();
   void on_actionEnglish_triggered();
   void on_actionChinese_triggered();
+
 };
 
 extern MainWindow* g_pMainWnd;

@@ -264,6 +264,8 @@
    <addaction name="actionSave_Defect"/>
    <addaction name="separator"/>
    <addaction name="actionLanguage"/>
+   <addaction name="separator"/>
+   <addaction name="actionScreenShot"/>
   </widget>
   <action name="actionNew_Config">
    <property name="checkable">
@@ -578,6 +580,18 @@
    </property>
    <property name="toolTip">
     <string>CH/EN</string>
+   </property>
+  </action>
+  <action name="actionScreenShot">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-21.png</normaloff>:/file/resource/toolbar/0-21.png</iconset>
+   </property>
+   <property name="text">
+    <string>ScreenShot</string>
+   </property>
+   <property name="toolTip">
+    <string>ScreenShot</string>
    </property>
   </action>
  </widget>

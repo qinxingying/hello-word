@@ -17,31 +17,31 @@
 #include <QLabel>
 #include <QFileDialog>
 
-static const int ACTION_ID_START_MENUM   =  0  ;
-static const int ACTION_ID_START_TOOLBAR = 100 ;
-static const int ACTION_ID_NEW_CONFIGURE = ACTION_ID_START_TOOLBAR	  ;
-static const int ACTION_ID_OPEN_FILE	 = ACTION_ID_START_TOOLBAR + 1  ;
-static const int ACTION_ID_SAVE_FILE	 = ACTION_ID_OPEN_FILE	 + 1  ;
-static const int ACTION_ID_ADD_REPORT	= ACTION_ID_SAVE_FILE	 + 1  ;
-static const int ACTION_ID_DEL_REPORT	= ACTION_ID_ADD_REPORT	+ 1  ;
-static const int ACTION_ID_SET_REPORT	= ACTION_ID_DEL_REPORT	+ 1  ;
-static const int ACTION_ID_SAVE_REPORT   = ACTION_ID_SET_REPORT	+ 1  ;
-static const int ACTION_ID_TOFD_STRAIGHTWAV_ALIGN  = ACTION_ID_SAVE_REPORT   + 1  ;
-static const int ACTION_ID_TOFD_BOTTOMWAV_ALIGN	= ACTION_ID_TOFD_STRAIGHTWAV_ALIGN   + 1  ;
-static const int ACTION_ID_TOFD_DIFFERENCE		 = ACTION_ID_TOFD_BOTTOMWAV_ALIGN   + 1  ;
-static const int ACTION_ID_TOFD_SAFT			   = ACTION_ID_TOFD_DIFFERENCE   + 1  ;
-static const int ACTION_ID_TOFD_REPEAL			 = ACTION_ID_TOFD_SAFT + 1  ;
-static const int ACTION_ID_TOFD_REDO			   = ACTION_ID_TOFD_REPEAL + 1  ;
-//-------------------------------------------------------------------------------------------------
-//
-static const int ACTION_ID_TOFD_MEASURE_LENGTH	 = ACTION_ID_TOFD_REDO + 1  ;
-static const int ACTION_ID_TOFD_MEASURE_HEIGHT	 = ACTION_ID_TOFD_MEASURE_LENGTH + 1  ;
-static const int ACTION_ID_TOFD_MEASURE_DEPTH	  = ACTION_ID_TOFD_MEASURE_HEIGHT + 1  ;
-static const int ACTION_ID_TOFD_SAVE_DEFECT		= ACTION_ID_TOFD_MEASURE_DEPTH + 1  ;
+//static const int ACTION_ID_START_MENUM   =  0  ;
+//static const int ACTION_ID_START_TOOLBAR = 100 ;
+//static const int ACTION_ID_NEW_CONFIGURE = ACTION_ID_START_TOOLBAR	  ;
+//static const int ACTION_ID_OPEN_FILE	 = ACTION_ID_START_TOOLBAR + 1  ;
+//static const int ACTION_ID_SAVE_FILE	 = ACTION_ID_OPEN_FILE	 + 1  ;
+//static const int ACTION_ID_ADD_REPORT	= ACTION_ID_SAVE_FILE	 + 1  ;
+//static const int ACTION_ID_DEL_REPORT	= ACTION_ID_ADD_REPORT	+ 1  ;
+//static const int ACTION_ID_SET_REPORT	= ACTION_ID_DEL_REPORT	+ 1  ;
+//static const int ACTION_ID_SAVE_REPORT   = ACTION_ID_SET_REPORT	+ 1  ;
+//static const int ACTION_ID_TOFD_STRAIGHTWAV_ALIGN  = ACTION_ID_SAVE_REPORT   + 1  ;
+//static const int ACTION_ID_TOFD_BOTTOMWAV_ALIGN	= ACTION_ID_TOFD_STRAIGHTWAV_ALIGN   + 1  ;
+//static const int ACTION_ID_TOFD_DIFFERENCE		 = ACTION_ID_TOFD_BOTTOMWAV_ALIGN   + 1  ;
+//static const int ACTION_ID_TOFD_SAFT			   = ACTION_ID_TOFD_DIFFERENCE   + 1  ;
+//static const int ACTION_ID_TOFD_REPEAL			 = ACTION_ID_TOFD_SAFT + 1  ;
+//static const int ACTION_ID_TOFD_REDO			   = ACTION_ID_TOFD_REPEAL + 1  ;
+////-------------------------------------------------------------------------------------------------
+////
+//static const int ACTION_ID_TOFD_MEASURE_LENGTH	 = ACTION_ID_TOFD_REDO + 1  ;
+//static const int ACTION_ID_TOFD_MEASURE_HEIGHT	 = ACTION_ID_TOFD_MEASURE_LENGTH + 1  ;
+//static const int ACTION_ID_TOFD_MEASURE_DEPTH	  = ACTION_ID_TOFD_MEASURE_HEIGHT + 1  ;
+//static const int ACTION_ID_TOFD_SAVE_DEFECT		= ACTION_ID_TOFD_MEASURE_DEPTH + 1  ;
 
-static const int ACTION_ID_TOFD_LANGUAGE		   = ACTION_ID_TOFD_SAVE_DEFECT + 1  ;
-//-------------------------------------------------------------------------------------------------
-static const int ACTION_ID_SCREEN_SHOT		   = ACTION_ID_TOFD_LANGUAGE + 1  ;
+//static const int ACTION_ID_TOFD_LANGUAGE		   = ACTION_ID_TOFD_SAVE_DEFECT + 1  ;
+////-------------------------------------------------------------------------------------------------
+//static const int ACTION_ID_SCREEN_SHOT		   = ACTION_ID_TOFD_LANGUAGE + 1  ;
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -127,35 +127,6 @@ void MainWindow::resizeEvent(QResizeEvent* )
         ui->splitter->setGeometry(0 , 0 , _nWidth , _nHeight);
 }
 
-//  creat tool bar
-void MainWindow::CreateToolBar()
-{
-        QToolBar* toolbar = ui->toolBar ;
-        toolbar->setBackgroundRole(QPalette::Shadow);
-        toolbar->setAutoFillBackground(true);
-        toolbar->setMovable(false);
-        setToolButtonStyle( Qt::ToolButtonIconOnly );
-
-        int _nId = ACTION_ID_START_TOOLBAR;
-        m_nTBCnt = ToolBarCnt()-1;
-        for(int i = 0; i < m_nTBCnt; i++)
-        {
-                m_actions[i] = new QAction( QPixmap((const char*)g_strToolBarIconName[i]), tr("Doppler"),  toolbar );
-                m_actions[i]->setData(_nId++);
-                toolbar->addAction(m_actions[i]);
-                if(g_iToolSeparator[i])
-                        toolbar->addSeparator();
-        }
-
-        m_actions[0]->setEnabled(false);
-        m_actions[2]->setEnabled(false);
-
-        connect(toolbar ,SIGNAL(actionTriggered(QAction*)) , this , SLOT(slotActionTriggered(QAction*))) ;
-
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance()  ;
-        SetToolBarName(_pConfig->AppEvn.eLanguage);
-}
-
 // create status bar
 void MainWindow::CreateStatusBar()
 {
@@ -239,93 +210,6 @@ void MainWindow::SetStatusBarMessage(int nId_ , QString& str_)
         _pCell->setText(str_);
 }
 
-/****************************************************************************
-  Description: 工具栏响应函数
-*****************************************************************************/
-void MainWindow::slotActionTriggered(QAction* action_)
-{
-        int _nActionId = action_->data().toInt() ;
-        switch(_nActionId)
-        {
-        case ACTION_ID_NEW_CONFIGURE:
-                NewConfigure();
-                break;
-        case ACTION_ID_OPEN_FILE:
-                OpenFile()  ;
-                break;
-        case ACTION_ID_SAVE_FILE:
-                SaveFile();
-                break;
-        case ACTION_ID_ADD_REPORT:
-                ReportAddOneItem();
-                break;
-        case ACTION_ID_DEL_REPORT:
-                ReportDelOneItem();
-                break;
-        case ACTION_ID_SET_REPORT:
-                ReportSetting() ;
-                break;
-        case ACTION_ID_SAVE_REPORT:
-                ReportSave() ;
-                break;
-        //case ACTION_ID_TOFD:
-        //	TofdSetting() ;
-        //	break;
-        //-------------------------------------
-        case ACTION_ID_TOFD_STRAIGHTWAV_ALIGN:
-                TofdDataPro(TOFD_PRO_STRAIGHT);
-                break;
-        case ACTION_ID_TOFD_BOTTOMWAV_ALIGN:
-                TofdDataPro(TOFD_PRO_BOTTOM);
-                break;
-        case ACTION_ID_TOFD_DIFFERENCE:
-                TofdDataPro(TOFD_PRO_DIFFERENC);
-                break;
-        case ACTION_ID_TOFD_SAFT:
-                TofdDataPro(TOFD_PRO_SAFT);
-                break;
-        case ACTION_ID_TOFD_REPEAL:
-                TofdDataPro(TOFD_PRO_REPEAL);
-                break;
-        case ACTION_ID_TOFD_REDO:
-                TofdDataPro(TOFD_PRO_REDO);
-                break;
-        //-------------------------------------
-        //
-        case ACTION_ID_TOFD_MEASURE_LENGTH:
-                DefectSign(DEFECT_SIGN_LENGTH);
-                break;
-        case ACTION_ID_TOFD_MEASURE_HEIGHT:
-                DefectSign(DEFECT_SIGN_HEIGHT);
-                break;
-        case ACTION_ID_TOFD_MEASURE_DEPTH:
-                DefectSign(DEFECT_SIGN_DEPTH);
-                break;
-        case ACTION_ID_TOFD_SAVE_DEFECT:
-                DefectSign(DEFECT_SIGN_SAVE);
-                break;
-        case ACTION_ID_TOFD_LANGUAGE:
-                {
-                        DopplerConfigure* _pConfig = DopplerConfigure::Instance()  ;
-                        if(_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH) {
-                                _pConfig->AppEvn.eLanguage = setup_LANG_CHINESS;
-                        } else {
-                                _pConfig->AppEvn.eLanguage = setup_LANG_ENGLISH;
-                        }
-                        SetWndName(_pConfig->AppEvn.eLanguage);
-                }
-                break;
-        case ACTION_ID_SCREEN_SHOT:
-                ScreenShot();
-                break;
-        //-------------------------------------
-        default:
-                break;
-        }
-
-}
-
-
 void MainWindow::slotsLeftTabButton(Qt::MouseButton btn_)
 {
         return ;
@@ -363,12 +247,6 @@ void MainWindow::DestroyDisplayTab(int nId_)
         _nQty = ui->TabWidgetRight->count() ;
 
         SetDispTabText();
-        //for(int i = 0 ; i< _nQty - 1 ; i++)
-        //{
-        //	QString _str ;
-        //	_str.sprintf("DISP %d" , i+1) ;
-        //	ui->TabWidgetRight->setTabText(i , _str);
-        //}
 }
 
 void MainWindow::SetDispTabText()
@@ -1418,6 +1296,11 @@ void MainWindow::on_actionLanguage_triggered()
       on_actionEnglish_triggered();
     }
     UI_LanguageSwitch = !UI_LanguageSwitch;
+}
+
+void MainWindow::on_actionScreenShot_triggered()
+{
+    ScreenShot();
 }
 
 void MainWindow::on_actionEnglish_triggered()
