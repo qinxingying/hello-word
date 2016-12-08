@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>805</width>
-    <height>600</height>
+    <width>754</width>
+    <height>543</height>
    </rect>
   </property>
   <property name="font">
@@ -26,153 +26,167 @@
     <normaloff>:/file/resource/main/0-01.png</normaloff>:/file/resource/main/0-01.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QSplitter" name="splitter">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>801</width>
-      <height>521</height>
-     </rect>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
     </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
+    <property name="topMargin">
+     <number>0</number>
     </property>
-    <widget class="PoppingTabWidget" name="TabWidgetLeft">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>9</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-       <kerning>true</kerning>
-      </font>
-     </property>
-     <property name="autoFillBackground">
-      <bool>true</bool>
-     </property>
-     <property name="tabPosition">
-      <enum>QTabWidget::East</enum>
-     </property>
-     <property name="tabShape">
-      <enum>QTabWidget::Rounded</enum>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="tabsClosable">
-      <bool>false</bool>
-     </property>
-     <widget class="DopplerGroupTab" name="Group1">
-      <attribute name="icon">
-       <iconset resource="../mainwindow.qrc">
-        <normaloff>:/file/resource/main_menu/0-27.png</normaloff>:/file/resource/main_menu/0-27.png</iconset>
-      </attribute>
-      <attribute name="title">
-       <string>Group 1</string>
-      </attribute>
-     </widget>
-     <widget class="InstrumentSettingWidget" name="ScanHardware">
-      <attribute name="icon">
-       <iconset resource="../mainwindow.qrc">
-        <normaloff>:/file/resource/main_menu/0-28.png</normaloff>:/file/resource/main_menu/0-28.png</iconset>
-      </attribute>
-      <attribute name="title">
-       <string>Scan</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="GroupAdd">
-      <attribute name="icon">
-       <iconset resource="../mainwindow.qrc">
-        <normaloff>:/file/resource/main_menu/0-36.png</normaloff>:/file/resource/main_menu/0-36.png</iconset>
-      </attribute>
-      <attribute name="title">
-       <string/>
-      </attribute>
-     </widget>
-    </widget>
-    <widget class="PoppingTabWidget" name="TabWidgetRight">
-     <property name="baseSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>9</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="tabShape">
-      <enum>QTabWidget::Rounded</enum>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>16</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="elideMode">
-      <enum>Qt::ElideLeft</enum>
-     </property>
-     <property name="tabsClosable">
-      <bool>false</bool>
-     </property>
-     <widget class="DopplerViewFrame" name="Display1">
-      <property name="autoFillBackground">
-       <bool>false</bool>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
-      <attribute name="title">
-       <string>DISP 1</string>
-      </attribute>
+      <widget class="PoppingTabWidget" name="TabWidgetRight">
+       <property name="baseSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="tabPosition">
+        <enum>QTabWidget::North</enum>
+       </property>
+       <property name="tabShape">
+        <enum>QTabWidget::Rounded</enum>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="elideMode">
+        <enum>Qt::ElideLeft</enum>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
+       </property>
+       <widget class="DopplerViewFrame" name="Display1">
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <attribute name="title">
+         <string>DISP 1</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="AddDisplay">
+        <attribute name="icon">
+         <iconset resource="../mainwindow.qrc">
+          <normaloff>:/file/resource/main_menu/0-36.png</normaloff>:/file/resource/main_menu/0-36.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string/>
+        </attribute>
+       </widget>
+      </widget>
+      <widget class="PoppingTabWidget" name="TabWidgetLeft">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+         <kerning>true</kerning>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+       <property name="tabPosition">
+        <enum>QTabWidget::North</enum>
+       </property>
+       <property name="tabShape">
+        <enum>QTabWidget::Rounded</enum>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
+       </property>
+       <widget class="DopplerGroupTab" name="Group1">
+        <attribute name="icon">
+         <iconset resource="../mainwindow.qrc">
+          <normaloff>:/file/resource/main_menu/0-27.png</normaloff>:/file/resource/main_menu/0-27.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Group 1</string>
+        </attribute>
+       </widget>
+       <widget class="InstrumentSettingWidget" name="ScanHardware">
+        <attribute name="icon">
+         <iconset resource="../mainwindow.qrc">
+          <normaloff>:/file/resource/main_menu/0-28.png</normaloff>:/file/resource/main_menu/0-28.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Scan</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="GroupAdd">
+        <attribute name="icon">
+         <iconset resource="../mainwindow.qrc">
+          <normaloff>:/file/resource/main_menu/0-36.png</normaloff>:/file/resource/main_menu/0-36.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string/>
+        </attribute>
+       </widget>
+      </widget>
      </widget>
-     <widget class="QWidget" name="AddDisplay">
-      <attribute name="icon">
-       <iconset resource="../mainwindow.qrc">
-        <normaloff>:/file/resource/main_menu/0-36.png</normaloff>:/file/resource/main_menu/0-36.png</iconset>
-      </attribute>
-      <attribute name="title">
-       <string/>
-      </attribute>
-     </widget>
-    </widget>
-   </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>805</width>
+     <width>754</width>
      <height>23</height>
     </rect>
    </property>
