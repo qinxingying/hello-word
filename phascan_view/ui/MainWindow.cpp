@@ -541,17 +541,6 @@ void MainWindow::SetWndName(setup_LANG eLang)
         DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
         InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidgetLeft->widget(_pConfig->common.nGroupQty);
         _pScanner->SetWndName(eLang);
-
-        SetToolBarName(eLang);
-}
-
-void MainWindow::SetToolBarName(setup_LANG eLang)
-{
-        int _idx = eLang;
-        for(int i = 0; i < m_nTBCnt; i++)
-        {
-        m_actions[i]->setText(QString::fromLocal8Bit(g_strToolBarName[i][_idx]));
-        }
 }
 
 void MainWindow::UpdateCombinationDisplay(void)
@@ -561,10 +550,6 @@ void MainWindow::UpdateCombinationDisplay(void)
         _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_ALLGROUP);
         _pViewFrame->SetViewFrameId(0);
         _pViewFrame->update();
-
-        //ProcessDisplay _display ;
-        //_display.UpdateAllViewOverlay();
-        //RunDrawThreadOnce(true);
 
         DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
         SetWndName(_pConfig->AppEvn.eLanguage);

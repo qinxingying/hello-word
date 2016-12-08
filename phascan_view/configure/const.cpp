@@ -107,56 +107,12 @@ const char* g_strMeasureFildUnit[][4] =
 }  ;
 
 const U8 g_iToolSeparator[] = {0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0,1,0};
-const char* g_strToolBarIconName[] = {
-	":/icon/toolbar/resource/toobar/0-01.png",
-	":/icon/toolbar/resource/toobar/0-02.png",
-	":/icon/toolbar/resource/toobar/0-03.png",
-	":/icon/toolbar/resource/toobar/0-04.png",
-	":/icon/toolbar/resource/toobar/0-05.png",
-	":/icon/toolbar/resource/toobar/0-06.png",
-	":/icon/toolbar/resource/toobar/0-07.png",
-	":/icon/toolbar/resource/toobar/0-10.png",
-	":/icon/toolbar/resource/toobar/0-11.png",
-	":/icon/toolbar/resource/toobar/0-12.png",
-	":/icon/toolbar/resource/toobar/0-13.png",
-	":/icon/toolbar/resource/toobar/0-14.png",
-	":/icon/toolbar/resource/toobar/0-15.png",
-	":/icon/toolbar/resource/toobar/0-16.png",
-	":/icon/toolbar/resource/toobar/0-17.png",
-	":/icon/toolbar/resource/toobar/0-18.png",
-	":/icon/toolbar/resource/toobar/0-19.png",
-	":/icon/toolbar/resource/toobar/0-20.png",
-	":/icon/toolbar/resource/toobar/0-21.png",
-	(char*)0
-};
 
 const char* g_strLanguageName[] = {
 	"English",
-	"中文",
-	"日本语",
-	"??",
-};
-
-const char* g_strToolBarName[][4] = {
-	{"New", "新建" , "", ""},
-	{"Open", "打开" , "", ""},
-	{"Save", "保存" , "", ""},
-	{"Report Add One Item", "增加报告项" , "", ""},
-	{"Report Del One Item", "删除报告项" , "", ""},
-	{"Report Setting", "报告设置" , "", ""},
-	{"Save Report", "生成报告" , "", ""},
-	{"TOFD LW Straitening", "TOFD 直通波对齐" , "", ""},
-	{"TOFD BW Straitening", "TOFD 底波对齐" , "", ""},
-	{"TOFD LW Removal", "TOFD 差分" , "", ""},
-	{"TOFD SAFT", "TOFD SAFT" , "", ""},
-	{"TOFD repeal", "TOFD 撤销" , "", ""},
-	{"TOFD redo", "TOFD 重做" , "", ""},
-	{"TOFD length-measurement", "TOFD 测长" , "", ""},
-	{"TOFD height-measurement", "TOFD 测高" , "", ""},
-	{"TOFD depth-measurement", "TOFD 测深" , "", ""},
-	{"Save defect", "保存缺陷" , "", ""},
-	{"CH/EN ", "中/英 切换" , "", ""},
-	{"Screenshot", "截屏" , "", ""},
+    "Chinese",
+    "Japanese",
+    "Korean",
 };
 
 const char* g_strTravelMode[][4] = {
@@ -458,15 +414,7 @@ const char* g_strReportSetGroupParamMode[][4] = {
 
 #include <qdatetime.h>
 #include <QCoreApplication>
-int ToolBarCnt()
-{
-	int i = 0;
-	while((U32)g_strToolBarIconName[i] != 0)
-	{
-		i++;
-	}
-	return i;
-}
+
 #include <stdio.h>
 
 #ifndef QT_NO_DEBUG

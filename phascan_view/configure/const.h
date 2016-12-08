@@ -72,10 +72,8 @@ extern const char* g_strMeasureFildName[][4] ;
 extern const char* g_strMeasureFildUnit[][4] ;
 
 extern const U8 g_iToolSeparator[];
-extern const char* g_strToolBarIconName[];
 
 extern const char* g_strLanguageName[];
-extern const char* g_strToolBarName[][4];
 extern const char* g_strTravelMode[][4];
 extern const char* g_strTxRxMode[][4];
 extern const char* g_strScanMode[][4];

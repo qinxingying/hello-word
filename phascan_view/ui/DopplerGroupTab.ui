@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>329</width>
+    <width>338</width>
     <height>720</height>
    </rect>
   </property>
@@ -52,7 +52,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>1</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -62,7 +62,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>329</width>
+        <width>338</width>
         <height>510</height>
        </rect>
       </property>
@@ -131,6 +131,12 @@
               <size>
                <width>0</width>
                <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
               </size>
              </property>
              <property name="title">
@@ -700,6 +706,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="BoxPulserReceiver">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Pulser/Receiver</string>
              </property>
@@ -1102,6 +1114,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="groupBox_2">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string/>
              </property>
@@ -1335,7 +1353,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>329</width>
+        <width>338</width>
         <height>510</height>
        </rect>
       </property>
@@ -1349,6 +1367,12 @@
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QScrollArea" name="scrollAreaProbeWedge">
+         <property name="maximumSize">
+          <size>
+           <width>330</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -1375,7 +1399,7 @@
             <number>6</number>
            </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,0">
              <property name="leftMargin">
               <number>9</number>
              </property>
@@ -1425,10 +1449,29 @@
                </item>
               </widget>
              </item>
+             <item>
+              <spacer name="horizontalSpacer_6">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
             </layout>
            </item>
            <item>
             <widget class="QGroupBox" name="BoxProbeTrigger">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Tx Probe</string>
              </property>
@@ -1477,6 +1520,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="BoxWedgeTrigger">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Tx Wedge</string>
              </property>
@@ -1532,6 +1581,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="BoxProbeTrigger_2">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Rx Probe</string>
              </property>
@@ -1580,6 +1635,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="BoxWedgeTrigger_2">
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Rx Probe</string>
              </property>
@@ -1637,7 +1698,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>313</width>
+        <width>321</width>
         <height>618</height>
        </rect>
       </property>
@@ -1659,7 +1720,7 @@
         <widget class="QScrollArea" name="scrollArea">
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>313</width>
            <height>600</height>
           </size>
          </property>
@@ -1674,8 +1735,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>312</width>
-            <height>583</height>
+            <width>313</width>
+            <height>600</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -1704,6 +1765,9 @@
              </property>
              <property name="topMargin">
               <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>9</number>
              </property>
              <property name="bottomMargin">
               <number>0</number>
@@ -1752,6 +1816,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="BoxAngle">
+             <property name="maximumSize">
+              <size>
+               <width>310</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Angle</string>
              </property>
@@ -2454,6 +2524,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="BoxFocalPoint">
+             <property name="maximumSize">
+              <size>
+               <width>310</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Focal Point</string>
              </property>
@@ -2932,6 +3008,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="BoxAperture">
+             <property name="maximumSize">
+              <size>
+               <width>310</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Aperture</string>
              </property>
@@ -3418,7 +3500,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
+            <y>-125</y>
             <width>320</width>
             <height>600</height>
            </rect>
@@ -3446,7 +3528,7 @@
             <widget class="QGroupBox" name="groupBox_3">
              <property name="maximumSize">
               <size>
-               <width>330</width>
+               <width>310</width>
                <height>16777215</height>
               </size>
              </property>
@@ -3819,7 +3901,7 @@
             <widget class="QGroupBox" name="groupBox_4">
              <property name="maximumSize">
               <size>
-               <width>330</width>
+               <width>310</width>
                <height>16777215</height>
               </size>
              </property>
@@ -4820,7 +4902,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>312</width>
+        <width>321</width>
         <height>700</height>
        </rect>
       </property>
@@ -4890,7 +4972,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>313</width>
+            <width>320</width>
             <height>700</height>
            </rect>
           </property>
@@ -5776,7 +5858,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>312</width>
+        <width>321</width>
         <height>850</height>
        </rect>
       </property>
@@ -5822,7 +5904,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>312</width>
+            <width>321</width>
             <height>850</height>
            </rect>
           </property>
@@ -7364,7 +7446,7 @@
        <rect>
         <x>0</x>
         <y>-190</y>
-        <width>312</width>
+        <width>321</width>
         <height>700</height>
        </rect>
       </property>
@@ -7428,7 +7510,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>312</width>
+            <width>321</width>
             <height>700</height>
            </rect>
           </property>
@@ -7438,7 +7520,7 @@
             <height>0</height>
            </size>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_18" stretch="12,9,2,1">
+          <layout class="QVBoxLayout" name="verticalLayout_18" stretch="14,9,2,1">
            <item>
             <widget class="QTreeView" name="treeView">
              <property name="dragEnabled">
