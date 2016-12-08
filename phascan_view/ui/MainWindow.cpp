@@ -534,7 +534,7 @@ void MainWindow::SetWndName(setup_LANG eLang)
         for(int i = 0 ; i< _nQty - 2 ; i++)
         {
                 DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidgetLeft->widget(i) ;
-                _pGroup->SetWndName(eLang);
+                _pGroup->SetWndName();
                 _pGroup->UpdateGroupConfig ();
         }
 

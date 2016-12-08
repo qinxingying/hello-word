@@ -104,9 +104,7 @@ const char* g_strMeasureFildUnit[][4] =
 	{"T-S(m-r)" , "mm"} ,
 	{"T-D(m-r)" , "mm"}
 
-}  ;
-
-const U8 g_iToolSeparator[] = {0,0,1,0,0,0,1,0,0,0,1,0,1,0,0,0,1,0};
+};
 
 const char* g_strLanguageName[] = {
 	"English",
@@ -114,150 +112,144 @@ const char* g_strLanguageName[] = {
     "Japanese",
     "Korean",
 };
-
-const char* g_strTravelMode[][4] = {
-	{"True Depth", "真实深度" , "", ""},
-	{"Half Path" , "半 声 程" , "", ""},
-};
-
 const char* g_strTxRxMode[][4] = {
-	{"Pitch Catch"   , "一发一收"  , "", ""},
-	{"Pitch Echo"	, "脉冲回波"  , "", ""},
-	{"Through Trans" , "穿 透 法"  , "", ""},
-	{"TOFD"		  , "衍射时差法" , "", ""},
+    {"Pitch Catch"   , "一发一收"  , "", ""},
+    {"Pitch Echo"	, "脉冲回波"  , "", ""},
+    {"Through Trans" , "穿 透 法"  , "", ""},
+    {"TOFD"		  , "衍射时差法" , "", ""},
 };
 
 const char* g_strScanMode[][4] = {//(report)
-	{"Normal"   , "非平行" , "", ""},
-	{"Parallel" , "平 行" , "", ""},
+    {"Normal"   , "非平行" , "", ""},
+    {"Parallel" , "平 行" , "", ""},
 };
 
 const char* g_strGeometry[][4]={// (report)
-	{"Plate" , "平板" , "", ""},
-	{"OD"	, "凸面" , "", ""},
-	{"ID"	, "凹面" , "", ""},
+    {"Plate" , "平板" , "", ""},
+    {"OD"	, "凸面" , "", ""},
+    {"ID"	, "凹面" , "", ""},
 };
 
 const char* g_strTofdScanMode[][4] = {
-	{"Normal", "非平行" , "", ""},
-	{"Parallel" , "平行" , "", ""},
+    {"Normal", "非平行" , "", ""},
+    {"Parallel" , "平行" , "", ""},
 };
 
 const char* g_strTofdProMode[][4] = {
-	{"Whole", "全局" , "", ""},
-	{"Area" , "区域" , "", ""},
+    {"Whole", "全局" , "", ""},
+    {"Area" , "区域" , "", ""},
 };
 
 const char* g_strWeldType[][4] = {
-	{"I shape"	   , "I型" , "", ""},
-	{"V shape"	   , "V型" , "", ""},
-	{"double V shpe" , "双V" , "", ""},
-	{"U shpe"		, "U型" , "", ""},
+    {"I shape"	   , "I型" , "", ""},
+    {"V shape"	   , "V型" , "", ""},
+    {"double V shpe" , "双V" , "", ""},
+    {"U shpe"		, "U型" , "", ""},
 //	{"double U shpe" , "双U" , "", ""},
-	{"Part file"	 , "高级工件" , "", ""},
+    {"Part file"	 , "高级工件" , "", ""},
 };
 
 const char* g_strSymmetry[][4] = {
-	{"Symmetry", "对称" , "", ""},
-	{"Left"	, "左单边坡口" , "", ""},
-	{"Right"   , "右单边坡口" , "", ""},
+    {"Symmetry", "对称" , "", ""},
+    {"Left"	, "左单边坡口" , "", ""},
+    {"Right"   , "右单边坡口" , "", ""},
 };
 
 const char* g_strLawType[][4] = {
-	{"Azimuthal Sector" , "扇形扫查" , "", ""},
-	{"Linear Sector"	, "线性扫查" , "", ""},
+    {"Azimuthal Sector" , "扇形扫查" , "", ""},
+    {"Linear Sector"	, "线性扫查" , "", ""},
 };
 
 const char* g_strAngleType[][4] = {
-	{"Refracted Angle",		"折射角" , "", ""},
-	{"Primary Steering Angle", "主轴偏转角" , "", ""},
-	{"Beam Skew Angle",		"声束转向角" , "", ""},
+    {"Refracted Angle",		"折射角" , "", ""},
+    {"Primary Steering Angle", "主轴偏转角" , "", ""},
+    {"Beam Skew Angle",		"声束转向角" , "", ""},
 };
 
 const char* g_strFocalType[][4] = {// (report)
-	{"Half Path"  , "半声程"   , "", ""},
-	{"True Depth" , "真实深度"  , "", ""},
-	{"Projection" , "投影"	 , "", ""},
-	{"Focal Plane", "任意面"   , "", ""},
-	{"Automatic"  , "自动"	, "", ""},
+    {"Half Path"  , "半声程"   , "", ""},
+    {"True Depth" , "真实深度"  , "", ""},
+    {"Projection" , "投影"	 , "", ""},
+    {"Focal Plane", "任意面"   , "", ""},
+    {"Automatic"  , "自动"	, "", ""},
 };
 
 const char* g_strSkewAngle[][4] = {
-	{"  0degree" , "  0度"   , "", ""},
-	{" 90degree" , " 90度"  , "", ""},
-	{"180degree" , "180度"	 , "", ""},
-	{"270degree" , "270度"   , "", ""},
+    {"  0degree" , "  0度"   , "", ""},
+    {" 90degree" , " 90度"  , "", ""},
+    {"180degree" , "180度"	 , "", ""},
+    {"270degree" , "270度"   , "", ""},
 };
 
 const char* g_strGateSelect[][4] = {
-	{"Gate A" , "闸门 A"   , "", ""},
-	{"Gate B" , "闸门 B"  , "", ""},
-	{"Gate I" , "闸门 I"	 , "", ""},
+    {"Gate A" , "闸门 A"   , "", ""},
+    {"Gate B" , "闸门 B"  , "", ""},
+    {"Gate I" , "闸门 I"	 , "", ""},
 };
 
 const char* g_strGateSync[][4] = {
-	{"Pulse", "脉冲" , "", ""},
-	{"I/"   , "I/"  , "", ""},
-	{"A/"   , "A/"  , "", ""},
+    {"Pulse", "脉冲" , "", ""},
+    {"I/"   , "I/"  , "", ""},
+    {"A/"   , "A/"  , "", ""},
 };
 
 const char* g_strGateMeasure[][4] = {
-	{"Peak ^" , "峰值"   , "", ""},
-	{"Edge /" , "前沿"  , "", ""},
+    {"Peak ^" , "峰值"   , "", ""},
+    {"Edge /" , "前沿"  , "", ""},
 };
 
 const char* g_strSizingCurve[][4] = {
-	{"NULL"	   , "无"   , "", ""},
-	{"DAC"		, "DAC"   , "", ""},
-	{"Linear DAC" , "线性 DAC"  , "", ""},
-	{"TCG"		, "TCG"	 , "", ""},
+    {"NULL"	   , "无"   , "", ""},
+    {"DAC"		, "DAC"   , "", ""},
+    {"Linear DAC" , "线性 DAC"  , "", ""},
+    {"TCG"		, "TCG"	 , "", ""},
 };
 
 
 const char* g_strColorLineColor[][4] = {
-	{"Yellow" , "黄" , "", ""},
-	{"Green"  , "绿" , "", ""},
-	{"Red"	, "红" , "", ""},
-	{"White"  , "白" , "", ""},
+    {"Yellow" , "黄" , "", ""},
+    {"Green"  , "绿" , "", ""},
+    {"Red"	, "红" , "", ""},
+    {"White"  , "白" , "", ""},
 };
 
 const char* g_strCScanSource[][4] = {
-	{"Gate A  Amplitude"  , "闸门 A 峰值" , "", ""},
-	{"Gate B  Amplitude"  , "闸门 B 峰值" , "", ""},
-	{"Gate I  Position"   , "闸门 I 位置" , "", ""},
-	{"Gate A  Position"   , "闸门 A 位置" , "", ""},
-	{"Gate B  Position"   , "闸门 B 位置" , "", ""},
-	{"Gate A-I  Position" , "闸门 A-I 位置" , "", ""},
-	{"Gate B-I  Position" , "闸门 B-I 位置" , "", ""},
-	{"Gate B-A  Position" , "闸门 B-A 位置" , "", ""},
+    {"Gate A  Amplitude"  , "闸门 A 峰值" , "", ""},
+    {"Gate B  Amplitude"  , "闸门 B 峰值" , "", ""},
+    {"Gate I  Position"   , "闸门 I 位置" , "", ""},
+    {"Gate A  Position"   , "闸门 A 位置" , "", ""},
+    {"Gate B  Position"   , "闸门 B 位置" , "", ""},
+    {"Gate A-I  Position" , "闸门 A-I 位置" , "", ""},
+    {"Gate B-I  Position" , "闸门 B-I 位置" , "", ""},
+    {"Gate B-A  Position" , "闸门 B-A 位置" , "", ""},
 };
 
 const char* g_strWeldPartSel[][4] = {
-	{"Weld"			, "焊缝设置" , "", ""},
-	{"Load Part File"  , "高级工件加载" , "", ""},
+    {"Weld"			, "焊缝设置" , "", ""},
+    {"Load Part File"  , "高级工件加载" , "", ""},
 };
 
 const char* g_strScanType[][4] = {
-	{"One Line Scan"	, "单线扫查" , "", ""},
-	{"Raster Scan"	  , "栅格扫查" , "", ""},
-	{"Helicoidal Scan"  , "螺旋扫查" , "", ""},
+    {"One Line Scan"	, "单线扫查" , "", ""},
+    {"Raster Scan"	  , "栅格扫查" , "", ""},
+    {"Helicoidal Scan"  , "螺旋扫查" , "", ""},
 };
 
 const char* g_strEncoderType[][4] = {
-	{"Time",	  "时间" , "", ""},
-	{"Encoder X", "编码器 X" , "", ""},
-	{"Encoder Y", "编码器 Y" , "", ""},
+    {"Time",	  "时间" , "", ""},
+    {"Encoder X", "编码器 X" , "", ""},
+    {"Encoder Y", "编码器 Y" , "", ""},
 };
 
 const char* g_strPolarity[][4] = {
-	{"Normal",  "正常" , "", ""},
-	{"Reverse", "反转" , "", ""},
+    {"Normal",  "正常" , "", ""},
+    {"Reverse", "反转" , "", ""},
 };
 
 const char* g_strDirection[][4] = {
-	{"Quad", "正交" , "", ""},
-	{"Up",   "向上" , "", ""},
-	{"Down", "向下" , "", ""},
+    {"Quad", "正交" , "", ""},
+    {"Up",   "向上" , "", ""},
+    {"Down", "向下" , "", ""},
 };
 
 //report

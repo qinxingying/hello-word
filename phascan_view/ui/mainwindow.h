@@ -59,7 +59,6 @@ public:
     int GetCurGroup() {return m_iCurGroup;}
     void SetCurGroup(int nGroupID_);
     void SetWndName(setup_LANG eLang);
-  //  void SetToolBarName(setup_LANG eLang);
     void OpenFilePro(QString strFileName_);
     void ScreenShot();
     bool ParamBackMode(void) {return m_bParamBackMode;}

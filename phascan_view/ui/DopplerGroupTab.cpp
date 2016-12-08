@@ -94,7 +94,7 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 
 	ui->ComLanguage->setCurrentIndex(_iLang);
 
-	SetWndName(m_pConfig->AppEvn.eLanguage); // whuan language 2015-05-13
+    SetWndName();
 
 	UpdateGroupConfig ();
 	ui->toolBox->setCurrentIndex(0);
@@ -364,20 +364,8 @@ void DopplerGroupTab::UpdateSampleRange()
 	ui->ValueRange->setValue(_process->GetSampleRange(m_nGroupId , _nLawId));
 }
 
-void DopplerGroupTab::SetWndName(setup_LANG eLang)
+void DopplerGroupTab::SetWndName()
 {
-	int iLang = eLang;
-
-	ui->LabelDefect->setText(g_strDefect[0][eLang]);
-	ui->LabelReMark->setText(g_strDefect[1][eLang]);
-	ui->LabelDefectIndex->setText(g_strDefect[2][eLang]);
-	ui->labelDefectStart->setText(g_strDefect[3][eLang]);
-	ui->labelDefectLength->setText(g_strDefect[4][eLang]);
-	ui->labelDefectDepth->setText(g_strDefect[5][eLang]);
-	ui->labelDefectHeight->setText(g_strDefect[6][eLang]);
-	ui->labelDefectOffset->setText(g_strDefect[7][eLang]);
-	ui->labelDefectWidth->setText(g_strDefect[8][eLang]);
-
 	if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD ) {
 		ui->labelDefectOffset->hide();
 		ui->labelDefectWidth->hide();
@@ -392,86 +380,6 @@ void DopplerGroupTab::SetWndName(setup_LANG eLang)
 		ui->ValueDefectWidth->show();
 		ui->LabelCursorUnit3_11->show();
 		ui->LabelCursorUnit3_12->show();
-	}
-
-	ui->ComGateSelect->clear();
-	for(int i = 0; i < 3; i++) {
-		ui->ComGateSelect->addItem(g_strGateSelect[i][iLang]);
-	}
-
-	ui->ComGateSync->clear();
-	for(int i = 0; i < 3; i++) {
-		ui->ComGateSync->addItem(g_strGateSync[i][iLang]);
-	}
-
-	ui->ComGateMeasure->clear();
-	for(int i = 0; i < 2; i++) {
-		ui->ComGateMeasure->addItem(g_strGateMeasure[i][iLang]);
-	}
-
-	ui->ComSizingCurve->clear();
-	for(int i = 0; i < (int)setup_CURVE_TYPE_MAX; i++) {
-		ui->ComSizingCurve->addItem(g_strSizingCurve[i][iLang]);
-	}
-
-	ui->ComTravelMode->clear();
-	for(int i = 0; i < 2; i++) {
-		ui->ComTravelMode->addItem(g_strTravelMode[i][iLang]);
-	}
-
-	ui->ComTxRxMode->clear();
-	for(int i = 0; i < 4; i++) {
-		ui->ComTxRxMode->addItem(g_strTxRxMode[i][iLang]);
-	}
-
-	ui->ComRectifier->clear();
-	for(int i = 0; i < 4; i++) {
-		ui->ComRectifier->addItem(g_strRectifier[i][iLang]);
-	}
-
-	ui->ComLawType->clear();
-	for(int i = 0; i < 2; i++) {
-		ui->ComLawType->addItem(g_strLawType[i][iLang]);
-	}
-
-	ui->ComAngleType->clear();
-	for(int i = 0; i < 3; i++) {
-		ui->ComAngleType->addItem(g_strAngleType[i][iLang]);
-	}
-
-	ui->ComFocalType->clear();
-	for(int i = 0; i < 5; i++) {
-		ui->ComFocalType->addItem(g_strFocalType[i][iLang]);
-	}
-
-	ui->ComSkewAngle->clear();
-	for(int i = 0; i < 4; i++) {
-		ui->ComSkewAngle->addItem(g_strSkewAngle[i][iLang]);
-	}
-
-	ui->ComColorLineColor->clear();
-	for(int i = 0; i < 3; i++) {
-		ui->ComColorLineColor->addItem(g_strColorLineColor[i][iLang]);
-	}
-
-	ui->ComCScanSource1->clear();
-	for(int i = 0; i < 8; i++) {
-		ui->ComCScanSource1->addItem(g_strCScanSource[i][iLang]);
-	}
-
-	ui->ComCScanSource2->clear();
-	for(int i = 0; i < 8; i++) {
-		ui->ComCScanSource2->addItem(g_strCScanSource[i][iLang]);
-	}
-
-	ui->ComBoxScanMode->clear();
-	for(int i = 0; i < 2; i++) {
-		ui->ComBoxScanMode->addItem(g_strTofdScanMode[i][iLang]);
-	}
-
-	ui->ComBoxProMode->clear();
-	for(int i = 0; i < 2; i++) {
-		ui->ComBoxProMode->addItem(g_strTofdProMode[i][iLang]);
 	}
 
 	QComboBox* _comboxTab[4];

@@ -1,7 +1,6 @@
 /***************************
   Name:  DopplerGroupTab
   Date : 2013-08-26
-  Description:   ���������ô���
 ************************************/
 
 #ifndef DOPPLERGROUPTAB_H
@@ -34,7 +33,7 @@ public:
     void UpdateCursorValue();
     void UpdateDefectBox();
     void UpdateDefectValue();
-    void SetWndName(setup_LANG eLang);
+    void SetWndName();
     void UpdateGroupConfig () ;
 
 	void UpdateCurrentAngleCom();
@@ -43,7 +42,6 @@ public:
     void retranslateUi();
 
 protected:
-    //##### ֻ��������ʾʱ ���ڲ�ʹ��
     void SetWidgetInvalide();
     //###############################
     void CreateSettingView();
@@ -187,8 +185,6 @@ private slots:
 	void on_CheckCursorSync_clicked(bool checked);
     void on_ValueCScanThicknessMin_valueChanged(double);
     void on_ValueCScanThicknessMax_valueChanged(double);
-    //void on_ValueCScanThicknessMin_editingFinished();
-    //void on_ValueCScanThicknessMax_editingFinished();
     void on_ComCScanSource1_currentIndexChanged(int index);
     void on_ComCScanSource2_currentIndexChanged(int index);
 
