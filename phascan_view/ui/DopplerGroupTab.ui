@@ -52,7 +52,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>6</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -88,6 +88,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
          <property name="verticalScrollBarPolicy">
           <enum>Qt::ScrollBarAsNeeded</enum>
          </property>
@@ -107,6 +110,12 @@
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_15" stretch="7,4,3">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>6</number>
+           </property>
            <item>
             <widget class="QGroupBox" name="BoxGeneral">
              <property name="enabled">
@@ -704,7 +713,7 @@
                  <number>0</number>
                 </property>
                 <property name="rightMargin">
-                 <number>9</number>
+                 <number>0</number>
                 </property>
                 <item row="0" column="3">
                  <widget class="QLabel" name="LabelReceiver">
@@ -716,8 +725,8 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>70</width>
-                    <height>25</height>
+                    <width>60</width>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -745,7 +754,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>60</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -779,7 +788,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>60</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -813,12 +822,12 @@
                   <property name="minimumSize">
                    <size>
                     <width>70</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -1021,7 +1030,7 @@
                  <widget class="QComboBox" name="ComRectifier">
                   <property name="minimumSize">
                    <size>
-                    <width>50</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -1112,7 +1121,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>80</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -1137,7 +1146,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>50</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -1178,13 +1187,13 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>80</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -1254,8 +1263,14 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>70</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="text">
@@ -1265,6 +1280,18 @@
                 </item>
                 <item row="2" column="1">
                  <widget class="QComboBox" name="ComAverage">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <item>
                    <property name="text">
                     <string>1</string>
@@ -1322,6 +1349,9 @@
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <widget class="QScrollArea" name="scrollAreaProbeWedge">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
          <property name="horizontalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOff</enum>
          </property>
@@ -1333,13 +1363,25 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>318</width>
+            <width>300</width>
             <height>640</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_16">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>6</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <property name="leftMargin">
+              <number>9</number>
+             </property>
+             <property name="rightMargin">
+              <number>9</number>
+             </property>
              <item>
               <widget class="QLabel" name="LabelGroupMode">
                <property name="sizePolicy">
@@ -1350,7 +1392,7 @@
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>75</width>
+                 <width>70</width>
                  <height>25</height>
                 </size>
                </property>
@@ -1594,7 +1636,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-90</y>
         <width>313</width>
         <height>618</height>
        </rect>
@@ -1621,6 +1663,9 @@
            <height>600</height>
           </size>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -1629,8 +1674,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>293</width>
-            <height>598</height>
+            <width>295</width>
+            <height>600</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -1646,19 +1691,22 @@
            </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_17" stretch="1,6,5,5">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_7">
              <property name="leftMargin">
-              <number>9</number>
+              <number>3</number>
              </property>
              <property name="topMargin">
               <number>0</number>
              </property>
-             <property name="rightMargin">
-              <number>9</number>
-             </property>
              <property name="bottomMargin">
-              <number>9</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QLabel" name="LabelLawType">
@@ -1670,7 +1718,7 @@
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>75</width>
+                 <width>70</width>
                  <height>25</height>
                 </size>
                </property>
@@ -1709,7 +1757,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_22" stretch="1,5">
               <property name="spacing">
-               <number>6</number>
+               <number>3</number>
               </property>
               <property name="topMargin">
                <number>0</number>
@@ -1717,13 +1765,13 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_8">
                 <property name="leftMargin">
-                 <number>9</number>
+                 <number>0</number>
                 </property>
                 <property name="topMargin">
                  <number>0</number>
                 </property>
                 <property name="rightMargin">
-                 <number>9</number>
+                 <number>0</number>
                 </property>
                 <property name="bottomMargin">
                  <number>0</number>
@@ -1823,7 +1871,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
-                    <height>0</height>
+                    <height>25</height>
                    </size>
                   </property>
                   <property name="text">
@@ -1972,7 +2020,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
-                    <height>0</height>
+                    <height>25</height>
                    </size>
                   </property>
                   <property name="text">
@@ -2094,7 +2142,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
-                    <height>0</height>
+                    <height>25</height>
                    </size>
                   </property>
                   <property name="text">
@@ -2216,7 +2264,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
-                    <height>0</height>
+                    <height>25</height>
                    </size>
                   </property>
                   <property name="text">
@@ -2338,16 +2386,22 @@
               <string>Focal Point</string>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_23" stretch="1,4">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <property name="leftMargin">
-                 <number>9</number>
+                 <number>0</number>
                 </property>
                 <property name="topMargin">
                  <number>0</number>
                 </property>
                 <property name="rightMargin">
-                 <number>9</number>
+                 <number>0</number>
                 </property>
                 <property name="bottomMargin">
                  <number>0</number>
@@ -2449,6 +2503,12 @@
                 </item>
                 <item row="1" column="0">
                  <widget class="QLabel" name="LabelFocalPosition">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
+                    <height>25</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Position:</string>
                   </property>
@@ -2559,6 +2619,12 @@
                 </item>
                 <item row="2" column="0">
                  <widget class="QLabel" name="LabelFocalOffset">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
+                    <height>25</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Offset:</string>
                   </property>
@@ -2647,6 +2713,12 @@
                 </item>
                 <item row="3" column="0">
                  <widget class="QLabel" name="LabelFocalDepth">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
+                    <height>25</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Depth:</string>
                   </property>
@@ -2797,14 +2869,14 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>104</width>
+                    <width>75</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>70</width>
-                    <height>20</height>
+                    <width>1777125</width>
+                    <height>25</height>
                    </size>
                   </property>
                   <property name="text">
@@ -2890,14 +2962,14 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>81</width>
+                    <width>75</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>70</width>
-                    <height>20</height>
+                    <width>1777125</width>
+                    <height>25</height>
                    </size>
                   </property>
                   <property name="text">
@@ -2983,14 +3055,14 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>81</width>
+                    <width>75</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>70</width>
-                    <height>20</height>
+                    <width>75</width>
+                    <height>25</height>
                    </size>
                   </property>
                   <property name="text">
@@ -3076,14 +3148,14 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>81</width>
+                    <width>75</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>70</width>
-                    <height>20</height>
+                    <width>75</width>
+                    <height>25</height>
                    </size>
                   </property>
                   <property name="text">
@@ -3210,6 +3282,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -3218,7 +3293,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>293</width>
+            <width>295</width>
             <height>700</height>
            </rect>
           </property>
@@ -3235,6 +3310,12 @@
            </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_21">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>6</number>
+           </property>
            <item>
             <widget class="QGroupBox" name="groupBox_3">
              <property name="title">
@@ -3243,6 +3324,18 @@
              <layout class="QGridLayout" name="gridLayout_27">
               <item row="0" column="0">
                <widget class="QLabel" name="LabelGate">
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>Gate</string>
                 </property>
@@ -3277,13 +3370,13 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -3321,13 +3414,13 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -3393,13 +3486,13 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -3459,7 +3552,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -3484,7 +3577,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -3522,8 +3615,14 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>70</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="text">
@@ -3602,13 +3701,13 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -3655,13 +3754,13 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>11111</width>
+                    <width>70</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -3722,9 +3821,15 @@
                 </property>
                 <item row="0" column="0">
                  <widget class="QLabel" name="LabelSizingCure1">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="maximumSize">
                    <size>
-                    <width>160</width>
+                    <width>70</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -4576,7 +4681,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-290</y>
         <width>313</width>
         <height>800</height>
        </rect>
@@ -4636,6 +4741,9 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -4645,7 +4753,7 @@
             <x>0</x>
             <y>0</y>
             <width>300</width>
-            <height>798</height>
+            <height>800</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -4661,6 +4769,12 @@
            </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_20">
+           <property name="leftMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
            <item>
             <widget class="QGroupBox" name="BoxPart">
              <property name="title">
@@ -4679,7 +4793,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -4717,7 +4831,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -4765,7 +4879,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -4825,7 +4939,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -4892,7 +5006,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -4972,7 +5086,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -5035,7 +5149,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>75</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -5098,7 +5212,7 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>80</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
@@ -5158,13 +5272,13 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>40</width>
+                  <width>70</width>
                   <height>25</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>40</width>
+                  <width>70</width>
                   <height>16777215</height>
                  </size>
                 </property>
@@ -5177,7 +5291,7 @@
                <widget class="QPushButton" name="BtnLoadPartFile">
                 <property name="minimumSize">
                  <size>
-                  <width>150</width>
+                  <width>100</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -5559,6 +5673,9 @@
            <height>850</height>
           </size>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -5567,8 +5684,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>311</width>
-            <height>848</height>
+            <width>313</width>
+            <height>850</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -5578,6 +5695,12 @@
            </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_19" stretch="6,9,10">
+           <property name="leftMargin">
+            <number>6</number>
+           </property>
+           <property name="rightMargin">
+            <number>6</number>
+           </property>
            <item>
             <widget class="QGroupBox" name="groupBox_6">
              <property name="title">
@@ -7102,7 +7225,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-210</y>
         <width>313</width>
         <height>720</height>
        </rect>
@@ -7138,6 +7261,9 @@
            <height>720</height>
           </size>
          </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -7146,11 +7272,26 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>326</width>
-            <height>701</height>
+            <width>313</width>
+            <height>720</height>
            </rect>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
+          </property>
           <layout class="QVBoxLayout" name="verticalLayout_18" stretch="12,9,2,1,1">
+           <property name="spacing">
+            <number>9</number>
+           </property>
+           <property name="leftMargin">
+            <number>6</number>
+           </property>
+           <property name="rightMargin">
+            <number>6</number>
+           </property>
            <item>
             <widget class="QTreeView" name="treeView">
              <property name="dragEnabled">
@@ -7163,8 +7304,8 @@
              <property name="title">
               <string>ColorSetting</string>
              </property>
-             <layout class="QGridLayout" name="gridLayout_35">
-              <item row="0" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_25" stretch="1,3,3,1">
+              <item>
                <layout class="QHBoxLayout" name="horizontalLayout_14">
                 <property name="rightMargin">
                  <number>3</number>
@@ -7214,7 +7355,7 @@
                 </item>
                </layout>
               </item>
-              <item row="1" column="0">
+              <item>
                <layout class="QFormLayout" name="formLayout_3">
                 <property name="fieldGrowthPolicy">
                  <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -7252,6 +7393,18 @@
                 </item>
                 <item row="2" column="0">
                  <widget class="QLabel" name="label_5">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>95</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Thickness:</string>
                   </property>
@@ -7266,10 +7419,22 @@
                 </item>
                </layout>
               </item>
-              <item row="2" column="0">
+              <item>
                <layout class="QFormLayout" name="formLayout">
                 <item row="0" column="0">
                  <widget class="QLabel" name="LabelCScanSource1">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>95</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>C Scan 1 Source:</string>
                   </property>
@@ -7321,6 +7486,18 @@
                 </item>
                 <item row="1" column="0">
                  <widget class="QLabel" name="LabelCScanSource2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>90</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>C Scan 2 Source:</string>
                   </property>
@@ -7372,6 +7549,18 @@
                 </item>
                 <item row="2" column="0">
                  <widget class="QLabel" name="LabelCScanThickness">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>90</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>C Scan Thickness</string>
                   </property>
@@ -7379,7 +7568,7 @@
                 </item>
                </layout>
               </item>
-              <item row="3" column="0">
+              <item>
                <layout class="QHBoxLayout" name="horizontalLayout_9">
                 <item>
                  <widget class="QLabel" name="LabelCScanThicknessMin">
