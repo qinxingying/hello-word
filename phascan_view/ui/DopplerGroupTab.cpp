@@ -91,9 +91,7 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 	for(int i = 0; i < 2; i++) {
 		ui->ComLanguage->addItem(g_strLanguageName[i]);
 	}
-	ui->LabelLanguage->hide();
-	ui->ComLanguage->hide();;
-	//--------------------------------------------
+
 	ui->ComLanguage->setCurrentIndex(_iLang);
 
 	SetWndName(m_pConfig->AppEvn.eLanguage); // whuan language 2015-05-13
@@ -177,20 +175,10 @@ void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 
 	QString _str[4] ;
 
-	if (m_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH)
-	{
-		_str[0].sprintf("Element Qty  : Pri[%3d]   Sec[%3d] ", _probe.nElementPri ,	_probe.nElementSec ) ;
-		_str[1].sprintf("Element Size : Pri[%2.1f] Sec[%2.1f]  mm", _probe.fSizePri ,  _probe.fSizeSec)	;
-		_str[2].sprintf("Element Pitch: Pri[%2.1f] Sec[%2.1f]  mm" , _probe.fPitchPri, _probe.fPitchSec) ;
-		_str[3].sprintf("Element Frequency: %.1f MHz" , _probe.fFrequency);
-	}
-	else
-	{
-        _str[0].sprintf("阵元数  : 主轴[%3d]   次轴[%3d] ", _probe.nElementPri ,	_probe.nElementSec ) ;
-		_str[1].sprintf("阵元尺寸 : 主轴[%2.1f] 次轴[%2.1f]  mm", _probe.fSizePri ,  _probe.fSizeSec)	;
-		_str[2].sprintf("阵元间距 : 主轴[%2.1f] 次轴[%2.1f]  mm" , _probe.fPitchPri, _probe.fPitchSec) ;
-        _str[3].sprintf("频率	: %.1f MHz" , _probe.fFrequency);
-	}
+    _str[0].sprintf("Element Qty  : Pri[%3d]   Sec[%3d] ", _probe.nElementPri ,	_probe.nElementSec ) ;
+    _str[1].sprintf("Element Size : Pri[%2.1f] Sec[%2.1f]  mm", _probe.fSizePri ,  _probe.fSizeSec)	;
+    _str[2].sprintf("Element Pitch: Pri[%2.1f] Sec[%2.1f]  mm" , _probe.fPitchPri, _probe.fPitchSec) ;
+    _str[3].sprintf("Element Frequency: %.1f MHz" , _probe.fFrequency);
 
 	if(bIsRx_)
 	{
@@ -217,42 +205,22 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 {
 	WEDGE_CONFIG& _wedge = m_pGroup->wedge[bIsRx_ ? 1 : 0] ;
 
-	QString _str[4] ;
-	if (m_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH)
-	{
-		_str[0].sprintf("Wedge Angle: %2.1f Roof Angle: %2.1f" , _wedge.fWedgeAngle , _wedge.fRoofAngle ) ;
-		_str[1].sprintf("Velocity Longtitude: %.0f Transmmit: %.0f" , _wedge.fVelocityLon , _wedge.fVelocityTra ) ;
-		_str[2].sprintf("Wedge Type: %s Wedge Direction: %s",
-						_wedge.eType ? "UT" : "PA" , _wedge.eDirection ? "NORMAL" : "INVERSE");
-		if(_wedge.eType)
-		{
-			_str[3].sprintf("Reference Point: %.1f mm Wedge Delay: %.2f us" ,
-							_wedge.fRefPoint , _wedge.nWedgeDelay /1000.0) ;
-		}
-		else
-		{
-			_str[3].sprintf("First Height: %.1f  Offset Fir: %.1f  Sec: %.1f" ,
-						   _wedge.fHeigtFirst , _wedge.fOffsetFir , _wedge.fOffsetSec) ;
-		}
-	}
-	else if(m_pConfig->AppEvn.eLanguage == setup_LANG_CHINESS)
-	{
-		_str[0].sprintf("楔块角度: %2.1f 楔块顶角: %2.1f" , _wedge.fWedgeAngle , _wedge.fRoofAngle ) ;
-		_str[1].sprintf("声速 纵波: %.0f 横波: %.0f" , _wedge.fVelocityLon , _wedge.fVelocityTra ) ;
-		_str[2].sprintf("楔块类型: %s 楔块方向: %s",
-                        _wedge.eType ? "UT" : "PA" , _wedge.eDirection ? QString(QString::fromLocal8Bit("正向")).toUtf8().data() : QString(QString::fromLocal8Bit("反向")).toUtf8().data());
+    QString _str[4] ;
 
-		if(_wedge.eType)
-		{
-			_str[3].sprintf("参考点: %.1f mm 楔块延迟: %.2f us" ,
-							_wedge.fRefPoint , _wedge.nWedgeDelay /1000.0) ;
-		}
-		else
-		{
-			_str[3].sprintf("第一阵元高度: %.1f  偏置 主轴: %.1f  次轴: %.1f" ,
-						   _wedge.fHeigtFirst , _wedge.fOffsetFir , _wedge.fOffsetSec) ;
-		}
-	}
+    _str[0].sprintf("Wedge Angle: %2.1f Roof Angle: %2.1f" , _wedge.fWedgeAngle , _wedge.fRoofAngle ) ;
+    _str[1].sprintf("Velocity Longtitude: %.0f Transmmit: %.0f" , _wedge.fVelocityLon , _wedge.fVelocityTra ) ;
+    _str[2].sprintf("Wedge Type: %s Wedge Direction: %s",
+                    _wedge.eType ? "UT" : "PA" , _wedge.eDirection ? "NORMAL" : "INVERSE");
+    if(_wedge.eType)
+    {
+        _str[3].sprintf("Reference Point: %.1f mm Wedge Delay: %.2f us" ,
+                        _wedge.fRefPoint , _wedge.nWedgeDelay /1000.0) ;
+    }
+    else
+    {
+        _str[3].sprintf("First Height: %.1f  Offset Fir: %.1f  Sec: %.1f" ,
+                       _wedge.fHeigtFirst , _wedge.fOffsetFir , _wedge.fOffsetSec) ;
+    }
 
 	if(bIsRx_)
 	{
@@ -1175,33 +1143,13 @@ void DopplerGroupTab::UpdateGeometryState()
 	setup_PART_GEOMETRY _eGeometry =  (setup_PART_GEOMETRY)ui->ComGeometry->currentIndex();
 	if(_eGeometry == setup_PART_GEOMETRY_FLAT)
 	{
-	if (m_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH)
-	{
-		ui->LabelPartSize1->setText(QString(tr("Thickness:")));
-		ui->LabelPartSize2->setText(QString(tr("Length:")));
-		ui->LabelPartSize3->setText(QString(tr("Width:")));
-	}
-	else if (m_pConfig->AppEvn.eLanguage == setup_LANG_CHINESS)
-	{
-        ui->LabelPartSize1->setText(QString::fromLocal8Bit("厚度:"));
-        ui->LabelPartSize2->setText(QString::fromLocal8Bit("长度:"));
-        ui->LabelPartSize3->setText(QString::fromLocal8Bit("宽度:"));
-	}
-	}
-	else
-	{
-	if (m_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH)
-	{
-		ui->LabelPartSize1->setText(QString(tr("Inner Diameter:")));
-		ui->LabelPartSize2->setText(QString(tr("Outer Diameter:")));
-		ui->LabelPartSize3->setText(QString(tr("Length:")));
-	}
-	else if (m_pConfig->AppEvn.eLanguage == setup_LANG_CHINESS)
-	{
-        ui->LabelPartSize1->setText(QString::fromLocal8Bit("内部直径:"));
-        ui->LabelPartSize2->setText(QString::fromLocal8Bit("外部直径:"));
-        ui->LabelPartSize3->setText(QString::fromLocal8Bit("长度:"));
-	}
+        ui->LabelPartSize1->setText(QString(tr("Thickness:")));
+        ui->LabelPartSize2->setText(QString(tr("Length:")));
+        ui->LabelPartSize3->setText(QString(tr("Width:")));
+    }else{
+        ui->LabelPartSize1->setText(QString(tr("Inner Diameter:")));
+        ui->LabelPartSize2->setText(QString(tr("Outer Diameter:")));
+        ui->LabelPartSize3->setText(QString(tr("Length:")));
 	}
 
 	ui->ValuePartSize1->setValue(m_pGroup->part.afSize[0]);
@@ -2447,6 +2395,4 @@ void DopplerGroupTab::on_ComLanguage_currentIndexChanged(int index_)
 	m_pConfig->AppEvn.eLanguage = _eLang;
 	g_pMainWnd->SetWndName(_eLang);
 
-/*	SetWndName(m_pConfig->AppEvn.eLanguage);
-	UpdateGroupConfig ();*/
 }

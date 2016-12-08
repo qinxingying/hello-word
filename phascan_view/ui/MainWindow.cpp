@@ -545,13 +545,6 @@ void MainWindow::SetWndName(setup_LANG eLang)
         SetToolBarName(eLang);
 }
 
-void MainWindow::SoftwareRegisterError()
-{
-        ui->TabWidgetLeft->setEnabled(false);
-        ui->TabWidgetRight->setEnabled(false);
-        ui->toolBar->setEnabled(false);
-}
-
 void MainWindow::SetToolBarName(setup_LANG eLang)
 {
         int _idx = eLang;

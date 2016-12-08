@@ -1362,7 +1362,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-148</y>
+            <y>0</y>
             <width>320</width>
             <height>640</height>
            </rect>
@@ -1636,7 +1636,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-125</y>
+        <y>0</y>
         <width>313</width>
         <height>618</height>
        </rect>
@@ -3418,7 +3418,7 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>-125</y>
+            <y>0</y>
             <width>320</width>
             <height>600</height>
            </rect>
@@ -4819,7 +4819,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-190</y>
+        <y>0</y>
         <width>312</width>
         <height>700</height>
        </rect>
@@ -5775,7 +5775,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-340</y>
+        <y>0</y>
         <width>312</width>
         <height>850</height>
        </rect>
@@ -7438,16 +7438,7 @@
             <height>0</height>
            </size>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_18" stretch="12,9,2,0,1">
-           <property name="spacing">
-            <number>9</number>
-           </property>
-           <property name="leftMargin">
-            <number>6</number>
-           </property>
-           <property name="rightMargin">
-            <number>6</number>
-           </property>
+          <layout class="QVBoxLayout" name="verticalLayout_18" stretch="12,9,2,1">
            <item>
             <widget class="QTreeView" name="treeView">
              <property name="dragEnabled">
@@ -8056,14 +8047,30 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="LabelLanguage">
-             <property name="text">
-              <string>Language:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="ComLanguage"/>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="LabelLanguage">
+               <property name="minimumSize">
+                <size>
+                 <width>70</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Language:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="ComLanguage"/>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
