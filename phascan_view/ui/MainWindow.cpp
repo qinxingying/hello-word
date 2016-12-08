@@ -30,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->TabWidgetRight->SetHideAble(false) ;
 
+    ui->actionNew_Config->setDisabled(true);
+    ui->actionSave->setDisabled(true);
     // tool bar
     ui->actionNew->setDisabled(true);
     ui->actionSaveFile->setDisabled(true);
@@ -676,8 +678,8 @@ void MainWindow::OpenFilePro(QString strFileName_)
 
         if(!_ret)
         {
-                UpdateTableLeft()	 ;
-                UpdateStatusBarInfo() ;
+                UpdateTableLeft();
+                UpdateStatusBarInfo();
                 UpdateTableRight();
                 m_iCurGroup = 0;
         }
@@ -692,13 +694,16 @@ void MainWindow::SaveFile()
                                                                    "data",
                                                                    "Doppler Files(*.cfg)");
         if(_strFileName.isEmpty())  return ;
-    this->setWindowTitle(QString("Doppler V1.1.1: ") + _strFileName);
+        this->setWindowTitle(QString("Doppler V1.1.1: ") + _strFileName);
         DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
         _pConfig->SaveConfig(_strFileName);
 }
 
 void MainWindow::ScreenShot()
 {
+    QString _strPath = QDir::currentPath();
+    QPixmap pixmap = QPixmap::grabWidget(this);
+    pixmap.save(_strPath , "png");
 }
 
 #include <report/DopplerHtmlReport.h>
@@ -1101,6 +1106,28 @@ void MainWindow::slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF
         ProcessDisplay _process ;
         _process.UpdateAllViewCursorOfGroup(_nGroupId) ;
         RunDrawThreadOnce(true);
+}
+
+void MainWindow::on_actionNew_Config_triggered()
+{
+    ui->actionNew_Config->setCheckable(true);
+    NewConfigure();
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    ui->actionOpen->setDisabled(true);
+    OpenFile();
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    SaveFile();
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    close();
 }
 
 void MainWindow::on_actionNew_triggered()

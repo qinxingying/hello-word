@@ -135,6 +135,11 @@ private slots:
     void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_);
 
 protected slots:
+  void on_actionNew_Config_triggered();
+  void on_actionOpen_triggered();
+  void on_actionSave_triggered();
+  void on_actionExit_triggered();
+
   void on_actionNew_triggered();                    // (1).ToolBar
   void on_actionOpenFile_triggered();
   void on_actionSaveFile_triggered();
