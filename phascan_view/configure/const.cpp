@@ -1,7 +1,7 @@
 #include "gHeader.h"
 #include "const.h"
 
-const char* g_strPartDir		= "init/part/" ;
+const char* g_strPartDir		= ":/file/init/part/" ;
 
 
 const char* g_strMeasureFildName[][4] =

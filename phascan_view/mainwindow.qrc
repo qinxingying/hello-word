@@ -60,5 +60,22 @@
         <file>resource/toolbar/0-22.png</file>
         <file>translator/phascan_view_chinese.qm</file>
         <file>translator/phascan_view_english.qm</file>
+        <file>init/palette/ONDT_Alarm.pal</file>
+        <file>init/palette/ONDT_Amplitude.pal</file>
+        <file>init/palette/ONDT_Corrosion.pal</file>
+        <file>init/palette/ONDT_ONDT.pal</file>
+        <file>init/palette/ONDT_RFrectified.pal</file>
+        <file>init/palette/ONDT_RFTOFD.pal</file>
+        <file>init/EVN.DPL</file>
+        <file>init/Material.init</file>
+        <file>init/part/0du.ncc</file>
+        <file>init/part/3.ncc</file>
+        <file>init/part/4.ncc</file>
+        <file>init/part/45duli.ncc</file>
+        <file>init/part/CX.ncc</file>
+        <file>init/part/dpl14.ncc</file>
+        <file>init/part/dpl111.ncc</file>
+        <file>init/part/JX2.ncc</file>
+        <file>init/part/JX3.ncc</file>
     </qresource>
 </RCC>

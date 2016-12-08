@@ -11,13 +11,13 @@
 #include <report/DopplerHtmlReport.h>
 #include <process/ParameterProcess.h> 
 
-static const char* g_strDataFilePath	= "data" ;
+static const char* g_strDataFilePath	= ":/file/data" ;
 
-static const char* g_strMaterialPath	= "init/Material.init" ;
-static const char* g_strColorAmp		= "init/palette/ONDT_Amplitude.pal" ;
-static const char* g_strColorThickness	= "init/palette/ONDT_Corrosion.pal" ;
-static const char* g_strColorRectifier	= "init/palette/ONDT_RFTOFD.pal" ;
-static const char* g_strEvnParamDir		= "init/EVN.DPL";
+static const char* g_strMaterialPath	= ":/file/init/Material.init" ;
+static const char* g_strColorAmp		= ":/file/init/palette/ONDT_Amplitude.pal" ;
+static const char* g_strColorThickness	= ":/file/init/palette/ONDT_Corrosion.pal" ;
+static const char* g_strColorRectifier	= ":/file/init/palette/ONDT_RFTOFD.pal" ;
+static const char* g_strEvnParamDir		= ":/file/init/EVN.DPL";
 
 static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 	"Default PA" ,
