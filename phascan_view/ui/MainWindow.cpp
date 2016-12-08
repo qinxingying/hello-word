@@ -526,21 +526,17 @@ void MainWindow::UpdateTableLeft()
         connect(ui->TabWidgetLeft  , SIGNAL(currentChanged(int)) , SLOT(slotCurrentGroupChanged(int))) ;
 }
 
-void MainWindow::SetWndName(setup_LANG eLang)
+void MainWindow::SetWndName()
 {
-        int _nQty = ui->TabWidgetLeft->count() ;
-        if(_nQty < 3 )  return  ;
+    int _nQty = ui->TabWidgetLeft->count() ;
+    if(_nQty < 3 )  return;
 
-        for(int i = 0 ; i< _nQty - 2 ; i++)
-        {
-                DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidgetLeft->widget(i) ;
-                _pGroup->SetWndName();
-                _pGroup->UpdateGroupConfig ();
-        }
-
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidgetLeft->widget(_pConfig->common.nGroupQty);
-        _pScanner->SetWndName(eLang);
+    for(int i = 0 ; i< _nQty - 2 ; i++)
+    {
+        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidgetLeft->widget(i);
+        _pGroup->SetWndName();
+        _pGroup->UpdateGroupConfig();
+    }
 }
 
 void MainWindow::UpdateCombinationDisplay(void)
@@ -551,8 +547,7 @@ void MainWindow::UpdateCombinationDisplay(void)
         _pViewFrame->SetViewFrameId(0);
         _pViewFrame->update();
 
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        SetWndName(_pConfig->AppEvn.eLanguage);
+        SetWndName();
 }
 
 void MainWindow::SaveCurScreenshot(QString strPath_)
@@ -599,12 +594,9 @@ void MainWindow::UpdateTableRight()
                         } else {
                                 _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
                         }
-                        //ProcessDisplay _display ;
-                        //_display.UpdateAllViewOverlay();
-                        //RunDrawThreadOnce(true);
+
                         sleep(600);
                 }
-                //ui->TabWidgetLeft->setCurrentIndex(0);
                 ui->TabWidgetRight->setCurrentIndex(0);
         } else {
                 ui->TabWidgetRight->setCurrentIndex(0);
@@ -617,9 +609,6 @@ void MainWindow::UpdateTableRight()
                 } else {
                         _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
                 }
-                //ProcessDisplay _display ;
-                //_display.UpdateAllViewOverlay();
-                //RunDrawThreadOnce(true);
         }
 
 
@@ -654,7 +643,7 @@ void MainWindow::NewConfigure()
                 UpdateTableLeft() ;
         this->setWindowTitle(QString("Doppler V1.1.1: New Setting"));
         }
-        // refresh status bar information
+
         UpdateStatusBarInfo();
 }
 
@@ -935,8 +924,6 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                                                 _pConfig->group[i].afCursor[_nItemId] = _fCursor;
                                         }
 
-                                        //if(_nDisplay != setup_DISPLAY_MODE_A_H
-                                        //&& _nDisplay != setup_DISPLAY_MODE_A_V)
                                         if(_nDisplay == setup_DISPLAY_MODE_B_H
                                         || _nDisplay == setup_DISPLAY_MODE_B_V
                                         || _nDisplay == setup_DISPLAY_MODE_C_H

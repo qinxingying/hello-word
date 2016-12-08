@@ -18,7 +18,6 @@ public:
     explicit InstrumentSettingWidget(QWidget *parent = 0);
     ~InstrumentSettingWidget();
     void UpdateScanPos();
-    void SetWndName(setup_LANG eLang);
     void retranslateUi();
 
 protected:

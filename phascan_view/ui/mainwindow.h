@@ -58,7 +58,7 @@ public:
     void UpdateAllDisplay() ;
     int GetCurGroup() {return m_iCurGroup;}
     void SetCurGroup(int nGroupID_);
-    void SetWndName(setup_LANG eLang);
+    void SetWndName();
     void OpenFilePro(QString strFileName_);
     void ScreenShot();
     bool ParamBackMode(void) {return m_bParamBackMode;}

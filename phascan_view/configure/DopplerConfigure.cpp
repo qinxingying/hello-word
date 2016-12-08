@@ -159,7 +159,7 @@ void DopplerConfigure::OpenEvn()
 
 		GetExePathName1((char*)g_strPartDir, _strPathName);
 		strcpy(AppEvn.strNccFilePath, _strPathName);
-		AppEvn.eLanguage = setup_LANG_ENGLISH;
+        AppEvn.eLanguage = setup_LANG_ENGLISH;
 		AppEvn.eUnit	 = setup_SOUND_AXIX_UNIT_MM;
 		AppEvn.iTofdDataProMode = 0;
 		AppEvn.bSAxisCursorSync		= true;
@@ -197,12 +197,12 @@ void DopplerConfigure::OpenEvn()
 		group[i].aeMeasureType[4] = AppEvn.anMeasureSelection[0][4] ;
 
 		group[i].bShowCursor	= AppEvn.bShowCursor[i] ;
-		group[i].bShowGate		= true;//AppEvn.bShowGate[i]   ;
-		group[i].bShowThickness = false;//AppEvn.bShowThickness[i]   ;
-		group[i].bShowWeldPart  = false;//AppEvn.bShowWeld[i]   ;
+        group[i].bShowGate		= true;
+        group[i].bShowThickness = false;
+        group[i].bShowWeldPart  = false;
 		group[i].bShowMeasure   = AppEvn.bShowMeasure[i] ;
 		group[i].bShowLwBw	    = AppEvn.bShowLwBw[i] ;
-		group[i].bShowDefect	= true;//AppEvn.bShowDefect[i];
+        group[i].bShowDefect	= true;
 	}
 	AppEvn.bSAxisCursorSync		= false;
 	AppEvn.bRegStatus = false;
@@ -366,10 +366,9 @@ void DopplerConfigure::ReleaseShadowData()
 void DopplerConfigure::ResetShadowData()
 {
 	int _nQty = comTmp.nGroupQty;
-	//if(_nQty < 2) return;
-	//-----------------------------------------------
+
 	float _fScanOff[setup_MAX_GROUP_QTY];
-	{//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    {
 		float _fMinOff = 200000;
 		float _fMaxOff = 0;
 		for(int i = 0; i < _nQty; i++) {
@@ -384,13 +383,13 @@ void DopplerConfigure::ResetShadowData()
 		}
 		common.scanner.fScanStart = comTmp.scanner.fScanStart + _fMinOff;	/**/
 		common.scanner.fScanStop  = comTmp.scanner.fScanStop  + _fMaxOff;	/**/
-	}//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	//-----------------------------------------------
+    }
+
 	int _nChanOffTmp[setup_MAX_GROUP_QTY];
 	for(int i = 0; i < _nQty; i++) {
 		_nChanOffTmp[i] = common.nScanOff[i];
 	}
-	//-----------------------------------------------
+
 	int _nOffTab[setup_MAX_GROUP_QTY];
 	int _nMin = 2000000000;
 	for(int i = 0; i < _nQty; i++) {

@@ -10,7 +10,6 @@ InstrumentSettingWidget::InstrumentSettingWidget(QWidget *parent) :
 {
 	ui->setupUi(this);
 	m_pConfig = DopplerConfigure::Instance()  ;
-	SetWndName(m_pConfig->AppEvn.eLanguage); // whuan language 2015-05-19
 	InitCommonConfig();
 }
 
@@ -282,96 +281,6 @@ void InstrumentSettingWidget::on_SliderCurrentScanPos_valueChanged(int value)
 	 ProcessDisplay _proDisplay ;
 	_proDisplay.UpdateAllView();
 	g_pMainWnd->RunDrawThreadOnce(true);
-}
-
-void InstrumentSettingWidget::SetWndName(setup_LANG eLang)
-{
-	switch(eLang)
-	{
-	case setup_LANG_ENGLISH:
-		ui->LabelScanType->setText(QString(tr("Scan Type:")));
-		ui->LabelEncoderType->setText(QString(tr("Encoder Type:")));
-		ui->LabelPrf->setText(QString(tr("PRF:")));
-
-		ui->BoxScanArea->setTitle(QString(tr("Area")));
-		ui->LabelPaValtage_2->setText(QString(tr("Scan Axis")));
-		ui->LabelPaValtage_3->setText(QString(tr("Index Axis")));
-		ui->LabelScanStart->setText(QString(tr("Start:")));
-		ui->LabelScanEnd->setText(QString(tr("End:")));
-		ui->LabelScanResolution->setText(QString(tr("Resolution:")));
-
-		ui->BoxEncoderMode->setTitle(QString(tr("Encoder Mode")));
-		ui->LabelEncoderType_2->setText(QString(tr("Encoder Type:")));
-		ui->LabelResolution->setText(QString(tr("Resolution:")));
-		ui->LabelEncoderPolarity->setText(QString(tr("Polarity:")));
-		ui->LabelEncoderDirection->setText(QString(tr("Direction:")));
-		ui->LabelEncoderOrg->setText(QString(tr("Origin:")));
-
-		ui->LabelPaValtage->setText(QString(tr("PA Voltage:")));
-		ui->LabelUtVolatage->setText(QString(tr("UT Voltage:")));
-
-		ui->LabelScanPos->setText(QString(tr("Current Scan Pos:")));
-		ui->LabelIndexPos->setText(QString(tr("Current Index Pos:")));
-
-		break;
-	case setup_LANG_CHINESS:
-        ui->LabelScanType->setText(QString::fromLocal8Bit("ɨ�鷽ʽ:"));
-        ui->LabelEncoderType->setText(QString::fromLocal8Bit("������:"));
-        ui->LabelPrf->setText(QString::fromLocal8Bit("�ظ�Ƶ��:"));
-
-        ui->BoxScanArea->setTitle(QString::fromLocal8Bit("ɨ������"));
-        ui->LabelPaValtage_2->setText(QString::fromLocal8Bit("ɨ����"));
-        ui->LabelPaValtage_3->setText(QString::fromLocal8Bit("������"));
-        ui->LabelScanStart->setText(QString::fromLocal8Bit("����:"));
-        ui->LabelScanEnd->setText(QString::fromLocal8Bit("�յ�:"));
-        ui->LabelScanResolution->setText(QString::fromLocal8Bit("�ֱ���:"));
-
-        ui->BoxEncoderMode->setTitle(QString::fromLocal8Bit("����������"));
-        ui->LabelEncoderType_2->setText(QString::fromLocal8Bit("������:"));
-        ui->LabelResolution->setText(QString::fromLocal8Bit("����:"));
-        ui->LabelEncoderPolarity->setText(QString::fromLocal8Bit("����:"));
-        ui->LabelEncoderDirection->setText(QString::fromLocal8Bit("����:"));
-        ui->LabelEncoderOrg->setText(QString::fromLocal8Bit("����������:"));
-
-        ui->LabelPaValtage->setText(QString::fromLocal8Bit("PA ������ѹ:"));
-        ui->LabelUtVolatage->setText(QString::fromLocal8Bit("UT ������ѹ:"));
-
-        ui->LabelScanPos->setText(QString::fromLocal8Bit("ɨ���ᵱǰλ��:"));
-        ui->LabelIndexPos->setText(QString::fromLocal8Bit("�����ᵱǰλ��:"));
-
-		break;
-
-	case setup_LANG_JAPEN:
-		break;
-	case setup_LANG_KOREA:
-		break;
-	}
-		int iLang = eLang;
-
-	ui->ComScanType->clear();
-	for(int i = 0; i < 3; i++) {
-		ui->ComScanType->addItem(g_strScanType[i][iLang]);
-	}
-
-	ui->ComEncoderType->clear();
-	for(int i = 0; i < 3; i++) {
-		ui->ComEncoderType->addItem(g_strEncoderType[i][iLang]);
-	}
-
-	ui->ComEncoderTypeSetting->clear();
-	for(int i = 0; i < 2; i++) {
-		ui->ComEncoderTypeSetting->addItem(g_strEncoderType[i+1][iLang]);
-	}
-
-	ui->ComEncoderPolarity->clear();
-	for(int i = 0; i < 2; i++) {
-		ui->ComEncoderPolarity->addItem(g_strPolarity[i][iLang]);
-	}
-
-	ui->ComEncoderDirection->clear();
-	for(int i = 0; i < 3; i++) {
-		ui->ComEncoderDirection->addItem(g_strDirection[i][iLang]);
-    }
 }
 
 void InstrumentSettingWidget::retranslateUi()

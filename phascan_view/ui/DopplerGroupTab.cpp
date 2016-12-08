@@ -2301,6 +2301,6 @@ void DopplerGroupTab::on_ComLanguage_currentIndexChanged(int index_)
 	default: return;
 	}
 	m_pConfig->AppEvn.eLanguage = _eLang;
-	g_pMainWnd->SetWndName(_eLang);
+    g_pMainWnd->SetWndName();
 
 }
