@@ -13,6 +13,7 @@
 #include <QtGui>
 #include <QLabel>
 #include <QDoubleSpinBox>
+#include <Instrument.h>
 
 class QToolBox ;
 class DopplerConfigure ;
@@ -66,7 +67,7 @@ protected:
     GROUP_CONFIG*      m_pGroup  ;
     QStandardItemModel *model    ;
 
-	QLabel*			m_pSizingCurveName[setup_DAC_POINT_QTY];
+    QLabel*			m_pSizingCurveName[setup_DAC_POINT_QTY];
 	QDoubleSpinBox* m_pSizingCurveValue[setup_DAC_POINT_QTY];
 	QLabel*			m_pSizingCurveUnit[setup_DAC_POINT_QTY];
 

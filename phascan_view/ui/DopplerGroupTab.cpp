@@ -35,56 +35,18 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 	m_pConfig = DopplerConfigure::Instance()  ;
 	m_pGroup  = &m_pConfig->group[m_nGroupId]  ;
 	ui->toolBox->setMinimumHeight(400);
-	m_pSizingCurveName[0]  = ui->LabelSizingCure1;
-	m_pSizingCurveName[1]  = ui->LabelSizingCure2;
-	m_pSizingCurveName[2]  = ui->LabelSizingCure3;
-	m_pSizingCurveName[3]  = ui->LabelSizingCure4;
-	m_pSizingCurveName[4]  = ui->LabelSizingCure5;
-	m_pSizingCurveName[5]  = ui->LabelSizingCure6;
-	m_pSizingCurveName[6]  = ui->LabelSizingCure7;
-	m_pSizingCurveName[7]  = ui->LabelSizingCure8;
-	m_pSizingCurveName[8]  = ui->LabelSizingCure9;
-	m_pSizingCurveName[9]  = ui->LabelSizingCure10;
-	m_pSizingCurveName[10] = ui->LabelSizingCure11;
-	m_pSizingCurveName[11] = ui->LabelSizingCure12;
-	m_pSizingCurveName[12] = ui->LabelSizingCure13;
-	m_pSizingCurveName[13] = ui->LabelSizingCure14;
-	m_pSizingCurveName[14] = ui->LabelSizingCure15;
-	m_pSizingCurveName[15] = ui->LabelSizingCure16;
 
-	m_pSizingCurveValue[0]  = ui->ValueSizingCurve1;
-	m_pSizingCurveValue[1]  = ui->ValueSizingCurve2;
-	m_pSizingCurveValue[2]  = ui->ValueSizingCurve3;
-	m_pSizingCurveValue[3]  = ui->ValueSizingCurve4;
-	m_pSizingCurveValue[4]  = ui->ValueSizingCurve5;
-	m_pSizingCurveValue[5]  = ui->ValueSizingCurve6;
-	m_pSizingCurveValue[6]  = ui->ValueSizingCurve7;
-	m_pSizingCurveValue[7]  = ui->ValueSizingCurve8;
-	m_pSizingCurveValue[8]  = ui->ValueSizingCurve9;
-	m_pSizingCurveValue[9]  = ui->ValueSizingCurve10;
-	m_pSizingCurveValue[10] = ui->ValueSizingCurve11;
-	m_pSizingCurveValue[11] = ui->ValueSizingCurve12;
-	m_pSizingCurveValue[12] = ui->ValueSizingCurve13;
-	m_pSizingCurveValue[13] = ui->ValueSizingCurve14;
-	m_pSizingCurveValue[14] = ui->ValueSizingCurve15;
-	m_pSizingCurveValue[15] = ui->ValueSizingCurve16;
+    for(int i = 0; i < setup_DAC_POINT_QTY; i++){
+        m_pSizingCurveName[i] = findChild<QLabel*>("LabelSizingCure" + QString::number(i + 1));
+    }
 
-	m_pSizingCurveUnit[0]  = ui->LabelSizingCureUnit1;
-	m_pSizingCurveUnit[1]  = ui->LabelSizingCureUnit2;
-	m_pSizingCurveUnit[2]  = ui->LabelSizingCureUnit3;
-	m_pSizingCurveUnit[3]  = ui->LabelSizingCureUnit4;
-	m_pSizingCurveUnit[4]  = ui->LabelSizingCureUnit5;
-	m_pSizingCurveUnit[5]  = ui->LabelSizingCureUnit6;
-	m_pSizingCurveUnit[6]  = ui->LabelSizingCureUnit7;
-	m_pSizingCurveUnit[7]  = ui->LabelSizingCureUnit8;
-	m_pSizingCurveUnit[8]  = ui->LabelSizingCureUnit9;
-	m_pSizingCurveUnit[9]  = ui->LabelSizingCureUnit10;
-	m_pSizingCurveUnit[10] = ui->LabelSizingCureUnit11;
-	m_pSizingCurveUnit[11] = ui->LabelSizingCureUnit12;
-	m_pSizingCurveUnit[12] = ui->LabelSizingCureUnit13;
-	m_pSizingCurveUnit[13] = ui->LabelSizingCureUnit14;
-	m_pSizingCurveUnit[14] = ui->LabelSizingCureUnit15;
-	m_pSizingCurveUnit[15] = ui->LabelSizingCureUnit16;
+    for(int i = 0; i < setup_DAC_POINT_QTY; i++){
+        m_pSizingCurveValue[i] = findChild<QDoubleSpinBox*>("ValueSizingCurve" + QString::number(i + 1));
+    }
+
+    for(int i = 0; i < setup_DAC_POINT_QTY; i++){
+        m_pSizingCurveUnit[i] = findChild<QLabel*>("LabelSizingCureUnit" + QString::number(i + 1));
+    }
 
 	int _iLang = m_pConfig->AppEvn.eLanguage;
 	ui->ComLanguage->clear();
