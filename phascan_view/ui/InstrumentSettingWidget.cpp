@@ -57,11 +57,9 @@ void InstrumentSettingWidget::InitCommonConfig()
 
 	ui->ComVoltagePa->setCurrentIndex(config.instrument.eVoltagePA);
 	ui->ComVoltageUt->setCurrentIndex(config.instrument.eVoltageUT);
-	//ui->ComTRPA->setCurrentIndex(config.instrument.eTxRxModePA);
-	//ui->ComTRUT->setCurrentIndex(config.instrument.eTxRxModeUT);
 
-	UpdateScanRange()   ;
-	UpdateEncoderInfo() ;
+    UpdateScanRange();
+    UpdateEncoderInfo();
 
 	SCANNER& _scanner = m_pConfig->common.scanner ;
 	if(_scanner.eEncoderType == setup_ENCODER_TYPE_TIMER) {
@@ -78,26 +76,17 @@ void InstrumentSettingWidget::InitCommonConfig()
 	ui->SliderCurrentScanPos->setSingleStep(1);
 	ui->SliderCurrentScanPos->setMaximum( (_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5);
 
-	UpdateScanPos()  ;
-	SetItemInvalide() ;
+    UpdateScanPos();
+    SetItemInvalide();
 }
 
 void InstrumentSettingWidget::SetItemInvalide()
 {
-	ui->ComEncoderType->setEnabled(false);
-	ui->ComScanType->setEnabled(false);
-	ui->ValueScanEnd->setEnabled(false);
-	ui->ValueScanStart->setEnabled(false);
-	ui->ValueScanResolution->setEnabled(false);
-	ui->ValueIndexResolution->setEnabled(false);
-	ui->ValueIndexStart->setEnabled(false);
-	ui->ValueIndexStop->setEnabled(false);
-	ui->BoxEncoderMode->setEnabled(false);
-	ui->SpinBoxCurrentIndexPos->setEnabled(false);
-	ui->SliderCurrentIndexPos->setEnabled(false);
-	ui->ValuePrf->setEnabled(false);
-	ui->ComVoltagePa->setEnabled(false);
-	ui->ComVoltageUt->setEnabled(false);
+    ui->groupBox->setDisabled(true);
+    ui->BoxScanArea->setDisabled(true);
+    ui->BoxEncoderMode->setDisabled(true);
+    ui->groupBoxVoltage->setDisabled(true);
+    ui->SpinBoxCurrentIndexPos->setDisabled(true);
 }
 
 void InstrumentSettingWidget::UpdateScanPos()

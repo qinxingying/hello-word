@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pThreadDraw  = DataRefreshThread::Instance()  ;
     m_bParamBackMode = false;
 
-    ui->TabWidgetRight->SetHideAble(false) ;
+    ui->TabWidgetRight->SetHideAble(false);
 
     ui->actionNew_Config->setDisabled(true);
     ui->actionSave->setDisabled(true);
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
     translator = new QTranslator(this);
     qApp->installTranslator(translator);
     slot_actionChinese_triggered(); // default Chinese
-    UI_LanguageSwitch = true;
+    m_chineseFlag = true;
 
     connect(ui->actionEnglish, SIGNAL(triggered()), this, SLOT(slot_actionEnglish_triggered()));
     connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(slot_actionChinese_triggered()));
@@ -651,14 +651,14 @@ void MainWindow::NewConfigure()
 
 void MainWindow::OpenFile()
 {
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        QString _strFileName = QFileDialog::getOpenFileName(
-                                this,
-                                "Open File Dialog",
-                                _pConfig->AppEvn.strDataFilePath,
-                                "Doppler Files(*.cfg *.data)");
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    QString _strFileName = QFileDialog::getOpenFileName(this,
+                            "Open File Dialog",
+                         //   "",
+                            _pConfig->AppEvn.strDataFilePath,
+                            "Doppler Files(*.cfg *.data)");
 
-        OpenFilePro(_strFileName);
+    OpenFilePro(_strFileName);
 }
 
 void MainWindow::OpenFilePro(QString strFileName_)
@@ -1116,7 +1116,7 @@ void MainWindow::on_actionNew_Config_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    ui->actionOpen->setDisabled(true);
+    ui->actionOpen->setCheckable(true);
     OpenFile();
 }
 
@@ -1217,13 +1217,13 @@ void MainWindow::on_actionSave_Defect_triggered()
 
 void MainWindow::on_actionLanguage_triggered()
 {
-    if(!UI_LanguageSwitch)
+    if(!m_chineseFlag)
     {
       slot_actionChinese_triggered();
     }else{
       slot_actionEnglish_triggered();
     }
-    UI_LanguageSwitch = !UI_LanguageSwitch;
+    m_chineseFlag = !m_chineseFlag;
 }
 
 void MainWindow::on_actionScreenShot_triggered()
@@ -1238,9 +1238,9 @@ void MainWindow::slot_actionEnglish_triggered()
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-20.png"));
     translator->load(":/file/translator/phascan_view_english.qm");
 
-    ui->retranslateUi(this);
-    ui->Group1->retranslateUi();
     ui->ScanHardware->retranslateUi();
+    ui->Group1->retranslateUi();
+    ui->retranslateUi(this);
 }
 
 void MainWindow::slot_actionChinese_triggered()
@@ -1250,9 +1250,9 @@ void MainWindow::slot_actionChinese_triggered()
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-22.png"));
     translator->load(":/file/translator/phascan_view_chinese.qm");
 
-    ui->retranslateUi(this);
-    ui->Group1->retranslateUi();
     ui->ScanHardware->retranslateUi();
+    ui->Group1->retranslateUi();
+    ui->retranslateUi(this);
 }
 
 /****************************************************************************

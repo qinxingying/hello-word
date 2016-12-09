@@ -108,6 +108,11 @@ DopplerGroupTab::~DopplerGroupTab ()
 	delete ui;
 }
 
+void DopplerGroupTab::retranslateUi()
+{
+    ui->retranslateUi(this);
+}
+
 void DopplerGroupTab::SetGroupId(int nGroupId_)
 {
 	m_nGroupId = nGroupId_ ;
@@ -428,61 +433,39 @@ void DopplerGroupTab::SetWndName()
 *****************************************************************************/
 void DopplerGroupTab::SetWidgetInvalide()
 {
-	ui->ValueGain->setEnabled(false);
-	ui->ValueStart->setEnabled(false);
-	ui->ValueRange->setEnabled(false);
-	ui->ComCurrentAngle->setEnabled(false);
-	ui->ComVelocitySelection->setEnabled(false);
-	ui->ValueVelocity->setEnabled(false);
-	ui->ValueWedgeDelay->setEnabled(false);
-	ui->ComTravelMode->setEnabled(false);
+    ui->ValueGain->setDisabled(true);
+    ui->ValueStart->setDisabled(true);
+    ui->ValueRange->setDisabled(true);
+    ui->ValueWedgeDelay->setDisabled(true);
+    ui->ValueVelocity->setDisabled(true);
+    ui->ComCurrentAngle->setDisabled(true);
+    ui->ComVelocitySelection->setDisabled(true);
+    ui->ComTravelMode->setDisabled(true);
+    ui->BoxPulserReceiver->setDisabled(true);
+    ui->groupBox_2->setDisabled(true);
 
-	ui->BoxPulserReceiver->setEnabled(false);
-	ui->ValuePointQty->setEnabled(false);
-	ui->ComAverage->setEnabled(false);
+    ui->ProbWedge->setDisabled(true);
+    ui->FocalLaw->setDisabled(true);
 
-	ui->CheckPointQtyAuto->setEnabled(false);
-	ui->ValueSumGain->setEnabled(false);
-	ui->CheckSumGainAuto->setEnabled(false);
-	ui->BoxProbeTrigger->setEnabled(false);
-	ui->BoxWedgeTrigger->setEnabled(false);
-	ui->BoxProbeTrigger_2->setEnabled(false);
-	ui->BoxWedgeTrigger_2->setEnabled(false);
+    ui->ComGateSync->setDisabled(true);
+    ui->ComGateMeasure->setDisabled(true);
+    ui->groupBox_curves->setDisabled(true);
 
-	ui->ComLawType->setEnabled(false);
-	ui->BtnProcessLaw->setEnabled(false);
-	ui->BoxAngle->setEnabled(false);
-	ui->BoxFocalPoint->setEnabled(false);
-	ui->BoxFocalPoint->setEnabled(false);
-	ui->BoxAperture->setEnabled(false);
-//	ui->ValueGateHeight->setEnabled(false);
-//	ui->ValueGateStart->setEnabled(false);
-//	ui->ValueGateWidth->setEnabled(false);
-	ui->ComGateMeasure->setEnabled(false);
-	ui->ComGateSync->setEnabled(false);
-	ui->ComGroupMode->setEnabled(false);
+    ui->ComGeometry->setDisabled(true);
+    ui->ComMaterial->setDisabled(true);
+    ui->ValuePartSize2->setDisabled(true);
+    ui->ValuePartSize3->setDisabled(true);
+    ui->CheckUnifiedPartSetting->setDisabled(true);
 
-	ui->ComGeometry->setEnabled(false);
-	ui->ComMaterial->setEnabled(false);
-	ui->ValuePartSize2->setEnabled(false);
-	ui->ValuePartSize3->setEnabled(false);
-	ui->CheckUnifiedPartSetting->setEnabled(false);
-	ui->ValueDefectLStart->setEnabled(false);
-	ui->ValueDefectLength->setEnabled(false);
+    ui->ValueDefectLStart->setDisabled(true);
+    ui->ValueDefectLength->setDisabled(true);
+    ui->ValueDefectHStart->setDisabled(true);
+    ui->ValueDefectHeight->setDisabled(true);
+    ui->ValueDefectWStart->setDisabled(true);
+    ui->ValueDefectWidth->setDisabled(true);
 
-	ui->ValueDefectHStart->setEnabled(false);
-	ui->ValueDefectHeight->setEnabled(false);
-
-	ui->ValueDefectWStart->setEnabled(false);
-	ui->ValueDefectWidth->setEnabled(false);
-	//---------------------------------------------------------
-	//ui->ComSkewAngle->setEnabled(false);
-	ui->ComColorLineColor->setEnabled(false);
-	ui->ComColorLineSelection->setEnabled(false);
-
-	ui->BoxProbeTrigger_2->setVisible(false);
-	ui->BoxWedgeTrigger_2->setVisible(false);
-
+    ui->ComColorLineColor->setDisabled(true);
+    ui->ComColorLineSelection->setDisabled(true);
 }
 
 #include <QStandardItemModel>
@@ -706,11 +689,6 @@ void DopplerGroupTab::UpdateGroupConfig ()
 	ui->ValueVelocity->setValue(m_pGroup->fVelocity);
 	ui->ComTravelMode->setCurrentIndex(m_pGroup->eTravelMode);
 	ui->ComTxRxMode->setCurrentIndex(m_pGroup->eTxRxMode);
-	//QAction* action = ui->ComTxRxMode->actions().at(3) ;
-	//if(m_pGroup->eGroupMode == setup_GROUP_MODE_PA )
-	//	action->setEnabled(false);
-	//else
-	//	action->setEnabled( true);
 
 	UpdateVelocitySelection() ;
 	ui->ValuePulser->setValue(m_pGroup->nTrigeStart);
@@ -726,13 +704,12 @@ void DopplerGroupTab::UpdateGroupConfig ()
 	ui->CheckSumGainAuto->setCheckState(m_pGroup->bSumGainAuto ?Qt::Checked :Qt::Unchecked );
 	ui->ComAverage->setCurrentIndex(m_pGroup->eAveraging);
 
-	//************************************************
 	//********** Probe and Wedge **********//
 	UpdateProbeWedge() ;
-	//***********************************************
+
 	//**********	Focallaw	***************//
 	UpdateLawConfig();
-	//***********************************************
+
 	//**********   Gate and Sizeing curves
 	int _nGate = ui->ComGateSelect->currentIndex() ;
 	GATE_CONFIG& gate = m_pGroup->gate[_nGate] ;
@@ -743,8 +720,8 @@ void DopplerGroupTab::UpdateGroupConfig ()
 	ui->ComGateSync->setCurrentIndex(gate.eSynChro);
 	ui->ComGateMeasure->setCurrentIndex(gate.eMeasure);
 	UpdateSizeingCurves();
-	//***********************************************
-	//  ********** geometry
+
+    //  ********** geometry  ***************//
 	InitComBoxMaterialSelection() ;
 	ui->ComGeometry->setCurrentIndex(m_pGroup->part.eGeometry);
 	UpdateGeometryState();
@@ -765,8 +742,7 @@ void DopplerGroupTab::UpdateGroupConfig ()
 	}
 
 	UpdateTofdParam();
-	//--------------------------------------------------
-	//************************************************
+
 	//*********** measure
 	ui->CheckMeasureShow->setCheckState(m_pGroup->bShowMeasure ? Qt::Checked : Qt::Unchecked );
 	//ui->CheckBackShow->setCheckState(g_pMainWnd->ParamBackMode() ? Qt::Checked : Qt::Unchecked );
@@ -776,7 +752,7 @@ void DopplerGroupTab::UpdateGroupConfig ()
 	ui->ComField3->setCurrentIndex(m_pGroup->aeMeasureType[2]);
 	ui->ComField4->setCurrentIndex(m_pGroup->aeMeasureType[3]);
 	ui->ComField5->setCurrentIndex(m_pGroup->aeMeasureType[4]);
-	//************************************************
+
 	//*********** measure
 	ui->CheckCursorShow->setCheckState(m_pGroup->bShowCursor ? Qt::Checked : Qt::Unchecked );
 	ui->CheckCursorSync->setCheckState(m_pConfig->AppEvn.bSAxisCursorSync ? Qt::Checked : Qt::Unchecked );
@@ -821,9 +797,6 @@ void DopplerGroupTab::UpdateTofdParam()
 		ui->SpinBoxZeroOff->setValue(_tofd->fZeroOff);
 		ui->SpinBoxDepthStart->setValue(_tofd->fLayerStart);
 		ui->SpinBoxDepthEnd->setValue(_tofd->fLayerEnd);
-
-		//ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
-
 	}
 }
 
@@ -844,34 +817,16 @@ void DopplerGroupTab::UpdateSizeingCurves()
 		m_pSizingCurveValue[i]->hide();
 		m_pSizingCurveUnit[i]->hide();
 	}
-	//***************************
 
 	CURVES& _curve = m_pGroup->curve;
-	switch(m_pConfig->AppEvn.eLanguage)
-	{
-	case setup_LANG_ENGLISH:
-		if(_curve.eType == setup_CURVE_TYPE_LINEAR_DAC) {
-			m_pSizingCurveName[0]->setText(QString(tr("Mat. Atten:")));
-			m_pSizingCurveName[1]->setText(QString(tr("Delay:")));
-		} else {
-			m_pSizingCurveName[0]->setText(QString(tr("RefAmplitude:")));
-			m_pSizingCurveName[1]->setText(QString(tr("RefAmplitude:")));
-		}
-		break;
-	case setup_LANG_CHINESS:
-		if(_curve.eType == setup_CURVE_TYPE_LINEAR_DAC) {
-            m_pSizingCurveName[0]->setText(QString::fromLocal8Bit("衰减系数:"));
-            m_pSizingCurveName[1]->setText(QString::fromLocal8Bit("延迟时间:"));
-		} else {
-            m_pSizingCurveName[0]->setText(QString::fromLocal8Bit("参考幅度:"));
-            m_pSizingCurveName[1]->setText(QString::fromLocal8Bit("参考幅度:"));
-		}
-		break;
-	default:
-		break;
-	}
 
-	//***************************
+    if(_curve.eType == setup_CURVE_TYPE_LINEAR_DAC) {
+        m_pSizingCurveName[0]->setText(QString(tr("Mat. Atten:")));
+        m_pSizingCurveName[1]->setText(QString(tr("Delay:")));
+    } else {
+        m_pSizingCurveName[0]->setText(QString(tr("RefAmplitude:")));
+        m_pSizingCurveName[1]->setText(QString(tr("RefAmplitude:")));
+    }
 
 	int _nLawId  = (int)m_pGroup->afCursor[setup_CURSOR_LAW]  ;
 	switch(_curve.eType)
@@ -927,11 +882,6 @@ void DopplerGroupTab::UpdateSizeingCurves()
     ui->ComCurvePointId->setCurrentIndex(_curve.nPointPos);
 }
 
-void DopplerGroupTab::retranslateUi()
-{
-    ui->retranslateUi(this);
-}
-
 /****************************************************************************
   Description: 参数极限更新
 *****************************************************************************/
@@ -939,7 +889,7 @@ void DopplerGroupTab::retranslateUi()
 void DopplerGroupTab::UpdateParameterLimit()
 {
 	Limitation _limit ;
-	//GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
+
 	// Gain
 	ui->ValueGain->setMaximum(_limit.GetGroupGainMax(m_nGroupId));
 	ui->ValueGain->setMinimum(_limit.GetGroupGainMin(m_nGroupId));
@@ -955,92 +905,12 @@ void DopplerGroupTab::UpdateParameterLimit()
 *****************************************************************************/
 void DopplerGroupTab::UpdateFocallawState()
 {
-	ui->ComAngleType->setCurrentIndex(0);
-	ui->ComAngleType->setEnabled(false);
-
-	ui->ValuePriSteerStart->setEnabled(false);
-	ui->ValuePriSteerStep->setEnabled(false);
-	ui->ValuePriSteerStop->setEnabled(false);
-
-	ui->ValueSecSteerStart->setEnabled(false);
-	ui->ValueSecSteerStep->setEnabled(false);
-	ui->ValueSecSteerStop->setEnabled(false);
-
-	ui->ValueSkewStart->setEnabled(false);
-	ui->ValueSkewStep->setEnabled(false);
-	ui->ValueSkewStop->setEnabled(false);
-
-	ui->ValueElementQtySec->setEnabled(false);
-	ui->ValueElementStartSec->setEnabled(false);
-	ui->ValueElementStopSec->setEnabled(false);
-	ui->ValueElementStepSec->setEnabled(false);
+    ui->ComAngleType->setCurrentIndex(0);
 
 	if(ui->ComLawType->currentIndex() == 0) // angle
 	{ // angle
-		ui->ValueRefractStart->setEnabled(true);
-		ui->ValueRefractStop->setEnabled(true);
-		ui->ValueRefractStep->setEnabled(true);
-
-		ui->ValueElementQtyPri->setEnabled(true);
-		ui->ValueElementStartPri->setEnabled(true);
-		ui->ValueElementStopPri->setEnabled(false);
-		ui->ValueElementStepPri->setEnabled(false);
 		ui->ValueElementStopPri->setValue(ui->ValueElementQtyPri->value() + ui->ValueElementStartPri->value() - 1 );
-	}
-	else // linear
-	{
-		ui->ValueRefractStart->setEnabled(true);
-		ui->ValueRefractStop->setEnabled(false);
-		ui->ValueRefractStep->setEnabled(false);
-
-		ui->ValueElementQtyPri->setEnabled(true);
-		ui->ValueElementStartPri->setEnabled(true);
-		ui->ValueElementStopPri->setEnabled(true);
-		ui->ValueElementStepPri->setEnabled(true);
-		//ui->ValueElementStopPri->setValue(ui->ValueElementQtyPri->value() + ui->ValueElementStartPri->value() - 1 );
-	}
-
-	if(ui->ComFocalType->currentIndex() == 0)
-	{ // depth
-		ui->ValueFocusDepthStart->setEnabled(false);
-		ui->ValueFocusDepthStop->setEnabled(false);
-		ui->ValueFocusOffsetStart->setEnabled(false);
-		ui->ValueFocusOffsetStop->setEnabled(false);
-		ui->ValueFocusPositionStart->setEnabled(true);
-		ui->ValueFocusPositionStop->setEnabled(false);
-		ui->ValueFocusPositionStep->setEnabled(false);
-
-	}
-	else if(ui->ComFocalType->currentIndex() == 1)
-	{// half path
-		ui->ValueFocusDepthStart->setEnabled(false);
-		ui->ValueFocusDepthStop->setEnabled(false);
-		ui->ValueFocusOffsetStart->setEnabled(false);
-		ui->ValueFocusOffsetStop->setEnabled(false);
-		ui->ValueFocusPositionStart->setEnabled(true);
-		ui->ValueFocusPositionStop->setEnabled(false);
-		ui->ValueFocusPositionStep->setEnabled(false);
-	}
-	else if (ui->ComFocalType->currentIndex() == 2)
-	{// projection
-		ui->ValueFocusDepthStart->setEnabled(false);
-		ui->ValueFocusDepthStop->setEnabled(false);
-		ui->ValueFocusOffsetStart->setEnabled(true);
-		ui->ValueFocusOffsetStop->setEnabled(false);
-		ui->ValueFocusPositionStart->setEnabled(false);
-		ui->ValueFocusPositionStop->setEnabled(false);
-		ui->ValueFocusPositionStep->setEnabled(false);
-	}
-	else
-	{// focal plane
-		ui->ValueFocusDepthStart->setEnabled(true);
-		ui->ValueFocusDepthStop->setEnabled(true);
-		ui->ValueFocusOffsetStart->setEnabled(true);
-		ui->ValueFocusOffsetStop->setEnabled(true);
-		ui->ValueFocusPositionStart->setEnabled(false);
-		ui->ValueFocusPositionStop->setEnabled(false);
-		ui->ValueFocusPositionStep->setEnabled(false);
-	}
+    }
 }
 
 /****************************************************************************

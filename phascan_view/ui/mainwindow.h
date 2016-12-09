@@ -104,7 +104,7 @@ private:
     DataRefreshThread* m_pThreadDraw ;
 
     QTranslator *translator;
-    bool UI_LanguageSwitch;
+    bool m_chineseFlag;
 
     QWidget* m_pCurrentDataView;
     QLabel* m_pStatusCell[3]  ;
