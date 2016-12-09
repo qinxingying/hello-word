@@ -142,9 +142,9 @@ void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 
 	QString _str[4] ;
 
-    _str[0].sprintf("Element Qty  : Pri[%3d]   Sec[%3d] ", _probe.nElementPri ,	_probe.nElementSec ) ;
-    _str[1].sprintf("Element Size : Pri[%2.1f] Sec[%2.1f]  mm", _probe.fSizePri ,  _probe.fSizeSec)	;
-    _str[2].sprintf("Element Pitch: Pri[%2.1f] Sec[%2.1f]  mm" , _probe.fPitchPri, _probe.fPitchSec) ;
+    _str[0].sprintf("Element Qty  :     Pri[%3d]     Sec[%3d] ", _probe.nElementPri ,	_probe.nElementSec ) ;
+    _str[1].sprintf("Element Size :     Pri[%2.1f]   Sec[%2.1f]  mm", _probe.fSizePri ,  _probe.fSizeSec)	;
+    _str[2].sprintf("Element Pitch:     Pri[%2.1f]   Sec[%2.1f]  mm" , _probe.fPitchPri, _probe.fPitchSec) ;
     _str[3].sprintf("Element Frequency: %.1f MHz" , _probe.fFrequency);
 
 	if(bIsRx_)
@@ -174,18 +174,18 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 
     QString _str[4] ;
 
-    _str[0].sprintf("Wedge Angle: %2.1f Roof Angle: %2.1f" , _wedge.fWedgeAngle , _wedge.fRoofAngle ) ;
-    _str[1].sprintf("Velocity Longtitude: %.0f Transmmit: %.0f" , _wedge.fVelocityLon , _wedge.fVelocityTra ) ;
-    _str[2].sprintf("Wedge Type: %s Wedge Direction: %s",
+    _str[0].sprintf("Wedge Angle:         %2.1f   Roof Angle:      %2.1f" , _wedge.fWedgeAngle , _wedge.fRoofAngle ) ;
+    _str[1].sprintf("Velocity Longtitude: %.0f    Transmmit:       %.0f" , _wedge.fVelocityLon , _wedge.fVelocityTra ) ;
+    _str[2].sprintf("Wedge Type:          %s      Wedge Direction: %s",
                     _wedge.eType ? "UT" : "PA" , _wedge.eDirection ? "NORMAL" : "INVERSE");
     if(_wedge.eType)
     {
-        _str[3].sprintf("Reference Point: %.1f mm Wedge Delay: %.2f us" ,
+        _str[3].sprintf("Reference Point:     %.1f mm Wedge Delay:     %.2f us",
                         _wedge.fRefPoint , _wedge.nWedgeDelay /1000.0) ;
     }
     else
     {
-        _str[3].sprintf("First Height: %.1f  Offset Fir: %.1f  Sec: %.1f" ,
+        _str[3].sprintf("First Height:        %.1f    Offset Fir:      %.1f    Sec: %.1f" ,
                        _wedge.fHeigtFirst , _wedge.fOffsetFir , _wedge.fOffsetSec) ;
     }
 
@@ -858,7 +858,6 @@ void DopplerGroupTab::UpdateParameterLimit()
 	// Start & Range
 	ui->ValueStart->setMaximum(_limit.GetGroupSampleRangeMax(m_nGroupId));
 	ui->ValueRange->setMaximum(_limit.GetGroupSampleRangeMax(m_nGroupId) - ui->ValueStart->value());
-	//
 }
 
 
@@ -1074,28 +1073,11 @@ void DopplerGroupTab::on_CheckSumGainAuto_toggled(bool checked)
 	ui->ValueSumGain->setEnabled(!checked);
 }
 
-void DopplerGroupTab::on_BtnProbeSelection_clicked()
-{
-}
-
-void DopplerGroupTab::on_BtnWedgeSelection_clicked()
-{
-}
-
-void DopplerGroupTab::on_BtnProbeSelection_2_clicked()
-{
-}
-
-void DopplerGroupTab::on_BtnWedgeSelection_2_clicked()
-{
-}
-
 void DopplerGroupTab::on_ComLawType_currentIndexChanged(int)
 {
 	if(!ui->ComLawType->hasFocus())  return ;
 	UpdateFocallawState() ;
 }
-
 
 void DopplerGroupTab::on_BtnProcessLaw_clicked()
 {
@@ -1143,37 +1125,6 @@ void DopplerGroupTab::on_ComAngleType_currentIndexChanged(int)
 	UpdateFocallawState();
 }
 
-void DopplerGroupTab::on_ValuePriSteerStart_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValuePriSteerStop_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValuePriSteerStep_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValueSecSteerStart_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValueSecSteerStop_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValueSecSteerStep_editingFinished()
-{
-
-}
-
-
 void DopplerGroupTab::AngleAlign()
 {
 	int _nStart = ui->ValueRefractStart->value() * 10 ;
@@ -1183,6 +1134,7 @@ void DopplerGroupTab::AngleAlign()
 	_nStop = _nStart + _nStep * _nSteps ;
 	ui->ValueRefractStop->setValue(_nStop / 10.0);
 }
+
 void DopplerGroupTab::FocusPositionAlign()
 {
 	int _nStart = ui->ValueFocusPositionStart->value() * 10 ;
@@ -1204,7 +1156,6 @@ void DopplerGroupTab::ElementAlign()
 	ui->ValueElementStopPri->setValue(_nStop );
 }
 
-//&&&&&&&&&&&&&
 void DopplerGroupTab::on_ValueRefractStart_editingFinished()
 {
 	AngleAlign() ;
@@ -1218,21 +1169,6 @@ void DopplerGroupTab::on_ValueRefractStop_editingFinished()
 void DopplerGroupTab::on_ValueRefractStep_editingFinished()
 {
 	AngleAlign();
-}
-
-void DopplerGroupTab::on_ValueSkewStart_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValueSkewStop_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValueSkewStep_editingFinished()
-{
-
 }
 
 void DopplerGroupTab::on_ComFocalType_currentIndexChanged(int)
@@ -1256,34 +1192,9 @@ void DopplerGroupTab::on_ValueFocusPositionStep_editingFinished()
 	FocusPositionAlign() ;
 }
 
-void DopplerGroupTab::on_ValueFocusOffsetStart_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValueFocusOffsetStop_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValueFocusDepthStart_editingFinished()
-{
-
-}
-
-void DopplerGroupTab::on_ValueFocusDepthStop_editingFinished()
-{
-
-}
-
 void DopplerGroupTab::on_ValueElementQtyPri_editingFinished()
 {
 	ElementAlign() ;
-}
-
-void DopplerGroupTab::on_ValueElementQtySec_editingFinished()
-{
-
 }
 
 void DopplerGroupTab::on_ValueElementStartPri_editingFinished()
@@ -1291,19 +1202,9 @@ void DopplerGroupTab::on_ValueElementStartPri_editingFinished()
 	ElementAlign() ;
 }
 
-void DopplerGroupTab::on_ValueElementStartSec_editingFinished()
-{
-
-}
-
 void DopplerGroupTab::on_ValueElementStopPri_editingFinished()
 {
 	ElementAlign() ;
-}
-
-void DopplerGroupTab::on_ValueElementStopSec_editingFinished()
-{
-
 }
 
 void DopplerGroupTab::on_ValueElementStepPri_editingFinished()
@@ -1311,12 +1212,6 @@ void DopplerGroupTab::on_ValueElementStepPri_editingFinished()
 	ElementAlign() ;
 }
 
-void DopplerGroupTab::on_ValueElementStepSec_editingFinished()
-{
-
-}
-
-//*****************************************
 // gate
 void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 {
@@ -1333,9 +1228,7 @@ void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 		ui->ComGateMeasure->setCurrentIndex(0);
 		ui->ComGateMeasure->setEnabled(false);
 		ui->ComGateSync->setEnabled(false);
-	}
-	else
-	{
+    }else{
 		ui->ComGateMeasure->setEnabled(true);
 		ui->ComGateSync->setEnabled(true);
 		ui->ComGateSync->setCurrentIndex(_gate.eSynChro);
@@ -1367,75 +1260,36 @@ void DopplerGroupTab::GatePro()
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
 
-void DopplerGroupTab::on_ValueGateStart_valueChanged(double arg)
+void DopplerGroupTab::on_ValueGateStart_valueChanged(double)
 {
 	if(!ui->ValueGateStart->hasFocus())  return ;
 	GatePro();
 }
 
-void DopplerGroupTab::on_ValueGateWidth_valueChanged(double arg)
+void DopplerGroupTab::on_ValueGateWidth_valueChanged(double)
 {
 	if(!ui->ValueGateWidth->hasFocus())  return ;
 	GatePro();
 }
 
-void DopplerGroupTab::on_ValueGateHeight_valueChanged(double arg)
+void DopplerGroupTab::on_ValueGateHeight_valueChanged(double)
 {
 	if(!ui->ValueGateHeight->hasFocus())  return ;
 	GatePro();
 }
-void DopplerGroupTab::on_ComGateSync_currentIndexChanged(int /*index*/)
+void DopplerGroupTab::on_ComGateSync_currentIndexChanged(int )
 {
 	if(!ui->ComGateSync->hasFocus())  return ;
 	GatePro();
-}
-
-void DopplerGroupTab::on_ComGateMeasure_currentIndexChanged(int /*index*/)
-{
-	if(!ui->ComGateMeasure->hasFocus())  return ;
-	GatePro();
-	UpdateMeasureBox();
-}
-/*
-void DopplerGroupTab::on_ValueGateStart_editingFinished()
-{
-	GATE_CONFIG _gate ;
-	_gate.fStart = ui->ValueGateStart->value() ;
-	_gate.fWidth = ui->ValueGateWidth->value() ;
-	_gate.nThreshold = ui->ValueGateHeight->value();
-	_gate.eMeasure   = ui->ComGateMeasure->currentIndex() ;
-	_gate.eSynChro   = ui->ComGateSync->currentIndex() ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->SetupGateInfo(m_nGroupId , (setup_GATE_NAME)ui->ComGateSelect->currentIndex() , &_gate) ;
-
-	ProcessDisplay _display ;
-	_display.UpdateAllViewOverlay();
-}
-
-void DopplerGroupTab::on_ValueGateWidth_editingFinished()
-{
-	on_ValueGateStart_editingFinished() ;
-}
-
-void DopplerGroupTab::on_ValueGateHeight_editingFinished()
-{
-	on_ValueGateWidth_editingFinished();
-}
-
-void DopplerGroupTab::on_ComGateSync_currentIndexChanged(int)
-{
-	if(!ui->ComGateSync->hasFocus())  return ;
-	on_ValueGateWidth_editingFinished();
 }
 
 void DopplerGroupTab::on_ComGateMeasure_currentIndexChanged(int)
 {
 	if(!ui->ComGateMeasure->hasFocus())  return ;
-	on_ValueGateStart_editingFinished();
-
+	GatePro();
 	UpdateMeasureBox();
 }
-*/
+
 void DopplerGroupTab::on_CheckShowThickness_clicked(bool checked)
 {
 	m_pGroup->bShowThickness = checked  ;
@@ -1484,31 +1338,6 @@ void DopplerGroupTab::on_ValuePartSize3_valueChanged(double)
 	PartPro();
 }
 
-/*
-void DopplerGroupTab::on_ValuePartSize1_editingFinished()
-{
-	PART_CONFIG _part ;
-	_part.eGeometry = (setup_PART_GEOMETRY)ui->ComGeometry->currentIndex() ;
-	_part.afSize[0] = ui->ValuePartSize1->value() ;
-	_part.afSize[1] = ui->ValuePartSize2->value() ;
-	_part.afSize[2] = ui->ValuePartSize3->value() ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->SetupPartInfoGeometry (m_nGroupId , &_part) ;
-	ProcessDisplay _display ;
-	_display.UpdateAllView();
-}
-
-void DopplerGroupTab::on_ValuePartSize2_editingFinished()
-{
-	on_ValuePartSize1_editingFinished() ;
-}
-
-void DopplerGroupTab::on_ValuePartSize3_editingFinished()
-{
-	on_ValuePartSize1_editingFinished() ;
-}
-*/
-
 void DopplerGroupTab::on_ComMaterial_currentIndexChanged(int index)
 {
 	if(!ui->ComMaterial->hasFocus())  return ;
@@ -1518,11 +1347,6 @@ void DopplerGroupTab::on_ComMaterial_currentIndexChanged(int index)
 	UpdateVelocitySelection() ;
 }
 
-void DopplerGroupTab::on_CheckUnifiedPartSetting_clicked(bool)
-{
-}
-
-//void DopplerGroupTab::on_ValueScanOffset_valueChanged()
 void DopplerGroupTab::on_ValueScanOffset_editingFinished()
 {
 	if(!ui->ValueScanOffset->hasFocus())  return ;
@@ -1998,17 +1822,7 @@ void DopplerGroupTab::on_ValueCScanThicknessMax_valueChanged(double)
 	_display.UpdateAllViewOverlay();
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
-/*
-void DopplerGroupTab::on_ValueCScanThicknessMin_editingFinished()
-{
-	m_pGroup->fMinThickness = ui->ValueCScanThicknessMin->value() ;
-}
 
-void DopplerGroupTab::on_ValueCScanThicknessMax_editingFinished()
-{
-	m_pGroup->fMaxThickness = ui->ValueCScanThicknessMax->value() ;
-}
-*/
 void DopplerGroupTab::on_ComCScanSource1_currentIndexChanged(int index)
 {
 	if(!ui->ComCScanSource1->hasFocus()) return ;
@@ -2134,5 +1948,4 @@ void DopplerGroupTab::on_ComLanguage_currentIndexChanged(int index_)
 	}
 	m_pConfig->AppEvn.eLanguage = _eLang;
     g_pMainWnd->SetWndName();
-
 }
