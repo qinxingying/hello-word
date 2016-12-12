@@ -103,7 +103,6 @@ const char* g_strMeasureFildUnit[][4] =
 	{"T-D(m)" , "mm"} ,
 	{"T-S(m-r)" , "mm"} ,
 	{"T-D(m-r)" , "mm"}
-
 };
 
 const char* g_strTxRxMode[] = {
@@ -159,10 +158,6 @@ const char* g_strWeldPartSel[] = {
 };
 
 //report
-const char* g_strReportName[] = {
-    "Phascan Report"
-};
-
 const char* g_strRectifier[] = {//UpdateGroupConfig()
     "RF",
     "HW+",
@@ -188,10 +183,6 @@ const char* g_strReportHead[] = {
     "Part No.",
     "Position",
     "Date"
-};
-
-const char* g_strReportPath[] = {
-    "Path"
 };
 
 const char* g_strLawConfig[] = {
@@ -277,10 +268,10 @@ const char* g_strGroupPart[] = {
 } ;
 
 const char* g_strSignature[] = {
-    "	 Technician Name :",
+    "Technician Name:",
     "Technician Signature:",
-    "		  Contractor :",
-    "			    Date :"
+    "Contractor:",
+    "Date:"
 } ;
 
 const char* g_strOnOff[] = {

@@ -85,10 +85,9 @@ extern const char* g_strGateSync[];
 
 extern const char* g_strWeldPartSel[];
 
-extern const char* g_strReportName[];
 extern const char* g_strTofdReportHead[];
 extern const char* g_strReportHead[];
-extern const char* g_strReportPath[];
+
 extern const char* g_strLawConfig[];
 
 extern const char* g_strProbe[];

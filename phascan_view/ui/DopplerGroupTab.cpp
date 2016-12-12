@@ -476,7 +476,7 @@ void DopplerGroupTab::CreateSettingView()
 	for( i = 0 ; i < _nQty; i++)
 	{
 		_pItems[i] = new QStandardItem(tr(g_strDisplayMode[i]));
-		QString str = QString(":/icon/display/resource/Display/0-");
+        QString str = QString(":/file/resource/display/0-");
 		QString tmp; tmp.sprintf("%02d.png", i+1) ;
 		str += tmp ;
 		QByteArray array = str.toLatin1() ;

@@ -392,13 +392,16 @@ void DopplerHtmlReport::BuildEnder()
 
 void DopplerHtmlReport::CreateHeader()
 {
+    QString strReportName = QString(QObject::tr("Phascan Report"));
+    QString strReportPath = QString(QObject::tr("Path"));
+
 	fprintf(m_pFile,"<table %s>\n" ,tableWidth);
 	fprintf(m_pFile,"<tr>\n");
-	fprintf(m_pFile,"<td align=left><img src = \"%s/logo.png\"></td>\n" , TOCHAR(m_strFolder));
-    fprintf(m_pFile,"<td align=right><h1>%s</h1></td>\n" , g_strReportName[0]);
+    fprintf(m_pFile,"<td align=left><img src = \"%s/logo.png\"></td>\n" , TOCHAR(m_strFolder));
+    fprintf(m_pFile,"<td align=right><h1>%s</h1></td>\n" , TOCHAR(strReportName));
 	fprintf(m_pFile,"</tr>\n");
 	fprintf(m_pFile,"<tr>\n");
-    fprintf(m_pFile,"<td align=left style=\"word-break:break-all; word-wrap:break-word;\" colspan=2>%s</td>\n" , g_strReportName[0]);
+    fprintf(m_pFile,"<td align=left style=\"word-break:break-all; word-wrap:break-word;\" colspan=2>%s</td>\n", TOCHAR(strReportName));
 
 	fprintf(m_pFile,"</tr>\n");
 	fprintf(m_pFile,"</table>\n");
@@ -422,10 +425,7 @@ void DopplerHtmlReport::CreateHeader()
 	fprintf(m_pFile,"</tr>\n\n");
 
 	fprintf(m_pFile,"<tr>\n");
-	for(int i = 0 ;i < 1 ;++i)
-	{
-        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, g_strReportPath[i]);
-	}
+    fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(strReportPath));
 	fprintf(m_pFile,"<td colspan=\"6\" %s>%s</td>\n" ,tableTdStyle , TOCHAR(m_szDataFile));
 	fprintf(m_pFile,"</tr>\n\n");
 	fprintf(m_pFile,"</table></td></tr>\n</table>\n\n");//table
