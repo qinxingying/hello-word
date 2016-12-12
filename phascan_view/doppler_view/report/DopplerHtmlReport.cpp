@@ -6,7 +6,7 @@
 char tableWidth[256];
 
 const char* g_strReportDir	  = "data/Report/"  ;
-const char* g_strReportLogo   = "data/logo/logo.png" ;
+const char* g_strReportLogo   = ":file/resource/report_logo/logo.png"; // data/logo/logo.png
 
 
 //const char* tableWidth	    = "width=800 style=\"table-layout:fixed\"";
@@ -15,11 +15,6 @@ const char* tableTdStyle	= "class=\"general_cell\"";
 const char* sonTableStyle   = "width=100% style=\"table-layout:fixed\"";
 
 const char* tdSpace		 = "&nbsp;";
-
-
-////////////////////////////////////////////////////////////
-
-
 
 const char* string_groupMode[] = {"UT" , "PA", "UT1", "UT2"};
 const char* string_filter[] = {
@@ -40,20 +35,6 @@ const char* string_filter[] = {
 		"HR 10 MHz",
 		"None"
 };
-/*
-const char* string_synchro[] ={
-		"Pulse",
-		"I/",
-		"A/"
-};
-*/
-/*
-const char* string_geometry[]={
-		"Plate",
-		"OD" ,
-		"ID"
-};
-*/
 
 DopplerHtmlReport::DopplerHtmlReport()
 {
@@ -141,10 +122,9 @@ void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 	fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
 	fprintf(m_pFile,"<tr>\n");
 
-	int _iLang = _pConfig->AppEvn.eLanguage;
 	for(int i = 0 ;i < 10 ;++i)
 	{
-		fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle ,g_strTofdReportHead[i][_iLang]);
+        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle ,g_strTofdReportHead[i]);
 
 	}
 	fprintf(m_pFile,"</tr>\n\n");
@@ -161,7 +141,7 @@ void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 	fprintf(m_pFile,"<td %s>%.2fus</td>\n" ,tableTdStyle , _process->DistMmToUs(nGroupId_ , _pGroup->fSampleRange));
 	fprintf(m_pFile,"<td %s>%.1fdB</td>\n" ,tableTdStyle , _pGroup->fGain);
 	fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _scaner.fScanStep);
-	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , g_strScanMode[iScanMode][_iLang]);
+    fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , g_strScanMode[iScanMode]);
 	fprintf(m_pFile,"</tr>\n\n");
 
 	fprintf(m_pFile,"</table>\n</table>\n\n");
@@ -170,13 +150,12 @@ void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 void DopplerHtmlReport::CreateDefect(int nGroupId_)
 {
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	GROUP_CONFIG&   _group = _pConfig->group[nGroupId_];
-	int _iLang = _pConfig->AppEvn.eLanguage;
+    GROUP_CONFIG&   _group = _pConfig->group[nGroupId_];
 
 	fprintf(m_pFile , "<br />\n");
 
 	//g_strDefect
-	fprintf(m_pFile , "<th align=left>%s(Gr%d)</th>\n" , g_strDefect[0][_iLang], nGroupId_+1);
+    fprintf(m_pFile , "<th align=left>%s(Gr%d)</th>\n" , g_strDefect[0], nGroupId_+1);
 
 	fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
 	fprintf(m_pFile,"<tr>\n");
@@ -186,7 +165,7 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 
 	for(int i = 1 ;i < iMax ;++i)
 	{
-		fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, g_strDefect[i+1][_iLang]);
+        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, g_strDefect[i+1]);
 	}
 	fprintf(m_pFile,"</tr>\n\n");
 	fprintf(m_pFile,"<tr>\n");
@@ -228,22 +207,15 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
 {
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	GROUP_CONFIG&       _group = _pConfig->group[nGroupId_];
 	DEFECT_INFO*      _pDfInfo = _pConfig->GetDefectPointer(nGroupId_, index_);
-	int                 _iLang = _pConfig->AppEvn.eLanguage;
 
 	fprintf(m_pFile , "<br />\n");
 	fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
 	fprintf(m_pFile,"<tr>\n");
 
-	fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, g_strDefect[2][_iLang]);
-	if (_iLang == setup_LANG_ENGLISH) {
-		fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Group");
-		fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Law ID");
-	} else if (_iLang == setup_LANG_CHINESS) {
-		fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "组");
-		fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Law");//"聚焦法则编号");//"规则编号");
-	}
+    fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, g_strDefect[2]);
+    fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Group");
+    fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Law ID");
 
 	fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[nGroupId_][0]) ,TOCHAR(m_szFieldUnit[nGroupId_][0]));
 	fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[nGroupId_][1]) ,TOCHAR(m_szFieldUnit[nGroupId_][1]));
@@ -253,10 +225,6 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
 
 	fprintf(m_pFile,"</tr>\n\n");
 	fprintf(m_pFile,"<tr>\n");
-	//-------------------------------------------------
-	float _fStart = 0;
-	float  _fData = 0;
-	float _fDepth = 0;
 
 	//int i = index_+1;
 	if(strlen(_pDfInfo->srtInfo) > 0) {
@@ -424,16 +392,13 @@ void DopplerHtmlReport::BuildEnder()
 
 void DopplerHtmlReport::CreateHeader()
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	int _iLang = _pConfig->AppEvn.eLanguage;
-
 	fprintf(m_pFile,"<table %s>\n" ,tableWidth);
 	fprintf(m_pFile,"<tr>\n");
 	fprintf(m_pFile,"<td align=left><img src = \"%s/logo.png\"></td>\n" , TOCHAR(m_strFolder));
-	fprintf(m_pFile,"<td align=right><h1>%s</h1></td>\n" , g_strReportName[_iLang]);
+    fprintf(m_pFile,"<td align=right><h1>%s</h1></td>\n" , g_strReportName[0]);
 	fprintf(m_pFile,"</tr>\n");
 	fprintf(m_pFile,"<tr>\n");
-	fprintf(m_pFile,"<td align=left style=\"word-break:break-all; word-wrap:break-word;\" colspan=2>%s</td>\n" , g_strReportName[_iLang]);
+    fprintf(m_pFile,"<td align=left style=\"word-break:break-all; word-wrap:break-word;\" colspan=2>%s</td>\n" , g_strReportName[0]);
 
 	fprintf(m_pFile,"</tr>\n");
 	fprintf(m_pFile,"</table>\n");
@@ -443,7 +408,7 @@ void DopplerHtmlReport::CreateHeader()
 	fprintf(m_pFile,"<tr>\n");
 	for(int i = 0 ;i < 4 ;++i)
 	{
-		fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle ,g_strReportHead[i][_iLang]);
+        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle ,g_strReportHead[i]);
 	}
 	fprintf(m_pFile,"</tr>\n\n");
 
@@ -459,7 +424,7 @@ void DopplerHtmlReport::CreateHeader()
 	fprintf(m_pFile,"<tr>\n");
 	for(int i = 0 ;i < 1 ;++i)
 	{
-		fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, g_strReportPath[i][_iLang]);
+        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, g_strReportPath[i]);
 	}
 	fprintf(m_pFile,"<td colspan=\"6\" %s>%s</td>\n" ,tableTdStyle , TOCHAR(m_szDataFile));
 	fprintf(m_pFile,"</tr>\n\n");
@@ -471,7 +436,6 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 {
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
 	GROUP_CONFIG* _pGroup = &_pConfig->group[nGroupId_] ;
-	int _iLang = _pConfig->AppEvn.eLanguage;
 
 	m_probeModel.sprintf("%s" , _pGroup->probe[0].strName) ;
 	m_probeSerial.sprintf("%s" , _pGroup->probe[0].strSerial ) ;
@@ -489,13 +453,13 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 
 	m_scaleFactor.sprintf("1") ;
 
-	m_videoFilter = g_strOnOff[_pGroup->bVedioFilter][_iLang];
+    m_videoFilter = g_strOnOff[_pGroup->bVedioFilter];
 
-	m_rectification = g_strRectifier[_pGroup->eRectifier][_iLang];
+    m_rectification = g_strRectifier[_pGroup->eRectifier];
 	m_bandPassFilter.sprintf("%s" , string_filter[_pGroup->eFileter]) ;
 	m_gain.sprintf( "%.1f dB" ,  _pGroup->fGain );
 
-	m_mode = g_strTxRxMode[_pGroup->eTxRxMode][_iLang];
+    m_mode = g_strTxRxMode[_pGroup->eTxRxMode];
 
 	m_soundVelocity.sprintf("%.1f m/s" , _pGroup->fVelocity ) ;
 	m_pulseWidth.sprintf("%d ns" , _pGroup->nPulserWidth ) ;
@@ -514,12 +478,9 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 	m_gateAthreshold.sprintf("%d %%" , _pGroup->gate[setup_GATE_A ].nThreshold ) ;
 	m_gateBthreshold.sprintf("%d %%" , _pGroup->gate[setup_GATE_B ].nThreshold ) ;
 
-	//m_gateIsynchro.sprintf("%s" , string_synchro[_pGroup->gate[setup_GATE_I ].eSynChro]) ;
-	//m_gateAsynchro.sprintf("%s" , string_synchro[_pGroup->gate[setup_GATE_A ].eSynChro]) ;
-	//m_gateBsynchro.sprintf("%s" , string_synchro[_pGroup->gate[setup_GATE_B ].eSynChro]) ;
-	m_gateIsynchro = QString(QObject::tr(g_strGateSync[_pGroup->gate[setup_GATE_I ].eSynChro][_iLang]));
-	m_gateAsynchro = QString(QObject::tr(g_strGateSync[_pGroup->gate[setup_GATE_A ].eSynChro][_iLang]));
-	m_gateBsynchro = QString(QObject::tr(g_strGateSync[_pGroup->gate[setup_GATE_B ].eSynChro][_iLang]));
+    m_gateIsynchro = QString(QObject::tr(g_strGateSync[_pGroup->gate[setup_GATE_I ].eSynChro]));
+    m_gateAsynchro = QString(QObject::tr(g_strGateSync[_pGroup->gate[setup_GATE_A ].eSynChro]));
+    m_gateBsynchro = QString(QObject::tr(g_strGateSync[_pGroup->gate[setup_GATE_B ].eSynChro]));
 
 	m_probeAperture.sprintf ( "%d"	  , _pGroup->law.nElemQtyFir) ;
 	m_usedElementQty.sprintf( "%d"	  , _pGroup->law.nElemQtyFir) ;
@@ -544,9 +505,9 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 
 	}
 
-	m_lawConfiguration = g_strLawConfig[_pGroup->law.eLawType][_iLang];
+    m_lawConfiguration = g_strLawConfig[_pGroup->law.eLawType];
 	m_focalPointType = _pGroup->law.eFocalType ;
-	m_focalType = g_strFocalType[_pGroup->law.eFocalType][_iLang] ;
+    m_focalType = g_strFocalType[_pGroup->law.eFocalType];
 
 	switch(m_focalPointType)
 	{
@@ -571,8 +532,8 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 	default:
 		break;
 	}
-	m_material = _pGroup->part.material.strName[_iLang];
-	m_geometry = g_strGeometry[_pGroup->part.eGeometry][_iLang];
+    m_material = _pGroup->part.material.strName;
+    m_geometry = g_strGeometry[_pGroup->part.eGeometry];
 	m_thickness.sprintf("%.2f mm" , _pGroup->part.afSize[0]) ;
 
 
@@ -629,18 +590,15 @@ void DopplerHtmlReport::fprintfReportGroupStart(int group)
 
 void DopplerHtmlReport::fprintfReportGroupProbe()
 {
-   DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	int _iLang = _pConfig->AppEvn.eLanguage;
-
 	int i;
 	fprintf(m_pFile , "<br />\n");
-	fprintf(m_pFile , "%s\n" ,  g_strProbe[0][_iLang]);
+    fprintf(m_pFile , "%s\n" ,  g_strProbe[0]);
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 1 ;i < 4 ;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strProbe[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strProbe[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -654,7 +612,7 @@ void DopplerHtmlReport::fprintfReportGroupProbe()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 4 ;i < 7 ;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strProbe[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strProbe[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -671,19 +629,15 @@ void DopplerHtmlReport::fprintfReportGroupProbe()
 
 void DopplerHtmlReport::fprintfReportGroupSetup()
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	int _iLang = _pConfig->AppEvn.eLanguage;
-
-
 	int i;
 	fprintf(m_pFile , "<br />\n");
-	fprintf(m_pFile , "%s\n"  ,  g_strGroupSetup[0][_iLang]);
+    fprintf(m_pFile , "%s\n"  ,  g_strGroupSetup[0]);
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 1 ;i < 7 ;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -699,7 +653,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 7 ;i < 11 ;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -714,7 +668,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 11 ;i < 15;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -730,7 +684,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 15 ;i <18 ;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strGroupSetup[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strGroupSetup[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -746,7 +700,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 18 ;i < 23 ;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -782,18 +736,15 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 
 void DopplerHtmlReport::fprintfReportGroupCalculator()
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	int _iLang = _pConfig->AppEvn.eLanguage;
-
 	int i;
 	fprintf(m_pFile , "<br />\n");
-	fprintf(m_pFile , "%s\n"  , g_strCalculator[0][_iLang]);
+    fprintf(m_pFile , "%s\n"  , g_strCalculator[0]);
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 1 ; i < 7 ;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strCalculator[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strCalculator[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -809,7 +760,7 @@ void DopplerHtmlReport::fprintfReportGroupCalculator()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 7 ;i < 11 ;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strCalculator[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strCalculator[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -822,21 +773,21 @@ void DopplerHtmlReport::fprintfReportGroupCalculator()
 	fprintf(m_pFile , "</tr>\n\n");
 
 	fprintf(m_pFile , "<tr>\n");
-	fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[11][_iLang]);
+    fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[11]);
 	switch(m_focalPointType)
 	{
 	case 0:
 	case 1:
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[12][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[12]);
 		break;
 	case 2:
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[15][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[15]);
 		break;
 	case 3:
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[15][_iLang]);
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[16][_iLang]);
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[17][_iLang]);
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[18][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[15]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[16]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[17]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[18]);
 		break;
 	default:
 		break;
@@ -874,18 +825,15 @@ void DopplerHtmlReport::fprintfReportGroupCalculator()
 
 void DopplerHtmlReport::fprintfReportGroupPart()
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	int _iLang = _pConfig->AppEvn.eLanguage;
-
 	int i;
 	fprintf(m_pFile , "<br />\n");
-	fprintf(m_pFile , "%s\n" , g_strGroupPart[0][_iLang]);
+    fprintf(m_pFile , "%s\n" , g_strGroupPart[0]);
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 1 ;i < 4 ;++i)
 	{
-		fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strGroupPart[i][_iLang]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strGroupPart[i]);
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -985,14 +933,11 @@ void DopplerHtmlReport::SprintfGroupMeasure()
 
 void DopplerHtmlReport::SfprintfReportSignature()
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	int _iLang = _pConfig->AppEvn.eLanguage;
-
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 	for(int i = 0 ;i < 4 ;++i)
 	{
 		fprintf(m_pFile , "<tr>\n");
-		fprintf(m_pFile , "<td width=25%% align=\"right\">%s</td>\n" , g_strSignature[i][_iLang]);
+        fprintf(m_pFile , "<td width=25%% align=\"right\">%s</td>\n" , g_strSignature[i]);
 		fprintf(m_pFile , "<td >%s</td>\n" , tdSpace);
 		fprintf(m_pFile , "</tr>\n");
 		fprintf(m_pFile , "<tr>\n");

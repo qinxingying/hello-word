@@ -27,7 +27,7 @@ protected:
         DISPLAY_PART
     };
 
-    void SetWndName(setup_LANG eLang);
+    void SetWndName();
     void SetDisplayMode(DISPLAY_MODE eMode_)   ;
 
 	void ListPartFiles();

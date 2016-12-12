@@ -10,8 +10,7 @@ DialogReportSetting::DialogReportSetting(QWidget *parent) :
 
     //********************************************************
     // whuan language 2015-05-15
-    DopplerConfigure* m_pConfig = DopplerConfigure::Instance() ;
-    SetWndName(m_pConfig->AppEvn.eLanguage);
+    SetWndName();
 	//********************************************************
 }
 
@@ -63,44 +62,23 @@ void DialogReportSetting::UpdateItems()
     ui->ComModeSelection->setCurrentIndex(m_cInfo.eMode ? 1 : 0);
 }
 
-void DialogReportSetting::SetWndName(setup_LANG eLang)
+void DialogReportSetting::SetWndName()
 {
 	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-	switch(eLang)
-	{
-	case setup_LANG_ENGLISH:
-		setWindowTitle(QString(tr("Report Setting"))) ;
+    setWindowTitle(QString(tr("Report Setting"))) ;
 
-		ui->label_5->setText(QString(tr("Part Name:")));
-		ui->label->setText(QString(tr("Part N0.:")));
-		ui->label_2->setText(QString(tr("Part Position")));
-		ui->label_6->setText(QString(tr("Report Name:")));
-		ui->label_4->setText(QString(tr("Date & Time:")));
+    ui->label_5->setText(QString(tr("Part Name:")));
+    ui->label->setText(QString(tr("Part N0.:")));
+    ui->label_2->setText(QString(tr("Part Position")));
+    ui->label_6->setText(QString(tr("Report Name:")));
+    ui->label_4->setText(QString(tr("Date & Time:")));
 
-		ui->pushButton->setText(QString(tr("Ok")));
-		break;
-	case setup_LANG_CHINESS:
-		setWindowTitle(QString(tr("报表设置"))) ;
+    ui->pushButton->setText(QString(tr("Ok")));
 
-		ui->label_5->setText(QString(tr("部件名称:")));
-		ui->label->setText(QString(tr("部件序号:")));
-		ui->label_2->setText(QString(tr("部件位置")));
-		ui->label_6->setText(QString(tr("报表名称:")));
-		ui->label_4->setText(QString(tr("日期 & 时间:")));
-
-		ui->pushButton->setText(QString(tr("确认")));
-		break;
-	case setup_LANG_JAPEN:
-		break;
-	case setup_LANG_KOREA:
-		break;
-	}
-
-	int iLang = eLang;
 	ui->ComModeSelection->clear();
 	for(int i = 0; i < 2; i++) {
-		ui->ComModeSelection->addItem(g_strReportSetGroupParamMode[i][iLang]);
+        ui->ComModeSelection->addItem(g_strReportSetGroupParamMode[i]);
 	}
 	ui->ComModeSelection->setCurrentIndex(m_cInfo.eMode ? 1 : 0);
 }

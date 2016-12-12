@@ -173,7 +173,6 @@ private slots:
     void on_ComDefectIndex_currentIndexChanged(int index);
 	void on_lineEditReMark_textChanged(QString str);
 	void on_BtnDefectDelete_clicked();
-    void on_ComLanguage_currentIndexChanged(int index);
 
 private:
     Ui::DopplerGroupTab *ui;

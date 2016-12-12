@@ -558,10 +558,10 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_part.afSize[1] = _part.afSize[2] = 100 ;
 
 	MATERIAL& _material  = _part.material ;			   /* ≤ƒ¡œ */
-	strcpy(_material.strName[0] , "Steel common") ;
-	strcpy(_material.strName[1] , "∆’Õ®∏÷") ;
-	strcpy(_material.strName[2] , " ") ;
-	strcpy(_material.strName[3] , " ") ;
+    strcpy(_material.strName, "Steel common") ;
+//	strcpy(_material.strName[1] , "∆’Õ®∏÷") ;
+//	strcpy(_material.strName[2] , " ") ;
+//	strcpy(_material.strName[3] , " ") ;
 	_material.fVelocityLon = 5920 ;
 	_material.fVelocityTran= 3230 ;
 	_material.fDensity	 = 7.9  ;

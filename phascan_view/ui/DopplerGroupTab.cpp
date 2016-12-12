@@ -48,14 +48,6 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
         m_pSizingCurveUnit[i] = findChild<QLabel*>("LabelSizingCureUnit" + QString::number(i + 1));
     }
 
-	int _iLang = m_pConfig->AppEvn.eLanguage;
-	ui->ComLanguage->clear();
-	for(int i = 0; i < 2; i++) {
-		ui->ComLanguage->addItem(g_strLanguageName[i]);
-	}
-
-	ui->ComLanguage->setCurrentIndex(_iLang);
-
     SetWndName();
 
 	UpdateGroupConfig ();
@@ -116,17 +108,17 @@ void DopplerGroupTab::InitComBoxMaterialSelection()
 	ui->ComMaterial->clear();
 	QStringList _strList;
 
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	int _iLang = _pConfig->AppEvn.eLanguage;
+//	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+//	int _iLang = _pConfig->AppEvn.eLanguage;
 
 	int _nIndex = 0;
 	for(int i = 0 ; i< _list->count() ; i++)
 	{
 		MATERIAL* _pMaterial = _list->at(i) ;
 		QString _str ;
-		_str.sprintf("[%s][L:%.0f][T:%.0f]" , QString(tr(_pMaterial->strName[_iLang])).toUtf8().data(), _pMaterial->fVelocityLon , _pMaterial->fVelocityTran ) ;
+        _str.sprintf("[%s][L:%.0f][T:%.0f]" , QString(tr(_pMaterial->strName)).toUtf8().data(), _pMaterial->fVelocityLon , _pMaterial->fVelocityTran ) ;
 		_strList.append(_str);
-		if(!strcmp( _pMaterial->strName[0] , m_pGroup->part.material.strName[0]) )
+        if(!strcmp( _pMaterial->strName, m_pGroup->part.material.strName) )
 			_nIndex= i ;
 		//-------------------------------------------------------------
 	}
@@ -1968,21 +1960,4 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 //  g_pMainWnd->RunDrawThreadOnce();
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOverlay();
-}
-
-void DopplerGroupTab::on_ComLanguage_currentIndexChanged(int index_)
-{
-	if(!ui->ComLanguage->hasFocus()) return ;
-
-	setup_LANG _eLang;
-	switch(index_)
-	{
-	case 0:  _eLang = setup_LANG_ENGLISH;  break;
-	case 1:  _eLang = setup_LANG_CHINESS;  break;
-	case 2:  _eLang = setup_LANG_JAPEN;  break;
-	case 3:  _eLang = setup_LANG_KOREA;  break;
-	default: return;
-	}
-	m_pConfig->AppEvn.eLanguage = _eLang;
-    g_pMainWnd->SetWndName();
 }

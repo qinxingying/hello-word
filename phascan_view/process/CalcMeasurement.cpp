@@ -501,9 +501,9 @@ const char* CalcMeasurement::GetMeasureNameString(int nGroupId_ , FEILD_VALUE_IN
 		{
 			GATE_CONFIG* _pGate = _process->GetGateInfo(nGroupId_ , setup_GATE_A ) ;
 			if(_pGate->eMeasure)
-				return g_strMeasureFildName[eIndex_][2] ;
+                return g_strMeasureFildName[eIndex_][2];
 			else
-				return g_strMeasureFildName[eIndex_][0] ;
+                return g_strMeasureFildName[eIndex_][0];
 		}
 		break;
 	case FEILD_BPos :
@@ -516,13 +516,13 @@ const char* CalcMeasurement::GetMeasureNameString(int nGroupId_ , FEILD_VALUE_IN
 		{
 			GATE_CONFIG* _pGate = _process->GetGateInfo(nGroupId_ , setup_GATE_B ) ;
 			if(_pGate->eMeasure)
-				return g_strMeasureFildName[eIndex_][2] ;
+                return g_strMeasureFildName[eIndex_][2];
 			else
-				return g_strMeasureFildName[eIndex_][0] ;
+                return g_strMeasureFildName[eIndex_][0];
 		}
 		break;
 	default:
-		return g_strMeasureFildName[eIndex_][0] ;
+        return g_strMeasureFildName[eIndex_][0];
 		break;
 	} ;
 }

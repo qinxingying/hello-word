@@ -13,7 +13,7 @@ DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 	m_nGroupId = nGroupId_ ;
 	m_nWeldPartSel = 0;
 
-	m_pConfig = DopplerConfigure::Instance();
+//	m_pConfig = DopplerConfigure::Instance();
 
 	SetPart();
 	UpdateWeld() ;
@@ -24,7 +24,7 @@ DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 	palette.setColor(QPalette::Background, QColor(0,0,0));
 	ui->ExpoView->setPalette(palette);
 
-	SetWndName(m_pConfig->AppEvn.eLanguage);
+    SetWndName();
 	UpdateDisplay();
 
 	ListPartFiles();
@@ -38,62 +38,30 @@ DialogWeldPartLoad::~DialogWeldPartLoad()
 	delete ui;
 }
 #include <QPushButton>
-void DialogWeldPartLoad::SetWndName(setup_LANG eLang)
+void DialogWeldPartLoad::SetWndName()
 {
 	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	int _bPartFile = strlen(m_cPart.strPartFile);
 
+    setWindowTitle(QString(tr("WELD"))) ;
 
-	switch(eLang)
-	{
-	case setup_LANG_ENGLISH:
-		setWindowTitle(QString(tr("WELD"))) ;
+    ui->WeldGroupShow->setTitle(QString(tr("Weld Parameter")));
+    ui->LabelType->setText(QString(tr("Type:")));
+    ui->LabelSymetry->setText(QString(tr("Symmetry:")));
+    ui->LabelWHeight->setText(QString(tr("Weland Height:")));
+    ui->LabelWOffset->setText(QString(tr("Weland Offset:")));
+    ui->LabelFHeight->setText(QString(tr("Fizone Height:")));
+    ui->LabelFRadius->setText(QString(tr("Fizone Radius:")));
+    ui->LabelFAngle->setText(QString(tr("Fizone Angle:")));
 
-		ui->WeldGroupShow->setTitle(QString(tr("Weld Parameter")));
-		ui->LabelType->setText(QString(tr("Type:")));
-		ui->LabelSymetry->setText(QString(tr("Symmetry:")));
-		ui->LabelWHeight->setText(QString(tr("Weland Height:")));
-		ui->LabelWOffset->setText(QString(tr("Weland Offset:")));
-		ui->LabelFHeight->setText(QString(tr("Fizone Height:")));
-		ui->LabelFRadius->setText(QString(tr("Fizone Radius:")));
-		ui->LabelFAngle->setText(QString(tr("Fizone Angle:")));
-
-		ui->PartGroupShow->setTitle(QString(tr("Part File")));
-		ui->BtnNccPath->setText(QString(tr("Path Setting")));
-		ui->BtnNccDefaultPath->setText(QString(tr("Default path")));
-		if(!_bPartFile) {
-			ui->LabelPartFileName->setText(QString(tr("Not Load")));
-		}
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setText(QString(tr("Ok")));
-		ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(QString(tr("Cancel")));
-		break;
-	case setup_LANG_CHINESS:
-		setWindowTitle(QString(tr("焊缝"))) ;
-
-		ui->WeldGroupShow->setTitle(QString(tr("焊缝参数")));
-		ui->LabelType->setText(QString(tr("焊缝类型:")));
-		ui->LabelSymetry->setText(QString(tr("对称性:")));
-		ui->LabelWHeight->setText(QString(tr("钝边高度:")));
-		ui->LabelWOffset->setText(QString(tr("钝边偏移:")));
-		ui->LabelFHeight->setText(QString(tr("填充区高度:")));
-		ui->LabelFRadius->setText(QString(tr("填充区弧度:")));
-		ui->LabelFAngle->setText(QString(tr("填充区角度:")));
-
-		ui->PartGroupShow->setTitle(QString(tr("工件文件")));
-
-		ui->BtnNccPath->setText(QString(tr("设置文件目录")));
-		ui->BtnNccDefaultPath->setText(QString(tr("默认目录")));
-		if(!_bPartFile) {
-			ui->LabelPartFileName->setText(QString(tr("未加载")));
-		}
-		//ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("确认"));
-		//ui->buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok);
-		ui->buttonBox->button(QDialogButtonBox::Ok)->setText(QString(tr("确认")));
-		ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(QString(tr("取消")));
-		break;
-	default:
-		return;
-	}
+    ui->PartGroupShow->setTitle(QString(tr("Part File")));
+    ui->BtnNccPath->setText(QString(tr("Path Setting")));
+    ui->BtnNccDefaultPath->setText(QString(tr("Default path")));
+    if(!_bPartFile) {
+        ui->LabelPartFileName->setText(QString(tr("Not Load")));
+    }
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(QString(tr("Ok")));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(QString(tr("Cancel")));
 
 	if(_bPartFile) {
 		char buf[256];
@@ -103,22 +71,22 @@ void DialogWeldPartLoad::SetWndName(setup_LANG eLang)
 	}
 	ui->LabelPartFileName->setStyleSheet("border-width: 1px;   border-style: solid;   border-color: rgb(180, 180, 180);");
 
-	int iLang = eLang;
+//	int iLang = eLang;
 
 	ui->comboBox->clear();
 	for(int i = 0; i < 2; i++) {
-		ui->comboBox->addItem(g_strWeldPartSel[i][iLang]);
+        ui->comboBox->addItem(g_strWeldPartSel[i]);
 	}
 	ui->comboBox->setCurrentIndex(m_nWeldPartSel);
 	//----------------------------
 	ui->ComWeldType->clear();
 	if(_bPartFile) {
 		for(int i = 0; i < setup_WELD_MAX; i++) {
-			ui->ComWeldType->addItem(g_strWeldType[i][iLang]);
+            ui->ComWeldType->addItem(g_strWeldType[i]);
 		}
 	} else {
 		for(int i = 0; i < setup_WELD_MAX-1; i++) {
-			ui->ComWeldType->addItem(g_strWeldType[i][iLang]);
+            ui->ComWeldType->addItem(g_strWeldType[i]);
 		}
 	}
 
@@ -128,7 +96,7 @@ void DialogWeldPartLoad::SetWndName(setup_LANG eLang)
 	//----------------------------
 	ui->ComWeldSymetry->clear();
 	for(int i = 0; i < 3; i++) {
-		ui->ComWeldSymetry->addItem(g_strSymmetry[i][iLang]);
+        ui->ComWeldSymetry->addItem(g_strSymmetry[i]);
 	}
 }
 
@@ -359,7 +327,7 @@ void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
 
 	//QMessageBox::information(NULL, "Title", m_cPart.strPartFile, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
-	SetWndName(m_pConfig->AppEvn.eLanguage);
+    SetWndName();
 	UpdateDisplay();
 	UpdateWeld();
 }
@@ -377,7 +345,7 @@ void DialogWeldPartLoad::on_BtnNccPathClicked()
 														 );
 	strcpy(_strBuf, (char*)(qPrintable(_strPath)));
 	sprintf(_pConfig->AppEvn.strNccFilePath, "%s/", _strBuf);
-	SetWndName(_pConfig->AppEvn.eLanguage);
+    SetWndName();
 	UpdateDisplay();
 	UpdateWeld();
 	ListPartFiles();
@@ -390,7 +358,7 @@ void DialogWeldPartLoad::on_BtnNccDefaultPathClicked()
 
 	GetExePathName1((char*)g_strPartDir, _strBuf);
 	strcpy(_pConfig->AppEvn.strNccFilePath, _strBuf);
-	SetWndName(_pConfig->AppEvn.eLanguage);
+    SetWndName();
 	UpdateDisplay();
 	UpdateWeld();
 	ListPartFiles();

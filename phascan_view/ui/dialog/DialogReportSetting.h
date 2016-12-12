@@ -24,7 +24,7 @@ protected:
     void UpdateItems() ;
     ReportInfo m_cInfo ;
 
-    void SetWndName(setup_LANG eLang);
+    void SetWndName();
 
 private slots:
     void on_pushButton_clicked();

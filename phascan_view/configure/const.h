@@ -68,48 +68,37 @@ typedef U8				WDATA;	//	定义波形数据位宽 8位
 #define LAW_2_COLOR							QColor(200 , 200,  0)
 #define LAW_3_COLOR							QColor(200 , 0  ,  0)
 //#################################################################
-extern const char* g_strMeasureFildName[][4] ;
-extern const char* g_strMeasureFildUnit[][4] ;
+extern const char* g_strMeasureFildName[][4];
+extern const char* g_strMeasureFildUnit[][4];
 
-extern const char* g_strLanguageName[];
-extern const char* g_strTxRxMode[][4];
-extern const char* g_strScanMode[][4];
-extern const char* g_strGeometry[][4];
-extern const char* g_strRectifier[][4];
-extern const char* g_strTofdScanMode[][4];
-extern const char* g_strTofdProMode[][4];
-extern const char* g_strWeldType[][4];
-extern const char* g_strSymmetry[][4];
-extern const char* g_strLawType[][4];
-extern const char* g_strAngleType[][4];
-extern const char* g_strFocalType[][4];
-extern const char* g_strSkewAngle[][4];
-extern const char* g_strGateSelect[][4];
-extern const char* g_strGateSync[][4];
-extern const char* g_strGateMeasure[][4];
-extern const char* g_strSizingCurve[][4];
-extern const char* g_strColorLineColor[][4];
-extern const char* g_strCScanSource[][4];
-extern const char* g_strWeldPartSel[][4];
-extern const char* g_strScanType[][4];
-extern const char* g_strEncoderType[][4];
-extern const char* g_strPolarity[][4];
-extern const char* g_strDirection[][4];
+extern const char* g_strTxRxMode[];
+extern const char* g_strScanMode[];
+extern const char* g_strGeometry[];
+extern const char* g_strRectifier[];
 
-extern const char* g_strReportName[4];
-extern const char* g_strTofdReportHead[][4];
-extern const char* g_strReportHead[][4];
-extern const char* g_strReportPath[][4];
-extern const char* g_strLawConfig[][4];
-extern const char* g_strMaterial[][4];
-extern const char* g_strProbe[][4];
-extern const char* g_strGroupSetup[][4];
-extern const char* g_strCalculator[][4];
-extern const char* g_strGroupPart[][4];
-extern const char* g_strSignature[][4];
-extern const char* g_strOnOff[][4];
-extern const char* g_strDefect[][4];
-extern const char* g_strReportSetGroupParamMode[][4];
+extern const char* g_strWeldType[];
+extern const char* g_strSymmetry[];
+
+extern const char* g_strFocalType[];
+
+extern const char* g_strGateSync[];
+
+extern const char* g_strWeldPartSel[];
+
+extern const char* g_strReportName[];
+extern const char* g_strTofdReportHead[];
+extern const char* g_strReportHead[];
+extern const char* g_strReportPath[];
+extern const char* g_strLawConfig[];
+
+extern const char* g_strProbe[];
+extern const char* g_strGroupSetup[];
+extern const char* g_strCalculator[];
+extern const char* g_strGroupPart[];
+extern const char* g_strSignature[];
+extern const char* g_strOnOff[];
+extern const char* g_strDefect[];
+extern const char* g_strReportSetGroupParamMode[];
 
 extern int ToolBarCnt();
 extern QString GetExePathName2(char* dir);

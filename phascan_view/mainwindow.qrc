@@ -77,5 +77,6 @@
         <file>init/part/dpl111.ncc</file>
         <file>init/part/JX2.ncc</file>
         <file>init/part/JX3.ncc</file>
+        <file>resource/report_logo/logo.png</file>
     </qresource>
 </RCC>
