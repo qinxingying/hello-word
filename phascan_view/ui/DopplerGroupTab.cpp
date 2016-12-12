@@ -138,30 +138,29 @@ void DopplerGroupTab::InitComBoxMaterialSelection()
 *****************************************************************************/
 void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 {
-	PROBE_CONFIG& _probe = m_pGroup->probe[bIsRx_ ? 1 : 0] ;
-
-	QString _str[4] ;
-
-    _str[0].sprintf("Element Qty  :     Pri[%3d]     Sec[%3d] ", _probe.nElementPri ,	_probe.nElementSec ) ;
-    _str[1].sprintf("Element Size :     Pri[%2.1f]   Sec[%2.1f]  mm", _probe.fSizePri ,  _probe.fSizeSec)	;
-    _str[2].sprintf("Element Pitch:     Pri[%2.1f]   Sec[%2.1f]  mm" , _probe.fPitchPri, _probe.fPitchSec) ;
-    _str[3].sprintf("Element Frequency: %.1f MHz" , _probe.fFrequency);
+    PROBE_CONFIG& _probe = m_pGroup->probe[bIsRx_ ? 1 : 0];
 
 	if(bIsRx_)
 	{
 		ui->BtnProbeSelection_2->setText(_probe.strName);
-		ui->LabelProbeT_Line1_2->setText(_str[0]);
-		ui->LabelProbeT_Line2_2->setText(_str[1]);
-		ui->LabelProbeT_Line3_2->setText(_str[2]);
-		ui->LabelProbeT_Line4_2->setText(_str[3]);
+        ui->lineEdit_probeR_1->setText(QString::number((double)_probe.nElementPri, 'f', 0));
+        ui->lineEdit_probeR_2->setText(QString::number((double)_probe.nElementSec, 'f', 0));
+        ui->lineEdit_probeR_3->setText(QString::number((double)_probe.fSizePri, 'f', 1));
+        ui->lineEdit_probeR_4->setText(QString::number((double)_probe.fSizeSec, 'f', 1));
+        ui->lineEdit_probeR_5->setText(QString::number((double)_probe.fPitchPri, 'f', 1));
+        ui->lineEdit_probeR_6->setText(QString::number((double)_probe.fPitchSec, 'f', 1));
+        ui->lineEdit_probeR_7->setText(QString::number((double)_probe.fFrequency, 'f', 1));
 	}
 	else
 	{
 		ui->BtnProbeSelection->setText(_probe.strName);
-		ui->LabelProbeT_Line1->setText(_str[0]);
-		ui->LabelProbeT_Line2->setText(_str[1]);
-		ui->LabelProbeT_Line3->setText(_str[2]);
-		ui->LabelProbeT_Line4->setText(_str[3]);
+        ui->lineEdit_probeT_1->setText(QString::number((double)_probe.nElementPri, 'f', 0));
+        ui->lineEdit_probeT_2->setText(QString::number((double)_probe.nElementSec, 'f', 0));
+        ui->lineEdit_probeT_3->setText(QString::number((double)_probe.fSizePri, 'f', 1));
+        ui->lineEdit_probeT_4->setText(QString::number((double)_probe.fSizeSec, 'f', 1));
+        ui->lineEdit_probeT_5->setText(QString::number((double)_probe.fPitchPri, 'f', 1));
+        ui->lineEdit_probeT_6->setText(QString::number((double)_probe.fPitchSec, 'f', 1));
+        ui->lineEdit_probeT_7->setText(QString::number((double)_probe.fFrequency, 'f', 1));
 	}
 }
 
@@ -170,40 +169,73 @@ void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 *****************************************************************************/
 void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 {
-	WEDGE_CONFIG& _wedge = m_pGroup->wedge[bIsRx_ ? 1 : 0] ;
-
-    QString _str[4] ;
-
-    _str[0].sprintf("Wedge Angle:         %2.1f   Roof Angle:      %2.1f" , _wedge.fWedgeAngle , _wedge.fRoofAngle ) ;
-    _str[1].sprintf("Velocity Longtitude: %.0f    Transmmit:       %.0f" , _wedge.fVelocityLon , _wedge.fVelocityTra ) ;
-    _str[2].sprintf("Wedge Type:          %s      Wedge Direction: %s",
-                    _wedge.eType ? "UT" : "PA" , _wedge.eDirection ? "NORMAL" : "INVERSE");
-    if(_wedge.eType)
-    {
-        _str[3].sprintf("Reference Point:     %.1f mm Wedge Delay:     %.2f us",
-                        _wedge.fRefPoint , _wedge.nWedgeDelay /1000.0) ;
-    }
-    else
-    {
-        _str[3].sprintf("First Height:        %.1f    Offset Fir:      %.1f    Sec: %.1f" ,
-                       _wedge.fHeigtFirst , _wedge.fOffsetFir , _wedge.fOffsetSec) ;
-    }
+    WEDGE_CONFIG& _wedge = m_pGroup->wedge[bIsRx_ ? 1 : 0];
 
 	if(bIsRx_)
 	{
         ui->BtnWedgeSelection_2->setText(_wedge.strName);
-		ui->LabelWedgeT_Line1_2->setText(_str[0]);
-		ui->LabelWedgeT_Line2_2->setText(_str[1]);
-		ui->LabelWedgeT_Line3_2->setText(_str[2]);
-		ui->LabelWedgeT_Line4_2->setText(_str[3]);
+
+        ui->lineEdit_wedgeR_1->setText(QString::number((double)_wedge.fWedgeAngle, 'f', 1));
+        ui->lineEdit_wedgeR_2->setText(QString::number((double)_wedge.fRoofAngle, 'f', 1));
+
+        if(_wedge.eType){
+            ui->lineEdit_wedgeR_3->setText("UT");
+
+            ui->label_wedgeR_7->setText(tr("Reference Point:"));
+            ui->label_wedgeR_8->setText(tr("Wedge Delay:"));
+            ui->label_wedgeR_9->hide();
+
+            ui->lineEdit_wedgeR_7->setText(QString::number((double)_wedge.fRefPoint, 'f', 1) + " mm");
+            ui->lineEdit_wedgeR_8->setText(QString::number((double)_wedge.nWedgeDelay/1000.0, 'f', 1) + " us");
+            ui->lineEdit_wedgeR_9->hide();
+        }else{
+            ui->lineEdit_wedgeR_3->setText(tr("PA"));
+            ui->lineEdit_wedgeR_7->setText(QString::number((double)_wedge.fHeigtFirst, 'f', 1));
+            ui->lineEdit_wedgeR_8->setText(QString::number((double)_wedge.fOffsetFir, 'f', 1));
+            ui->lineEdit_wedgeR_9->setText(QString::number((double)_wedge.fOffsetSec, 'f', 1));
+        }
+
+        if(_wedge.eDirection){
+            ui->lineEdit_wedgeR_4->setText(tr("NORMAL"));
+        }else{
+            ui->lineEdit_wedgeR_4->setText(tr("INVERSE"));
+        }
+
+        ui->lineEdit_wedgeR_5->setText(QString::number((double)_wedge.fVelocityLon, 'f', 0));
+        ui->lineEdit_wedgeR_6->setText(QString::number((double)_wedge.fVelocityTra, 'f', 0));
 	}
 	else
 	{
 		ui->BtnWedgeSelection->setText(_wedge.strName);
-		ui->LabelWedgeT_Line1->setText(_str[0]);
-		ui->LabelWedgeT_Line2->setText(_str[1]);
-		ui->LabelWedgeT_Line3->setText(_str[2]);
-		ui->LabelWedgeT_Line4->setText(_str[3]);
+        ui->lineEdit_wedgeT_1->setText(QString::number((double)_wedge.fWedgeAngle, 'f', 1));
+        ui->lineEdit_wedgeT_2->setText(QString::number((double)_wedge.fRoofAngle, 'f', 1));
+
+        if(_wedge.eType){
+            ui->lineEdit_wedgeT_3->setText(tr("UT"));
+
+            ui->label_wedgeT_7->setText(tr("Reference Point:"));
+            ui->label_wedgeT_8->setText(tr("Wedge Delay:"));
+            ui->label_wedgeT_9->hide();
+
+            ui->lineEdit_wedgeT_7->setText(QString::number((double)_wedge.fRefPoint, 'f', 1) + " mm");
+            ui->lineEdit_wedgeT_8->setText(QString::number((double)_wedge.nWedgeDelay/1000.0, 'f', 1) + " us");
+            ui->lineEdit_wedgeT_9->hide();
+        }else{
+            ui->lineEdit_wedgeT_3->setText(tr("PA"));
+            ui->lineEdit_wedgeT_7->setText(QString::number((double)_wedge.fHeigtFirst, 'f', 1));
+            ui->lineEdit_wedgeT_8->setText(QString::number((double)_wedge.fOffsetFir, 'f', 1));
+            ui->lineEdit_wedgeT_9->setText(QString::number((double)_wedge.fOffsetSec, 'f', 1));
+        }
+
+        if(_wedge.eDirection){
+            ui->lineEdit_wedgeT_4->setText(tr("NORMAL"));
+        }else{
+            ui->lineEdit_wedgeT_4->setText(tr("INVERSE"));
+        }
+
+        ui->lineEdit_wedgeT_5->setText(QString::number((double)_wedge.fVelocityLon, 'f', 0));
+        ui->lineEdit_wedgeT_6->setText(QString::number((double)_wedge.fVelocityTra, 'f', 0));
+
 	}
 
 }
@@ -406,7 +438,12 @@ void DopplerGroupTab::SetWidgetInvalide()
     ui->BoxPulserReceiver->setDisabled(true);
     ui->groupBox_2->setDisabled(true);
 
-    ui->ProbWedge->setDisabled(true);
+    ui->ComGroupMode->setDisabled(true);
+    ui->BoxProbeTrigger->setDisabled(true);
+    ui->BoxWedgeTrigger->setDisabled(true);
+    ui->BoxProbeTrigger_2->setDisabled(true);
+    ui->BoxWedgeTrigger_2->setDisabled(true);
+
     ui->FocalLaw->setDisabled(true);
 
     ui->ComGateSync->setDisabled(true);
