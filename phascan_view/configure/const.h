@@ -71,35 +71,6 @@ typedef U8				WDATA;	//	定义波形数据位宽 8位
 extern const char* g_strMeasureFildName[][4];
 extern const char* g_strMeasureFildUnit[][4];
 
-extern const char* g_strTxRxMode[];
-extern const char* g_strScanMode[];
-extern const char* g_strGeometry[];
-extern const char* g_strRectifier[];
-
-extern const char* g_strWeldType[];
-extern const char* g_strSymmetry[];
-
-extern const char* g_strFocalType[];
-
-extern const char* g_strGateSync[];
-
-extern const char* g_strWeldPartSel[];
-
-extern const char* g_strTofdReportHead[];
-extern const char* g_strReportHead[];
-
-extern const char* g_strLawConfig[];
-
-extern const char* g_strProbe[];
-extern const char* g_strGroupSetup[];
-extern const char* g_strCalculator[];
-extern const char* g_strGroupPart[];
-extern const char* g_strSignature[];
-extern const char* g_strOnOff[];
-extern const char* g_strDefect[];
-extern const char* g_strReportSetGroupParamMode[];
-
-extern int ToolBarCnt();
 extern QString GetExePathName2(char* dir);
 extern void GetExePathName1(char* dir, char* _strPathName);
 extern bool VerRegInfo(char* strRegInfo_, char* strCpuID_);
@@ -109,8 +80,6 @@ extern void GetHardwareInfo(char* strInfo_);
 //#################################################################
 #ifndef CONST_H
 #define CONST_H
-
-
 
 enum FEILD_VALUE_INDEX
 {
@@ -162,11 +131,6 @@ enum FEILD_VALUE_INDEX
 	FEILD_TofdHeight ,
 	FEILD_VALUE_INDEX_MAX
 };
-
-
-extern const char* g_strPartDir;
-
-
 #endif // CONST_H
 
 

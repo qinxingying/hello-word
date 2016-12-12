@@ -207,7 +207,6 @@ void MainWindow::slotLeftTabRightButtonDoubleClicked(int)
 
 void MainWindow::DestroyDisplayTab(int nId_)
 {
-        int _nQty = ui->TabWidgetRight->count() ;
         QList<QWidget*>* _pList = m_pViewList[nId_]   ;
         for(int i = 0 ; i < _pList->count() ; i++)
         {
@@ -220,7 +219,6 @@ void MainWindow::DestroyDisplayTab(int nId_)
         delete _pTmpWidget ;
         // clear
         ui->TabWidgetRight->setCurrentIndex(0);
-        _nQty = ui->TabWidgetRight->count() ;
 
         SetDispTabText();
 }

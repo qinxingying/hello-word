@@ -8,7 +8,6 @@ char tableWidth[256];
 const char* g_strReportDir	  = "data/Report/"  ;
 const char* g_strReportLogo   = ":file/resource/report_logo/logo.png"; // data/logo/logo.png
 
-
 //const char* tableWidth	    = "width=800 style=\"table-layout:fixed\"";
 const char* tableThStyle	= "class=\"general_cell\"  align=left";
 const char* tableTdStyle	= "class=\"general_cell\"";
@@ -34,6 +33,170 @@ const char* string_filter[] = {
 		"HR" ,
 		"HR 10 MHz",
 		"None"
+};
+
+const char* g_strTxRxMode[] = {
+    "Pitch Catch",
+    "Pitch Echo",
+    "Through Trans",
+    "TOFD"
+};
+
+const char* g_strScanMode[]= {//(report)
+    "Normal",
+    "Parallel"
+};
+
+const char* g_strGeometry[]={// (report)
+    "Plate",
+    "OD",
+    "ID"
+};
+
+const char* g_strFocalType[] = {// (report)
+    "Half Path",
+    "True Depth",
+    "Projection",
+    "Focal Plane",
+    "Automatic"
+};
+
+const char* g_strGateSync[] = {
+    "Pulse",
+    "I/",
+    "A/"
+};
+
+const char* g_strRectifier[] = {//UpdateGroupConfig()
+    "RF",
+    "HW+",
+    "HW-",
+    "FW"
+};
+
+const char* g_strLawConfig[] = {
+    "Azimuthal",
+    "Linear",
+    "Depth",
+    "Static"
+};
+
+const char* g_strTofdReportHead[] = {
+    "Channel",
+    "Frequency",
+    "Chip Size",
+    "Wedge Angle",
+    "Probe Dealy",
+    "The Probe Center Distance",
+    "The Time Window Set",
+    "DB Set",
+    "Scan Incremental",
+    "Scan Mode"
+};
+
+const char* g_strReportHead[] = {
+    "Part Name",
+    "Part No.",
+    "Position",
+    "Date"
+};
+
+const char* g_strProbe[] = {
+    "Probe Characterization",
+    "Probe Model",
+    "Probe Serial",
+    "Probe Frequency",
+    "Probe Model",
+    "Probe Angle",
+    "Probe Aperture"
+};
+
+const char* g_strGroupSetup[] = {
+    "Setup",
+    //1
+    "Beam Delay",
+    "Sample Start",
+    "Sample Range",
+    "PRF",
+    "Type",
+    "Averaging Factor",
+    //7
+    "Scale Factor",
+    "Video Filter",
+    "Rectification",
+    "Band-Pass Filter",
+    //11
+    "Gain",
+    "Mode",
+    "Sound Velocity",
+    "Pulse Width",
+    //15
+    "Scan Offset",
+    "Index Offset",
+    "Skew",
+    "Gate",
+    "Start",
+    "Width",
+    "Threshold",
+    "Synchro"
+    //23
+};
+
+const char* g_strCalculator[]= {
+    "Calculator",
+
+    "Element Qty",
+    "First TX Element",
+    "Last TX Element",
+    "First RX Element",
+    "Last RX Element",
+    "Resolution",
+    //
+    "Start Angle",
+    "Stop Angle",
+    "Angle Resolution",
+    "Law Configuration",
+    //
+    "Focal Type",
+    "Position Start",
+    "Position End",
+    "Position Step",
+    "Offset Start",
+    "Offset Stop",
+    "Depth Start",
+    "Depth Stop"
+};
+
+const char* g_strGroupPart[] = {
+    "Part",
+    "Material",
+    "Geometry",
+    "Thickness",
+};
+
+const char* g_strOnOff[] = {
+    "Off",
+    "ON",
+};
+
+const char* g_strDefect[]=
+{
+    "Defect",
+    "Remark",
+    "Index",
+    "Position start",
+    "Length",
+    "Depth start",
+    "Height",
+    "Index pos",
+    "Width"
+};
+
+const char* g_strSignature[] = {
+    "Technician Name:",
+    "Technician Signature:",
+    "Contractor:",
+    "Date:"
 };
 
 DopplerHtmlReport::DopplerHtmlReport()
@@ -928,7 +1091,6 @@ void DopplerHtmlReport::SprintfGroupMeasure()
 	}
 	fprintf(m_pFile ,"\t\t</br>\n");
 	fprintf(m_pFile ,"\t\t</br>\n");
-
 }
 
 void DopplerHtmlReport::SfprintfReportSignature()

@@ -1,8 +1,10 @@
 #include "DialogWeldPartLoad.h"
 #include "ui_DialogWeldPartLoad.h"
-#include <process/ParameterProcess.h>
+#include "ParameterProcess.h"
 
+#include <QFileDialog>
 
+const char* g_strPartDir = ":/file/init/part/";
 
 DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 	QDialog(parent),
@@ -13,7 +15,7 @@ DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 	m_nGroupId = nGroupId_ ;
 	m_nWeldPartSel = 0;
 
-//	m_pConfig = DopplerConfigure::Instance();
+    m_pConfig = DopplerConfigure::Instance();
 
 	SetPart();
 	UpdateWeld() ;
@@ -21,7 +23,7 @@ DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 
 	ui->ExpoView->setAutoFillBackground(true);
 	QPalette palette;
-	palette.setColor(QPalette::Background, QColor(0,0,0));
+    palette.setColor(QPalette::Background, QColor(0, 0, 0));
 	ui->ExpoView->setPalette(palette);
 
     SetWndName();
@@ -37,31 +39,14 @@ DialogWeldPartLoad::~DialogWeldPartLoad()
 {
 	delete ui;
 }
-#include <QPushButton>
+
 void DialogWeldPartLoad::SetWndName()
 {
-	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	int _bPartFile = strlen(m_cPart.strPartFile);
 
-    setWindowTitle(QString(tr("WELD"))) ;
-
-    ui->WeldGroupShow->setTitle(QString(tr("Weld Parameter")));
-    ui->LabelType->setText(QString(tr("Type:")));
-    ui->LabelSymetry->setText(QString(tr("Symmetry:")));
-    ui->LabelWHeight->setText(QString(tr("Weland Height:")));
-    ui->LabelWOffset->setText(QString(tr("Weland Offset:")));
-    ui->LabelFHeight->setText(QString(tr("Fizone Height:")));
-    ui->LabelFRadius->setText(QString(tr("Fizone Radius:")));
-    ui->LabelFAngle->setText(QString(tr("Fizone Angle:")));
-
-    ui->PartGroupShow->setTitle(QString(tr("Part File")));
-    ui->BtnNccPath->setText(QString(tr("Path Setting")));
-    ui->BtnNccDefaultPath->setText(QString(tr("Default path")));
     if(!_bPartFile) {
         ui->LabelPartFileName->setText(QString(tr("Not Load")));
     }
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(QString(tr("Ok")));
-    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(QString(tr("Cancel")));
 
 	if(_bPartFile) {
 		char buf[256];
@@ -71,47 +56,20 @@ void DialogWeldPartLoad::SetWndName()
 	}
 	ui->LabelPartFileName->setStyleSheet("border-width: 1px;   border-style: solid;   border-color: rgb(180, 180, 180);");
 
-//	int iLang = eLang;
-
-	ui->comboBox->clear();
-	for(int i = 0; i < 2; i++) {
-        ui->comboBox->addItem(g_strWeldPartSel[i]);
-	}
-	ui->comboBox->setCurrentIndex(m_nWeldPartSel);
-	//----------------------------
-	ui->ComWeldType->clear();
-	if(_bPartFile) {
-		for(int i = 0; i < setup_WELD_MAX; i++) {
-            ui->ComWeldType->addItem(g_strWeldType[i]);
-		}
-	} else {
-		for(int i = 0; i < setup_WELD_MAX-1; i++) {
-            ui->ComWeldType->addItem(g_strWeldType[i]);
-		}
-	}
-
-	ui->ComWeldType->setCurrentIndex(m_cPart.weld.eType);
-
-	ui->LabelPartFilePath->setText(QString(tr(m_pConfig->AppEvn.strNccFilePath)));
-	//----------------------------
-	ui->ComWeldSymetry->clear();
-	for(int i = 0; i < 3; i++) {
-        ui->ComWeldSymetry->addItem(g_strSymmetry[i]);
-	}
+    ui->ComWeldType->setCurrentIndex(m_cPart.weld.eType);
+    ui->LabelPartFilePath->setText(QString(tr(m_pConfig->AppEvn.strNccFilePath)));
 }
 
 void DialogWeldPartLoad::SetDisplayMode(DISPLAY_MODE eMode_)
 {
-	m_eDisplay = eMode_ ;
+    m_eDisplay = eMode_;
 	if(eMode_ == DISPLAY_WELD)
 	{
 		ui->WeldGroupShow->show();
 		ui->PartGroupShow->hide();
 		//ui->BtnNccPath->hide();
 		ui->LabelPartFilePath->hide();
-	}
-	else//(eMode_ == DISPLAY_PART)
-	{
+    }else{
 		ui->PartGroupShow->show();
 		ui->WeldGroupShow->hide();
 		//ui->BtnNccPath->show();
@@ -123,8 +81,9 @@ void DialogWeldPartLoad::SetDisplayMode(DISPLAY_MODE eMode_)
 void DialogWeldPartLoad::ListPartFiles()
 {
 	char _strPath[256];
-	//GetExePathName1((char*)m_pConfig->AppEvn.strNccFilePath, _strPath);
-	strcpy(_strPath, (char*)m_pConfig->AppEvn.strNccFilePath);
+
+  //  strcpy(_strPath, (char*)m_pConfig->AppEvn.strNccFilePath);
+    strcpy(_strPath, (char*)g_strPartDir);
 	QDir dir(_strPath);
 	if(!dir.exists()) {
 		return;
@@ -156,19 +115,12 @@ void DialogWeldPartLoad::ListPartFiles()
 	{
 		QString string = static_cast<QString>(strList.at(i));
 		QStandardItem *item = new QStandardItem(string);
-		/*if(i % 2 == 1)
-		{
-			QLinearGradient linearGrad(QPointF(0, 0), QPointF(200, 200));
-			linearGrad.setColorAt(0, Qt::darkGreen);
-			linearGrad.setColorAt(1, Qt::yellow);
-			QBrush brush(linearGrad);
-			item->setBackground(brush);
-		}*/
 		standardItemModel->appendRow(item);
 	}
 	ui->ListPartFile->setModel(standardItemModel);
 	ui->ListPartFile->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
+
 void DialogWeldPartLoad::SetPart()
 {
 	ParameterProcess* _process = ParameterProcess::Instance() ;
@@ -202,9 +154,9 @@ void DialogWeldPartLoad::UpdateDisplay()
 		ui->SpinFRadius->setVisible(false);
 		ui->SpinFAngle->setVisible(false);
 
-		ui->LabelFHeight->setVisible (false);
-		ui->LabelFAngle->setVisible  (false);
-		ui->LabelFRadius->setVisible (false);
+        ui->LabelFHeight->setVisible(false);
+        ui->LabelFAngle->setVisible(false);
+        ui->LabelFRadius->setVisible(false);
 		ui->LabelUnitFHeight->setVisible(false);
 		ui->LabelUnitFAngle->setVisible(false);
 		ui->LabelUnitFRadius->setVisible(false);
@@ -215,9 +167,9 @@ void DialogWeldPartLoad::UpdateDisplay()
 		ui->SpinFRadius->setVisible(false);
 		ui->SpinFAngle->setVisible(true);
 
-		ui->LabelFHeight->setVisible (true);
-		ui->LabelFAngle->setVisible  (true);
-		ui->LabelFRadius->setVisible (false);
+        ui->LabelFHeight->setVisible(true);
+        ui->LabelFAngle->setVisible(true);
+        ui->LabelFRadius->setVisible(false);
 		ui->LabelUnitFHeight->setVisible(true);
 		ui->LabelUnitFAngle->setVisible(true);
 		ui->LabelUnitFRadius->setVisible(false);
@@ -228,17 +180,16 @@ void DialogWeldPartLoad::UpdateDisplay()
 		ui->SpinFRadius->setVisible(true);
 		ui->SpinFAngle->setVisible(true);
 
-		ui->LabelFHeight->setVisible (true);
-		ui->LabelFAngle->setVisible  (true);
-		ui->LabelFRadius->setVisible (true);
+        ui->LabelFHeight->setVisible(true);
+        ui->LabelFAngle->setVisible(true);
+        ui->LabelFRadius->setVisible(true);
 		ui->LabelUnitFHeight->setVisible(true);
 		ui->LabelUnitFAngle->setVisible(true);
 		ui->LabelUnitFRadius->setVisible(true);
 		break;
 	default:
 		break;
-	} ;
-
+    };
 
 	if(m_cPart.weld.eType == setup_WELD_NCC) {
 		ui->ComWeldSymetry->setEnabled(false);
@@ -317,8 +268,9 @@ void DialogWeldPartLoad::on_SpinFAngle_valueChanged(double arg1)
 void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
 {
 	char _strPath[256];
-	//GetExePathName1((char*)m_pConfig->AppEvn.strNccFilePath, _strPath);
-	strcpy(_strPath, (char*)m_pConfig->AppEvn.strNccFilePath);
+
+   // strcpy(_strPath, (char*)m_pConfig->AppEvn.strNccFilePath);
+    strcpy(_strPath, (char*)g_strPartDir);
 
 	QString _str = index.data().toString();
 	m_cPart.weld.eType = setup_WELD_NCC;
@@ -331,7 +283,6 @@ void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
 	UpdateDisplay();
 	UpdateWeld();
 }
-#include <QFileDialog>
 
 void DialogWeldPartLoad::on_BtnNccPathClicked()
 {

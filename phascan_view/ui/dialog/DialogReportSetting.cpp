@@ -7,11 +7,6 @@ DialogReportSetting::DialogReportSetting(QWidget *parent) :
     ui(new Ui::DialogReportSetting)
 {
     ui->setupUi(this);
-
-    //********************************************************
-    // whuan language 2015-05-15
-    SetWndName();
-	//********************************************************
 }
 
 DialogReportSetting::~DialogReportSetting()
@@ -60,25 +55,4 @@ void DialogReportSetting::UpdateItems()
     ui->StrPartPostion->setText(QString(m_cInfo.strPartPos));
     ui->StrReportName->setText(QString(m_cInfo.strReportName));
     ui->ComModeSelection->setCurrentIndex(m_cInfo.eMode ? 1 : 0);
-}
-
-void DialogReportSetting::SetWndName()
-{
-	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-
-    setWindowTitle(QString(tr("Report Setting"))) ;
-
-    ui->label_5->setText(QString(tr("Part Name:")));
-    ui->label->setText(QString(tr("Part N0.:")));
-    ui->label_2->setText(QString(tr("Part Position")));
-    ui->label_6->setText(QString(tr("Report Name:")));
-    ui->label_4->setText(QString(tr("Date & Time:")));
-
-    ui->pushButton->setText(QString(tr("Ok")));
-
-	ui->ComModeSelection->clear();
-	for(int i = 0; i < 2; i++) {
-        ui->ComModeSelection->addItem(g_strReportSetGroupParamMode[i]);
-	}
-	ui->ComModeSelection->setCurrentIndex(m_cInfo.eMode ? 1 : 0);
 }

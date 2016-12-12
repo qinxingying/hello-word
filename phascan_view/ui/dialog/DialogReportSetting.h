@@ -18,13 +18,9 @@ public:
     void SetReportInfo(ReportInfo*) ;
     ReportInfo* GetRePortInfo() ;
 
-
 protected:
-
     void UpdateItems() ;
     ReportInfo m_cInfo ;
-
-    void SetWndName();
 
 private slots:
     void on_pushButton_clicked();

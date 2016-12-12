@@ -143,6 +143,7 @@ DopplerConfigure::~DopplerConfigure()
 
 void DopplerConfigure::OpenEvn()
 {
+    const char* g_strPartDir = ":/file/init/part/";
 	char _strPathName[256];
 	GetExePathName1((char*)g_strEvnParamDir, _strPathName);
 

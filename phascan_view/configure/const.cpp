@@ -1,9 +1,6 @@
 #include "gHeader.h"
 #include "const.h"
 
-const char* g_strPartDir		= ":/file/init/part/" ;
-
-
 const char* g_strMeasureFildName[][4] =
 {
 	{"None  "  , "None"} ,
@@ -52,8 +49,7 @@ const char* g_strMeasureFildName[][4] =
 	{"T-D(m)"	  , "Tofd Ultrasonic Axis Measure Cursor Depth"} ,
 	{"T-S(m-r)"	, "Tofd Scan Axis Cursor Measure to Reference"} ,
 	{"T-D(m-r)"	, "Tofd Ultrasonic Axis Cursor Measure to Reference"} ,
-}  ;
-
+};
 
 const char* g_strMeasureFildUnit[][4] =
 {
@@ -105,199 +101,7 @@ const char* g_strMeasureFildUnit[][4] =
 	{"T-D(m-r)" , "mm"}
 };
 
-const char* g_strTxRxMode[] = {
-    "Pitch Catch",
-    "Pitch Echo",
-    "Through Trans",
-    "TOFD"
-};
-
-const char* g_strScanMode[]= {//(report)
-    "Normal",
-    "Parallel"
-};
-
-const char* g_strGeometry[]={// (report)
-    "Plate",
-    "OD",
-    "ID"
-};
-
-const char* g_strWeldType[] = {
-    "I shape",
-    "V shape",
-    "double V shpe",
-    "U shpe",
-//	{"double U shpe" , "˫U" , "", ""},
-    "Part file"
-};
-
-const char* g_strSymmetry[] = {
-    "Symmetry",
-    "Left",
-    "Right"
-};
-
-const char* g_strFocalType[] = {// (report)
-    "Half Path",
-    "True Depth",
-    "Projection",
-    "Focal Plane",
-    "Automatic"
-};
-
-const char* g_strGateSync[] = {
-    "Pulse",
-    "I/",
-    "A/"
-};
-
-const char* g_strWeldPartSel[] = {
-    "Weld",
-    "Load Part File"
-};
-
-//report
-const char* g_strRectifier[] = {//UpdateGroupConfig()
-    "RF",
-    "HW+",
-    "HW-",
-    "FW"
-};
-
-const char* g_strTofdReportHead[] = {
-    "Channel",
-    "Frequency",
-    "Chip Size",
-    "Wedge Angle",
-    "Probe Dealy",
-    "The Probe Center Distance",
-    "The Time Window Set",
-    "DB Set",
-    "Scan Incremental",
-    "Scan Mode"
-};
-
-const char* g_strReportHead[] = {
-    "Part Name",
-    "Part No.",
-    "Position",
-    "Date"
-};
-
-const char* g_strLawConfig[] = {
-    "Azimuthal",
-    "Linear",
-    "Depth",
-    "Static"
-};
-
-
 #include <string.h>
-const char* g_strProbe[] = {
-    "Probe Characterization",
-    "Probe Model",
-    "Probe Serial",
-    "Probe Frequency",
-    "Probe Model",
-    "Probe Angle",
-    "Probe Aperture"
-};
-
-const char* g_strGroupSetup[] = {
-    "Setup",
-	//1
-    "Beam Delay",
-    "Sample Start",
-    "Sample Range",
-    "PRF",
-    "Type",
-    "Averaging Factor",
-	//7
-    "Scale Factor",
-    "Video Filter",
-    "Rectification",
-    "Band-Pass Filter",
-	//11
-    "Gain",
-    "Mode",
-    "Sound Velocity",
-    "Pulse Width",
-	//15
-    "Scan Offset",
-    "Index Offset",
-    "Skew",
-    "Gate",
-    "Start",
-    "Width",
-    "Threshold",
-    "Synchro"
-	//23
-} ;
-
-const char* g_strCalculator[]= {
-    "Calculator",
-
-    "Element Qty",
-    "First TX Element",
-    "Last TX Element",
-    "First RX Element",
-    "Last RX Element",
-    "Resolution",
-	//
-    "Start Angle",
-    "Stop Angle",
-    "Angle Resolution",
-    "Law Configuration",
-	//
-    "Focal Type",
-    "Position Start",
-    "Position End",
-    "Position Step",
-    "Offset Start",
-    "Offset Stop",
-    "Depth Start",
-    "Depth Stop"
-};
-
-const char* g_strGroupPart[] = {
-    "Part",
-    "Material",
-    "Geometry",
-    "Thickness",
-} ;
-
-const char* g_strSignature[] = {
-    "Technician Name:",
-    "Technician Signature:",
-    "Contractor:",
-    "Date:"
-} ;
-
-const char* g_strOnOff[] = {
-    "Off",
-    "ON",
-};
-
-const char* g_strDefect[]=
-{
-    "Defect",
-    "Remark",
-    "Index",
-    "Position start",
-    "Length",
-    "Depth start",
-    "Height",
-    "Index pos",
-    "Width"
-} ;
-
-const char* g_strReportSetGroupParamMode[] = {
-    "Without Group Parameters",
-    "With Group Parameters"
-};
-
-
 #include <qdatetime.h>
 #include <QCoreApplication>
 
