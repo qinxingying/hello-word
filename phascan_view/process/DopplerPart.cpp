@@ -451,30 +451,30 @@ void DopplerPart::DrawCurveTo(QPainter& painter, QPointF pt1_, QPointF pt2_, QPo
 	double fH  = bottom - top;
 
 	int nRelation = GetPositionRelationForLine(x[0], y[0], x[2], y[2], x[1], y[1]);
-	int mode = 0;
+ //   int mode = 0;
 	int status = 0;
 	if(x[0] == left && y[0] == top)	{
 		if(nRelation > 0) {
 			rect = QRectF(x[0], y[0] - fH, 2*fW, 2*fH);			fA = 180;
-			mode = 0;
+        //	mode = 0;
 		} else {
 			rect = QRectF(x[0] - fW, y[0], 2*fW, 2*fH);			fA = 0;
-			mode = 1;
+        //	mode = 1;
 		}
 	} else if(x[0] == left && y[0] == bottom) {
 		if(nRelation > 0) {
 			rect = QRectF(x[0] - fW, y[0] - 2*fH, 2*fW, 2*fH);	fA = 270;
-			mode = 2;
+        //	mode = 2;
 		} else {
 			rect = QRectF(x[0], y[0] - fH, 2*fW, 2*fH);			fA = 90;
-			mode = 3;
+        //	mode = 3;
 		}
 	} else if(x[0] == right && y[0] == bottom) {
 		if(nRelation > 0) {
 			rect = QRectF(x[0] - fW, y[0] - 2*fH, 2*fW, 2*fH);	fA = 180;
-			mode = 4;
+        //	mode = 4;
 		} else {
-			mode = 5;
+        //	mode = 5;
 			rect = QRectF(x[0] - 2*fW, y[0] - fH, 2*fW, 2*fH);	fA = 0;
 			if(L0 - 10*L1 > 0 ||  L0 - 10*L2 > 0) {
 				status = -1;
@@ -483,10 +483,10 @@ void DopplerPart::DrawCurveTo(QPainter& painter, QPointF pt1_, QPointF pt2_, QPo
 	} else if(x[0] == right && y[0] == top) {
 		if(nRelation > 0) {
 			rect = QRectF(x[0] - 2*fW, y[0] - fH, 2*fW, 2*fH);	fA = 270;
-			mode = 6;
+        //	mode = 6;
 		} else {
 			rect = QRectF(x[0] - fW, y[0], 2*fW, 2*fH);			fA = 90;
-			mode = 7;
+        //	mode = 7;
 		}
 	}
 	fA *= 16;
@@ -499,9 +499,8 @@ void DopplerPart::DrawCurveTo(QPainter& painter, QPointF pt1_, QPointF pt2_, QPo
 	}
 	m_ptCur = pt3_;
 }
-//***************************************************************************************************************
-//***************************************************************************************************************
-//***************************************************************************************************************
+
+//*********************************************//
 void DopplerPart::DrawNccPart(QPainterPath& path)
 {
 	//int _nRet = GetNccCmdList(m_listCmd);
@@ -717,30 +716,30 @@ void DopplerPart::DrawCurveTo(QPainterPath& path, QPointF pt1_, QPointF pt2_, QP
 	double fH  = bottom - top;
 
 	int nRelation = GetPositionRelationForLine(x[0], y[0], x[2], y[2], x[1], y[1]);
-	int mode = 0;
+    //int mode = 0;
 	int status = 0;
 	if(x[0] == left && y[0] == top)	{
 		if(nRelation > 0) {
 			rect = QRectF(x[0], y[0] - fH, 2*fW, 2*fH);			fA = 180;
-			mode = 0;
+        //	mode = 0;
 		} else {
 			rect = QRectF(x[0] - fW, y[0], 2*fW, 2*fH);			fA = 0;
-			mode = 1;
+        //	mode = 1;
 		}
 	} else if(x[0] == left && y[0] == bottom) {
 		if(nRelation > 0) {
 			rect = QRectF(x[0] - fW, y[0] - 2*fH, 2*fW, 2*fH);	fA = 270;
-			mode = 2;
+        //	mode = 2;
 		} else {
 			rect = QRectF(x[0], y[0] - fH, 2*fW, 2*fH);			fA = 90;
-			mode = 3;
+        //	mode = 3;
 		}
 	} else if(x[0] == right && y[0] == bottom) {
 		if(nRelation > 0) {
 			rect = QRectF(x[0] - fW, y[0] - 2*fH, 2*fW, 2*fH);	fA = 180;
-			mode = 4;
+        //	mode = 4;
 		} else {
-			mode = 5;
+        //	mode = 5;
 			rect = QRectF(x[0] - 2*fW, y[0] - fH, 2*fW, 2*fH);	fA = 0;
 			if(L0 - 10*L1 > 0 ||  L0 - 10*L2 > 0) {
 				status = -1;
@@ -749,10 +748,10 @@ void DopplerPart::DrawCurveTo(QPainterPath& path, QPointF pt1_, QPointF pt2_, QP
 	} else if(x[0] == right && y[0] == top) {
 		if(nRelation > 0) {
 			rect = QRectF(x[0] - 2*fW, y[0] - fH, 2*fW, 2*fH);	fA = 270;
-			mode = 6;
+        //	mode = 6;
 		} else {
 			rect = QRectF(x[0] - fW, y[0], 2*fW, 2*fH);			fA = 90;
-			mode = 7;
+        //	mode = 7;
 		}
 	}
 

@@ -157,6 +157,7 @@ int CalIMRCursor(int nGroupId_ , float* pResult_)
 
 int CalPDist(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResult_ )
 {
+    Q_UNUSED(eGate_)
 	int ret = 0;
 
 	ParameterProcess* _process = ParameterProcess::Instance() ;
@@ -227,6 +228,8 @@ int CalVsDist(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResu
 
 int CalLTimes(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResult_ )
 {
+    Q_UNUSED(nLaw_);
+    Q_UNUSED(eGate_);
 	int ret = 0;
 
 	ParameterProcess* _process = ParameterProcess::Instance() ;

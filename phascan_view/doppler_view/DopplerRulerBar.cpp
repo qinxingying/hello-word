@@ -460,6 +460,7 @@ void DopplerRulerBar::drawBottomSlider(QPainter& painter)
 
 void DopplerRulerBar::enterEvent(QEvent* event)
 {
+    Q_UNUSED(event);
 	QPoint _point =  this->mapFromGlobal(QCursor::pos());
 	sliderDispPro(_point);
 	update();
@@ -467,6 +468,7 @@ void DopplerRulerBar::enterEvent(QEvent* event)
 
 void DopplerRulerBar::leaveEvent(QEvent* event)
 {
+    Q_UNUSED(event);
 	if(!m_bSliderDrag)
 		m_bSliderON = false;
 	update();

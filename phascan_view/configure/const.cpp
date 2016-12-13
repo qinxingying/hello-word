@@ -234,8 +234,8 @@ QDate GetSysTime(void)
 	return getDate(_strTime);
 #endif
 }
-#include <QtNetwork/QNetworkInterface>
 
+#include <QtNetwork/QNetworkInterface>
 const char INFOSWITCH[10] = {'M','N','O','P','Q','R','S','T','U','V'};
 void GetHardwareInfo(char* strInfo_)
 {

@@ -671,6 +671,7 @@ void Doppler3DAll::drawWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdoub
 
 void Doppler3DAll::drawIShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_)
 {
+    Q_UNUSED(bMirroring_);
     GLdouble _sign = 1;
     if(!bPositive_)
         _sign = -1;
@@ -775,6 +776,7 @@ void Doppler3DAll::drawVShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, 
 
 void Doppler3DAll::drawDoubleVShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_)
 {
+    Q_UNUSED(bMirroring_);
     GLdouble _sign = 1;
     if(!bPositive_)
         _sign = -1;
@@ -955,9 +957,9 @@ void Doppler3DAll::drawUShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, 
     *x2_ = _pt1[3].x;
 }
 
-void Doppler3DAll::drawDoubleUShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_)
-{
-}
+//void Doppler3DAll::drawDoubleUShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_)
+//{
+//}
 
 void Doppler3DAll::drawDefect(GLdouble y0_)
 {
@@ -1029,8 +1031,8 @@ void Doppler3DAll::drawDefectAzimuthal(GLdouble y0_)
     //GLdouble  _fScanStart = m_pConfig->common.scanner.fScanStart;
     GLdouble  _fScanStep = m_pConfig->common.scanner.fScanStep;
 
-	ParameterProcess* _process = ParameterProcess::Instance();
-	int _nScanMax = _process->GetScanMax();
+//	ParameterProcess* _process = ParameterProcess::Instance();
+//	int _nScanMax = _process->GetScanMax();
 
     GLdouble _nAngles[256];
     GLdouble _fSin[256];
@@ -1134,8 +1136,8 @@ void Doppler3DAll::drawDefectLiner(GLdouble y0_)
     //GLdouble  _fScanStart = m_pConfig->common.scanner.fScanStart;
     GLdouble  _fScanStep = m_pConfig->common.scanner.fScanStep;
 
-	ParameterProcess* _process = ParameterProcess::Instance();
-	int _nScanMax = _process->GetScanMax();
+//	ParameterProcess* _process = ParameterProcess::Instance();
+//	int _nScanMax = _process->GetScanMax();
 
     WDATA* _pData  = m_process->GetShadowDataPointer();// + _nGroupOffset;
     if(!_pData) return ;

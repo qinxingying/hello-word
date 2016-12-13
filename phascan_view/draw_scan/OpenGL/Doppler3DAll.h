@@ -59,7 +59,7 @@ private:
     void drawVShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_);
     void drawDoubleVShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_);
     void drawUShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_);
-    void drawDoubleUShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_);
+ //   void drawDoubleUShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_);
 
     void drawDefect(GLdouble y0_);
     void drawDefectAzimuthal(GLdouble y0_);

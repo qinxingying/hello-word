@@ -2,7 +2,7 @@
 #include <QFile>
 #include <QDir>
 
-#define TABLE_WIDTH				800
+#define TABLE_WIDTH	  800
 char tableWidth[256];
 
 const char* g_strReportDir	  = "data/Report/"  ;

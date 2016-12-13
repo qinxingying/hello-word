@@ -30,5 +30,6 @@ void GYSplitter::timerEvent( QTimerEvent *event )
 
 	if(m_nTimerId != 0)
 		killTimer(m_nTimerId);
+    Q_UNUSED(event);
 }
 

@@ -386,10 +386,10 @@ void DopplerConfigure::ResetShadowData()
 		common.scanner.fScanStop  = comTmp.scanner.fScanStop  + _fMaxOff;	/**/
     }
 
-	int _nChanOffTmp[setup_MAX_GROUP_QTY];
-	for(int i = 0; i < _nQty; i++) {
-		_nChanOffTmp[i] = common.nScanOff[i];
-	}
+//    int _nChanOffTmp[setup_MAX_GROUP_QTY];
+//	for(int i = 0; i < _nQty; i++) {
+//        _nChanOffTmp[i] = common.nScanOff[i];
+//	}
 
 	int _nOffTab[setup_MAX_GROUP_QTY];
 	int _nMin = 2000000000;
@@ -560,9 +560,7 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 
 	MATERIAL& _material  = _part.material ;			   /* ²ÄÁÏ */
     strcpy(_material.strName, "Steel common") ;
-//	strcpy(_material.strName[1] , "ÆÕÍ¨¸Ö") ;
-//	strcpy(_material.strName[2] , " ") ;
-//	strcpy(_material.strName[3] , " ") ;
+
 	_material.fVelocityLon = 5920 ;
 	_material.fVelocityTran= 3230 ;
 	_material.fDensity	 = 7.9  ;
@@ -1459,6 +1457,7 @@ float DopplerConfigure::DefectDepthValue(int iGroupId_, int index_)
 
 float DopplerConfigure::DefectDepthPos(int iGroupId_, int index_)
 {
+    Q_UNUSED(index_);
 	DEFECT_INFO* _pDfInfo = &m_dfParam[iGroupId_].dfInfo;
 
 	float _fDepth = -1;

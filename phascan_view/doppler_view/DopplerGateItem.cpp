@@ -158,6 +158,7 @@ void DopplerGateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
 void DopplerGateItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_)
 {
+    Q_UNUSED(bSel_);
 	QPen _pen = painter->pen();
 	_pen.setColor(cColor_) ;
 	painter->setPen(_pen);
@@ -187,5 +188,3 @@ void DopplerGateItem::SetItemGeometry (QRectF& rect_)
 		break;
 	}
 }
-
-

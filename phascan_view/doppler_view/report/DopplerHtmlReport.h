@@ -29,8 +29,8 @@ struct ReportValueItem
     float fPos ;
     int   nGroupId ;
     int   nLawId   ;
-    QString szValue[5] ;
-    QString szPixmap   ;
+    QString szValue[5];
+    QString szPixmap;
 } ;
 
 

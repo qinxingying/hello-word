@@ -1366,7 +1366,8 @@ float ParameterProcess::GetScanSpeed()
 
 void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , double* fStart_ , double* fStop_, double* fSliderStart_ , double* fSliderStop_)
 {
-	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
+    Q_UNUSED(nGroupId_);
+//	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
 	//float      _fScanOff = _group.fScanOffset;
 
 	SCANNER& _scan = m_pConfig->common.scanner  ;

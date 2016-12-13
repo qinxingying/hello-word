@@ -188,16 +188,16 @@ void MainWindow::SetStatusBarMessage(int nId_ , QString& str_)
 
 void MainWindow::slotsLeftTabButton(Qt::MouseButton btn_)
 {
-        return ;
-        if(btn_ == Qt::LeftButton)
-        {
-                DialogAddOneGroup _dlg(this) ;
-                int ret = _dlg.exec();
-                if(ret)
-                {
-                        AddOneGroup() ;
-                }
+    //   return ;
+    if(btn_ == Qt::LeftButton)
+    {
+        DialogAddOneGroup _dlg(this) ;
+        int ret = _dlg.exec();
+
+        if(ret){
+            AddOneGroup();
         }
+    }
 }
 
 void MainWindow::slotLeftTabRightButtonDoubleClicked(int)

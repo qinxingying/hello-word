@@ -146,9 +146,9 @@ DopplerGraphicView::~DopplerGraphicView()
 
 static QRect mRect ;
 
-void DopplerGraphicView::timerEvent( QTimerEvent *event )
-{
-}
+//void DopplerGraphicView::timerEvent( QTimerEvent *event )
+//{
+//}
 
 void DopplerGraphicView::InitGraphicView(const QSize& cSize_)
 {

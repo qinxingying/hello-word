@@ -19,9 +19,7 @@ protected:
     QPainterPath shape() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
     void DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_);
-    //void mouseMoveEvent(QGraphicsSceneMouseEvent *event) ;
-    //void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+ //   void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
     QRectF         m_rect   ;
     QColor         m_cColor ;

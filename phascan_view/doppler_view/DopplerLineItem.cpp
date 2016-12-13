@@ -20,8 +20,9 @@ DopplerLineItem::DopplerLineItem(const QColor& cColor_)
 
 	m_cColor   = cColor_;
 	setZValue(g_nZValue);
-	SetMoveType(LINE_MOVE_NO) ;
-	m_eStype = Qt::SolidLine  ;
+    SetMoveType(LINE_MOVE_NO);
+    m_eStype = Qt::SolidLine;
+    m_eLineType = LINE_TYPE::LINE_FREE;
 }
 
 void DopplerLineItem::SetLineType(LINE_TYPE eType_)
@@ -239,6 +240,7 @@ void DopplerLineItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void DopplerLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
+    Q_UNUSED(event);
 	/*
 	if(m_eMoveType) {
 		QPointF  _posItem = event->pos()  ;
@@ -369,23 +371,25 @@ void DopplerLineItem::SetScenceSize(QSize size_)
 QRectF DopplerLineItem::GetCursorValidArea()
 {
 	QPointF _pos = GetItemScenePos();
-	QRectF _rect(0,0,0,0);
-	QGraphicsScene* _pScene = scene () ;
+    QRectF _rect(0, 0, 0, 0);
+    QGraphicsScene* _pScene = scene();
 
-	switch (m_eLineType)
-	{
-	case LINE_VERTICAL:
-	_rect.setLeft(_pos.x() - g_nRectSize);
-	_rect.setTop(0);
-	_rect.setWidth(2*g_nRectSize);
-	_rect.setHeight(_pScene->height());
-	break;
+    switch(m_eLineType)
+    {
+    case LINE_FREE:
+        break;
+    case LINE_VERTICAL:
+        _rect.setLeft(_pos.x() - g_nRectSize);
+        _rect.setTop(0);
+        _rect.setWidth(2*g_nRectSize);
+        _rect.setHeight(_pScene->height());
+        break;
 	case LINE_HORIZENTAL:
-	_rect.setLeft(0);
-	_rect.setTop(_pos.y()-g_nRectSize);
-	_rect.setWidth(_pScene->width());
-	_rect.setHeight(2*g_nRectSize);
-	break;
+        _rect.setLeft(0);
+        _rect.setTop(_pos.y()-g_nRectSize);
+        _rect.setWidth(_pScene->width());
+        _rect.setHeight(2*g_nRectSize);
+        break;
 	};
 
 	return _rect;
@@ -395,7 +399,7 @@ Qt::CursorShape DopplerLineItem::GetCursorShape(QPointF posCursor_)
 {
 	if(!m_eMoveType)  return Qt::ArrowCursor;
 
-	QPointF _pos = GetItemScenePos();
+//	QPointF _pos = GetItemScenePos();
 	QRectF _rect = GetCursorValidArea();
 
 	if(posCursor_.x() < _rect.left())		return Qt::ArrowCursor;

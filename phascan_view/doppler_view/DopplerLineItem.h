@@ -18,7 +18,7 @@ public:
     };
     enum LINE_TYPE
     {
-        LINE_FREE ,
+        LINE_FREE,
         LINE_VERTICAL ,
         LINE_HORIZENTAL
     };

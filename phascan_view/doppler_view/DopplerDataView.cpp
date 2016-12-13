@@ -405,8 +405,8 @@ void DopplerDataView::CreateComponent()
 
 	connect(m_pGraphicView , SIGNAL(signalTofdDragProAction(QPointF, QPointF)) , SLOT(slotTofdDragProAction(QPointF, QPointF))) ;
 
-	connect(m_pRulers[DATA_VIEW_RULER_LEFT]   , SIGNAL(signalRulerMoved(double, double)) , SLOT(slotLeftRulerMoved(double, double))) ;
-	connect(m_pRulers[DATA_VIEW_RULER_BOTTOM] , SIGNAL(signalRulerMoved(double, double)) , SLOT(slotBottomRulerMoved(double, double))) ;
+//	connect(m_pRulers[DATA_VIEW_RULER_LEFT]   , SIGNAL(signalRulerMoved(double, double)) , SLOT(slotLeftRulerMoved(double, double))) ;
+//	connect(m_pRulers[DATA_VIEW_RULER_BOTTOM] , SIGNAL(signalRulerMoved(double, double)) , SLOT(slotBottomRulerMoved(double, double))) ;
 	setLayout(m_pLayout);
 }
 
@@ -494,63 +494,62 @@ void DopplerDataView::slotTofdDragProAction(QPointF ptS_, QPointF ptE_)
 	g_pMainWnd->RunDrawThreadOnce(false);
 }
 
-void DopplerDataView::slotLeftRulerMoved(double nStart_, double nStop_)
-{
-/*	if(m_pGraphicView->GetZoomStatus())
-	{
-		double _nStart , _nStop, _nSliderStart , _nSliderStop;
-		//m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
-		m_pRulers[DATA_VIEW_RULER_BOTTOM]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
-		QRect rect = m_pGraphicView->GetZoomRect();
-		int _iH = rect.height();
-		m_pGraphicView->slotResetView();
+//void DopplerDataView::slotLeftRulerMoved(double nStart_, double nStop_)
+//{
+//	if(m_pGraphicView->GetZoomStatus())
+//	{
+//		double _nStart , _nStop, _nSliderStart , _nSliderStop;
+//		//m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+//		m_pRulers[DATA_VIEW_RULER_BOTTOM]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+//		QRect rect = m_pGraphicView->GetZoomRect();
+//		int _iH = rect.height();
+//		m_pGraphicView->slotResetView();
 
-		QPointF _pt1 = QPointF(_nStart, nStart_);
-		QPointF _pt2 = QPointF(_nStop, nStop_);
-		_pt1 = TranslateToScenePlan(&_pt1);
-		_pt2 = TranslateToScenePlan(&_pt2);
+//		QPointF _pt1 = QPointF(_nStart, nStart_);
+//		QPointF _pt2 = QPointF(_nStop, nStop_);
+//		_pt1 = TranslateToScenePlan(&_pt1);
+//		_pt2 = TranslateToScenePlan(&_pt2);
 
-		float x1 = GYMIN(_pt1.x(), _pt2.x());
-		float x2 = GYMAX(_pt1.x(), _pt2.x());
-		float y1 = GYMIN(_pt1.y(), _pt2.y());
-		float y2 = GYMAX(_pt1.y(), _pt2.y());
+//		float x1 = GYMIN(_pt1.x(), _pt2.x());
+//		float x2 = GYMAX(_pt1.x(), _pt2.x());
+//		float y1 = GYMIN(_pt1.y(), _pt2.y());
+//		float y2 = GYMAX(_pt1.y(), _pt2.y());
 
-		//QRect rect(x1, y1, x2 - x1, y2 - y1);
-		rect.setTop(y1);
-		//rect.setBottom(y2);
-		rect.setHeight(_iH);
-		m_pGraphicView->zoomAction(rect);
-	}*/
-}
+//		//QRect rect(x1, y1, x2 - x1, y2 - y1);
+//		rect.setTop(y1);
+//		//rect.setBottom(y2);
+//		rect.setHeight(_iH);
+//		m_pGraphicView->zoomAction(rect);
+//	}
+//}
 
-void DopplerDataView::slotBottomRulerMoved(double nStart_, double nStop_)
-{
-/*	if(m_pGraphicView->GetZoomStatus())
-	{
-		double _nStart , _nStop, _nSliderStart , _nSliderStop;
-		m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
-		QRect rect = m_pGraphicView->GetZoomRect();
-		int _iW = rect.width();
-		m_pGraphicView->slotResetView();
+//void DopplerDataView::slotBottomRulerMoved(double nStart_, double nStop_)
+//{
+///*	if(m_pGraphicView->GetZoomStatus())
+//	{
+//		double _nStart , _nStop, _nSliderStart , _nSliderStop;
+//		m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+//		QRect rect = m_pGraphicView->GetZoomRect();
+//		int _iW = rect.width();
+//		m_pGraphicView->slotResetView();
 
-		QPointF _pt1 = QPointF(nStart_, _nStart);
-		QPointF _pt2 = QPointF(nStop_, _nStop);
-		_pt1 = TranslateToScenePlan(&_pt1);
-		_pt2 = TranslateToScenePlan(&_pt2);
+//		QPointF _pt1 = QPointF(nStart_, _nStart);
+//		QPointF _pt2 = QPointF(nStop_, _nStop);
+//		_pt1 = TranslateToScenePlan(&_pt1);
+//		_pt2 = TranslateToScenePlan(&_pt2);
 
-		float x1 = GYMIN(_pt1.x(), _pt2.x());
-		float x2 = GYMAX(_pt1.x(), _pt2.x());
-		float y1 = GYMIN(_pt1.y(), _pt2.y());
-		float y2 = GYMAX(_pt1.y(), _pt2.y());
+//		float x1 = GYMIN(_pt1.x(), _pt2.x());
+//		float x2 = GYMAX(_pt1.x(), _pt2.x());
+//		float y1 = GYMIN(_pt1.y(), _pt2.y());
+//		float y2 = GYMAX(_pt1.y(), _pt2.y());
 
-		//QRect rect(x1, y1, x2 - x1, y2 - y1);
-		rect.setLeft(x1);
-		//rect.setBottom(y2);
-		rect.setWidth(_iW);
-		m_pGraphicView->zoomAction(rect);
-	}*/
-
-}
+//		//QRect rect(x1, y1, x2 - x1, y2 - y1);
+//		rect.setLeft(x1);
+//		//rect.setBottom(y2);
+//		rect.setWidth(_iW);
+//		m_pGraphicView->zoomAction(rect);
+//	}*/
+//}
 
 void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
 {
@@ -559,13 +558,6 @@ void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
 	ParameterProcess* _process = ParameterProcess::Instance();
 	double _nStart = _process->SAxisIndexToDist(nStart_);
 	double _nStop  = _process->SAxisIndexToDist(nStop_);
-
-	//DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	//GROUP_CONFIG& _group = _pConfig->group[m_nGroupId];
-	//float      _fScanOff = _group.fScanOffset;
-
-	//_nStart += _fScanOff;
-	//_nStop  += _fScanOff;
 
 	double _nSliderStart , _nSliderStop;
 
@@ -599,35 +591,13 @@ void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
 	this->update();
 }
 
-
-const char* g_strMenuItem[4][2] =
-{
-	{QT_TR_NOOP("Setting") , ":/icon/menu/resource/Menu/0-27.png"} ,
-	{QT_TR_NOOP("Delete")  , ":/icon/menu/resource/Menu/0-28.png"} ,
-	{QT_TR_NOOP("Splitter V") , ":/icon/menu/resource/Menu/0-29.png"} ,
-	{QT_TR_NOOP("Splitter H") , ":/icon/menu/resource/Menu/0-30.png"}
-} ;
-
 void DopplerDataView::mouseReleaseEvent(QMouseEvent* event)
 {
 	if(Qt::RightButton != event->button()) return ;
 
 	if(m_pItemsGroup) {
 		m_pItemsGroup->UpdateItems();
-	}
-
-	//QMenu menu(this);
-	//for(int i = 0 ; i < 4 ; i++)
-	//{
-	//	QAction* _action = menu.addAction(QIcon(g_strMenuItem[i][1]) , QString(g_strMenuItem[i][0]));
-	//	_action->setData(i);
-	//}
-
-	//QAction* action = menu.exec(event->globalPos());
-	//if(action)
-	//{
-	//	emit signalViewFrameMenuSelection(this , action->data().toInt());
-	//}
+    }
 }
 
 void DopplerDataView::mousePressEvent (QMouseEvent* )

@@ -66,6 +66,7 @@ void DopplerGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* /*event*/)
 //
 void DopplerGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
     setSelected(false);
 }
 

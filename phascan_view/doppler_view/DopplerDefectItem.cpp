@@ -95,6 +95,7 @@ void DopplerDefectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 }
 void DopplerDefectItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_)
 {
+    Q_UNUSED(bSel_);
 	QPen _pen = painter->pen();
 	_pen.setColor(cColor_) ;
 	painter->setPen(_pen);
@@ -131,24 +132,12 @@ void DopplerDefectItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_
 	painter->drawText(0 , -4 , _str );
 }
 
+//void DopplerDefectItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+//{
+//	//setSelected(false);
+//	//update();
+//}
 
-/*
-void DopplerDefectItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	DopplerGraphicsItem::mousePressEvent(event) ;
-	mouseMoveEvent(event) ;
-}
-*/
-void DopplerDefectItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
-{
-	//setSelected(false);
-	//update();
-}
-/*
-void DopplerDefectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-}
-*/
 void DopplerDefectItem::SetItemGeometry (QRectF& rect_)
 {
 	QRectF _rect = rect_;

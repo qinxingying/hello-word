@@ -39,7 +39,7 @@ public:
 	//bool   GetBCZoomStatus() {return m_bBCAutoZomm;}
 
 protected:
-    void   timerEvent( QTimerEvent *event );
+ //   void   timerEvent( QTimerEvent *event );
     void   wheelEvent ( QWheelEvent * event ) ;
     void   resizeEvent(QResizeEvent *event) ;
     void   mousePressEvent(QMouseEvent *event);
