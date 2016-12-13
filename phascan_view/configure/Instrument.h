@@ -160,13 +160,12 @@ struct WEDGE_CONFIG
 	unsigned int nWedgeDelay ;
 };
 
-//######################################################################
 struct MATERIAL
 {
-    char   strName[64] ;
+    char   strName[64];
 	float  fVelocityLon;
 	float  fVelocityTran;
-	float  fDensity  ;
+    float  fDensity;
 };
 
 enum setup_WELD_TYPE

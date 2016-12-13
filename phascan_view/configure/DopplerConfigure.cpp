@@ -178,12 +178,12 @@ void DopplerConfigure::OpenEvn()
 		AppEvn.anMeasureSelection[1][4] = 0  ;
 		for(int i = 0 ; i < 8 ; i++)
 		{
-			AppEvn.bShowCursor[i]	= true  ;
-			AppEvn.bShowGate  [i]	= true  ;
-			AppEvn.bShowMeasure[i]   = true  ;
-			AppEvn.bShowWeld[i]	  = false ;
-			AppEvn.bShowThickness[i] = false ;
-			AppEvn.bShowLwBw[i]	  = true  ;
+            AppEvn.bShowCursor[i]	= true ;
+            AppEvn.bShowGate  [i]	= true ;
+            AppEvn.bShowMeasure[i]  = true ;
+            AppEvn.bShowWeld[i]	    = false;
+            AppEvn.bShowThickness[i]= false;
+            AppEvn.bShowLwBw[i]	    = true;
 			AppEvn.bShowDefect[i]	= true;
 		}
 		SetLastDate();
@@ -484,22 +484,22 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_pConfig->eGroupMode  = setup_GROUP_MODE_PA  ;
 	_pConfig->eTravelMode = setup_TRAVEL_MODE_TRUE_DEPTH  ;
 //  _pConfig->eTravelMode = setup_TRAVEL_MODE_TRUE_DEPTH  ;
-	_pConfig->nWedgeDelay	=  0	;
-	_pConfig->fSampleStart   =  0	;
-	_pConfig->fSampleRange   =  48   ;
-	_pConfig->nPointQty	  =  600  ;
-	_pConfig->fVelocity	  =  5920 ;
+    _pConfig->nWedgeDelay  =  0;
+    _pConfig->fSampleStart =  0;
+    _pConfig->fSampleRange =  48;
+    _pConfig->nPointQty	   =  600;
+    _pConfig->fVelocity	   =  5920 ;
 
-	_pConfig->nTimeStart     = 2 * (1000000 * _pConfig->fSampleStart / _pConfig->fVelocity);
-	_pConfig->nTimeRange     = 2 * (1000000 * _pConfig->fSampleRange / _pConfig->fVelocity);
+    _pConfig->nTimeStart   = 2 * (1000000 * _pConfig->fSampleStart / _pConfig->fVelocity);
+    _pConfig->nTimeRange   = 2 * (1000000 * _pConfig->fSampleRange / _pConfig->fVelocity);
 
-	_pConfig->fGain		  =  20	;
+    _pConfig->fGain		   =  20	;
 	_pConfig->fRefGain	   =  0	 ;
 	_pConfig->fSumGain	   =  24.8  ;
 	_pConfig->bPointQtyAuto  = -1;
 	_pConfig->bSumGainAuto   = -1;
 	/* ·¢Éä½ÓÊÕ */
-	_pConfig->nTrigeStart	= 1;
+    _pConfig->nTrigeStart	 = 1;
 	_pConfig->nReceiveStart  = 1;
 
 	_pConfig->eFileter	   = setup_FILTER_AUTO  ;

@@ -1,28 +1,28 @@
 /***************************
   Name:  DopplerConfigure
-  Copyright: Sheng Shen
   Date : 2013-08-26
   Description:   用于操作配置文件，负责配置文件的加载
 				 初始化，和保存
-				 .............
 ************************************/
 
 
 #ifndef DOPPLERCONFIGURE_H
 #define DOPPLERCONFIGURE_H
 
-#include <QObject>
 #include "const.h"
 #include "Struct.h"
-#include <QList>
 #include "DopplerDataFileOperateor.h"
 #include "FileStruct.h"
+#include "Instrument.h"
 //#include <report/DopplerHtmlReport.h>
+
+#include <QObject>
+#include <QList>
 
 class DopplerHtmlReport ;
 enum PALETTE_NAME
 {
-	PALETTE_AMP =0 ,
+    PALETTE_AMP = 0 ,
 	PALETTE_THICKNESS ,
 	PALETTE_RECTIFY ,
 	PALETTE_NAME_MAX
@@ -51,9 +51,6 @@ struct FOCALLAW_RESULT
 	float afRefractPosZ[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*入射点坐标 */
 };
 
-/****************************************************
-	
-****************************************************/
 enum DEFECT_SIGN_TYPE
 {
 	DEFECT_SIGN_LENGTH = 0 ,
@@ -63,9 +60,6 @@ enum DEFECT_SIGN_TYPE
 //	DEFECT_SIGN_DELETE
 };
 
-/****************************************************
-	
-****************************************************/
 struct DEFECT_INFO
 {
 	DEFECT_INFO *pPrev;
@@ -86,7 +80,7 @@ struct DEFECT_INFO
 
 	float fIStart;
 	float fIStop;
-//----------------------------------------
+
 	int   nLawNo;
 	char  m_strMeasure[5][50]  ;
 };
@@ -104,6 +98,7 @@ struct DEFECT_PARAM
 class DopplerConfigure : public QObject
 {
 	Q_OBJECT
+
 public:
 	~DopplerConfigure () ;
 	static   DopplerConfigure* Instance() ;
@@ -160,6 +155,7 @@ public:
 	//--------------------------------------------------
 
 	void SaveEvn() ;
+
 protected:
 	explicit DopplerConfigure(QObject *parent = 0);
 	void OpenEvn() ;
@@ -167,23 +163,26 @@ protected:
 	static   DopplerConfigure* m_pConfig   ;
 	DopplerDataFileOperateor* m_pDataFile  ;
 	DopplerHtmlReport* m_pReport  ;
+
 public:
 	FILE_HEADER			header ;   //
 	COMMON_CONFIG		common ;   //
 	COMMON_CONFIG		comTmp ;   //
 	GROUP_CONFIG		group[setup_MAX_GROUP_QTY+1] ;
 	FOCALLAW_RESULT		focallaw[setup_MAX_GROUP_QTY] ;
+
 private:
 	WDATA*				m_pData ;
 	WDATA*				m_pDataShadow ;
 	U8					m_nComDisplay[4];
+
 public:
-	QList<MATERIAL*>*	m_listMaterial;
+    QList<MATERIAL*>*	m_listMaterial;
 	TOFD_PARA			TOFD[setup_MAX_GROUP_QTY] ;
 	QString				m_szFileInUse;
 	QString				m_szDefectPathName;
 
-	SYSTEM_ENVIRMENT	AppEvn  ;
+    SYSTEM_ENVIRMENT	AppEvn;
 	DEFECT_PARAM		m_dfParam[setup_MAX_GROUP_QTY];
 	int					m_nCutBmpNo[setup_MAX_GROUP_QTY];
 

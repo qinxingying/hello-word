@@ -65,7 +65,7 @@ struct TOFD_PARA
 	TOFD_PRO_INFO   proInfo[9];
 	int iProCnt;
 	int iSaftBuf[8192*40];
-}  ;
+};
 
 extern "C" DOPPLER_EXPORT void sleep(unsigned int msec);
 extern "C" DOPPLER_EXPORT float GetDepth(float h_, float ply_);

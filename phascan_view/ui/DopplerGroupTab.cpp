@@ -90,9 +90,8 @@ void DopplerGroupTab::UpdateVelocitySelection()
 	ui->ComVelocitySelection->clear();
 
 	QString _strTmp[3];
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	int _iLang = _pConfig->AppEvn.eLanguage;
-	_strTmp[0] = _material.strName[_iLang] ;
+
+    _strTmp[0] = _material.strName;
 
 	_strTmp[1].sprintf("[L]%.0f" , _material.fVelocityLon) ;
 	_strTmp[2].sprintf("[T]%.0f" , _material.fVelocityTran) ;
@@ -107,9 +106,6 @@ void DopplerGroupTab::InitComBoxMaterialSelection()
 	QList<MATERIAL*>* _list = m_pConfig->m_listMaterial ;
 	ui->ComMaterial->clear();
 	QStringList _strList;
-
-//	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-//	int _iLang = _pConfig->AppEvn.eLanguage;
 
 	int _nIndex = 0;
 	for(int i = 0 ; i< _list->count() ; i++)
@@ -681,7 +677,7 @@ void DopplerGroupTab::UpdateGroupConfig ()
 	ui->ComTravelMode->setCurrentIndex(m_pGroup->eTravelMode);
 	ui->ComTxRxMode->setCurrentIndex(m_pGroup->eTxRxMode);
 
-	UpdateVelocitySelection() ;
+    UpdateVelocitySelection();
 	ui->ValuePulser->setValue(m_pGroup->nTrigeStart);
 	ui->ValueReceiver->setValue(m_pGroup->nReceiveStart);
 	ui->ComFilter->setCurrentIndex(m_pGroup->eFileter);
