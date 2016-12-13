@@ -50,11 +50,12 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 
     SetWndName();
 
-	UpdateGroupConfig ();
+    UpdateMeasureBox();
+    UpdateGroupConfig();
 	ui->toolBox->setCurrentIndex(0);
-	CreateSettingView ();
-	// 使窗口不使能  只作数据显示用
-	SetWidgetInvalide() ;
+    CreateSettingView();
+
+    SetWidgetInvalide(); // 使窗口不使能  只作数据显示用
 }
 
 DopplerGroupTab::~DopplerGroupTab ()
@@ -664,7 +665,7 @@ void DopplerGroupTab::UpdateDefectValue()
 /****************************************************************************
   Description: 组参数同步
 *****************************************************************************/
-void DopplerGroupTab::UpdateGroupConfig ()
+void DopplerGroupTab::UpdateGroupConfig()
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
 
