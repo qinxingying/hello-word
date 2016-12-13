@@ -63,6 +63,7 @@ static const WEDGE_CONFIG  DEFAULT_WEDGE_PA  =
 	0 , 0 ,
 };
 
+const char* materialName = QT_TRANSLATE_NOOP("DopplerConfigure", "Steel common");
 
 static const WEDGE_CONFIG  DEFAULT_WEDGE_UT  =
 {
@@ -476,7 +477,6 @@ void DopplerConfigure::InitCommonConfig()
 	InitGroupConfig(0);
 }
 
-
 void DopplerConfigure::InitGroupConfig(int nGroupId_)
 {
 	GROUP_CONFIG* _pConfig = &group[nGroupId_]  ;
@@ -558,8 +558,8 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_part.afSize[0] = 20  ;
 	_part.afSize[1] = _part.afSize[2] = 100 ;
 
-	MATERIAL& _material  = _part.material ;			   /* ²ÄÁÏ */
-    strcpy(_material.strName, "Steel common") ;
+    MATERIAL& _material  = _part.material ;
+    strcpy(_material.strName, materialName);
 
 	_material.fVelocityLon = 5920 ;
 	_material.fVelocityTran= 3230 ;
@@ -1198,6 +1198,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 		}
 		_ret = AddDefectInfo(iGroupId_, m_dfParam[iGroupId_].dfInfo);
 		ClearDefectInfo(iGroupId_);
+
 		if(_ret >= 0) {
 			int _index = GetDefectCnt(iGroupId_)-1;
 			DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, _index);

@@ -6,18 +6,21 @@
 #ifndef DOPPLERGROUPTAB_H
 #define DOPPLERGROUPTAB_H
 
+#include "const.h"
+#include "ParameterProcess.h"
+#include "Instrument.h"
+#include "DopplerConfigure.h"
+
 #include <QWidget>
 #include <QModelIndex>
-#include <configure/const.h>
-#include <process/ParameterProcess.h>
 #include <QtGui>
 #include <QLabel>
 #include <QDoubleSpinBox>
-#include <Instrument.h>
 
-class QToolBox ;
-class DopplerConfigure ;
+class QToolBox;
+class DopplerConfigure;
 class QStandardItemModel;
+
 namespace Ui {
     class DopplerGroupTab;
 }
@@ -29,13 +32,14 @@ class DopplerGroupTab : public QWidget
 public:
     explicit DopplerGroupTab(QWidget *parent = 0);
     ~DopplerGroupTab();
+
     void SetGroupId(int nGroupId_) ;
     QToolBox* GetToolBox() const ;
     void UpdateCursorValue();
     void UpdateDefectBox();
     void UpdateDefectValue();
     void SetWndName();
-    void UpdateGroupConfig () ;
+    void UpdateGroupConfig();
 
 	void UpdateCurrentAngleCom();
 	void UpdateTofdParam();
@@ -63,9 +67,9 @@ protected:
     void FocusPositionAlign();
     void AngleAlign();
     int  m_nGroupId;
-    DopplerConfigure*  m_pConfig ;
-    GROUP_CONFIG*      m_pGroup  ;
-    QStandardItemModel *model    ;
+    DopplerConfigure*  m_pConfig;
+    GROUP_CONFIG*      m_pGroup;
+    QStandardItemModel *model;
 
     QLabel*			m_pSizingCurveName[setup_DAC_POINT_QTY];
 	QDoubleSpinBox* m_pSizingCurveValue[setup_DAC_POINT_QTY];

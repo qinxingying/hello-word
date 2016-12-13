@@ -445,6 +445,7 @@ void DopplerGroupTab::SetWidgetInvalide()
     ui->ValuePartSize3->setDisabled(true);
     ui->CheckUnifiedPartSetting->setDisabled(true);
 
+    ui->lineEditReMark->setDisabled(true);
     ui->ValueDefectLStart->setDisabled(true);
     ui->ValueDefectLength->setDisabled(true);
     ui->ValueDefectHStart->setDisabled(true);
@@ -571,6 +572,7 @@ void DopplerGroupTab::UpdateCursorValue()
 	_process->GetTofdDepth(m_nGroupId , 1 , &_tofd->fDepthCal);
 	ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
 }
+
 void DopplerGroupTab::UpdateDefectBox()
 {
 	DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
@@ -601,58 +603,48 @@ void DopplerGroupTab::UpdateDefectBox()
 
 void DopplerGroupTab::UpdateDefectValue()
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    DopplerConfigure* pConfig = DopplerConfigure::Instance();
+    int _iCnt = pConfig->GetDefectCnt(m_nGroupId);
 
-	ui->lineEditReMark->setText(QString(tr("")));
-	ui->lineEditReMark->setEnabled(false);
-	ui->ValueDefectLStart->setValue(0);
-	ui->ValueDefectLength->setValue(0);
-	ui->ValueDefectHStart->setValue(0);
-	ui->ValueDefectHeight->setValue(0);
-	ui->ValueDefectWStart->setValue(0);
-	ui->ValueDefectWidth->setValue(0);
+    if(_iCnt > 0){
+        int _index = pConfig->m_dfParam[m_nGroupId].index;
 
-	int _iCnt = _pConfig->GetDefectCnt(m_nGroupId);
-	if(_iCnt > 0)
-	{
-		int   _index = _pConfig->m_dfParam[m_nGroupId].index;
 		if(_index < 0)		_index = 0;
 		if(_index >= _iCnt) _index = _iCnt - 1;
 
-		char *_pInfo = _pConfig->GetDefectInfo(m_nGroupId, _index);
+        char *_pInfo = pConfig->GetDefectInfo(m_nGroupId, _index);
 		ui->lineEditReMark->setText(QString(tr(_pInfo)));
 		ui->lineEditReMark->setEnabled(true);
 
 		float _fStart = 0;
 		float  _fData = 0;
+        _fData = pConfig->DefectLengthValue(m_nGroupId, &_fStart, _index);
 
-		_fData = _pConfig->DefectLengthValue(m_nGroupId, &_fStart, _index);
-		if(_fData >= 0)
-		{
-			ui->ValueDefectLStart->setValue(_fStart);
+        if(_fData >= 0){
+            ui->ValueDefectLStart->setValue(_fStart);
 			ui->ValueDefectLength->setValue(_fData);
 		}
 
-		_fData = _pConfig->DefectHeightValue(m_nGroupId, &_fStart, _index);
-		if(_fData >= 0)
-		{
-			float _fDepth = _pConfig->DefectDepthValue(m_nGroupId, _index);
-			if(_fDepth >= 0) {
+        _fData = pConfig->DefectHeightValue(m_nGroupId, &_fStart, _index);
+
+        if(_fData >= 0){
+            float _fDepth = pConfig->DefectDepthValue(m_nGroupId, _index);
+
+            if(_fDepth >= 0){
 				_fStart = _fDepth;
 			}
+
 			ui->ValueDefectHStart->setValue(_fStart);
 			ui->ValueDefectHeight->setValue(_fData);
 		}
 
-		_fData = _pConfig->DefectWidthValue(m_nGroupId, &_fStart, _index);
-		if(_fData >= 0)
-		{
+        _fData = pConfig->DefectWidthValue(m_nGroupId, &_fStart, _index);
+
+        if(_fData >= 0){
 			ui->ValueDefectWStart->setValue(_fStart);
 			ui->ValueDefectWidth->setValue(_fData);
 		}
-	}
-	else
-	{
+    }else{
 		ui->ValueDefectLStart->setValue(0);
 		ui->ValueDefectLength->setValue(0);
 		ui->ValueDefectHStart->setValue(0);
@@ -744,8 +736,8 @@ void DopplerGroupTab::UpdateGroupConfig()
 	//*********** measure
 	ui->CheckCursorShow->setCheckState(m_pGroup->bShowCursor ? Qt::Checked : Qt::Unchecked );
 	ui->CheckCursorSync->setCheckState(m_pConfig->AppEvn.bSAxisCursorSync ? Qt::Checked : Qt::Unchecked );
-	UpdateCursorValue() ;
-	UpdateDefectValue() ;
+    UpdateCursorValue();
+    UpdateDefectValue();
 
 	ui->ComColorLineSelection->setCurrentIndex(0);
 	ui->ComColorLineColor->setCurrentIndex(m_pGroup->color.anColor[0]);
@@ -1930,7 +1922,7 @@ void DopplerGroupTab::on_ComDefectIndex_currentIndexChanged(int index)
 	if(!ui->ComDefectIndex->hasFocus()) return ;
 	DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
 	_pConfig->m_dfParam[m_nGroupId].index = index;
-	UpdateDefectValue() ;
+    UpdateDefectValue();
 	g_pMainWnd->RunDrawThreadOnce();
 }
 
@@ -1945,6 +1937,7 @@ void DopplerGroupTab::on_lineEditReMark_textChanged(QString str)
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOverlay();
 }
+
 void DopplerGroupTab::on_BtnDefectDelete_clicked()
 {
 	DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;

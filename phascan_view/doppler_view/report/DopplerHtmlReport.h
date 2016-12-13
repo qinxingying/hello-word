@@ -37,7 +37,6 @@ struct ReportValueItem
 class DopplerHtmlReport
 {
 public:
-
     DopplerHtmlReport();
     void InitReportInfo();
     void SetReportInfo(ReportInfo*) ;
@@ -184,11 +183,6 @@ protected:
 
 	char m_strReportDir[1024];
 	char m_strReportLogo[1024];
-
-signals:
-
-public slots:
-
 };
 
 #endif // DOPPLERHTMLREPORT_H
