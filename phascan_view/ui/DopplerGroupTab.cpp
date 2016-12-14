@@ -804,8 +804,8 @@ void DopplerGroupTab::UpdateSizeingCurves()
         m_pSizingCurveName[0]->setText(QString(tr("Mat. Atten:")));
         m_pSizingCurveName[1]->setText(QString(tr("Delay:")));
     } else {
-        m_pSizingCurveName[0]->setText(QString(tr("RefAmplitude:")));
-        m_pSizingCurveName[1]->setText(QString(tr("RefAmplitude:")));
+        m_pSizingCurveName[0]->setText(QString(tr("Ref Amplitude:")));
+        m_pSizingCurveName[1]->setText(QString(tr("Ref Amplitude:")));
     }
 
 	int _nLawId  = (int)m_pGroup->afCursor[setup_CURSOR_LAW]  ;

@@ -12,11 +12,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-
-//	QTextCodec::setCodecForTr(QTextCodec::codecForName("System"));
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("System"));
-//	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("System"));
+//    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 
     MainWindow _mainWindow;
     g_pMainWnd  = &_mainWindow;

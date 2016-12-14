@@ -159,7 +159,6 @@ void DopplerConfigure::OpenEvn()
 
 		GetExePathName1((char*)g_strPartDir, _strPathName);
 		strcpy(AppEvn.strNccFilePath, _strPathName);
-        AppEvn.eLanguage = setup_LANG_ENGLISH;
 		AppEvn.eUnit	 = setup_SOUND_AXIX_UNIT_MM;
 		AppEvn.iTofdDataProMode = 0;
 		AppEvn.bSAxisCursorSync		= true;
@@ -221,9 +220,7 @@ void DopplerConfigure::SaveEvn()
 			AppEvn.anMeasureSelection[0][2] = group[i].aeMeasureType[2] ;
 			AppEvn.anMeasureSelection[0][3] = group[i].aeMeasureType[3] ;
 			AppEvn.anMeasureSelection[0][4] = group[i].aeMeasureType[4] ;
-		}
-		else
-		{
+        }else{
 			AppEvn.anMeasureSelection[1][0] = group[i].aeMeasureType[0] ;
 			AppEvn.anMeasureSelection[1][1] = group[i].aeMeasureType[1] ;
 			AppEvn.anMeasureSelection[1][2] = group[i].aeMeasureType[2] ;

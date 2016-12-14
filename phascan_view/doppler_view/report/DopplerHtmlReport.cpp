@@ -1,11 +1,15 @@
 #include "DopplerHtmlReport.h"
+#include "ParameterProcess.h"
+
 #include <QFile>
 #include <QDir>
+#include <QProcess>
+#include <QStringList>
 
 #define TABLE_WIDTH	  800
 char tableWidth[256];
 
-const char* g_strReportDir	  = "data/Report/"  ;
+const char* g_strReportDir	  = "data/Report/";
 const char* g_strReportLogo   = ":file/resource/report_logo/logo.png"; // data/logo/logo.png
 
 //const char* tableWidth	    = "width=800 style=\"table-layout:fixed\"";
@@ -35,6 +39,19 @@ const char* string_filter[] = {
 		"None"
 };
 
+QString g_strDefect[] =
+{
+    QString(QObject::tr("Defect")),
+    QString(QObject::tr("Remark")),
+    QString(QObject::tr("Index")),
+    QString(QObject::tr("Position start")),
+    QString(QObject::tr("Length")),
+    QString(QObject::tr("Depth start")),
+    QString(QObject::tr("Height")),
+    QString(QObject::tr("Index pos")),
+    QString(QObject::tr("Width"))
+};
+
 DopplerHtmlReport::DopplerHtmlReport()
 {
 	m_pFile = NULL ;
@@ -51,10 +68,10 @@ void DopplerHtmlReport::InitReportInfo()
 {
 	sprintf(tableWidth, "width=%d style=\"table-layout:fixed\"", TABLE_WIDTH);
 	{
-		strcpy(m_cInfo.strPartName   , "Part") ;
-		strcpy(m_cInfo.strPartNo	 , "No. 1") ;
-		strcpy(m_cInfo.strPartPos	, "Part Position") ;
-		strcpy(m_cInfo.strReportName , "Report") ;
+        strcpy(m_cInfo.strPartName, "Part");
+        strcpy(m_cInfo.strPartNo, "No. 1");
+        strcpy(m_cInfo.strPartPos, "Part Position");
+        strcpy(m_cInfo.strReportName, "Report");
 	}
 
 	QDate _date= QDate::currentDate();
@@ -75,12 +92,6 @@ ReportInfo* DopplerHtmlReport::GetReportInfo()
 {
 	return &m_cInfo ;
 }
-
-#include <QProcess>
-#include <QStringList>
-
-
-#include <process/ParameterProcess.h>
 
 void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 {
@@ -115,7 +126,6 @@ void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 	//fprintf(m_pFile,"<td align=left style=\"word-break:break-all; word-wrap:break-word;\" colspan=2>%s</td>\n" , TOCHAR(_str));
 	//fprintf(m_pFile,"</tr>\n");
 	//fprintf(m_pFile,"</table>\n\n");
-
 
 	fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
 	fprintf(m_pFile,"<tr>\n");
@@ -160,18 +170,7 @@ void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 
 	fprintf(m_pFile,"</table>\n</table>\n\n");
 }
-QString g_strDefect[] =
-{
-    QString(QObject::tr("Defect")),
-    QString(QObject::tr("Remark")),
-    QString(QObject::tr("Index")),
-    QString(QObject::tr("Position start")),
-    QString(QObject::tr("Length")),
-    QString(QObject::tr("Depth start")),
-    QString(QObject::tr("Height")),
-    QString(QObject::tr("Index pos")),
-    QString(QObject::tr("Width"))
-};
+
 void DopplerHtmlReport::CreateDefect(int nGroupId_)
 {
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
@@ -924,8 +923,7 @@ void DopplerHtmlReport::fprintfReportGroupCalculator()
 		break;
 	default:
 		break;
-	} ;
-
+    };
 
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -1080,7 +1078,6 @@ void DopplerHtmlReport::SfprintfReportSignature()
 	fprintf(m_pFile , "</table></td></tr>\n</table>\n\n");//table
 }
 
-
 bool DopplerHtmlReport::CopyFileToPath(QString toDir ,QString sourceDir)
 {
 	toDir.replace("\\","/");
@@ -1106,16 +1103,16 @@ bool DopplerHtmlReport::CopyFileToPath(QString toDir ,QString sourceDir)
 
 void DopplerHtmlReport::CreateFolder()
 {
-	QString _str ;
+    QString _str;
 	QDir foder;
-	_str.sprintf("%s" , m_strReportDir ) ;
+    _str.sprintf("%s", m_strReportDir );
 	if(!foder.exists(_str))
-		foder.mkdir(_str)  ;
+        foder.mkdir(_str);
 
 	_str.clear();
-	_str.sprintf("%s%s" , m_strReportDir , TOCHAR(m_strFolder)) ;
+    _str.sprintf("%s%s" , m_strReportDir , TOCHAR(m_strFolder));
 	if(!foder.exists(_str))
-		foder.mkdir(_str)  ;
-	_str.sprintf("%s%s" , TOCHAR(_str), "/logo.png") ;
-	CopyFileToPath(_str , QString(m_strReportLogo));
+        foder.mkdir(_str);
+    _str.sprintf("%s%s", TOCHAR(_str), "/logo.png");
+    CopyFileToPath(_str, QString(m_strReportLogo));
 }
