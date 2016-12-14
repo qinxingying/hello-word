@@ -14,7 +14,7 @@ enum FILE_TYPE
 struct FILE_HEADER
 {
     FILE_TYPE eType ;
-    char strVersion[64] ;
+    char strVersion[64];
 } ;
 
 enum setup_LANG

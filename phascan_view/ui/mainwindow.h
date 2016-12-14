@@ -14,23 +14,22 @@
 #include <QTranslator>
 
 #define MAX_LIST_QTY     10
-class DataRefreshThread ;
-class DopplerGroupTab ;
-class QTabWidget ;
-class QLabel ;
+class DataRefreshThread;
+class DopplerGroupTab;
+class QTabWidget;
+class QLabel;
 class DopplerViewFrame;
-
-class InstrumentSettingWidget  ;
+class InstrumentSettingWidget;
 
 struct STATUS_BAR_INFO
 {
-    int nGroupQty ;
-    int nLawQty   ;
-    int nDataSize ;
+    int nGroupQty;
+    int nLawQty;
+    int nDataSize;
 
-    int nBatery1  ;
-    int nBatery2  ;
-    int nTmperature ;
+    int nBatery1;
+    int nBatery2;
+    int nTmperature;
 } ;
 
 namespace Ui {
@@ -47,15 +46,15 @@ public:
 
     QList<QWidget*>* GetCurrentDisplayTableWidgetList();
     QList<QWidget*>* GetDisplayTableWidgetList(int nIndex_);
-    int  GetDisplayTableQty() const ;
+    int  GetDisplayTableQty() const;
     int  GetDisplayTableIndex() const;
-    void SetStatusBarMessageColor(int nId_, QColor& fgColor_ , QColor& bgColor_) ;
-    void SetStatusBarMessage(int nId_ , QString& str_) ;
-    void UpdateStatusBarInfo() ;
+    void SetStatusBarMessageColor(int nId_, QColor& fgColor_, QColor& bgColor_);
+    void SetStatusBarMessage(int nId_, QString& str_);
+    void UpdateStatusBarInfo();
     void RunDrawThread();
     void RunDrawThreadOnce(bool bUseDrawThread_ = true);
 
-    void UpdateAllDisplay() ;
+    void UpdateAllDisplay();
     int GetCurGroup() {return m_iCurGroup;}
     void SetCurGroup(int nGroupID_);
     void SetWndName();
@@ -67,13 +66,13 @@ public:
     void SaveCurScreenshot(QString strPath_);
 
 protected:
-    void CreateStatusBar() ;
+    void CreateStatusBar();
     void DestroyDisplayTab(int);
     void DestroyAllDisplay();
 
     void AddOneGroup();
-    void UpdateTableLeft();
-    void UpdateTableRight();
+    void UpdateTableParameter();
+    void UpdateTableDisplay();
     void InsertRightTab();
     void NewConfigure();
     void OpenFile();
@@ -84,52 +83,47 @@ protected:
     void ReportSetting();
     void ReportSave();
 
-    void TofdSetting() ;
+    void TofdSetting();
     void TofdDataPro(TOFD_PRO_STATUS proSt_);
-    //
+
     void DefectSign(DEFECT_SIGN_TYPE signType_);
     void SetSelectedDataView(QWidget* pWidget_);
-    QList<QWidget*>* m_pViewList[MAX_LIST_QTY] ;
+    QList<QWidget*>* m_pViewList[MAX_LIST_QTY];
 
-    // event
-    virtual void closeEvent(QCloseEvent *event) ;
+    virtual void closeEvent(QCloseEvent *event);
     void resizeEvent(QResizeEvent *);
 
 private:
+    Ui::MainWindow *ui;
+    DataRefreshThread* m_pThreadDraw;
+    QTranslator *translator;
+    QWidget* m_pCurrentDataView;
+    QLabel* m_pStatusCell[3];
+    STATUS_BAR_INFO m_BarInfo;
+
+    void init_ui();
+
     int  m_iCurGroup;
     int  m_nLawIdSel;
+    int  m_nTBCnt;
+    int  m_nAlloff;
     bool m_bCursorSel;
-
-    Ui::MainWindow *ui;
-    DataRefreshThread* m_pThreadDraw ;
-
-    QTranslator *translator;
     bool m_chineseFlag;
+    bool m_bParamBackMode; //Qt::BGMode m_paramBackMode;
 
-    QWidget* m_pCurrentDataView;
-    QLabel* m_pStatusCell[3]  ;
-
-    STATUS_BAR_INFO m_BarInfo ;
-
-    QAction* m_actions[26] ;
-    int      m_nTBCnt;
-    int      m_nAlloff;
-
-    //Qt::BGMode m_paramBackMode;
-    bool m_bParamBackMode;
 signals:
     void setPixmap(QPixmap pixmap);
 
 private slots:
-    void slotsLeftTabButton(Qt::MouseButton) ;
-    void slotsRightTabButton(Qt::MouseButton) ;
+    void slotsLeftTabButton(Qt::MouseButton);
+    void slotsRightTabButton(Qt::MouseButton);
     void slotLeftTabRightButtonDoubleClicked(int);
     void SetDispTabText();
     void slotRightTabRightButtonDoubleClicked(int nId_);
     void slotViewFrameButtonClicked(QWidget* );
     //void slotViewFrameMenuSelection(DopplerDataView* , int);
-    void slotCurrentGroupChanged(int) ;
-    void slotCurrentDispChanged(int) ;
+    void slotCurrentGroupChanged(int);
+    void slotCurrentDispChanged(int);
     void slotItemMoved(DopplerDataView* , DopplerGraphicsItem*);
     void slotDataViewResized(DopplerDataView*) ;
     void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_);
@@ -161,7 +155,6 @@ protected slots:
   void on_actionScreenShot_triggered();
   void slot_actionEnglish_triggered();
   void slot_actionChinese_triggered();
-
 };
 
 extern MainWindow* g_pMainWnd;

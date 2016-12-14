@@ -22,50 +22,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setContextMenuPolicy(Qt::NoContextMenu);
-    setMinimumSize(1024 , 720);
 
-    m_pThreadDraw  = DataRefreshThread::Instance()  ;
-    m_bParamBackMode = false;
+    init_ui();
 
-    ui->TabWidget_display->SetHideAble(false);
+    m_pThreadDraw  = DataRefreshThread::Instance();
 
-    ui->actionNew_Config->setDisabled(true);
-    ui->actionSave->setDisabled(true);
-    // tool bar
-    ui->actionNew->setDisabled(true);
-    ui->actionSaveFile->setDisabled(true);
-
-    // init right display widget list
-    for(int i = 0 ; i < MAX_LIST_QTY ; i++)
-    {
-        m_pViewList[i] = new QList<QWidget*>;
-        m_pViewList[i]->clear();
-    }
-
-    // status bar
-    CreateStatusBar() ;
-
-    //CreateInstrumentSettingWidget(ui->Group1);
     connect(ui->TabWidget_parameter, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsLeftTabButton(Qt::MouseButton)));
     connect(ui->TabWidget_parameter, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotLeftTabRightButtonDoubleClicked(int)));
     connect(ui->TabWidget_display, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsRightTabButton(Qt::MouseButton)));
     connect(ui->TabWidget_display, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotRightTabRightButtonDoubleClicked(int)));
     connect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentGroupChanged(int)));
     connect(ui->TabWidget_display, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentDispChanged(int)));
-
-    // tofd setting dialog
-    m_iCurGroup  = 0;
-    m_nLawIdSel  = 0;
-    m_bCursorSel = true;
-    m_nAlloff	= 0;
-    SetDispTabText();
-
-    //------------ Language----------------//
-    translator = new QTranslator(this);
-    qApp->installTranslator(translator);
-    slot_actionChinese_triggered(); // default Chinese
-    m_chineseFlag = true;
 
     connect(ui->actionEnglish, SIGNAL(triggered()), this, SLOT(slot_actionEnglish_triggered()));
     connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(slot_actionChinese_triggered()));
@@ -93,33 +60,68 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent (QCloseEvent* e)
 {
-        QMainWindow::closeEvent (e) ;
+    QMainWindow::closeEvent(e);
 }
 
 void MainWindow::resizeEvent(QResizeEvent* )
 {
-        int _nWidth   = ui->centralwidget->width();
-        int _nHeight  = ui->centralwidget->height();
-        ui->splitter->setGeometry(0 , 0 , _nWidth , _nHeight);
+    int _nWidth  = ui->centralwidget->width();
+    int _nHeight = ui->centralwidget->height();
+    ui->splitter->setGeometry(0, 0, _nWidth, _nHeight);
 }
 
-// create status bar
+void MainWindow::init_ui()
+{
+    setMinimumSize(1024, 720);
+
+    CreateStatusBar();
+    SetDispTabText();
+
+    ui->TabWidget_display->SetHideAble(false);
+    ui->actionNew_Config->setDisabled(true);
+    ui->actionSave->setDisabled(true);
+    ui->actionNew->setDisabled(true);
+    ui->actionSaveFile->setDisabled(true);
+
+    // init right display widget list
+    for(int i = 0 ; i < MAX_LIST_QTY ; i++)
+    {
+        m_pViewList[i] = new QList<QWidget*>;
+        m_pViewList[i]->clear();
+    }
+
+    // tofd setting dialog
+    m_iCurGroup  = 0;
+    m_nLawIdSel  = 0;
+    m_nAlloff	 = 0;
+    m_bCursorSel = true;
+
+    //------------ Language----------------//
+    translator = new QTranslator(this);
+    qApp->installTranslator(translator);
+    slot_actionChinese_triggered(); // default Chinese
+    m_chineseFlag = true;
+
+    m_bParamBackMode = false;
+
+}
+
 void MainWindow::CreateStatusBar()
 {
-        QStatusBar* _status = ui->statusbar ;
-        QPalette pal = this->palette() ;
-        pal.setColor(QPalette::Background , QColor(0 , 0 , 0));
+    QStatusBar* _status = ui->statusbar ;
+    QPalette pal = this->palette() ;
+        pal.setColor(QPalette::Background, QColor(0 , 0 , 0));
         _status->setPalette(pal);
         _status->setAutoFillBackground(true);
-        //################################
+
         m_pStatusCell[0] = new QLabel(_status) ;
         m_pStatusCell[1] = new QLabel(_status) ;
         m_pStatusCell[2] = new QLabel(_status) ;
 
         _status->addWidget(m_pStatusCell[0]);
         _status->addWidget(m_pStatusCell[1]);
-        _status->addWidget(m_pStatusCell[2] , 1);
-        UpdateStatusBarInfo() ;
+        _status->addWidget(m_pStatusCell[2], 1);
+        UpdateStatusBarInfo();
 }
 
 // update status bar information when new *.data or *.cfg file is loaded
@@ -239,7 +241,7 @@ void MainWindow::SetDispTabText()
                 if(i+m_nAlloff < _nQty)
                 {
                         _str.sprintf("Group %d" , i+1) ;
-                        ui->TabWidget_display->setTabText(i+m_nAlloff , _str);
+                        ui->TabWidget_display->setTabText(i+m_nAlloff, _str);
                 }
         }
 
@@ -283,8 +285,7 @@ void MainWindow::slotRightTabRightButtonDoubleClicked(int)
         {
             int _nIndex = GetDisplayTableIndex() ;
             DestroyDisplayTab(_nIndex); // clear list
-        }
-        else if(messageBox.clickedButton() == _pBtnNo)
+        }else if(messageBox.clickedButton() == _pBtnNo)
         {
         }
 }
@@ -497,7 +498,7 @@ void MainWindow::SetSelectedDataView(QWidget* pWidget_)
 /****************************************************************************
   Description: 参数和数据加载时  更新参数窗口
 *****************************************************************************/
-void MainWindow::UpdateTableLeft()
+void MainWindow::UpdateTableParameter()
 {
         // disconnect for signal unpredicted
         disconnect(ui->TabWidget_parameter  , SIGNAL(currentChanged(int)) , 0 , 0) ;
@@ -557,7 +558,7 @@ void MainWindow::SaveCurScreenshot(QString strPath_)
         pixmap.save(_strPath , "png");
 }
 
-void MainWindow::UpdateTableRight()
+void MainWindow::UpdateTableDisplay()
 {
         DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
         int _nGroupQty = _pConfig->common.nGroupQty ;
@@ -640,7 +641,7 @@ void MainWindow::NewConfigure()
         {
                 DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
                 _pConfig->InitCommonConfig();
-                UpdateTableLeft() ;
+                UpdateTableParameter();
         this->setWindowTitle(QString("Doppler V1.1.1: New Setting"));
         }
 
@@ -676,9 +677,9 @@ void MainWindow::OpenFilePro(QString strFileName_)
 
         if(!_ret)
         {
-                UpdateTableLeft();
+                UpdateTableParameter();
                 UpdateStatusBarInfo();
-                UpdateTableRight();
+                UpdateTableDisplay();
                 m_iCurGroup = 0;
         }
 
