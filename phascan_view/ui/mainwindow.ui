@@ -224,9 +224,8 @@
     <property name="title">
      <string>Report</string>
     </property>
-    <addaction name="actionReport_Format"/>
     <addaction name="actionReport_PreView"/>
-    <addaction name="actionSave_2"/>
+    <addaction name="actionSaveReport"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuLanguage"/>
@@ -374,7 +373,7 @@
     <string>Report PreView</string>
    </property>
   </action>
-  <action name="actionSave_2">
+  <action name="actionSaveReport">
    <property name="text">
     <string>Save </string>
    </property>

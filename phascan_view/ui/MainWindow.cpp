@@ -103,7 +103,6 @@ void MainWindow::init_ui()
     m_chineseFlag = true;
 
     m_bParamBackMode = false;
-
 }
 
 void MainWindow::CreateStatusBar()
@@ -532,7 +531,7 @@ void MainWindow::SetWndName()
     int _nQty = ui->TabWidget_parameter->count() ;
     if(_nQty < 3 )  return;
 
-    for(int i = 0 ; i< _nQty - 2 ; i++)
+    for(int i = 0 ; i< _nQty - 2; i++)
     {
         DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(i);
         _pGroup->SetWndName();
@@ -1129,6 +1128,16 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
+void MainWindow::on_actionReport_PreView_triggered()
+{
+    ReportSave();
+}
+
+void MainWindow::on_actionSaveReport_triggered()
+{
+    ReportSave();
+}
+
 void MainWindow::on_actionNew_triggered()
 {
     NewConfigure();
@@ -1264,4 +1273,3 @@ void MainWindow::slotDataViewResized(DopplerDataView* pView_)
         _process.UpdateDataViewOverlay(pView_);
         pView_->UpdateDrawing();
 }
-
