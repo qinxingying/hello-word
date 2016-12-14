@@ -485,22 +485,24 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
     m_scaleFactor.sprintf("1");
     QString g_strOnOff[] = {
         QString(QObject::tr("Off")),
-        QString(QObject::tr("ON"))
+        QString(QObject::tr("ON")),
     };
     QString g_strRectifier[] = {//UpdateGroupConfig()
         QString(QObject::tr("RF")),
         QString(QObject::tr("HW+")),
         QString(QObject::tr("HW-")),
-        QString(QObject::tr("FW"))
+        QString(QObject::tr("FW")),
     };
     QString g_strTxRxMode[] = {
          QString(QObject::tr("Pitch Catch")),
          QString(QObject::tr("Pitch Echo")),
          QString(QObject::tr("Through Trans")),
-         QString(QObject::tr("TOFD"))
+         QString(QObject::tr("TOFD")),
      };
 
-    m_videoFilter = g_strOnOff[_pGroup->bVedioFilter];
+    if(_pGroup->bVedioFilter < 2){
+        m_videoFilter = g_strOnOff[_pGroup->bVedioFilter];
+    }
 
     m_rectification = g_strRectifier[_pGroup->eRectifier];
 	m_bandPassFilter.sprintf("%s" , string_filter[_pGroup->eFileter]) ;
@@ -637,8 +639,6 @@ void DopplerHtmlReport::SprintfGroupProbeConfig(int nGroupId_)
 
 void DopplerHtmlReport::fprintfReportGroupStart(int group)
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-
 	fprintf(m_pFile , "<br />\n");
 	fprintf(m_pFile ,"<h3></h3>");
 	fprintf(m_pFile , "<table %s>\n" ,tableWidth);
@@ -647,11 +647,11 @@ void DopplerHtmlReport::fprintfReportGroupStart(int group)
 	fprintf(m_pFile , "</tr>\n");
 	fprintf(m_pFile , "<tr>\n");
 
-	QString _str ;
-	if (_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH)
-		_str.sprintf("GROUP  %d" , group + 1) ;
-	else if (_pConfig->AppEvn.eLanguage == setup_LANG_CHINESS)
-		_str.sprintf("第 %d 组" , group + 1) ;
+    QString _str;
+    _str.append(QObject::tr("GROUP "));
+    _str.append(QString::number((group + 1), 'f', 0));
+    _str.append(QObject::tr(":"));
+//    _str.sprintf("GROUP %d", group + 1);
 
 	fprintf(m_pFile , "<th align=left>%s</th>\n" , TOCHAR(_str));
 	fprintf(m_pFile , "</tr>\n");
@@ -991,8 +991,6 @@ void DopplerHtmlReport::fprintfReportGroupPart()
 
 void DopplerHtmlReport::SprintfReportTable()
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-
 	fprintf(m_pFile , "<br />\n");
 	fprintf(m_pFile ,"<h3></h3>");
 	fprintf(m_pFile , "<table %s>\n" ,tableWidth);
@@ -1001,21 +999,16 @@ void DopplerHtmlReport::SprintfReportTable()
 	fprintf(m_pFile , "</tr>\n");
 	fprintf(m_pFile , "<tr>\n");
 
-	if (_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH)
-		fprintf(m_pFile , "<th align=left>%s</th>\n" , "Table");
-	else if (_pConfig->AppEvn.eLanguage == setup_LANG_CHINESS)
-		fprintf(m_pFile , "<th align=left>%s</th>\n" , "缺陷报表");//"表格");
+    QString tableName = QString(QObject::tr("Table"));
+    fprintf(m_pFile , "<th align=left>%s</th>\n" , TOCHAR(tableName));
 
 	fprintf(m_pFile , "</tr>\n");
 	fprintf(m_pFile , "</table>\n\n");
 	fprintf(m_pFile , "<br />\n");
-
 }
 
 void DopplerHtmlReport::SprintfGroupMeasure()
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-
 	int _nGroupId ;
 	const char* bodyFormat = "i";
 	const char* newLineFormat = " align=\"center\" style=\"word-break:break-all; word-wrap:break-word;\"";
@@ -1028,19 +1021,13 @@ void DopplerHtmlReport::SprintfGroupMeasure()
 		_nGroupId =  _value.nGroupId ;
 		fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 
-		if (_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH)
-		{
-			fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Scan Pos");
-			fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Group");
-			fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Law ID");
-		}
-		else if (_pConfig->AppEvn.eLanguage == setup_LANG_CHINESS)
-		{
-			fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "扫描轴");
-			fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "组");
-			fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Law");//"聚焦法则编号");//"规则编号");
-		}
+        QString str_1 = QString(QObject::tr("Scan Pos"));
+        QString str_2 = QString(QObject::tr("Group"));
+        QString str_3 = QString(QObject::tr("Law ID"));
 
+        fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , TOCHAR(str_1));
+        fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , TOCHAR(str_2));
+        fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , TOCHAR(str_3));
 
 		fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[_nGroupId][0]) ,TOCHAR(m_szFieldUnit[_nGroupId][0]));
 		fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[_nGroupId][1]) ,TOCHAR(m_szFieldUnit[_nGroupId][1]));
