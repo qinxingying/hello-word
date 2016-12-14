@@ -10,11 +10,11 @@
 #ifndef PARAMETERPROCESS_H
 #define PARAMETERPROCESS_H
 
+#include "DopplerConfigure.h"
+
 #include <QObject>
 #include <QString>
 #include <QPoint>
-#include <configure/DopplerConfigure.h>
-
 
 class Focallaw ;
 enum GATE_POS_VALUE_TYPE
