@@ -1036,7 +1036,7 @@ void DopplerConfigure::OpenDefectFile(QString& path_)
 	file.open (QIODevice::ReadOnly);
 	QDataStream reader(&file);
 
-	ReleaseAllDefect();
+    ReleaseAllDefect();
 
 	int _sign;
 	reader.readRawData((char*)&_sign , sizeof(int)) ;
@@ -1055,7 +1055,7 @@ void DopplerConfigure::OpenDefectFile(QString& path_)
 				AddDefectInfo(iGroup, _dfInfo);
 			}
 		}
-	}
+    }
 	file.close();
 }
 

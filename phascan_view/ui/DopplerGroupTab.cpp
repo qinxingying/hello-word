@@ -11,7 +11,7 @@
 #include <QtGui>
 #include <QPushButton>
 
-const int MAX_ITEM_QTY = 50 ;
+const int MAX_ITEM_QTY = 50;
 
 //  Description: 所有显示窗口类型
 static const char* g_strDisplayMode[] =
@@ -27,7 +27,7 @@ static const char* g_strDisplayMode[] =
 	"S-A-B-C SCAN" , "S-A-B-C SCAN" , "S-A-B-C SCAN" ,
 	"S-A-C SCAN"  , "S-A-C SCAN"  ,
 	"S-A-C-C SCAN"  , "S-A-C-C SCAN"
-}  ;
+};
 
 DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 	QWidget(parent),
@@ -36,8 +36,8 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 	ui->setupUi(this);
 
 	m_nGroupId = 0 ;
-	m_pConfig = DopplerConfigure::Instance()  ;
-	m_pGroup  = &m_pConfig->group[m_nGroupId]  ;
+    m_pConfig = DopplerConfigure::Instance();
+    m_pGroup  = &m_pConfig->group[m_nGroupId];
 	ui->toolBox->setMinimumHeight(400);
 
     for(int i = 0; i < setup_DAC_POINT_QTY; i++){
@@ -386,7 +386,7 @@ void DopplerGroupTab::SetWndName()
 	for(int k = 0; k < 4; k++) {
 		_comboxTab[k]->clear();
 		for(int i = 0; i < _nQty; i++) {
-			_str.sprintf("Group%d", i+1) ;
+            _str.sprintf("Group%d", i+1);
 			_comboxTab[k]->addItem(_str);
 		}
 		_comboxTab[k]->setCurrentIndex(_pComDisp[k]);
@@ -759,12 +759,11 @@ void DopplerGroupTab::UpdateTofdParam()
 	ui->LabelTofdPcsCal->hide();
 	ui->SpinBoxCalPCS->hide();
 	ui->LabelCalPCSUnit->hide();
+
 	if(m_pGroup->eTxRxMode != setup_TX_RX_MODE_TOFD )
 	{
 		ui->BoxPartTofd->hide();
-	}
-	else
-	{
+    }else{
 		ui->BoxPartTofd->show();
 		ui->CheckLwBwShow->setChecked(m_pGroup->bShowLwBw);
 
@@ -870,9 +869,8 @@ void DopplerGroupTab::UpdateSizeingCurves()
 #include <process/Limitation.h>
 void DopplerGroupTab::UpdateParameterLimit()
 {
-	Limitation _limit ;
+    Limitation _limit;
 
-	// Gain
 	ui->ValueGain->setMaximum(_limit.GetGroupGainMax(m_nGroupId));
 	ui->ValueGain->setMinimum(_limit.GetGroupGainMin(m_nGroupId));
 	// Start & Range
