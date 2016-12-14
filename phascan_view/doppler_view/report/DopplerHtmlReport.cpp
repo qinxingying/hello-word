@@ -35,170 +35,6 @@ const char* string_filter[] = {
 		"None"
 };
 
-const char* g_strTxRxMode[] = {
-    "Pitch Catch",
-    "Pitch Echo",
-    "Through Trans",
-    "TOFD"
-};
-
-const char* g_strScanMode[]= {//(report)
-    "Normal",
-    "Parallel"
-};
-
-const char* g_strGeometry[]={// (report)
-    "Plate",
-    "OD",
-    "ID"
-};
-
-const char* g_strFocalType[] = {// (report)
-    "Half Path",
-    "True Depth",
-    "Projection",
-    "Focal Plane",
-    "Automatic"
-};
-
-const char* g_strGateSync[] = {
-    "Pulse",
-    "I/",
-    "A/"
-};
-
-const char* g_strRectifier[] = {//UpdateGroupConfig()
-    "RF",
-    "HW+",
-    "HW-",
-    "FW"
-};
-
-const char* g_strLawConfig[] = {
-    "Azimuthal",
-    "Linear",
-    "Depth",
-    "Static"
-};
-
-const char* g_strTofdReportHead[] = {
-    "Channel",
-    "Frequency",
-    "Chip Size",
-    "Wedge Angle",
-    "Probe Dealy",
-    "The Probe Center Distance",
-    "The Time Window Set",
-    "DB Set",
-    "Scan Incremental",
-    "Scan Mode"
-};
-
-const char* g_strReportHead[] = {
-    "Part Name",
-    "Part No.",
-    "Position",
-    "Date"
-};
-
-const char* g_strProbe[] = {
-    "Probe Characterization",
-    "Probe Model",
-    "Probe Serial",
-    "Probe Frequency",
-    "Probe Model",
-    "Probe Angle",
-    "Probe Aperture"
-};
-
-const char* g_strGroupSetup[] = {
-    "Setup",
-    //1
-    "Beam Delay",
-    "Sample Start",
-    "Sample Range",
-    "PRF",
-    "Type",
-    "Averaging Factor",
-    //7
-    "Scale Factor",
-    "Video Filter",
-    "Rectification",
-    "Band-Pass Filter",
-    //11
-    "Gain",
-    "Mode",
-    "Sound Velocity",
-    "Pulse Width",
-    //15
-    "Scan Offset",
-    "Index Offset",
-    "Skew",
-    "Gate",
-    "Start",
-    "Width",
-    "Threshold",
-    "Synchro"
-    //23
-};
-
-const char* g_strCalculator[]= {
-    "Calculator",
-
-    "Element Qty",
-    "First TX Element",
-    "Last TX Element",
-    "First RX Element",
-    "Last RX Element",
-    "Resolution",
-    //
-    "Start Angle",
-    "Stop Angle",
-    "Angle Resolution",
-    "Law Configuration",
-    //
-    "Focal Type",
-    "Position Start",
-    "Position End",
-    "Position Step",
-    "Offset Start",
-    "Offset Stop",
-    "Depth Start",
-    "Depth Stop"
-};
-
-const char* g_strGroupPart[] = {
-    "Part",
-    "Material",
-    "Geometry",
-    "Thickness",
-};
-
-const char* g_strOnOff[] = {
-    "Off",
-    "ON",
-};
-
-const char* g_strDefect[]=
-{
-    "Defect",
-    "Remark",
-    "Index",
-    "Position start",
-    "Length",
-    "Depth start",
-    "Height",
-    "Index pos",
-    "Width"
-};
-
-const char* g_strSignature[] = {
-    "Technician Name:",
-    "Technician Signature:",
-    "Contractor:",
-    "Date:"
-};
-
 DopplerHtmlReport::DopplerHtmlReport()
 {
 	m_pFile = NULL ;
@@ -270,7 +106,6 @@ void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 	//fprintf(m_pFile , "</tr>\n");
 	//fprintf(m_pFile , "</table>\n\n");
 
-
 	//fprintf(m_pFile,"<table %s>\n" ,tableWidth);
 	//fprintf(m_pFile,"<tr>\n");
 	//fprintf(m_pFile,"<td align=left><img src = \"%s/logo.png\"></td>\n" , TOCHAR(m_strFolder));
@@ -285,14 +120,30 @@ void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 	fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
 	fprintf(m_pFile,"<tr>\n");
 
+    QString g_strTofdReportHead[] = {
+        QString(QObject::tr("Channel")),
+        QString(QObject::tr("Frequency")),
+        QString(QObject::tr("Chip Size")),
+        QString(QObject::tr("Wedge Angle")),
+        QString(QObject::tr("Probe Dealy")),
+        QString(QObject::tr("The Probe Center Distance")),
+        QString(QObject::tr("The Time Window Set")),
+        QString(QObject::tr("DB Set")),
+        QString(QObject::tr("Scan Incremental")),
+        QString(QObject::tr("Scan Mode"))
+    };
+
 	for(int i = 0 ;i < 10 ;++i)
 	{
-        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle ,g_strTofdReportHead[i]);
-
+        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strTofdReportHead[i]));
 	}
 	fprintf(m_pFile,"</tr>\n\n");
 
 	int iScanMode = _scaner.eScanType;
+    QString g_strScanMode[] = {
+        QString(QObject::tr("Normal")),
+        QString(QObject::tr("Parallel"))
+    };
 
 	fprintf(m_pFile,"<tr>\n");
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , string_groupMode[_pGroup->eGroupMode]);
@@ -304,12 +155,23 @@ void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 	fprintf(m_pFile,"<td %s>%.2fus</td>\n" ,tableTdStyle , _process->DistMmToUs(nGroupId_ , _pGroup->fSampleRange));
 	fprintf(m_pFile,"<td %s>%.1fdB</td>\n" ,tableTdStyle , _pGroup->fGain);
 	fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _scaner.fScanStep);
-    fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , g_strScanMode[iScanMode]);
+    fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , TOCHAR(g_strScanMode[iScanMode]));
 	fprintf(m_pFile,"</tr>\n\n");
 
 	fprintf(m_pFile,"</table>\n</table>\n\n");
 }
-
+QString g_strDefect[] =
+{
+    QString(QObject::tr("Defect")),
+    QString(QObject::tr("Remark")),
+    QString(QObject::tr("Index")),
+    QString(QObject::tr("Position start")),
+    QString(QObject::tr("Length")),
+    QString(QObject::tr("Depth start")),
+    QString(QObject::tr("Height")),
+    QString(QObject::tr("Index pos")),
+    QString(QObject::tr("Width"))
+};
 void DopplerHtmlReport::CreateDefect(int nGroupId_)
 {
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
@@ -318,7 +180,7 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 	fprintf(m_pFile , "<br />\n");
 
 	//g_strDefect
-    fprintf(m_pFile , "<th align=left>%s(Gr%d)</th>\n" , g_strDefect[0], nGroupId_+1);
+    fprintf(m_pFile , "<th align=left>%s(Gr%d)</th>\n", TOCHAR(g_strDefect[0]), nGroupId_+1);
 
 	fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
 	fprintf(m_pFile,"<tr>\n");
@@ -328,7 +190,7 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 
 	for(int i = 1 ;i < iMax ;++i)
 	{
-        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, g_strDefect[i+1]);
+        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strDefect[i+1]));
 	}
 	fprintf(m_pFile,"</tr>\n\n");
 	fprintf(m_pFile,"<tr>\n");
@@ -376,7 +238,7 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
 	fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
 	fprintf(m_pFile,"<tr>\n");
 
-    fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, g_strDefect[2]);
+    fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strDefect[2]));
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Group");
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Law ID");
 
@@ -557,6 +419,12 @@ void DopplerHtmlReport::CreateHeader()
 {
     QString strReportName = QString(QObject::tr("Phascan Report"));
     QString strReportPath = QString(QObject::tr("Path"));
+    QString g_strReportHead[] = {
+        QString(QObject::tr("Part Name")),
+        QString(QObject::tr("Part No.")),
+        QString(QObject::tr("Position")),
+        QString(QObject::tr("Date"))
+    };
 
 	fprintf(m_pFile,"<table %s>\n" ,tableWidth);
 	fprintf(m_pFile,"<tr>\n");
@@ -574,7 +442,7 @@ void DopplerHtmlReport::CreateHeader()
 	fprintf(m_pFile,"<tr>\n");
 	for(int i = 0 ;i < 4 ;++i)
 	{
-        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle ,g_strReportHead[i]);
+        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strReportHead[i]));
 	}
 	fprintf(m_pFile,"</tr>\n\n");
 
@@ -614,7 +482,23 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 	m_type.sprintf ("%s" , string_groupMode[_pGroup->eGroupMode])  ;
 	m_averagingFactor.sprintf("%d" , _pGroup->eAveraging << 1 ) ;
 
-	m_scaleFactor.sprintf("1") ;
+    m_scaleFactor.sprintf("1");
+    QString g_strOnOff[] = {
+        QString(QObject::tr("Off")),
+        QString(QObject::tr("ON"))
+    };
+    QString g_strRectifier[] = {//UpdateGroupConfig()
+        QString(QObject::tr("RF")),
+        QString(QObject::tr("HW+")),
+        QString(QObject::tr("HW-")),
+        QString(QObject::tr("FW"))
+    };
+    QString g_strTxRxMode[] = {
+         QString(QObject::tr("Pitch Catch")),
+         QString(QObject::tr("Pitch Echo")),
+         QString(QObject::tr("Through Trans")),
+         QString(QObject::tr("TOFD"))
+     };
 
     m_videoFilter = g_strOnOff[_pGroup->bVedioFilter];
 
@@ -641,9 +525,14 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 	m_gateAthreshold.sprintf("%d %%" , _pGroup->gate[setup_GATE_A ].nThreshold ) ;
 	m_gateBthreshold.sprintf("%d %%" , _pGroup->gate[setup_GATE_B ].nThreshold ) ;
 
-    m_gateIsynchro = QString(QObject::tr(g_strGateSync[_pGroup->gate[setup_GATE_I ].eSynChro]));
-    m_gateAsynchro = QString(QObject::tr(g_strGateSync[_pGroup->gate[setup_GATE_A ].eSynChro]));
-    m_gateBsynchro = QString(QObject::tr(g_strGateSync[_pGroup->gate[setup_GATE_B ].eSynChro]));
+    QString g_strGateSync[] = {
+        QString(QObject::tr("Pulse")),
+        QString(QObject::tr("I/")),
+        QString(QObject::tr("A/"))
+    };
+    m_gateIsynchro = g_strGateSync[_pGroup->gate[setup_GATE_I ].eSynChro];
+    m_gateAsynchro = g_strGateSync[_pGroup->gate[setup_GATE_A ].eSynChro];
+    m_gateBsynchro = g_strGateSync[_pGroup->gate[setup_GATE_B ].eSynChro];
 
 	m_probeAperture.sprintf ( "%d"	  , _pGroup->law.nElemQtyFir) ;
 	m_usedElementQty.sprintf( "%d"	  , _pGroup->law.nElemQtyFir) ;
@@ -668,6 +557,19 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 
 	}
 
+    QString g_strLawConfig[] = {
+        QString(QObject::tr("Azimuthal")),
+        QString(QObject::tr("Linear")),
+        QString(QObject::tr("Depth")),
+        QString(QObject::tr("Static"))
+    };
+    QString g_strFocalType[] = {// (report)
+        QString(QObject::tr("Half Path")),
+        QString(QObject::tr("True Depth")),
+        QString(QObject::tr("Projection")),
+        QString(QObject::tr("Focal Plane")),
+        QString(QObject::tr("Automatic"))
+    };
     m_lawConfiguration = g_strLawConfig[_pGroup->law.eLawType];
 	m_focalPointType = _pGroup->law.eFocalType ;
     m_focalType = g_strFocalType[_pGroup->law.eFocalType];
@@ -696,6 +598,11 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 		break;
 	}
     m_material = _pGroup->part.material.strName;
+    QString g_strGeometry[]={
+        QString(QObject::tr("Plate")),
+        QString(QObject::tr("OD")),
+        QString(QObject::tr("ID"))
+    };
     m_geometry = g_strGeometry[_pGroup->part.eGeometry];
 	m_thickness.sprintf("%.2f mm" , _pGroup->part.afSize[0]) ;
 
@@ -753,15 +660,24 @@ void DopplerHtmlReport::fprintfReportGroupStart(int group)
 
 void DopplerHtmlReport::fprintfReportGroupProbe()
 {
+    QString g_strProbe[] = {
+        QString(QObject::tr("Probe Characterization")),
+        QString(QObject::tr("Probe Model")),
+        QString(QObject::tr("Probe Serial")),
+        QString(QObject::tr("Probe Frequency")),
+        QString(QObject::tr("Wedge Model")),
+        QString(QObject::tr("Wedge Angle")),
+        QString(QObject::tr("Wedge Aperture"))
+    };
 	int i;
 	fprintf(m_pFile , "<br />\n");
-    fprintf(m_pFile , "%s\n" ,  g_strProbe[0]);
+    fprintf(m_pFile , "%s\n", TOCHAR(g_strProbe[0]));
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 1 ;i < 4 ;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strProbe[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strProbe[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -775,7 +691,7 @@ void DopplerHtmlReport::fprintfReportGroupProbe()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 4 ;i < 7 ;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strProbe[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strProbe[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -792,15 +708,45 @@ void DopplerHtmlReport::fprintfReportGroupProbe()
 
 void DopplerHtmlReport::fprintfReportGroupSetup()
 {
+    QString g_strGroupSetup[] = {
+        QString(QObject::tr("Setup")),
+        //1
+        QString(QObject::tr("Beam Delay")),
+        QString(QObject::tr("Sample Start")),
+        QString(QObject::tr("Sample Range")),
+        QString(QObject::tr("PRF")),
+        QString(QObject::tr("Type")),
+        QString(QObject::tr("Averaging Factor")),
+        //7
+        QString(QObject::tr("Scale Factor")),
+        QString(QObject::tr("Video Filter")),
+        QString(QObject::tr("Rectification")),
+        QString(QObject::tr("Band-Pass Filter")),
+        //11
+        QString(QObject::tr("Gain")),
+        QString(QObject::tr("Mode")),
+        QString(QObject::tr("Sound Velocity")),
+        QString(QObject::tr("Pulse Width")),
+        //15
+        QString(QObject::tr("Scan Offset")),
+        QString(QObject::tr("Index Offset")),
+        QString(QObject::tr("Skew")),
+        QString(QObject::tr("Gate")),
+        QString(QObject::tr("Start")),
+        QString(QObject::tr("Width")),
+        QString(QObject::tr("Threshold")),
+        QString(QObject::tr("Synchro"))
+        //23
+    };
 	int i;
 	fprintf(m_pFile , "<br />\n");
-    fprintf(m_pFile , "%s\n"  ,  g_strGroupSetup[0]);
+    fprintf(m_pFile , "%s\n", TOCHAR(g_strGroupSetup[0]));
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 1 ;i < 7 ;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strGroupSetup[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -816,7 +762,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 7 ;i < 11 ;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strGroupSetup[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -831,7 +777,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 11 ;i < 15;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strGroupSetup[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -847,7 +793,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 15 ;i <18 ;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strGroupSetup[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strGroupSetup[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -863,7 +809,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 18 ;i < 23 ;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strGroupSetup[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strGroupSetup[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -899,15 +845,40 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 
 void DopplerHtmlReport::fprintfReportGroupCalculator()
 {
+    QString g_strCalculator[]= {
+        QString(QObject::tr("Calculator")),
+
+        QString(QObject::tr("Element Qty")),
+        QString(QObject::tr("First TX Element")),
+        QString(QObject::tr("Last TX Element")),
+        QString(QObject::tr("First RX Element")),
+        QString(QObject::tr("Last RX Element")),
+        QString(QObject::tr("Resolution")),
+        //
+        QString(QObject::tr("Start Angle")),
+        QString(QObject::tr("Stop Angle")),
+        QString(QObject::tr("Angle Resolution")),
+        QString(QObject::tr("Law Configuration")),
+        //
+        QString(QObject::tr("Focal Type")),
+        QString(QObject::tr("Position Start")),
+        QString(QObject::tr("Position End")),
+        QString(QObject::tr("Position Step")),
+        QString(QObject::tr("Offset Start")),
+        QString(QObject::tr("Offset Stop")),
+        QString(QObject::tr("Depth Start")),
+        QString(QObject::tr("Depth Stop"))
+    };
+
 	int i;
 	fprintf(m_pFile , "<br />\n");
-    fprintf(m_pFile , "%s\n"  , g_strCalculator[0]);
+    fprintf(m_pFile , "%s\n", TOCHAR(g_strCalculator[0]));
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 1 ; i < 7 ;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strCalculator[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strCalculator[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -923,7 +894,7 @@ void DopplerHtmlReport::fprintfReportGroupCalculator()
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 7 ;i < 11 ;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle , g_strCalculator[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strCalculator[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -936,21 +907,21 @@ void DopplerHtmlReport::fprintfReportGroupCalculator()
 	fprintf(m_pFile , "</tr>\n\n");
 
 	fprintf(m_pFile , "<tr>\n");
-    fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[11]);
+    fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strCalculator[11]));
 	switch(m_focalPointType)
 	{
 	case 0:
 	case 1:
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[12]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strCalculator[12]));
 		break;
 	case 2:
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[15]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strCalculator[15]));
 		break;
 	case 3:
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[15]);
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[16]);
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[17]);
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strCalculator[18]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strCalculator[15]));
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strCalculator[16]));
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strCalculator[17]));
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strCalculator[18]));
 		break;
 	default:
 		break;
@@ -988,15 +959,21 @@ void DopplerHtmlReport::fprintfReportGroupCalculator()
 
 void DopplerHtmlReport::fprintfReportGroupPart()
 {
+    QString g_strGroupPart[] = {
+        QString(QObject::tr("Part")),
+        QString(QObject::tr("Material")),
+        QString(QObject::tr("Geometry")),
+        QString(QObject::tr("Thickness"))
+    };
 	int i;
 	fprintf(m_pFile , "<br />\n");
-    fprintf(m_pFile , "%s\n" , g_strGroupPart[0]);
+    fprintf(m_pFile , "%s\n", TOCHAR(g_strGroupPart[0]));
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 
 	fprintf(m_pFile , "<tr>\n");
 	for(i = 1 ;i < 4 ;++i)
 	{
-        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle ,g_strGroupPart[i]);
+        fprintf(m_pFile , "<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strGroupPart[i]));
 	}
 	fprintf(m_pFile , "</tr>\n\n");
 
@@ -1095,11 +1072,18 @@ void DopplerHtmlReport::SprintfGroupMeasure()
 
 void DopplerHtmlReport::SfprintfReportSignature()
 {
+    QString g_strSignature[] = {
+        QString(QObject::tr("Technician Name:")),
+        QString(QObject::tr("Technician Signature:")),
+        QString(QObject::tr("Contractor:")),
+        QString(QObject::tr("Date:"))
+    };
+
 	fprintf(m_pFile , "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);//table
 	for(int i = 0 ;i < 4 ;++i)
 	{
 		fprintf(m_pFile , "<tr>\n");
-        fprintf(m_pFile , "<td width=25%% align=\"right\">%s</td>\n" , g_strSignature[i]);
+         fprintf(m_pFile , "<td width=25%% align=\"right\">%s</td>\n", TOCHAR(g_strSignature[i]));
 		fprintf(m_pFile , "<td >%s</td>\n" , tdSpace);
 		fprintf(m_pFile , "</tr>\n");
 		fprintf(m_pFile , "<tr>\n");

@@ -63,8 +63,6 @@ static const WEDGE_CONFIG  DEFAULT_WEDGE_PA  =
 	0 , 0 ,
 };
 
-const char* materialName = QT_TRANSLATE_NOOP("DopplerConfigure", "Steel common");
-
 static const WEDGE_CONFIG  DEFAULT_WEDGE_UT  =
 {
 	"default UT" ,
@@ -558,8 +556,9 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_part.afSize[0] = 20  ;
 	_part.afSize[1] = _part.afSize[2] = 100 ;
 
+    QString materialName = QString(QObject::tr("Steel common"));
     MATERIAL& _material  = _part.material ;
-    strcpy(_material.strName, materialName);
+    strcpy(_material.strName, materialName.toLocal8Bit().data());
 
 	_material.fVelocityLon = 5920 ;
 	_material.fVelocityTran= 3230 ;
