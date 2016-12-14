@@ -486,6 +486,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
     QString g_strOnOff[] = {
         QString(QObject::tr("Off")),
         QString(QObject::tr("ON")),
+        QString(QObject::tr("Defect")),
     };
     QString g_strRectifier[] = {//UpdateGroupConfig()
         QString(QObject::tr("RF")),
@@ -500,9 +501,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
          QString(QObject::tr("TOFD")),
      };
 
-    if(_pGroup->bVedioFilter < 2){
-        m_videoFilter = g_strOnOff[_pGroup->bVedioFilter];
-    }
+    m_videoFilter = g_strOnOff[_pGroup->bVedioFilter];
 
     m_rectification = g_strRectifier[_pGroup->eRectifier];
 	m_bandPassFilter.sprintf("%s" , string_filter[_pGroup->eFileter]) ;
