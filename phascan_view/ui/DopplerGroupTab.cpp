@@ -6,6 +6,7 @@
 #include "const.h"
 #include "gHeader.h"
 #include "ProcessDisplay.h"
+#include "dialog/DialogColorSelect.h"
 
 #include <QtGui>
 #include <QPushButton>
@@ -1098,16 +1099,14 @@ void DopplerGroupTab::on_ComLawType_currentIndexChanged(int)
 
 void DopplerGroupTab::on_BtnProcessLaw_clicked()
 {
-	//qDebug("on_BtnProcessLaw_clicked");
-
 	LAW_CONFIG _law ;
 	_law.eLawType = (setup_LAW_TYPE)ui->ComLawType->currentIndex();
-	//************  angle  setting ***************
+
 	_law.nAngleStartRefract = ui->ValueRefractStart->value() * 10 ;
 	_law.nAngleStepRefract = ui->ValueRefractStep->value() * 10 ;
 	_law.nAngleStopRefract = ui->ValueRefractStop->value() * 10 ;
-	//************************************************
-	//************ focal point
+
+    //************ focal point***************//
 	_law.eFocalType	 = (setup_FOCAL_TYPE)ui->ComFocalType->currentIndex() ;
 	_law.fPositionStart = ui->ValueFocusPositionStart->value() ;
 	_law.fPositionStop  = ui->ValueFocusPositionStop->value() ;
@@ -1116,8 +1115,8 @@ void DopplerGroupTab::on_BtnProcessLaw_clicked()
 	_law.fOffsetStop	= ui->ValueFocusOffsetStop->value() ;
 	_law.fDepthStart	= ui->ValueFocusDepthStart->value() ;
 	_law.fDepthStop	 = ui->ValueFocusDepthStop->value() ;
-	//***********************************************
-	//************ element selection
+
+    //************ element selection***************//
 	_law.nElemQtyFir   = ui->ValueElementQtyPri->value() ;
 	_law.nFirstElemFir = ui->ValueElementStartPri->value() ;
 	_law.nLastElemFir  = ui->ValueElementStopPri->value() ;
@@ -1253,7 +1252,6 @@ void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 	}
 }
 
-#include "ProcessDisplay.h"
 void DopplerGroupTab::on_CheckGateShow_clicked(bool checked)
 {
 	m_pGroup->bShowGate = checked ;
@@ -1309,7 +1307,7 @@ void DopplerGroupTab::on_ComGateMeasure_currentIndexChanged(int)
 
 void DopplerGroupTab::on_CheckShowThickness_clicked(bool checked)
 {
-	m_pGroup->bShowThickness = checked  ;
+    m_pGroup->bShowThickness = checked;
 
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOverlay();
@@ -1317,7 +1315,7 @@ void DopplerGroupTab::on_CheckShowThickness_clicked(bool checked)
 
 void DopplerGroupTab::on_ComGeometry_currentIndexChanged(int)
 {
-	if(!ui->ComGeometry->hasFocus())  return ;
+    if(!ui->ComGeometry->hasFocus())  return;
 	UpdateGeometryState() ;
 	PartPro();
 }
@@ -1330,7 +1328,7 @@ void DopplerGroupTab::PartPro()
 	_part.afSize[1] = ui->ValuePartSize2->value() ;
 	_part.afSize[2] = ui->ValuePartSize3->value() ;
 	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->SetupPartGeometry (m_nGroupId , &_part) ;
+    _process->SetupPartGeometry (m_nGroupId, &_part) ;
 	ProcessDisplay _display ;
 	_display.UpdateAllView();
 	g_pMainWnd->RunDrawThreadOnce(true);
@@ -1609,7 +1607,7 @@ void DopplerGroupTab::on_ComField5_currentIndexChanged(int index)
 	if(ui->CheckMeasureShow->checkState())
 	{
 		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    }
 }
 
 void DopplerGroupTab::on_CheckCursorShow_clicked(bool checked)
@@ -1626,138 +1624,96 @@ void DopplerGroupTab::on_CheckCursorSync_clicked(bool checked)
 	_display.UpdateAllViewOverlay();
 }
 
+void DopplerGroupTab::update_valueChanged()
+{
+    if(ui->CheckCursorShow->checkState())
+    {
+        ProcessDisplay _display;
+        _display.UpdateAllViewOverlay();
+    }
+
+    if(ui->CheckMeasureShow->checkState())
+    {
+        g_pMainWnd->RunDrawThreadOnce(true);
+    }
+}
+
 void DopplerGroupTab::on_ValueARef_valueChanged(double value)
 {
 	if(!ui->ValueARef->hasFocus()) return ;
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupCursor(m_nGroupId , setup_CURSOR_A_REF, value);
 
-	if(ui->CheckCursorShow->checkState())
-	{
-		ProcessDisplay _display ;
-		_display.UpdateAllViewOverlay();
-	}
-	if(ui->CheckMeasureShow->checkState())
-	{
-		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    update_valueChanged();
 }
+
 void DopplerGroupTab::on_ValueAMes_valueChanged(double value)
 {
 	if(!ui->ValueAMes->hasFocus()) return ;
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupCursor(m_nGroupId , setup_CURSOR_A_MES, value);
 
-	if(ui->CheckCursorShow->checkState())
-	{
-		ProcessDisplay _display ;
-		_display.UpdateAllViewOverlay();
-	}
-	if(ui->CheckMeasureShow->checkState())
-	{
-		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    update_valueChanged();
 }
+
 void DopplerGroupTab::on_ValueURef_valueChanged(double value)
 {
 	if(!ui->ValueURef->hasFocus()) return ;
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupCursor(m_nGroupId , setup_CURSOR_U_REF , value);
 
-	if(ui->CheckCursorShow->checkState())
-	{
-		ProcessDisplay _display ;
-		_display.UpdateAllViewOverlay();
-	}
-	if(ui->CheckMeasureShow->checkState())
-	{
-		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    update_valueChanged();
+
 	ui->ValueARef->setValue(m_pGroup->afCursor[setup_CURSOR_A_REF]);
 }
+
 void DopplerGroupTab::on_ValueUMes_valueChanged(double value)
 {
 	if(!ui->ValueUMes->hasFocus()) return ;
 	ParameterProcess* _process = ParameterProcess::Instance();
-    _process->SetupCursor(m_nGroupId , setup_CURSOR_U_MES, value)  ;
+    _process->SetupCursor(m_nGroupId , setup_CURSOR_U_MES, value);
 
-	if(ui->CheckCursorShow->checkState())
-	{
-		ProcessDisplay _display ;
-		_display.UpdateAllViewOverlay();
-	}
-	if(ui->CheckMeasureShow->checkState())
-	{
-		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    update_valueChanged();
+
 	ui->ValueAMes->setValue(m_pGroup->afCursor[setup_CURSOR_A_MES]);
 }
+
 void DopplerGroupTab::on_ValueSRef_valueChanged(double value)
 {
 	if(!ui->ValueSRef->hasFocus()) return ;
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupCursor(m_nGroupId, setup_CURSOR_S_REF, value);
 
-	if(ui->CheckCursorShow->checkState())
-	{
-		ProcessDisplay _display ;
-		_display.UpdateAllViewOverlay();
-	}
-	if(ui->CheckMeasureShow->checkState())
-	{
-		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    update_valueChanged();
 }
+
 void DopplerGroupTab::on_ValueSMes_valueChanged(double value)
 {
 	if(!ui->ValueSMes->hasFocus()) return ;
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupCursor(m_nGroupId , setup_CURSOR_S_MES, value);
 
-	if(ui->CheckCursorShow->checkState())
-	{
-		ProcessDisplay _display ;
-		_display.UpdateAllViewOverlay();
-	}
-	if(ui->CheckMeasureShow->checkState())
-	{
-		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    update_valueChanged();
 }
+
 void DopplerGroupTab::on_ValueIRef_valueChanged(double value)
 {
 	if(!ui->ValueIRef->hasFocus()) return ;
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupCursor(m_nGroupId , setup_CURSOR_I_REF, value);
 
-	if(ui->CheckCursorShow->checkState())
-	{
-		ProcessDisplay _display ;
-		_display.UpdateAllViewOverlay();
-	}
-	if(ui->CheckMeasureShow->checkState())
-	{
-		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    update_valueChanged();
 }
+
 void DopplerGroupTab::on_ValueIMes_valueChanged(double value)
 {
 	if(!ui->ValueIMes->hasFocus()) return ;
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupCursor(m_nGroupId , setup_CURSOR_I_MES, value);
 
-	if(ui->CheckCursorShow->checkState())
-	{
-		ProcessDisplay _display ;
-		_display.UpdateAllViewOverlay();
-	}
-	if(ui->CheckMeasureShow->checkState())
-	{
-		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    update_valueChanged();
 }
 
-#include "dialog/DialogColorSelect.h"
 void DopplerGroupTab::on_BtnColorAmp_clicked()
 {
 	DialogColorSelect _dialog(this) ;
