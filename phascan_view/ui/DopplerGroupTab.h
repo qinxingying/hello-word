@@ -79,7 +79,7 @@ private slots:
     void StartDrags(QModelIndex a) ;
     void slotMeasureBoxTipInfo(int nIndex_);
     void on_ValueGain_editingFinished();
-    void on_ValueRefGain_valueChanged(double arg1);
+    void on_ValueRefGain_valueChanged(double value);
     void on_ValueStart_editingFinished();
     void on_ValueRange_editingFinished();
     void on_ComCurrentAngle_currentIndexChanged(int index);
@@ -148,14 +148,14 @@ private slots:
     void on_ComField4_currentIndexChanged(int index);
     void on_ComField5_currentIndexChanged(int index);
 
-    void on_ValueARef_valueChanged(double);
-    void on_ValueAMes_valueChanged(double);
-    void on_ValueURef_valueChanged(double);
-    void on_ValueUMes_valueChanged(double);
-    void on_ValueSRef_valueChanged(double);
-    void on_ValueSMes_valueChanged(double);
-    void on_ValueIRef_valueChanged(double);
-    void on_ValueIMes_valueChanged(double);
+    void on_ValueARef_valueChanged(double value);
+    void on_ValueAMes_valueChanged(double value);
+    void on_ValueURef_valueChanged(double value);
+    void on_ValueUMes_valueChanged(double value);
+    void on_ValueSRef_valueChanged(double value);
+    void on_ValueSMes_valueChanged(double value);
+    void on_ValueIRef_valueChanged(double value);
+    void on_ValueIMes_valueChanged(double value);
     void on_BtnColorAmp_clicked();
     void on_BtnColorRf_clicked();
     void on_BtnColorThickness_clicked();

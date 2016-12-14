@@ -1,11 +1,14 @@
 #include "DopplerGroupTab.h"
 #include "ui_DopplerGroupTab.h"
-#include <QPushButton>
-#include <configure/DopplerConfigure.h>
-#include <process/ParameterProcess.h>
-#include <configure/const.h>
-#include <gHeader.h>
+
+#include "DopplerConfigure.h"
+#include "ParameterProcess.h"
+#include "const.h"
+#include "gHeader.h"
+#include "ProcessDisplay.h"
+
 #include <QtGui>
+#include <QPushButton>
 
 const int MAX_ITEM_QTY = 50 ;
 
@@ -445,6 +448,8 @@ void DopplerGroupTab::SetWidgetInvalide()
     ui->ValuePartSize3->setDisabled(true);
     ui->CheckUnifiedPartSetting->setDisabled(true);
 
+    ui->ValueARef->setDisabled(true);
+    ui->ValueAMes->setDisabled(true);
     ui->lineEditReMark->setDisabled(true);
     ui->ValueDefectLStart->setDisabled(true);
     ui->ValueDefectLength->setDisabled(true);
@@ -549,13 +554,13 @@ void DopplerGroupTab::UpdateCursorValue()
 	ui->ValueARef->setValue(m_pGroup->afCursor[setup_CURSOR_A_REF]);
 	ui->ValueAMes->setValue(m_pGroup->afCursor[setup_CURSOR_A_MES]);
 	ui->ValueURef->setValue(m_pGroup->afCursor[setup_CURSOR_U_REF]);
-	ui->ValueUMes->setValue(m_pGroup->afCursor[setup_CURSOR_U_MES]);
+    ui->ValueUMes->setValue(m_pGroup->afCursor[setup_CURSOR_U_MES]);
 	ui->ValueSRef->setValue(m_pGroup->afCursor[setup_CURSOR_S_REF]);
 	ui->ValueSMes->setValue(m_pGroup->afCursor[setup_CURSOR_S_MES]);
 	ui->ValueIRef->setValue(m_pGroup->afCursor[setup_CURSOR_I_REF]);
 	ui->ValueIMes->setValue(m_pGroup->afCursor[setup_CURSOR_I_MES]);
 
-	SCANNER& _scanner = m_pConfig->common.scanner ;
+    SCANNER& _scanner = m_pConfig->common.scanner;
 	if(_scanner.eEncoderType == setup_ENCODER_TYPE_TIMER) {
 		ui->LabelCursorUnit5->setText("sec");
 		ui->LabelCursorUnit6->setText("sec");
@@ -564,12 +569,9 @@ void DopplerGroupTab::UpdateCursorValue()
 		ui->LabelCursorUnit6->setText("mm");
 	}
 
-	ui->ValueARef->setEnabled(false);
-	ui->ValueAMes->setEnabled(false);
-
-	ParameterProcess* _process = ParameterProcess::Instance() ;
+    ParameterProcess* _process = ParameterProcess::Instance();
 	TOFD_PARA* _tofd = m_pConfig->GetTofdConfig(m_nGroupId);
-	_process->GetTofdDepth(m_nGroupId , 1 , &_tofd->fDepthCal);
+    _process->GetTofdDepth(m_nGroupId, 1, &_tofd->fDepthCal);
 	ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
 }
 
@@ -584,11 +586,10 @@ void DopplerGroupTab::UpdateDefectBox()
 	{
 		_pBox->addItem(QString("NULL"));
 		_pBox->setEnabled(false);
-	}
-	else
-	{
+    }else{
 		QString _str;
 		int _index = _pConfig->m_dfParam[m_nGroupId].index;
+
 		for(int i = 0 ; i < _iCnt ; i ++)
 		{
 			_str.sprintf("%d", i+1);
@@ -921,13 +922,11 @@ void DopplerGroupTab::on_ValueGain_editingFinished()
 	_process->SetupGain(m_nGroupId , _fValue) ;
 }
 
-#include "ProcessDisplay.h"
-void DopplerGroupTab::on_ValueRefGain_valueChanged(double)
+void DopplerGroupTab::on_ValueRefGain_valueChanged(double value)
 {
-	if(!ui->ValueRefGain->hasFocus())  return ;
-	double _fValue = ui->ValueRefGain->value() ;
+    if(!ui->ValueRefGain->hasFocus())  return ;
 	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->SetupRefGain(m_nGroupId , _fValue) ;
+    _process->SetupRefGain(m_nGroupId , value) ;
 	ProcessDisplay _display ;
 	_display.UpdateAllViewCursorOfGroup(m_nGroupId);
 	g_pMainWnd->RunDrawThreadOnce(true);
@@ -1627,12 +1626,11 @@ void DopplerGroupTab::on_CheckCursorSync_clicked(bool checked)
 	_display.UpdateAllViewOverlay();
 }
 
-void DopplerGroupTab::on_ValueARef_valueChanged(double)
+void DopplerGroupTab::on_ValueARef_valueChanged(double value)
 {
 	if(!ui->ValueARef->hasFocus()) return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue = ui->ValueARef->value() ;
-	_process->SetupCursor(m_nGroupId , setup_CURSOR_A_REF , _fValue)  ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupCursor(m_nGroupId , setup_CURSOR_A_REF, value);
 
 	if(ui->CheckCursorShow->checkState())
 	{
@@ -1644,12 +1642,11 @@ void DopplerGroupTab::on_ValueARef_valueChanged(double)
 		 g_pMainWnd->RunDrawThreadOnce(true);
 	}
 }
-void DopplerGroupTab::on_ValueAMes_valueChanged(double)
+void DopplerGroupTab::on_ValueAMes_valueChanged(double value)
 {
 	if(!ui->ValueAMes->hasFocus()) return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue = ui->ValueAMes->value() ;
-	_process->SetupCursor(m_nGroupId , setup_CURSOR_A_MES , _fValue)  ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupCursor(m_nGroupId , setup_CURSOR_A_MES, value);
 
 	if(ui->CheckCursorShow->checkState())
 	{
@@ -1661,12 +1658,11 @@ void DopplerGroupTab::on_ValueAMes_valueChanged(double)
 		 g_pMainWnd->RunDrawThreadOnce(true);
 	}
 }
-void DopplerGroupTab::on_ValueURef_valueChanged(double)
+void DopplerGroupTab::on_ValueURef_valueChanged(double value)
 {
 	if(!ui->ValueURef->hasFocus()) return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue = ui->ValueURef->value() ;
-	_process->SetupCursor(m_nGroupId , setup_CURSOR_U_REF , _fValue)  ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupCursor(m_nGroupId , setup_CURSOR_U_REF , value);
 
 	if(ui->CheckCursorShow->checkState())
 	{
@@ -1679,12 +1675,11 @@ void DopplerGroupTab::on_ValueURef_valueChanged(double)
 	}
 	ui->ValueARef->setValue(m_pGroup->afCursor[setup_CURSOR_A_REF]);
 }
-void DopplerGroupTab::on_ValueUMes_valueChanged(double)
+void DopplerGroupTab::on_ValueUMes_valueChanged(double value)
 {
 	if(!ui->ValueUMes->hasFocus()) return ;
 	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue = ui->ValueUMes->value() ;
-	_process->SetupCursor(m_nGroupId , setup_CURSOR_U_MES , _fValue)  ;
+    _process->SetupCursor(m_nGroupId , setup_CURSOR_U_MES, value)  ;
 
 	if(ui->CheckCursorShow->checkState())
 	{
@@ -1697,12 +1692,11 @@ void DopplerGroupTab::on_ValueUMes_valueChanged(double)
 	}
 	ui->ValueAMes->setValue(m_pGroup->afCursor[setup_CURSOR_A_MES]);
 }
-void DopplerGroupTab::on_ValueSRef_valueChanged(double)
+void DopplerGroupTab::on_ValueSRef_valueChanged(double value)
 {
 	if(!ui->ValueSRef->hasFocus()) return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue = ui->ValueSRef->value() ;
-	_process->SetupCursor(m_nGroupId , setup_CURSOR_S_REF , _fValue)  ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupCursor(m_nGroupId, setup_CURSOR_S_REF, value);
 
 	if(ui->CheckCursorShow->checkState())
 	{
@@ -1714,12 +1708,11 @@ void DopplerGroupTab::on_ValueSRef_valueChanged(double)
 		 g_pMainWnd->RunDrawThreadOnce(true);
 	}
 }
-void DopplerGroupTab::on_ValueSMes_valueChanged(double)
+void DopplerGroupTab::on_ValueSMes_valueChanged(double value)
 {
 	if(!ui->ValueSMes->hasFocus()) return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue = ui->ValueSMes->value() ;
-	_process->SetupCursor(m_nGroupId , setup_CURSOR_S_MES , _fValue)  ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupCursor(m_nGroupId , setup_CURSOR_S_MES, value);
 
 	if(ui->CheckCursorShow->checkState())
 	{
@@ -1731,12 +1724,11 @@ void DopplerGroupTab::on_ValueSMes_valueChanged(double)
 		 g_pMainWnd->RunDrawThreadOnce(true);
 	}
 }
-void DopplerGroupTab::on_ValueIRef_valueChanged(double)
+void DopplerGroupTab::on_ValueIRef_valueChanged(double value)
 {
 	if(!ui->ValueIRef->hasFocus()) return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue = ui->ValueIRef->value() ;
-	_process->SetupCursor(m_nGroupId , setup_CURSOR_I_REF , _fValue)  ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupCursor(m_nGroupId , setup_CURSOR_I_REF, value);
 
 	if(ui->CheckCursorShow->checkState())
 	{
@@ -1748,12 +1740,11 @@ void DopplerGroupTab::on_ValueIRef_valueChanged(double)
 		 g_pMainWnd->RunDrawThreadOnce(true);
 	}
 }
-void DopplerGroupTab::on_ValueIMes_valueChanged(double)
+void DopplerGroupTab::on_ValueIMes_valueChanged(double value)
 {
 	if(!ui->ValueIMes->hasFocus()) return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue = ui->ValueIMes->value() ;
-	_process->SetupCursor(m_nGroupId , setup_CURSOR_I_MES , _fValue)  ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupCursor(m_nGroupId , setup_CURSOR_I_MES, value);
 
 	if(ui->CheckCursorShow->checkState())
 	{
