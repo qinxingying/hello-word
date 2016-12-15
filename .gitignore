@@ -1,5 +1,6 @@
 /Win32
 /build-phascan_view-win32-Debug
+/build-phascan_view-win32-Release
 *.obj
 *.user
 *.autosave

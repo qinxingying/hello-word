@@ -179,43 +179,6 @@ bool VerRegInfo(char* strRegInfo_, char* strCpuID_)
 	return false;
 }
 
-int GetRegDays(char* strRegInfo_, QDate last_)
-{
-	char _strDate1[16];
-	char _strDate2[16];
-	memset(_strDate1, 0x00, 16);
-	memset(_strDate2, 0x00, 16);
-
-	memcpy(_strDate1, &strRegInfo_[16], 8);
-	memcpy(_strDate2, &strRegInfo_[24], 8);
-
-	QDate _date1 = getDate(_strDate1);
-	QDate _date2 = getDate(_strDate2);
-
-	QDate _date = GetSysTime();
-
-	if(_date.daysTo(last_) > 0) {
-		return SYSTEM_TIME_ERROR;
-		char buff[256];
-		sprintf(buff,"(2)error! (%04d-%02d-%02d)(%04d-%02d-%02d)",
-				_date.year(), _date.month(), _date.day(),
-				last_.year(), last_.month(), last_.day());
-		QMessageBox::information(NULL, "Note", buff, QMessageBox::Yes);
-	}
-	if(_date.daysTo(_date1) > 0) {
-		return SYSTEM_TIME_ERROR;
-		char buff[256];
-		sprintf(buff,"(3)error! (%04d-%02d-%02d)(%04d-%02d-%02d)",
-				_date.year(), _date.month(), _date.day(),
-				_date1.year(), _date1.month(), _date1.day());
-		QMessageBox::information(NULL, "Note", buff, QMessageBox::Yes);
-	}
-
-	int days = _date.daysTo(_date2);
-
-	return days;
-}
-
 QDate GetSysTime(void)
 {
 #if 1

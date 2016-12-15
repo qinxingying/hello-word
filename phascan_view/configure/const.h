@@ -74,7 +74,7 @@ extern const char* g_strMeasureFildUnit[][4];
 extern QString GetExePathName2(char* dir);
 extern void GetExePathName1(char* dir, char* _strPathName);
 extern bool VerRegInfo(char* strRegInfo_, char* strCpuID_);
-extern int GetRegDays(char* strRegInfo_, QDate last_);
+
 extern QDate GetSysTime(void);
 extern void GetHardwareInfo(char* strInfo_);
 //#################################################################

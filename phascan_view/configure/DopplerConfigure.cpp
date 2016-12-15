@@ -11,13 +11,12 @@
 #include <report/DopplerHtmlReport.h>
 #include <process/ParameterProcess.h> 
 
-static const char* g_strDataFilePath	= ":/file/data" ;
+static const char* g_strDataFilePath	= ":/file/data";
 
 static const char* g_strMaterialPath	= ":/file/init/Material.init" ;
 static const char* g_strColorAmp		= ":/file/init/palette/ONDT_Amplitude.pal" ;
 static const char* g_strColorThickness	= ":/file/init/palette/ONDT_Corrosion.pal" ;
-static const char* g_strColorRectifier	= ":/file/init/palette/ONDT_RFTOFD.pal" ;
-//static const char* g_strEvnParamDir		= ":/file/init/EVN.DPL";
+static const char* g_strColorRectifier	= ":/file/init/palette/ONDT_RFTOFD.pal";
 
 static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 	"Default PA" ,
@@ -143,10 +142,9 @@ DopplerConfigure::~DopplerConfigure()
 void DopplerConfigure::OpenEvn()
 {
     const char* g_strPartDir = ":/file/init/part/";
-//	char _strPathName[256];
-//	GetExePathName1((char*)g_strEvnParamDir, _strPathName);
-    QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
 
+    QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
+    qDebug()<<"openPath = "<<_strPathName;
     QFile file(_strPathName);
 	file.open (QIODevice::ReadOnly);
 	QDataStream reader(&file);
@@ -242,10 +240,8 @@ void DopplerConfigure::SaveEvn()
 		SetLastDate();
 	}
 
-    //char _strPathName[256];
-    //GetExePathName1((char*)g_strEvnParamDir, _strPathName);
-
     QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
+    qDebug()<<"savePath = "<<_strPathName;
 	QFile file(_strPathName);
 	file.open (QIODevice::WriteOnly);
 	QDataStream write(&file);
