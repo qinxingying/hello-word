@@ -1,7 +1,9 @@
 #include "InstrumentSettingWidget.h"
 #include "ui_InstrumentSettingWidget.h"
-#include <configure/DopplerConfigure.h>
-#include <process/ParameterProcess.h>
+
+#include "DopplerConfigure.h"
+#include "ParameterProcess.h"
+
 #include <QSlider>
 
 InstrumentSettingWidget::InstrumentSettingWidget(QWidget *parent) :
@@ -9,7 +11,7 @@ InstrumentSettingWidget::InstrumentSettingWidget(QWidget *parent) :
 	ui(new Ui::InstrumentSettingWidget)
 {
 	ui->setupUi(this);
-	m_pConfig = DopplerConfigure::Instance()  ;
+    m_pConfig = DopplerConfigure::Instance();
 	InitCommonConfig();
 }
 

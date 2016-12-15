@@ -62,21 +62,16 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
     SetWidgetInvalide(); // 使窗口不使能  只作数据显示用
 }
 
-DopplerGroupTab::~DopplerGroupTab ()
+DopplerGroupTab::~DopplerGroupTab()
 {
 	delete ui;
 }
 
-void DopplerGroupTab::retranslateUi()
-{
-    ui->retranslateUi(this);
-}
-
 void DopplerGroupTab::SetGroupId(int nGroupId_)
 {
-	m_nGroupId = nGroupId_ ;
-	m_pGroup  = &m_pConfig->group[m_nGroupId]  ;
-	UpdateGroupConfig ();
+    m_nGroupId = nGroupId_;
+    m_pGroup  = &m_pConfig->group[m_nGroupId];
+    UpdateGroupConfig();
 }
 
 QToolBox* DopplerGroupTab::GetToolBox() const
@@ -91,7 +86,7 @@ QToolBox* DopplerGroupTab::GetToolBox() const
 *****************************************************************************/
 void DopplerGroupTab::UpdateVelocitySelection()
 {
-	MATERIAL& _material = m_pGroup->part.material ;
+    MATERIAL& _material = m_pGroup->part.material;
 	ui->ComVelocitySelection->clear();
 
 	QString _strTmp[3];
@@ -1895,4 +1890,9 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 //  g_pMainWnd->RunDrawThreadOnce();
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOverlay();
+}
+
+void DopplerGroupTab::retranslateGroupTabUi()
+{
+    ui->retranslateUi(this);
 }

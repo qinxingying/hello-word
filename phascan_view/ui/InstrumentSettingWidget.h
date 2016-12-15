@@ -3,8 +3,10 @@
 //##########################
 //    公共参数设置窗口 ， 所有的组参数共用
 //##########################
+#include "FileStruct.h"
+
 #include <QWidget>
-#include "configure/FileStruct.h"
+
 class DopplerConfigure ;
 namespace Ui {
     class InstrumentSettingWidget;
@@ -30,6 +32,7 @@ protected:
     void UpdateEncoderInfo();
     void UpdateScanRange() ;
     void ResetEncoderSetting();
+
 private slots:
     void on_ComScanType_currentIndexChanged(int index);
     void on_ComEncoderType_currentIndexChanged(int index);

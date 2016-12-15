@@ -44,7 +44,7 @@ public:
 	void UpdateCurrentAngleCom();
 	void UpdateTofdParam();
 	void UpdateSizeingCurves();
-    void retranslateUi();
+    void retranslateGroupTabUi();
 
 protected:
     void SetWidgetInvalide();
