@@ -12,8 +12,6 @@
 #include <process/ParameterProcess.h> 
 
 static const char* g_strDataFilePath	= ":/file/data";
-
-static const char* g_strMaterialPath	= ":/file/init/Material.init" ;
 static const char* g_strColorAmp		= ":/file/init/palette/ONDT_Amplitude.pal" ;
 static const char* g_strColorThickness	= ":/file/init/palette/ONDT_Corrosion.pal" ;
 static const char* g_strColorRectifier	= ":/file/init/palette/ONDT_RFTOFD.pal";
@@ -110,9 +108,9 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
 
 	m_listMaterial = new QList<MATERIAL*>  ;
 	m_listMaterial->clear();
-	//QString _str (g_strMaterialPath);
-	QString _str = GetExePathName2((char*)g_strMaterialPath);
-	DopplerXMLReader::LoadMaterial(&_str , m_listMaterial) ;
+
+    QString _str = QDir::currentPath() + "/init/Material.init";
+    DopplerXMLReader::LoadMaterial(&_str, m_listMaterial) ;
 
     InitCommonConfig();
 	m_szFileInUse.clear();
