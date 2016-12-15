@@ -1225,11 +1225,10 @@ void MainWindow::on_actionSave_Defect_triggered()
 
 void MainWindow::on_actionLanguage_triggered()
 {
-    if(!m_chineseFlag)
-    {
-      slot_actionChinese_triggered();
+    if(!m_chineseFlag){
+        slot_actionChinese_triggered();
     }else{
-      slot_actionEnglish_triggered();
+        slot_actionEnglish_triggered();
     }
     m_chineseFlag = !m_chineseFlag;
 }
@@ -1244,10 +1243,13 @@ void MainWindow::slot_actionEnglish_triggered()
     ui->actionEnglish->setChecked(true);
     ui->actionChinese->setChecked(false);
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-20.png"));
+
     translator->load(":/file/translator/phascan_view_english.qm");
+//    bool loadSuccess = translator->load(":/file/translator/phascan_view_english.qm");
+//    if(!loadSuccess) return;
 
     ui->ScanHardware->retranslateUi();
-    ui->Group1->retranslateUi();
+    ui->Group1->retranslateGroupTabUi();
     ui->retranslateUi(this);
 }
 
@@ -1256,10 +1258,13 @@ void MainWindow::slot_actionChinese_triggered()
     ui->actionChinese->setChecked(true);
     ui->actionEnglish->setChecked(false);
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-22.png"));
+
     translator->load(":/file/translator/phascan_view_chinese.qm");
+//    bool loadSuccess = translator->load(":/file/translator/phascan_view_chinese.qm");
+//    if(!loadSuccess) return;
 
     ui->ScanHardware->retranslateUi();
-    ui->Group1->retranslateUi();
+    ui->Group1->retranslateGroupTabUi();
     ui->retranslateUi(this);
 }
 
