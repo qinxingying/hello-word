@@ -585,7 +585,7 @@
   <action name="actionLanguage">
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
-     <normaloff>:/file/resource/toolbar/0-22.png</normaloff>:/file/resource/toolbar/0-22.png</iconset>
+     <normaloff>:/file/resource/toolbar/0-20.png</normaloff>:/file/resource/toolbar/0-20.png</iconset>
    </property>
    <property name="text">
     <string>Language</string>

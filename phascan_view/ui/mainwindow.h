@@ -11,7 +11,6 @@
 #include "DopplerLawMarker.h"
 
 #include <QMainWindow>
-#include <QTranslator>
 
 #define MAX_LIST_QTY     10
 class DataRefreshThread;
@@ -96,7 +95,6 @@ protected:
 private:
     Ui::MainWindow *ui;
     DataRefreshThread* m_pThreadDraw;
-//    QTranslator *translator;
     QWidget* m_pCurrentDataView;
     QLabel* m_pStatusCell[3];
     STATUS_BAR_INFO m_BarInfo;
