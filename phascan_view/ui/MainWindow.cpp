@@ -615,7 +615,6 @@ void MainWindow::UpdateTableDisplay()
                 }
         }
 
-
         ui->TabWidget_parameter->setEnabled(true);
         ui->TabWidget_display->setEnabled(true);
         ui->toolBar->setEnabled(true);

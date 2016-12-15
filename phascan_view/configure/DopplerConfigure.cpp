@@ -17,7 +17,7 @@ static const char* g_strMaterialPath	= ":/file/init/Material.init" ;
 static const char* g_strColorAmp		= ":/file/init/palette/ONDT_Amplitude.pal" ;
 static const char* g_strColorThickness	= ":/file/init/palette/ONDT_Corrosion.pal" ;
 static const char* g_strColorRectifier	= ":/file/init/palette/ONDT_RFTOFD.pal" ;
-static const char* g_strEvnParamDir		= ":/file/init/EVN.DPL";
+//static const char* g_strEvnParamDir		= ":/file/init/EVN.DPL";
 
 static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 	"Default PA" ,
@@ -115,7 +115,7 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
 	QString _str = GetExePathName2((char*)g_strMaterialPath);
 	DopplerXMLReader::LoadMaterial(&_str , m_listMaterial) ;
 
-	InitCommonConfig()  ;
+    InitCommonConfig();
 	m_szFileInUse.clear();
 
 	header.eType = FILE_TYPE_CONFIG ;
@@ -143,22 +143,22 @@ DopplerConfigure::~DopplerConfigure()
 void DopplerConfigure::OpenEvn()
 {
     const char* g_strPartDir = ":/file/init/part/";
-	char _strPathName[256];
-	GetExePathName1((char*)g_strEvnParamDir, _strPathName);
+//	char _strPathName[256];
+//	GetExePathName1((char*)g_strEvnParamDir, _strPathName);
+    QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
 
-	QFile file(_strPathName);
+    QFile file(_strPathName);
 	file.open (QIODevice::ReadOnly);
 	QDataStream reader(&file);
-	int ret ;
 
-	ret = reader.readRawData((char*)&AppEvn , sizeof(SYSTEM_ENVIRMENT)) ;
+    int ret = reader.readRawData((char*)&AppEvn , sizeof(SYSTEM_ENVIRMENT));
 	if(ret < 0)
 	{
-		GetExePathName1((char*)g_strDataFilePath, _strPathName);
-		strcpy(AppEvn.strDataFilePath, _strPathName);
+        GetExePathName1((char*)g_strDataFilePath, _strPathName.toLatin1().data());
+        strcpy(AppEvn.strDataFilePath, _strPathName.toLatin1().data());
 
-		GetExePathName1((char*)g_strPartDir, _strPathName);
-		strcpy(AppEvn.strNccFilePath, _strPathName);
+        GetExePathName1((char*)g_strPartDir, _strPathName.toLatin1().data());
+        strcpy(AppEvn.strNccFilePath, _strPathName.toLatin1().data());
 		AppEvn.eUnit	 = setup_SOUND_AXIX_UNIT_MM;
 		AppEvn.iTofdDataProMode = 0;
 		AppEvn.bSAxisCursorSync		= true;
@@ -229,26 +229,27 @@ void DopplerConfigure::SaveEvn()
 		}
 
 
-		AppEvn.bShowCursor[i]		= group[i].bShowCursor	 ;
-		AppEvn.bShowGate[i]			= group[i].bShowGate	   ;
-		AppEvn.bShowThickness[i]	= group[i].bShowThickness  ;
-		AppEvn.bShowWeld[i]			= group[i].bShowWeldPart   ;
-		AppEvn.bShowMeasure[i]		= group[i].bShowMeasure	;
-		AppEvn.bShowLwBw[i]			= group[i].bShowLwBw	   ;
-		AppEvn.bShowDefect[i]		= group[i].bShowDefect	 ;
+        AppEvn.bShowCursor[i]		= group[i].bShowCursor;
+        AppEvn.bShowGate[i]			= group[i].bShowGate;
+        AppEvn.bShowThickness[i]	= group[i].bShowThickness;
+        AppEvn.bShowWeld[i]			= group[i].bShowWeldPart;
+        AppEvn.bShowMeasure[i]		= group[i].bShowMeasure;
+        AppEvn.bShowLwBw[i]			= group[i].bShowLwBw;
+        AppEvn.bShowDefect[i]		= group[i].bShowDefect;
 	}
 
 	if(AppEvn.bRegStatus) {
 		SetLastDate();
 	}
 
-	char _strPathName[256];
-	GetExePathName1((char*)g_strEvnParamDir, _strPathName);
+    //char _strPathName[256];
+    //GetExePathName1((char*)g_strEvnParamDir, _strPathName);
 
+    QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
 	QFile file(_strPathName);
 	file.open (QIODevice::WriteOnly);
 	QDataStream write(&file);
-	write.writeRawData((char*)&AppEvn , sizeof(SYSTEM_ENVIRMENT)) ;
+    write.writeRawData((char*)&AppEvn, sizeof(SYSTEM_ENVIRMENT));
 	file.close();
 }
 
