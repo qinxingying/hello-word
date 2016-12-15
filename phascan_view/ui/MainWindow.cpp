@@ -97,8 +97,8 @@ void MainWindow::init_ui()
     m_bCursorSel = true;
 
     //------------ Language----------------//
-    translator = new QTranslator(this);
-    qApp->installTranslator(translator);
+//    translator = new QTranslator(this);
+//    qApp->installTranslator(translator);
     slot_actionChinese_triggered(); // default Chinese
     m_chineseFlag = true;
 
@@ -107,8 +107,8 @@ void MainWindow::init_ui()
 
 void MainWindow::CreateStatusBar()
 {
-    QStatusBar* _status = ui->statusbar ;
-    QPalette pal = this->palette() ;
+    QStatusBar* _status = ui->statusbar;
+    QPalette pal = this->palette();
         pal.setColor(QPalette::Background, QColor(0 , 0 , 0));
         _status->setPalette(pal);
         _status->setAutoFillBackground(true);
@@ -1238,16 +1238,22 @@ void MainWindow::on_actionScreenShot_triggered()
     ScreenShot();
 }
 
+#include <QMutex>
+
 void MainWindow::slot_actionEnglish_triggered()
 {
+    QMutex mutex;
+    mutex.lock();
     ui->actionEnglish->setChecked(true);
     ui->actionChinese->setChecked(false);
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-20.png"));
 
-    translator->load(":/file/translator/phascan_view_english.qm");
+    QTranslator translator2;
+    translator2.load(":/file/translator/phascan_view_english.qm");
+    qApp->installTranslator(&translator2);
 //    bool loadSuccess = translator->load(":/file/translator/phascan_view_english.qm");
 //    if(!loadSuccess) return;
-
+    mutex.unlock();
     ui->ScanHardware->retranslateUi();
     ui->Group1->retranslateGroupTabUi();
     ui->retranslateUi(this);
@@ -1255,14 +1261,18 @@ void MainWindow::slot_actionEnglish_triggered()
 
 void MainWindow::slot_actionChinese_triggered()
 {
+    QMutex mutex;
+    mutex.lock();
     ui->actionChinese->setChecked(true);
     ui->actionEnglish->setChecked(false);
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-22.png"));
 
-    translator->load(":/file/translator/phascan_view_chinese.qm");
+    QTranslator translator1;
+    translator1.load(":/file/translator/phascan_view_chinese.qm");
+    qApp->installTranslator(&translator1);
 //    bool loadSuccess = translator->load(":/file/translator/phascan_view_chinese.qm");
 //    if(!loadSuccess) return;
-
+    mutex.unlock();
     ui->ScanHardware->retranslateUi();
     ui->Group1->retranslateGroupTabUi();
     ui->retranslateUi(this);

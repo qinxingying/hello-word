@@ -96,7 +96,7 @@ protected:
 private:
     Ui::MainWindow *ui;
     DataRefreshThread* m_pThreadDraw;
-    QTranslator *translator;
+//    QTranslator *translator;
     QWidget* m_pCurrentDataView;
     QLabel* m_pStatusCell[3];
     STATUS_BAR_INFO m_BarInfo;
