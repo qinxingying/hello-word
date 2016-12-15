@@ -369,7 +369,7 @@ void MainWindow::AddOneGroup()
         int _nGroupQty = _pConfig->common.nGroupQty - 1;
 
         DopplerGroupTab* _pGroup = new DopplerGroupTab(this);
-        _pGroup->SetGroupId(_nGroupQty )  ;
+        _pGroup->SetGroupId(_nGroupQty );
 
         QString str(tr("Group ")) ; QString str1 ; str1.sprintf("%d", _nGroupQty + 1) ;
         str += str1 ;
@@ -499,36 +499,40 @@ void MainWindow::SetSelectedDataView(QWidget* pWidget_)
 *****************************************************************************/
 void MainWindow::UpdateTableParameter()
 {
-        // disconnect for signal unpredicted
-        disconnect(ui->TabWidget_parameter  , SIGNAL(currentChanged(int)) , 0 , 0) ;
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        int _nGroupQty = _pConfig->common.nGroupQty ;
-        int _nTabQty   = ui->TabWidget_parameter->count() ;
-        while(_nTabQty > 2)
-        {
-                QWidget* _pWidget  = ui->TabWidget_parameter->widget(0);
-                ui->TabWidget_parameter->removeTab(0);
-                delete _pWidget ;
-                _nTabQty   = ui->TabWidget_parameter->count() ;
-        }
+    // disconnect for signal unpredicted
+    disconnect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), 0 , 0) ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int _nGroupQty = _pConfig->common.nGroupQty;
+    int _nTabQty   = ui->TabWidget_parameter->count();
 
-        for(int i = 0 ; i < _nGroupQty ; i++)
-        {
-                DopplerGroupTab* _pGroup = new DopplerGroupTab(this);
-                _pGroup->SetGroupId(i)  ;
-                QString str(tr("Group ")) ; QString str1 ; str1.sprintf("%d", i + 1) ;
-                str += str1 ;
-                QIcon icon(":/file/resource/main_menu/0-27.png");
-                ui->TabWidget_parameter->insertTab(i , _pGroup , icon, str)  ;
-        }
+    while(_nTabQty > 2)
+    {
+        QWidget* _pWidget = ui->TabWidget_parameter->widget(0);
+        ui->TabWidget_parameter->removeTab(0);
+        delete _pWidget;
+        _nTabQty = ui->TabWidget_parameter->count();
+    }
 
-        ui->TabWidget_parameter->setCurrentIndex(0);
-        connect(ui->TabWidget_parameter  , SIGNAL(currentChanged(int)) , SLOT(slotCurrentGroupChanged(int))) ;
+    for(int i = 0; i < _nGroupQty; i++)
+    {
+        DopplerGroupTab* _pGroup = new DopplerGroupTab(this);
+        _pGroup->SetGroupId(i);
+
+        QString str(tr("Group "));
+        QString str1;
+        str1.sprintf("%d", i + 1);
+        str += str1;
+        QIcon icon(":/file/resource/main_menu/0-27.png");
+        ui->TabWidget_parameter->insertTab(i, _pGroup, icon, str);
+    }
+
+    ui->TabWidget_parameter->setCurrentIndex(0);
+    connect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentGroupChanged(int)));
 }
 
 void MainWindow::SetWndName()
 {
-    int _nQty = ui->TabWidget_parameter->count() ;
+    int _nQty = ui->TabWidget_parameter->count();
     if(_nQty < 3 )  return;
 
     for(int i = 0 ; i< _nQty - 2; i++)
@@ -541,27 +545,27 @@ void MainWindow::SetWndName()
 
 void MainWindow::UpdateCombinationDisplay(void)
 {
-        ui->TabWidget_display->setCurrentIndex(0);
-        DopplerViewFrame* _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
-        _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_ALLGROUP);
-        _pViewFrame->SetViewFrameId(0);
-        _pViewFrame->update();
+    ui->TabWidget_display->setCurrentIndex(0);
+    DopplerViewFrame* _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
+    _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_ALLGROUP);
+    _pViewFrame->SetViewFrameId(0);
+    _pViewFrame->update();
 
-        SetWndName();
+    SetWndName();
 }
 
 void MainWindow::SaveCurScreenshot(QString strPath_)
 {
-        QString _strPath = strPath_;
-        QPixmap pixmap = QPixmap::grabWidget(ui->TabWidget_display->currentWidget());
-        pixmap.save(_strPath , "png");
+    QString _strPath = strPath_;
+    QPixmap pixmap = QPixmap::grabWidget(ui->TabWidget_display->currentWidget());
+    pixmap.save(_strPath, "png");
 }
 
 void MainWindow::UpdateTableDisplay()
 {
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        int _nGroupQty = _pConfig->common.nGroupQty ;
-        int _nTabQty   = ui->TabWidget_display->count() ;
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        int _nGroupQty = _pConfig->common.nGroupQty;
+        int _nTabQty   = ui->TabWidget_display->count();
 
         m_nAlloff = 1;
         if(_nGroupQty < 2)
@@ -629,6 +633,7 @@ void MainWindow::InsertRightTab()
         ui->TabWidget_display->setCurrentIndex(_nIndex -1);
         SetDispTabText();
 }
+
 void MainWindow::NewConfigure()
 {
         QMessageBox messageBox(this);
