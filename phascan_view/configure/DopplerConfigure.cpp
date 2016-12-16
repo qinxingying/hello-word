@@ -103,7 +103,7 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
 	m_listMaterial->clear();
 
     QString _str = QDir::currentPath() + "/init/Material.init";
-    DopplerXMLReader::LoadMaterial(&_str, m_listMaterial) ;
+    DopplerXMLReader::LoadMaterial(&_str, m_listMaterial);
 
     g_strColorAmp = QDir::currentPath() + "/init/palette/ONDT_Amplitude.pal";
     g_strColorThickness	= QDir::currentPath() + ":/file/init/palette/ONDT_Corrosion.pal";
@@ -127,8 +127,8 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
 DopplerConfigure::~DopplerConfigure()
 {
 	ReleaseShadowData();	
-	delete m_pDataFile ;
-	delete m_pReport   ;
+    delete m_pDataFile;
+    delete m_pReport;
 
 	SaveEvn();
 	ReleaseAllDefect();

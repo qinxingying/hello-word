@@ -5,8 +5,7 @@
 #include <QDir>
 #include <QPainter>
 #include <QListWidget>
-
-static const char* g_strPaletePath = ":/file/init/palette"  ;
+#include <QDebug>
 
 DialogColorSelect::DialogColorSelect(QWidget *parent) :
     QDialog(parent),
@@ -14,7 +13,7 @@ DialogColorSelect::DialogColorSelect(QWidget *parent) :
 {
     ui->setupUi(this);
     setFixedSize(size());
-    InitListWidget() ;
+    InitListWidget();
 }
 
 DialogColorSelect::~DialogColorSelect()
@@ -22,23 +21,19 @@ DialogColorSelect::~DialogColorSelect()
     delete ui;
 }
 
-
 void DialogColorSelect::InitListWidget()
 {
-    QListWidget* m_pSubList  = ui->ListName   ;
+    QListWidget* m_pSubList  = ui->ListName;
+    QString strPaletePath = QDir::currentPath() + "/init/palette";
 
-    char _strPathName[256];
-    GetExePathName1((char*)g_strPaletePath, _strPathName);
-
-    QString _str = QString("%1").arg(_strPathName)  ;
-
-    QDir _dir(_str);
+    QDir _dir(strPaletePath);
     _dir.setFilter(QDir::Files | QDir::Readable);
 
     QFileInfoList _list = _dir.entryInfoList();
     QFileInfo _fileInfo;
     m_pSubList->clear();
-    QListWidgetItem* _p ;
+    QListWidgetItem* _p;
+
     for (int i = 0; i < _list.size(); ++i)
     {
         _fileInfo = _list.at(i);
@@ -57,24 +52,22 @@ void DialogColorSelect::slotSelectChanged(QString str_)
 {
     if(str_.isEmpty())  return ;
 
-    char _strPathName[256];
-    GetExePathName1((char*)g_strPaletePath, _strPathName);
-
-    QListWidget* m_pSubList  = ui->ListName   ;
+    QString strPaletePath = QDir::currentPath() + "/init/palette/";
+    QListWidget* m_pSubList  = ui->ListName;
     QListWidgetItem* _pFile   = m_pSubList->currentItem();
-    QString _str = QString("%1/%2").arg(_strPathName).arg(_pFile->text())  ;
-    //qDebug("slotNameChanged   %s" , _str.toLatin1().data());
-    DopplerColorIndex _color ;
+
+    QString _str = strPaletePath + _pFile->text();
+
+    DopplerColorIndex _color;
     _color.LoadPallete(_str);
-    memcpy((void*)m_aColor , _color.GetColorIndex() , 256 * 3) ;
+    memcpy((void*)m_aColor , _color.GetColorIndex() , 256 * 3);
     update();
 }
-
 
 void DialogColorSelect::paintEvent (QPaintEvent*)
 {
     QPainter _painter(this);
-    QRect _rect = ui->ListName->geometry() ;
+    QRect _rect = ui->ListName->geometry();
     int _nXStart = _rect.right() + 10 ;
     int _nXStop  = _nXStart + 90  ;
     int _nYStart = _rect.top() ;
@@ -82,6 +75,7 @@ void DialogColorSelect::paintEvent (QPaintEvent*)
     int _nIndex ;
     QPen _pen = _painter.pen();
     _pen.setWidth(1);
+
     for(int i = 0 ; i < _nHeight ; i++)
     {
         _nIndex = 255 - i * 255 / _nHeight ;
@@ -101,8 +95,7 @@ void DialogColorSelect::on_pushButton_2_clicked()
     reject();
 }
 
-
 void* DialogColorSelect::GetColorIndex() const
 {
-    return (void*)m_aColor ;
+    return (void*)m_aColor;
 }

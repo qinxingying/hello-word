@@ -1,8 +1,9 @@
 #ifndef DIALOGCOLORSELECT_H
 #define DIALOGCOLORSELECT_H
 
+#include "const.h"
+
 #include <QDialog>
-#include "configure/const.h"
 
 namespace Ui {
     class DialogColorSelect;
@@ -17,6 +18,7 @@ public:
     ~DialogColorSelect();
 
     void* GetColorIndex() const;
+
 protected:
     void paintEvent (QPaintEvent*);
 
@@ -24,9 +26,11 @@ private:
     void InitListWidget() ;
 
     Ui::DialogColorSelect *ui;
-    unsigned char m_aColor[256][3] ;
+    unsigned char m_aColor[256][3];
+
 protected slots:
-    void slotSelectChanged(QString str_) ;
+    void slotSelectChanged(QString str_);
+
 private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
