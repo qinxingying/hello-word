@@ -52,10 +52,11 @@ private slots:
 private:
 	DopplerConfigure* m_pConfig;
 	Ui::DialogWeldPartLoad *ui;
-    DISPLAY_MODE m_eDisplay ;
+    DISPLAY_MODE m_eDisplay;
 	PART_CONFIG m_cPart;
-	int    m_nGroupId ;
-	int    m_nWeldPartSel ;
+    int    m_nGroupId;
+    int    m_nWeldPartSel;
+    QString g_strPartDir;
 };
 
 #endif // DIALOGWELDPARTLOAD_H

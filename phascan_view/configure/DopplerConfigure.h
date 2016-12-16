@@ -176,6 +176,10 @@ private:
 	WDATA*				m_pDataShadow ;
 	U8					m_nComDisplay[4];
 
+    QString g_strColorAmp;
+    QString g_strColorThickness;
+    QString g_strColorRectifier;
+
 public:
     QList<MATERIAL*>*	m_listMaterial;
 	TOFD_PARA			TOFD[setup_MAX_GROUP_QTY] ;
@@ -185,10 +189,6 @@ public:
     SYSTEM_ENVIRMENT	AppEvn;
 	DEFECT_PARAM		m_dfParam[setup_MAX_GROUP_QTY];
 	int					m_nCutBmpNo[setup_MAX_GROUP_QTY];
-
-signals:
-
-public slots:
 
 };
 

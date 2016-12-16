@@ -4,8 +4,6 @@
 
 #include <QFileDialog>
 
-const char* g_strPartDir = ":/file/init/part/";
-
 DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 	QDialog(parent),
 	ui(new Ui::DialogWeldPartLoad)
@@ -16,6 +14,8 @@ DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 	m_nWeldPartSel = 0;
 
     m_pConfig = DopplerConfigure::Instance();
+
+    g_strPartDir = QDir::currentPath() + "/init/part/";
 
 	SetPart();
 	UpdateWeld() ;
@@ -80,11 +80,8 @@ void DialogWeldPartLoad::SetDisplayMode(DISPLAY_MODE eMode_)
 #include <QStandardItem>
 void DialogWeldPartLoad::ListPartFiles()
 {
-	char _strPath[256];
-
   //  strcpy(_strPath, (char*)m_pConfig->AppEvn.strNccFilePath);
-    strcpy(_strPath, (char*)g_strPartDir);
-	QDir dir(_strPath);
+    QDir dir(g_strPartDir);
 	if(!dir.exists()) {
 		return;
 	}
@@ -192,19 +189,19 @@ void DialogWeldPartLoad::UpdateDisplay()
     };
 
 	if(m_cPart.weld.eType == setup_WELD_NCC) {
-		ui->ComWeldSymetry->setEnabled(false);
-		ui->SpinWHeight->setEnabled(false);
-		ui->SpinWoffset->setEnabled(false);
-		ui->SpinFHeight->setEnabled(false);
-		ui->SpinFRadius->setEnabled(false);
-		ui->SpinFAngle->setEnabled(false);
+        ui->ComWeldSymetry->setEnabled(false);
+        ui->SpinWHeight->setEnabled(false);
+        ui->SpinWoffset->setEnabled(false);
+        ui->SpinFHeight->setEnabled(false);
+        ui->SpinFRadius->setEnabled(false);
+        ui->SpinFAngle->setEnabled(false);
 	} else {
-		ui->ComWeldSymetry->setEnabled(true);
-		ui->SpinWHeight->setEnabled(true);
-		ui->SpinWoffset->setEnabled(true);
-		ui->SpinFHeight->setEnabled(true);
-		ui->SpinFRadius->setEnabled(true);
-		ui->SpinFAngle->setEnabled(true);
+        ui->ComWeldSymetry->setEnabled(true);
+        ui->SpinWHeight->setEnabled(true);
+        ui->SpinWoffset->setEnabled(true);
+        ui->SpinFHeight->setEnabled(true);
+        ui->SpinFRadius->setEnabled(true);
+        ui->SpinFAngle->setEnabled(true);
 	}
 }
 
@@ -267,10 +264,10 @@ void DialogWeldPartLoad::on_SpinFAngle_valueChanged(double arg1)
 //#include <QMessageBox>
 void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
 {
-	char _strPath[256];
+    char _strPath[256];
 
    // strcpy(_strPath, (char*)m_pConfig->AppEvn.strNccFilePath);
-    strcpy(_strPath, (char*)g_strPartDir);
+    strcpy(_strPath, g_strPartDir.toLatin1().data());
 
 	QString _str = index.data().toString();
 	m_cPart.weld.eType = setup_WELD_NCC;
@@ -307,7 +304,7 @@ void DialogWeldPartLoad::on_BtnNccDefaultPathClicked()
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance()  ;
 	char _strBuf[256];
 
-	GetExePathName1((char*)g_strPartDir, _strBuf);
+    GetExePathName1(g_strPartDir.toLatin1().data(), _strBuf);
 	strcpy(_pConfig->AppEvn.strNccFilePath, _strBuf);
     SetWndName();
 	UpdateDisplay();

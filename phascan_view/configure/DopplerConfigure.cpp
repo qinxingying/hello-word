@@ -12,9 +12,6 @@
 #include <process/ParameterProcess.h> 
 
 static const char* g_strDataFilePath	= ":/file/data";
-static const char* g_strColorAmp		= ":/file/init/palette/ONDT_Amplitude.pal" ;
-static const char* g_strColorThickness	= ":/file/init/palette/ONDT_Corrosion.pal" ;
-static const char* g_strColorRectifier	= ":/file/init/palette/ONDT_RFTOFD.pal";
 
 static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 	"Default PA" ,
@@ -86,7 +83,7 @@ DopplerConfigure* DopplerConfigure::Instance()
 	}
 	return m_pConfig ;
 }
-#include <QMessageBox>
+
 DopplerConfigure::DopplerConfigure(QObject *parent) :
 	QObject(parent)
 {
@@ -94,8 +91,7 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
 
 	m_pData = NULL;
 	m_pDataShadow = NULL;   
-	//------------------------------------------
-	// 
+
 	for(int i = 0; i < setup_MAX_GROUP_QTY; i++)
 	{
 		ClearDefectInfo(i);
@@ -104,13 +100,16 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
 		m_dfParam[i].pDFEnd = NULL;
 		m_nCutBmpNo[i] = 0;
 	}
-	//------------------------------------------
 
-	m_listMaterial = new QList<MATERIAL*>  ;
+    m_listMaterial = new QList<MATERIAL*>;
 	m_listMaterial->clear();
 
     QString _str = QDir::currentPath() + "/init/Material.init";
     DopplerXMLReader::LoadMaterial(&_str, m_listMaterial) ;
+
+    g_strColorAmp = QDir::currentPath() + "/init/palette/ONDT_Amplitude.pal";
+    g_strColorThickness	= QDir::currentPath() + ":/file/init/palette/ONDT_Corrosion.pal";
+    g_strColorRectifier	= QDir::currentPath() + ":/file/init/palette/ONDT_RFTOFD.pal";
 
     InitCommonConfig();
 	m_szFileInUse.clear();
@@ -139,8 +138,7 @@ DopplerConfigure::~DopplerConfigure()
 
 void DopplerConfigure::OpenEvn()
 {
-    const char* g_strPartDir = ":/file/init/part/";
-
+    QString g_strPartDir = QDir::currentPath() + "/init/part/";
     QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
     qDebug()<<"openPath = "<<_strPathName;
     QFile file(_strPathName);
@@ -153,7 +151,7 @@ void DopplerConfigure::OpenEvn()
         GetExePathName1((char*)g_strDataFilePath, _strPathName.toLatin1().data());
         strcpy(AppEvn.strDataFilePath, _strPathName.toLatin1().data());
 
-        GetExePathName1((char*)g_strPartDir, _strPathName.toLatin1().data());
+        GetExePathName1(g_strPartDir.toLatin1().data(), _strPathName.toLatin1().data());
         strcpy(AppEvn.strNccFilePath, _strPathName.toLatin1().data());
 		AppEvn.eUnit	 = setup_SOUND_AXIX_UNIT_MM;
 		AppEvn.iTofdDataProMode = 0;
@@ -592,14 +590,14 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	memset((void*)&_curve.faAmp ,         0 , sizeof(float) * setup_MAX_GROUP_LAW_QTY * setup_DAC_POINT_QTY)  ;
 	memset((void*)&_curve.faPosition ,    0 , sizeof(float) * setup_MAX_GROUP_LAW_QTY * setup_DAC_POINT_QTY)  ;
 
-	DopplerColorIndex _color ;
-	_color.LoadPallete(GetExePathName2((char*)g_strColorAmp));
+    DopplerColorIndex _color;
+    _color.LoadPallete(g_strColorAmp);
 	memcpy((void*)_pConfig->color.Amp , _color.GetColorIndex() , 256 * 3);
 
-	_color.LoadPallete(GetExePathName2((char*)g_strColorThickness));
+    _color.LoadPallete(g_strColorThickness);
 	memcpy((void*)_pConfig->color.Thickness , _color.GetColorIndex() , 256 * 3);
 
-	_color.LoadPallete(GetExePathName2((char*)g_strColorRectifier));
+    _color.LoadPallete(g_strColorRectifier);
 	memcpy((void*)_pConfig->color.Rf ,_color.GetColorIndex() , 256 * 3);
 
 }
@@ -710,8 +708,6 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	memcpy(common.nRecMark , _pack->bScanMark , _nScanIndex) ;
 }
 
-//#include <process/ParameterProcess.h> 
-#include <QList>
 void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
@@ -948,13 +944,13 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
 		DopplerColorIndex _color ;
 
-		_color.LoadPallete(GetExePathName2((char*)g_strColorAmp));
-		memcpy((void*)_group.color.Amp , _color.GetColorIndex() , 256 * 3);
+        _color.LoadPallete(g_strColorAmp);
+        memcpy((void*)_group.color.Amp, _color.GetColorIndex() , 256 * 3);
 
-		_color.LoadPallete(GetExePathName2((char*)g_strColorThickness));
+        _color.LoadPallete(g_strColorThickness);
 		memcpy((void*)_group.color.Thickness , _color.GetColorIndex() , 256 * 3);
 
-		_color.LoadPallete(GetExePathName2((char*)g_strColorRectifier));
+        _color.LoadPallete(g_strColorRectifier);
 		memcpy((void*)_group.color.Rf ,_color.GetColorIndex() , 256 * 3);
 		//##################################
 		UpdateTofdConfig(i) ;
