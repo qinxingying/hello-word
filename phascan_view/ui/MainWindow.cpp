@@ -1250,8 +1250,6 @@ void MainWindow::slot_actionEnglish_triggered()
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-20.png"));
 
     translator->load(":/file/translator/phascan_view_english.qm");
-//    bool loadSuccess = translator2.load(":/file/translator/phascan_view_english.qm");
-//    if(!loadSuccess) return;
 
     ui->ScanHardware->retranslateUi();
     ui->Group1->retranslateGroupTabUi();
@@ -1265,8 +1263,6 @@ void MainWindow::slot_actionChinese_triggered()
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-22.png"));
 
     translator->load(":/file/translator/phascan_view_chinese.qm");
-//    bool loadSuccess = translator1.load(":/file/translator/phascan_view_chinese.qm");
-//    if(!loadSuccess) return;
 
     ui->ScanHardware->retranslateUi();
     ui->Group1->retranslateGroupTabUi();
