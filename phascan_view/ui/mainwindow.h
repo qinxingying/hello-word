@@ -157,6 +157,7 @@ protected slots:
   void on_actionScreenShot_triggered();
   void slot_actionEnglish_triggered();
   void slot_actionChinese_triggered();
+  void on_actionJapanese_triggered();
 };
 
 extern MainWindow* g_pMainWnd;

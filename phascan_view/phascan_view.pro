@@ -15,7 +15,8 @@ PROJECT_DIR = $$PWD
 
 RESOURCES    += mainwindow.qrc
 TRANSLATIONS += translator/phascan_view_chinese.ts \
-                translator/phascan_view_english.ts
+                translator/phascan_view_english.ts \
+                translator/phascan_view_japanese.ts
 
 include(ui/ui.pri)
 include(configure/configure.pri)

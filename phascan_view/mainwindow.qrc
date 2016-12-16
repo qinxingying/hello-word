@@ -61,5 +61,6 @@
         <file>translator/phascan_view_chinese.qm</file>
         <file>translator/phascan_view_english.qm</file>
         <file>resource/report_logo/logo.png</file>
+        <file>translator/phascan_view_japanese.qm</file>
     </qresource>
 </RCC>

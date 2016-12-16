@@ -1247,6 +1247,7 @@ void MainWindow::slot_actionEnglish_triggered()
 {
     ui->actionEnglish->setChecked(true);
     ui->actionChinese->setChecked(false);
+    ui->actionJapanese->setChecked(false);
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-20.png"));
 
     translator->load(":/file/translator/phascan_view_english.qm");
@@ -1260,12 +1261,26 @@ void MainWindow::slot_actionChinese_triggered()
 {
     ui->actionChinese->setChecked(true);
     ui->actionEnglish->setChecked(false);
+    ui->actionJapanese->setChecked(false);
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-22.png"));
 
     translator->load(":/file/translator/phascan_view_chinese.qm");
 
     ui->ScanHardware->retranslateUi();
     ui->Group1->retranslateGroupTabUi();
+    ui->retranslateUi(this);
+}
+
+void MainWindow::on_actionJapanese_triggered()
+{
+    ui->actionJapanese->setChecked(true);
+    ui->actionChinese->setChecked(false);
+    ui->actionEnglish->setChecked(false);
+
+    translator->load(":/file/translator/phascan_view_japanese.qm");
+
+  //  ui->ScanHardware->retranslateUi();
+  //  ui->Group1->retranslateGroupTabUi();
     ui->retranslateUi(this);
 }
 
