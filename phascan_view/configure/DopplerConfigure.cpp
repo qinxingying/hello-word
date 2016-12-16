@@ -11,8 +11,6 @@
 #include <report/DopplerHtmlReport.h>
 #include <process/ParameterProcess.h> 
 
-static const char* g_strDataFilePath	= ":/file/data";
-
 static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 	"Default PA" ,
 	"Doppler Serial" ,
@@ -138,6 +136,7 @@ DopplerConfigure::~DopplerConfigure()
 
 void DopplerConfigure::OpenEvn()
 {
+    QString g_strDataFilePath = QDir::currentPath() + "/data";
     QString g_strPartDir = QDir::currentPath() + "/init/part/";
     QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
     qDebug()<<"openPath = "<<_strPathName;
@@ -148,7 +147,7 @@ void DopplerConfigure::OpenEvn()
     int ret = reader.readRawData((char*)&AppEvn , sizeof(SYSTEM_ENVIRMENT));
 	if(ret < 0)
 	{
-        GetExePathName1((char*)g_strDataFilePath, _strPathName.toLatin1().data());
+        GetExePathName1(g_strDataFilePath.toLatin1().data(), _strPathName.toLatin1().data());
         strcpy(AppEvn.strDataFilePath, _strPathName.toLatin1().data());
 
         GetExePathName1(g_strPartDir.toLatin1().data(), _strPathName.toLatin1().data());

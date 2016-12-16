@@ -178,8 +178,8 @@ protected:
     QString m_polarity;
     QString m_axis2;
 
-    QString  m_szField[8][5] ;
-	QString  m_szFieldUnit[8][5] ;
+    QString  m_szField[8][5];
+    QString  m_szFieldUnit[8][5];
 
 	char m_strReportDir[1024];
 	char m_strReportLogo[1024];

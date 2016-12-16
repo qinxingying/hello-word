@@ -6,21 +6,15 @@
 #include <QProcess>
 #include <QStringList>
 
-#define TABLE_WIDTH	  800
+#define TABLE_WIDTH	 800
 char tableWidth[256];
-
-const char* g_strReportDir	  = "data/Report/";
-const char* g_strReportLogo   = ":file/resource/report_logo/logo.png"; // data/logo/logo.png
-
-//const char* tableWidth	    = "width=800 style=\"table-layout:fixed\"";
 const char* tableThStyle	= "class=\"general_cell\"  align=left";
 const char* tableTdStyle	= "class=\"general_cell\"";
 const char* sonTableStyle   = "width=100% style=\"table-layout:fixed\"";
-
-const char* tdSpace		 = "&nbsp;";
+const char* tdSpace		    = "&nbsp;";
 
 const char* string_groupMode[] = {"UT" , "PA", "UT1", "UT2"};
-const char* string_filter[] = {
+const char* string_filter[]    = {
 		"None  0.5-20.0 MHz",
 		"Auto",
 		"1 MHz",
@@ -39,28 +33,18 @@ const char* string_filter[] = {
 		"None"
 };
 
-QString g_strDefect[] =
-{
-    QString(QObject::tr("Defect")),
-    QString(QObject::tr("Remark")),
-    QString(QObject::tr("Index")),
-    QString(QObject::tr("Position start")),
-    QString(QObject::tr("Length")),
-    QString(QObject::tr("Depth start")),
-    QString(QObject::tr("Height")),
-    QString(QObject::tr("Index pos")),
-    QString(QObject::tr("Width"))
-};
-
 DopplerHtmlReport::DopplerHtmlReport()
 {
 	m_pFile = NULL ;
+    QString g_strReportDir  = "data/Report/";
+    QString g_strReportLogo = "data/logo/logo.png";
+
 #ifdef QT_NO_DEBUG
-	GetExePathName1((char*)g_strReportDir, m_strReportDir);
-	GetExePathName1((char*)g_strReportLogo, m_strReportLogo);
+    GetExePathName1(g_strReportDir.toLatin1().data(), m_strReportDir);
+    GetExePathName1(g_strReportLogo.toLatin1().data(), m_strReportLogo);
 #else
-	strcpy(m_strReportDir, g_strReportDir);
-	strcpy(m_strReportLogo, g_strReportLogo);
+    strcpy(m_strReportDir, g_strReportDir.toLatin1().data());
+    strcpy(m_strReportLogo, g_strReportLogo.toLatin1().data());
 #endif
 }
 
@@ -179,7 +163,21 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 	fprintf(m_pFile , "<br />\n");
 
 	//g_strDefect
-    fprintf(m_pFile , "<th align=left>%s(Gr%d)</th>\n", TOCHAR(g_strDefect[0]), nGroupId_+1);
+    QString strDefect = QString(QObject::tr("Defect"));
+    QString defect[] =
+    {
+        QString(QObject::tr("Defect")),
+        QString(QObject::tr("Remark")),
+        QString(QObject::tr("Index")),
+        QString(QObject::tr("Position start")),
+        QString(QObject::tr("Length")),
+        QString(QObject::tr("Depth start")),
+        QString(QObject::tr("Height")),
+        QString(QObject::tr("Index pos")),
+        QString(QObject::tr("Width"))
+    };
+
+    fprintf(m_pFile , "<th align=left>%s(Gr%d)</th>\n", TOCHAR(strDefect), nGroupId_+1);
 
 	fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
 	fprintf(m_pFile,"<tr>\n");
@@ -187,9 +185,9 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 	if(_group.eTxRxMode != setup_TX_RX_MODE_TOFD)
 		iMax = 8;
 
-	for(int i = 1 ;i < iMax ;++i)
+    for(int i = 1; i < iMax ;++i)
 	{
-        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strDefect[i+1]));
+        fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(defect[i+1]));
 	}
 	fprintf(m_pFile,"</tr>\n\n");
 	fprintf(m_pFile,"<tr>\n");
@@ -233,13 +231,16 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
 	DEFECT_INFO*      _pDfInfo = _pConfig->GetDefectPointer(nGroupId_, index_);
 
-	fprintf(m_pFile , "<br />\n");
-	fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
-	fprintf(m_pFile,"<tr>\n");
+    fprintf(m_pFile, "<br />\n");
+    fprintf(m_pFile, "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
+    fprintf(m_pFile, "<tr>\n");
 
-    fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strDefect[2]));
-    fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Group");
-    fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , "Law ID");
+    QString strIndex = QString(QObject::tr("Index"));
+    QString strGroup = QString(QObject::tr("Group"));
+    QString strLaw = QString(QObject::tr("Law ID"));
+    fprintf(m_pFile,"<th %s>%s</th>\n", tableThStyle, TOCHAR(strIndex));
+    fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strGroup));
+    fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strLaw));
 
 	fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[nGroupId_][0]) ,TOCHAR(m_szFieldUnit[nGroupId_][0]));
 	fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[nGroupId_][1]) ,TOCHAR(m_szFieldUnit[nGroupId_][1]));
@@ -303,7 +304,7 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
 
 void DopplerHtmlReport::SaveReport()
 {
-	BuildReport() ;
+    BuildReport();
 #ifdef LINUX
 	QString _strExec("/usr/bin/firefox") ;
 #else
@@ -339,13 +340,13 @@ void DopplerHtmlReport::BuildReport()
 	strcat(_strName , ".html") ;
 
 #ifdef QT_NO_DEBUG
-	m_strFile = QString(_strName) ;
+    m_strFile = QString(_strName) ;
 #else
-	m_strFile  = QDir::currentPath() ;
-	m_strFile += QString("\\") ;
-	m_strFile += QString(_strName) ;
+    m_strFile  = QDir::currentPath();
+    m_strFile += QString("\\");
+    m_strFile += QString(_strName);
 #endif
-	m_pFile = fopen(_strName ,"w+");
+    m_pFile = fopen(_strName, "w+");
 	if(m_pFile == NULL)
 		return ;
 
