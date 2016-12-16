@@ -101,6 +101,8 @@ private:
     QLabel* m_pStatusCell[3];
     STATUS_BAR_INFO m_BarInfo;
 
+    QList<DopplerGroupTab*> m_pGroupList;
+
     void init_ui();
 
     int  m_iCurGroup;
