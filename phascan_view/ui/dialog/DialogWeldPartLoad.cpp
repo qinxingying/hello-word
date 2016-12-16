@@ -190,18 +190,10 @@ void DialogWeldPartLoad::UpdateDisplay()
 
 	if(m_cPart.weld.eType == setup_WELD_NCC) {
         ui->ComWeldSymetry->setEnabled(false);
-        ui->SpinWHeight->setEnabled(false);
-        ui->SpinWoffset->setEnabled(false);
-        ui->SpinFHeight->setEnabled(false);
-        ui->SpinFRadius->setEnabled(false);
-        ui->SpinFAngle->setEnabled(false);
+        ui->frame_5->setDisabled(true);
 	} else {
         ui->ComWeldSymetry->setEnabled(true);
-        ui->SpinWHeight->setEnabled(true);
-        ui->SpinWoffset->setEnabled(true);
-        ui->SpinFHeight->setEnabled(true);
-        ui->SpinFRadius->setEnabled(true);
-        ui->SpinFAngle->setEnabled(true);
+        ui->frame_5->setEnabled(true);
 	}
 }
 
@@ -261,7 +253,6 @@ void DialogWeldPartLoad::on_SpinFAngle_valueChanged(double arg1)
 	UpdateDisplay() ;
 }
 
-//#include <QMessageBox>
 void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
 {
     char _strPath[256];
