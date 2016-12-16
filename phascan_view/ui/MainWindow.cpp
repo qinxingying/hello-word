@@ -706,7 +706,7 @@ void MainWindow::ScreenShot()
 {
     QString _strPath = QDir::currentPath();
     QPixmap pixmap = QPixmap::grabWidget(this);
-    pixmap.save(_strPath , "png");
+    pixmap.save(_strPath, "png");
 }
 
 #include <report/DopplerHtmlReport.h>

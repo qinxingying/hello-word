@@ -117,10 +117,10 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
 	memcpy(header.strVersion  ,  _strVersion , strlen(_strVersion)) ;
 	m_pDataFile = new DopplerDataFileOperateor(0);
 
-	m_pReport = new DopplerHtmlReport() ;
+    m_pReport = new DopplerHtmlReport();
 	m_pReport->InitReportInfo();
 
-	OpenEvn() ;
+    OpenEvn();
 }
 
 

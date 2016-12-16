@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QProcess>
 #include <QStringList>
+#include<QDebug>
 
 #define TABLE_WIDTH	 800
 char tableWidth[256];
@@ -340,13 +341,15 @@ void DopplerHtmlReport::BuildReport()
 	strcat(_strName , ".html") ;
 
 #ifdef QT_NO_DEBUG
-    m_strFile = QString(_strName) ;
+    m_strFile = QString(_strName);
 #else
-    m_strFile  = QDir::currentPath();
-    m_strFile += QString("\\");
-    m_strFile += QString(_strName);
+    m_strFile  = QDir::currentPath() + "/" + QString(_strName);
 #endif
+    qDebug()<<"_strName = "<<_strName;
+    qDebug()<<"m_strFile = "<<m_strFile;
+
     m_pFile = fopen(_strName, "w+");
+
 	if(m_pFile == NULL)
 		return ;
 
