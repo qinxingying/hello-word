@@ -1,10 +1,8 @@
-/**
- * @file dxf_header.c
- * @brief dxf header层
- * @author JakeYang <add358@gmail.com>
- * @version 0.2
- * @date 2015-04-14
- */
+/*****************************
+ * @brief : dxf header层
+ * @author: Yshy
+ * @date  : 2016-12-19
+ *****************************/
 
 #include "dxf_header.h"
 

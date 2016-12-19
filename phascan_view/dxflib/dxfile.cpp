@@ -1,17 +1,15 @@
-/**
- * @file dxfile.c
- * @brief dxf文件操作
- * @author JakeYang <add358@gmail.com>
- * @version 0.2
- * @date 2015-04-14
- */
+/*************************************
+ * @brief : dxf文件操作
+ * @author: Yshy
+ * @date  : 2016-12-19
+ *************************************/
 
 #include "dxfile.h"
 
 static inline Dxfile *dxfile_new_item() { return g_malloc0(sizeof(Dxfile)); }
-static gint dxfile_encoding(const gchar *filename);
+static int dxfile_encoding(const char *filename);
 
-Dxfile *dxfile_open(const gchar *filename)
+Dxfile *dxfile_open(const char *filename)
 {
     g_return_val_if_fail( filename != NULL, NULL);
 
@@ -36,7 +34,7 @@ Dxfile *dxfile_open(const gchar *filename)
     return dxfile;
 }
 
-void dxfile_get_line(Dxfile *f, gchar **str, gsize *len)
+void dxfile_get_line(Dxfile *f, char **str, gsize *len)
 {
     g_return_if_fail( f != NULL );
     g_return_if_fail( str != NULL );
@@ -113,7 +111,7 @@ void dxfile_destory(Dxfile *f)
     g_free(f);
 }
 
-gboolean dxfile_set_pos(Dxfile *f, glong pos)
+gboolean dxfile_set_pos(Dxfile *f, long pos)
 {
     g_return_val_if_fail( f != NULL, FALSE );
     if ( pos < 0 || pos > f->len ) {

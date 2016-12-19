@@ -26,7 +26,7 @@
 #define c_log_err(_fmt, ...) \
     c_message("** Log Error: " _fmt "\n", ##__VA_ARGS__)
 #else
-#include <syslog.h>
+//#include <syslog.h>
 #define c_debug(_fmt, ...) {}
 #define c_log_begin(_logflag)   openlog(_logfile, LOG_CONS|LOG_PID, 0)
 #define c_log_end() closelog()

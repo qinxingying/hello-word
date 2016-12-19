@@ -1,15 +1,14 @@
 /**
  * @file dxfbase.h
  * @brief dxf基本接口
- * @author JakeYang <add358@gmail.com>
- * @version 0.2
- * @date 2015-04-14
+ * @author Yshy
+ * @date 2016-12-19
  */
 
 #ifndef __DXFBASE_H__
 #define __DXFBASE_H__
 
-#include <glib.h>
+//#include <glib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -40,12 +39,12 @@
 
 typedef struct _Section Section;
 struct _Section {
-    gint code;              /*group code*/
-    gchar value[STR_MAX];   /*group value*/
+    int code;              /*group code*/
+    char value[STR_MAX];   /*group value*/
 };
 
-static inline gboolean section_check(const Section *s, gint code,
-                                     const gchar *codestr)
+static inline gboolean section_check(const Section *s, int code,
+                                     const char *codestr)
 {
     return ((s->code == code) && (! g_strcmp0(s->value, codestr)));
 }
@@ -61,9 +60,9 @@ static inline gboolean section_check(const Section *s, gint code,
 /* Point */
 typedef struct _DxfPointData DxfPointData;
 struct _DxfPointData {
-    gdouble x;
-    gdouble y;
-    gdouble z;
+    double x;
+    double y;
+    double z;
 };
 
 #endif /* __DXFBASE_H__ */

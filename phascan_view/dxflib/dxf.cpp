@@ -1,14 +1,12 @@
-/**
- * @file dxf.c
- * @brief dxf接口文件
- * @author JakeYang <add358@gmail.com>
- * @version 0.2
- * @date 2015-04-14
- */
+/*****************************
+ * @brief : dxf接口文件
+ * @author: Yshy
+ * @date  : 2016-12-19
+ *****************************/
 
 #include "dxf.h"
 #include "dxfile.h"
-#include <glib.h>
+//#include <glib.h>
 
 static gboolean initFlag = FALSE;   /*初始化标志*/
 

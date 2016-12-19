@@ -1,10 +1,8 @@
-/**
- * @file entities_image.c
- * @brief dxf entities层, image对象
- * @author JakeYang <add358@gmail.com>
- * @version 0.2
- * @date 2015-04-14
- */
+/*************************************
+ * @brief : dxf entities层, image对象
+ * @author: Yshy
+ * @date  : 2016-12-19
+ *************************************/
 
 #include "entities_image.h"
 

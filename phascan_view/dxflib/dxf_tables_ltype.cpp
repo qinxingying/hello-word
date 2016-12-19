@@ -1,10 +1,8 @@
-/**
- * @file dxf_tables_ltype.c
- * @brief dxf tables层, ltype封装
- * @author JakeYang <add358@gmail.com>
- * @version 0.2
- * @date 2015-04-14
- */
+/*************************************
+ * @brief : dxf tables层, ltype封装
+ * @author: Yshy
+ * @date  : 2016-12-19
+ *************************************/
 
 #include "dxf_tables_ltype.h"
 
