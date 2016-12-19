@@ -12,7 +12,7 @@ DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 	ui(new Ui::DialogWeldPartLoad)
 {
 	ui->setupUi(this);
-	SetDisplayMode(DISPLAY_WELD) ;
+    SetDisplayMode(DISPLAY_WELD);
 	m_nGroupId = nGroupId_ ;
 	m_nWeldPartSel = 0;
 

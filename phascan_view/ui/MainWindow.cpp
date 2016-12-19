@@ -1305,8 +1305,8 @@ void MainWindow::on_actionJapanese_triggered()
 *****************************************************************************/
 void MainWindow::slotDataViewResized(DopplerDataView* pView_)
 {
-        ProcessDisplay _process ;
-        _process.UpdateDataViewFrame(pView_);
-        _process.UpdateDataViewOverlay(pView_);
-        pView_->UpdateDrawing();
+    ProcessDisplay _process;
+    _process.UpdateDataViewFrame(pView_);
+    _process.UpdateDataViewOverlay(pView_);
+    pView_->UpdateDrawing();
 }

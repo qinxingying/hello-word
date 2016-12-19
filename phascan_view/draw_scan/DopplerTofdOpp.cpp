@@ -178,7 +178,7 @@ int DopplerTofdOpp::TofdDataProStart(int nGroupId_, TOFD_PRO_STATUS proSt_, GYRE
 		m_pTofd->proInfo[i].fX = m_process->DistMmToDotPos(m_nGroupId, 0, m_pGroup->afCursor[setup_CURSOR_TFOD_BW]) + 0.5;
 		break;
 	case TOFD_PRO_DIFFERENC:
-//	m_pTofd->proInfo[i].fY = 10;
+   //	m_pTofd->proInfo[i].fY = 10;
 		break;
 	case TOFD_PRO_SAFT:
 		m_pTofd->proInfo[i].iDots = 10;

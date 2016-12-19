@@ -7,6 +7,7 @@
 #include "gHeader.h"
 #include "ProcessDisplay.h"
 #include "dialog/DialogColorSelect.h"
+#include "dialog/DialogWeldPartLoad.h"
 
 #include <QtGui>
 #include <QPushButton>
@@ -1401,7 +1402,6 @@ void DopplerGroupTab::on_ComSkewAngle_currentIndexChanged(int index)
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
 
-#include "dialog/DialogWeldPartLoad.h"
 void DopplerGroupTab::on_BtnLoadPartFile_clicked()
 {
 	DialogWeldPartLoad _dialog(this);
@@ -1416,6 +1416,7 @@ void DopplerGroupTab::on_BtnLoadPartFile_clicked()
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOfGroup(m_nGroupId);
 }
+
 void DopplerGroupTab::on_CheckLwBwShow_clicked(bool checked)
 {
 	m_pGroup->bShowLwBw = checked;
@@ -1433,6 +1434,7 @@ void DopplerGroupTab::on_ComBoxProMode_currentIndexChanged(int index_)
 		ui->ComBoxProMode->setCurrentIndex(m_pConfig->AppEvn.iTofdDataProMode);
 	}
 }
+
 void DopplerGroupTab::on_SpinBoxWedgeSeperation_valueChanged(double arg1)
 {
 	if(!ui->SpinBoxWedgeSeperation->hasFocus())  return  ;
@@ -1449,6 +1451,7 @@ void DopplerGroupTab::on_SpinBoxWedgeSeperation_valueChanged(double arg1)
 	_display.UpdateAllViewOfGroup(m_nGroupId);
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
+
 void DopplerGroupTab::on_SpinBoxZeroOff_valueChanged(double)
 {
 	if(!ui->SpinBoxZeroOff->hasFocus()) return ;
@@ -1466,6 +1469,7 @@ void DopplerGroupTab::on_SpinBoxZeroOff_valueChanged(double)
 	_process->GetTofdDepth(m_nGroupId , 1 , &_tofd->fDepthCal);
 	ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
 }
+
 void DopplerGroupTab::on_SpinBoxDepthStart_valueChanged(double)
 {
 	if(!ui->SpinBoxDepthStart->hasFocus()) return ;
@@ -1480,6 +1484,7 @@ void DopplerGroupTab::on_SpinBoxDepthStart_valueChanged(double)
 	_display.UpdateAllViewOfGroup(m_nGroupId);
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
+
 void DopplerGroupTab::on_SpinBoxDepthEnd_valueChanged(double)
 {
 	if(!ui->SpinBoxDepthEnd->hasFocus()) return ;

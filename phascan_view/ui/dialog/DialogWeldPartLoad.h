@@ -1,9 +1,10 @@
 #ifndef DIALOGWELDPARTLOAD_H
 #define DIALOGWELDPARTLOAD_H
 
+#include "Instrument.h"
+#include "DopplerConfigure.h"
+
 #include <QDialog>
-#include <configure/Instrument.h>
-#include <configure/DopplerConfigure.h>
 #include <QModelIndex>
 
 namespace Ui {
