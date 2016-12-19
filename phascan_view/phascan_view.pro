@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui opengl printsupport network
-#multimedia sql xml script xmlpatterns svg opengl axcontainer
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET   = phascan_view

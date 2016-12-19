@@ -1297,8 +1297,6 @@ void MainWindow::on_actionJapanese_triggered()
 
     translator->load(":/file/translator/phascan_view_japanese.qm");
 
-  //  ui->ScanHardware->retranslateUi();
-  //  ui->Group1->retranslateGroupTabUi();
     ui->retranslateUi(this);
 }
 

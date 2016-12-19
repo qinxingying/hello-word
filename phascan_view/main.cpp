@@ -4,8 +4,6 @@
 #include "mainwindow.h"
 #include "const.h"
 
-#define REG_DAYS_MIN  0
-
 MainWindow* g_pMainWnd = NULL;
 
 int main(int argc, char *argv[])
