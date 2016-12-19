@@ -19,7 +19,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Doppler V1.1.1</string>
+   <string>Doppler V1.1.2</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../mainwindow.qrc">
@@ -349,16 +349,25 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Korean</string>
    </property>
   </action>
   <action name="actionMenu">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Help</string>
    </property>
   </action>
   <action name="actionAbout">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>About</string>
    </property>
