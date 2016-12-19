@@ -106,8 +106,8 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
     DopplerXMLReader::LoadMaterial(&_str, m_listMaterial);
 
     g_strColorAmp = QDir::currentPath() + "/init/palette/ONDT_Amplitude.pal";
-    g_strColorThickness	= QDir::currentPath() + ":/file/init/palette/ONDT_Corrosion.pal";
-    g_strColorRectifier	= QDir::currentPath() + ":/file/init/palette/ONDT_RFTOFD.pal";
+    g_strColorThickness	= QDir::currentPath() + "/init/palette/ONDT_Corrosion.pal";
+    g_strColorRectifier	= QDir::currentPath() + "/init/palette/ONDT_RFTOFD.pal";
 
     InitCommonConfig();
 	m_szFileInUse.clear();
