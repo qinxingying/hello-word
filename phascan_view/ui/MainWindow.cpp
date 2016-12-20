@@ -227,92 +227,87 @@ void MainWindow::DestroyDisplayTab(int nId_)
 
 void MainWindow::SetDispTabText()
 {
-        QString _str ;
-        int _nQty = ui->TabWidget_display->count() ;
+    QString _str;
+    int _nQty = ui->TabWidget_display->count();
 
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        int _nGroupQty = _pConfig->common.nGroupQty  ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int _nGroupQty = _pConfig->common.nGroupQty;
 
-        if(m_nAlloff)
-                ui->TabWidget_display->setTabText(0 , QString(tr("Com Groups")));
+    if(m_nAlloff)
+        ui->TabWidget_display->setTabText(0 , QString(tr("Com Groups")));
 
-        for(int i = 0 ; i < _nGroupQty ; i++)
-        {
-                if(i+m_nAlloff < _nQty)
-                {
-                        _str.sprintf("Group %d" , i+1) ;
-                        ui->TabWidget_display->setTabText(i+m_nAlloff, _str);
-                }
+    for(int i = 0; i < _nGroupQty; i++){
+        if(i+m_nAlloff < _nQty){
+            _str.sprintf("Group %d", i+1);
+            ui->TabWidget_display->setTabText(i + m_nAlloff, _str);
         }
+    }
 
-        if(_nQty > m_nAlloff + _nGroupQty + 1)
-        {
-                int _nCnt = 1;
-                for(int i = m_nAlloff + _nGroupQty ; i < _nQty ; i++)
-                {
-                        _str.sprintf("Disp %d" , _nCnt++) ;
-                        ui->TabWidget_display->setTabText(i , _str);
-                }
+    if(_nQty > m_nAlloff + _nGroupQty + 1)
+    {
+        int _nCnt = 1;
+
+        for(int i = m_nAlloff + _nGroupQty; i < _nQty; i++){
+            _str.sprintf("Disp %d", _nCnt++);
+            ui->TabWidget_display->setTabText(i, _str);
         }
+    }
 
-        ui->TabWidget_display->setTabText(_nQty - 1, QString(tr("")));
+    ui->TabWidget_display->setTabText(_nQty - 1, QString(tr("")));
 }
 
 void MainWindow::slotRightTabRightButtonDoubleClicked(int)
 {
-        DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
-        int _nGroupQty = _pConfig->common.nGroupQty  ;
-        int _nQty      = ui->TabWidget_display->count() ;
-        int _index     = ui->TabWidget_display->currentIndex();
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    int _nGroupQty = _pConfig->common.nGroupQty;
+    int _nQty      = ui->TabWidget_display->count();
+    int _index     = ui->TabWidget_display->currentIndex();
 //	if(_nQty <= 2)  return  ;
-        int _nLimit = _nGroupQty + 1;
-        if(_nGroupQty == 1)
-                _nLimit = 1;
-        if(_index < _nLimit)  return  ;
-        _nLimit++;
-        if(_nQty <= _nLimit)  return  ;
+    int _nLimit = _nGroupQty + 1;
+    if(_nGroupQty == 1)
+            _nLimit = 1;
+    if(_index < _nLimit)  return;
+    _nLimit++;
+    if(_nQty <= _nLimit)  return;
 
-        QMessageBox messageBox(this);
-        QAbstractButton* _pBtnYes;
-        QAbstractButton* _pBtnNo;
+    QMessageBox messageBox(this);
+    QAbstractButton* _pBtnYes;
+    QAbstractButton* _pBtnNo;
 
-        messageBox.setText(tr("Delete Current Display Table ?"));
-        _pBtnYes = (QAbstractButton*)messageBox.addButton(tr("YES"), QMessageBox::ActionRole);
-        _pBtnNo  = (QAbstractButton*)messageBox.addButton(tr("NO"), QMessageBox::ActionRole);
+    messageBox.setText(tr("Delete Current Display Table ?"));
+    _pBtnYes = (QAbstractButton*)messageBox.addButton(tr("YES"), QMessageBox::ActionRole);
+    _pBtnNo  = (QAbstractButton*)messageBox.addButton(tr("NO"), QMessageBox::ActionRole);
 
-        messageBox.exec();
-        if (messageBox.clickedButton() == _pBtnYes)
-        {
-            int _nIndex = GetDisplayTableIndex() ;
-            DestroyDisplayTab(_nIndex); // clear list
-        }else if(messageBox.clickedButton() == _pBtnNo)
-        {
-        }
+    messageBox.exec();
+    if (messageBox.clickedButton() == _pBtnYes)
+    {
+        int _nIndex = GetDisplayTableIndex() ;
+        DestroyDisplayTab(_nIndex); // clear list
+    }else if(messageBox.clickedButton() == _pBtnNo)
+    {
+    }
 }
 
 void MainWindow::DestroyAllDisplay()
 {
+    int _nQty = ui->TabWidget_display->count();
 
-        int _nQty = ui->TabWidget_display->count() ;
-        for(int i = 0 ; i < _nQty - 1 ; i++)
-        {
-                QList<QWidget*>* _pList = m_pViewList[i]   ;
-                for(int i = 0 ; i < _pList->count() ; i++)
-                {
-                        delete _pList->at(i) ;
-                }
-                _pList->clear();
-        }
+    for(int i = 0 ; i < _nQty - 1 ; i++){
+        QList<QWidget*>* _pList = m_pViewList[i];
 
-        ui->TabWidget_display->setCurrentIndex(0);
-        for(int i = 1; i <  _nQty - 1 ; i++)
-        {
-                QWidget* _pTmpWidget = ui->TabWidget_display->widget(1) ;
-                ui->TabWidget_display->removeTab(1);
-                delete _pTmpWidget ;
+        for(int i = 0; i < _pList->count(); i++){
+            delete _pList->at(i);
         }
+        _pList->clear();
+    }
+
+    ui->TabWidget_display->setCurrentIndex(0);
+    for(int i = 1; i <  _nQty - 1; i++){
+        QWidget* _pTmpWidget = ui->TabWidget_display->widget(1);
+        ui->TabWidget_display->removeTab(1);
+        delete _pTmpWidget;
+    }
 }
-
 
 void MainWindow::slotsRightTabButton(Qt::MouseButton btn_)
 {
@@ -342,23 +337,23 @@ void MainWindow::slotsRightTabButton(Qt::MouseButton btn_)
 *****************************************************************************/
 QList<QWidget*>* MainWindow::GetCurrentDisplayTableWidgetList()
 {
-        int _nIndex = GetDisplayTableIndex();
-        return m_pViewList[_nIndex]  ;
+    int _nIndex = GetDisplayTableIndex();
+    return m_pViewList[_nIndex];
 }
 
 QList<QWidget*>* MainWindow::GetDisplayTableWidgetList(int nIndex_)
 {
-        return m_pViewList[nIndex_]  ;
+    return m_pViewList[nIndex_];
 }
 
 int  MainWindow::GetDisplayTableQty() const
 {
-        return ui->TabWidget_display->count() ;
+    return ui->TabWidget_display->count();
 }
 
 int  MainWindow::GetDisplayTableIndex() const
 {
-        return ui->TabWidget_display->currentIndex() ;
+    return ui->TabWidget_display->currentIndex();
 }
 
 /****************************************************************************
@@ -366,17 +361,19 @@ int  MainWindow::GetDisplayTableIndex() const
 *****************************************************************************/
 void MainWindow::AddOneGroup()
 {
-        DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
-        int _nGroupQty = _pConfig->common.nGroupQty - 1;
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    int _nGroupQty = _pConfig->common.nGroupQty - 1;
 
-        DopplerGroupTab* _pGroup = new DopplerGroupTab(this);
-        _pGroup->SetGroupId(_nGroupQty );
+    DopplerGroupTab* _pGroup = new DopplerGroupTab(this);
+    _pGroup->SetGroupId(_nGroupQty );
 
-        QString str(tr("Group ")) ; QString str1 ; str1.sprintf("%d", _nGroupQty + 1) ;
-        str += str1 ;
-        QIcon icon(":/file/resource/main_menu/0-27.png");
-        ui->TabWidget_parameter->insertTab(_nGroupQty , _pGroup , icon, str);
-        ui->TabWidget_parameter->setCurrentIndex(_nGroupQty);
+    QString str(tr("Group "));
+    QString str1;
+    str1.sprintf("%d", _nGroupQty + 1);
+    str += str1;
+    QIcon icon(":/file/resource/main_menu/0-27.png");
+    ui->TabWidget_parameter->insertTab(_nGroupQty, _pGroup, icon, str);
+    ui->TabWidget_parameter->setCurrentIndex(_nGroupQty);
 }
 
 /****************************************************************************
@@ -384,7 +381,7 @@ void MainWindow::AddOneGroup()
 *****************************************************************************/
 void MainWindow::slotViewFrameButtonClicked(QWidget* pWidget_)
 {
-        SetSelectedDataView( pWidget_) ;
+    SetSelectedDataView(pWidget_);
 }
 
 /****************************************************************************
@@ -392,15 +389,16 @@ void MainWindow::slotViewFrameButtonClicked(QWidget* pWidget_)
 *****************************************************************************/
 void MainWindow::slotCurrentGroupChanged(int nIndex_)
 {
-    static int _nOldIndex = 0 ;
+    static int _nOldIndex = 0;
     if(nIndex_ + 2 >= ui->TabWidget_parameter->count())  return;
-    if(ui->TabWidget_parameter->count() < 4)  return ;
+    if(ui->TabWidget_parameter->count() < 4)  return;
 
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-    int _nGroupQty = _pConfig->common.nGroupQty  ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int _nGroupQty = _pConfig->common.nGroupQty;
     int _nCurRight = ui->TabWidget_display->currentIndex();
-    if(_nCurRight < 0)				_nCurRight = 0;
-    if(_nCurRight >= MAX_LIST_QTY)	_nCurRight = MAX_LIST_QTY - 1;
+
+    if(_nCurRight < 0)		     _nCurRight = 0;
+    if(_nCurRight >= MAX_LIST_QTY)   _nCurRight = MAX_LIST_QTY - 1;
 
     if(m_nAlloff && _nCurRight == 0) {
     } else {
@@ -448,46 +446,43 @@ void MainWindow::slotCurrentGroupChanged(int nIndex_)
 
 void MainWindow::SetCurGroup(int nGroupID_)
 {
-        m_iCurGroup = nGroupID_;
-        ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
+    m_iCurGroup = nGroupID_;
+    ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
 }
 
 void MainWindow::slotCurrentDispChanged(int nIndex_)
 {
-        if(nIndex_ >= MAX_LIST_QTY)
-        return;
+    if(nIndex_ >= MAX_LIST_QTY)
+    return;
 
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        int _nGroupQty = _pConfig->common.nGroupQty  ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int _nGroupQty = _pConfig->common.nGroupQty;
 
-        if(_nGroupQty > m_nAlloff)
-        {
-                if(nIndex_ > 0)
-                {
-                        QList<QWidget*>* _list = m_pViewList[nIndex_];
-                        if(_list->count() > 0)
-                        {
-                                DopplerDataView* _pDraw = (DopplerDataView*)_list->at(0);
-                                int _iGroup = _pDraw->GetGroupId();
+    if(_nGroupQty > m_nAlloff){
+        if(nIndex_ > 0){
+            QList<QWidget*>* _list = m_pViewList[nIndex_];
 
-                                if(_iGroup < _nGroupQty)
-                                {
-                                        m_iCurGroup = _iGroup;
-                                        if(ui->TabWidget_parameter->currentIndex() < _nGroupQty)
-                                        {
-                                                ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
-                                        }
-                                }
-                        }
+            if(_list->count() > 0){
+                DopplerDataView* _pDraw = (DopplerDataView*)_list->at(0);
+                int _iGroup = _pDraw->GetGroupId();
 
-                        //ProcessDisplay _process ;
-                        //_process.UpdateAllViewCursorOfGroup(m_iCurGroup);
-                        ProcessDisplay _proDisplay ;
-                   _proDisplay.UpdateAllView();
+                if(_iGroup < _nGroupQty){
+                    m_iCurGroup = _iGroup;
+
+                    if(ui->TabWidget_parameter->currentIndex() < _nGroupQty){
+                        ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
+                    }
                 }
+            }
+
+            //ProcessDisplay _process ;
+            //_process.UpdateAllViewCursorOfGroup(m_iCurGroup);
+            ProcessDisplay _proDisplay;
+            _proDisplay.UpdateAllView();
         }
-        //------------------------------------------------------
-        RunDrawThreadOnce(true);
+    }
+    //------------------------------------------------------
+    RunDrawThreadOnce(true);
 }
 
 void MainWindow::SetSelectedDataView(QWidget* pWidget_)
@@ -512,7 +507,6 @@ void MainWindow::UpdateTableParameter()
         ui->TabWidget_parameter->removeTab(0);
     //    delete _pWidget;
         _nTabQty = ui->TabWidget_parameter->count();
-
     }
 
     m_pGroupList.clear();
@@ -882,7 +876,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
         m_nLawIdSel = _nId;
         _group.afCursor[setup_CURSOR_LAW] = _nPos;
-        DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId) ;
+        DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
         _pGroupTab->UpdateCurrentAngleCom();
         _pGroupTab->UpdateSizeingCurves();
 
@@ -959,8 +953,8 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         RunDrawThreadOnce(true);
     }
     break;
-    //case OVERLAYS_THICKNESS   :
-    //case OVERLAYS_WELD  :
+    //case OVERLAYS_THICKNESS:
+    //case OVERLAYS_WELD:
     case DOPPLER_GRAPHICS_ITEM_SCAN:
     {
         QRectF _rect = pItem_->GetItemGeometryReal();
