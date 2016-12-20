@@ -1,11 +1,7 @@
 #ifndef DOPPLERFOCALLAW_H
 #define DOPPLERFOCALLAW_H
 
-//#ifdef Q_WS_WIN
 #define DOPPLER_EXPORT __declspec(dllexport)
-//#else
-//#define DOPPLER_EXPORT
-//#endif
 
 #include <string.h>
 #include <math.h>
