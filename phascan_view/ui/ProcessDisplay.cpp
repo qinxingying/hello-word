@@ -398,12 +398,13 @@ int ProcessDisplay::CreateViews_S_AV(QWidget* pWidget_)
 	split->setCollapsible(0 , false);
 	split->setCollapsible(1 , false);
 	split->show();
-	QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
-	_pList->append(_pView[0]);
-	_pList->append(_pView[1]);
+    qDebug()<<__func__<<__LINE__<<"S-AV";
+    QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
+    _pList->append(_pView[0]);
+    _pList->append(_pView[1]);
 
 	//**************  transfer item move signal to main window
-	ConnectSingals(_pView , 2) ;
+    ConnectSingals(_pView, 2) ;
 	return 0;
 }
 //PA-A-A-A SCAN
@@ -2154,6 +2155,7 @@ void ProcessDisplay::UpdateAllView()
 	for(int j = 0 ; j < g_pMainWnd->GetDisplayTableQty() ; j++)
 	{
 		QList<QWidget*>* pList = g_pMainWnd->GetDisplayTableWidgetList(j);
+
 		for(int i = 0 ; i < pList->count() ; i++)
 		{
 			UpdateAll((DopplerDataView*)pList->at(i));

@@ -47,7 +47,6 @@ public:
     QList<QWidget*>* GetCurrentDisplayTableWidgetList();
     QList<QWidget*>* GetDisplayTableWidgetList(int nIndex_);
     int  GetDisplayTableQty() const;
-    int  GetDisplayTableIndex() const;
     void SetStatusBarMessageColor(int nId_, QColor& fgColor_, QColor& bgColor_);
     void SetStatusBarMessage(int nId_, QString& str_);
     void UpdateStatusBarInfo();

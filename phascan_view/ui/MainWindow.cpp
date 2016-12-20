@@ -203,7 +203,7 @@ void MainWindow::slotsLeftTabButton(Qt::MouseButton btn_)
 
 void MainWindow::slotLeftTabRightButtonDoubleClicked(int)
 {
-        return;
+    return;
 }
 
 void MainWindow::DestroyDisplayTab(int nId_)
@@ -237,7 +237,7 @@ void MainWindow::SetDispTabText()
         ui->TabWidget_display->setTabText(0 , QString(tr("Com Groups")));
 
     for(int i = 0; i < _nGroupQty; i++){
-        if(i+m_nAlloff < _nQty){
+        if(i + m_nAlloff < _nQty){
             _str.sprintf("Group %d", i+1);
             ui->TabWidget_display->setTabText(i + m_nAlloff, _str);
         }
@@ -281,7 +281,7 @@ void MainWindow::slotRightTabRightButtonDoubleClicked(int)
     messageBox.exec();
     if (messageBox.clickedButton() == _pBtnYes)
     {
-        int _nIndex = GetDisplayTableIndex() ;
+        int _nIndex = ui->TabWidget_display->currentIndex();
         DestroyDisplayTab(_nIndex); // clear list
     }else if(messageBox.clickedButton() == _pBtnNo)
     {
@@ -337,8 +337,14 @@ void MainWindow::slotsRightTabButton(Qt::MouseButton btn_)
 *****************************************************************************/
 QList<QWidget*>* MainWindow::GetCurrentDisplayTableWidgetList()
 {
-    int _nIndex = GetDisplayTableIndex();
-    return m_pViewList[_nIndex];
+    qDebug()<<__func__<<__LINE__<<ui->TabWidget_display->currentIndex()<<"\n";
+
+    if(ui->TabWidget_display->currentIndex() != 0){
+        return m_pViewList[2];
+    }else{
+        m_pViewList[ui->TabWidget_display->currentIndex()];
+    }
+    return m_pViewList[ui->TabWidget_display->currentIndex()];
 }
 
 QList<QWidget*>* MainWindow::GetDisplayTableWidgetList(int nIndex_)
@@ -349,11 +355,6 @@ QList<QWidget*>* MainWindow::GetDisplayTableWidgetList(int nIndex_)
 int  MainWindow::GetDisplayTableQty() const
 {
     return ui->TabWidget_display->count();
-}
-
-int  MainWindow::GetDisplayTableIndex() const
-{
-    return ui->TabWidget_display->currentIndex();
 }
 
 /****************************************************************************
@@ -715,7 +716,7 @@ void MainWindow::ScreenShot()
 void MainWindow::ReportAddOneItem()
 {
         static int _nPixId = 0 ;
-        int _nIndex = GetDisplayTableIndex();
+        int _nIndex = ui->TabWidget_display->currentIndex();
         if(!m_pViewList[_nIndex]->count()) return ;
 
         int _nGroup = m_iCurGroup;
@@ -872,17 +873,14 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
     {
         int _nId = ((DopplerLawMarker*)pItem_)->GetMarkerId();
         int _nPos = ((DopplerLawMarker*)pItem_)->GetMarkerPos(_nId);
-        int _nTabIndex = GetDisplayTableIndex();
+        int _nTabIndex = ui->TabWidget_display->currentIndex();
 
         m_nLawIdSel = _nId;
         _group.afCursor[setup_CURSOR_LAW] = _nPos;
         DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
         _pGroupTab->UpdateCurrentAngleCom();
         _pGroupTab->UpdateSizeingCurves();
-
-        int test = m_pViewList[_nTabIndex]->count();
-        qDebug()<<"_nTabIndex = "<<_nTabIndex;
-        qDebug()<<"test = "<<test;
+qDebug()<<__func__<<__LINE__<<"      GetCurrentDisplayTableWidgetCount ="<<m_pViewList[_nTabIndex]->count();
         for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
         {
             int _nCurGroup;
