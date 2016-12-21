@@ -2142,7 +2142,7 @@ void ProcessDisplay::UpdateDataViewTitle(DopplerDataView* pWidget_)
 void ProcessDisplay::UpdateAllView()
 {
 	for(int j = 0 ; j < g_pMainWnd->GetDisplayTableQty() ; j++)
-	{
+    {
 		QList<QWidget*>* pList = g_pMainWnd->GetDisplayTableWidgetList(j);
 
 		for(int i = 0 ; i < pList->count() ; i++)
