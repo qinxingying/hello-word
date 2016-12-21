@@ -197,7 +197,7 @@ int ProcessDisplay::CreateViews_AH(QWidget* pWidget_)
 
 
 	//**************  transfer item move signal to main window
-	ConnectSingals(_pView) ;
+    ConnectSlots(_pView) ;
 	return 0;
 }
 
@@ -309,7 +309,7 @@ int ProcessDisplay::CreateViews_S(QWidget* pWidget_)
 	_pList->append(_pView);
 
 	//**************  transfer item move signal to main window
-	ConnectSingals(_pView) ;
+    ConnectSlots(_pView) ;
 
 	return 0;
 }
@@ -357,7 +357,7 @@ int ProcessDisplay::CreateViews_S_AH(QWidget* pWidget_)
 	split->setCollapsible(1 , false);
 	split->show();
 	QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
-	_pList->append(_pView[0]);
+    _pList->append(_pView[0]);
 	_pList->append(_pView[1]);
 
 	//**************  transfer item move signal to main window
@@ -402,7 +402,14 @@ int ProcessDisplay::CreateViews_S_AV(QWidget* pWidget_)
     QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
     _pList->append(_pView[0]);
     _pList->append(_pView[1]);
-qDebug()<<__func__<<__LINE__<<"PROCESS "<<_pList->count();
+
+//    QList<QWidget*>* _pList = g_pMainWnd->GetDisplayTableWidgetList(g_pMainWnd->GetCurrentTabelIndex());
+//    _pList->append(_pView[0]);
+//    _pList->append(_pView[1]);
+
+//    if(_pList->count() > 9) return 0;
+
+qDebug()<<__func__<<     __LINE__<<"CreateViewsCount = "<<_pList->count();
 	//**************  transfer item move signal to main window
     ConnectSingals(_pView, 2) ;
 	return 0;
@@ -1367,11 +1374,11 @@ void ProcessDisplay::ConnectSingals(DopplerDataView** pViews_, int nQty_)
 {
 	for(int i = 0 ; i < nQty_ ; i++)
 	{
-		ConnectSingals(pViews_[i]) ;
+        ConnectSlots(pViews_[i]) ;
 	}
 }
 
-void ProcessDisplay::ConnectSingals(DopplerDataView* pViews_)
+void ProcessDisplay::ConnectSlots(DopplerDataView* pViews_)
 {
 	connect(pViews_ , SIGNAL(signalItemMoved(DopplerDataView*,DopplerGraphicsItem*)) ,
 			   g_pMainWnd ,   SLOT(slotItemMoved(DopplerDataView*,DopplerGraphicsItem*))) ;

@@ -80,7 +80,7 @@ public:
     int CreateViews_AllGroups(QWidget*);
 
     void ConnectSingals(DopplerDataView** pViews_ , int nQty_) ;
-    void ConnectSingals(DopplerDataView*);
+    void ConnectSlots(DopplerDataView*);
 
     void SetViewPara(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_ , setup_DISPLAY_MODE eDsipaly_);
     void UpdateAll(DopplerDataView* pWidget_ );
