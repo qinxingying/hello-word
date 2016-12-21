@@ -403,16 +403,10 @@ int ProcessDisplay::CreateViews_S_AV(QWidget* pWidget_)
     _pList->append(_pView[0]);
     _pList->append(_pView[1]);
 
-//    QList<QWidget*>* _pList = g_pMainWnd->GetDisplayTableWidgetList(g_pMainWnd->GetCurrentTabelIndex());
-//    _pList->append(_pView[0]);
-//    _pList->append(_pView[1]);
-
-//    if(_pList->count() > 9) return 0;
-
 qDebug()<<__func__<<     __LINE__<<"CreateViewsCount = "<<_pList->count();
 	//**************  transfer item move signal to main window
     ConnectSingals(_pView, 2) ;
-	return 0;
+    return 0;
 }
 //PA-A-A-A SCAN
 int ProcessDisplay::CreateViews_S_AH_AH_AH(QWidget* pWidget_)
@@ -476,18 +470,6 @@ int ProcessDisplay::CreateViews_S_AH_AH_AH(QWidget* pWidget_)
 	_pView[2]->SetTitleBarStringColor(LAW_2_COLOR);
 	_pView[3]->SetTitleBarStringColor(LAW_3_COLOR);
 
-/*	_pView[1]->SetRulerMarkerColor(&g_SLawMarkerColor1 , DopplerDataView::DATA_VIEW_RULER_LEFT );
-	_pView[1]->SetRulerMarkerColor(&g_SLawMarkerColor1 , DopplerDataView::DATA_VIEW_RULER_RIGHT );
-	_pView[1]->SetRulerMarkerColor(&g_SLawMarkerColor1 , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
-
-	_pView[2]->SetRulerMarkerColor(&g_SLawMarkerColor2 , DopplerDataView::DATA_VIEW_RULER_LEFT );
-	_pView[2]->SetRulerMarkerColor(&g_SLawMarkerColor2 , DopplerDataView::DATA_VIEW_RULER_RIGHT );
-	_pView[2]->SetRulerMarkerColor(&g_SLawMarkerColor2 , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
-
-	_pView[3]->SetRulerMarkerColor(&g_SLawMarkerColor3 , DopplerDataView::DATA_VIEW_RULER_LEFT );
-	_pView[3]->SetRulerMarkerColor(&g_SLawMarkerColor3 , DopplerDataView::DATA_VIEW_RULER_RIGHT );
-	_pView[3]->SetRulerMarkerColor(&g_SLawMarkerColor3 , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
-*/
 	QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
 	for(int i= 0 ; i< 4 ; i++)
 		_pList->append(_pView[i]);
