@@ -1345,9 +1345,6 @@ int ProcessDisplay::CreateViews_AllGroups(QWidget* pWidget_)
 }
 
 /****************************************************************************
-  Name:  ConnectSingals
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 连接信号到主窗口
   Input: 【pWidget_：窗口指针】
 *****************************************************************************/
@@ -1372,9 +1369,6 @@ void ProcessDisplay::ConnectSlots(DopplerDataView* pViews_)
 }
 
 /****************************************************************************
-  Name:  UpdateAll
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新指定窗口
   Input: 【pWidget_：窗口指针】
 *****************************************************************************/
@@ -1974,9 +1968,6 @@ void ProcessDisplay::UpdateDataViewDrawSL(DopplerDataView* pWidget_ , int nGroup
 }
 
 /****************************************************************************
-  Name:  UpdateDataViewDraw
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新指定窗口的画图操作
   Input: 【pWidget_：窗口指针】
 *****************************************************************************/
@@ -2023,9 +2014,6 @@ void ProcessDisplay::UpdateDataViewDraw(DopplerDataView* pWidget_ )
 }
 
 /****************************************************************************
-  Name:  UpdateDataViewFrame
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新指定窗口的标尺
   Input: 【pWidget_：窗口指针】
 *****************************************************************************/
@@ -2071,9 +2059,6 @@ void ProcessDisplay::UpdateDataViewFrame(DopplerDataView* pWidget_)
 	};
 }
 /****************************************************************************
-  Name:  UpdateDataViewTitle
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新指定窗口的标题
   Input: 【pWidget_：窗口指针】
 *****************************************************************************/
@@ -2132,9 +2117,6 @@ void ProcessDisplay::UpdateDataViewTitle(DopplerDataView* pWidget_)
 }
 
 /****************************************************************************
-  Name:  UpdateAllView
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新窗口的全部设置
   Input: 【pWidget_：窗口指针】
 *****************************************************************************/
@@ -2152,9 +2134,6 @@ void ProcessDisplay::UpdateAllView()
 }
 
 /****************************************************************************
-  Name:  UpdateDataViewOverlay
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新指定窗口的光标、闸门
   Input: 【pWidget_：窗口指针】
 *****************************************************************************/
@@ -2166,9 +2145,6 @@ void ProcessDisplay::UpdateDataViewOverlay(DopplerDataView* pWidget_)
 }
 
 /****************************************************************************
-  Name:  UpdateAllViewOverlay
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新所有窗口的光标、闸门
 *****************************************************************************/
 void ProcessDisplay::UpdateAllViewOverlay()
@@ -2184,9 +2160,6 @@ void ProcessDisplay::UpdateAllViewOverlay()
 }
 
 /****************************************************************************
-  Name:  UpdateAllViewFrame
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新所有窗口的标尺和标题
 *****************************************************************************/
 
@@ -2203,9 +2176,6 @@ void ProcessDisplay::UpdateAllViewFrame()
 }
 
 /****************************************************************************
-  Name:  UpdateAllViewFrameOfGroup
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新所有指定组窗口的标尺和标题
   Input:   【nGroupId_ ： 组ID】
 *****************************************************************************/
@@ -2227,9 +2197,6 @@ void ProcessDisplay::UpdateAllViewFrameOfGroup(int nGroupId_)
 }
 
 /****************************************************************************
-  Name:  UpdateAllViewOverlayOfGroup
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新所有指定组窗口的光标
   Input:   【nGroupId_ ： 组ID】
 *****************************************************************************/
@@ -2251,9 +2218,6 @@ void ProcessDisplay::UpdateAllViewOverlayOfGroup(int nGroupId_)
 }
 
 /****************************************************************************
-  Name:  UpdateAllViewOfGroup
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新所有指定组窗口，包括标尺、标题、光标
   Input:   【nGroupId_ ： 组ID】
 *****************************************************************************/
@@ -2264,9 +2228,6 @@ void ProcessDisplay::UpdateAllViewOfGroup(int nGroupId_)
 }
 
 /****************************************************************************
-  Name:  UpdateAllViewGateOfGroup
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新所有指定组窗口的闸门位置
   Input:   【nGroupId_ ： 组ID】
 *****************************************************************************/
@@ -2292,9 +2253,6 @@ void ProcessDisplay::UpdateAllViewGateOfGroup(int nGroupId_)
 }
 
 /****************************************************************************
-  Name:  UpdateAllViewCursorOfGroup
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 更新所有指定组窗口的光标显示
   Input:   【nGroupId_ ： 组ID】
 *****************************************************************************/

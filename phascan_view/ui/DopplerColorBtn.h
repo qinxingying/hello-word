@@ -1,10 +1,6 @@
-/*******************
-  Name:  DopplerColorBtn
-  Copyright: Sheng Shen
-  Date : 2013-08-26
-  Description:   带颜色条显示的按钮
-                 .............
-**********************/
+/**********************************
+  Description: 带颜色条显示的按钮
+**********************************/
 
 #ifndef DOPPLERCOLORBTN_H
 #define DOPPLERCOLORBTN_H

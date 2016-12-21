@@ -1,3 +1,8 @@
+/*************************************
+Copyright: Yshy
+Date : 2016-12-06
+*************************************/
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -10,12 +15,14 @@
 #include "DopplerDataView.h"
 #include "ParameterProcess.h"
 #include "ProcessDisplay.h"
+#include "report/DopplerHtmlReport.h"
 
 #include <QSplitterHandle>
 #include <QMessageBox>
 #include <QToolBox>
 #include <QLabel>
 #include <QFileDialog>
+#include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -661,40 +668,41 @@ void MainWindow::OpenFile()
 
 void MainWindow::OpenFilePro(QString strFileName_)
 {
-        if(strFileName_.isEmpty())  return ;
-        QString suffix = strFileName_.section('.',-1);
+    if(strFileName_.isEmpty())  return ;
+    QString suffix = strFileName_.section('.', -1);
 
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
-        DestroyAllDisplay()   ;
+    DestroyAllDisplay();
 
-        int _ret  = 0;
-        if ( suffix == "cfg")
-                _ret = _pConfig->OpenConfig(strFileName_);
-        else if ( suffix == "data")
-                _ret = _pConfig->OpenData(strFileName_);
+    int _ret  = 0;
+    if( suffix == "cfg"){
+        _ret = _pConfig->OpenConfig(strFileName_);
+    }else if( suffix == "data"){
+        _ret = _pConfig->OpenData(strFileName_);
+    }
 
-        if(!_ret)
-        {
-                UpdateTableParameter();
-                UpdateStatusBarInfo();
-                UpdateTableDisplay();
-                m_iCurGroup = 0;
-        }
+    if(!_ret)
+    {
+        UpdateTableParameter();
+        UpdateStatusBarInfo();
+        UpdateTableDisplay();
+        m_iCurGroup = 0;
+    }
 
     this->setWindowTitle(tr("Doppler V1.1.2: ") + strFileName_);
 }
 
 void MainWindow::SaveFile()
 {
-        QString _strFileName =  QFileDialog::getSaveFileName(this,
-                                                                   "Save File Dialog",
-                                                                   "data",
-                                                                   "Doppler Files(*.cfg)");
-        if(_strFileName.isEmpty())  return ;
-        this->setWindowTitle(tr("Doppler V1.1.2: ") + _strFileName);
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        _pConfig->SaveConfig(_strFileName);
+    QString _strFileName =  QFileDialog::getSaveFileName(this,
+                                                         "Save File Dialog",
+                                                         "data",
+                                                         "Doppler Files(*.cfg)");
+    if(_strFileName.isEmpty())  return ;
+    this->setWindowTitle(tr("Doppler V1.1.2: ") + _strFileName);
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->SaveConfig(_strFileName);
 }
 
 void MainWindow::ScreenShot()
@@ -703,9 +711,6 @@ void MainWindow::ScreenShot()
     QPixmap pixmap = QPixmap::grabWidget(this);
     pixmap.save(_strPath, "png");
 }
-
-#include <report/DopplerHtmlReport.h>
-#include <QPixmap>
 
 /****************************************************************************
   Description: 在报告中加入一条新数据记录

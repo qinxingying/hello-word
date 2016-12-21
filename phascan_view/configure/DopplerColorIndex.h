@@ -1,11 +1,7 @@
 /***************************
   Name:  DopplerColorIndex
-  Copyright: Sheng Shen
-  Date : 2013-08-26
   Description:    用于加载XML格式的颜色文件
-                 .............
 ************************************/
-
 
 #ifndef DOPPLERCOLORINDEX_H
 #define DOPPLERCOLORINDEX_H

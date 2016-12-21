@@ -1,11 +1,6 @@
 /***************************
-  Name:  Limitation
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description:   计算各参数之间的互相约束关系
-                 .............
 ************************************/
-
 
 #ifndef LIMITATION_H
 #define LIMITATION_H

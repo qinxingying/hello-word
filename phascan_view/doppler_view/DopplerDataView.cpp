@@ -276,9 +276,6 @@ void DopplerDataView::UpdateMeasure()
 
 
 /****************************************************************************
-  Name:  SetItemGeometry
-  Copyright: shensheng
-  Author: Sheng Shen
   Description: 换算ITEM位置
 *****************************************************************************/
 void DopplerDataView::SetItemGeometry(DopplerGraphicsItem* item , QRectF& rect_)
@@ -293,9 +290,6 @@ void DopplerDataView::SetItemGeometry(DopplerGraphicsItem* item , QRectF& rect_)
 }
 
 /****************************************************************************
-  Name:  TranslateToScenePlan
-  Copyright: shensheng
-  Author: Sheng Shen
   Description: 换算实际坐标到场景坐标
   Input:  的实际坐标
   Output: 坐标，以像素作单位
@@ -322,9 +316,6 @@ QPointF DopplerDataView::TranslateToScenePlan(QPointF* pPos_)
 }
 
 /****************************************************************************
-  Name:  CreateComponent
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 创建所有的DATAVIEW部件 ， TITLE , RULERS , COLORBAR , CENTER VIEW
 *****************************************************************************/
 void DopplerDataView::CreateComponent()
@@ -659,9 +650,6 @@ void DopplerDataView::slotItemMoved(DopplerGraphicsItem* item_)
 	emit signalItemMoved(this , item_)  ;
 }
 /****************************************************************************
-  Name:  PixTransferToReal
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description: 换算  在场景中的像素位置 到  标尺刻度对应的位置
   Input:	 场景位置
   Output:	标尺对应位置

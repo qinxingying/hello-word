@@ -1,10 +1,7 @@
 
 /************************
   Name:  DopplerViewFrame
-  Copyright: Sheng Shen
-  Date : 2013-08-26
   Description:   显示窗口的父窗口  提供拖拽功能
-                 .............
 ************************/
 
 #ifndef DopplerViewFrame_H
@@ -13,10 +10,6 @@
 #include <QWidget>
 #include <QList>
 #include <QSize>
-
-
-
-
 
 class QDragEnterEvent  ;
 class QDragLeaveEvent  ;

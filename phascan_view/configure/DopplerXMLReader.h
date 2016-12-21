@@ -1,9 +1,6 @@
 /***************************
   Name:  DopplerXMLReader
-  Copyright: Sheng Shen
-  Date : 2013-08-26
   Description:    用于加载XML格式文件
-                 .............
 ************************************/
 
 
