@@ -337,8 +337,6 @@ void MainWindow::slotsRightTabButton(Qt::MouseButton btn_)
 *****************************************************************************/
 QList<QWidget*>* MainWindow::GetCurrentDisplayTableWidgetList()
 {
-    qDebug()<<__func__<<__LINE__<<"currTabIndex = "<<ui->TabWidget_display->currentIndex()<<" Count ="<<m_pViewList[ui->TabWidget_display->currentIndex()]->count()<<"\n";
-
     return m_pViewList[ui->TabWidget_display->currentIndex()];
 }
 
@@ -456,7 +454,6 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
     if(nIndex_ >= MAX_LIST_QTY)
     return;
 
-qDebug()<<__LINE__<<"CurrentDispChanged"<< nIndex_<<m_pViewList[nIndex_]->count();
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     int _nGroupQty = _pConfig->common.nGroupQty;
 
@@ -634,20 +631,21 @@ void MainWindow::InsertRightTab()
 
 void MainWindow::NewConfigure()
 {
-        QMessageBox messageBox(this);
-        messageBox.setText(tr("New Configure ?"));
-        QAbstractButton* _pBtnYes = (QAbstractButton*)messageBox.addButton(tr("YES"), QMessageBox::ActionRole);
-        messageBox.addButton(tr("NO"), QMessageBox::ActionRole);
-        messageBox.exec();
-        if (messageBox.clickedButton() == _pBtnYes)
-        {
-                DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-                _pConfig->InitCommonConfig();
-                UpdateTableParameter();
-        this->setWindowTitle(QString("Doppler V1.1.2: New Setting"));
-        }
+    QMessageBox messageBox(this);
+    messageBox.setText(tr("New Configure ?"));
+    QAbstractButton* _pBtnYes = (QAbstractButton*)messageBox.addButton(tr("YES"), QMessageBox::ActionRole);
+    messageBox.addButton(tr("NO"), QMessageBox::ActionRole);
+    messageBox.exec();
 
-        UpdateStatusBarInfo();
+    if (messageBox.clickedButton() == _pBtnYes)
+    {
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        _pConfig->InitCommonConfig();
+        UpdateTableParameter();
+        this->setWindowTitle(tr("Doppler V1.1.2: New Setting"));
+    }
+
+    UpdateStatusBarInfo();
 }
 
 void MainWindow::OpenFile()
@@ -684,7 +682,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
                 m_iCurGroup = 0;
         }
 
-    this->setWindowTitle(QString("Doppler V1.1.2: ") + strFileName_);
+    this->setWindowTitle(tr("Doppler V1.1.2: ") + strFileName_);
 }
 
 void MainWindow::SaveFile()
@@ -694,7 +692,7 @@ void MainWindow::SaveFile()
                                                                    "data",
                                                                    "Doppler Files(*.cfg)");
         if(_strFileName.isEmpty())  return ;
-        this->setWindowTitle(QString("Doppler V1.1.2: ") + _strFileName);
+        this->setWindowTitle(tr("Doppler V1.1.2: ") + _strFileName);
         DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
         _pConfig->SaveConfig(_strFileName);
 }
@@ -879,7 +877,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
         _pGroupTab->UpdateCurrentAngleCom();
         _pGroupTab->UpdateSizeingCurves();
-qDebug()<<__func__<<__LINE__<<"     currentTabIndex = "<<_nTabIndex<<"   Count ="<<m_pViewList[_nTabIndex]->count();
+
         for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
         {
             int _nCurGroup;
