@@ -339,11 +339,6 @@ QList<QWidget*>* MainWindow::GetCurrentDisplayTableWidgetList()
 {
     qDebug()<<__func__<<__LINE__<<ui->TabWidget_display->currentIndex()<<"\n";
 
-    if(ui->TabWidget_display->currentIndex() != 0){
-        return m_pViewList[2];
-    }else{
-        m_pViewList[ui->TabWidget_display->currentIndex()];
-    }
     return m_pViewList[ui->TabWidget_display->currentIndex()];
 }
 
@@ -355,6 +350,11 @@ QList<QWidget*>* MainWindow::GetDisplayTableWidgetList(int nIndex_)
 int  MainWindow::GetDisplayTableQty() const
 {
     return ui->TabWidget_display->count();
+}
+
+int MainWindow::GetCurrentTabelIndex()
+{
+    return ui->TabWidget_display->currentIndex();
 }
 
 /****************************************************************************
@@ -880,7 +880,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
         _pGroupTab->UpdateCurrentAngleCom();
         _pGroupTab->UpdateSizeingCurves();
-qDebug()<<__func__<<__LINE__<<"      GetCurrentDisplayTableWidgetCount ="<<m_pViewList[_nTabIndex]->count();
+qDebug()<<__func__<<__LINE__<<"currentTabIndex = "<<_nTabIndex<<"      Count ="<<m_pViewList[_nTabIndex]->count();
         for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
         {
             int _nCurGroup;

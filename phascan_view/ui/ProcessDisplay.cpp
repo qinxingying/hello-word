@@ -398,11 +398,11 @@ int ProcessDisplay::CreateViews_S_AV(QWidget* pWidget_)
 	split->setCollapsible(0 , false);
 	split->setCollapsible(1 , false);
 	split->show();
-    qDebug()<<__func__<<__LINE__<<"S-AV";
+
     QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
     _pList->append(_pView[0]);
     _pList->append(_pView[1]);
-
+qDebug()<<__func__<<__LINE__<<"PROCESS "<<_pList->count();
 	//**************  transfer item move signal to main window
     ConnectSingals(_pView, 2) ;
 	return 0;
