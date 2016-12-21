@@ -403,9 +403,9 @@ int ProcessDisplay::CreateViews_S_AV(QWidget* pWidget_)
     _pList->append(_pView[0]);
     _pList->append(_pView[1]);
 
-qDebug()<<__func__<<     __LINE__<<"CreateViewsCount = "<<_pList->count();
+    qDebug()<<__func__<<     __LINE__<<"-------------- CreateViewsCount = "<<_pList->count();
 	//**************  transfer item move signal to main window
-    ConnectSingals(_pView, 2) ;
+    ConnectSingals(_pView, 2);
     return 0;
 }
 //PA-A-A-A SCAN

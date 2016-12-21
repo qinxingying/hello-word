@@ -21,9 +21,8 @@ DopplerViewFrame::DopplerViewFrame(QWidget *parent) :
 	//pal.setColor(QPalette::Background , QColor(0 , 0 , 0));
 	//setPalette(pal);
 	// 以异步的方式调用新窗口的创建
-	connect(this,  SIGNAL(signalCreateDrawWindow(QWidget*, int , int)) ,
-			SLOT(slotCreateDrawWindow(QWidget* , int , int))
-			 , Qt::QueuedConnection) ;
+    connect(this,  SIGNAL(signalCreateDrawWindow(QWidget*, int , int)),
+            SLOT(slotCreateDrawWindow(QWidget* , int , int)));  //Qt::QueuedConnection
 }
 
 DopplerViewFrame::~DopplerViewFrame()
