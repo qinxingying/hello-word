@@ -23,9 +23,6 @@ ParameterProcess::ParameterProcess(QObject *parent) :
 }
 
 /****************************************************************************
-  Name:  AddOneGroup
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description:   向参数中添加一个组参数
   Input:  nGroupId_: 使用该组参数初始化添加组， 如果为“-1”则用默认参数初始化
   Output: 如果成功返回空，否则返回错误说明
@@ -60,9 +57,6 @@ QString ParameterProcess::AddOneGroup(int nGroupId_)
 	return _str ;
 }
 /****************************************************************************
-  Name:  DeleteOneGroup
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description:   删除一个组参数
   Input:  nGroupId_: 删除的组参数ID
   Output: 如果成功返回空，否则返回错误说明
@@ -1930,9 +1924,6 @@ void* ParameterProcess::GetPalete(int nGroupId_ , PALETTE_NAME eName_)
 	return 0 ;
 }
 /****************************************************************************
-  Name:  CalGateValueAmp
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description:   计算闸门读数 幅度
   Input:  32bit 的闸门采样数据 前31-22位为幅度  0-21位为位置
 *****************************************************************************/
@@ -1956,9 +1947,6 @@ float ParameterProcess::GetGateValueAmp(int nGroupId_ , int nLaw_ , setup_GATE_N
 	return _fRet * 100.0f;
 }
 /******************************************************
-  Name:  CalGateValuePos
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description:   计算闸门读数 位置
   Input:  32bit 的闸门采样数据 前31-22位为幅度  0-21位为位置
 ******************************************************/

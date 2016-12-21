@@ -789,9 +789,6 @@ DopplerDrawScan* DopplerGraphicView::GetDrawScan() const
 }
 
 /****************************************************************************
-  Name:  UpdateDrawing
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description:   调用DrawScan的Draw函数绘制数据 并发送刷新信号到主线程
 *****************************************************************************/
 void DopplerGraphicView::UpdateDrawing()
@@ -805,9 +802,6 @@ void DopplerGraphicView::UpdateDrawing()
 	emit signalUpdateDrawing();
 }
 /****************************************************************************
-  Name:  UpdateSceneRegion
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description:   刷新场景
 *****************************************************************************/
 void DopplerGraphicView::UpdateSceneRegion()
@@ -817,9 +811,6 @@ void DopplerGraphicView::UpdateSceneRegion()
 }
 
 /****************************************************************************
-  Name:  slotUpdateDrawing
-  Copyright: Sheng Shen
-  Author: Sheng Shen
   Description:   刷新画布
 *****************************************************************************/
 void DopplerGraphicView::slotUpdateDrawing()

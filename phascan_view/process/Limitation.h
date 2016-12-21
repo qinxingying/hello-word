@@ -19,7 +19,7 @@ public:
     float GetGroupGainMax(int nGroupId_);
     float GetGroupGainMin(int nGroupId_);
     float GetGroupSampleRangeMax(int nGroupId_);
-    unsigned int GetGroupMaxBeamDelay(int nGroupId_ ) ;
+    unsigned int GetGroupMaxBeamDelay(int nGroupId_ );
 
 protected:
     DopplerConfigure* m_pConfig ;

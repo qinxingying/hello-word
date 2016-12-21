@@ -69,11 +69,9 @@ void DataRefreshThread::UpdateAllWidgetDrawing()
     }
 }
 
-/****************************************************************************
-  Name:  RunOnce
-  Copyright: Sheng Shen
+/*********************************************************
   Description:   刷新显示窗口波形 1 次
-*****************************************************************************/
+**********************************************************/
 void DataRefreshThread::RunOnce(THREAD_RUN_MODE eMode_)
 {
     if(eMode_ == RUN_IN_MAIN_THREAD)

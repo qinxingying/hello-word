@@ -1,13 +1,9 @@
 /***************************
-  Name:  DopplerDataView
-  Copyright: Sheng Shen
-  Date : 2013-08-26
   Description:   显示数据窗口
                  1个 标题栏 ， 由3个标尺  ，1个颜色条
                  和中间的数据显示窗口组成。
                  波形的绘制，提供了DopplerDrawScan 接口，
                  以实现 A B S C型显示
-                 .............
 ************************************/
 #ifndef DOPPLERDataView_H
 #define DOPPLERDataView_H

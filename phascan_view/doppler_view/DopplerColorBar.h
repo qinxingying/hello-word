@@ -1,9 +1,7 @@
 /***************************
   Name:  DopplerColorBar
-  Copyright: Sheng Shen
-  Date : 2013-08-26
   Description:   数据显示窗口颜色条
-************************************/
+*********************************/
 
 
 #ifndef DOPPLERCOLORBAR_H

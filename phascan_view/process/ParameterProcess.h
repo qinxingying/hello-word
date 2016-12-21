@@ -1,10 +1,6 @@
 /***************************
-  Name:  ParameterProcess
-  Copyright: Sheng Shen
-  Date : 2013-08-26
   Description:   参数设置处理类
-                 .............
-************************************/
+*****************************/
 
 
 #ifndef PARAMETERPROCESS_H
