@@ -1251,11 +1251,7 @@ void MainWindow::slot_actionEnglish_triggered()
     ui->actionJapanese->setChecked(false);
     ui->actionLanguage->setIcon(QIcon(":/file/resource/toolbar/0-20.png"));
 
-    static bool flag = true;
-    if( flag ) {
     translator->load(":/file/translator/phascan_view_english.qm");
-    flag = false;
-    }
 
     ui->ScanHardware->retranslateUi();
 
