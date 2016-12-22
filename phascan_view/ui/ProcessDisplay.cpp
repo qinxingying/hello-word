@@ -1425,27 +1425,24 @@ int ProcessDisplay::IsSizeAvailable(int nId_, QWidget* pWidget_)
 	return 0 ;
 }
 
-//#include "MainWindow.h"
-void ProcessDisplay::UpdateDataViewFrameAH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewFrameAH(DopplerDataView* pWidget_, int nGroupId_, int nLawId_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-	QString _strLeftUnit("%")  ;
-
-	//---------------------------------------------
+    QString _strLeftUnit("%");
 	
-	bool _bRectify = (_process->GetRectifierMode(nGroupId_) == setup_RECTIFIER_RF ) ;
+    bool _bRectify = (_process->GetRectifierMode(nGroupId_) == setup_RECTIFIER_RF );
 
 	if(_bRectify)
 	pWidget_->SetRulerRange( 100, -100, 100, -100, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	else
-	//---------------------------------------------
-	pWidget_->SetRulerRange( 100, 0 ,  100,  0 , DopplerDataView::DATA_VIEW_RULER_LEFT);
+
+    pWidget_->SetRulerRange( 100, 0,  100,  0, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
 
-	QString _strBottomUnit =  _process->GetSonicAxisUnit() ;
-	double _fStart = _process->GetSampleStart(nGroupId_ , nLawId_) ;
-	double _fRange = _process->GetSampleRange(nGroupId_ , nLawId_) ;
-	//---------------
+    QString _strBottomUnit =  _process->GetSonicAxisUnit();
+    double _fStart = _process->GetSampleStart(nGroupId_, nLawId_);
+    double _fRange = _process->GetSampleRange(nGroupId_, nLawId_);
+
 	SYSTEM_ENVIRMENT& _appEvn = m_pConfig->AppEvn;
 	if(_appEvn.bTrueDepth_A_S_Sync) {
 		GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
@@ -1456,23 +1453,21 @@ void ProcessDisplay::UpdateDataViewFrameAH(DopplerDataView* pWidget_ , int nGrou
 			_fRange = _fE - _fS;
 		}
 	}
-	//---------------
-	pWidget_->SetRulerRange( _fStart , _fStart + _fRange , _fStart , _fStart + _fRange , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
-	pWidget_->SetRulerUnit(&_strBottomUnit , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
 
-	//---------------------------------------------
+    pWidget_->SetRulerRange( _fStart , _fStart + _fRange , _fStart, _fStart + _fRange, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+	pWidget_->SetRulerUnit(&_strBottomUnit , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
 	
 	if(_bRectify)
-		pWidget_->SetRulerRange( 100 ,-100, 100 ,-100, DopplerDataView::DATA_VIEW_RULER_RIGHT) ;
+        pWidget_->SetRulerRange(100, -100, 100, -100, DopplerDataView::DATA_VIEW_RULER_RIGHT);
 	else
 	//---------------------------------------------
-	pWidget_->SetRulerRange( 100 , 0 ,  100 , 0 ,DopplerDataView::DATA_VIEW_RULER_RIGHT) ;
+    pWidget_->SetRulerRange(100, 0,  100, 0, DopplerDataView::DATA_VIEW_RULER_RIGHT);
 
-	void* _pColor ;
+    void* _pColor;
 	if(setup_RECTIFIER_RF ==  _process->GetRectifierMode(nGroupId_))
-		_pColor = _process->GetPalete(nGroupId_ , PALETTE_RECTIFY );
+        _pColor = _process->GetPalete(nGroupId_, PALETTE_RECTIFY );
 	else
-		_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
+        _pColor = _process->GetPalete(nGroupId_, PALETTE_AMP);
 	pWidget_->SetColorBarColorIndex(_pColor);
 }
 

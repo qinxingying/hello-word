@@ -10,13 +10,10 @@ public:
 	explicit GYSplitter(QWidget *parent = 0);
 
 protected:
-	void   timerEvent( QTimerEvent *event );
+    void timerEvent(QTimerEvent *event);
+
 private:
-	int  m_nTimerId;
-
-signals:
-
-public slots:
+    int m_nTimerId;
 
 };
 

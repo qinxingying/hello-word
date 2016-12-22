@@ -32,24 +32,24 @@ Doppler3DAll::Doppler3DAll(QWidget *parent)
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(advanceGL()));
     //timer->start(20);
-    //----------------------------------------
+
     m_nGroupId = -1;
-    //m_pTofd    = NULL;
+  //m_pTofd    = NULL;
     m_pGroup   = NULL;
     m_pScanner = NULL;
 
-    m_pConfig = DopplerConfigure::Instance() ;
+    m_pConfig = DopplerConfigure::Instance();
     m_process = ParameterProcess::Instance();
-    //--------------------------------------------
+
     // 扇扫
-    m_pDraw       = NULL ;
-    m_pAngleZoom  = NULL ;
-    m_pDrawRate   = NULL ;
-    m_pDataNo     = NULL ;
+    m_pDraw      = NULL;
+    m_pAngleZoom = NULL;
+    m_pDrawRate  = NULL;
+    m_pDataNo    = NULL;
 
     m_nWidth  = 10;
     m_nHeight = 10;
-    //--------------------------------------------
+
     SetGroupId(0);
 }
 
@@ -85,13 +85,13 @@ void Doppler3DAll::CreateMatrixBuff()
 {
     ReleaseMatrixBuff();
 
-    int _nSize = m_nWidth * m_nHeight  ;
+    int _nSize = m_nWidth * m_nHeight;
      //if(!_nSize) _nSize = 1 ;
     m_pDraw       =  (U8*)malloc(_nSize);
     m_pAngleZoom  =  (U8*)malloc(_nSize);
     m_pDrawRate   =  (U8*)malloc(_nSize);
     m_pDataNo     =  (int*)malloc(_nSize * sizeof(int));
-    memset((void*)(m_pDraw) , 0 , _nSize) ;
+    memset((void*)(m_pDraw), 0, _nSize);
 }
 
 void Doppler3DAll::ReleaseMatrixBuff()
@@ -107,10 +107,7 @@ void Doppler3DAll::CalcMatrixAzimuthal(void)
     GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId] ;
     LAW_CONFIG*     _law = m_process->GetLawConfig(m_nGroupId);
     int _iAngle = (int)m_process->GetProbeAngle(m_nGroupId);
-    //------------------
-    //------------------
-    //------------------
-    //-----------------------------------------------------------------------------
+
     // get real window size
     float  _nAngleStart = DEGREE_TO_ARCH(_law->nAngleStartRefract / 10.0)         ;
     float   _nAngleStop = DEGREE_TO_ARCH(_law->nAngleStopRefract / 10.0)          ;
@@ -133,49 +130,12 @@ void Doppler3DAll::CalcMatrixAzimuthal(void)
     //float  _nStopY = m_nStopY;
     float  _nStepX = m_nStepX;
     float  _nStepY = m_nStepY;
-    /*
-    float _nStartX , _nStopX , _nStartY , _nStopY , _nStepX , _nStepY ;
-
-    if(_nAngleStart * _nAngleStop <= 0)
-    {
-        _nStartX = _pExitPoint[0] + _nSampleStop * sin(_nAngleStart) ;
-        _nStopX  = _pExitPoint[_nBeamQty - 1] + _nSampleStop * sin(_nAngleStop) ;
-        _nStopY  = _nSampleStop  ;
-        if(fabs(_nAngleStart) > fabs(_nAngleStop))
-        {
-            _nStartY = _nSampleStart * cos(_nAngleStart)  ;
-        }
-        else
-        {
-            _nStartY = _nSampleStart * cos(_nAngleStop)   ;
-        }
-    }
-    else if( _nAngleStart < 0 && _nAngleStop < 0)
-    {
-        _nStartX = _pExitPoint[0] + _nSampleStop * sin(_nAngleStart) ;
-        _nStopX  = _pExitPoint[_nBeamQty -1] + _nSampleStart * sin(_nAngleStop) ;
-        _nStartY = _nSampleStart * cos(_nAngleStart)  ;
-        _nStopY  = _nSampleStop * cos(_nAngleStop) ;
-    }
-    else //( _nAngleStart > 0 && _nAngleStop > 0)
-    {
-        _nStartX = _pExitPoint[0] + _nSampleStart * sin(_nAngleStart) ;
-        _nStopX  = _pExitPoint[_nBeamQty - 1] + _nSampleStop * sin(_nAngleStop);
-        _nStartY = _nSampleStart * cos(_nAngleStop)  ;
-        _nStopY  = _nSampleStop * cos(_nAngleStart)  ;
-    }*/
-    //***************E
 
     // get real step of each pixel
     //***************S
     int  _width = m_nWidth  ;    //  图像 宽    单位 像素
     int _height = m_nHeight ;    //  图像 高    单位 像素
-    //int  _width = pInfo_->width  ;    //  图像 宽    单位 像素
-    //int _height = pInfo_->height ;    //  图像 高    单位 像素
-    //_nStepX  = (_nStopX - _nStartX) / (_width - 1) ;
-    //_nStepY  = (_nStopY - _nStartY) / (_height - 1) ;
-    //***************E
-    //-----------------------------------------------------------------------------
+
     // get juction of each two beam
     float _nTopLocation[256]  ;
     for(int i = 0 ; i < _nBeamQty - 1; i++)
@@ -255,9 +215,7 @@ void Doppler3DAll::CalcMatrixLinear(void)
     GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId] ;
     LAW_CONFIG*     _law = m_process->GetLawConfig(m_nGroupId);
     int _iAngle = (int)m_process->GetProbeAngle(m_nGroupId);
-    //------------------
-    //------------------
-    //------------------
+
     int _nStartElement = _law->nFirstElemFir ;
     int  _nStopElement = _law->nLastElemFir ;
     int  _nStepElement = _law->nElemStepFir ;
@@ -427,31 +385,11 @@ void Doppler3DAll::initializeGL()
 
 void Doppler3DAll::resizeGL(int width, int height)
 {
-    if (height==0)
-        height=1;
+    if (height == 0)
+        height = 1;
 
     m_fWndWidth  = width;
     m_fWndHeight = height;
-/*
-    glViewport(0,0,width,height);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    GLfloat x = (GLfloat)width / (GLfloat)height;
-    //gluPerspective(45.0f, x, 0.1f, 100.0f);
-    gluPerspective(45.0f, x, 0.1f, 200.0f);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-*/
-/*
-    gluLookAt(0.0f, 0.0f, -200.0f,                 //设置观察点
-                     0.0f,0.0f,0.0f,                          //设置观察的点
-                     0.0f,1.0f,0.0f);                         //设置向上的方向
-    glMatrixMode(GL_MODELVIEW);    // 设置当前矩阵为模型视图矩阵
-    glLoadIdentity();
-*/
 }
 
 void Doppler3DAll::paintGL()
@@ -516,7 +454,6 @@ void Doppler3DAll::BeginDraw()
 	GLfloat fH     = tan(GLfloat(90.0/360.0*3.14159))*zNear;
 	GLfloat fW     = fH * aspect;
 	glFrustum(-fW, fW, -fH, fH, zNear, zFar);
-	//----------------------------------------------------
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -579,7 +516,7 @@ void Doppler3DAll::drawFrame(bool bPositive_, GLdouble y0_, GLdouble x1_, GLdoub
     GLdouble _YD = _YU + _fHeight;
 
     GLPOINT _pt[4];
-    //--------------------------------------------------------------
+
     // 上
     InitGLPoint(_pt, 4);
     _pt[0].x += x1_;           _pt[0].y += _YU;   _pt[0].z += _fLength;
@@ -608,54 +545,8 @@ void Doppler3DAll::drawFrame(bool bPositive_, GLdouble y0_, GLdouble x1_, GLdoub
     _pt[3].x += x2_;           _pt[3].y += _YD;   _pt[3].z += 0;
     glColor3f(0.0f, 0.0f, 1.0f);
     GLDraw1(_pt, GL_LINE_STRIP, 4);//GL_LINE_LOOP
-    //--------------------------------------------------------------
 }
-/*
-void Doppler3DAll::drawFrame()
-{
-    GLdouble _fHeight = m_fHeight * m_fScale;
-    GLdouble _fWidth  = m_fWidth * m_fScale;
-    GLdouble _fLength = m_fLength * m_fScale;
 
-    GLPOINT _pt[4];
-    //--------------------------------------------------------------
-    // 上
-    InitGLPoint(_pt, 4);
-    _pt[0].x += -_fWidth / 2;  _pt[0].y += -_fHeight / 2;   _pt[0].z += _fLength;
-    _pt[1].x += -_fWidth / 2;  _pt[1].y += -_fHeight / 2;   _pt[1].z += 0;
-    _pt[2].x += _fWidth / 2;   _pt[2].y += -_fHeight / 2;   _pt[2].z += 0;
-    _pt[3].x += _fWidth / 2;   _pt[3].y += -_fHeight / 2;   _pt[3].z += _fLength;
-    glColor3f(0.0f, 1.0f, 0.0f);
-    GLDraw1(_pt, GL_LINE_LOOP, 4);//GL_LINE_LOOP GL_LINE_STRIP
-    // 中
-    InitGLPoint(_pt, 4);
-    _pt[0].x += -_fWidth / 2;  _pt[0].y += -_fHeight / 2;   _pt[0].z += 0;
-    _pt[1].x += -_fWidth / 2;  _pt[1].y += _fHeight / 2;    _pt[1].z += 0;
-    _pt[2].x += _fWidth / 2;   _pt[2].y += _fHeight / 2;    _pt[2].z += 0;
-    _pt[3].x += _fWidth / 2;   _pt[3].y += -_fHeight / 2;   _pt[3].z += 0;
-    glColor3f(0.0f, 0.8f, 0.8f);
-    GLDraw1(_pt, GL_LINES, 4);
-
-    InitGLPoint(_pt, 4);
-    _pt[0].x += -_fWidth / 2;  _pt[0].y += -_fHeight / 2;   _pt[0].z += _fLength;
-    _pt[1].x += -_fWidth / 2;  _pt[1].y += _fHeight / 2;    _pt[1].z += _fLength;
-    _pt[2].x += _fWidth / 2;   _pt[2].y += _fHeight / 2;    _pt[2].z += _fLength;
-    _pt[3].x += _fWidth / 2;   _pt[3].y += -_fHeight / 2;   _pt[3].z += _fLength;
-
-    glColor3f(1.0f, 0.8f, 0.0f);
-    GLDraw1(_pt, GL_LINES, 4);
-    //GLDraw(pt, GL_POLYGON, 4);
-    // 下
-    InitGLPoint(_pt, 4);
-    _pt[0].x += -_fWidth / 2;  _pt[0].y += _fHeight / 2;    _pt[0].z += _fLength;
-    _pt[1].x += -_fWidth / 2;  _pt[1].y += _fHeight / 2;    _pt[1].z += 0;
-    _pt[2].x += _fWidth / 2;   _pt[2].y += _fHeight / 2;    _pt[2].z += 0;
-    _pt[3].x += _fWidth / 2;   _pt[3].y += _fHeight / 2;    _pt[3].z += _fLength;
-    glColor3f(0.0f, 0.0f, 1.0f);
-    GLDraw1(_pt, GL_LINE_LOOP, 4);//GL_LINE_LOOP
-    //--------------------------------------------------------------
-}
-*/
 void Doppler3DAll::drawWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_)
 {
     switch(m_pWeld->eType)
@@ -688,7 +579,7 @@ void Doppler3DAll::drawIShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, 
     glLineStipple(1, 0xAAAA);
 
     glColor3f(0.5f, 5.0f, 0.5f);
-    //-----------------------------------
+
     InitGLPoint(_pt1, 2);
     _pt1[0].x += _XOff;  _pt1[0].y += _YOff;        _pt1[0].z += 0;
     _pt1[1].x += _XOff;  _pt1[1].y += _YOff+_High;  _pt1[1].z += 0;
@@ -702,7 +593,6 @@ void Doppler3DAll::drawIShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, 
     GLDraw1(_pt2, GL_LINE_STRIP, 2);
 
     GLDraw2(_pt1, _pt2, 2);
-    //-----------------------------------
 
     //glDisable(GL_LINE_STIPPLE);
 
@@ -710,7 +600,6 @@ void Doppler3DAll::drawIShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, 
     *x2_ = _pt1[1].x;
 }
 
-//#include <gHeader.h>
 void Doppler3DAll::drawVShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_)
 {
     GLdouble _sign = 1;
@@ -740,7 +629,7 @@ void Doppler3DAll::drawVShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, 
     //glLineStipple(1, 0xAAAA);
 
     glColor3f(0.5f, 5.0f, 0.5f);
-    //-----------------------------------
+
     InitGLPoint(_pt1, 3);
     if(bMirroring_) {
         _pt1[0].x += _XOff2;  _pt1[0].y += _YOff1;  _pt1[0].z += _ZOff1;
@@ -767,7 +656,7 @@ void Doppler3DAll::drawVShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, 
     GLDraw1(_pt2, GL_LINE_STRIP, 3);
 
     GLDraw2(_pt1, _pt2, 3);
-    //-----------------------------------
+
     //glDisable(GL_LINE_STIPPLE);
 
     *x1_ = _pt1[0].x;
@@ -799,7 +688,7 @@ void Doppler3DAll::drawDoubleVShapeWeld(bool bPositive_, GLdouble y0_, GLdouble*
     //glLineStipple(1, 0xAAAA);
 
     glColor3f(0.5f, 5.0f, 0.5f);
-    //-----------------------------------
+
     InitGLPoint(_pt1, 4);
     _pt1[0].x += _XOff1;  _pt1[0].y += _YOff1;  _pt1[0].z += _ZOff1;
     _pt1[1].x += _XOff2;  _pt1[1].y += _YOff2;  _pt1[1].z += _ZOff1;
@@ -816,7 +705,7 @@ void Doppler3DAll::drawDoubleVShapeWeld(bool bPositive_, GLdouble y0_, GLdouble*
     GLDraw1(_pt2, GL_LINE_STRIP, 4);
 
     GLDraw2(_pt1, _pt2, 4);
-    //-----------------------------------
+
     //glDisable(GL_LINE_STIPPLE);
 
     *x1_ = _pt1[0].x;
@@ -896,7 +785,7 @@ void Doppler3DAll::drawUShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, 
     GLDraw1(_pt1, GL_LINE_STRIP, 2);
     GLDrawArc(_cf, _pt1[1], _pt1[2], _r, _sign);
     GLDraw1(&_pt1[2], GL_LINE_STRIP, 2);
-    //----------------------------------------------------
+
     InitGLPoint(_pt2, 4);
     if(bMirroring_) {
         _pt2[0].x += _X4;  _pt2[0].y += _Y1;  _pt2[0].z += _Z2;
@@ -950,16 +839,12 @@ void Doppler3DAll::drawUShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, 
     GLDraw1(_pt2, GL_LINE_STRIP, 2);
     GLDrawArc(_cf, _pt2[1], _pt2[2], _r, _sign);
     GLDraw1(&_pt2[2], GL_LINE_STRIP, 2);*/
-    //----------------------------------------------------
+
     GLDraw2(_pt1, _pt2, 4);
 
     *x1_ = _pt1[0].x;
     *x2_ = _pt1[3].x;
 }
-
-//void Doppler3DAll::drawDoubleUShapeWeld(bool bPositive_, GLdouble y0_, GLdouble* x1_, GLdouble* x2_, int bMirroring_)
-//{
-//}
 
 void Doppler3DAll::drawDefect(GLdouble y0_)
 {
@@ -975,15 +860,6 @@ void Doppler3DAll::drawDefect(GLdouble y0_)
             CalcMatrixLinear();
         }
         DrawPixbuff(y0_);
-        /*
-        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
-        {
-            drawDefectAzimuthal(y0_);
-        }
-        else
-        {
-            drawDefectLiner(y0_);
-        }*/
     }
 }
 
@@ -1260,7 +1136,6 @@ void Doppler3DAll::mouseMoveEvent(QMouseEvent *event)
 
 void Doppler3DAll::wheelEvent(QWheelEvent *event)
 {
-    //event->delta() > 0 ? zTra += 1.0f : zTra -= 1.0f;
     event->delta() > 0 ? m_ptOrigin.z += 1.0f : m_ptOrigin.z -= 1.0f;
     updateGL();
 }
@@ -1320,23 +1195,3 @@ void GLDrawArc(GLPOINT cf_, GLPOINT pt1_, GLPOINT pt2_, GLdouble R_, GLdouble _s
     }
     glEnd();
 }
-/*
-float GetDepth(float h_, float ply_)
-{
-    float _fDepth;
-    if(h_ < ply_)
-    {
-        _fDepth = h_;
-    }
-    else
-    {
-        int n = h_ / ply_;
-        _fDepth = (h_ - n * ply_);
-        if(n%2)
-        {
-            _fDepth = ply_ - _fDepth;
-        }
-    }
-    return _fDepth;
-}
-*/

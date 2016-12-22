@@ -28,7 +28,6 @@ protected:
     void wheelEvent(QWheelEvent *event);
 
 private:
-    //-----------------------------------
     GLdouble  m_fHeight;
     GLdouble  m_fWidth;
     GLdouble  m_fLength;
@@ -47,7 +46,6 @@ private:
     int               m_nGroupId ;
     GLPOINT           m_ptOrigin;
     U8*               m_pColor;
-    //-----------------------------------
 
     void BeginDraw();
     void InitGLPoint(GLPOINT* point_, int iLen);
@@ -74,7 +72,6 @@ private:
     QTimer *timer;
 
 private:
-    //------------------------------------------------------------
     // 扇扫
     U8*  m_pAngleZoom;	//[BUFF_MAX_SIZE] ;// 处于哪个角度区间
     U8*  m_pDraw;	//[BUFF_MAX_SIZE] ;// 是否扇形区域
@@ -91,7 +88,7 @@ private:
     void CalcMatrixAzimuthal();
     void CalcMatrixLinear();
     int DrawPixbuff(GLdouble y0_);
-    //------------------------------------------------------------
+
 private slots:
     void advanceGL();
 };

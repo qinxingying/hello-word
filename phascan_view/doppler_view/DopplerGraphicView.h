@@ -5,12 +5,10 @@
 #include <QRect>
 #include <QRectF>
 
-//class DopplerDataView  ;
 class QGraphicsScene;
-class DopplerGraphicsItem ;
+class DopplerGraphicsItem;
 class GraphicsViewBase;
-class DopplerDrawScan ;
-class QTimer      ;
+class DopplerDrawScan;
 
 #define MAX_MEASURE_DATA_DISPLAY  15
 
@@ -39,7 +37,6 @@ public:
 	//bool   GetBCZoomStatus() {return m_bBCAutoZomm;}
 
 protected:
- //   void   timerEvent( QTimerEvent *event );
     void   wheelEvent ( QWheelEvent * event ) ;
     void   resizeEvent(QResizeEvent *event) ;
     void   mousePressEvent(QMouseEvent *event);

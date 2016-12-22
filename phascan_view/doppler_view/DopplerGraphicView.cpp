@@ -15,12 +15,11 @@
 #include <QImage>
 #include <QGraphicsScene>
 #include <QGraphicsWidget>
-#include <QTimer>
 #include <gHeader.h>
 #include <QObject>
 #include <QMutex>
 
-static const QSize FIXED_SCENE_SIZE( 480 , 360) ;
+static const QSize FIXED_SCENE_SIZE( 480 , 360);
 
 
 #define DPL_BASE_IMAGE_FORMATE	 (QImage::Format_RGB888)
@@ -83,14 +82,14 @@ public:
 			m_hMutex.unlock();
 		}
 	}
+
 public:
 	QMutex m_hMutex;
+
 private:
-	QImage* m_pImage ;
-	QSize   m_cSize  ;
-
+    QImage* m_pImage;
+    QSize   m_cSize;
 };
-
 
 DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 	QGraphicsView(parent)
@@ -111,18 +110,15 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 	m_nScaleH = 1.0 ;
 	m_nScaleV = 1.0 ;
 	InitGraphicView(size());
-	//****************************************************
+
 	// connect update signal for multi threads update user interface
-	connect( this , SIGNAL(signalUpdateDrawing())  ,
-					SLOT(slotUpdateDrawing())
-					//,Qt::QueuedConnection
-			 )  ;
+    connect(this, SIGNAL(signalUpdateDrawing()), SLOT(slotUpdateDrawing()));
 	// pass the drop event to father widget
 	setAcceptDrops(false);
 	// use openGL to render drawing
-	//##############################
+
 	//EnableRenderOpenGL(true) ;
-	//##############################
+
 	setRenderHint(QPainter::Antialiasing, true);
 	for(int i = 0 ; i < 5 ; i++)  m_strMeasure[i].clear();
 	m_nMeasureQty  = 0 ;
@@ -136,19 +132,11 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 
 DopplerGraphicView::~DopplerGraphicView()
 {
-	delete   m_pBackGround	;
-	delete   m_pScene;		;
-	delete   m_pDrawScan	  ;
-
-//	if(m_nTimerId != 0)
-//		killTimer(m_nTimerId);
+    delete   m_pBackGround;
+    delete   m_pScene;
+    delete   m_pDrawScan;
 }
-
-static QRect mRect ;
-
-//void DopplerGraphicView::timerEvent( QTimerEvent *event )
-//{
-//}
+static QRect mRect;
 
 void DopplerGraphicView::InitGraphicView(const QSize& cSize_)
 {
@@ -173,17 +161,15 @@ void DopplerGraphicView::InitGraphicView(const QSize& cSize_)
 
 void DopplerGraphicView::slotResetView()
 {
-	m_bZoom     = false;
-	SetupMatrixScale(1.0 , 1.0 );
-	ensureVisible(QRectF(0 , 0 , 0 , 0));
+    m_bZoom  = false;
+    SetupMatrixScale(1.0, 1.0 );
+    ensureVisible(QRectF(0, 0, 0, 0));
 }
 
-//----------------------------------------------------------
-//  wuhan cursor 2015-05-19
 void DopplerGraphicView::mouseCursorPro(QMouseEvent *event)
 {
 	setCursor(QCursor(Qt::ArrowCursor));
-	QList<QGraphicsItem*> listCursor = m_pScene->items() ;
+    QList<QGraphicsItem*> listCursor = m_pScene->items();
 	for(int i = 0; i < listCursor.count(); i++)
 	{
 		DopplerGraphicsItem* _item = (DopplerGraphicsItem*)listCursor.at(i);
@@ -204,7 +190,6 @@ void DopplerGraphicView::mouseCursorPro(QMouseEvent *event)
 	}
 	setCursor(QCursor(Qt::ArrowCursor));
 }
-//----------------------------------------------------------
 
 void DopplerGraphicView::SetupMatrixScale(double nScaleH_ , double nScaleV_)
 {
@@ -277,11 +262,11 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 			_nCenter.setY(_rect.top() + _nHeight / 2);
 
 			m_cZoomRect = _rect;
-			m_bZoom     = true;
+            m_bZoom = true;
 		} else {
-			m_bZoom     = false;
+            m_bZoom = false;
 		}
-		//****************************************
+
 		//centerOn(mapToScene((event->pos())));
 		centerOn(_nCenter);
 		SetupMatrixScale( m_nScaleH , m_nScaleV ) ;
@@ -320,7 +305,6 @@ void DopplerGraphicView::resizeEvent(QResizeEvent *event)
 	_pParent->GetItemGroup()->UpdateItemsLawMarker();
 	//***ÖØ»æ»­Í¼Çø*********
 	//UpdateDrawing();
-	//**********************
 }
 
 void DopplerGraphicView::SetDrawOperation(DopplerDrawScan* pDrawScan_)
@@ -427,28 +411,23 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 	for(int i = 0 ; i < list.count() ; i++)
 	list.at(i)->setSelected(false);
 
-	QGraphicsView::mouseReleaseEvent(event) ;
+    QGraphicsView::mouseReleaseEvent(event);
 }
 
 void DopplerGraphicView::paintEvent(QPaintEvent *event)
 {
-	QGraphicsView::paintEvent(event) ;
-	DrawMeasureValue() ;
-	//if(m_bZommInit) {
-	//	if(m_bBCAutoZomm) {
-	//		CScanZoomAction();
-	//	}
-	//}
+    QGraphicsView::paintEvent(event);
+    DrawMeasureValue();
 }
 
-void DopplerGraphicView::SetMeasureString(int nIndex_ , QString* str_)
+void DopplerGraphicView::SetMeasureString(int nIndex_, QString* str_)
 {
-	m_strMeasure[nIndex_] = *str_ ;
+    m_strMeasure[nIndex_] = *str_;
 }
 
 void DopplerGraphicView::SetMeasureStringQty(int nQty_)
 {
-	m_nMeasureQty = nQty_ > MAX_MEASURE_DATA_DISPLAY ? MAX_MEASURE_DATA_DISPLAY : nQty_  ;
+    m_nMeasureQty = nQty_ > MAX_MEASURE_DATA_DISPLAY ? MAX_MEASURE_DATA_DISPLAY : nQty_;
 }
 
 void DopplerGraphicView::DrawMeasureValue()

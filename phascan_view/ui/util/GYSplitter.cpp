@@ -6,7 +6,7 @@ GYSplitter::GYSplitter(QWidget *parent) :
 	m_nTimerId = startTimer(500);
 }
 
-void GYSplitter::timerEvent( QTimerEvent *event )
+void GYSplitter::timerEvent(QTimerEvent *event)
 {
 	if(m_nTimerId != 0)
 		killTimer(m_nTimerId);
