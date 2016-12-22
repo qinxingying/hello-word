@@ -19,7 +19,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Doppler V1.1.2</string>
+   <string/>
   </property>
   <property name="windowIcon">
    <iconset resource="../mainwindow.qrc">

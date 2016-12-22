@@ -95,6 +95,10 @@ void MainWindow::init_ui()
     m_chineseFlag = false;
     m_bParamBackMode = false;
     SetDispTabText();
+
+    m_fileName  = "";
+    m_titleName = tr("Doppler V1.1.2 : ");
+    this->setWindowTitle(m_titleName + m_fileName);
 }
 
 void MainWindow::closeEvent (QCloseEvent* e)
@@ -649,7 +653,9 @@ void MainWindow::NewConfigure()
         DopplerConfigure* _pConfig = DopplerConfigure::Instance();
         _pConfig->InitCommonConfig();
         UpdateTableParameter();
-        this->setWindowTitle(tr("Doppler V1.1.2: New Setting"));
+
+        m_fileName = tr("New Setting");
+        this->setWindowTitle(m_titleName + m_fileName);
     }
 
     UpdateStatusBarInfo();
@@ -690,7 +696,8 @@ void MainWindow::OpenFilePro(QString strFileName_)
         m_iCurGroup = 0;
     }
 
-    this->setWindowTitle(tr("Doppler V1.1.2: ") + strFileName_);
+    m_fileName = strFileName_;
+    this->setWindowTitle(m_titleName + m_fileName);
 }
 
 void MainWindow::SaveFile()
@@ -700,7 +707,10 @@ void MainWindow::SaveFile()
                                                          "data",
                                                          "Doppler Files(*.cfg)");
     if(_strFileName.isEmpty())  return ;
-    this->setWindowTitle(tr("Doppler V1.1.2: ") + _strFileName);
+
+    m_fileName = _strFileName;
+    this->setWindowTitle(m_titleName + m_fileName);
+
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     _pConfig->SaveConfig(_strFileName);
 }
@@ -1263,7 +1273,9 @@ void MainWindow::slot_actionEnglish_triggered()
     for(int i = 0; i < _nGroupQty; i++){
         m_pGroupList.at(i)->retranslateGroupTabUi();
     }
+
     ui->retranslateUi(this);
+    this->setWindowTitle(m_titleName + m_fileName);
 }
 
 void MainWindow::slot_actionChinese_triggered()
@@ -1281,7 +1293,9 @@ void MainWindow::slot_actionChinese_triggered()
     for(int i = 0; i < _nGroupQty; i++){
         m_pGroupList.at(i)->retranslateGroupTabUi();
     }
+
     ui->retranslateUi(this);
+    this->setWindowTitle(m_titleName + m_fileName);
 }
 
 void MainWindow::on_actionJapanese_triggered()

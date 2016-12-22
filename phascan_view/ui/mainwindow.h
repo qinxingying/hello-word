@@ -100,6 +100,8 @@ private:
     QWidget* m_pCurrentDataView;
     QLabel* m_pStatusCell[3];
     STATUS_BAR_INFO m_BarInfo;
+    QString m_titleName;
+    QString m_fileName;
 
     QList<DopplerGroupTab*> m_pGroupList;
 
