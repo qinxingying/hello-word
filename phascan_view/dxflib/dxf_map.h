@@ -12,9 +12,9 @@
 #include "dxfile.h"
 
 /* 定义解析、删除、打印函数的类型 */
-typedef gpointer (*parse_fun_t)(Dxfile *f);
-typedef void (*delete_fun_t)(gpointer e);
-typedef gchar *(*print_fun_t)(gpointer e);
+typedef void * (*parse_fun_t)(Dxfile *f);
+typedef void (*delete_fun_t)(void * e);
+typedef char *(*print_fun_t)(void * e);
 
 /* 定义映射表和映射表项目 类型 */
 typedef GHashTable DxfMap;
@@ -27,10 +27,10 @@ struct _DxfMapItem {
 
 extern DxfMap *dxf_map_new();
 extern void dxf_map_insert(DxfMap *map,
-                           const gpointer key,
-                           const gpointer parse_f,
-                           const gpointer delete_f,
-                           const gpointer print_f);
+                            &key,
+                            * parse_f,
+                            * delete_f,
+                            * print_f);
 extern void dxf_map_destroy(DxfMap *map);
 
 #endif /* End of __DXF_MAP_H__ */

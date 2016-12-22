@@ -8,13 +8,13 @@
 
 static inline Dxf3Dsolid *dxf3dsolid_new_item()
 {
-    return g_malloc0(sizeof(Dxf3Dsolid));
+    return malloc(sizeof(Dxf3Dsolid));
 }
 
 Dxf3Dsolid *dxf_3dsolid_parse(Dxfile *f)
 {
     Dxf3Dsolid *e = NULL;
-    gchar *data = NULL;
+    char *data = NULL;
     DxfPropData *propData = NULL;
 
     e = dxf3dsolid_new_item();
@@ -27,10 +27,10 @@ Dxf3Dsolid *dxf_3dsolid_parse(Dxfile *f)
         data = NULL;
         dxfile_get_line(f, &data, NULL);
         if (NULL == propData) {
-            propData = g_malloc0(sizeof(DxfPropData));
+            propData = malloc(sizeof(DxfPropData));
             e->proprietaryData = propData;
         } else {
-            propData->next = g_malloc0(sizeof(DxfPointData));
+            propData->next = malloc(sizeof(DxfPointData));
             propData = propData->next;
         }
         propData->data = data;
@@ -48,18 +48,18 @@ void dxf_3dsolid_delete(Dxf3Dsolid *e)
 
     while(e->proprietaryData) {
         propData = e->proprietaryData->next;
-        g_free(e->proprietaryData->data);
-        g_free(e->proprietaryData);
+        free(e->proprietaryData->data);
+        free(e->proprietaryData);
         e->proprietaryData = propData;
     }
 
-    g_free(e);
+    free(e);
 }
 
-gchar *dxf_3dsolid_print(Dxf3Dsolid *e)
+char *dxf_3dsolid_print(Dxf3Dsolid *e)
 {
     DxfPropData *d;
-    GString *msg = NULL;
+    QString *msg = NULL;
 
     g_return_val_if_fail( e != NULL, NULL );
     g_return_val_if_fail( e->proprietaryData != NULL, NULL);
@@ -74,5 +74,5 @@ gchar *dxf_3dsolid_print(Dxf3Dsolid *e)
         g_string_append_printf(msg, "%s\n", d->data);
     }
 
-    return g_string_free(msg, FALSE);
+    return g_strinfree(msg, FALSE);
 }

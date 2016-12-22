@@ -8,7 +8,7 @@
 
 static inline DxfLine *line_new_item()
 {
-    DxfLine *l = g_malloc0(sizeof(DxfLine));
+    DxfLine *l = malloc(sizeof(DxfLine));
     l->extrDir.z = 1;
     return l;
 }
@@ -45,7 +45,7 @@ DxfLine *dxf_line_parse(Dxfile *f)
     return l;
 }
 
-gchar *dxf_line_print(const DxfLine *l)
+char *dxf_line_print(const DxfLine *l)
 {
     return g_strdup_printf("thickness     : %g\n"
                            "Start Point   : (%g, %g, %g)\n"
@@ -58,5 +58,5 @@ gchar *dxf_line_print(const DxfLine *l)
 
 void dxf_line_delete(DxfLine *l)
 {
-     g_free(l);
+     free(l);
 }

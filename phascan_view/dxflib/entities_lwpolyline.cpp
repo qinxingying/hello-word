@@ -8,7 +8,7 @@
 
 static inline DxfLWPolyline *lwpolyline_new_item()
 {
-    DxfLWPolyline *l = g_malloc0(sizeof(DxfLWPolyline));
+    DxfLWPolyline *l = malloc(sizeof(DxfLWPolyline));
     l->extrDir.z = 1;
     return l;
 }
@@ -34,13 +34,13 @@ DxfLWPolyline *dxf_lwpolyline_parse(Dxfile *f)
     SWITCH_CODE_DO( 10 ) {
         if ( NULL == vertex) {
             if (l->vertexNum > 0) {
-                vertex = g_malloc0(sizeof(DxfPointData)*l->vertexNum);
+                vertex = malloc(sizeof(DxfPointData)*l->vertexNum);
                 l->vertexes = vertex;
                 dxfile_get_double(f, &vertex->x);
             } else {
                 c_log_warning("Haven't got the number of vertexes");
             }
-        } else if ((gint16)((vertex-l->vertexes)/sizeof(DxfPointData)) < l->vertexNum){
+        } else if ((int)((vertex-l->vertexes)/sizeof(DxfPointData)) < l->vertexNum){
             ++vertex;
             dxfile_get_double(f, &vertex->x);
         } else {
@@ -74,15 +74,15 @@ void dxf_lwpolyline_detele(DxfLWPolyline *l)
 {
     g_return_if_fail( l != NULL);
 
-    g_free(l->vertexes);
-    g_free(l);
+    free(l->vertexes);
+    free(l);
 }
 
 
-gchar *dxf_lwpolyline_print(const DxfLWPolyline *l)
+char *dxf_lwpolyline_print(const DxfLWPolyline *l)
 {
-    GString *msg = NULL;
-    gint i=0;
+    QString *msg = NULL;
+    int i=0;
 
     g_return_val_if_fail( l != NULL, NULL );
     g_return_val_if_fail( l->vertexes != NULL, NULL);
@@ -102,5 +102,5 @@ gchar *dxf_lwpolyline_print(const DxfLWPolyline *l)
         g_string_append_printf(msg, " [%03d] : (%g, %g)\n", i+1, l->vertexes[i].x, l->vertexes[i].y);
     }
 
-    return g_string_free(msg, FALSE);
+    return g_strinfree(msg, FALSE);
 }

@@ -43,10 +43,10 @@ struct _Section {
     char value[STR_MAX];   /*group value*/
 };
 
-static inline gboolean section_check(const Section *s, int code,
+static inline bool section_check(const Section *s, int code,
                                      const char *codestr)
 {
-    return ((s->code == code) && (! g_strcmp0(s->value, codestr)));
+    return ((s->code == code) && (! strcmp(s->value, codestr)));
 }
 #define section_is_begin(s) \
     section_check(s, 0, SECTION_START)      /*判断为段开始*/

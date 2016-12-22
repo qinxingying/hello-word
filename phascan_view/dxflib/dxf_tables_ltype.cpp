@@ -8,7 +8,7 @@
 
 DxfTablesLtype *dxf_tables_ltype_parse(Dxfile *f)
 {
-    DxfTablesLtype *ltype = g_malloc0(sizeof(DxfTablesLtype));
+    DxfTablesLtype *ltype = malloc(sizeof(DxfTablesLtype));
 
     SWITCH_CODE_BEGIN(f);
     SWITCH_CODE_DO( 2 )
@@ -79,15 +79,15 @@ void dxf_tables_ltype_delete(DxfTablesLtype *l)
 {
     g_return_if_fail( l != NULL );
 
-    g_free(l->name);
-    g_free(l->description);
-    g_free(l->text);
-    g_free(l->stylePointer);
-    g_free(l);
+    free(l->name);
+    free(l->description);
+    free(l->text);
+    free(l->stylePointer);
+    free(l);
 }
 
 
-gchar *dxf_tables_ltype_print(DxfTablesLtype *l)
+char *dxf_tables_ltype_print(DxfTablesLtype *l)
 {
     return g_strdup_printf("name       : %s\n"
                            "description: %s\n"

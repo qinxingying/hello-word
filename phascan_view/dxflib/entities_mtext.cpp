@@ -8,7 +8,7 @@
 
 static inline DxfMtext *mtext_new_item()
 {
-    DxfMtext *item = g_malloc0(sizeof(DxfMtext));
+    DxfMtext *item = malloc(sizeof(DxfMtext));
     item->str = g_string_new(NULL);
     item->extrDir.z = 1;
     return item;
@@ -17,7 +17,7 @@ static inline DxfMtext *mtext_new_item()
 DxfMtext *dxf_mtext_parse(Dxfile *f)
 {
     DxfMtext *e = NULL;
-    gchar *lineData = NULL;
+    char *lineData = NULL;
 
     e = mtext_new_item();
 
@@ -41,7 +41,7 @@ DxfMtext *dxf_mtext_parse(Dxfile *f)
         lineData = NULL;
         dxfile_get_line(f, &lineData, NULL);
         g_string_append(e->str, lineData);
-        g_free(lineData);
+        free(lineData);
     }
     SWITCH_CODE_DO( 7)
             dxfile_get_line(f, &e->style, NULL);
@@ -65,12 +65,12 @@ void dxf_mtext_delete(DxfMtext *e)
 {
     g_return_if_fail( e != NULL );
 
-    g_string_free(e->str, TRUE);
-    g_free(e->style);
-    g_free(e);
+    g_strinfree(e->str, TRUE);
+    free(e->style);
+    free(e);
 }
 
-gchar *dxf_mtext_print(DxfMtext *e)
+char *dxf_mtext_print(DxfMtext *e)
 {
     g_return_val_if_fail( e != NULL, NULL );
 

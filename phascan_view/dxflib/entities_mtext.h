@@ -76,21 +76,21 @@ typedef struct _DxfMtext DxfMtext;
 
 struct _DxfMtext {
     DxfPointData insertionPoint;    /*10,20,30 Insertion point*/
-    gdouble nominalHeight;          /*40 Nominal (initial) text height*/
-    gdouble rectangleWidth;         /*41 Reference rectangle width*/
-    gint16 attachment;              /*71 Attachment point*/
-    gint16 direction;               /*72 Drawing direction*/
-    GString *str;                   /*1,3 Text string*/
-    gchar *style;                   /*7 Text style name*/
+    double nominalHeight;          /*40 Nominal (initial) text height*/
+    double rectangleWidth;         /*41 Reference rectangle width*/
+    int attachment;              /*71 Attachment point*/
+    int direction;               /*72 Drawing direction*/
+    QString *str;                   /*1,3 Text string*/
+    char *style;                   /*7 Text style name*/
     DxfPointData extrDir;           /*210,220,230 Extrusion direction (optional; default = 0, 0, 1) */
     DxfPointData xAxisDir;          /*11,21,31 X-axis direction vector (in WCS)*/
-    gdouble rotation;
-    gdouble spacingFactor;
-    gint16 spacingStyle;
+    double rotation;
+    double spacingFactor;
+    int spacingStyle;
 };
 
 extern DxfMtext *dxf_mtext_parse(Dxfile *f);
 extern void dxf_mtext_delete(DxfMtext *e);
-extern gchar *dxf_mtext_print(DxfMtext *e);
+extern char *dxf_mtext_print(DxfMtext *e);
 
 #endif /* End of __ENTITIES_MTEXT_H__ */

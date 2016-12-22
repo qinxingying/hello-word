@@ -14,16 +14,16 @@
 
 typedef struct _DxfArc DxfArc;
 struct _DxfArc {
-    gdouble thickness;          /*39 Thickness (optional; default = 0)*/
+    double thickness;          /*39 Thickness (optional; default = 0)*/
     DxfPointData centerPoint;   /*10,20,30 Center point (in OCS)*/
-    gdouble radius;             /*40 Radius*/
-    gdouble startAngle;         /*50 Start angle*/
-    gdouble endAngle;           /*51 End angle*/
+    double radius;             /*40 Radius*/
+    double startAngle;         /*50 Start angle*/
+    double endAngle;           /*51 End angle*/
     DxfPointData extrDir;       /*210,220,230 Extrusion direction (optional; default = 0, 0, 1) */
 };
 
 extern DxfArc *dxf_arc_parse(Dxfile *f);
 extern void dxf_arc_delete(DxfArc *e);
-extern gchar *dxf_arc_print(DxfArc *e);
+extern char *dxf_arc_print(DxfArc *e);
 
 #endif /* End of __ENTITIES_ARC_H__ */

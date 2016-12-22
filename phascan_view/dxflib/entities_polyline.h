@@ -54,6 +54,6 @@ struct _DxfPolyline {
 
 extern DxfPolyline *dxf_polyline_parse(Dxfile *f);
 extern void dxf_polyline_delete(DxfPolyline *e);
-extern gchar *dxf_polyline_print(DxfPolyline *e);
+extern char *dxf_polyline_print(DxfPolyline *e);
 
 #endif /* End of __ENTITIES_POLYLINE_H__ */

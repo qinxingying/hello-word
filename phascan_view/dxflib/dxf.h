@@ -16,7 +16,7 @@ struct _Dxf {
 
 extern void dxf_init(void);
 extern void dxf_uninit(void);
-extern Dxf *dxf_new_for_file(const gchar *filename, const DxfSectionFlag flag);
+extern Dxf *dxf_new_for_file(const char *filename, const DxfSectionFlag flag);
 extern void dxf_delete(Dxf *dxf);
 
 #endif /* __DXF_H__ */

@@ -10,7 +10,7 @@ DxfTablesVport *dxf_tables_vport_parse(Dxfile *f)
 {
     DxfTablesVport *v = NULL;
 
-    v = g_malloc0(sizeof(DxfTablesVport));
+    v = malloc(sizeof(DxfTablesVport));
 
     SWITCH_CODE_BEGIN(f);
     SWITCH_CODE_DO( 2 )
@@ -127,14 +127,14 @@ DxfTablesVport *dxf_tables_vport_parse(Dxfile *f)
 void dxf_tables_vport_delete(DxfTablesVport *e)
 {
     g_return_if_fail(e != NULL );
-    g_free(e->name);
-    g_free(e->frozenLayerHardPointer);
-    g_free(e->frozenLayerSoftPointer);
-    g_free(e);
+    free(e->name);
+    free(e->frozenLayerHardPointer);
+    free(e->frozenLayerSoftPointer);
+    free(e);
 }
 
 
-gchar *dxf_tables_vport_print(DxfTablesVport *e)
+char *dxf_tables_vport_print(DxfTablesVport *e)
 {
     e = e;
     return g_strdup("vport test message\n");

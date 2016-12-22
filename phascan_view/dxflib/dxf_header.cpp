@@ -8,7 +8,7 @@
 
 static inline DxfHeader *dxf_header_new_item()
 {
-    DxfHeader *h = g_malloc0(sizeof(DxfHeader));
+    DxfHeader *h = malloc(sizeof(DxfHeader));
     h->angdir = DXF_ANGDIR_COUNTERCLOCKWISE;
     h->insunits = DXF_UNIT_MM;
     h->ucsxdir.x = DXF_AXIS_X_RIGHT;
@@ -17,7 +17,7 @@ static inline DxfHeader *dxf_header_new_item()
 }
 
 static void header_get_point(Dxfile *f, DxfPointData *p);
-static inline void header_get_line(Dxfile *f, gchar **str);
+static inline void header_get_line(Dxfile *f, char **str);
 
 static inline void header_acadver(Dxfile *f, DxfHeader *h);
 static inline void header_angdir(Dxfile *f, DxfHeader *h);
@@ -62,17 +62,19 @@ void dxf_header_init()
 
 void dxf_header_uninit()
 {
-    g_return_if_fail( headerMap != NULL );
-    g_hash_table_destroy(headerMap);
+    //g_return_if_fail( headerMap != NULL );
+    if(headerMap == NULL) return;
+    hash_table_destroy(headerMap);
 }
 
 DxfHeader *dxf_header_parse(Dxfile *f)
 {
     DxfHeader *h = NULL;
-    gchar *varName = NULL;
+    char *varName = NULL;
     VarFun var_f = NULL;
 
-    g_return_val_if_fail( f != NULL, NULL );
+ //  g_return_val_if_fail( f != NULL, NULL );
+    if(f == NULL) return NULL;
 
     if ( !dxfile_lseek_section(f, DXF_SECTION_HEADER) ) {
         return NULL;
@@ -86,7 +88,7 @@ DxfHeader *dxf_header_parse(Dxfile *f)
         /*获取变量名称,并处理*/
         dxfile_get_line(f, &varName, NULL);
         var_f = g_hash_table_lookup(headerMap, varName);
-        g_free(varName);
+        free(varName);
         varName = NULL;
         if (var_f != NULL) {
             var_f(f, h);
@@ -100,18 +102,20 @@ DxfHeader *dxf_header_parse(Dxfile *f)
 
 void dxf_header_delete(DxfHeader *h)
 {
-    g_return_if_fail( h != NULL );
+    //g_return_if_fail( h != NULL );
+    if(h == NULL) return;
 
-    g_free(h->acadver);
-    g_free(h->pucsname);
-    g_free(h->ucsname);
+    free(h->acadver);
+    free(h->pucsname);
+    free(h->ucsname);
 
-    g_free(h);
+    free(h);
 }
 
-gchar *dxf_header_print(DxfHeader *h)
+char *dxf_header_print(DxfHeader *h)
 {
-    g_return_val_if_fail( h != NULL, NULL );
+  //  g_return_val_if_fail( h != NULL, NULL );
+    if(h == NULL) return NULL;
     return g_strdup_printf("----- Header -----\n"
                            "$ACADVER    : %s\n"
                            "$ANGDIR     : %d\n"
@@ -141,9 +145,9 @@ gchar *dxf_header_print(DxfHeader *h)
 
 static void header_get_point(Dxfile *f, DxfPointData *p)
 {
-    gint code = 0;
-    glong pos = 0;
-    gboolean flag = TRUE;
+    int code = 0;
+    long pos = 0;
+    bool flag = true;
     while( flag ) {
         pos = dxfile_get_pos(f);
         dxfile_get_code(f, &code);
@@ -158,14 +162,14 @@ static void header_get_point(Dxfile *f, DxfPointData *p)
             dxfile_get_double(f, &p->z);
             break;
         default:
-            flag = FALSE;
+            flag = false;
             break;
         }
     }
     dxfile_set_pos(f, pos);
 }
 
-static inline void header_get_line(Dxfile *f, gchar **str)
+static inline void header_get_line(Dxfile *f, char **str)
 {
     dxfile_goto_nextline(f);
     dxfile_get_line(f, str, NULL);
@@ -178,7 +182,7 @@ static inline void header_acadver(Dxfile *f, DxfHeader *h)
 
 static inline void header_angdir(Dxfile *f, DxfHeader *h)
 {
-    gint16 angdir = 0;
+    int angdir = 0;
     dxfile_goto_nextline(f);
     dxfile_get_int16(f, &angdir);
     if (angdir < DXF_ANGDIR_MAX && angdir >= 0) {
@@ -188,7 +192,7 @@ static inline void header_angdir(Dxfile *f, DxfHeader *h)
 
 static inline void header_insunits(Dxfile *f, DxfHeader *h)
 {
-    gint16 unit = 0;
+    int unit = 0;
     dxfile_goto_nextline(f);
     dxfile_get_int16(f, &unit);
     if (unit > DXF_UNIT_PS || unit < 0) {

@@ -8,7 +8,7 @@
 
 static inline DxfText *text_new_item()
 {
-    DxfText *t = g_malloc0(sizeof(DxfText));
+    DxfText *t = malloc(sizeof(DxfText));
     t->width = 1;
     t->extrDir.z = 1;
     return t;
@@ -65,12 +65,12 @@ DxfText *dxf_text_parse(Dxfile *f)
 void dxf_text_delete(DxfText *e)
 {
     g_return_if_fail( e != NULL );
-    g_free(e->defaultValue);
-    g_free(e->style);
-    g_free(e);
+    free(e->defaultValue);
+    free(e->style);
+    free(e);
 }
 
-gchar *dxf_text_print(DxfText *e)
+char *dxf_text_print(DxfText *e)
 {
     return g_strdup_printf("Thickness               : %g\n"
                            "Text Height             : %g\n"

@@ -25,18 +25,18 @@ typedef struct _Dxf3Dsolid Dxf3Dsolid;
 typedef struct _DxfProprietaryData DxfPropData;
 
 struct _Dxf3Dsolid {
-    gint16  version;
+    int  version;
     DxfPropData *proprietaryData;
     DxfPropData *additionalProprietaryData;
 };
 
 struct _DxfProprietaryData {
-    gchar *data;
+    char *data;
     struct _DxfProprietaryData *next;
 };
 
 extern Dxf3Dsolid *dxf_3dsolid_parse(Dxfile *f);
 extern void dxf_3dsolid_delete(Dxf3Dsolid *e);
-extern gchar *dxf_3dsolid_print(Dxf3Dsolid *e);
+extern char *dxf_3dsolid_print(Dxf3Dsolid *e);
 
 #endif /* End of __ENTITIES_3DSOLID_H__ */

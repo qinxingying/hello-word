@@ -8,7 +8,7 @@
 
 static inline DxfCircle *circle_new_item()
 {
-    DxfCircle *c = g_malloc0(sizeof(DxfCircle));
+    DxfCircle *c = malloc(sizeof(DxfCircle));
     c->extrDir.z = 1;
     return c;
 }
@@ -44,10 +44,10 @@ DxfCircle *dxf_circle_parse(Dxfile *f)
 
 void dxf_circle_delete(DxfCircle *c)
 {
-    g_free(c);
+    free(c);
 }
 
-gchar *dxf_circle_print(const DxfCircle *c)
+char *dxf_circle_print(const DxfCircle *c)
 {
     return g_strdup_printf("Center Point       : (%g, %g, %g)\n"
                            "Extrusion Direction: (%g, %g, %g)\n"

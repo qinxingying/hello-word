@@ -8,7 +8,7 @@
 
 static inline DxfArc *arc_new_item()
 {
-    DxfArc *e = g_malloc0(sizeof(DxfArc));
+    DxfArc *e = malloc(sizeof(DxfArc));
     e->extrDir.z = 1;
     return e;
 }
@@ -48,10 +48,10 @@ DxfArc *dxf_arc_parse(Dxfile *f)
 void dxf_arc_delete(DxfArc *e)
 {
     g_return_if_fail( e != NULL );
-    g_free(e);
+    free(e);
 }
 
-gchar *dxf_arc_print(DxfArc *e)
+char *dxf_arc_print(DxfArc *e)
 {
     g_return_val_if_fail( e != NULL, NULL );
     return g_strdup_printf("Center Point : (%g, %g, %g)\n"

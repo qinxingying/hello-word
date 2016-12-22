@@ -8,7 +8,7 @@
 
 static inline DxfImage *image_new_item()
 {
-    DxfImage *image = g_malloc0(sizeof(DxfImage));
+    DxfImage *image = malloc(sizeof(DxfImage));
     image->brightness = 50;
     image->contrast = 50;
     return image;
@@ -65,13 +65,13 @@ DxfImage *dxf_image_parse(Dxfile *f)
     SWITCH_CODE_DO( 14 ) {
         if (NULL == vertex) {
             if (e->vertexNum > 0) {
-                vertex = g_malloc0(sizeof(DxfPointData)*e->vertexNum);
+                vertex = malloc(sizeof(DxfPointData)*e->vertexNum);
                 e->vertexes = vertex;
                 dxfile_get_double(f, &vertex->x);
             } else {
                 c_log_warning("Haven't got the number of vertexes");
             }
-        } else if ( (gint16)((vertex-e->vertexes)/sizeof(DxfPointData)) < e->vertexNum ) {
+        } else if ( (int)((vertex-e->vertexes)/sizeof(DxfPointData)) < e->vertexNum ) {
             ++vertex;
             dxfile_get_double(f, &vertex->x);
         } else {
@@ -91,12 +91,12 @@ DxfImage *dxf_image_parse(Dxfile *f)
 void dxf_image_delete(DxfImage *e)
 {
     g_return_if_fail( e != NULL );
-    g_free(e->hdRef2Imgdef);
-    g_free(e->hdRef2ImgdefReactor);
-    g_free(e);
+    free(e->hdRef2Imgdef);
+    free(e->hdRef2ImgdefReactor);
+    free(e);
 }
 
-gchar *dxf_image_print(DxfImage *e)
+char *dxf_image_print(DxfImage *e)
 {
     return g_strdup_printf("Insert Point   : (%g, %g, %g)\n"
                            "U Vector Point : (%g, %g, %g)\n"

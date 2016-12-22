@@ -109,26 +109,26 @@
 
 typedef struct _DxfAcDbEntity DxfAcDbEntity;
 typedef struct _DxfEntity DxfEntity;            /* Entity */
-typedef GList DxfEntities;                      /* Entity List */
+typedef QList DxfEntities;                      /* Entity List */
 
 struct _DxfEntity{
     /*common*/
-    gchar *name;            /*图元类型名称*/
-    gchar *handle;          /*句柄*/
-    gint16 ID2BlkRecord;    /*所有者BLOCK_RECORD对象的软件指针ID/句柄*/
+    char *name;            /*图元类型名称*/
+    char *handle;          /*句柄*/
+    int ID2BlkRecord;    /*所有者BLOCK_RECORD对象的软件指针ID/句柄*/
 
     /* AcDbEntity */
     DxfAcDbEntity *acDbEntity;
 
     /*special*/
-    gpointer spData;       /*各图形特有数据块，根据图元类型决定指向的图元结构*/
+    void * spData;       /*各图形特有数据块，根据图元类型决定指向的图元结构*/
 };
 
 struct _DxfAcDbEntity {
-    gchar *layerName;       /*图层名*/
-    gchar *linetype;        /*线型名*/
-    gint16 color;           /*颜色号*/
-    gint16 lineweight;      /*线宽枚举值*/
+    char *layerName;       /*图层名*/
+    char *linetype;        /*线型名*/
+    int color;           /*颜色号*/
+    int lineweight;      /*线宽枚举值*/
 };
 
 ///* 线形类型 */
@@ -185,40 +185,40 @@ extern void dxf_entities_delete(DxfEntities *es);
  * @param es                    DxfEntities类型
  * @return                      返回打印内容
  */
-extern gchar *dxf_entities_print(DxfEntities *es);
+extern char *dxf_entities_print(DxfEntities *es);
 
 /*图元类型判断*/
-static inline gboolean entity_is_line(const DxfEntity *e){ return ! g_strcmp0(e->name, ENTITIES_LINE); }
-static inline gboolean entity_is_arc(const DxfEntity *e) { return ! g_strcmp0(e->name, ENTITIES_ARC); }
-static inline gboolean entity_is_circle(const DxfEntity *e) { return ! g_strcmp0(e->name, ENTITIES_CIRCLE); }
-static inline gboolean entity_is_ellipse(const DxfEntity *e) { return ! g_strcmp0(e->name, ENTITIES_ELLIPSE); }
-static inline gboolean entity_is_lwpolyline(const DxfEntity *e) { return ! g_strcmp0(e->name, ENTITIES_LWPOLYLINE); }
-static inline gboolean entity_is_point(const DxfEntity *e) { return ! g_strcmp0(e->name, ENTITIES_POINT); }
-static inline gboolean entity_is_mtext(const DxfEntity *e) { return ! g_strcmp0(e->name, ENTITIES_MTEXT); }
-static inline gboolean entity_is_spline(const DxfEntity *e) { return ! g_strcmp0(e->name, ENTITIES_SPLINE); }
+static inline bool entity_is_line(const DxfEntity *e){ return ! strcmp(e->name, ENTITIES_LINE); }
+static inline bool entity_is_arc(const DxfEntity *e) { return ! strcmp(e->name, ENTITIES_ARC); }
+static inline bool entity_is_circle(const DxfEntity *e) { return ! strcmp(e->name, ENTITIES_CIRCLE); }
+static inline bool entity_is_ellipse(const DxfEntity *e) { return ! strcmp(e->name, ENTITIES_ELLIPSE); }
+static inline bool entity_is_lwpolyline(const DxfEntity *e) { return ! strcmp(e->name, ENTITIES_LWPOLYLINE); }
+static inline bool entity_is_point(const DxfEntity *e) { return ! strcmp(e->name, ENTITIES_POINT); }
+static inline bool entity_is_mtext(const DxfEntity *e) { return ! strcmp(e->name, ENTITIES_MTEXT); }
+static inline bool entity_is_spline(const DxfEntity *e) { return ! strcmp(e->name, ENTITIES_SPLINE); }
 
 /*图元线型判断*/
-static inline gboolean entity_linetype_is_bylayer(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BYLAYER); }
-static inline gboolean entity_linetype_is_byblock(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BYBLOCK); }
-static inline gboolean entity_linetype_is_continuous(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_CONTINUOUS); }
-static inline gboolean entity_linetype_is_dot(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DOT); }
-static inline gboolean entity_linetype_is_dot2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DOT2); }
-static inline gboolean entity_linetype_is_dotx2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DOTX2); }
-static inline gboolean entity_linetype_is_dashed(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHED); }
-static inline gboolean entity_linetype_is_dashed2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHED2); }
-static inline gboolean entity_linetype_is_dashedx2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHEDX2); }
-static inline gboolean entity_linetype_is_dashdot(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHDOT); }
-static inline gboolean entity_linetype_is_dashdot2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHDOT2); }
-static inline gboolean entity_linetype_is_dashdotx2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHDOTX2); }
-static inline gboolean entity_linetype_is_divide(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DIVIDE); }
-static inline gboolean entity_linetype_is_divide2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DIVIDE2); }
-static inline gboolean entity_linetype_is_dividex2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DIVIDEX2); }
-static inline gboolean entity_linetype_is_border(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BORDER); }
-static inline gboolean entity_linetype_is_border2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BORDER2); }
-static inline gboolean entity_linetype_is_borderx2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BORDERX2); }
-static inline gboolean entity_linetype_is_center(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_CENTER); }
-static inline gboolean entity_linetype_is_center2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_CENTER2); }
-static inline gboolean entity_linetype_is_centerx2(const DxfEntity *e) { return ! g_strcmp0(e->acDbEntity->linetype, ENTITY_LINE_TYPE_CENTERX2); }
+static inline bool entity_linetype_is_bylayer(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BYLAYER); }
+static inline bool entity_linetype_is_byblock(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BYBLOCK); }
+static inline bool entity_linetype_is_continuous(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_CONTINUOUS); }
+static inline bool entity_linetype_is_dot(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DOT); }
+static inline bool entity_linetype_is_dot2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DOT2); }
+static inline bool entity_linetype_is_dotx2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DOTX2); }
+static inline bool entity_linetype_is_dashed(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHED); }
+static inline bool entity_linetype_is_dashed2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHED2); }
+static inline bool entity_linetype_is_dashedx2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHEDX2); }
+static inline bool entity_linetype_is_dashdot(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHDOT); }
+static inline bool entity_linetype_is_dashdot2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHDOT2); }
+static inline bool entity_linetype_is_dashdotx2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DASHDOTX2); }
+static inline bool entity_linetype_is_divide(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DIVIDE); }
+static inline bool entity_linetype_is_divide2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DIVIDE2); }
+static inline bool entity_linetype_is_dividex2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_DIVIDEX2); }
+static inline bool entity_linetype_is_border(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BORDER); }
+static inline bool entity_linetype_is_border2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BORDER2); }
+static inline bool entity_linetype_is_borderx2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_BORDERX2); }
+static inline bool entity_linetype_is_center(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_CENTER); }
+static inline bool entity_linetype_is_center2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_CENTER2); }
+static inline bool entity_linetype_is_centerx2(const DxfEntity *e) { return ! strcmp(e->acDbEntity->linetype, ENTITY_LINE_TYPE_CENTERX2); }
 
 #define dxf_entities_foreach(entities, item) \
     for( ; entities && (item = entities->data) ; entities = g_list_next(entities) )

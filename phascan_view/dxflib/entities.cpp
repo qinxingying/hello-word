@@ -9,7 +9,7 @@
 
 static inline DxfEntity *entity_new_item()
 {
-    return g_malloc0(sizeof(DxfEntity));
+    return malloc(sizeof(DxfEntity));
 }
 
 static DxfAcDbEntity *entity_submarker_parse(Dxfile *f);
@@ -18,29 +18,29 @@ static DxfAcDbEntity *entity_submarker_parse(Dxfile *f);
  * @brief entity_delete 释放DxfEntity资源
  * @param data          指向DxfEntity类型
  */
-static void entity_delete(gpointer data);
+static void entity_delete(void * data);
 
 /**
  * @brief entity_cmn_print    打印ENTITY通用部分信息
  * @param e                     指向DxfEntity类型
  * @return                      成功返回打印信息，失败返回NULL
  */
-static inline gchar *entity_cmn_print(DxfEntity *e);
+static inline char *entity_cmn_print(DxfEntity *e);
 
 /**
  * @brief entity_print  打印ENTITY信息
  * @param data          指向DxfEntity类型
  * @param userData      保存输出的数据
  */
-static void entity_print(gpointer data, gpointer userData);
+static void entity_print(void * data, void * userData);
 
 /*定义entities映射表*/
 static DxfMap *entitiesMap = NULL;
 
-static inline void entities_map_insert(const gpointer name,
-                                       const gpointer parse_f,
-                                       const gpointer delete_f,
-                                       const gpointer print_f)
+static inline void entities_map_insert(const void * name,
+                                       const void * parse_f,
+                                       const void * delete_f,
+                                       const void * print_f)
 {
     return dxf_map_insert(entitiesMap, name, parse_f, delete_f, print_f);
 }
@@ -73,7 +73,7 @@ static DxfEntity *entity_parse(Dxfile *f, const Section *s)
 {
     DxfEntity *e = NULL;            /*图元数据*/
     DxfMapItem *item = NULL;
-    gboolean flag = TRUE;
+    bool flag = TRUE;
 
     if (s->code != 0) {
         c_log_warning("[%s] invalid code %d", __func__, s->code);
@@ -96,15 +96,15 @@ static DxfEntity *entity_parse(Dxfile *f, const Section *s)
     SWITCH_CODE_DO( ENTITIES_CODE_ID_TO_BLK_RECORD )
             dxfile_get_int16(f, &e->ID2BlkRecord);
     SWITCH_CODE_DO( DXF_CODE_SUBCLASS_MARKER ){
-        gchar *str = NULL;
+        char *str = NULL;
         dxfile_get_line(f, &str, NULL);
-        if (!g_strcmp0(str, ENTITIES_SUBMARKER_ENTITY)) {
+        if (!strcmp(str, ENTITIES_SUBMARKER_ENTITY)) {
             e->acDbEntity = entity_submarker_parse(f);
             if (NULL == e->acDbEntity) {
                 c_log_err("[%s] parse %s AcDbEntity section failed", __func__, s->value);
                 flag = FALSE;
             }
-            g_free(str);
+            free(str);
         } else {
             SWITCH_CODE_SEEK(f);
             e->spData = item->parse_f(f);
@@ -112,7 +112,7 @@ static DxfEntity *entity_parse(Dxfile *f, const Section *s)
                 c_log_err("[%s] Parse %s special section failed", __func__, s->value);
                 flag = FALSE;
             }
-            g_free(str);
+            free(str);
             SWITCH_CODE_OUT_OFFSET(f);
         }
     }
@@ -162,7 +162,7 @@ static DxfAcDbEntity *entity_submarker_parse(Dxfile *f)
 {
     DxfAcDbEntity *acDbEntity = NULL;
 
-    acDbEntity = g_malloc0(sizeof(DxfAcDbEntity));
+    acDbEntity = malloc(sizeof(DxfAcDbEntity));
 
     SWITCH_CODE_BEGIN(f);
     SWITCH_CODE_DO( ENTITIES_CODE_LAYER )
@@ -184,13 +184,13 @@ static void entities_submarker_delete(DxfAcDbEntity *acDbentity)
 {
     g_return_if_fail( acDbentity != NULL );
 
-    g_free(acDbentity->layerName);
-    g_free(acDbentity->linetype);
+    free(acDbentity->layerName);
+    free(acDbentity->linetype);
 
-    g_free(acDbentity);
+    free(acDbentity);
 }
 
-static void entity_delete(gpointer data)
+static void entity_delete(void * data)
 {
     DxfEntity *e = data;
     DxfMapItem *item = NULL;
@@ -205,10 +205,10 @@ static void entity_delete(gpointer data)
 
     entities_submarker_delete(e->acDbEntity);
 
-    g_free(e->name);
-    g_free(e->handle);
+    free(e->name);
+    free(e->handle);
 
-    g_free(e); //释放该数据结点所占空间
+    free(e); //释放该数据结点所占空间
 }
 
 void dxf_entities_delete(DxfEntities *es)
@@ -220,9 +220,9 @@ void dxf_entities_delete(DxfEntities *es)
 /**
  * @brief entities_cmn_print    打印图元公共头信息
  * @param e                     图元数据
- * @return                      成功返回字符串，失败返回NULL; 返回的字符串需要调用g_free来释放
+ * @return                      成功返回字符串，失败返回NULL; 返回的字符串需要调用free来释放
  */
-static inline gchar *entity_cmn_print(DxfEntity *e)
+static inline char *entity_cmn_print(DxfEntity *e)
 {
     return g_strdup_printf("----- Enitity %s ------\n"
                            "Handle        : %s\n"
@@ -240,17 +240,17 @@ static inline gchar *entity_cmn_print(DxfEntity *e)
                            e->ID2BlkRecord);
 }
 
-static void entity_print(gpointer data, gpointer userData)
+static void entity_print(void * data, void * userData)
 {
     DxfEntity *e = data;
     DxfMapItem *item = NULL;
 
-    GString *str = (GString *)userData;
-    gchar *tmp;
+    QString *str = (QString *)userData;
+    char *tmp;
 
     tmp = entity_cmn_print(e);
     g_string_append(str, tmp);
-    g_free(tmp);
+    free(tmp);
 
     item = g_hash_table_lookup(entitiesMap, e->name);
     if (NULL == item) {
@@ -260,12 +260,12 @@ static void entity_print(gpointer data, gpointer userData)
 
     tmp = item->print_f(e->spData);
     g_string_append(str, tmp);
-    g_free(tmp);
+    free(tmp);
 }
 
-gchar *dxf_entities_print(DxfEntities *es)
+char *dxf_entities_print(DxfEntities *es)
 {
-    GString *out = NULL;
+    QString *out = NULL;
 
     g_return_val_if_fail( es != NULL, NULL);
 
@@ -273,5 +273,5 @@ gchar *dxf_entities_print(DxfEntities *es)
 
     g_list_foreach(es, entity_print, out);
 
-    return g_string_free(out, FALSE);
+    return g_strinfree(out, FALSE);
 }

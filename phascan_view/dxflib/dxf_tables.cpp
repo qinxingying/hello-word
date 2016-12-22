@@ -24,13 +24,13 @@ static DxfTable *table_parse(Dxfile *f);
  * @param data          DxfTable类型
  * @param userData      保存输出数据
  */
-static void table_print(gpointer data, gpointer userData);
+static void table_print(void * data, void * userData);
 
 /**
  * @brief table_delete  单表删除操作
  * @param data          DxfTable类型
  */
-static void table_delete(gpointer data);
+static void table_delete(void * data);
 
 void dxf_tables_init()
 {
@@ -44,7 +44,7 @@ void dxf_tables_uninit()
 
 static inline DxfTable *table_new_item()
 {
-    return g_malloc0(sizeof(DxfTable));
+    return malloc(sizeof(DxfTable));
 }
 
 static DxfTable *table_parse(Dxfile *f)
@@ -106,19 +106,19 @@ DxfTables *dxf_tables_parse(Dxfile *f)
     return tables;
 }
 
-static void table_delete(gpointer data)
+static void table_delete(void * data)
 {
     g_return_if_fail(data != NULL);
 
     DxfTable *t = (DxfTable *)data;
 
-    g_free(t->handle);
-    g_free(t->name);
-    g_free(t->softPointerHandler);
+    free(t->handle);
+    free(t->name);
+    free(t->softPointerHandler);
 
     dxf_tables_entries_delete(t->entries);
 
-    g_free(t);
+    free(t);
 }
 
 void dxf_tables_delete(DxfTables *t)
@@ -128,13 +128,13 @@ void dxf_tables_delete(DxfTables *t)
     }
 }
 
-static void table_print(gpointer data, gpointer userData)
+static void table_print(void * data, void * userData)
 {
     DxfTable *t = (DxfTable *)data;
 //    DxfTable *item = NULL;
 
-    GString *str = (GString *)userData;
-    gchar *tmp = NULL;
+    QString *str = (QString *)userData;
+    char *tmp = NULL;
 
     g_return_if_fail( data != NULL );
     g_return_if_fail( userData != NULL );
@@ -146,16 +146,16 @@ static void table_print(gpointer data, gpointer userData)
                           t->handle,
                           t->softPointerHandler);
     g_string_append(str, tmp);
-    g_free(tmp);
+    free(tmp);
 
     tmp = dxf_tables_entries_print(t->entries);
     g_string_append(str, tmp);
-    g_free(tmp);
+    free(tmp);
 }
 
-gchar *dxf_tables_print(DxfTables *ts)
+char *dxf_tables_print(DxfTables *ts)
 {
-    GString *out = NULL;
+    QString *out = NULL;
 
     g_return_val_if_fail( ts != NULL, NULL);
 
@@ -163,5 +163,5 @@ gchar *dxf_tables_print(DxfTables *ts)
 
     g_list_foreach(ts, table_print, out);
 
-    return g_string_free(out, FALSE);
+    return g_strinfree(out, FALSE);
 }

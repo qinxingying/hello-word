@@ -6,23 +6,25 @@
 
 #include "dxf.h"
 #include "dxfile.h"
-//#include <glib.h>
 
-static gboolean initFlag = FALSE;   /*初始化标志*/
+#include <QDebug>
 
-static inline Dxf *dxf_new_Item() { return g_malloc0(sizeof(Dxf)); }
+static bool initFlag = false;   /*初始化标志*/
+
+static inline Dxf *dxf_new_Item() { return malloc(sizeof(Dxf)); }
 static Dxf *_dxf_parse_file(Dxfile *f, const DxfSectionFlag parseFlag);
 
-Dxf *dxf_new_for_file(const gchar *filename, const DxfSectionFlag flag)
+Dxf *dxf_new_for_file(const char *filename, const DxfSectionFlag flag)
 {
     Dxfile *dxfile = NULL;
     Dxf *dxf = NULL;
 
-    g_return_val_if_fail( initFlag == TRUE, NULL);
+    //g_return_val_if_fail( initFlag == true, NULL);
+    if(initFlag != true) return NULL;
 
     dxfile = dxfile_open(filename);
     if (NULL == dxfile) {
-        c_log_info("Open dxfile [%s] failed", filename);
+        qDebug("Open dxfile [%s] failed", filename);
         return NULL;
     }
 
@@ -42,7 +44,8 @@ static Dxf *_dxf_parse_file(Dxfile *f, const DxfSectionFlag parseFlag)
         /*解析HEADER段*/
         DxfHeader *h = dxf_header_parse(f);
         if (NULL == h) {
-            c_log_err("header parse failed");
+            qDebug()<<"DxfHeader Error : "<<"header parse failed";
+            //c_log_err("header parse failed");
             goto PARSE_FAILED;
         }
         dxf->header = h;
@@ -90,35 +93,39 @@ PARSE_FAILED:
 
 void dxf_delete(Dxf *dxf)
 {
-    g_return_if_fail(dxf != NULL);
-    g_return_if_fail( initFlag == TRUE );
+//    g_return_if_fail(dxf != NULL);
+//    g_return_if_fail( initFlag == true );
+    if(dxf == NULL) return;
+    if(initFlag == false) return;
 
     dxf_header_delete(dxf->header);
     dxf_tables_delete(dxf->tables);
     dxf_entities_delete(dxf->entities);
 
-    g_free(dxf);
+    free(dxf);
 }
 
 void dxf_init()
 {
-    g_return_if_fail( initFlag == FALSE );
+   // g_return_if_fail( initFlag == false );
+    if(initFlag == true) return;
 
     dxf_header_init();
     dxf_tables_init();
     dxf_entities_init();
 
-    initFlag = TRUE;
+    initFlag = true;
 }
 
 
 void dxf_uninit()
 {
-    g_return_if_fail( initFlag == TRUE );
+   // g_return_if_fail( initFlag == true );
+    if(initFlag == false) return;
 
     dxf_header_uninit();
     dxf_tables_uninit();
     dxf_entities_uninit();
 
-    initFlag = FALSE;
+    initFlag = false;
 }

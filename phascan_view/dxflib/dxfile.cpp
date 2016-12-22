@@ -6,7 +6,7 @@
 
 #include "dxfile.h"
 
-static inline Dxfile *dxfile_new_item() { return g_malloc0(sizeof(Dxfile)); }
+static inline Dxfile *dxfile_new_item() { return malloc(sizeof(Dxfile)); }
 static int dxfile_encoding(const char *filename);
 
 Dxfile *dxfile_open(const char *filename)
@@ -34,13 +34,13 @@ Dxfile *dxfile_open(const char *filename)
     return dxfile;
 }
 
-void dxfile_get_line(Dxfile *f, char **str, gsize *len)
+void dxfile_get_line(Dxfile *f, char **str, unsigned int *len)
 {
     g_return_if_fail( f != NULL );
     g_return_if_fail( str != NULL );
     g_return_if_fail( *str == NULL );
 
-    gchar *end = f->cur;
+    char *end = f->cur;
 
     for (; *end
          && *end != '\n'
@@ -67,13 +67,13 @@ void dxfile_get_line(Dxfile *f, char **str, gsize *len)
     f->cur = end;
 }
 
-gint dxfile_get_line_str(Dxfile *f, gchar *s, gint size)
+int dxfile_get_line_str(Dxfile *f, char *s, int size)
 {
     g_return_val_if_fail( f != NULL, -1 );
     g_return_val_if_fail( s != NULL, -1);
     g_return_val_if_fail( size > 0, -1);
 
-    gchar *tmp = s;
+    char *tmp = s;
 
     for (;
          size--
@@ -108,10 +108,10 @@ void dxfile_destory(Dxfile *f)
 {
     g_return_if_fail( f != NULL );
     g_mapped_file_unref(f->mmpedFile);
-    g_free(f);
+    free(f);
 }
 
-gboolean dxfile_set_pos(Dxfile *f, long pos)
+bool dxfile_set_pos(Dxfile *f, long pos)
 {
     g_return_val_if_fail( f != NULL, FALSE );
     if ( pos < 0 || pos > f->len ) {
@@ -121,11 +121,11 @@ gboolean dxfile_set_pos(Dxfile *f, long pos)
     return TRUE;
 }
 
-gboolean dxfile_lseek_section(Dxfile *f, const DxfSectionFlag flag)
+bool dxfile_lseek_section(Dxfile *f, const DxfSectionFlag flag)
 {
-    gchar *str = NULL;
-    gchar *needle = NULL;
-    gchar tmp[3] = {0};
+    char *str = NULL;
+    char *needle = NULL;
+    char tmp[3] = {0};
 
     if (f->enc) {
         tmp[0] = '\r';
@@ -159,23 +159,23 @@ gboolean dxfile_lseek_section(Dxfile *f, const DxfSectionFlag flag)
 
     str = g_strstr_len(f->contents, -1, needle);
     if (NULL == str) {
-        g_free(needle);
+        free(needle);
         return FALSE;
     }
 
     f->cur = str + strlen(needle);
-    g_free(needle);
+    free(needle);
     return TRUE;
 }
 
-gint dxfile_encoding(const gchar *filename)
+int dxfile_encoding(const char *filename)
 {
-    gchar *str = g_strdup_printf("file %s | grep CRLF", filename);
-    gint c = 0;
+    char *str = g_strdup_printf("file %s | grep CRLF", filename);
+    int c = 0;
     FILE *fp = NULL;
 
     fp = popen(str, "r");
-    g_free(str);
+    free(str);
     if (fp == NULL) {
         return 0;
     }

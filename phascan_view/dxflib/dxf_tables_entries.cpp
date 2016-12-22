@@ -14,10 +14,10 @@
  * @param delete_f              entry删除函数
  * @param print_f               entry打印函数
  */
-static inline void entries_map_insert(const gpointer name,
-                                      const gpointer parse_f,
-                                      const gpointer delete_f,
-                                      const gpointer print_f);
+static inline void entries_map_insert(const void * name,
+                                      const void * parse_f,
+                                      const void * delete_f,
+                                      const void * print_f);
 /**
  * @brief entry_parse   单个条目解析
  * @param f             Dxfile类型
@@ -29,14 +29,14 @@ static DxfTablesEntry *entry_parse(Dxfile *f);
  * @brief entry_delete  单个条目删除
  * @param data          指向DxfTablesEntry数据
  */
-static void entry_delete(gpointer data);
+static void entry_delete(void * data);
 
 /**
  * @brief entry_print   单个条目打印
  * @param data          指向DxfTableEntry数据
  * @param userData      保存输出数据
  */
-static void entry_print(gpointer data, gpointer userData);
+static void entry_print(void * data, void * userData);
 
 
 static DxfMap *entriesMap = NULL;
@@ -64,10 +64,10 @@ void dxf_tables_entries_uninit()
     entriesMap = NULL;
 }
 
-static inline void entries_map_insert(const gpointer name,
-                                      const gpointer parse_f,
-                                      const gpointer delete_f,
-                                      const gpointer print_f)
+static inline void entries_map_insert(const void * name,
+                                      const void * parse_f,
+                                      const void * delete_f,
+                                      const void * print_f)
 {
     return dxf_map_insert(entriesMap, name, parse_f, delete_f, print_f);
 }
@@ -99,14 +99,14 @@ void dxf_tables_entries_delete(DxfTablesEntries *es)
     g_list_free_full(es, entry_delete);
 }
 
-gchar *dxf_tables_entries_print(DxfTablesEntries *es)
+char *dxf_tables_entries_print(DxfTablesEntries *es)
 {
-    GString *out = NULL;
+    QString *out = NULL;
     g_return_val_if_fail( es != NULL, NULL );
     out = g_string_sized_new(1024);
     g_list_foreach(es, entry_print, out);
 
-    return g_string_free(out, FALSE);
+    return g_strinfree(out, FALSE);
 }
 
 static DxfTablesEntry *entry_parse(Dxfile *f)
@@ -114,7 +114,7 @@ static DxfTablesEntry *entry_parse(Dxfile *f)
     DxfTablesEntry *e = NULL;
     DxfMapItem *item = NULL;
 
-    e = g_malloc0(sizeof(DxfTablesEntry));
+    e = malloc(sizeof(DxfTablesEntry));
 
     SWITCH_CODE_BEGIN(f);
     SWITCH_CODE_DO( 5 ) {}
@@ -126,7 +126,7 @@ static DxfTablesEntry *entry_parse(Dxfile *f)
 //            dxfile_get_line(f, &e->softPointerHandler, NULL);
     SWITCH_CODE_DO( 100 ) {
         /*子类标记*/
-        gchar *str = NULL;
+        char *str = NULL;
         dxfile_get_line(f, &str, NULL);
         item = g_hash_table_lookup(entriesMap, str);
         if (NULL != item) {
@@ -134,7 +134,7 @@ static DxfTablesEntry *entry_parse(Dxfile *f)
             e->data = item->parse_f(f);
             SWITCH_CODE_OUT_OFFSET(f);
         } else {
-            g_free(str);
+            free(str);
             str = NULL;
         }
     }
@@ -143,7 +143,7 @@ static DxfTablesEntry *entry_parse(Dxfile *f)
     return e;
 }
 
-static void entry_delete(gpointer data)
+static void entry_delete(void * data)
 {
     DxfTablesEntry *entry = data;
     DxfMapItem *item = NULL;
@@ -154,19 +154,19 @@ static void entry_delete(gpointer data)
     if (item) {
         item->delete_f(entry->data);
     }
-    g_free(entry->handle);
-    g_free(entry->softPointerHandler);
-    g_free(entry->submarker);
-    g_free(entry->type);
-    g_free(entry);
+    free(entry->handle);
+    free(entry->softPointerHandler);
+    free(entry->submarker);
+    free(entry->type);
+    free(entry);
 }
 
 
-static void entry_print(gpointer data, gpointer userData)
+static void entry_print(void * data, void * userData)
 {
     DxfTablesEntry *e = (DxfTablesEntry *)data;
-    GString *str = (GString *)userData;
-    gchar *tmp = NULL;
+    QString *str = (QString *)userData;
+    char *tmp = NULL;
     DxfMapItem *item = NULL;
 
     tmp = g_strdup_printf("-- Entry %s --\n"
@@ -174,13 +174,13 @@ static void entry_print(gpointer data, gpointer userData)
                           e->submarker,
                           e->handle);
     g_string_append(str, tmp);
-    g_free(tmp);
+    free(tmp);
     if (e->submarker != NULL) {
         item = g_hash_table_lookup(entriesMap, e->submarker);
     }
     if (item) {
         tmp = item->print_f(e->data);
         g_string_append(str, tmp);
-        g_free(tmp);
+        free(tmp);
     }
 }

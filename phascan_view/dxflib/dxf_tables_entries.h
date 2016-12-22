@@ -19,17 +19,17 @@
 #define ENTRIES_AcDbLinetypeTableRecord  "AcDbLinetypeTableRecord"
 #define ENTRIES_AcDbViewportTableRecord  "AcDbViewportTableRecord"
 
-typedef GList DxfTablesEntries;                 /*条目链表，包含多个条目*/
+typedef QList DxfTablesEntries;                 /*条目链表，包含多个条目*/
 typedef struct _DxfTablesEntry DxfTablesEntry;  /*单个条目*/
 
 struct _DxfTablesEntry {
     /*通用属性*/
-    gchar *type;
-    gchar *handle;                  /*5/105:句柄*/
-    gchar *softPointerHandler;      /*330:所有者对象的软指针 ID/句柄*/
-    gchar *submarker;               /*100:条目的子类标记*/
+    char *type;
+    char *handle;                  /*5/105:句柄*/
+    char *softPointerHandler;      /*330:所有者对象的软指针 ID/句柄*/
+    char *submarker;               /*100:条目的子类标记*/
     /*特定条目类型数据*/
-    gpointer data;
+    void *data;
 };
 
 /**
@@ -60,6 +60,6 @@ extern void dxf_tables_entries_delete(DxfTablesEntries *es);
  * @param es                        DxfTablesEntries类型
  * @return                          返回打印内容
  */
-extern gchar *dxf_tables_entries_print(DxfTablesEntries *es);
+extern char *dxf_tables_entries_print(DxfTablesEntries *es);
 
 #endif /* End of __DXF_TABLES_ENTRIES_H__ */

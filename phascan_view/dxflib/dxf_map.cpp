@@ -6,11 +6,11 @@
 
 #include "dxf_map.h"
 
-static DxfMapItem *dxf_map_item_new(const gpointer parse_f,
-                                    const gpointer delete_f,
-                                    const gpointer print_f)
+static DxfMapItem *dxf_map_item_new(const void * parse_f,
+                                    const void * delete_f,
+                                    const void * print_f)
 {
-    DxfMapItem *item = g_malloc0(sizeof(DxfMapItem));
+    DxfMapItem *item = malloc(sizeof(DxfMapItem));
     item->delete_f = delete_f;
     item->parse_f = parse_f;
     item->print_f = print_f;
@@ -19,14 +19,14 @@ static DxfMapItem *dxf_map_item_new(const gpointer parse_f,
 
 DxfMap *dxf_map_new()
 {
-    return g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
+    return g_hash_table_new_full(g_str_hash, g_str_equal, NULL, free);
 }
 
 void dxf_map_insert(DxfMap *map,
-                    const gpointer key,
-                    const gpointer parse_f,
-                    const gpointer delete_f,
-                    const gpointer print_f)
+                     &key,
+                     *parse_f,
+                     *delete_f,
+                     *print_f)
 {
     DxfMapItem *item;
 

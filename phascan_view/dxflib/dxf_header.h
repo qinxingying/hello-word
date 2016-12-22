@@ -181,29 +181,29 @@ typedef enum {
 
 typedef struct _DxfHeader DxfHeader;
 struct _DxfHeader {
-//    gint16 mainver;         /*维护版本号（应忽略）*/
-    gchar *acadver;         /*AutoCAD图形数据库版本号*/
-    gdouble angbase;
+//    int mainver;         /*维护版本号（应忽略）*/
+    char *acadver;         /*AutoCAD图形数据库版本号*/
+    double angbase;
     /*page*/
-    gchar *pucsname;        /*当前图纸空间 UCS 名称*/
+    char *pucsname;        /*当前图纸空间 UCS 名称*/
     DxfPointData pucsorg;   /*当前图纸空间 UCS 原点*/
     DxfPointData pucsxdir;  /*当前图纸空间的 UCS X 轴*/
     DxfPointData pucsydir;  /*当前图纸空间的 UCS Y 轴*/
 
-    gchar *ucsname;         /*当前 UCS 的名称*/
+    char *ucsname;         /*当前 UCS 的名称*/
     DxfPointData ucsorg;    /*当前 UCS 的原点（在 WCS 中）*/
     DxfPointData ucsxdir;   /*当前 UCS X 轴的方向（在 WCS 中）*/
     DxfPointData ucsydir;   /*当前 UCS Y 轴的方向（在 WCS 中）*/
 
     DxfAngdir angdir;       /*角度方向*/
     DxfUnits insunits;      /*设计中心块的默认图形单位*/
-    gdouble ltscale;        /*全局线型比例*/
+    double ltscale;        /*全局线型比例*/
 };
 
 extern void dxf_header_init();
 extern void dxf_header_uninit();
 extern DxfHeader *dxf_header_parse(Dxfile *f);
 extern void dxf_header_delete(DxfHeader *h);
-extern gchar *dxf_header_print(DxfHeader *h);
+extern char *dxf_header_print(DxfHeader *h);
 
 #endif /* __DXF_HEADER_H__ */

@@ -11,14 +11,14 @@
 
 #include "dxf_tables_entries.h"
 
-typedef GList DxfTables;                    /*表链表，包含多个表*/
+typedef QList DxfTables;                    /*表链表，包含多个表*/
 typedef struct _DxfTable DxfTable;          /*单个表，包含多个条目*/
 
 struct _DxfTable {
     /*通用属性*/
-    gchar *name;                /*2:表名*/
-    gchar *handle;              /*5:句柄*/
-    gchar *softPointerHandler;  /*330:所有者对象的软指针 ID/句柄 */
+    char *name;                /*2:表名*/
+    char *handle;              /*5:句柄*/
+    char *softPointerHandler;  /*330:所有者对象的软指针 ID/句柄 */
 
     /*该表的所有条目*/
     DxfTablesEntries *entries;
@@ -52,6 +52,6 @@ extern void dxf_tables_delete(DxfTables *t);
  * @param t                 Dxftables类型
  * @return                  打印内容
  */
-extern gchar *dxf_tables_print(DxfTables *t);
+extern char *dxf_tables_print(DxfTables *t);
 
 #endif /* End of __DXF_TABLES_H__ */

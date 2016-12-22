@@ -3,7 +3,7 @@
 static inline DxfSpline *spline_new_item()
 {
     DxfSpline *spline;
-    spline = g_malloc0(sizeof(DxfSpline));
+    spline = malloc(sizeof(DxfSpline));
 
     spline->knotTolerance = 0.0000001;
     spline->ctrlPointTolerance = 0.0000001;
@@ -15,7 +15,7 @@ static inline DxfSpline *spline_new_item()
 DxfSpline *dxf_spline_parse(Dxfile *f)
 {
     DxfSpline *e = NULL;
-    gdouble *knotValue = NULL;
+    double *knotValue = NULL;
     DxfPointData *ctrlPoint = NULL;
 
     e = spline_new_item();
@@ -46,13 +46,13 @@ DxfSpline *dxf_spline_parse(Dxfile *f)
     SWITCH_CODE_DO( 40 ) {
         if ( NULL == knotValue ) {
             if (e->knotsNum > 0) {
-                knotValue = g_malloc0(sizeof(gdouble) * e->knotsNum);
+                knotValue = malloc(sizeof(double) * e->knotsNum);
                 e->knotValues = knotValue;
                 dxfile_get_double(f, knotValue);
             } else {
                 c_log_warning("Havent' got the number of knot");
             }
-        } else if ( (gint16)((knotValue - e->knotValues)/sizeof(gdouble)) < e->knotsNum ) {
+        } else if ( (int)((knotValue - e->knotValues)/sizeof(double)) < e->knotsNum ) {
             ++knotValue;
             dxfile_get_double(f, knotValue);
         } else {
@@ -62,13 +62,13 @@ DxfSpline *dxf_spline_parse(Dxfile *f)
     SWITCH_CODE_DO( 10 ) {
         if ( NULL == ctrlPoint) {
             if (e->ctrlPointsNum > 0) {
-                ctrlPoint = g_malloc0(sizeof(DxfPointData)*e->ctrlPointsNum);
+                ctrlPoint = malloc(sizeof(DxfPointData)*e->ctrlPointsNum);
                 e->ctrlPoints = ctrlPoint;
                 dxfile_get_double(f, &ctrlPoint->x);
             } else {
                 c_log_warning("Haven't got the number of control point");
             }
-        } else if ((gint16)((ctrlPoint - e->ctrlPoints)/sizeof(DxfPointData)) < e->ctrlPointsNum){
+        } else if ((int)((ctrlPoint - e->ctrlPoints)/sizeof(DxfPointData)) < e->ctrlPointsNum){
             ++ctrlPoint;
             dxfile_get_double(f, &ctrlPoint->x);
         } else {
@@ -89,14 +89,14 @@ void dxf_spline_delete(DxfSpline *e)
 {
     g_return_if_fail( e != NULL );
 
-    g_free(e->knotValues);
-    g_free(e->ctrlPoints);
-    g_free(e);
+    free(e->knotValues);
+    free(e->ctrlPoints);
+    free(e);
 }
 
-gchar *dxf_spline_print(DxfSpline *e)
+char *dxf_spline_print(DxfSpline *e)
 {
-    GString *msg = NULL;
+    QString *msg = NULL;
     int i = 0;
     msg = g_string_sized_new(1024);
     g_string_append_printf(msg,
@@ -133,5 +133,5 @@ gchar *dxf_spline_print(DxfSpline *e)
                                e->ctrlPoints[i].z);
     }
 
-    return g_string_free(msg, FALSE);
+    return g_strinfree(msg, FALSE);
 }

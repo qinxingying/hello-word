@@ -2,7 +2,7 @@
 
 static inline DxfPoint *point_new_item()
 {
-    DxfPoint *p = g_malloc0(sizeof(DxfPoint));
+    DxfPoint *p = malloc(sizeof(DxfPoint));
     p->extrDir.z = 1;
     return p;
 }
@@ -37,11 +37,11 @@ DxfPoint *dxf_point_parse(Dxfile *f)
 void dxf_point_delete(DxfPoint *p)
 {
     g_return_if_fail(p != NULL);
-    g_free(p);
+    free(p);
 }
 
 
-gchar *dxf_point_print(const DxfPoint *p)
+char *dxf_point_print(const DxfPoint *p)
 {
     return g_strdup_printf("Point : (%g, %g)\n",p->data.x,p->data.y);
 }

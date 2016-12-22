@@ -2,7 +2,7 @@
 
 static inline DxfPolyline *polyline_new_item()
 {
-    return g_malloc0(sizeof(DxfPolyline));
+    return malloc(sizeof(DxfPolyline));
 }
 
 DxfPolyline *dxf_polyline_parse(Dxfile *f)
@@ -22,10 +22,10 @@ DxfPolyline *dxf_polyline_parse(Dxfile *f)
 void dxf_polyline_delete(DxfPolyline *e)
 {
     g_return_if_fail( e != NULL );
-    g_free(e);
+    free(e);
 }
 
-gchar *dxf_polyline_print(DxfPolyline *e)
+char *dxf_polyline_print(DxfPolyline *e)
 {
     e = e;
     return g_strdup_printf("Polyline\n");

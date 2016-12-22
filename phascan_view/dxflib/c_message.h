@@ -27,13 +27,13 @@
     c_message("** Log Error: " _fmt "\n", ##__VA_ARGS__)
 #else
 //#include <syslog.h>
-#define c_debug(_fmt, ...) {}
-#define c_log_begin(_logflag)   openlog(_logfile, LOG_CONS|LOG_PID, 0)
-#define c_log_end() closelog()
-#define c_log_info(_fmt, ...)   syslog(LOG_USER|LOG_INFO, _fmt, ##__VA_ARGS__)
-#define c_log_warning(_fmt, ...) \
-    syslog(LOG_LOCAL0|LOG_WARNING, _fmt, ##__VA_ARGS__)
-#define c_log_err(_fmt, ...)    syslog(LOG_LOCAL0|LOG_ERR, _fmt, ##__VA_ARGS__)
+//#define c_debug(_fmt, ...) {}
+//#define c_log_begin(_logflag)   openlog(_logfile, LOG_CONS|LOG_PID, 0)
+//#define c_log_end() closelog()
+//#define c_log_info(_fmt, ...)   syslog(LOG_USER|LOG_INFO, _fmt, ##__VA_ARGS__)
+//#define c_log_warning(_fmt, ...)
+//    syslog(LOG_LOCAL0|LOG_WARNING, _fmt, ##__VA_ARGS__)
+//#define c_log_err(_fmt, ...)    syslog(LOG_LOCAL0|LOG_ERR, _fmt, ##__VA_ARGS__)
 #endif
 
 #endif /* end of __C_MESSAGE_H__ */

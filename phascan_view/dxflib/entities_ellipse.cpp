@@ -9,7 +9,7 @@
 
 static inline DxfEllipse *ellipse_new_item()
 {
-    DxfEllipse *e = g_malloc0(sizeof(DxfEllipse));
+    DxfEllipse *e = malloc(sizeof(DxfEllipse));
 
     e->ration = 1;
     e->startAngle = 0;
@@ -59,11 +59,11 @@ DxfEllipse *dxf_ellipse_parse(Dxfile *f)
 void dxf_ellipse_delete(DxfEllipse *e)
 {
     g_return_if_fail(e!=NULL);
-    g_free(e);
+    free(e);
 }
 
 
-gchar *dxf_ellipse_print(const DxfEllipse *e)
+char *dxf_ellipse_print(const DxfEllipse *e)
 {
     return g_strdup_printf("Center Point          : (%g, %g, %g)\n"
                            "Endpoint of Major Axis: (%g, %g, %g)\n"
@@ -82,12 +82,12 @@ gchar *dxf_ellipse_print(const DxfEllipse *e)
  * @param e     指向椭圆
  * @return      成功返回相对于x轴的角度
  */
-gdouble dxf_ellipse_calc_endpoint_pi(const DxfEllipse *e)
+double dxf_ellipse_calc_endpoint_pi(const DxfEllipse *e)
 {
     g_return_val_if_fail( e != NULL, 0);
 
     const DxfPointData *p = &e->endPointMajorAxis;
-    gdouble pi = 0;
+    double pi = 0;
 
     if ( fabs(p->x) < 1e-15 ) {
         if ( p->y < -(1e-15) ) {

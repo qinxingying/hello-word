@@ -3,9 +3,12 @@
 
 #include "dxfbase.h"
 
+#include <QFile>
+
 typedef struct _Dxfile Dxfile;
 struct _Dxfile {
-    GMappedFile *mmpedFile;
+//    GMappedFile *mmpedFile;
+    QFile *mmpedFile;
     char *contents;
     char *cur;
     int len;
@@ -15,25 +18,27 @@ struct _Dxfile {
 extern Dxfile *dxfile_open(const char *filename);
 extern void dxfile_destory(Dxfile *f);
 
-static inline gboolean dxfile_is_end(Dxfile *f) { return *f->cur == '\0'; }
+static inline bool dxfile_is_end(Dxfile *f) { return *f->cur == '\0'; }
 
 static inline void dxfile_goto_nextline(Dxfile *f)
 {
-    g_return_if_fail( f != NULL );
-    g_return_if_fail( f->cur != NULL );
+    if(f == NULL) return;
+    if(f->cur == NULL) return;
+//    g_return_if_fail( f != NULL );
+//    g_return_if_fail( f->cur != NULL );
     for (; *f->cur && *f->cur != '\n'; ++f->cur ) {}
     if (*f->cur == '\n') { ++f->cur; }
 }
 
-extern gboolean dxfile_set_pos(Dxfile *f, long pos);
-static inline glong dxfile_get_pos(Dxfile *f) { return (long)(f->cur - f->contents); }
+extern bool dxfile_set_pos(Dxfile *f, long pos);
+static inline long dxfile_get_pos(Dxfile *f) { return (long)(f->cur - f->contents); }
 
 static inline void dxfile_get_int(Dxfile *f, int *i) { sscanf(f->cur, "%d", i); dxfile_goto_nextline(f);}
 static inline void dxfile_get_int16(Dxfile *f, int *i) { sscanf(f->cur, "%d", i); dxfile_goto_nextline(f); }
 static inline void dxfile_get_double(Dxfile *f, double *d) { sscanf(f->cur, "%lf", d); dxfile_goto_nextline(f);}
 
-extern void dxfile_get_line(Dxfile *f, char **str, gsize *len);
-extern gint dxfile_get_line_str(Dxfile *f, char *s, int size);
+extern void dxfile_get_line(Dxfile *f, char **str, unsigned int *len);
+extern int dxfile_get_line_str(Dxfile *f, char *s, int size);
 
 static inline void dxfile_get_code(Dxfile *f, int *i) { *i=DXF_CODE_INVALID; dxfile_get_int(f, i); }
 extern void dxfile_get_section(Dxfile *f, Section *s);
@@ -51,7 +56,7 @@ typedef enum {
                             |DXF_SECTION_ENTITIES | DXF_SECTION_OBJECTS
 }DxfSectionFlag;
 
-extern gboolean dxfile_lseek_section(Dxfile *f, const DxfSectionFlag flag);
+extern bool dxfile_lseek_section(Dxfile *f, const DxfSectionFlag flag);
 
 /*选择code模板*/
 #define SWITCH_CODE_BEGIN(f)   \
@@ -68,14 +73,14 @@ extern gboolean dxfile_lseek_section(Dxfile *f, const DxfSectionFlag flag);
 #define SWITCH_CODE_SEEK(f)  dxfile_set_pos(f, pos)
 #define SWITCH_CODE_END(f)  break;\
         default: \
-            c_debug("[%s] invalid code %d", __func__, code); \
+            qDebug("[%s] invalid code %d", __func__, code); \
             dxfile_goto_nextline(f);\
             break; \
         } \
         pos = dxfile_get_pos(f); \
         dxfile_get_code(f, &code); \
     } \
-    if ( code == DXF_CODE_INVALID ) { c_debug("[%s] Can't get Code", __func__); }\
+    if ( code == DXF_CODE_INVALID ) { qDebug("[%s] Can't get Code", __func__); }\
     dxfile_set_pos(f, pos);\
 }
 
