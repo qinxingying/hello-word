@@ -512,7 +512,7 @@ void DopplerGroupTab::StartDrags(QModelIndex index)
 	// Get item string and id
 	const QAbstractItemModel* model = index.model() ;
 	QString _str1  = model->data(index , Qt::DisplayRole).toString()  ;
-	int _nId = model->data(index , Qt::UserRole).toInt() ;
+    int _nId = model->data(index , Qt::UserRole).toInt();
 	QVariant icon = model->data(index , Qt::DecorationRole);
 	QPixmap pixmap =  (icon.value<QIcon>()).pixmap(48 , 48);
 

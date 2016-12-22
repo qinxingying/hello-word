@@ -1,10 +1,11 @@
+#include "Instrument.h"
+#include "Doppler3DAll.h"
+#include "gHeader.h"
+
 #include <QtGui>
 #include <QtOpenGL>
 #include <math.h>
-#include <configure/Instrument.h>
-#include "Doppler3DAll.h"
-#include <gHeader.h>
-//#include <configure/Instrument.h>
+
 
 const int CURCLE_STEP = 3600;//360;
 const F32 DEST_HEIGHT = 6.0;//360;
@@ -14,7 +15,6 @@ void GLDraw1(GLPOINT* pt_, GLenum glemum_, int iDot_);
 void GLDraw2(GLPOINT* pt1_, GLPOINT* pt2_, int iDot_);
 void GLDrawArc(GLPOINT cf_, GLPOINT pt1_, GLPOINT pt2_, GLdouble R_, GLdouble _sign);
 //float GetDepth(float h_, float ply_);
-
 
 Doppler3DAll::Doppler3DAll(QWidget *parent)
     : QGLWidget(parent)

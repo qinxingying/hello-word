@@ -17,7 +17,6 @@
 #include <QScrollArea>
 #include <QGridLayout>
 
-
 ProcessDisplay::ProcessDisplay(QObject *parent) :
 	QObject(parent)
 {
@@ -95,10 +94,10 @@ QSize ProcessDisplay::GetMinimumWidgetSize(int eType_)
 
 void ProcessDisplay::SetCurrentGroupId(int nGroupId_)
 {
-	m_nGroupId = nGroupId_  ;
+    m_nGroupId = nGroupId_;
 }
 
-int ProcessDisplay::CreateViews(QWidget* parent_ , int eType_)
+int ProcessDisplay::CreateViews(QWidget* parent_, int eType_)
 {
 	int ret = 0 ;
 	ParameterProcess* _process = ParameterProcess::Instance();
@@ -632,7 +631,7 @@ int ProcessDisplay::CreateViews_S_AV_BH(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* split[2]  ;
+    GYSplitter* split[2];
 	DopplerDataView* _pView[3] ;
 	for(int i = 0 ; i< 3 ; i++)
 	{

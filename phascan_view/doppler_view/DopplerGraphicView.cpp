@@ -276,13 +276,13 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 void DopplerGraphicView::resizeEvent(QResizeEvent *event)
 {
 	QGraphicsView::resizeEvent(event);
-	int _nWidth = event->size().width() ;
-	int _nHeight= event->size().height() ;
+    int _nWidth = event->size().width();
+    int _nHeight= event->size().height();
 
 	if(m_pBackGround)
 	{
-		m_pBackGround->setGeometry(0 , 0 , _nWidth, _nHeight);
-		setSceneRect(0 , 0 , _nWidth, _nHeight);
+        m_pBackGround->setGeometry(0, 0, _nWidth, _nHeight);
+        setSceneRect(0, 0, _nWidth, _nHeight);
 	}
 
 	m_nScaleBaseH =  _nWidth / m_pBackGround->size().width()  ;

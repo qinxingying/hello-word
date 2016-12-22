@@ -6,6 +6,7 @@
 class GYSplitter : public QSplitter
 {
     Q_OBJECT
+
 public:
 	explicit GYSplitter(QWidget *parent = 0);
 

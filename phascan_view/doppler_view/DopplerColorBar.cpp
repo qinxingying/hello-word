@@ -24,9 +24,9 @@ void DopplerColorBar::setColorIndex(void* color_)
     update();
 }
 
-void DopplerColorBar::paintEvent(QPaintEvent* /*event*/)
+void DopplerColorBar::paintEvent(QPaintEvent*)
 {
-    if(!color)  return  ;
+    if(!color)  return;
 
     int i   , _nColor;
     int _nWidth = width() - 1;
