@@ -631,17 +631,20 @@ int ProcessDisplay::CreateViews_S_AV_BH(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-    GYSplitter* split[2];
-	DopplerDataView* _pView[3] ;
-	for(int i = 0 ; i< 3 ; i++)
-	{
+
+    GYSplitter* split[3] = {NULL};
+    DopplerDataView* _pView[3];
+
+    for(int i = 0 ; i < 3 ; ++i)
+    {
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
-		split[i]->setOpaqueResize(false) ;
+        split[i]->setOpaqueResize(false);
 	}
 
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
+
 	for(int i= 0 ; i< 3 ; i++)
 	{
 		_pView[i] = new DopplerDataView(pWidget_) ;
@@ -684,7 +687,8 @@ int ProcessDisplay::CreateViews_S_AV_BH(QWidget* pWidget_)
 	for(int i = 0 ; i < 3 ; i++)	_pList->append(_pView[i]);
 
 	//**************  transfer item move signal to main window
-	ConnectSingals(_pView , 3) ;
+    ConnectSingals(_pView , 3);
+
 	return 0;
 }
 
@@ -693,8 +697,9 @@ int ProcessDisplay::CreateViews_S_AH_BV(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* split[2]  ;
-	DopplerDataView* _pView[3] ;
+    GYSplitter* split[3];
+    DopplerDataView* _pView[3];
+
 	for(int i = 0 ; i< 3 ; i++)
 	{
 		split[i] = new GYSplitter(0);
@@ -704,6 +709,7 @@ int ProcessDisplay::CreateViews_S_AH_BV(QWidget* pWidget_)
 
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
+
 	for(int i= 0 ; i< 3 ; i++)
 	{
 		_pView[i] = new DopplerDataView(pWidget_) ;
@@ -746,7 +752,7 @@ int ProcessDisplay::CreateViews_S_AH_BV(QWidget* pWidget_)
 	for(int i = 0 ; i < 3 ; i++)	_pList->append(_pView[i]);
 
 	//**************  transfer item move signal to main window
-	ConnectSingals(_pView , 3) ;
+    ConnectSingals(_pView, 3) ;
 	return 0;
 }
 
@@ -755,8 +761,9 @@ int ProcessDisplay::CreateViews_S_AV_BH_CH(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* split[2]  ;
-	DopplerDataView* _pView[4] ;
+    GYSplitter* split[3];
+    DopplerDataView* _pView[4];
+
 	for(int i = 0 ; i< 3 ; i++)
 	{
 		split[i] = new GYSplitter(0);
@@ -822,8 +829,8 @@ int ProcessDisplay::CreateViews_S_AH_BH_CH(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* split[3]  ;
-	DopplerDataView* _pView[4] ;
+    GYSplitter* split[3];
+    DopplerDataView* _pView[4];
 	for(int i = 0 ; i< 3 ; i++)
 	{
 		split[i] = new GYSplitter(0);
@@ -896,13 +903,13 @@ int ProcessDisplay::CreateViews_S_AH_BH_CV(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* split[2]  ;
-	DopplerDataView* _pView[4] ;
+    GYSplitter* split[3];
+    DopplerDataView* _pView[4];
 	for(int i = 0 ; i< 3 ; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
-		split[i]->setOpaqueResize(false) ;
+        split[i]->setOpaqueResize(false);
 	}
 
 	split[0]->setOrientation(Qt::Horizontal);
@@ -963,8 +970,8 @@ int ProcessDisplay::CreateViews_S_AV_CH(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* split[2]  ;
-	DopplerDataView* _pView[3] ;
+    GYSplitter* split[3];
+    DopplerDataView* _pView[3];
 	for(int i = 0 ; i< 3 ; i++)
 	{
 		split[i] = new GYSplitter(0);
@@ -1025,9 +1032,10 @@ int ProcessDisplay::CreateViews_S_AH_CV(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* split[2]  ;
-	DopplerDataView* _pView[3] ;
-	for(int i = 0 ; i< 3 ; i++)
+    GYSplitter* split[3];
+    DopplerDataView* _pView[3];
+
+    for(int i = 0; i < 3; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1087,9 +1095,10 @@ int ProcessDisplay::CreateViews_S_AV_CH_CH(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* split[2]  ;
-	DopplerDataView* _pView[4] ;
-	for(int i = 0 ; i< 3 ; i++)
+    GYSplitter* split[3];
+    DopplerDataView* _pView[4];
+
+    for(int i = 0 ; i< 3; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1154,10 +1163,10 @@ int ProcessDisplay::CreateViews_S_AH_CV_CV(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* split[2]  ;
-	DopplerDataView* _pView[4] ;
-	//for(int i = 0 ; i< 3 ; i++)
-	for(int i = 0 ; i< 2 ; i++)
+    GYSplitter* split[3];
+    DopplerDataView* _pView[4];
+
+    for(int i = 0; i < 3; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1224,13 +1233,13 @@ int ProcessDisplay::CreateViews_AllGroups(QWidget* pWidget_)
 
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-	GYSplitter* _splitBase  ;
-	GYSplitter* _split[8]  ;
-	GYSplitter* _split_S_A[8]  ;
+    GYSplitter* _splitBase;
+    GYSplitter* _split[8];
+    GYSplitter* _split_S_A[8];
 
 	_splitBase = new GYSplitter(0);
 	_splitBase->setHandleWidth(g_nSpliterWidth);
-	_splitBase->setOpaqueResize(false) ;
+    _splitBase->setOpaqueResize(false);
 	_splitBase->setOrientation(Qt::Horizontal);
 
 	int _nQty = _nGroupQty;
