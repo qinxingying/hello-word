@@ -2,9 +2,7 @@
 #include "const.h"
 
 #include <string.h>
-#include <qdatetime.h>
 #include <QCoreApplication>
-
 #include <stdio.h>
 
 const char* g_strMeasureFildName[][4] =
@@ -107,11 +105,6 @@ const char* g_strMeasureFildUnit[][4] =
 	{"T-D(m-r)" , "mm"}
 };
 
-#ifndef QT_NO_DEBUG
-#include <QDir>
-#include <QMessageBox>
-#endif
-
 QString GetExePathName2(char* dir)
 {
 	char _strPathName[256];
@@ -125,7 +118,7 @@ void GetExePathName1(char* dir, char* _strPathName)
 #ifdef QT_NO_DEBUG
 	char _strAppPath[256];
 
-	QString	 _str0 = QCoreApplication::applicationDirPath ();
+    QString _str0 = QCoreApplication::applicationDirPath();
 	std::string _str1 = _str0.toStdString();
 	const char* _str2 = _str1.c_str();
 
@@ -136,44 +129,4 @@ void GetExePathName1(char* dir, char* _strPathName)
 #else
 	strcpy(_strPathName, dir);
 #endif
-}
-
-QDate getDate(char* strDate_)
-{
-	char buf[10];
-
-	memcpy(buf, strDate_, 4);
-	buf[4] = '\0';
-	int year = atoi(buf);
-
-	memcpy(buf, &strDate_[4], 2);
-	buf[2] = '\0';
-	int month = atoi(buf);
-
-	memcpy(buf, &strDate_[6], 2);
-	buf[2] = '\0';
-	int day = atoi(buf);
-
-	QDate date;
-	date.setDate(year, month, day);
-
-	return date;
-}
-
-bool VerRegInfo(char* strRegInfo_, char* strCpuID_)
-{
-	char _strDate1[64];
-	char _strDate2[64];
-
-	strcpy(_strDate1, strRegInfo_);
-	strcpy(_strDate2, strCpuID_);
-
-	_strDate1[8] = '\0';
-	_strDate2[8] = '\0';
-
-	if(strcmp(_strDate1, _strDate2) == 0) {
-		return true;
-	}
-
-	return false;
 }

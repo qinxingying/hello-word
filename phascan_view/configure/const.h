@@ -69,7 +69,6 @@ extern const char* g_strMeasureFildUnit[][4];
 
 extern QString GetExePathName2(char* dir);
 extern void GetExePathName1(char* dir, char* _strPathName);
-extern bool VerRegInfo(char* strRegInfo_, char* strCpuID_);
 
 #ifndef CONST_H
 #define CONST_H
