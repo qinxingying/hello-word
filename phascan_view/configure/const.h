@@ -1,3 +1,8 @@
+/*********************************
+  Name:  const.h
+  Description:   定义各种常量
+*********************************/
+
 #include <QString>
 #include <qdatetime.h>
 #include <QColor>
@@ -5,11 +10,6 @@
 #include "process/dopplerfocallaw.h"
 
 #define __DPL_DEBUG__
-
-/*********************************
-  Name:  const.h
-  Description:   定义各种常量
-*********************************/
 
 typedef char			S8;
 typedef unsigned char	U8;
@@ -63,7 +63,7 @@ typedef U8				WDATA;	//	定义波形数据位宽 8位
 #define LAW_1_COLOR							QColor(200 , 0  ,200)
 #define LAW_2_COLOR							QColor(200 , 200,  0)
 #define LAW_3_COLOR							QColor(200 , 0  ,  0)
-//#################################################################
+
 extern const char* g_strMeasureFildName[][4];
 extern const char* g_strMeasureFildUnit[][4];
 
@@ -71,9 +71,6 @@ extern QString GetExePathName2(char* dir);
 extern void GetExePathName1(char* dir, char* _strPathName);
 extern bool VerRegInfo(char* strRegInfo_, char* strCpuID_);
 
-extern QDate GetSysTime(void);
-extern void GetHardwareInfo(char* strInfo_);
-//#################################################################
 #ifndef CONST_H
 #define CONST_H
 

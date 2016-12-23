@@ -1487,7 +1487,7 @@ char* DopplerConfigure::GetDefectInfo(int iGroupId_, int index_)
 
 void DopplerConfigure::SetLastDate()
 {
-	QDate _date = GetSysTime();
+    QDate _date  = QDate::currentDate();
 	AppEvn.year  = _date.year();
 	AppEvn.month = _date.month();
 	AppEvn.day   = _date.day();
