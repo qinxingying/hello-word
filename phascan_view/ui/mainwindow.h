@@ -111,7 +111,6 @@ private:
     int  m_nTBCnt;
     int  m_nAlloff;
     bool m_bCursorSel;
-    bool m_chineseFlag;
     bool m_bParamBackMode;
 
 signals:
