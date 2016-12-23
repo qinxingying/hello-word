@@ -13,6 +13,7 @@ TEMPLATE = app
 
 PROJECT_DIR = $$PWD
 
+RC_FILE = app.rc
 RESOURCES    += mainwindow.qrc
 TRANSLATIONS += translator/phascan_view_chinese.ts \
                 translator/phascan_view_english.ts \
