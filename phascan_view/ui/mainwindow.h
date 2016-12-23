@@ -112,6 +112,7 @@ private:
     int  m_nAlloff;
     bool m_bCursorSel;
     bool m_bParamBackMode;
+    setup_LANG m_currentLang;
 
 signals:
     void setPixmap(QPixmap pixmap);

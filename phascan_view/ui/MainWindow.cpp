@@ -38,7 +38,16 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pThreadDraw  = DataRefreshThread::Instance();
     translator = new QTranslator(this);
     qApp->installTranslator(translator);
-    on_actionLanguage_triggered();
+
+    DopplerConfigure* pConfig = DopplerConfigure::Instance();
+    m_currentLang = pConfig->AppEvn.eLanguage;
+
+    if(m_currentLang == setup_LANG_ENGLISH) {
+        slot_actionEnglish_triggered();
+
+    }else if(m_currentLang == setup_LANG_CHINESE){
+        slot_actionChinese_triggered();
+    }
 
     connect(ui->TabWidget_parameter, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsLeftTabButton(Qt::MouseButton)));
     connect(ui->TabWidget_parameter, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotLeftTabRightButtonDoubleClicked(int)));
@@ -1241,16 +1250,18 @@ void MainWindow::on_actionSave_Defect_triggered()
 
 void MainWindow::on_actionLanguage_triggered()
 {
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    DopplerConfigure* pConfig = DopplerConfigure::Instance();
 
-    if(_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH) {
+    if(m_currentLang == setup_LANG_ENGLISH) {
         slot_actionChinese_triggered();
-        _pConfig->AppEvn.eLanguage = setup_LANG_CHINESE;
+        pConfig->AppEvn.eLanguage = setup_LANG_CHINESE;
 
-    }else if(_pConfig->AppEvn.eLanguage == setup_LANG_CHINESE){
+    }else if(m_currentLang == setup_LANG_CHINESE){
         slot_actionEnglish_triggered();
-        _pConfig->AppEvn.eLanguage = setup_LANG_ENGLISH;
+        pConfig->AppEvn.eLanguage = setup_LANG_ENGLISH;
     }
+
+    m_currentLang = pConfig->AppEvn.eLanguage;
 }
 
 void MainWindow::on_actionScreenShot_triggered()
