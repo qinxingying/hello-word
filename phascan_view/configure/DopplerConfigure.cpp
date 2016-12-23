@@ -144,7 +144,7 @@ void DopplerConfigure::OpenEvn()
 	file.open (QIODevice::ReadOnly);
 	QDataStream reader(&file);
 
-    int ret = reader.readRawData((char*)&AppEvn , sizeof(SYSTEM_ENVIRMENT));
+    int ret = reader.readRawData((char*)&AppEvn, sizeof(SYSTEM_ENVIRMENT));
 	if(ret < 0)
 	{
         GetExePathName1(g_strDataFilePath.toLatin1().data(), _strPathName.toLatin1().data());
@@ -152,11 +152,12 @@ void DopplerConfigure::OpenEvn()
 
         GetExePathName1(g_strPartDir.toLatin1().data(), _strPathName.toLatin1().data());
         strcpy(AppEvn.strNccFilePath, _strPathName.toLatin1().data());
+        AppEvn.eLanguage = setup_LANG_ENGLISH;
 		AppEvn.eUnit	 = setup_SOUND_AXIX_UNIT_MM;
 		AppEvn.iTofdDataProMode = 0;
-		AppEvn.bSAxisCursorSync		= true;
-		AppEvn.bTrueDepth_A_S_Sync	= true;
-		//********************************************************
+        AppEvn.bSAxisCursorSync	   = true;
+        AppEvn.bTrueDepth_A_S_Sync = true;
+
 		AppEvn.anMeasureSelection[0][0] = 1  ;
 		AppEvn.anMeasureSelection[0][1] = 32 ;
 		AppEvn.anMeasureSelection[0][2] = 34 ;
@@ -167,6 +168,7 @@ void DopplerConfigure::OpenEvn()
 		AppEvn.anMeasureSelection[1][2] = 44 ;
 		AppEvn.anMeasureSelection[1][3] = 45 ;
 		AppEvn.anMeasureSelection[1][4] = 0  ;
+
 		for(int i = 0 ; i < 8 ; i++)
 		{
             AppEvn.bShowCursor[i]	= true ;

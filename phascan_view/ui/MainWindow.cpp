@@ -39,6 +39,15 @@ MainWindow::MainWindow(QWidget *parent) :
     translator = new QTranslator(this);
     qApp->installTranslator(translator);
 
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    if(_pConfig->AppEvn.eLanguage == setup_LANG_ENGLISH) {
+        slot_actionChinese_triggered();
+        _pConfig->AppEvn.eLanguage = setup_LANG_CHINESE;
+    }else if(_pConfig->AppEvn.eLanguage == setup_LANG_CHINESE){
+        slot_actionEnglish_triggered();
+        _pConfig->AppEvn.eLanguage = setup_LANG_ENGLISH;
+    }
+
     connect(ui->TabWidget_parameter, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsLeftTabButton(Qt::MouseButton)));
     connect(ui->TabWidget_parameter, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotLeftTabRightButtonDoubleClicked(int)));
     connect(ui->TabWidget_display, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsRightTabButton(Qt::MouseButton)));
@@ -1256,6 +1265,8 @@ void MainWindow::on_actionScreenShot_triggered()
 
 void MainWindow::slot_actionEnglish_triggered()
 {
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
     ui->actionEnglish->setChecked(true);
     ui->actionChinese->setChecked(false);
     ui->actionJapanese->setChecked(false);
@@ -1265,7 +1276,6 @@ void MainWindow::slot_actionEnglish_triggered()
 
     ui->ScanHardware->retranslateUi();
 
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     int _nGroupQty = _pConfig->common.nGroupQty;
     for(int i = 0; i < _nGroupQty; i++){
         m_pGroupList.at(i)->retranslateGroupTabUi();
@@ -1277,6 +1287,8 @@ void MainWindow::slot_actionEnglish_triggered()
 
 void MainWindow::slot_actionChinese_triggered()
 {
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
     ui->actionChinese->setChecked(true);
     ui->actionEnglish->setChecked(false);
     ui->actionJapanese->setChecked(false);
@@ -1285,7 +1297,7 @@ void MainWindow::slot_actionChinese_triggered()
     translator->load(":/file/translator/phascan_view_chinese.qm");
 
     ui->ScanHardware->retranslateUi();
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
     int _nGroupQty = _pConfig->common.nGroupQty;
     for(int i = 0; i < _nGroupQty; i++){
         m_pGroupList.at(i)->retranslateGroupTabUi();
