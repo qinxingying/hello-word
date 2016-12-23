@@ -1,6 +1,6 @@
 /*************************************
 Copyright: Yshy
-Date : 2016-12-06
+Date     : 2016-12-06
 *************************************/
 
 #include "mainwindow.h"
@@ -16,6 +16,8 @@ Date : 2016-12-06
 #include "ParameterProcess.h"
 #include "ProcessDisplay.h"
 #include "report/DopplerHtmlReport.h"
+#include "dialog/DialogReportSetting.h"
+#include "DopplerTofdOpp.h"
 
 #include <QSplitterHandle>
 #include <QMessageBox>
@@ -87,6 +89,7 @@ void MainWindow::init_ui()
     }
 
     CreateStatusBar();
+
     // tofd setting dialog
     m_iCurGroup  = 0;
     m_nLawIdSel  = 0;
@@ -135,17 +138,19 @@ void MainWindow::CreateStatusBar()
 // update status bar information when new *.data or *.cfg file is loaded
 void MainWindow::UpdateStatusBarInfo()
 {
-    QPalette pal = this->palette() ;
-    pal.setColor(QPalette::Foreground , QColor(0, 255 , 0));
+    QPalette pal = this->palette();
+    pal.setColor(QPalette::Foreground, QColor(0, 255, 0));
 
     ParameterProcess* _pOpp = ParameterProcess::Instance();
 
-    m_BarInfo.nGroupQty = _pOpp->GetGroupQty() ;
-    m_BarInfo.nLawQty   = _pOpp->GetTotalLawQty() ;
-    m_BarInfo.nDataSize = _pOpp->GetTotalDataSize() ;
+    m_BarInfo.nGroupQty = _pOpp->GetGroupQty();
+    m_BarInfo.nLawQty   = _pOpp->GetTotalLawQty();
+    m_BarInfo.nDataSize = _pOpp->GetTotalDataSize();
 
-    QLabel* _pCell = m_pStatusCell[0]  ;
-    QString _str; _str.sprintf("Setting Info: Group Qty:[%d] Law Qty:[%d] Data Size:[%d]" ,m_BarInfo.nGroupQty , m_BarInfo.nLawQty , m_BarInfo.nDataSize) ;
+    QLabel* _pCell = m_pStatusCell[0];
+    QString _str;
+    _str.sprintf("Setting Info: Group Qty:[%d] Law Qty:[%d] Data Size:[%d]",
+                 m_BarInfo.nGroupQty, m_BarInfo.nLawQty, m_BarInfo.nDataSize);
     _pCell->setPalette(pal);
     _pCell->setText(_str);
 }
@@ -156,7 +161,7 @@ void MainWindow::UpdateStatusBarInfo()
 *****************************************************************************/
 void MainWindow::RunDrawThread()
 {
-    DataRefreshThread* _pThread = DataRefreshThread::Instance() ;
+    DataRefreshThread* _pThread = DataRefreshThread::Instance();
     _pThread->start();
 }
 /****************************************************************************
@@ -182,7 +187,7 @@ void MainWindow::UpdateAllDisplay()
     _process.UpdateAllView();
 }
 
-void MainWindow::SetStatusBarMessageColor(int nId_, QColor& fgColor_ , QColor& bgColor_)
+void MainWindow::SetStatusBarMessageColor(int nId_, QColor& fgColor_, QColor& bgColor_)
 {
     QLabel* _pCell = m_pStatusCell[nId_];
     QPalette pal = this->palette();
@@ -192,7 +197,7 @@ void MainWindow::SetStatusBarMessageColor(int nId_, QColor& fgColor_ , QColor& b
     _pCell->setPalette(pal);
 }
 
-void MainWindow::SetStatusBarMessage(int nId_ , QString& str_)
+void MainWindow::SetStatusBarMessage(int nId_, QString& str_)
 {
     QLabel* _pCell = m_pStatusCell[nId_];
     _pCell->setText(str_);
@@ -203,10 +208,9 @@ void MainWindow::slotsLeftTabButton(Qt::MouseButton btn_)
     //   return ;
     if(btn_ == Qt::LeftButton)
     {
-        DialogAddOneGroup _dlg(this) ;
-        int ret = _dlg.exec();
+        DialogAddOneGroup _dlg(this);
 
-        if(ret){
+        if(_dlg.exec()){
             AddOneGroup();
         }
     }
@@ -245,7 +249,7 @@ void MainWindow::SetDispTabText()
     int _nGroupQty = _pConfig->common.nGroupQty;
 
     if(m_nAlloff)
-        ui->TabWidget_display->setTabText(0 , QString(tr("Com Groups")));
+        ui->TabWidget_display->setTabText(0, QString(tr("Com Groups")));
 
     for(int i = 0; i < _nGroupQty; i++){
         if(i + m_nAlloff < _nQty){
@@ -313,6 +317,7 @@ void MainWindow::DestroyAllDisplay()
     }
 
     ui->TabWidget_display->setCurrentIndex(0);
+
     for(int i = 1; i <  _nQty - 1; i++){
         QWidget* _pTmpWidget = ui->TabWidget_display->widget(1);
         ui->TabWidget_display->removeTab(1);
@@ -335,7 +340,7 @@ void MainWindow::slotsRightTabButton(Qt::MouseButton btn_)
         messageBox.exec();
         if (messageBox.clickedButton() == _pBtnYes)
         {
-                InsertRightTab();
+            InsertRightTab();
         }
         else if(messageBox.clickedButton() == _pBtnNo)
         {
@@ -375,7 +380,7 @@ void MainWindow::AddOneGroup()
     int _nGroupQty = _pConfig->common.nGroupQty - 1;
 
     DopplerGroupTab* _pGroup = new DopplerGroupTab(this);
-    _pGroup->SetGroupId(_nGroupQty );
+    _pGroup->SetGroupId(_nGroupQty);
 
     QString str(tr("Group "));
     QString str1;
@@ -504,7 +509,7 @@ void MainWindow::SetSelectedDataView(QWidget* pWidget_)
 void MainWindow::UpdateTableParameter()
 {
     // disconnect for signal unpredicted
-    disconnect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), 0 , 0) ;
+    disconnect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), 0, 0) ;
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     int _nGroupQty = _pConfig->common.nGroupQty;
     int _nTabQty   = ui->TabWidget_parameter->count();
@@ -540,9 +545,9 @@ void MainWindow::UpdateTableParameter()
 void MainWindow::SetWndName()
 {
     int _nQty = ui->TabWidget_parameter->count();
-    if(_nQty < 3 )  return;
+    if(_nQty < 3)  return;
 
-    for(int i = 0 ; i< _nQty - 2; i++)
+    for(int i = 0; i< _nQty - 2; i++)
     {
         DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(i);
         _pGroup->SetWndName();
@@ -570,74 +575,74 @@ void MainWindow::SaveCurScreenshot(QString strPath_)
 
 void MainWindow::UpdateTableDisplay()
 {
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-        int _nGroupQty = _pConfig->common.nGroupQty;
-        int _nTabQty   = ui->TabWidget_display->count();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int _nGroupQty = _pConfig->common.nGroupQty;
+    int _nTabQty   = ui->TabWidget_display->count();
 
-        m_nAlloff = 1;
-        if(_nGroupQty < 2)
-                m_nAlloff = 0;
+    m_nAlloff = 1;
+    if(_nGroupQty < 2)  m_nAlloff = 0;
 
-        ui->toolBar->setEnabled(false);
-        ui->TabWidget_parameter->setEnabled(false);
-        ui->TabWidget_display->setEnabled(false);
+    ui->toolBar->setEnabled(false);
+    ui->TabWidget_parameter->setEnabled(false);
+    ui->TabWidget_display->setEnabled(false);
 
-        DopplerViewFrame* _pViewFrame = NULL;
-        if(_nGroupQty > 1) {
-                for(int i = _nTabQty; i < _nGroupQty+2; i++)
-                {
-                        InsertRightTab();
-                }
-
-                UpdateCombinationDisplay();
-                sleep(600);
-                for(int i = 1; i < _nGroupQty+1; i++)
-                {
-                        //ui->TabWidget_parameter->setCurrentIndex(i);
-                        ui->TabWidget_display->setCurrentIndex(i);
-                        m_iCurGroup = i-1;
-                        //sleep(2000);
-                        _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
-                        _pViewFrame->SetViewFrameId(i);
-
-                        if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
-                                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_S_AV);
-                        } else {
-                                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
-                        }
-
-                        sleep(600);
-                }
-                ui->TabWidget_display->setCurrentIndex(0);
-        } else {
-                ui->TabWidget_display->setCurrentIndex(0);
-                m_iCurGroup = 0;
-                _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
-                _pViewFrame->SetViewFrameId(0);
-
-                if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
-                        _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_S_AV);
-                } else {
-                        _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
-                }
+    DopplerViewFrame* _pViewFrame = NULL;
+    if(_nGroupQty > 1) {
+        for(int i = _nTabQty; i < _nGroupQty+2; i++)
+        {
+            InsertRightTab();
         }
 
-        ui->TabWidget_parameter->setEnabled(true);
-        ui->TabWidget_display->setEnabled(true);
-        ui->toolBar->setEnabled(true);
-        SetDispTabText();
+        UpdateCombinationDisplay();
+        sleep(600);
+
+        for(int i = 1; i < _nGroupQty+1; i++)
+        {
+            //ui->TabWidget_parameter->setCurrentIndex(i);
+            ui->TabWidget_display->setCurrentIndex(i);
+            m_iCurGroup = i-1;
+            //sleep(2000);
+            _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
+            _pViewFrame->SetViewFrameId(i);
+
+            if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
+                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_S_AV);
+            } else {
+                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
+            }
+
+            sleep(600);
+        }
+        ui->TabWidget_display->setCurrentIndex(0);
+    } else {
+        ui->TabWidget_display->setCurrentIndex(0);
+        m_iCurGroup = 0;
+        _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
+        _pViewFrame->SetViewFrameId(0);
+
+        if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
+            _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_S_AV);
+        } else {
+            _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
+        }
+    }
+
+    ui->TabWidget_parameter->setEnabled(true);
+    ui->TabWidget_display->setEnabled(true);
+    ui->toolBar->setEnabled(true);
+    SetDispTabText();
 }
 
 void MainWindow::InsertRightTab()
 {
-        int _nIndex = ui->TabWidget_display->count() ;
-        if(_nIndex > 9) return; // max group number is 8
-        DopplerViewFrame* _pViewFrame = new DopplerViewFrame(ui->TabWidget_display) ;
-        QString _str ;
-        _str.sprintf("DISP %d" , _nIndex) ;
-        ui->TabWidget_display->insertTab(_nIndex -1 , _pViewFrame , _str) ;
-        ui->TabWidget_display->setCurrentIndex(_nIndex -1);
-        SetDispTabText();
+    int _nIndex = ui->TabWidget_display->count();
+    if(_nIndex > 9) return; // max group number is 8
+    DopplerViewFrame* _pViewFrame = new DopplerViewFrame(ui->TabWidget_display);
+    QString _str ;
+    _str.sprintf("DISP %d", _nIndex);
+    ui->TabWidget_display->insertTab(_nIndex -1, _pViewFrame, _str);
+    ui->TabWidget_display->setCurrentIndex(_nIndex -1);
+    SetDispTabText();
 }
 
 void MainWindow::NewConfigure()
@@ -674,7 +679,7 @@ void MainWindow::OpenFile()
 
 void MainWindow::OpenFilePro(QString strFileName_)
 {
-    if(strFileName_.isEmpty())  return ;
+    if(strFileName_.isEmpty())  return;
     QString suffix = strFileName_.section('.', -1);
 
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -706,7 +711,7 @@ void MainWindow::SaveFile()
                                                          "Save File Dialog",
                                                          "data",
                                                          "Doppler Files(*.cfg)");
-    if(_strFileName.isEmpty())  return ;
+    if(_strFileName.isEmpty())  return;
 
     m_fileName = _strFileName;
     this->setWindowTitle(m_titleName + m_fileName);
@@ -727,38 +732,39 @@ void MainWindow::ScreenShot()
 *****************************************************************************/
 void MainWindow::ReportAddOneItem()
 {
-        static int _nPixId = 0 ;
-        int _nIndex = ui->TabWidget_display->currentIndex();
-        if(!m_pViewList[_nIndex]->count()) return ;
+    static int _nPixId = 0;
+    int _nIndex = ui->TabWidget_display->currentIndex();
+    if(!m_pViewList[_nIndex]->count()) return;
 
-        int _nGroup = m_iCurGroup;
-        DopplerConfigure*  _pConfig = DopplerConfigure::Instance() ;
-        GROUP_CONFIG&        _group = _pConfig->group[_nGroup] ;
-        int _nLawId = _group.afCursor[setup_CURSOR_LAW];
+    int _nGroup = m_iCurGroup;
+    DopplerConfigure*  _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[_nGroup];
+    int _nLawId = _group.afCursor[setup_CURSOR_LAW];
 
-        DopplerHtmlReport* _pReport = _pConfig->GetReportOpp() ;
-        ReportValueItem      _value ;
+    DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
+    ReportValueItem _value;
 
-        _value.fPos     =  _pConfig->common.scanner.fScanPos ;
-        _value.nGroupId = _nGroup ;
-        _value.nLawId   = _nLawId;
-        int* _pMeasure  = _group.aeMeasureType ;
-        int _nQty = 0 ;
-        for(int i = 0 ; i < 5 ; i++)
-        {
-                if(_pMeasure[i])
-                {
-                        _value.szValue[_nQty] = CalcMeasurement::GetMeasureValue(_nGroup , _nLawId , (FEILD_VALUE_INDEX)_pMeasure[i] );
-                        _nQty++  ;
-                }
+    _value.fPos     =  _pConfig->common.scanner.fScanPos;
+    _value.nGroupId = _nGroup;
+    _value.nLawId   = _nLawId;
+    int* _pMeasure  = _group.aeMeasureType;
+    int _nQty = 0;
+
+    for(int i = 0; i < 5; i++)
+    {
+        if(_pMeasure[i]){
+            _value.szValue[_nQty] = CalcMeasurement::GetMeasureValue(_nGroup, _nLawId, (FEILD_VALUE_INDEX)_pMeasure[i]);
+            _nQty++;
         }
-        for(int i = _nQty ; i < 5 ; i ++) _value.szValue[i] = QString("-") ;
-        QString _strPath ;
-        _strPath.sprintf("img%04d.png" , _nPixId++ ) ;
-        _value.szPixmap = _strPath ;
+    }
 
-        _pReport->AddOneValueItem(&_value);
-        SaveCurScreenshot(_strPath);
+    for(int i = _nQty; i < 5; i ++)  _value.szValue[i] = QString("-");
+    QString _strPath;
+    _strPath.sprintf("img%04d.png", _nPixId++);
+    _value.szPixmap = _strPath;
+
+    _pReport->AddOneValueItem(&_value);
+    SaveCurScreenshot(_strPath);
 }
 
 /****************************************************************************
@@ -766,28 +772,27 @@ void MainWindow::ReportAddOneItem()
 *****************************************************************************/
 void MainWindow::ReportDelOneItem()
 {
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        DopplerHtmlReport* _pReport = _pConfig->GetReportOpp() ;
-        _pReport->DelOneValueItem();
+    DopplerConfigure* _pConfig  = DopplerConfigure::Instance();
+    DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
+    _pReport->DelOneValueItem();
 }
 
 /****************************************************************************
   Description: 设置报告格式
 *****************************************************************************/
-#include <ui/dialog/DialogReportSetting.h>
 void MainWindow::ReportSetting()
 {
-        DialogReportSetting _dialog  ;
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        DopplerHtmlReport* _pReport = _pConfig->GetReportOpp() ;
-        ReportInfo* _pInfo = _pReport->GetReportInfo() ;
-        _dialog.SetReportInfo(_pInfo);
-        int _nRet = _dialog.exec();
-        if(_nRet)
-        {
-                _pInfo = _dialog.GetRePortInfo() ;
-                _pReport->SetReportInfo(_pInfo);
-        }
+    DialogReportSetting _dialog;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
+    ReportInfo* _pInfo = _pReport->GetReportInfo();
+    _dialog.SetReportInfo(_pInfo);
+
+    if(_dialog.exec())
+    {
+        _pInfo = _dialog.GetRePortInfo();
+        _pReport->SetReportInfo(_pInfo);
+    }
 }
 
 /****************************************************************************
@@ -795,72 +800,61 @@ void MainWindow::ReportSetting()
 *****************************************************************************/
 void MainWindow::ReportSave()
 {
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        DopplerHtmlReport* _pReport = _pConfig->GetReportOpp() ;
-        _pReport->SaveReport();
+    DopplerConfigure* _pConfig  = DopplerConfigure::Instance();
+    DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
+    _pReport->SaveReport();
 }
 
-/****************************************************************************
-  Description: 在报告中加入一条新数据记录
-*****************************************************************************/
-void MainWindow::TofdSetting()
-{
-}
-
-#include "DopplerTofdOpp.h"
 void MainWindow::TofdDataPro(TOFD_PRO_STATUS proSt_)
 {
-        DopplerTofdOpp opp;
+    DopplerTofdOpp opp;
 
-        if(proSt_ == TOFD_PRO_REPEAL)
-        {
+    if(proSt_ == TOFD_PRO_REPEAL){
         opp.TofdDataProRepeal(m_iCurGroup);
-        }
-        else if(proSt_ == TOFD_PRO_REDO)
-        {
+    }else if(proSt_ == TOFD_PRO_REDO){
         opp.TofdDataProRedo(m_iCurGroup);
+    }else{
+        if(opp.TofdDragProStart(m_iCurGroup, proSt_) < 0){
+            opp.TofdDataProStart(m_iCurGroup, proSt_, NULL);
+            opp.TofdDataToShadow(m_iCurGroup);
         }
-        else
-        {
-        if(opp.TofdDragProStart(m_iCurGroup, proSt_) < 0)
-        {
-                opp.TofdDataProStart(m_iCurGroup, proSt_, NULL);
-                opp.TofdDataToShadow(m_iCurGroup);
-        }
-        }
-        RunDrawThreadOnce(false);
+    }
+
+    RunDrawThreadOnce(false);
 }
 
 void MainWindow::DefectSign(DEFECT_SIGN_TYPE signType_)
 {
-        DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
-        int _ret = _pConfig->DefectSign(m_iCurGroup, signType_);
-        if(_ret >= 0) {
-                if(_ret == 3) {
-                        ProcessDisplay _process ;
-                        //GROUP_CONFIG* _pGroup = &_pConfig->group[m_iCurGroup] ;
-                        DopplerGroupTab* _pLeftGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
-                        _pLeftGroup->UpdateDefectBox();
-                        _pLeftGroup->UpdateDefectValue() ;
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    int _ret = _pConfig->DefectSign(m_iCurGroup, signType_);
 
-                        int _index = _pConfig->m_dfParam[m_iCurGroup].index;
-                        //bool _bTmp = _pGroup->bShowDefect;
-                        //_pGroup->bShowDefect = false;
-                        _pConfig->m_nCutBmpNo[m_iCurGroup] = _index+1;
-                        _process.UpdateAllViewCursorOfGroup(m_iCurGroup) ;
-                        //RunDrawThreadOnce(true);
-                        sleep(400);
+    if(_ret >= 0) {
+        if(_ret == 3) {
+            ProcessDisplay _process;
+            //GROUP_CONFIG* _pGroup = &_pConfig->group[m_iCurGroup];
+            DopplerGroupTab* _pLeftGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+            _pLeftGroup->UpdateDefectBox();
+            _pLeftGroup->UpdateDefectValue();
 
-                        DEFECT_INFO* _pDfInfo = _pConfig->GetDefectPointer(m_iCurGroup, _index);
-                        QString _strPath = _pConfig->m_szDefectPathName + QString(tr("/")) + QString(tr(_pDfInfo->srtImageName)) + QString(tr(".png"));
-                        SaveCurScreenshot(_strPath);
-                        sleep(200);
-                        //_pGroup->bShowDefect = _bTmp;
-                        _pConfig->m_nCutBmpNo[m_iCurGroup] = 0;
-                        _process.UpdateAllViewCursorOfGroup(m_iCurGroup) ;
-                }
-                RunDrawThreadOnce(false);
+            int _index = _pConfig->m_dfParam[m_iCurGroup].index;
+            //bool _bTmp = _pGroup->bShowDefect;
+            //_pGroup->bShowDefect = false;
+            _pConfig->m_nCutBmpNo[m_iCurGroup] = _index+1;
+            _process.UpdateAllViewCursorOfGroup(m_iCurGroup);
+            //RunDrawThreadOnce(true);
+            sleep(400);
+
+            DEFECT_INFO* _pDfInfo = _pConfig->GetDefectPointer(m_iCurGroup, _index);
+            QString _strPath = _pConfig->m_szDefectPathName + QString(tr("/")) + QString(tr(_pDfInfo->srtImageName)) + QString(tr(".png"));
+            SaveCurScreenshot(_strPath);
+            sleep(200);
+            //_pGroup->bShowDefect = _bTmp;
+            _pConfig->m_nCutBmpNo[m_iCurGroup] = 0;
+            _process.UpdateAllViewCursorOfGroup(m_iCurGroup);
         }
+
+        RunDrawThreadOnce(false);
+    }
 }
 
 /****************************************************************************
@@ -1006,123 +1000,126 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
 void MainWindow::slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_)
 {
-        m_bCursorSel = !m_bCursorSel;
+    m_bCursorSel = !m_bCursorSel;
 
-        int _nGroupId , _nLawId , _nDisplay  ;
-        pView_->GetDataViewConfigure( &_nGroupId ,  &_nLawId ,  &_nDisplay);
-        setup_DISPLAY_MODE _eMode = (setup_DISPLAY_MODE)_nDisplay  ;
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-        GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
+    int _nGroupId, _nLawId, _nDisplay;
+    pView_->GetDataViewConfigure(&_nGroupId, &_nLawId, &_nDisplay);
 
-        bool  _bScanPosSync = false;
-        float _fSyncData = 0;
+    setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_nDisplay;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
 
-        switch(_eMode)
-        {
-        case  setup_DISPLAY_MODE_A_H:
-                if(m_bCursorSel) {
-                        _group.afCursor[setup_CURSOR_A_REF ] = pos_.y()  ;
-                        _group.afCursor[setup_CURSOR_U_REF ] = pos_.x()  ;
-                } else {
-                        _group.afCursor[setup_CURSOR_A_MES ] = pos_.y()  ;
-                        _group.afCursor[setup_CURSOR_U_MES ] = pos_.x()  ;
-                }
-                break;
-        case  setup_DISPLAY_MODE_A_V:
-                if(m_bCursorSel) {
-                        _group.afCursor[setup_CURSOR_A_REF ] = pos_.x()  ;
-                        _group.afCursor[setup_CURSOR_U_REF ] = pos_.y()  ;
-                } else {
-                        _group.afCursor[setup_CURSOR_A_MES ] = pos_.x()  ;
-                        _group.afCursor[setup_CURSOR_U_MES ] = pos_.y()  ;
-                }
-                break;
-        case  setup_DISPLAY_MODE_B_H:
-                if(m_bCursorSel) {
-                        _group.afCursor[setup_CURSOR_S_REF ] = pos_.y()  ;
-                        _group.afCursor[setup_CURSOR_U_REF ] = pos_.x()  ;
-                } else {
-                        _group.afCursor[setup_CURSOR_S_MES ] = pos_.y()  ;
-                        _group.afCursor[setup_CURSOR_U_MES ] = pos_.x()  ;
-                }
-                _fSyncData = pos_.y();
-                _bScanPosSync = true;
-                break;
-        case setup_DISPLAY_MODE_B_V:
-                if(m_bCursorSel) {
-                        _group.afCursor[setup_CURSOR_S_REF ] = pos_.x()  ;
-                        _group.afCursor[setup_CURSOR_U_REF ] = pos_.y()  ;
-                } else {
-                        _group.afCursor[setup_CURSOR_S_MES ] = pos_.x()  ;
-                        _group.afCursor[setup_CURSOR_U_MES ] = pos_.y()  ;
-                }
-                _fSyncData = pos_.x();
-                _bScanPosSync = true;
-                break;
-        case setup_DISPLAY_MODE_C_H:
-        case setup_DISPLAY_MODE_CC_H:
-                if(m_bCursorSel) {
-                        _group.afCursor[setup_CURSOR_S_REF ] = pos_.x()  ;
-                        _group.afCursor[setup_CURSOR_VPA_REF ] = pos_.y()  ;
-                } else {
-                        _group.afCursor[setup_CURSOR_S_MES ] = pos_.x()  ;
-                        _group.afCursor[setup_CURSOR_VPA_MES ] = pos_.y()  ;
-                }
-                _fSyncData = pos_.x();
-                _bScanPosSync = true;
-                break;
-        case setup_DISPLAY_MODE_C_V:
-        case setup_DISPLAY_MODE_CC_V:
-                if(m_bCursorSel) {
-                        _group.afCursor[setup_CURSOR_S_REF ] = pos_.y()  ;
-                        _group.afCursor[setup_CURSOR_VPA_REF ] = pos_.x()  ;
-                } else {
-                        _group.afCursor[setup_CURSOR_S_MES ] = pos_.y()  ;
-                        _group.afCursor[setup_CURSOR_VPA_MES ] = pos_.x()  ;
-                }
-                _fSyncData = pos_.y();
-                _bScanPosSync = true;
-                break;
-        case setup_DISPLAY_MODE_S_SOUNDPATH:
-                if(m_bCursorSel) {
-                        _group.afCursor[setup_CURSOR_U_REF ] = pos_.x()  ;
-                } else {
-                        _group.afCursor[setup_CURSOR_U_MES ] = pos_.x()  ;
-                }
-                break;
-        case setup_DISPLAY_MODE_S_ATHUMIZ:
-        case setup_DISPLAY_MODE_S_LINEAR:
-                if(m_bCursorSel) {
-                        _group.afCursor[setup_CURSOR_U_REF ] = pos_.y()  ;
-                        _group.afCursor[setup_CURSOR_I_REF ] = pos_.x()  ;
-                } else {
-                        _group.afCursor[setup_CURSOR_U_MES ] = pos_.y()  ;
-                        _group.afCursor[setup_CURSOR_I_MES ] = pos_.x()  ;
-                }
-                break;
-        default:
-                break;
-        };
+    bool _bScanPosSync = false;
+    float _fSyncData = 0;
 
-        if(_pConfig->AppEvn.bSAxisCursorSync) {
-                if(_bScanPosSync) {
-                        ParameterProcess* _process = ParameterProcess::Instance();
-                        _process->SetupScanPos(_fSyncData);
-                        for(int i = 0; i < _pConfig->common.nGroupQty; i++) {
-                                if(m_bCursorSel) {
-                                        _pConfig->group[i].afCursor[setup_CURSOR_S_REF] = _fSyncData;
-                                } else {
-                                        _pConfig->group[i].afCursor[setup_CURSOR_S_MES] = _fSyncData;
-                                }
-                        }
-                }
+    switch(_eMode){
+    case setup_DISPLAY_MODE_A_H:
+        if(m_bCursorSel) {
+            _group.afCursor[setup_CURSOR_A_REF] = pos_.y();
+            _group.afCursor[setup_CURSOR_U_REF] = pos_.x();
+        } else {
+            _group.afCursor[setup_CURSOR_A_MES] = pos_.y();
+            _group.afCursor[setup_CURSOR_U_MES] = pos_.x();
+        }
+        break;
+    case setup_DISPLAY_MODE_A_V:
+        if(m_bCursorSel) {
+            _group.afCursor[setup_CURSOR_A_REF] = pos_.x();
+            _group.afCursor[setup_CURSOR_U_REF] = pos_.y();
+        } else {
+            _group.afCursor[setup_CURSOR_A_MES] = pos_.x();
+            _group.afCursor[setup_CURSOR_U_MES] = pos_.y();
+        }
+        break;
+    case setup_DISPLAY_MODE_B_H:
+        if(m_bCursorSel) {
+            _group.afCursor[setup_CURSOR_S_REF] = pos_.y();
+            _group.afCursor[setup_CURSOR_U_REF] = pos_.x();
+        } else {
+            _group.afCursor[setup_CURSOR_S_MES] = pos_.y();
+            _group.afCursor[setup_CURSOR_U_MES] = pos_.x();
         }
 
-        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
-        _pGroup->UpdateCursorValue();
-        ProcessDisplay _process ;
-        _process.UpdateAllViewCursorOfGroup(_nGroupId) ;
-        RunDrawThreadOnce(true);
+        _fSyncData = pos_.y();
+        _bScanPosSync = true;
+        break;
+    case setup_DISPLAY_MODE_B_V:
+        if(m_bCursorSel) {
+            _group.afCursor[setup_CURSOR_S_REF] = pos_.x();
+            _group.afCursor[setup_CURSOR_U_REF] = pos_.y();
+        } else {
+            _group.afCursor[setup_CURSOR_S_MES] = pos_.x();
+            _group.afCursor[setup_CURSOR_U_MES] = pos_.y();
+        }
+
+        _fSyncData = pos_.x();
+        _bScanPosSync = true;
+        break;
+    case setup_DISPLAY_MODE_C_H:
+    case setup_DISPLAY_MODE_CC_H:
+        if(m_bCursorSel) {
+            _group.afCursor[setup_CURSOR_S_REF] = pos_.x();
+            _group.afCursor[setup_CURSOR_VPA_REF] = pos_.y();
+        } else {
+            _group.afCursor[setup_CURSOR_S_MES] = pos_.x();
+            _group.afCursor[setup_CURSOR_VPA_MES] = pos_.y();
+        }
+        _fSyncData = pos_.x();
+        _bScanPosSync = true;
+        break;
+    case setup_DISPLAY_MODE_C_V:
+    case setup_DISPLAY_MODE_CC_V:
+        if(m_bCursorSel) {
+            _group.afCursor[setup_CURSOR_S_REF] = pos_.y();
+            _group.afCursor[setup_CURSOR_VPA_REF] = pos_.x();
+        } else {
+            _group.afCursor[setup_CURSOR_S_MES] = pos_.y();
+            _group.afCursor[setup_CURSOR_VPA_MES] = pos_.x();
+        }
+        _fSyncData = pos_.y();
+        _bScanPosSync = true;
+        break;
+    case setup_DISPLAY_MODE_S_SOUNDPATH:
+        if(m_bCursorSel) {
+            _group.afCursor[setup_CURSOR_U_REF] = pos_.x();
+        } else {
+            _group.afCursor[setup_CURSOR_U_MES] = pos_.x();
+        }
+        break;
+    case setup_DISPLAY_MODE_S_ATHUMIZ:
+    case setup_DISPLAY_MODE_S_LINEAR:
+        if(m_bCursorSel) {
+            _group.afCursor[setup_CURSOR_U_REF] = pos_.y();
+            _group.afCursor[setup_CURSOR_I_REF] = pos_.x();
+        } else {
+            _group.afCursor[setup_CURSOR_U_MES] = pos_.y();
+            _group.afCursor[setup_CURSOR_I_MES] = pos_.x();
+        }
+        break;
+    default:
+        break;
+    };
+
+    if(_pConfig->AppEvn.bSAxisCursorSync) {
+        if(_bScanPosSync) {
+            ParameterProcess* _process = ParameterProcess::Instance();
+            _process->SetupScanPos(_fSyncData);
+
+            for(int i = 0; i < _pConfig->common.nGroupQty; i++) {
+                if(m_bCursorSel) {
+                    _pConfig->group[i].afCursor[setup_CURSOR_S_REF] = _fSyncData;
+                } else {
+                    _pConfig->group[i].afCursor[setup_CURSOR_S_MES] = _fSyncData;
+                }
+            }
+        }
+    }
+
+    DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
+    _pGroup->UpdateCursorValue();
+    ProcessDisplay _process;
+    _process.UpdateAllViewCursorOfGroup(_nGroupId);
+    RunDrawThreadOnce(true);
 }
 
 void MainWindow::on_actionNew_Config_triggered()

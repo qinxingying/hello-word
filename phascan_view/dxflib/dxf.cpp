@@ -59,7 +59,8 @@ static Dxf *_dxf_parse_file(Dxfile *f, const DxfSectionFlag parseFlag)
         /*解析TABLES段*/
         DxfTables *t = dxf_tables_parse(f);
         if (NULL == t) {
-            c_log_err("tables parse failed");
+            qDebug()<<"DxfHeader Error : "<<"tables parse failed";
+          //  c_log_err("tables parse failed");
             goto PARSE_FAILED;
         }
         dxf->tables = t;
@@ -73,7 +74,8 @@ static Dxf *_dxf_parse_file(Dxfile *f, const DxfSectionFlag parseFlag)
         /*解析ENTITIES段*/
         DxfEntities *e = dxf_entities_parse(f);
         if (NULL == e) {
-            c_log_err("entities parse failed");
+            qDebug()<<"DxfHeader Error : "<<"entities parse failed";
+          //  c_log_err("entities parse failed");
             goto PARSE_FAILED;
         }
         dxf->entities = e;

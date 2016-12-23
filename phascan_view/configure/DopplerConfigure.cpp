@@ -139,7 +139,7 @@ void DopplerConfigure::OpenEvn()
     QString g_strDataFilePath = QDir::currentPath() + "/data";
     QString g_strPartDir = QDir::currentPath() + "/init/part/";
     QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
-    qDebug()<<"openPath = "<<_strPathName;
+
     QFile file(_strPathName);
 	file.open (QIODevice::ReadOnly);
 	QDataStream reader(&file);
@@ -236,7 +236,6 @@ void DopplerConfigure::SaveEvn()
 	}
 
     QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
-    qDebug()<<"savePath = "<<_strPathName;
 	QFile file(_strPathName);
 	file.open (QIODevice::WriteOnly);
 	QDataStream write(&file);

@@ -30,7 +30,7 @@ struct STATUS_BAR_INFO
     int nBatery1;
     int nBatery2;
     int nTmperature;
-} ;
+};
 
 namespace Ui {
 class MainWindow;
@@ -83,7 +83,6 @@ protected:
     void ReportSetting();
     void ReportSave();
 
-    void TofdSetting();
     void TofdDataPro(TOFD_PRO_STATUS proSt_);
 
     void DefectSign(DEFECT_SIGN_TYPE signType_);
@@ -113,7 +112,7 @@ private:
     int  m_nAlloff;
     bool m_bCursorSel;
     bool m_chineseFlag;
-    bool m_bParamBackMode; //Qt::BGMode m_paramBackMode;
+    bool m_bParamBackMode;
 
 signals:
     void setPixmap(QPixmap pixmap);
@@ -125,7 +124,6 @@ private slots:
     void SetDispTabText();
     void slotRightTabRightButtonDoubleClicked(int nId_);
     void slotViewFrameButtonClicked(QWidget* );
-    //void slotViewFrameMenuSelection(DopplerDataView* , int);
     void slotCurrentGroupChanged(int);
     void slotCurrentDispChanged(int);
     void slotItemMoved(DopplerDataView* , DopplerGraphicsItem*);

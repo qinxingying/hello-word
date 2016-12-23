@@ -23,7 +23,7 @@ include(configure/configure.pri)
 include(process/process.pri)
 include(draw_scan/draw_scan.pri)
 include(doppler_view/doppler_view.pri)
-include(dxflib/dxflib.pri)
+#include(dxflib/dxflib.pri)
 
 SOURCES += main.cpp
 

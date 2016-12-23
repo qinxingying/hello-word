@@ -5,7 +5,6 @@
 #include <QFileDialog>
 #include <QDir.h>
 #include <QStandardItem>
-#include <QDebug>
 
 DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 	QDialog(parent),
@@ -19,7 +18,7 @@ DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
     m_pConfig = DopplerConfigure::Instance();
 
 	SetPart();
-	UpdateWeld() ;
+    UpdateWeld();
 	ui->ExpoView->SerPart(&m_cPart);
 
 	ui->ExpoView->setAutoFillBackground(true);
@@ -53,15 +52,12 @@ void DialogWeldPartLoad::SetWndName()
 		char buf[256];
 		strcpy(buf, m_cPart.strPartFile);
 		CharFilter(buf, (char*)"/");
-		ui->LabelPartFileName->setText(QString(tr(buf)));
-        qDebug()<<"ui->LabelPartFileName = "<<buf;
+        ui->LabelPartFileName->setText(QString(tr(buf)));
 	}
-	ui->LabelPartFileName->setStyleSheet("border-width: 1px;   border-style: solid;   border-color: rgb(180, 180, 180);");
 
+	ui->LabelPartFileName->setStyleSheet("border-width: 1px;   border-style: solid;   border-color: rgb(180, 180, 180);");
     ui->ComWeldType->setCurrentIndex(m_cPart.weld.eType);
     ui->LabelPartFilePath->setText(QString(tr(m_pConfig->AppEvn.strNccFilePath)));
-
-    qDebug()<<"ui->LabelPartFilePath = "<<m_pConfig->AppEvn.strNccFilePath;
 }
 
 void DialogWeldPartLoad::SetDisplayMode(DISPLAY_MODE eMode_)

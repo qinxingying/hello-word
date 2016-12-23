@@ -40,7 +40,9 @@ static GHashTable *headerMap = NULL;
 
 void dxf_header_init()
 {
-    g_return_if_fail( headerMap == NULL );
+  //  g_return_if_fail( headerMap == NULL );
+    if(headerMap != NULL) return;
+
     headerMap = g_hash_table_new(g_str_hash, g_str_equal);
 
     g_hash_table_insert(headerMap, HEADER_ACADVER, header_acadver);

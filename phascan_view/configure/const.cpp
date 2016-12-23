@@ -1,6 +1,12 @@
 #include "gHeader.h"
 #include "const.h"
 
+#include <string.h>
+#include <qdatetime.h>
+#include <QCoreApplication>
+
+#include <stdio.h>
+
 const char* g_strMeasureFildName[][4] =
 {
 	{"None  "  , "None"} ,
@@ -101,12 +107,6 @@ const char* g_strMeasureFildUnit[][4] =
 	{"T-D(m-r)" , "mm"}
 };
 
-#include <string.h>
-#include <qdatetime.h>
-#include <QCoreApplication>
-
-#include <stdio.h>
-
 #ifndef QT_NO_DEBUG
 #include <QDir>
 #include <QMessageBox>
@@ -119,7 +119,6 @@ QString GetExePathName2(char* dir)
 	GetExePathName1(dir, _strPathName);
 	return QString(QObject::tr(_strPathName));
 }
-
 
 void GetExePathName1(char* dir, char* _strPathName)
 {
