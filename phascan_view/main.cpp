@@ -1,8 +1,6 @@
-#include <QApplication>
-#include <QTextCodec>
-
 #include "mainwindow.h"
-#include "const.h"
+
+#include <QApplication>
 
 MainWindow* g_pMainWnd = NULL;
 
@@ -16,12 +14,11 @@ int main(int argc, char *argv[])
     _mainWindow.showMaximized();
     _mainWindow.setMinimumSize(_mainWindow.width(), _mainWindow.height());
 
-    {
-        if(argc > 1) {
-            sleep(200);
-            if(argv[1]) {
-                _mainWindow.OpenFilePro(QString(QObject::tr(argv[1])));
-            }
+    if(argc > 1) {
+        sleep(200);
+
+        if(argv[1]) {
+            _mainWindow.OpenFilePro(QString(argv[1]));
         }
     }
 
