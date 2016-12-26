@@ -1,11 +1,10 @@
 #include "QWeldShowWidget.h"
+#include "gHeader.h"
+#include "DopplerPart.h"
+
 #include <QPainter>
 #include <QPen>
 #include <QPointF>
-#include <gHeader.h>
-#include <process/DopplerPart.h>
-
-
 
 QWeldShowWidget::QWeldShowWidget(QWidget *parent) :
 	QWidget(parent)
@@ -17,8 +16,8 @@ QWeldShowWidget::QWeldShowWidget(QWidget *parent) :
 
 void QWeldShowWidget::paintEvent (QPaintEvent* )
 {
-	QPainter _painter(this) ;
-	UpdateDisplayRangle() ;
+    QPainter _painter(this);
+    UpdateDisplayRangle();
 
 
 	QPen _pen = _painter.pen();
@@ -30,8 +29,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent* )
 
 	_painter.setRenderHint(QPainter::Antialiasing, true);
 
-	if(m_pPart->weld.eType == setup_WELD_NCC)
-	{
+    if(m_pPart->weld.eType == setup_WELD_NCC){
 		DRAW_PART_INFO _info;
 		DopplerPart* _pPart = DopplerPart::Instance();
 
@@ -59,9 +57,8 @@ void QWeldShowWidget::paintEvent (QPaintEvent* )
 		_painter.setPen(_NewPen);
 
 		_pPart->DrawOriginLine(_painter);
-	}
-	else
-	{
+
+    }else{
 		_painter.drawLine (0 , m_cRange.fStartY  , m_cRange.fWidth , m_cRange.fStartY );
 		_painter.drawLine (0 , m_cRange.fStopY   , m_cRange.fWidth , m_cRange.fStopY  );
 
@@ -86,20 +83,20 @@ void QWeldShowWidget::SerPart(PART_CONFIG* pInfo_)
 
 void  QWeldShowWidget::DrawWeld(QPainter& painter)
 {
-	if(!m_pPart) return  ;
-	switch (m_pPart->weld.eType)
-	{
+    if(!m_pPart) return;
+
+    switch (m_pPart->weld.eType){
 	case setup_WELD_I :
-		DrawWeldI(painter) ;
+        DrawWeldI(painter);
 		break;
 	case setup_WELD_V :
-		DrawWeldV(painter) ;
+        DrawWeldV(painter);
 		break;
 	case setup_WELD_DV :
-		DrawWeldDV(painter) ;
+        DrawWeldDV(painter);
 		break;
 	case setup_WELD_U :
-		DrawWeldU(painter) ;
+        DrawWeldU(painter);
 		break;
 /*	case setup_WELD_NCC :
 		{
@@ -125,35 +122,35 @@ void  QWeldShowWidget::DrawWeld(QPainter& painter)
 
 void  QWeldShowWidget::DrawWeldI(QPainter& painter)
 {
-	QPointF _pos[2] ;
+    QPointF _pos[2];
 	_pos[0].setX(m_pPart->weld.weland_offset);
 	_pos[0].setY(0);
 	_pos[1].setX(m_pPart->weld.weland_offset);
 	_pos[1].setY(m_pPart->weld.weland_height);
-	PositionTransfer(_pos[0]) ;
-	PositionTransfer(_pos[1]) ;
+    PositionTransfer(_pos[0]);
+    PositionTransfer(_pos[1]);
 
-	double _fOrgX = m_cRange.fWidth / 2  ;
-	double _fOrgY = m_cRange.fStartY	 ;
-	double _fX , _fY ;
-	if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT )
-	{
+    double _fOrgX = m_cRange.fWidth / 2;
+    double _fOrgY = m_cRange.fStartY;
+    double _fX, _fY ;
+
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT){
 		_fX = _fOrgX - _pos[0].x() ;
 		_fY = _fOrgY + _pos[1].y() ;
-		painter.drawLine( _fX , _fOrgY , _fX , _fY);
+        painter.drawLine( _fX, _fOrgY, _fX , _fY);
 	}
 
-	if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT )
-	{
-		_fX = _fOrgX + _pos[0].x() ;
-		_fY = _fOrgY + _pos[1].y() ;
-		painter.drawLine( _fX , _fOrgY , _fX , _fY);
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT){
+        _fX = _fOrgX + _pos[0].x();
+        _fY = _fOrgY + _pos[1].y();
+        painter.drawLine( _fX, _fOrgY, _fX, _fY);
 	}
 }
 
 void  QWeldShowWidget::DrawWeldV(QPainter& painter)
 {
-	QPointF _pos[3] ;
+    QPointF _pos[3];
+
 	_pos[0].setX(m_pPart->weld.weland_offset + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) * m_pPart->weld.fizone_height);
 	_pos[0].setY(0);
 	_pos[1].setX(m_pPart->weld.weland_offset);
@@ -161,37 +158,37 @@ void  QWeldShowWidget::DrawWeldV(QPainter& painter)
 	_pos[2].setX(m_pPart->weld.weland_offset);
 	_pos[2].setY(m_pPart->weld.fizone_height + m_pPart->weld.weland_height);
 
-	PositionTransfer(_pos[0]) ;
-	PositionTransfer(_pos[1]) ;
-	PositionTransfer(_pos[2]) ;
+    PositionTransfer(_pos[0]);
+    PositionTransfer(_pos[1]);
+    PositionTransfer(_pos[2]);
 
-	double _fOrgX = m_cRange.fWidth / 2  ;
-	double _fOrgY = m_cRange.fStartY	 ;
-	double _fXTop   , _fXWeldand ,  _fYFizone , _fYWeland ;
-	if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT )
-	{
-		_fXTop	 = _fOrgX - _pos[0].x() ;
-		_fXWeldand = _fOrgX - _pos[1].x() ;
-		_fYFizone  = _fOrgY + _pos[1].y() ;
-		_fYWeland  = _fOrgY + _pos[2].y() ;
-		painter.drawLine( _fXTop , _fOrgY , _fXWeldand , _fYFizone);
-		painter.drawLine( _fXWeldand , _fYFizone , _fXWeldand , _fYWeland);
+    double _fOrgX = m_cRange.fWidth / 2;
+    double _fOrgY = m_cRange.fStartY;
+    double _fXTop, _fXWeldand,  _fYFizone, _fYWeland;
+
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT){
+        _fXTop	 = _fOrgX - _pos[0].x();
+        _fXWeldand = _fOrgX - _pos[1].x();
+        _fYFizone  = _fOrgY + _pos[1].y();
+        _fYWeland  = _fOrgY + _pos[2].y();
+        painter.drawLine( _fXTop, _fOrgY, _fXWeldand, _fYFizone);
+        painter.drawLine( _fXWeldand, _fYFizone, _fXWeldand, _fYWeland);
 	}
 
-	if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT )
-	{
-		_fXTop	 = _fOrgX + _pos[0].x() ;
-		_fXWeldand = _fOrgX + _pos[1].x() ;
-		_fYFizone  = _fOrgY + _pos[1].y() ;
-		_fYWeland  = _fOrgY + _pos[2].y() ;
-		painter.drawLine( _fXTop , _fOrgY , _fXWeldand , _fYFizone);
-		painter.drawLine( _fXWeldand , _fYFizone , _fXWeldand , _fYWeland);
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT){
+        _fXTop = _fOrgX + _pos[0].x();
+        _fXWeldand = _fOrgX + _pos[1].x();
+        _fYFizone  = _fOrgY + _pos[1].y();
+        _fYWeland  = _fOrgY + _pos[2].y();
+        painter.drawLine( _fXTop, _fOrgY, _fXWeldand, _fYFizone);
+        painter.drawLine( _fXWeldand, _fYFizone, _fXWeldand, _fYWeland);
 	}
 }
 
 void  QWeldShowWidget::DrawWeldDV(QPainter& painter)
 {
-	QPointF _pos[4] ;
+    QPointF _pos[4];
+
 	_pos[0].setX(m_pPart->weld.weland_offset + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) * m_pPart->weld.fizone_height);
 	_pos[0].setY(0);
 	_pos[1].setX(m_pPart->weld.weland_offset);
@@ -206,54 +203,54 @@ void  QWeldShowWidget::DrawWeldDV(QPainter& painter)
 	PositionTransfer(_pos[2]) ;
 	PositionTransfer(_pos[3]) ;
 
-	double _fOrgX = m_cRange.fWidth / 2  ;
-	double _fOrgY = m_cRange.fStartY	 ;
-	double _fXTop   , _fXWeldand ,  _fYFizone , _fYWeland  , _fYBottom ;
-	if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT )
-	{
-		_fXTop	 = _fOrgX - _pos[0].x() ;
-		_fXWeldand = _fOrgX - _pos[1].x() ;
-		_fYFizone  = _fOrgY + _pos[1].y() ;
-		_fYWeland  = _fOrgY + _pos[2].y() ;
-		_fYBottom  = _fOrgY + _pos[3].y() ;
-		painter.drawLine( _fXTop , _fOrgY , _fXWeldand , _fYFizone);
-		painter.drawLine( _fXWeldand , _fYFizone , _fXWeldand , _fYWeland);
-		painter.drawLine( _fXWeldand , _fYWeland , _fXTop , _fYBottom);
+    double _fOrgX = m_cRange.fWidth / 2;
+    double _fOrgY = m_cRange.fStartY;
+    double _fXTop, _fXWeldand,  _fYFizone, _fYWeland, _fYBottom;
+
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT ){
+        _fXTop	 = _fOrgX - _pos[0].x();
+        _fXWeldand = _fOrgX - _pos[1].x();
+        _fYFizone  = _fOrgY + _pos[1].y();
+        _fYWeland  = _fOrgY + _pos[2].y();
+        _fYBottom  = _fOrgY + _pos[3].y();
+        painter.drawLine( _fXTop, _fOrgY, _fXWeldand, _fYFizone);
+        painter.drawLine( _fXWeldand, _fYFizone, _fXWeldand, _fYWeland);
+        painter.drawLine( _fXWeldand, _fYWeland, _fXTop, _fYBottom);
 	}
 
-	if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT )
-	{
-		_fXTop	 = _fOrgX + _pos[0].x() ;
-		_fXWeldand = _fOrgX + _pos[1].x() ;
-		_fYFizone  = _fOrgY + _pos[1].y() ;
-		_fYWeland  = _fOrgY + _pos[2].y() ;
-		_fYBottom  = _fOrgY + _pos[3].y() ;
-		painter.drawLine( _fXTop , _fOrgY , _fXWeldand , _fYFizone);
-		painter.drawLine( _fXWeldand , _fYFizone , _fXWeldand , _fYWeland);
-		painter.drawLine( _fXWeldand , _fYWeland , _fXTop , _fYBottom);
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT){
+        _fXTop	 = _fOrgX + _pos[0].x();
+        _fXWeldand = _fOrgX + _pos[1].x();
+        _fYFizone  = _fOrgY + _pos[1].y();
+        _fYWeland  = _fOrgY + _pos[2].y();
+        _fYBottom  = _fOrgY + _pos[3].y();
+        painter.drawLine( _fXTop, _fOrgY, _fXWeldand, _fYFizone);
+        painter.drawLine( _fXWeldand, _fYFizone, _fXWeldand, _fYWeland);
+        painter.drawLine( _fXWeldand, _fYWeland, _fXTop, _fYBottom);
 	}
 }
 
 void  QWeldShowWidget::DrawWeldU (QPainter& painter)
 {
-	if(m_pPart->weld.weland_offset >= m_pPart->weld.fizone_radius )
-	{
-		DrawWeldV(painter) ;
-		return ;
+    if(m_pPart->weld.weland_offset >= m_pPart->weld.fizone_radius){
+        DrawWeldV(painter);
+        return;
 	}
 
-	double _fFizoneAngle = DEGREE_TO_ARCH(m_pPart->weld.fizone_angle) ;
-	double _nTmpY2 = sin(_fFizoneAngle) * m_pPart->weld.fizone_radius  ;
-	double _nTmpY1 = sqrt(m_pPart->weld.fizone_radius * m_pPart->weld.fizone_radius - m_pPart->weld.weland_offset * m_pPart->weld.weland_offset );
-	if(_nTmpY2 > _nTmpY1)
-	{
-		DrawWeldV( painter ) ;
-		return ;
-	}
-	double _fPosX = cos(_fFizoneAngle) * m_pPart->weld.fizone_radius  ;
-	double _fPosY = m_pPart->weld.fizone_height - _nTmpY1 + _nTmpY2   ;
+    double _fFizoneAngle = DEGREE_TO_ARCH(m_pPart->weld.fizone_angle);
+    double _nTmpY2 = sin(_fFizoneAngle) * m_pPart->weld.fizone_radius;
+    double _nTmpY1 = sqrt(m_pPart->weld.fizone_radius * m_pPart->weld.fizone_radius
+                          - m_pPart->weld.weland_offset * m_pPart->weld.weland_offset);
 
-	QPointF _pos[4] ;
+    if(_nTmpY2 > _nTmpY1){
+        DrawWeldV( painter );
+        return;
+	}
+
+    double _fPosX = cos(_fFizoneAngle) * m_pPart->weld.fizone_radius;
+    double _fPosY = m_pPart->weld.fizone_height - _nTmpY1 + _nTmpY2;
+
+    QPointF _pos[4];
 	_pos[0].setX(_fPosX + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) * _fPosY);
 	_pos[0].setY(0);
 	_pos[1].setX(_fPosX);
@@ -264,96 +261,95 @@ void  QWeldShowWidget::DrawWeldU (QPainter& painter)
 	_pos[3].setY(m_pPart->weld.fizone_height + m_pPart->weld.weland_height);
 
 
-	double _fOrgX = m_cRange.fWidth / 2  ;
-	double _fOrgY = m_cRange.fStartY	 ;
-	QPointF _center ;
+    double _fOrgX = m_cRange.fWidth / 2;
+    double _fOrgY = m_cRange.fStartY;
+    QPointF _center;
 	_center.setX(m_pPart->weld.fizone_radius);
 	_center.setY(m_pPart->weld.fizone_height - _nTmpY1);
-	PositionTransfer(_center) ;
-	QRectF rectangle( _fOrgX - _center.x() , _fOrgY  + _center.y()  - _center.x()   ,_center.x() * 2,  _center.x() * 2 );
-	double _fAngleStart = (m_pPart->weld.fizone_angle + 180) * 16 ;
-	double _asine = ARCH_TO_DEGREE(asin(m_pPart->weld.weland_offset / m_pPart->weld.fizone_radius)) ;
+    PositionTransfer(_center);
+    QRectF rectangle(_fOrgX - _center.x(), _fOrgY + _center.y() - _center.x(), _center.x() * 2,  _center.x() * 2);
+    double _fAngleStart = (m_pPart->weld.fizone_angle + 180) * 16;
+    double _asine = ARCH_TO_DEGREE(asin(m_pPart->weld.weland_offset / m_pPart->weld.fizone_radius));
 	double _fAngleStop  = (270 - _asine ) * 16 - _fAngleStart ;
 
-	PositionTransfer(_pos[0]) ;
-	PositionTransfer(_pos[1]) ;
-	PositionTransfer(_pos[2]) ;
-	PositionTransfer(_pos[3]) ;
-	double _fXTop   , _fXFizone  , _fYFizone  , _fXWeland , _fYWeland , _fYBottom ;
-	if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT )
-	{
-		_fXTop	 = _fOrgX - _pos[0].x() ;
+    PositionTransfer(_pos[0]);
+    PositionTransfer(_pos[1]);
+    PositionTransfer(_pos[2]);
+    PositionTransfer(_pos[3]);
+    double _fXTop, _fXFizone, _fYFizone, _fXWeland, _fYWeland, _fYBottom;
+
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT){
+        _fXTop = _fOrgX - _pos[0].x() ;
 		_fXFizone  = _fOrgX - _pos[1].x() ;
 		_fYFizone  = _fOrgY + _pos[1].y() ;
 		_fXWeland  = _fOrgX - _pos[2].x() ;
 		_fYWeland  = _fOrgY + _pos[2].y() ;
 		_fYBottom  = _fOrgY + _pos[3].y() ;
-		painter.drawLine( _fXTop , _fOrgY , _fXFizone , _fYFizone);
-		painter.drawLine( _fXWeland , _fYWeland , _fXWeland , _fYBottom);
+        painter.drawLine(_fXTop, _fOrgY, _fXFizone, _fYFizone);
+        painter.drawLine(_fXWeland, _fYWeland, _fXWeland , _fYBottom);
 		painter.drawArc(rectangle, _fAngleStart, _fAngleStop);
 	}
 
-	if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT )
-	{
-		_fXTop	 = _fOrgX + _pos[0].x() ;
-		_fXFizone  = _fOrgX + _pos[1].x() ;
-		_fYFizone  = _fOrgY + _pos[1].y() ;
-		_fXWeland  = _fOrgX + _pos[2].x() ;
-		_fYWeland  = _fOrgY + _pos[2].y() ;
-		_fYBottom  = _fOrgY + _pos[3].y() ;
-		painter.drawLine( _fXTop , _fOrgY , _fXFizone , _fYFizone)		   ;
-		painter.drawLine( _fXWeland , _fYWeland , _fXWeland , _fYBottom)	 ;
-		painter.drawArc (rectangle, 180 * 16 - _fAngleStart, -_fAngleStop)   ;
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT){
+        _fXTop	 = _fOrgX + _pos[0].x();
+        _fXFizone  = _fOrgX + _pos[1].x();
+        _fYFizone  = _fOrgY + _pos[1].y();
+        _fXWeland  = _fOrgX + _pos[2].x();
+        _fYWeland  = _fOrgY + _pos[2].y();
+        _fYBottom  = _fOrgY + _pos[3].y();
+        painter.drawLine( _fXTop, _fOrgY, _fXFizone, _fYFizone);
+        painter.drawLine( _fXWeland, _fYWeland, _fXWeland, _fYBottom);
+        painter.drawArc (rectangle, 180 * 16 - _fAngleStart, -_fAngleStop);
 	}
 }
 
-void  QWeldShowWidget::UpdateDisplayRangle()
+void QWeldShowWidget::UpdateDisplayRangle()
 {
-	double _fWidth = (double) width()  ;
-	double _fHeight= (double) height() ;
+    double _fWidth = (double) width();
+    double _fHeight= (double) height();
 	m_cRange.fWidth	 = _fWidth;
 	m_cRange.fHeight	= _fHeight;
-	m_cRange.fPixelSize = m_fThickness * 3 / (2 * _fHeight)  ;
+    m_cRange.fPixelSize = m_fThickness * 3 / (2 * _fHeight);
 	m_cRange.fStartY	= _fHeight / 6 ;
 	m_cRange.fStopY	 = _fHeight * 5 / 6 ;
 	if(!m_pPart)		return ;
 
-	double _fDefaultWidth = 3 * _fWidth * m_fThickness / (3 * _fHeight) ;
-	_fDefaultWidth /=  3.0 ;
-	switch (m_pPart->weld.eType)
-	{
+    double _fDefaultWidth = 3 * _fWidth * m_fThickness / (3 * _fHeight);
+    _fDefaultWidth /=  3.0;
+
+    switch (m_pPart->weld.eType){
 	case setup_WELD_I :
-		if(m_pPart->weld.weland_offset > _fDefaultWidth)
-		{
-			m_cRange.fPixelSize = m_pPart->weld.weland_offset * 3 / _fWidth	  ;
-			double _fThickness  = m_fThickness / (2 * m_cRange.fPixelSize)  ;
-			m_cRange.fStartY	= _fHeight / 2 - _fThickness  ;
-			m_cRange.fStopY	 = _fHeight / 2 + _fThickness  ;
+        if(m_pPart->weld.weland_offset > _fDefaultWidth){
+            m_cRange.fPixelSize = m_pPart->weld.weland_offset * 3 / _fWidth;
+            double _fThickness = m_fThickness / (2 * m_cRange.fPixelSize);
+            m_cRange.fStartY = _fHeight / 2 - _fThickness;
+            m_cRange.fStopY	 = _fHeight / 2 + _fThickness;
 		}
 		break;
 	case setup_WELD_V :
 	case setup_WELD_DV:
 	{
-		double _fMaxWidth = m_pPart->weld.weland_offset + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) * m_pPart->weld.fizone_height  ;
-		if(_fMaxWidth > _fDefaultWidth)
-		{
-			m_cRange.fPixelSize = _fMaxWidth * 3 / _fWidth	  ;
-			double _fThickness  = m_fThickness / (2 * m_cRange.fPixelSize)  ;
-			m_cRange.fStartY	= _fHeight / 2 - _fThickness  ;
-			m_cRange.fStopY	 = _fHeight / 2 + _fThickness  ;
+        double _fMaxWidth = m_pPart->weld.weland_offset
+                          + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) * m_pPart->weld.fizone_height;
+
+        if(_fMaxWidth > _fDefaultWidth){
+            m_cRange.fPixelSize = _fMaxWidth * 3 / _fWidth;
+            double _fThickness  = m_fThickness / (2 * m_cRange.fPixelSize);
+            m_cRange.fStartY	= _fHeight / 2 - _fThickness;
+            m_cRange.fStopY	 = _fHeight / 2 + _fThickness;
 		}
 	}
 		break;
 	case setup_WELD_U :
 	{
-		double _fAngle = DEGREE_TO_ARCH(m_pPart->weld.fizone_angle) ;
-		double _fMaxWidth = m_pPart->weld.fizone_radius * cos(_fAngle) + tan(_fAngle) * m_pPart->weld.fizone_height  ;
-		if(_fMaxWidth > _fDefaultWidth)
-		{
-			m_cRange.fPixelSize = _fMaxWidth * 3 / _fWidth	  ;
-			double _fThickness  = m_fThickness / (2 * m_cRange.fPixelSize)  ;
-			m_cRange.fStartY	= _fHeight / 2 - _fThickness  ;
-			m_cRange.fStopY	 = _fHeight / 2 + _fThickness  ;
+        double _fAngle = DEGREE_TO_ARCH(m_pPart->weld.fizone_angle);
+        double _fMaxWidth = m_pPart->weld.fizone_radius * cos(_fAngle) + tan(_fAngle) * m_pPart->weld.fizone_height;
+
+        if(_fMaxWidth > _fDefaultWidth){
+            m_cRange.fPixelSize = _fMaxWidth * 3 / _fWidth;
+            double _fThickness = m_fThickness / (2 * m_cRange.fPixelSize);
+            m_cRange.fStartY = _fHeight / 2 - _fThickness;
+            m_cRange.fStopY	 = _fHeight / 2 + _fThickness;
 		}
 	}
 		break;
@@ -364,8 +360,8 @@ void  QWeldShowWidget::UpdateDisplayRangle()
 
 void  QWeldShowWidget::PositionTransfer(QPointF& pos_)
 {
-	double _fX = pos_.x() / m_cRange.fPixelSize ;
-	double _fY = pos_.y() / m_cRange.fPixelSize ;
+    double _fX = pos_.x() / m_cRange.fPixelSize;
+    double _fY = pos_.y() / m_cRange.fPixelSize;
 
 	pos_.setX(_fX);
 	pos_.setY(_fY);
