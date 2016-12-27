@@ -13,16 +13,14 @@ QWeldShowWidget::QWeldShowWidget(QWidget *parent) :
 	m_fThickness = 20;
 }
 
-
-void QWeldShowWidget::paintEvent (QPaintEvent* )
+void QWeldShowWidget::paintEvent (QPaintEvent*)
 {
     QPainter _painter(this);
     UpdateDisplayRangle();
 
-
 	QPen _pen = _painter.pen();
 
-	QPen _NewPen(_pen) ;
+    QPen _NewPen(_pen);
 	_NewPen.setWidth(2);
 	_NewPen.setColor(QColor(255, 0, 0));
 	_painter.setPen(_NewPen);
@@ -44,13 +42,10 @@ void QWeldShowWidget::paintEvent (QPaintEvent* )
 		_pPart->SetInfo(_info);
 		_pPart->AdaptiveArea();
 
-		//QPainterPath _path ;
-		//_pPart->DrawNccPart(_path);
-		//_painter.drawPath(_path);
 		_pPart->DrawNccPart(_painter);
 
 		QVector<qreal> dashes;
-		dashes << 3 << 5  ;
+        dashes << 3 << 5;
 		_NewPen.setWidth(1);
 		_NewPen.setDashPattern(dashes);
 		_NewPen.setColor(QColor(0, 0, 255));
@@ -59,18 +54,18 @@ void QWeldShowWidget::paintEvent (QPaintEvent* )
 		_pPart->DrawOriginLine(_painter);
 
     }else{
-		_painter.drawLine (0 , m_cRange.fStartY  , m_cRange.fWidth , m_cRange.fStartY );
-		_painter.drawLine (0 , m_cRange.fStopY   , m_cRange.fWidth , m_cRange.fStopY  );
+        _painter.drawLine (0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
+        _painter.drawLine (0, m_cRange.fStopY, m_cRange.fWidth, m_cRange.fStopY);
 
-		DrawWeld(_painter) ;
+        DrawWeld(_painter);
 
 		QVector<qreal> dashes;
-		dashes << 3 << 5  ;
+        dashes << 3 << 5;
 		_NewPen.setWidth(1);
 		_NewPen.setDashPattern(dashes);
 		_NewPen.setColor(QColor(0, 0, 255));
 		_painter.setPen(_NewPen);
-		_painter.drawLine (m_cRange.fWidth / 2 , 0  , m_cRange.fWidth / 2 , m_cRange.fHeight );
+        _painter.drawLine (m_cRange.fWidth / 2, 0, m_cRange.fWidth / 2, m_cRange.fHeight);
 	}
 	_painter.setPen(_pen);
 }
@@ -81,7 +76,7 @@ void QWeldShowWidget::SerPart(PART_CONFIG* pInfo_)
 	m_fThickness = m_pPart->afSize[0];
 }
 
-void  QWeldShowWidget::DrawWeld(QPainter& painter)
+void QWeldShowWidget::DrawWeld(QPainter& painter)
 {
     if(!m_pPart) return;
 
@@ -98,29 +93,12 @@ void  QWeldShowWidget::DrawWeld(QPainter& painter)
 	case setup_WELD_U :
         DrawWeldU(painter);
 		break;
-/*	case setup_WELD_NCC :
-		{
-			DRAW_PART_INFO _info;
-			DopplerPart* _pPart = DopplerPart::Instance();
-
-			_info.fX = m_cRange.fWidth / 2;
-			_info.fY = m_cRange.fStartY;
-			_info.fScaleX = m_cRange.fPixelSize;
-			_info.fScaleY = m_cRange.fPixelSize;
-
-			_pPart->SetPart(m_pPart);
-			_pPart->SetInfo(_info);
-			_pPart->DrawNccPart(painter);
-		}
-		break;*/
 	default:
 		break;
 	}
-
 }
 
-
-void  QWeldShowWidget::DrawWeldI(QPainter& painter)
+void QWeldShowWidget::DrawWeldI(QPainter& painter)
 {
     QPointF _pos[2];
 	_pos[0].setX(m_pPart->weld.weland_offset);
@@ -147,7 +125,7 @@ void  QWeldShowWidget::DrawWeldI(QPainter& painter)
 	}
 }
 
-void  QWeldShowWidget::DrawWeldV(QPainter& painter)
+void QWeldShowWidget::DrawWeldV(QPainter& painter)
 {
     QPointF _pos[3];
 
@@ -185,7 +163,7 @@ void  QWeldShowWidget::DrawWeldV(QPainter& painter)
 	}
 }
 
-void  QWeldShowWidget::DrawWeldDV(QPainter& painter)
+void QWeldShowWidget::DrawWeldDV(QPainter& painter)
 {
     QPointF _pos[4];
 
@@ -198,16 +176,16 @@ void  QWeldShowWidget::DrawWeldDV(QPainter& painter)
 	_pos[3].setX(m_pPart->weld.weland_offset + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) * m_pPart->weld.fizone_height);
 	_pos[3].setY(m_pPart->weld.fizone_height * 2 + m_pPart->weld.weland_height);
 
-	PositionTransfer(_pos[0]) ;
-	PositionTransfer(_pos[1]) ;
-	PositionTransfer(_pos[2]) ;
-	PositionTransfer(_pos[3]) ;
+    PositionTransfer(_pos[0]);
+    PositionTransfer(_pos[1]);
+    PositionTransfer(_pos[2]);
+    PositionTransfer(_pos[3]);
 
     double _fOrgX = m_cRange.fWidth / 2;
     double _fOrgY = m_cRange.fStartY;
     double _fXTop, _fXWeldand,  _fYFizone, _fYWeland, _fYBottom;
 
-    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT ){
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT){
         _fXTop	 = _fOrgX - _pos[0].x();
         _fXWeldand = _fOrgX - _pos[1].x();
         _fYFizone  = _fOrgY + _pos[1].y();
@@ -230,7 +208,7 @@ void  QWeldShowWidget::DrawWeldDV(QPainter& painter)
 	}
 }
 
-void  QWeldShowWidget::DrawWeldU (QPainter& painter)
+void QWeldShowWidget::DrawWeldU (QPainter& painter)
 {
     if(m_pPart->weld.weland_offset >= m_pPart->weld.fizone_radius){
         DrawWeldV(painter);
@@ -358,7 +336,7 @@ void QWeldShowWidget::UpdateDisplayRangle()
 	}
 }
 
-void  QWeldShowWidget::PositionTransfer(QPointF& pos_)
+void QWeldShowWidget::PositionTransfer(QPointF& pos_)
 {
     double _fX = pos_.x() / m_cRange.fPixelSize;
     double _fY = pos_.y() / m_cRange.fPixelSize;

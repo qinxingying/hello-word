@@ -37,9 +37,7 @@
 
 #include "iostream"
 
-/**
- * Default constructor.
- */
+/* Default constructor */
 DL_Dxf::DL_Dxf() {
     version = DL_VERSION_2000;
 
@@ -67,11 +65,7 @@ DL_Dxf::DL_Dxf() {
     leaderVertexIndex = 0;
 }
 
-
-
-/**
- * Destructor.
- */
+/* Destructor*/
 DL_Dxf::~DL_Dxf() {
     if (vertices!=NULL) {
         delete[] vertices;
@@ -121,7 +115,6 @@ bool DL_Dxf::in(const std::string& file, DL_CreationInterface* creationInterface
 
     return false;
 }
-
 
 
 /**
@@ -5244,7 +5237,4 @@ void DL_Dxf::test() {
     std::cout << "1 buf6: '" << buf6 << "'\n";
     stripWhiteSpace(&buf6);
     std::cout << "2 buf6: '" << buf6 << "'\n";
-
 }
-
-

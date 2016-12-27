@@ -16,7 +16,7 @@ class DialogWeldPartLoad : public QDialog
     Q_OBJECT
 
 public:
-    DialogWeldPartLoad(QWidget *parent = 0 , int nGroupId_ = 0);
+    DialogWeldPartLoad(QWidget *parent = 0, int nGroupId_ = 0);
     ~DialogWeldPartLoad();
 
 	PART_CONFIG* GetPart();
@@ -24,18 +24,18 @@ public:
 protected:
     enum DISPLAY_MODE
     {
-        DISPLAY_WELD  = 0,
+        DISPLAY_WELD = 0,
         DISPLAY_PART
     };
 
     void SetWndName();
-    void SetDisplayMode(DISPLAY_MODE eMode_)   ;
+    void SetDisplayMode(DISPLAY_MODE eMode_);
 
 	void ListPartFiles();
 	void SetPart();
 
 	void UpdateWeld();
-    void UpdateDisplay() ;
+    void UpdateDisplay();
 
 private slots:
     void on_comboBox_currentIndexChanged(int index);
@@ -55,8 +55,8 @@ private:
 	Ui::DialogWeldPartLoad *ui;
     DISPLAY_MODE m_eDisplay;
 	PART_CONFIG m_cPart;
-    int    m_nGroupId;
-    int    m_nWeldPartSel;
+    int m_nGroupId;
+    int m_nWeldPartSel;
 };
 
 #endif // DIALOGWELDPARTLOAD_H

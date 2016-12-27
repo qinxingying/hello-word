@@ -120,14 +120,14 @@ void DialogWeldPartLoad::ListPartFiles()
 
 void DialogWeldPartLoad::SetPart()
 {
-	ParameterProcess* _process = ParameterProcess::Instance() ;
-	PART_CONFIG* _pPart = _process->GetPart(m_nGroupId) ;
-	memcpy((void*)&m_cPart , (void*)_pPart, sizeof(PART_CONFIG))  ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    PART_CONFIG* _pPart = _process->GetPart(m_nGroupId);
+    memcpy((void*)&m_cPart, (void*)_pPart, sizeof(PART_CONFIG));
 }
 
 PART_CONFIG* DialogWeldPartLoad::GetPart()
 {
-	return &m_cPart ;
+    return &m_cPart;
 }
 
 void DialogWeldPartLoad::UpdateWeld()
@@ -199,30 +199,30 @@ void DialogWeldPartLoad::UpdateDisplay()
 
 void DialogWeldPartLoad::on_comboBox_currentIndexChanged(int index)
 {
-	if(!ui->comboBox->hasFocus())  return ;
+    if(!ui->comboBox->hasFocus())  return;
 	m_nWeldPartSel = index;
-	SetDisplayMode((DISPLAY_MODE)m_nWeldPartSel) ;
+    SetDisplayMode((DISPLAY_MODE)m_nWeldPartSel);
 }
 
 void DialogWeldPartLoad::on_ComWeldType_currentIndexChanged(int index)
 {
-	if(!ui->ComWeldType->hasFocus())  return ;
-	m_cPart.weld.eType = (setup_WELD_TYPE) index  ;
-	UpdateDisplay() ;
+    if(!ui->ComWeldType->hasFocus())  return;
+    m_cPart.weld.eType = (setup_WELD_TYPE) index;
+    UpdateDisplay();
 }
 
 void DialogWeldPartLoad::on_ComWeldSymetry_currentIndexChanged(int index)
 {
-	if(!ui->ComWeldSymetry->hasFocus())  return ;
-	m_cPart.weld.eSymmetry = (setup_WELD_SYMMETRY_TYPE) index  ;
-	UpdateDisplay() ;
+    if(!ui->ComWeldSymetry->hasFocus())  return;
+    m_cPart.weld.eSymmetry = (setup_WELD_SYMMETRY_TYPE) index;
+    UpdateDisplay();
 }
 
 void DialogWeldPartLoad::on_SpinWHeight_valueChanged(double arg1)
 {
-	if(!ui->SpinWHeight->hasFocus())  return ;
+    if(!ui->SpinWHeight->hasFocus())  return;
 	m_cPart.weld.weland_height = arg1;
-	UpdateDisplay() ;
+    UpdateDisplay();
 }
 
 void DialogWeldPartLoad::on_SpinWoffset_valueChanged(double arg1)
@@ -256,12 +256,11 @@ void DialogWeldPartLoad::on_SpinFAngle_valueChanged(double arg1)
 void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
 {
     QString g_strPartDir = QDir::currentPath() + "/init/part/";
-   // strcpy(_strPath, (char*)m_pConfig->AppEvn.strNccFilePath);
+
 	QString _str = index.data().toString();
 	m_cPart.weld.eType = setup_WELD_NCC;
 
     sprintf(m_cPart.strPartFile, "%s%s", g_strPartDir.toLatin1().data(), (char*)(qPrintable(_str)));
-	//QMessageBox::information(NULL, "Title", m_cPart.strPartFile, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
     SetWndName();
 	UpdateDisplay();
@@ -270,9 +269,8 @@ void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
 
 void DialogWeldPartLoad::on_BtnNccPathClicked()
 {
-	DopplerConfigure* _pConfig = DopplerConfigure::Instance()  ;
-	char _strBuf[256];
-	//strcpy(_strBuf, _pConfig->AppEvn.strNccFilePath);
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    char _strBuf[256];
 
 	QString _strPath = QFileDialog::getExistingDirectory(this,
 														 QString(tr("")),
