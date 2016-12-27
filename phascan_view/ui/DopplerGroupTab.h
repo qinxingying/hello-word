@@ -48,32 +48,31 @@ public:
 
 protected:
     void SetWidgetInvalide();
-    //###############################
     void CreateSettingView();
     void UpdateColorSetting();
     void UpdateSampleRange();
-    void UpdateVelocitySelection() ;
-    void InitComBoxMaterialSelection() ;
-    void UpdateProbeConfig(int bIsRx_) ;
-    void UpdateWedgeConfig(int bIsRx_) ;
+    void UpdateVelocitySelection();
+    void InitComBoxMaterialSelection();
+    void UpdateProbeConfig(int bIsRx_);
+    void UpdateWedgeConfig(int bIsRx_);
     void UpdateLawConfig();
-    void UpdateProbeWedge() ;
+    void UpdateProbeWedge();
 
     void UpdateMeasureBox();
     void UpdateParameterLimit();
     void UpdateFocallawState();
     void UpdateGeometryState();
-    void ElementAlign() ;
+    void ElementAlign();
     void FocusPositionAlign();
     void AngleAlign();
     int  m_nGroupId;
-    DopplerConfigure*  m_pConfig;
-    GROUP_CONFIG*      m_pGroup;
+    DopplerConfigure* m_pConfig;
+    GROUP_CONFIG* m_pGroup;
     QStandardItemModel *model;
 
-    QLabel*			m_pSizingCurveName[setup_DAC_POINT_QTY];
+    QLabel*	m_pSizingCurveName[setup_DAC_POINT_QTY];
 	QDoubleSpinBox* m_pSizingCurveValue[setup_DAC_POINT_QTY];
-	QLabel*			m_pSizingCurveUnit[setup_DAC_POINT_QTY];
+    QLabel*	m_pSizingCurveUnit[setup_DAC_POINT_QTY];
 
 private slots:
     void StartDrags(QModelIndex a) ;
@@ -131,6 +130,7 @@ private slots:
 	void on_ValueIndexOffset_editingFinished();
     void on_ComSkewAngle_currentIndexChanged(int index);
     void on_BtnLoadPartFile_clicked();
+    void on_BtnLoadDxfFile_clicked();
 	void on_CheckLwBwShow_clicked(bool checked);
 	void on_ComBoxProMode_currentIndexChanged(int index_);
     void on_SpinBoxWedgeSeperation_valueChanged(double arg1);

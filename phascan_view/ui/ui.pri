@@ -16,7 +16,9 @@ HEADERS += \
     $$PWD/PoppingTabBar.h \
     $$PWD/PoppingTabWidget.h \
     $$PWD/ProcessDisplay.h \
-    $$PWD/QWeldShowWidget.h
+    $$PWD/QWeldShowWidget.h \
+    $$PWD/dialog/DialogDxfFileLoad.h \
+    $$PWD/DplDxf.h
 
 SOURCES += \
     $$PWD/util/GYSplitter.cpp \
@@ -34,7 +36,9 @@ SOURCES += \
     $$PWD/PoppingTabBar.cpp \
     $$PWD/PoppingTabWidget.cpp \
     $$PWD/ProcessDisplay.cpp \
-    $$PWD/QWeldShowWidget.cpp
+    $$PWD/QWeldShowWidget.cpp \
+    $$PWD/dialog/DialogDxfFileLoad.cpp \
+    $$PWD/DplDxf.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
@@ -43,4 +47,5 @@ FORMS += \
     $$PWD/dialog/DialogWeldPartLoad.ui \
     $$PWD/DopplerGroupTab.ui \
     $$PWD/InstrumentSettingWidget.ui \
-    $$PWD/mainwindow.ui
+    $$PWD/mainwindow.ui \
+    $$PWD/dialog/DialogDxfFileLoad.ui

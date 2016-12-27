@@ -52,7 +52,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -6740,11 +6740,50 @@
             </widget>
            </item>
            <item>
+            <widget class="QGroupBox" name="groupBox_dxfCAD">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>50</height>
+              </size>
+             </property>
+             <property name="title">
+              <string>CAD DXF File</string>
+             </property>
+             <widget class="QLabel" name="label_dxfLoad">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>20</y>
+                <width>70</width>
+                <height>25</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Load:</string>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="BtnLoadDxfFile">
+              <property name="geometry">
+               <rect>
+                <x>90</x>
+                <y>20</y>
+                <width>105</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Weld</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+           <item>
             <widget class="QGroupBox" name="BoxPartTofd">
              <property name="title">
               <string>TOFD</string>
              </property>
-             <layout class="QGridLayout" name="gridLayout_32" rowstretch="9,1">
+             <layout class="QGridLayout" name="gridLayout_32" rowstretch="9,0">
               <item row="0" column="0">
                <layout class="QGridLayout" name="gridLayout_3">
                 <item row="1" column="0">

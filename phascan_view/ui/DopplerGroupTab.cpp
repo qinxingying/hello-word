@@ -8,6 +8,7 @@
 #include "ProcessDisplay.h"
 #include "dialog/DialogColorSelect.h"
 #include "dialog/DialogWeldPartLoad.h"
+#include "dialog/DialogDxfFileLoad.h"
 
 #include <QtGui>
 #include <QPushButton>
@@ -1413,14 +1414,29 @@ void DopplerGroupTab::on_BtnLoadPartFile_clicked()
 		_process->SetupPart(m_nGroupId,  _dialog.GetPart());
 	}
 
-	ProcessDisplay _display ;
-	_display.UpdateAllViewOfGroup(m_nGroupId);
+    ProcessDisplay _display;
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+}
+
+void DopplerGroupTab::on_BtnLoadDxfFile_clicked()
+{
+    DialogDxfFileLoad dialog(this);
+
+    if(dialog.exec())
+    {
+        ParameterProcess* _process = ParameterProcess::Instance();
+        _process->SetupPart(m_nGroupId, dialog.GetPart());
+    }
+
+    ProcessDisplay _display;
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+
 }
 
 void DopplerGroupTab::on_CheckLwBwShow_clicked(bool checked)
 {
 	m_pGroup->bShowLwBw = checked;
-	ProcessDisplay _display ;
+    ProcessDisplay _display;
 	_display.UpdateAllViewOverlay();
 }
 
