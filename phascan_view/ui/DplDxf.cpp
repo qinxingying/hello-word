@@ -110,7 +110,7 @@ void DplDxf::DrawWeldI(QPainter& painter)
 
     double _fOrgX = m_cRange.fWidth / 2;
     double _fOrgY = m_cRange.fStartY;
-    double _fX, _fY ;
+    double _fX, _fY;
 
     if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT){
 		_fX = _fOrgX - _pos[0].x() ;

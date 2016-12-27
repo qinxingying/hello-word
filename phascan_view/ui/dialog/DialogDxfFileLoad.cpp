@@ -12,7 +12,7 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
 {
 	ui->setupUi(this);
     SetDisplayMode(DISPLAY_WELD);
-	m_nGroupId = nGroupId_ ;
+    m_nGroupId = nGroupId_;
 	m_nWeldPartSel = 0;
 
     m_pConfig = DopplerConfigure::Instance();

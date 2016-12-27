@@ -117,6 +117,36 @@
          <string>U shape</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>double V-1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>double V-2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>J-1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>J-2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>VY-1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>VY-2</string>
+        </property>
+       </item>
       </widget>
       <widget class="QLabel" name="LabelType">
        <property name="geometry">
