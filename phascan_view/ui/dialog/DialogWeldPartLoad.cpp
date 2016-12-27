@@ -1,10 +1,12 @@
 #include "DialogWeldPartLoad.h"
 #include "ui_DialogWeldPartLoad.h"
 #include "ParameterProcess.h"
+#include "DopplerConfigure.h"
 
 #include <QFileDialog>
 #include <QDir.h>
 #include <QStandardItem>
+#include <QDebug>
 
 DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 	QDialog(parent),
@@ -12,10 +14,8 @@ DialogWeldPartLoad::DialogWeldPartLoad(QWidget *parent , int nGroupId_) :
 {
 	ui->setupUi(this);
     SetDisplayMode(DISPLAY_WELD);
-	m_nGroupId = nGroupId_ ;
+    m_nGroupId = nGroupId_;
 	m_nWeldPartSel = 0;
-
-    m_pConfig = DopplerConfigure::Instance();
 
 	SetPart();
     UpdateWeld();
@@ -57,7 +57,9 @@ void DialogWeldPartLoad::SetWndName()
 
 	ui->LabelPartFileName->setStyleSheet("border-width: 1px;   border-style: solid;   border-color: rgb(180, 180, 180);");
     ui->ComWeldType->setCurrentIndex(m_cPart.weld.eType);
-    ui->LabelPartFilePath->setText(QString(tr(m_pConfig->AppEvn.strNccFilePath)));
+    DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
+    ui->LabelPartFilePath->setText(m_pConfig->AppEvn.strNccFilePath);
+//    ui->LabelPartFilePath->setText(tr("Path : ") + "/init/part/ncc/");
 }
 
 void DialogWeldPartLoad::SetDisplayMode(DISPLAY_MODE eMode_)
@@ -79,8 +81,7 @@ void DialogWeldPartLoad::SetDisplayMode(DISPLAY_MODE eMode_)
 
 void DialogWeldPartLoad::ListPartFiles()
 {
-  //  strcpy(_strPath, (char*)m_pConfig->AppEvn.strNccFilePath);
-    QString g_strPartDir = QDir::currentPath() + "/init/part/";
+    QString g_strPartDir = QDir::currentPath() + "/init//part/ncc/";
     QDir dir(g_strPartDir);
 	if(!dir.exists()) {
 		return;
@@ -100,7 +101,6 @@ void DialogWeldPartLoad::ListPartFiles()
 		QString suffix = file_info.suffix();
 		if(QString::compare(suffix, QString("ncc"), Qt::CaseInsensitive) == 0)
 		{
-			//QString absolute_file_path = file_info.absoluteFilePath();
 			QString absolute_file_path = file_info.fileName();
 			strList.append(absolute_file_path);
 		}
@@ -255,7 +255,7 @@ void DialogWeldPartLoad::on_SpinFAngle_valueChanged(double arg1)
 
 void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
 {
-    QString g_strPartDir = QDir::currentPath() + "/init/part/";
+    QString g_strPartDir = QDir::currentPath() + "/init/part/ncc/";
 
 	QString _str = index.data().toString();
 	m_cPart.weld.eType = setup_WELD_NCC;
@@ -287,7 +287,7 @@ void DialogWeldPartLoad::on_BtnNccPathClicked()
 void DialogWeldPartLoad::on_BtnNccDefaultPathClicked()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    QString g_strPartDir = QDir::currentPath() + "/init/part/";
+    QString g_strPartDir = QDir::currentPath() + "/init/part/ncc/";
     strcpy(_pConfig->AppEvn.strNccFilePath, g_strPartDir.toLatin1().data());
     SetWndName();
 	UpdateDisplay();

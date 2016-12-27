@@ -2,7 +2,6 @@
 #define DIALOGWELDPARTLOAD_H
 
 #include "Instrument.h"
-#include "DopplerConfigure.h"
 
 #include <QDialog>
 #include <QModelIndex>
@@ -51,7 +50,6 @@ private slots:
 	void on_BtnNccDefaultPathClicked();
 
 private:
-	DopplerConfigure* m_pConfig;
 	Ui::DialogWeldPartLoad *ui;
     DISPLAY_MODE m_eDisplay;
 	PART_CONFIG m_cPart;

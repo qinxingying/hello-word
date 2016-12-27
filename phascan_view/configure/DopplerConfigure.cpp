@@ -137,7 +137,7 @@ DopplerConfigure::~DopplerConfigure()
 void DopplerConfigure::OpenEvn()
 {
     QString g_strDataFilePath = QDir::currentPath() + "/data";
-    QString g_strPartDir = QDir::currentPath() + "/init/part/";
+    QString g_strPartDir = QDir::currentPath() + "/init/part/ncc/";
     QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
 
     QFile file(_strPathName);
@@ -145,13 +145,14 @@ void DopplerConfigure::OpenEvn()
 	QDataStream reader(&file);
 
     int ret = reader.readRawData((char*)&AppEvn, sizeof(SYSTEM_ENVIRMENT));
-	if(ret < 0)
+    if(ret < 0)
 	{
         GetExePathName1(g_strDataFilePath.toLatin1().data(), _strPathName.toLatin1().data());
         strcpy(AppEvn.strDataFilePath, _strPathName.toLatin1().data());
 
         GetExePathName1(g_strPartDir.toLatin1().data(), _strPathName.toLatin1().data());
         strcpy(AppEvn.strNccFilePath, _strPathName.toLatin1().data());
+
         AppEvn.eLanguage = setup_LANG_ENGLISH;
 		AppEvn.eUnit	 = setup_SOUND_AXIX_UNIT_MM;
 		AppEvn.iTofdDataProMode = 0;
@@ -633,65 +634,65 @@ void DopplerConfigure::GroupModeChanged(int nGroupId_ , setup_GROUP_MODE eMode_)
 		memcpy((void*)&_group.probe[1] , (void*)&DEFAULT_PROBE_UT , sizeof(PROBE_CONFIG))  ;
 		InitLawComfing(nGroupId_) ;
 
-		LAW_CONFIG& _law = _group.law  ;
-		_law.nElemQtyFir		= 1  ;
-		_law.nLastElemFir	   = 1  ;
+        LAW_CONFIG& _law = _group.law;
+        _law.nElemQtyFir = 1;
+        _law.nLastElemFir = 1;
 	}
 }
 
 void DopplerConfigure::InitLawComfing(int nGroupId_)
 {
-	GROUP_CONFIG& config = group[nGroupId_]  ;
-	LAW_CONFIG& _law = config.law  ;
-	memset((void*)&_law , 0 , sizeof(LAW_CONFIG)) ;
-	_law.eLawType		   = setup_LAW_TYPE_AZIMUTHAL ;
-	_law.eAngleType		 = setup_ANGLE_TYPE_REFRACT ;
-	_law.eFocalType		 = setup_FOCAL_TYPE_TRUE_DEPTH  ;
-	_law.nAngleStartRefract = 300 ; // 30 DEG
-	_law.nAngleStopRefract  = 500 ;
-	_law.nAngleStepRefract  = 100  ;
+    GROUP_CONFIG& config = group[nGroupId_];
+    LAW_CONFIG& _law = config.law;
+    memset((void*)&_law, 0, sizeof(LAW_CONFIG));
+    _law.eLawType		 = setup_LAW_TYPE_AZIMUTHAL;
+    _law.eAngleType		 = setup_ANGLE_TYPE_REFRACT;
+    _law.eFocalType		 = setup_FOCAL_TYPE_TRUE_DEPTH;
+    _law.nAngleStartRefract = 300; // 30 DEG
+    _law.nAngleStopRefract  = 500;
+    _law.nAngleStepRefract  = 100;
 
-	_law.fPositionStart	 = 30  ;
-	_law.fPositionStep	  = 1   ;
-	_law.fPositionStop	  = 60  ;
-	_law.fOffsetStart	   = 20  ;
-	_law.fOffsetStop		= 100 ;
-	_law.fDepthStart		= 100 ;
-	_law.fDepthStop		 = 20  ;
+    _law.fPositionStart	 = 30;
+    _law.fPositionStep	 = 1;
+    _law.fPositionStop	 = 60;
+    _law.fOffsetStart	 = 20;
+    _law.fOffsetStop	 = 100;
+    _law.fDepthStart	 = 100;
+    _law.fDepthStop		 = 20;
 
-	_law.nElemQtyFir		= 8   ;
-	_law.nElemQtySec		= 1   ;
-	_law.nFirstElemFir	  = 1   ;
-	_law.nFirstElemSec	  = 1   ;
-	_law.nLastElemFir	   = 8  ;
-	_law.nElemStepFir	   = 1   ;
-	_law.nElemStepSec	   = 1   ;
+    _law.nElemQtyFir	 = 8;
+    _law.nElemQtySec	 = 1;
+    _law.nFirstElemFir	 = 1;
+    _law.nFirstElemSec	 = 1;
+    _law.nLastElemFir	 = 8;
+    _law.nElemStepFir	 = 1;
+    _law.nElemStepSec	 = 1;
 }
 
 void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 {
 	DRAW_INFO_PACK* _pack = pConf_->GetDrawInfo();
 	common.nGroupQty = _pack->nGroupNum ;
-	common.scanner.fPrf  = pConf_->GetGroupInfo(0)->prf1 / 10.0 ;
+    common.scanner.fPrf  = pConf_->GetGroupInfo(0)->prf1 / 10.0;
 
 	if(_pack->nEncodeType)
 	{
-		common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE  ;
-		common.scanner.eEncoderType = setup_ENCODER_TYPE_ENCODER_1 ;
+        common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;
+        common.scanner.eEncoderType = setup_ENCODER_TYPE_ENCODER_1;
 		common.scanner.eScanMode	= setup_SCAN_NORMAL;
 		common.scanner.fScanPos		=  0 ;
 		common.scanner.fIndexPos	=  0 ;
-		common.scanner.fScanStart   =  _pack->nScanStart		/ 1000.0   ;
-		common.scanner.fScanStop	=  _pack->nScanEnd		    / 1000.0   ;
-		common.scanner.fScanStep	=  _pack->nScanResolution   / 1000.0   ;
-		common.scanner.fIndexStart  =  _pack->nInspecStart	    / 1000.0   ;
-		common.scanner.fIndexStop   =  _pack->nInspecEnd		/ 1000.0   ;
-		common.scanner.fIndexStep   =  _pack->nInspecResolution / 1000.0   ;
+        common.scanner.fScanStart   =  _pack->nScanStart		/ 1000.0;
+        common.scanner.fScanStop	=  _pack->nScanEnd		    / 1000.0;
+        common.scanner.fScanStep	=  _pack->nScanResolution   / 1000.0;
+        common.scanner.fIndexStart  =  _pack->nInspecStart	    / 1000.0;
+        common.scanner.fIndexStop   =  _pack->nInspecEnd		/ 1000.0;
+        common.scanner.fIndexStep   =  _pack->nInspecResolution / 1000.0;
 	}
 	else
 	{
-		common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE  ;
-		common.scanner.eEncoderType = setup_ENCODER_TYPE_TIMER  ;
+        common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;
+        common.scanner.eEncoderType = setup_ENCODER_TYPE_TIMER;
 		common.scanner.eScanMode	= setup_SCAN_NORMAL;
 		common.scanner.fScanPos		=  0 ;
 		common.scanner.fIndexPos	=  0 ;

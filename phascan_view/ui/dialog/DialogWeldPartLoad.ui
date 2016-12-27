@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>610</width>
+    <width>657</width>
     <height>395</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>240</x>
      <y>360</y>
      <width>161</width>
      <height>32</height>
@@ -66,7 +66,7 @@
     <rect>
      <x>10</x>
      <y>40</y>
-     <width>591</width>
+     <width>641</width>
      <height>311</height>
     </rect>
    </property>
@@ -463,11 +463,11 @@
     <rect>
      <x>216</x>
      <y>4</y>
-     <width>381</width>
+     <width>431</width>
      <height>31</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_4">
+   <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0">
     <item>
      <widget class="QLabel" name="LabelPartFilePath">
       <property name="minimumSize">
