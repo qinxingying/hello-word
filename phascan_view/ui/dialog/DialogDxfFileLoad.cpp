@@ -25,6 +25,7 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
     palette.setColor(QPalette::Background, QColor(0, 0, 0));
     ui->ExpoView->setPalette(palette);
 
+    m_path = QDir::currentPath() + "/init/part/dxf/";
     SetWndName();
 	UpdateDisplay();
 
@@ -56,7 +57,8 @@ void DialogDxfFileLoad::SetWndName()
 
 	ui->LabelPartFileName->setStyleSheet("border-width: 1px;   border-style: solid;   border-color: rgb(180, 180, 180);");
     ui->ComWeldType->setCurrentIndex(m_cPart.weld.eType);
-    ui->LabelPartFilePath->setText(tr("Path : ") + "/init/part/dxf/");
+
+    ui->LabelPartFilePath->setText(m_path);
 }
 
 void DialogDxfFileLoad::SetDisplayMode(DISPLAY_MODE eMode_)
@@ -76,8 +78,7 @@ void DialogDxfFileLoad::SetDisplayMode(DISPLAY_MODE eMode_)
 
 void DialogDxfFileLoad::ListPartFiles()
 {
-    QString g_strPartDir = QDir::currentPath() + "/init/part/dxf/";
-    QDir dir(g_strPartDir);
+    QDir dir(m_path);
 	if(!dir.exists()) {
 		return;
 	}
@@ -250,12 +251,10 @@ void DialogDxfFileLoad::on_SpinFAngle_valueChanged(double arg1)
 
 void DialogDxfFileLoad::on_PartFileListDbClicked(QModelIndex index)
 {
-    QString g_strPartDir = QDir::currentPath() + "/init/part/dxf/";
-
 	QString _str = index.data().toString();
 	m_cPart.weld.eType = setup_WELD_NCC;
 
-    sprintf(m_cPart.strPartFile, "%s%s", g_strPartDir.toLatin1().data(), (char*)(qPrintable(_str)));
+    sprintf(m_cPart.strPartFile, "%s%s", m_path.toLatin1().data(), (char*)(qPrintable(_str)));
 
     SetWndName();
 	UpdateDisplay();
@@ -264,15 +263,14 @@ void DialogDxfFileLoad::on_PartFileListDbClicked(QModelIndex index)
 
 void DialogDxfFileLoad::on_BtnNccPathClicked()
 {
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     char _strBuf[256];
 
 	QString _strPath = QFileDialog::getExistingDirectory(this,
 														 QString(tr("")),
-                                                         _pConfig->AppEvn.strNccFilePath
+                                                         m_path
 														 );
 	strcpy(_strBuf, (char*)(qPrintable(_strPath)));
-    sprintf(_pConfig->AppEvn.strNccFilePath, "%s/", _strBuf);
+    sprintf(m_path.toLatin1().data(), "%s/", _strBuf);
     SetWndName();
 	UpdateDisplay();
 	UpdateWeld();
@@ -281,9 +279,6 @@ void DialogDxfFileLoad::on_BtnNccPathClicked()
 
 void DialogDxfFileLoad::on_BtnNccDefaultPathClicked()
 {
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    QString g_strPartDir = QDir::currentPath() + "/init/part/dxf/";
-    strcpy(_pConfig->AppEvn.strNccFilePath, g_strPartDir.toLatin1().data());
     SetWndName();
 	UpdateDisplay();
 	UpdateWeld();

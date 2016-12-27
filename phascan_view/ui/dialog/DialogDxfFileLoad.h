@@ -55,6 +55,7 @@ private:
 	PART_CONFIG m_cPart;
     int m_nGroupId;
     int m_nWeldPartSel;
+    QString m_path;
 };
 
 #endif // DIALOGDXFFILELOAD_H
