@@ -1,7 +1,7 @@
 #include "DrawDxf.h"
 #include "dl_dxf.h"
 #include "dl_creationadapter.h"
-#include "test_creationclass.h"
+//#include "test_creationclass.h"
 
 #include <QPainter>
 #include <QPen>
@@ -11,14 +11,22 @@
 DrawDxf::DrawDxf(QWidget *parent) :
 	QWidget(parent)
 {
+    creationClass = new Test_CreationClass();
 
+}
+
+DRAW_LINE DrawDxf::getLine() const
+{
+    return m_line;
+}
+
+void DrawDxf::setLine(const DRAW_LINE &line)
+{
+    m_line = line;
 }
 
 void DrawDxf::paintEvent (QPaintEvent*)
 {
-//    Test_CreationClass* creationClass = new Test_CreationClass();
-//    DL_Dxf* dxf = new DL_Dxf();
-
     QPainter painter(this);
     QPen pen = painter.pen();
     QPen NewPen(pen);
@@ -27,8 +35,8 @@ void DrawDxf::paintEvent (QPaintEvent*)
     painter.setPen(NewPen);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    painter.drawLine (width()/2, 20, 150,50);
-    painter.drawLine (130, 60, 80, height()/2);
+    qDebug() << "m_line x1:" << m_line.x1 << "x2:" << m_line.x2;
+    painter.drawLine(m_line.x1, m_line.y1, m_line.x2, m_line.y2);
 
     QVector<qreal> dashes;
     dashes << 3 << 5;
@@ -38,9 +46,6 @@ void DrawDxf::paintEvent (QPaintEvent*)
     painter.setPen(NewPen);
     painter.drawLine(0, height()/2, width(), height()/2);
     painter.drawLine(width()/2, 0, width()/2, height());
-
-//        DL_LineData& data;
-//        painter.drawLine (data.x1, data.y1, data.x2,data.y2);
 
     painter.setPen(pen);
 }

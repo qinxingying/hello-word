@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <QDebug>
 
 Test_CreationClass::Test_CreationClass() {
 
@@ -32,6 +33,15 @@ void Test_CreationClass::addLine(const DL_LineData& data) {
     printf("LINE(---)     (%6.3f, %6.3f, %6.3f) (%6.3f, %6.3f, %6.3f)\n",
            data.x1, data.y1, data.z1, data.x2, data.y2, data.z2);
     printAttributes();
+
+    m_line.x1 = data.x1;
+    m_line.y1 = data.y1;
+    m_line.x2 = data.x2;
+    m_line.y2 = data.y2;
+    qDebug()<<"\n&&&&&&& line_1 ="<<m_line.x1<<m_line.y1;
+    qDebug()<<"\n&&&&&&& line_2 ="<<m_line.x2<<m_line.y2;
+
+  //  m_lineList.append(m_line);
 }
 
 /**
@@ -107,6 +117,16 @@ void Test_CreationClass::printAttributes() {
         printf("%d", attributes.getWidth());
     }
     printf(" Type: %s\n", attributes.getLinetype().c_str());
+}
+
+DRAW_LINE Test_CreationClass::getLine() const
+{
+    return m_line;
+}
+
+void Test_CreationClass::setLine(const DRAW_LINE &line)
+{
+    m_line = line;
 }
 
 // EOF

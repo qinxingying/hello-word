@@ -2,6 +2,7 @@
 #define DrawDxf_H
 
 #include "dl_creationadapter.h"
+#include "test_creationclass.h"
 
 #include <QWidget>
 #include <QPaintEvent>
@@ -17,7 +18,12 @@ class DrawDxf : public QWidget
 public:
     explicit DrawDxf(QWidget *parent = 0);
 
+    DRAW_LINE getLine() const;
+    void setLine(const DRAW_LINE &line);
+
 private:
+    Test_CreationClass* creationClass;
+    DRAW_LINE m_line;
 //    const DL_LineData& data;
 
 protected:

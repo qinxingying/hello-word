@@ -6,6 +6,7 @@
 #include "test_creationclass.h"
 
 #include <QFileDialog>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,4 +43,8 @@ void MainWindow::on_pushButton_openFile_clicked()
         ui->lineEdit_filePath->setText("could not be opened");
         return;
     }
+
+    DRAW_LINE line = creationClass->getLine();
+    qDebug() << "line x1:" << line.x1 << "x2:" << line.x2;
+    ui->widget_dxfImage->setLine(line);
 }
