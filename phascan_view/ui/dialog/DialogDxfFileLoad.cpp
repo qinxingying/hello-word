@@ -3,6 +3,10 @@
 #include "ParameterProcess.h"
 #include "DopplerConfigure.h"
 
+#include "dl_dxf.h"
+#include "dl_creationadapter.h"
+#include "test_creationclass.h"
+
 #include <QFileDialog>
 #include <QDir.h>
 #include <QStandardItem>
@@ -18,7 +22,7 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
 
 	SetPart();
     UpdateWeld();
-    ui->ExpoView->SerPart(&m_cPart);
+    //ui->ExpoView->SerPart(&m_cPart);
 
 	ui->ExpoView->setAutoFillBackground(true);
 	QPalette palette;
@@ -48,8 +52,8 @@ void DialogDxfFileLoad::SetWndName()
         ui->LabelPartFileName->setText(QString(tr("Not Load")));
     }
 
-	if(_bPartFile) {
-		char buf[256];
+    char buf[256];
+    if(_bPartFile) {
 		strcpy(buf, m_cPart.strPartFile);
 		CharFilter(buf, (char*)"/");
         ui->LabelPartFileName->setText(QString(tr(buf)));
@@ -59,6 +63,15 @@ void DialogDxfFileLoad::SetWndName()
     ui->ComWeldType->setCurrentIndex(m_cPart.weld.eType);
 
     ui->LabelPartFilePath->setText(m_path);
+
+    Test_CreationClass* creationClass = new Test_CreationClass();
+    DL_Dxf* dxf = new DL_Dxf();
+
+    QString dxfFile = m_cPart.strPartFile;
+    if (!dxf->in(dxfFile.toLatin1().data(), creationClass)) {
+        ui->LabelPartFilePath->setText("could not be opened");
+        return;
+    }
 }
 
 void DialogDxfFileLoad::SetDisplayMode(DISPLAY_MODE eMode_)

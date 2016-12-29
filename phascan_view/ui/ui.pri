@@ -18,7 +18,7 @@ HEADERS += \
     $$PWD/ProcessDisplay.h \
     $$PWD/QWeldShowWidget.h \
     $$PWD/dialog/DialogDxfFileLoad.h \
-    $$PWD/DplDxf.h
+    $$PWD/DrawDxf.h
 
 SOURCES += \
     $$PWD/util/GYSplitter.cpp \
@@ -38,7 +38,7 @@ SOURCES += \
     $$PWD/ProcessDisplay.cpp \
     $$PWD/QWeldShowWidget.cpp \
     $$PWD/dialog/DialogDxfFileLoad.cpp \
-    $$PWD/DplDxf.cpp
+    $$PWD/DrawDxf.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \

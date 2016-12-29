@@ -10,8 +10,10 @@ HEADERS += \
     $$PWD/dl_exception.h \
     $$PWD/dl_extrusion.h \
     $$PWD/dl_writer.h \
-    $$PWD/dl_writer_ascii.h
+    $$PWD/dl_writer_ascii.h \
+    $$PWD/test_creationclass.h
 
 SOURCES += \
     $$PWD/dl_dxf.cpp \
-    $$PWD/dl_writer_ascii.cpp
+    $$PWD/dl_writer_ascii.cpp \
+    $$PWD/test_creationclass.cpp

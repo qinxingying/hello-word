@@ -221,17 +221,14 @@ enum CYLINDRICAL_PART_SIZE
 struct PART_CONFIG
 {
 	setup_PART_GEOMETRY	eGeometry;				/* 几何形状 FLAT/ID/OD/BALL */
-//	float				fThickness;				/* 厚度 mm */
-//	float				fDiameter;				/* 直径 mm */
+
 	//geometry parameter
 	float				afSize[4];				// sizes if necceray , part height , width , diameter
 	MATERIAL			material;				/* 材料 */
 	WELD				weld;					// weld
 	char				strPartFile[256];		// Name of part file , *.ncc
 };
-//################################################################
-//#######Guangzhou Doppler Electronic Technologies Co. Ltd########
-//***************************************************************//
+
 enum setup_LAW_TYPE
 {
 	setup_LAW_TYPE_AZIMUTHAL = 0 ,

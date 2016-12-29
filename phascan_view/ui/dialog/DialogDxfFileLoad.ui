@@ -413,7 +413,7 @@
      </widget>
     </item>
     <item>
-     <widget class="DplDxf" name="ExpoView" native="true">
+     <widget class="DrawDxf" name="ExpoView" native="true">
       <property name="palette">
        <palette>
         <active>
@@ -516,9 +516,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DplDxf</class>
+   <class>DrawDxf</class>
    <extends>QWidget</extends>
-   <header>ui/DplDxf.h</header>
+   <header>drawdxf.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
