@@ -44,7 +44,7 @@ void MainWindow::on_pushButton_openFile_clicked()
         return;
     }
 
-    DRAW_LINE line = creationClass->getLine();
-    qDebug() << "line x1:" << line.x1 << "x2:" << line.x2;
-    ui->widget_dxfImage->setLine(line);
+    QList<DRAW_LINE> lineList = creationClass->getLineList();
+    qDebug() << "line x1:" << lineList.at(0).x1 << "y1:" << lineList.at(0).y1;
+    ui->widget_dxfImage->setLineList(lineList);
 }

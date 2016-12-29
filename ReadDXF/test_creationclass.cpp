@@ -5,7 +5,10 @@
 #include <QDebug>
 
 Test_CreationClass::Test_CreationClass() {
-
+//    m_line.x1 = 0;
+//    m_line.y1 = 0;
+//    m_line.x2 = 0;
+//    m_line.y2 = 0;
 }
 
 
@@ -34,14 +37,15 @@ void Test_CreationClass::addLine(const DL_LineData& data) {
            data.x1, data.y1, data.z1, data.x2, data.y2, data.z2);
     printAttributes();
 
-    m_line.x1 = data.x1;
-    m_line.y1 = data.y1;
-    m_line.x2 = data.x2;
-    m_line.y2 = data.y2;
-    qDebug()<<"\n&&&&&&& line_1 ="<<m_line.x1<<m_line.y1;
-    qDebug()<<"\n&&&&&&& line_2 ="<<m_line.x2<<m_line.y2;
+    DRAW_LINE line = {0};
+    line.x1 = data.x1;
+    line.y1 = data.y1;
+    line.x2 = data.x2;
+    line.y2 = data.y2;
+    qDebug()<<"\n&&&&&&& line_1 ="<<line.x1<<line.y1;
+    qDebug()<<"\n&&&&&&& line_2 ="<<line.x2<<line.y2;
 
-  //  m_lineList.append(m_line);
+    m_lineList.append(line);
 }
 
 /**
@@ -119,14 +123,14 @@ void Test_CreationClass::printAttributes() {
     printf(" Type: %s\n", attributes.getLinetype().c_str());
 }
 
-DRAW_LINE Test_CreationClass::getLine() const
+QList<DRAW_LINE> Test_CreationClass::getLineList() const
 {
-    return m_line;
+    return m_lineList;
 }
 
-void Test_CreationClass::setLine(const DRAW_LINE &line)
+void Test_CreationClass::setLineList(const QList<DRAW_LINE> &lineList)
 {
-    m_line = line;
+    m_lineList = lineList;
 }
 
 // EOF

@@ -18,12 +18,13 @@ class DrawDxf : public QWidget
 public:
     explicit DrawDxf(QWidget *parent = 0);
 
-    DRAW_LINE getLine() const;
-    void setLine(const DRAW_LINE &line);
+    QList<DRAW_LINE> getLineList() const;
+    void setLineList(const QList<DRAW_LINE> &lineList);
 
 private:
     Test_CreationClass* creationClass;
     DRAW_LINE m_line;
+    QList<DRAW_LINE> m_lineList;
 //    const DL_LineData& data;
 
 protected:

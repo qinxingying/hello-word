@@ -15,28 +15,34 @@ DrawDxf::DrawDxf(QWidget *parent) :
 
 }
 
-DRAW_LINE DrawDxf::getLine() const
+QList<DRAW_LINE> DrawDxf::getLineList() const
 {
-    return m_line;
+    return m_lineList;
 }
 
-void DrawDxf::setLine(const DRAW_LINE &line)
+void DrawDxf::setLineList(const QList<DRAW_LINE> &lineList)
 {
-    m_line = line;
+    m_lineList = lineList;
 }
 
 void DrawDxf::paintEvent (QPaintEvent*)
 {
+    if (m_lineList.size() <= 0) return ;
+
     QPainter painter(this);
     QPen pen = painter.pen();
     QPen NewPen(pen);
+
     NewPen.setWidth(2);
     NewPen.setColor(QColor(255, 0, 0));
     painter.setPen(NewPen);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    qDebug() << "m_line x1:" << m_line.x1 << "x2:" << m_line.x2;
-    painter.drawLine(m_line.x1, m_line.y1, m_line.x2, m_line.y2);
+    for (int i = 0; i < m_lineList.count(); i ++)
+    {
+        qDebug() << "m_line x2:" << m_lineList.at(i).x2 << "y2:" << m_lineList.at(i).y2;
+        painter.drawLine(3*m_lineList.at(i).x1 +250, -3*m_lineList.at(i).y1 +400, 3*m_lineList.at(i).x2 +250, -3*m_lineList.at(i).y2 +400);
+    }
 
     QVector<qreal> dashes;
     dashes << 3 << 5;

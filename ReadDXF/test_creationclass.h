@@ -27,12 +27,11 @@ public:
     virtual void add3dFace(const DL_3dFaceData& data);
     void printAttributes();
 
-    DRAW_LINE getLine() const;
-    void setLine(const DRAW_LINE &line);
+    QList<DRAW_LINE> getLineList() const;
+    void setLineList(const QList<DRAW_LINE> &lineList);
 
 private:
-    DRAW_LINE m_line;
-  //  QList<DRAW_LINE> m_lineList;
+    QList<DRAW_LINE> m_lineList;
 };
 
 #endif
