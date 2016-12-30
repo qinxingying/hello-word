@@ -24,6 +24,16 @@ void DrawDxf::setLineList(const QList<DRAW_LINE> &lineList)
     m_lineList = lineList;
 }
 
+QList<DRAW_ARC> DrawDxf::getArcList() const
+{
+    return m_arcList;
+}
+
+void DrawDxf::setArcList(const QList<DRAW_ARC> &arcList)
+{
+    m_arcList = arcList;
+}
+
 void DrawDxf::paintEvent (QPaintEvent*)
 {
     QPainter painter(this);
@@ -36,11 +46,20 @@ void DrawDxf::paintEvent (QPaintEvent*)
     painter.setRenderHint(QPainter::Antialiasing, true);
 
     if (m_lineList.size() > 0){
-        for (int i = 0; i < m_lineList.count(); i ++)
-        {
+        for(int i = 0; i < m_lineList.count(); i++){
             painter.drawLine(m_zoom*m_lineList.at(i).x1 + width()/2, -m_zoom*m_lineList.at(i).y1 + height()/2,
                              m_zoom*m_lineList.at(i).x2 + width()/2, -m_zoom*m_lineList.at(i).y2 + height()/2);
         }
+    }
+
+    if(m_arcList.size() > 0){
+        for(int i = 0; i < m_arcList.count(); i++){
+            double r = m_arcList.at(i).radius;
+            double x = m_arcList.at(i).cx - 1.141*r;
+            double y = m_arcList.at(i).cy - 1.141*r;
+            painter.drawArc(x, y, 2*r, 2*r, m_arcList.at(i).angle1, fabs(m_arcList.at(i).angle2 - m_arcList.at(i).angle1));
+        }
+
     }
 
     QVector<qreal> dashes;

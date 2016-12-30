@@ -37,7 +37,7 @@ void Test_CreationClass::addLine(const DL_LineData& data) {
            data.x1, data.y1, data.z1, data.x2, data.y2, data.z2);
     printAttributes();
 
-    DRAW_LINE line = {0};
+    DRAW_LINE line = {0.0, 0.0, 0.0, 0.0};
     line.x1 = data.x1;
     line.y1 = data.y1;
     line.x2 = data.x2;
@@ -56,6 +56,13 @@ void Test_CreationClass::addArc(const DL_ArcData& data) {
            data.cx, data.cy, data.cz,
            data.radius, data.angle1, data.angle2);
     printAttributes();
+
+    DRAW_ARC arc = {0.0, 0.0, 0.0, 0.0, 0.0};
+    arc.cx = data.cx;
+    arc.cy = data.cy;
+    arc.radius = data.radius;
+    arc.angle1 = data.angle1;
+    arc.angle2 = data.angle2;
 }
 
 /**
@@ -130,6 +137,16 @@ QList<DRAW_LINE> Test_CreationClass::getLineList() const
 void Test_CreationClass::setLineList(const QList<DRAW_LINE> &lineList)
 {
     m_lineList = lineList;
+}
+
+QList<DRAW_ARC> Test_CreationClass::getArcList() const
+{
+    return m_arcList;
+}
+
+void Test_CreationClass::setArcList(const QList<DRAW_ARC> &arcList)
+{
+    m_arcList = arcList;
 }
 
 // EOF

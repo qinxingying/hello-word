@@ -18,14 +18,18 @@ class DrawDxf : public QWidget
 public:
     explicit DrawDxf(QWidget *parent = 0);
 
+    double m_zoom;
+
     QList<DRAW_LINE> getLineList() const;
     void setLineList(const QList<DRAW_LINE> &lineList);
-    double m_zoom;
+
+    QList<DRAW_ARC> getArcList() const;
+    void setArcList(const QList<DRAW_ARC> &arcList);
 
 private:
     Test_CreationClass* creationClass;
-    DRAW_LINE m_line;
     QList<DRAW_LINE> m_lineList;
+    QList<DRAW_ARC> m_arcList;
 
 protected:
     void paintEvent (QPaintEvent * event);

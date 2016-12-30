@@ -12,6 +12,18 @@ typedef struct ADD_LINE
     float y2;
 }DRAW_LINE;
 
+typedef struct ADD_ARC
+{
+    double cx;
+    double cy;
+
+    double radius;
+    /*! Startangle of arc in degrees. */
+    double angle1;
+    /*! Endangle of arc in degrees. */
+    double angle2;
+}DRAW_ARC;
+
 class Test_CreationClass : public DL_CreationAdapter {
 
 public:
@@ -30,8 +42,12 @@ public:
     QList<DRAW_LINE> getLineList() const;
     void setLineList(const QList<DRAW_LINE> &lineList);
 
+    QList<DRAW_ARC> getArcList() const;
+    void setArcList(const QList<DRAW_ARC> &arcList);
+
 private:
     QList<DRAW_LINE> m_lineList;
+    QList<DRAW_ARC> m_arcList;
 };
 
 #endif
