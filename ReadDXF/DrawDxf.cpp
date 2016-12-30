@@ -34,6 +34,16 @@ void DrawDxf::setArcList(const QList<DRAW_ARC> &arcList)
     m_arcList = arcList;
 }
 
+QList<DRAW_MTEXT> DrawDxf::getTextList() const
+{
+    return m_textList;
+}
+
+void DrawDxf::setTextList(const QList<DRAW_MTEXT> &textList)
+{
+    m_textList = textList;
+}
+
 void DrawDxf::paintEvent (QPaintEvent*)
 {
     QPainter painter(this);
@@ -57,9 +67,17 @@ void DrawDxf::paintEvent (QPaintEvent*)
             double r = m_arcList.at(i).radius;
             double x = m_arcList.at(i).cx - 1.141*r;
             double y = m_arcList.at(i).cy - 1.141*r;
-            painter.drawArc(x, y, 2*r, 2*r, m_arcList.at(i).angle1, fabs(m_arcList.at(i).angle2 - m_arcList.at(i).angle1));
+            painter.drawArc(m_zoom*x + width()/2, m_zoom*y + height()/2, m_zoom*2*r, m_zoom*2*r,
+                            m_arcList.at(i).angle1, fabs(m_arcList.at(i).angle2 - m_arcList.at(i).angle1));
         }
+    }
 
+    if(m_textList.size() > 0){
+        for(int i = 0; i < m_textList.count(); i++){
+            painter.drawText(m_zoom*m_textList.at(i).x + width()/2, m_zoom*m_textList.at(i).y + height()/2,
+                             m_zoom*m_textList.at(i).width, m_zoom*m_textList.at(i).height, -1, m_textList.at(i).text);
+            qDebug()<<__func__<<"text = "<<m_textList.at(i).text;
+        }
     }
 
     QVector<qreal> dashes;

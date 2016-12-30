@@ -48,7 +48,9 @@ void MainWindow::on_pushButton_openFile_clicked()
     ui->widget_dxfImage->setLineList(lineList);
     QList<DRAW_ARC> arcList = creationClass->getArcList();
     ui->widget_dxfImage->setArcList(arcList);
-
+    QList<DRAW_MTEXT> textList = creationClass->getTextList();
+    ui->widget_dxfImage->setTextList(textList);
+//qDebug()<<__func__<<"text = "<<textList.at(0).text;
     ui->lineEdit_filePath->setText(fileName);
     ui->doubleSpinBox_zoom->setValue(ui->widget_dxfImage->m_zoom);
 }

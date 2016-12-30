@@ -42,8 +42,6 @@ void Test_CreationClass::addLine(const DL_LineData& data) {
     line.y1 = data.y1;
     line.x2 = data.x2;
     line.y2 = data.y2;
-    qDebug()<<"\n&&&&&&& line_1 ="<<line.x1<<line.y1;
-    qDebug()<<"\n&&&&&&& line_2 ="<<line.x2<<line.y2;
 
     m_lineList.append(line);
 }
@@ -105,6 +103,31 @@ void Test_CreationClass::add3dFace(const DL_3dFaceData& data) {
     printAttributes();
 }
 
+void Test_CreationClass::addText(const DL_TextData &data)
+{
+    qDebug()<<"**************TEXT*************\n text ="<<data.text.c_str()<<"  \n style= "<<data.style.c_str();
+}
+
+void Test_CreationClass::addMText(const DL_MTextData &data)
+{
+    qDebug()<<"**************MTEXT*************\n"<<data.angle<<"  height "<<data.height<<"\n style:"<<data.style.c_str()<<"text:"<<data.text.c_str();
+
+    DRAW_MTEXT text = {0, 0, 0, 0, 0, 0, ""};
+    text.x = data.ipx;
+    text.y = data.ipy;
+    text.dirx = data.dirx;
+    text.diry = data.diry;
+    text.width = data.width;
+    text.height = data.height;
+    text.text = data.text.c_str();
+}
+
+void Test_CreationClass::addLeader(const DL_LeaderData &data)
+{
+    qDebug()<<"**************Arrow*************\n"<<data.arrowHeadFlag<<"  numer = "<<data.number<<data.textAnnotationWidth;
+    printAttributes();
+}
+
 
 void Test_CreationClass::printAttributes() {
     printf("  Attributes: Layer: %s, ", attributes.getLayer().c_str());
@@ -147,6 +170,16 @@ QList<DRAW_ARC> Test_CreationClass::getArcList() const
 void Test_CreationClass::setArcList(const QList<DRAW_ARC> &arcList)
 {
     m_arcList = arcList;
+}
+
+QList<DRAW_MTEXT> Test_CreationClass::getTextList() const
+{
+    return m_textList;
+}
+
+void Test_CreationClass::setTextList(const QList<DRAW_MTEXT> &textList)
+{
+    m_textList = textList;
 }
 
 // EOF

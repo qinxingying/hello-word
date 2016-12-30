@@ -26,10 +26,14 @@ public:
     QList<DRAW_ARC> getArcList() const;
     void setArcList(const QList<DRAW_ARC> &arcList);
 
+    QList<DRAW_MTEXT> getTextList() const;
+    void setTextList(const QList<DRAW_MTEXT> &textList);
+
 private:
     Test_CreationClass* creationClass;
     QList<DRAW_LINE> m_lineList;
     QList<DRAW_ARC> m_arcList;
+    QList<DRAW_MTEXT> m_textList;
 
 protected:
     void paintEvent (QPaintEvent * event);
