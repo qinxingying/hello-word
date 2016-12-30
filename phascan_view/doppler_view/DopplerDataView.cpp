@@ -396,8 +396,6 @@ void DopplerDataView::CreateComponent()
 
 	connect(m_pGraphicView , SIGNAL(signalTofdDragProAction(QPointF, QPointF)) , SLOT(slotTofdDragProAction(QPointF, QPointF))) ;
 
-//	connect(m_pRulers[DATA_VIEW_RULER_LEFT]   , SIGNAL(signalRulerMoved(double, double)) , SLOT(slotLeftRulerMoved(double, double))) ;
-//	connect(m_pRulers[DATA_VIEW_RULER_BOTTOM] , SIGNAL(signalRulerMoved(double, double)) , SLOT(slotBottomRulerMoved(double, double))) ;
 	setLayout(m_pLayout);
 }
 
@@ -484,63 +482,6 @@ void DopplerDataView::slotTofdDragProAction(QPointF ptS_, QPointF ptE_)
 	opp.TofdDragProcess(m_nGroupId, _area);
 	g_pMainWnd->RunDrawThreadOnce(false);
 }
-
-//void DopplerDataView::slotLeftRulerMoved(double nStart_, double nStop_)
-//{
-//	if(m_pGraphicView->GetZoomStatus())
-//	{
-//		double _nStart , _nStop, _nSliderStart , _nSliderStop;
-//		//m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
-//		m_pRulers[DATA_VIEW_RULER_BOTTOM]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
-//		QRect rect = m_pGraphicView->GetZoomRect();
-//		int _iH = rect.height();
-//		m_pGraphicView->slotResetView();
-
-//		QPointF _pt1 = QPointF(_nStart, nStart_);
-//		QPointF _pt2 = QPointF(_nStop, nStop_);
-//		_pt1 = TranslateToScenePlan(&_pt1);
-//		_pt2 = TranslateToScenePlan(&_pt2);
-
-//		float x1 = GYMIN(_pt1.x(), _pt2.x());
-//		float x2 = GYMAX(_pt1.x(), _pt2.x());
-//		float y1 = GYMIN(_pt1.y(), _pt2.y());
-//		float y2 = GYMAX(_pt1.y(), _pt2.y());
-
-//		//QRect rect(x1, y1, x2 - x1, y2 - y1);
-//		rect.setTop(y1);
-//		//rect.setBottom(y2);
-//		rect.setHeight(_iH);
-//		m_pGraphicView->zoomAction(rect);
-//	}
-//}
-
-//void DopplerDataView::slotBottomRulerMoved(double nStart_, double nStop_)
-//{
-///*	if(m_pGraphicView->GetZoomStatus())
-//	{
-//		double _nStart , _nStop, _nSliderStart , _nSliderStop;
-//		m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
-//		QRect rect = m_pGraphicView->GetZoomRect();
-//		int _iW = rect.width();
-//		m_pGraphicView->slotResetView();
-
-//		QPointF _pt1 = QPointF(nStart_, _nStart);
-//		QPointF _pt2 = QPointF(nStop_, _nStop);
-//		_pt1 = TranslateToScenePlan(&_pt1);
-//		_pt2 = TranslateToScenePlan(&_pt2);
-
-//		float x1 = GYMIN(_pt1.x(), _pt2.x());
-//		float x2 = GYMAX(_pt1.x(), _pt2.x());
-//		float y1 = GYMIN(_pt1.y(), _pt2.y());
-//		float y2 = GYMAX(_pt1.y(), _pt2.y());
-
-//		//QRect rect(x1, y1, x2 - x1, y2 - y1);
-//		rect.setLeft(x1);
-//		//rect.setBottom(y2);
-//		rect.setWidth(_iW);
-//		m_pGraphicView->zoomAction(rect);
-//	}*/
-//}
 
 void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
 {

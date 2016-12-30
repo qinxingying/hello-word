@@ -124,8 +124,7 @@ protected slots:
     void slotViewMousePressed(QMouseEvent*) ;
     void slotMouseDoubleClicked(QPointF pos_);
     void slotTofdDragProAction(QPointF, QPointF);
-//	void slotLeftRulerMoved(double nStart_, double nStop_) ;
-//	void slotBottomRulerMoved(double nStart_, double nStop_) ;
+
 	void slotScanRangeMove(int nType_, int nStart_, int nStop_) ;
 };
 
