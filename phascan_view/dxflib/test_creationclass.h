@@ -2,6 +2,15 @@
 #define TEST_CREATIONCLASS_H
 
 #include "dl_creationadapter.h"
+#include <QPainter>
+
+typedef struct ADD_LINE
+{
+    float x1;
+    float y1;
+    float x2;
+    float y2;
+}DRAW_LINE;
 
 class Test_CreationClass : public DL_CreationAdapter {
 
@@ -16,8 +25,13 @@ public:
     virtual void addPolyline(const DL_PolylineData& data);
     virtual void addVertex(const DL_VertexData& data);
     virtual void add3dFace(const DL_3dFaceData& data);
-
     void printAttributes();
+
+    QList<DRAW_LINE> getLineList() const;
+    void setLineList(const QList<DRAW_LINE> &lineList);
+
+private:
+    QList<DRAW_LINE> m_lineList;
 };
 
 #endif

@@ -72,6 +72,8 @@ void DialogDxfFileLoad::SetWndName()
         ui->LabelPartFilePath->setText("could not be opened");
         return;
     }
+    QList<DRAW_LINE> lineList = creationClass->getLineList();
+    ui->ExpoView->setLineList(lineList);
 }
 
 void DialogDxfFileLoad::SetDisplayMode(DISPLAY_MODE eMode_)

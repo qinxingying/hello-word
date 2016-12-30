@@ -2,9 +2,13 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <QDebug>
 
 Test_CreationClass::Test_CreationClass() {
-
+//    m_line.x1 = 0;
+//    m_line.y1 = 0;
+//    m_line.x2 = 0;
+//    m_line.y2 = 0;
 }
 
 
@@ -32,6 +36,14 @@ void Test_CreationClass::addLine(const DL_LineData& data) {
     printf("LINE(---)     (%6.3f, %6.3f, %6.3f) (%6.3f, %6.3f, %6.3f)\n",
            data.x1, data.y1, data.z1, data.x2, data.y2, data.z2);
     printAttributes();
+
+    DRAW_LINE line = {0, 0, 0, 0};
+    line.x1 = data.x1;
+    line.y1 = data.y1;
+    line.x2 = data.x2;
+    line.y2 = data.y2;
+
+    m_lineList.append(line);
 }
 
 /**
@@ -63,7 +75,6 @@ void Test_CreationClass::addPolyline(const DL_PolylineData& data) {
     printf("flags: %d\n", (int)data.flags);
     printAttributes();
 }
-
 
 /**
  * Sample implementation of the method which handles vertices.
@@ -107,6 +118,16 @@ void Test_CreationClass::printAttributes() {
         printf("%d", attributes.getWidth());
     }
     printf(" Type: %s\n", attributes.getLinetype().c_str());
+}
+
+QList<DRAW_LINE> Test_CreationClass::getLineList() const
+{
+    return m_lineList;
+}
+
+void Test_CreationClass::setLineList(const QList<DRAW_LINE> &lineList)
+{
+    m_lineList = lineList;
 }
 
 // EOF
