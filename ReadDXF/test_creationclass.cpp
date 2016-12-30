@@ -78,7 +78,6 @@ void Test_CreationClass::addPolyline(const DL_PolylineData& data) {
     printAttributes();
 }
 
-
 /**
  * Sample implementation of the method which handles vertices.
  */

@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QPalette palette;
     palette.setColor(QPalette::Background, QColor(0, 0, 0));
     ui->widget_dxfImage->setPalette(palette);
+
+    connect(ui->widget_dxfImage, SIGNAL(zoom(double)), this, SLOT(slot_doubleSpinBox_setValue(double)));
 }
 
 MainWindow::~MainWindow()
@@ -34,8 +36,6 @@ void MainWindow::on_pushButton_openFile_clicked()
 
     if(fileName.isEmpty())  return;
 
-    ui->lineEdit_filePath->setText(fileName);
-
     Test_CreationClass* creationClass = new Test_CreationClass();
     DL_Dxf* dxf = new DL_Dxf();
 
@@ -47,4 +47,12 @@ void MainWindow::on_pushButton_openFile_clicked()
     QList<DRAW_LINE> lineList = creationClass->getLineList();
     qDebug() << "line x1:" << lineList.at(0).x1 << "y1:" << lineList.at(0).y1;
     ui->widget_dxfImage->setLineList(lineList);
+
+    ui->lineEdit_filePath->setText(fileName);
+    ui->doubleSpinBox_zoom->setValue(ui->widget_dxfImage->m_zoom);
+}
+
+void MainWindow::slot_doubleSpinBox_setValue(double value)
+{
+    ui->doubleSpinBox_zoom->setValue(value);
 }

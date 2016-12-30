@@ -1,11 +1,9 @@
 #include "DrawDxf.h"
 #include "dl_dxf.h"
 #include "dl_creationadapter.h"
-//#include "test_creationclass.h"
 
 #include <QPainter>
 #include <QPen>
-#include <QPointF>
 #include <QDebug>
 
 DrawDxf::DrawDxf(QWidget *parent) :
@@ -13,6 +11,7 @@ DrawDxf::DrawDxf(QWidget *parent) :
 {
     creationClass = new Test_CreationClass();
 
+    m_zoom = 1.0;
 }
 
 QList<DRAW_LINE> DrawDxf::getLineList() const
@@ -27,8 +26,6 @@ void DrawDxf::setLineList(const QList<DRAW_LINE> &lineList)
 
 void DrawDxf::paintEvent (QPaintEvent*)
 {
-    if (m_lineList.size() <= 0) return ;
-
     QPainter painter(this);
     QPen pen = painter.pen();
     QPen NewPen(pen);
@@ -38,10 +35,12 @@ void DrawDxf::paintEvent (QPaintEvent*)
     painter.setPen(NewPen);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    for (int i = 0; i < m_lineList.count(); i ++)
-    {
-        qDebug() << "m_line x2:" << m_lineList.at(i).x2 << "y2:" << m_lineList.at(i).y2;
-        painter.drawLine(3*m_lineList.at(i).x1 +250, -3*m_lineList.at(i).y1 +400, 3*m_lineList.at(i).x2 +250, -3*m_lineList.at(i).y2 +400);
+    if (m_lineList.size() > 0){
+        for (int i = 0; i < m_lineList.count(); i ++)
+        {
+            painter.drawLine(m_zoom*m_lineList.at(i).x1 + width()/2, -m_zoom*m_lineList.at(i).y1 + height()/2,
+                             m_zoom*m_lineList.at(i).x2 + width()/2, -m_zoom*m_lineList.at(i).y2 + height()/2);
+        }
     }
 
     QVector<qreal> dashes;
@@ -54,4 +53,17 @@ void DrawDxf::paintEvent (QPaintEvent*)
     painter.drawLine(width()/2, 0, width()/2, height());
 
     painter.setPen(pen);
+}
+
+void DrawDxf::wheelEvent(QWheelEvent *event)
+{
+    if(event->delta() > 0){
+        m_zoom += 0.5;
+    }else{
+        if(m_zoom > 0){
+            m_zoom -= 0.5;
+        }
+    }
+    update();
+    emit zoom(m_zoom);
 }

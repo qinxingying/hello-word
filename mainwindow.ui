@@ -16,7 +16,10 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,10">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,1,8">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,0,0,0,1,8">
+      <property name="spacing">
+       <number>6</number>
+      </property>
       <item>
        <widget class="QPushButton" name="pushButton_openFile">
         <property name="text">
@@ -26,6 +29,29 @@
       </item>
       <item>
        <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Zoom:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_zoom"/>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
