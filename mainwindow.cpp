@@ -44,13 +44,13 @@ void MainWindow::on_pushButton_openFile_clicked()
         return;
     }
 
-    QList<DRAW_LINE> lineList = creationClass->getLineList();
+    QList<DL_LineData> lineList = creationClass->getLineList();
     ui->widget_dxfImage->setLineList(lineList);
 qDebug()<<__func__<<"x1 = "<<lineList.at(0).x1;
-    QList<DRAW_ARC> arcList = creationClass->getArcList();
+    QList<DL_ArcData> arcList = creationClass->getArcList();
     ui->widget_dxfImage->setArcList(arcList);
 //qDebug()<<__func__<<"angle1 = "<<arcList.at(0).angle1;
-    QList<DRAW_MTEXT> textList = creationClass->getTextList();
+    QList<DL_MTextData> textList = creationClass->getTextList();
     ui->widget_dxfImage->setTextList(textList);
 //qDebug()<<__func__<<"text = "<<textList.at(0).text;
     ui->lineEdit_filePath->setText(fileName);

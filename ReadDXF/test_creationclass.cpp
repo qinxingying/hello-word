@@ -34,15 +34,7 @@ void Test_CreationClass::addLine(const DL_LineData& data) {
            data.x1, data.y1, data.z1, data.x2, data.y2, data.z2);
     printAttributes();
 
-    DRAW_LINE line = {0.0, 0.0, 0.0, 0.0};
-//    DRAW_LINE line;
-//    memset(&line, 0, sizeof(line));
-    line.x1 = data.x1;
-    line.y1 = data.y1;
-    line.x2 = data.x2;
-    line.y2 = data.y2;
-
-    m_lineList.append(line);
+    m_lineList.append(data);
 }
 
 /**
@@ -54,17 +46,8 @@ void Test_CreationClass::addArc(const DL_ArcData& data) {
            data.radius, data.angle1, data.angle2);
     printAttributes();
 
-    DRAW_ARC arc = {0.0, 0.0, 0.0, 0.0, 0.0};
-//    DRAW_ARC arc;
-//    memset(&arc, 0, sizeof(arc));
-    arc.cx = data.cx;
-    arc.cy = data.cy;
-    arc.radius = data.radius;
-    arc.angle1 = data.angle1;
-    arc.angle2 = data.angle2;
-
-    m_arcList.append(arc);
-    qDebug()<<__func__<<"-----add Arc-----\n radius = "<<data.radius<<arc.radius;
+    m_arcList.append(data);
+    qDebug()<<__func__<<"-----add Arc-----\n radius = "<<data.radius;
 }
 
 /**
@@ -115,18 +98,8 @@ void Test_CreationClass::addText(const DL_TextData &data)
 void Test_CreationClass::addMText(const DL_MTextData &data)
 {
     printAttributes();
-    qDebug()<<"**************MTEXT*************\n"<<data.angle<<"  height "<<data.height<<"\n style:"<<data.style.c_str()<<"text:"<<data.text.c_str();
-
-    DRAW_MTEXT textData = {0, 0, 0, 0, 0, 0, ""};
-    textData.x = data.ipx;
-    textData.y = data.ipy;
-    textData.dirx = data.dirx;
-    textData.diry = data.diry;
-    textData.height = data.height;
-    textData.width = data.width;
-    textData.text = data.text.c_str();
-
-    m_textList.append(textData);
+    m_textList.append(data);
+    qDebug()<<"\n \n *******MTEXT********\n ipx, y ="<<data.ipx<<data.ipy<<"\n width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str();
 }
 
 void Test_CreationClass::addLeader(const DL_LeaderData &data)
@@ -165,32 +138,32 @@ void Test_CreationClass::printAttributes() {
     printf(" Type: %s\n", attributes.getLinetype().c_str());
 }
 
-QList<DRAW_LINE> Test_CreationClass::getLineList() const
+QList<DL_LineData> Test_CreationClass::getLineList() const
 {
     return m_lineList;
 }
 
-void Test_CreationClass::setLineList(const QList<DRAW_LINE> &lineList)
+void Test_CreationClass::setLineList(const QList<DL_LineData> &lineList)
 {
     m_lineList = lineList;
 }
 
-QList<DRAW_ARC> Test_CreationClass::getArcList() const
+QList<DL_ArcData> Test_CreationClass::getArcList() const
 {
     return m_arcList;
 }
 
-void Test_CreationClass::setArcList(const QList<DRAW_ARC> &arcList)
+void Test_CreationClass::setArcList(const QList<DL_ArcData> &arcList)
 {
     m_arcList = arcList;
 }
 
-QList<DRAW_MTEXT> Test_CreationClass::getTextList() const
+QList<DL_MTextData> Test_CreationClass::getTextList() const
 {
     return m_textList;
 }
 
-void Test_CreationClass::setTextList(const QList<DRAW_MTEXT> &textList)
+void Test_CreationClass::setTextList(const QList<DL_MTextData> &textList)
 {
     m_textList = textList;
 }

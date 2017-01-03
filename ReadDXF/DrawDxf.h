@@ -20,20 +20,20 @@ public:
 
     double m_zoom;
 
-    QList<DRAW_LINE> getLineList() const;
-    void setLineList(const QList<DRAW_LINE> &lineList);
+    QList<DL_LineData> getLineList() const;
+    void setLineList(const QList<DL_LineData> &lineList);
 
-    QList<DRAW_ARC> getArcList() const;
-    void setArcList(const QList<DRAW_ARC> &arcList);
+    QList<DL_ArcData> getArcList() const;
+    void setArcList(const QList<DL_ArcData> &arcList);
 
-    QList<DRAW_MTEXT> getTextList() const;
-    void setTextList(const QList<DRAW_MTEXT> &textList);
+    QList<DL_MTextData> getTextList() const;
+    void setTextList(const QList<DL_MTextData> &textList);
 
 private:
     Test_CreationClass* creationClass;
-    QList<DRAW_LINE> m_lineList;
-    QList<DRAW_ARC> m_arcList;
-    QList<DRAW_MTEXT> m_textList;
+    QList<DL_LineData> m_lineList;
+    QList<DL_ArcData> m_arcList;
+    QList<DL_MTextData> m_textList;
 
 protected:
     void paintEvent (QPaintEvent * event);

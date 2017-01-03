@@ -16,32 +16,32 @@ DrawDxf::DrawDxf(QWidget *parent) :
     m_zoom = 1.0;
 }
 
-QList<DRAW_LINE> DrawDxf::getLineList() const
+QList<DL_LineData> DrawDxf::getLineList() const
 {
     return m_lineList;
 }
 
-void DrawDxf::setLineList(const QList<DRAW_LINE> &lineList)
+void DrawDxf::setLineList(const QList<DL_LineData> &lineList)
 {
     m_lineList = lineList;
 }
 
-QList<DRAW_ARC> DrawDxf::getArcList() const
+QList<DL_ArcData> DrawDxf::getArcList() const
 {
     return m_arcList;
 }
 
-void DrawDxf::setArcList(const QList<DRAW_ARC> &arcList)
+void DrawDxf::setArcList(const QList<DL_ArcData> &arcList)
 {
     m_arcList = arcList;
 }
 
-QList<DRAW_MTEXT> DrawDxf::getTextList() const
+QList<DL_MTextData> DrawDxf::getTextList() const
 {
     return m_textList;
 }
 
-void DrawDxf::setTextList(const QList<DRAW_MTEXT> &textList)
+void DrawDxf::setTextList(const QList<DL_MTextData> &textList)
 {
     m_textList = textList;
 }
@@ -64,25 +64,24 @@ void DrawDxf::paintEvent (QPaintEvent*)
         }
     }
 
-    if(m_arcList.size() > 0){
-        for(int i = 0; i < m_arcList.count(); i++){
-            double r = m_arcList.at(i).radius;
-            double x = m_arcList.at(i).cx - 1.141*r;
-            double y = m_arcList.at(i).cy - 1.141*r;
-            double startAngle = m_arcList.at(i).angle1* 2*M_PI / 360;
-            double endAngle = m_arcList.at(i).angle2* 2*M_PI / 360;
-            painter.drawArc(m_zoom*x + width()/2, m_zoom*y + height()/2, m_zoom*2*r, m_zoom*2*r,
-                            startAngle, fabs(endAngle - startAngle));
-            qDebug()<<__func__<<"arc = "<<m_arcList.at(i).radius;
-        }
-    }
+//    if(m_arcList.size() > 0){
+//        for(int i = 0; i < m_arcList.count(); i++){
+//            double r = m_arcList.at(i).radius;
+//            double x = m_arcList.at(i).cx - 1.141*r;
+//            double y = m_arcList.at(i).cy - 1.141*r;
+//            double startAngle = m_arcList.at(i).angle1* 2*M_PI / 360;
+//            double endAngle = m_arcList.at(i).angle2* 2*M_PI / 360;
+//            painter.drawArc(m_zoom*x + width()/2, m_zoom*y + height()/2, m_zoom*2*r, m_zoom*2*r,
+//                            startAngle, fabs(endAngle - startAngle));
+//            qDebug()<<__func__<<"arc = "<<m_arcList.at(i).radius;
+//        }
+//    }
 
     if(m_textList.size() > 0){
         for(int i = 0; i < m_textList.count(); i++){
-            painter.drawText(m_zoom*m_textList.at(i).x + width()/2, m_zoom*m_textList.at(i).y + height()/2,
-                             m_zoom*m_textList.at(i).width, m_zoom*m_textList.at(i).height, -1, m_textList.at(i).text);
-          //  painter.drawText(width()/2, height()/2, m_zoom*60, m_zoom*60,  -1, "Test");
-            qDebug()<<__func__<<"text = "<<m_textList.at(i).text;
+            painter.drawText(m_zoom*(m_textList.at(i).ipx-2*m_textList.at(i).height) + width()/2, -m_zoom*m_textList.at(i).ipy + height()/2,
+                             m_zoom*4*m_textList.at(i).height, m_zoom*m_textList.at(i).height, Qt::AlignLeft, m_textList.at(i).text.c_str());
+            qDebug()<<__func__<<"text = "<<m_textList.at(i).text.c_str();
         }
     }
 
