@@ -30,8 +30,8 @@ void Test_CreationClass::addPoint(const DL_PointData& data) {
  * Sample implementation of the method which handles line entities.
  */
 void Test_CreationClass::addLine(const DL_LineData& data) {
-    printf("LINE(---)     (%6.3f, %6.3f, %6.3f) (%6.3f, %6.3f, %6.3f)\n",
-           data.x1, data.y1, data.z1, data.x2, data.y2, data.z2);
+//    printf("LINE(---)     (%6.3f, %6.3f, %6.3f) (%6.3f, %6.3f, %6.3f)\n",
+//           data.x1, data.y1, data.z1, data.x2, data.y2, data.z2);
     printAttributes();
 
     m_lineList.append(data);
@@ -53,10 +53,14 @@ void Test_CreationClass::addArc(const DL_ArcData& data) {
  * Sample implementation of the method which handles circle entities.
  */
 void Test_CreationClass::addCircle(const DL_CircleData& data) {
-    printf("CIRCLE   (%6.3f, %6.3f, %6.3f) %6.3f\n",
-           data.cx, data.cy, data.cz,
-           data.radius);
+//    printf("CIRCLE   (%6.3f, %6.3f, %6.3f) %6.3f\n",
+//           data.cx, data.cy, data.cz,
+//           data.radius);
     printAttributes();
+    m_circleList.append(data);
+
+    qDebug()<<"\n *******Circle********\n -----------\n cx,y ="<<data.cx<<data.cy;
+    qDebug()<<"radius ="<<data.radius<<"\n *******Circle********";
 }
 
 
@@ -64,9 +68,10 @@ void Test_CreationClass::addCircle(const DL_CircleData& data) {
  * Sample implementation of the method which handles polyline entities.
  */
 void Test_CreationClass::addPolyline(const DL_PolylineData& data) {
-    printf("POLYLINE \n");
-    printf("flags: %d\n", (int)data.flags);
+ //   printf("POLYLINE \n");
+ //   printf("flags: %d\n", (int)data.flags);
     printAttributes();
+    qDebug()<<"\n *******Polyline********\n -----------\n num,m,n ="<<data.number<<data.m<<data.n<<"\n flag ="<<data.flags<<"\n *******Polyline********";
 }
 
 /**
@@ -95,6 +100,14 @@ void Test_CreationClass::addMText(const DL_MTextData &data)
     printAttributes();
     m_textList.append(data);
 qDebug()<<"\n \n *******MTEXT********\n ipx, y ="<<data.ipx<<data.ipy<<"\n width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str();
+}
+
+void Test_CreationClass::addEllipse(const DL_EllipseData &data)
+{
+    m_ellipseList.append(data);
+qDebug()<<"\n *******Ellipse********\n -----------\n cx,y ="<<data.cx<<data.cy;
+qDebug()<<"mx,y ="<<data.mx<<data.my<<"\n ratio ="<<data.ratio;
+qDebug()<<"angle1,2 ="<<data.angle1<<data.angle2<<"\n *******Ellipse********";
 }
 
 void Test_CreationClass::printAttributes() {
@@ -148,6 +161,26 @@ QList<DL_MTextData> Test_CreationClass::getTextList() const
 void Test_CreationClass::setTextList(const QList<DL_MTextData> &textList)
 {
     m_textList = textList;
+}
+
+QList<DL_EllipseData> Test_CreationClass::getEllipseList() const
+{
+    return m_ellipseList;
+}
+
+void Test_CreationClass::setEllipseList(const QList<DL_EllipseData> &ellipseList)
+{
+    m_ellipseList = ellipseList;
+}
+
+QList<DL_CircleData> Test_CreationClass::getCircleList() const
+{
+    return m_circleList;
+}
+
+void Test_CreationClass::setCircleList(const QList<DL_CircleData> &circleList)
+{
+    m_circleList = circleList;
 }
 
 // EOF

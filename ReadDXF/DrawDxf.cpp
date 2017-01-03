@@ -43,7 +43,27 @@ void DrawDxf::setTextList(const QList<DL_MTextData> &textList)
 {
     m_textList = textList;
 }
-#include <QRectF>
+
+QList<DL_EllipseData> DrawDxf::getEllipseList() const
+{
+    return m_ellipseList;
+}
+
+void DrawDxf::setEllipseList(const QList<DL_EllipseData> &ellipseList)
+{
+    m_ellipseList = ellipseList;
+}
+
+QList<DL_CircleData> DrawDxf::getCircleList() const
+{
+    return m_circleList;
+}
+
+void DrawDxf::setCircleList(const QList<DL_CircleData> &circleList)
+{
+    m_circleList = circleList;
+}
+
 void DrawDxf::paintEvent (QPaintEvent*)
 {
     QPainter painter(this);
@@ -59,24 +79,27 @@ void DrawDxf::paintEvent (QPaintEvent*)
 
     paint_text(painter);
 
+    paint_circle(painter);
 
-    double r = 34.897;
-    double x = 148 - sqrt(2)*r/2;
-    double y = 138.500 - sqrt(2)*r/2;
-    double startAngle = 23.259*16;
-    double endAngle = 217.747*16;
 
-    painter.drawArc(m_zoom*x + width()/2, -m_zoom*y + height()/2, m_zoom*sqrt(2)*r, m_zoom*sqrt(2)*r,
-                    startAngle, abs(endAngle - startAngle));
+//    double r = 34.897;
+//    double x = 148 - sqrt(2)*r/2;
+//    double y = 138.500 - sqrt(2)*r/2;
+//    double startAngle = 23.259*16;
+//    double endAngle = 217.747*16;
 
-    double r2 = 34.594;
-    double x2 = 189.684 - sqrt(2)*r2/2;
-    double y2 = 97.727 - sqrt(2)*r2/2;
-    double startAngle2 = 191.213*16;
-    double endAngle2 = 10.027*16;
+//    painter.drawArc(m_zoom*x + width()/2, -m_zoom*y + height()/2, m_zoom*sqrt(2)*r, m_zoom*sqrt(2)*r,
+//                    startAngle, abs(endAngle - startAngle));
 
-    painter.drawArc(m_zoom*x2 + width()/2, -m_zoom*y2 + height()/2, m_zoom*sqrt(2)*r2,
-                    m_zoom*sqrt(2)*r2, startAngle2, abs(endAngle2 - startAngle2));
+//    double r2 = 34.594;
+//    double x2 = 189.684 - sqrt(2)*r2/2;
+//    double y2 = 97.727 - sqrt(2)*r2/2;
+//    double startAngle2 = 191.213*16;
+//    double endAngle2 = 10.027*16;
+
+//    painter.drawArc(m_zoom*x2 + width()/2, -m_zoom*y2 + height()/2, m_zoom*sqrt(2)*r2,
+//                    m_zoom*sqrt(2)*r2, startAngle2, abs(endAngle2 - startAngle2));
+//    painter.drawEllipse(m_zoom*15 + width()/2, -m_zoom*15 + height()/2, m_zoom*15, m_zoom*15);
 
 
     QVector<qreal> dashes;
@@ -124,6 +147,34 @@ void DrawDxf::paint_arc(QPainter &painter)
             painter.drawArc(m_zoom*x + width()/2, -m_zoom*y + height()/2, m_zoom*sqrt(2)*r, m_zoom*sqrt(2)*r,
                             startAngle, abs(endAngle - startAngle));
 qDebug()<<__func__<<"arc = "<<m_arcList.at(i).cx<<m_arcList.at(i).cy<<m_arcList.at(i).radius<<m_arcList.at(i).angle1<<m_arcList.at(i).angle2;
+        }
+    }
+}
+
+void DrawDxf::paint_ellipse(QPainter &painter)
+{
+    if(m_ellipseList.size() > 0){
+        for(int i = 0; i < m_ellipseList.count(); i++){
+            double r = m_ellipseList.at(i).ratio;
+            double x = m_ellipseList.at(i).cx - sqrt(2)*r/2;
+            double y = m_ellipseList.at(i).cy - sqrt(2)*r/2;
+            double startAngle = m_ellipseList.at(i).angle1*16;
+            double endAngle = m_ellipseList.at(i).angle2*16;
+            painter.drawArc(m_zoom*x + width()/2, -m_zoom*y + height()/2, m_zoom*sqrt(2)*r, m_zoom*sqrt(2)*r,
+                            startAngle, abs(endAngle - startAngle));
+      //      painter.drawEllipse();
+
+qDebug()<<__func__<<"r = "<<m_ellipseList.at(i).ratio;
+        }
+    }
+}
+
+void DrawDxf::paint_circle(QPainter &painter)
+{
+    if(m_circleList.size() > 0){
+        for(int i = 0; i < m_circleList.count(); i++){
+            painter.drawEllipse(m_zoom*m_circleList.at(i).cx + width()/2, -m_zoom*m_circleList.at(i).cy + height()/2,
+                                m_zoom*m_circleList.at(i).radius, m_zoom*m_circleList.at(i).radius);
         }
     }
 }

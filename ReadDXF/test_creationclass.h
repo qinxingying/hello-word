@@ -20,6 +20,7 @@ public:
     void printAttributes();
 
     virtual void addMText(const DL_MTextData& data);//3
+    virtual void addEllipse(const DL_EllipseData& data);
 
     QList<DL_LineData> getLineList() const;
     void setLineList(const QList<DL_LineData> &lineList);
@@ -30,10 +31,18 @@ public:
     QList<DL_MTextData> getTextList() const;
     void setTextList(const QList<DL_MTextData> &textList);
 
+    QList<DL_EllipseData> getEllipseList() const;
+    void setEllipseList(const QList<DL_EllipseData> &ellipseList);
+
+    QList<DL_CircleData> getCircleList() const;
+    void setCircleList(const QList<DL_CircleData> &circleList);
+
 private:
     QList<DL_LineData> m_lineList;
     QList<DL_ArcData> m_arcList;
     QList<DL_MTextData> m_textList;
+    QList<DL_EllipseData> m_ellipseList;
+    QList<DL_CircleData> m_circleList;
 };
 
 #endif
