@@ -53,6 +53,7 @@ public:
     virtual void addText(const DL_TextData& data);
     virtual void addMText(const DL_MTextData& data);
     virtual void addLeader(const DL_LeaderData& data);
+    virtual void addLeaderVertex(const DL_LeaderVertexData& data);
 
     QList<DRAW_LINE> getLineList() const;
     void setLineList(const QList<DRAW_LINE> &lineList);

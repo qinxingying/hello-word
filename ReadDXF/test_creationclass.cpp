@@ -5,10 +5,7 @@
 #include <QDebug>
 
 Test_CreationClass::Test_CreationClass() {
-//    m_line.x1 = 0;
-//    m_line.y1 = 0;
-//    m_line.x2 = 0;
-//    m_line.y2 = 0;
+
 }
 
 
@@ -38,6 +35,8 @@ void Test_CreationClass::addLine(const DL_LineData& data) {
     printAttributes();
 
     DRAW_LINE line = {0.0, 0.0, 0.0, 0.0};
+//    DRAW_LINE line;
+//    memset(&line, 0, sizeof(line));
     line.x1 = data.x1;
     line.y1 = data.y1;
     line.x2 = data.x2;
@@ -56,11 +55,16 @@ void Test_CreationClass::addArc(const DL_ArcData& data) {
     printAttributes();
 
     DRAW_ARC arc = {0.0, 0.0, 0.0, 0.0, 0.0};
+//    DRAW_ARC arc;
+//    memset(&arc, 0, sizeof(arc));
     arc.cx = data.cx;
     arc.cy = data.cy;
     arc.radius = data.radius;
     arc.angle1 = data.angle1;
     arc.angle2 = data.angle2;
+
+    m_arcList.append(arc);
+    qDebug()<<__func__<<"-----add Arc-----\n radius = "<<data.radius<<arc.radius;
 }
 
 /**
@@ -110,22 +114,31 @@ void Test_CreationClass::addText(const DL_TextData &data)
 
 void Test_CreationClass::addMText(const DL_MTextData &data)
 {
+    printAttributes();
     qDebug()<<"**************MTEXT*************\n"<<data.angle<<"  height "<<data.height<<"\n style:"<<data.style.c_str()<<"text:"<<data.text.c_str();
 
-    DRAW_MTEXT text = {0, 0, 0, 0, 0, 0, ""};
-    text.x = data.ipx;
-    text.y = data.ipy;
-    text.dirx = data.dirx;
-    text.diry = data.diry;
-    text.width = data.width;
-    text.height = data.height;
-    text.text = data.text.c_str();
+    DRAW_MTEXT textData = {0, 0, 0, 0, 0, 0, ""};
+    textData.x = data.ipx;
+    textData.y = data.ipy;
+    textData.dirx = data.dirx;
+    textData.diry = data.diry;
+    textData.height = data.height;
+    textData.width = data.width;
+    textData.text = data.text.c_str();
+
+    m_textList.append(textData);
 }
 
 void Test_CreationClass::addLeader(const DL_LeaderData &data)
 {
-    qDebug()<<"**************Arrow*************\n"<<data.arrowHeadFlag<<"  numer = "<<data.number<<data.textAnnotationWidth;
+    qDebug()<<"**************Arrow*************\n"<<data.arrowHeadFlag<<"  number = "<<data.number<<data.textAnnotationWidth;
     printAttributes();
+}
+
+void Test_CreationClass::addLeaderVertex(const DL_LeaderVertexData &data)
+{
+    printAttributes();
+ qDebug()<<"******LeaderVertex*******\n x = "<<data.x<<"  \n y = "<<data.y<< "z :"<<data.z;
 }
 
 

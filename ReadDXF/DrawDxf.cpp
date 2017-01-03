@@ -6,6 +6,8 @@
 #include <QPen>
 #include <QDebug>
 
+#define M_PI   3.14159265358979323846
+
 DrawDxf::DrawDxf(QWidget *parent) :
 	QWidget(parent)
 {
@@ -67,8 +69,11 @@ void DrawDxf::paintEvent (QPaintEvent*)
             double r = m_arcList.at(i).radius;
             double x = m_arcList.at(i).cx - 1.141*r;
             double y = m_arcList.at(i).cy - 1.141*r;
+            double startAngle = m_arcList.at(i).angle1* 2*M_PI / 360;
+            double endAngle = m_arcList.at(i).angle2* 2*M_PI / 360;
             painter.drawArc(m_zoom*x + width()/2, m_zoom*y + height()/2, m_zoom*2*r, m_zoom*2*r,
-                            m_arcList.at(i).angle1, fabs(m_arcList.at(i).angle2 - m_arcList.at(i).angle1));
+                            startAngle, fabs(endAngle - startAngle));
+            qDebug()<<__func__<<"arc = "<<m_arcList.at(i).radius;
         }
     }
 
@@ -76,6 +81,7 @@ void DrawDxf::paintEvent (QPaintEvent*)
         for(int i = 0; i < m_textList.count(); i++){
             painter.drawText(m_zoom*m_textList.at(i).x + width()/2, m_zoom*m_textList.at(i).y + height()/2,
                              m_zoom*m_textList.at(i).width, m_zoom*m_textList.at(i).height, -1, m_textList.at(i).text);
+          //  painter.drawText(width()/2, height()/2, m_zoom*60, m_zoom*60,  -1, "Test");
             qDebug()<<__func__<<"text = "<<m_textList.at(i).text;
         }
     }
