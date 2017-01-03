@@ -36,8 +36,10 @@ private:
     QList<DL_MTextData> m_textList;
 
 protected:
-    void paintEvent (QPaintEvent * event);
-
+    void paintEvent(QPaintEvent * event);
+    void paint_line(QPainter& painter);
+    void paint_text(QPainter& painter);
+    void paint_arc(QPainter& painter);
     void wheelEvent(QWheelEvent *event);
 
 signals:

@@ -47,7 +47,6 @@ void Test_CreationClass::addArc(const DL_ArcData& data) {
     printAttributes();
 
     m_arcList.append(data);
-    qDebug()<<__func__<<"-----add Arc-----\n radius = "<<data.radius;
 }
 
 /**
@@ -90,30 +89,13 @@ void Test_CreationClass::add3dFace(const DL_3dFaceData& data) {
     printAttributes();
 }
 
-void Test_CreationClass::addText(const DL_TextData &data)
-{
-    qDebug()<<"**************TEXT*************\n text ="<<data.text.c_str()<<"  \n style= "<<data.style.c_str();
-}
 
 void Test_CreationClass::addMText(const DL_MTextData &data)
 {
     printAttributes();
     m_textList.append(data);
-    qDebug()<<"\n \n *******MTEXT********\n ipx, y ="<<data.ipx<<data.ipy<<"\n width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str();
+qDebug()<<"\n \n *******MTEXT********\n ipx, y ="<<data.ipx<<data.ipy<<"\n width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str();
 }
-
-void Test_CreationClass::addLeader(const DL_LeaderData &data)
-{
-    qDebug()<<"**************Arrow*************\n"<<data.arrowHeadFlag<<"  number = "<<data.number<<data.textAnnotationWidth;
-    printAttributes();
-}
-
-void Test_CreationClass::addLeaderVertex(const DL_LeaderVertexData &data)
-{
-    printAttributes();
- qDebug()<<"******LeaderVertex*******\n x = "<<data.x<<"  \n y = "<<data.y<< "z :"<<data.z;
-}
-
 
 void Test_CreationClass::printAttributes() {
     printf("  Attributes: Layer: %s, ", attributes.getLayer().c_str());

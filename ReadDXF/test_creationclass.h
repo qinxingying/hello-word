@@ -19,10 +19,7 @@ public:
     virtual void add3dFace(const DL_3dFaceData& data);
     void printAttributes();
 
-    virtual void addText(const DL_TextData& data);
     virtual void addMText(const DL_MTextData& data);//3
-    virtual void addLeader(const DL_LeaderData& data);
-    virtual void addLeaderVertex(const DL_LeaderVertexData& data);
 
     QList<DL_LineData> getLineList() const;
     void setLineList(const QList<DL_LineData> &lineList);
