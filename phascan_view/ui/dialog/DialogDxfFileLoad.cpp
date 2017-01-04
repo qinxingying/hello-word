@@ -72,8 +72,20 @@ void DialogDxfFileLoad::SetWndName()
         ui->LabelPartFilePath->setText("could not be opened");
         return;
     }
-    QList<DRAW_LINE> lineList = creationClass->getLineList();
+    QList<DL_LineData> lineList = creationClass->getLineList();
     ui->ExpoView->setLineList(lineList);
+
+    QList<DL_MTextData> textList = creationClass->getTextList();
+    ui->ExpoView->setTextList(textList);
+
+    QList<DL_ArcData> arcList = creationClass->getArcList();
+    ui->ExpoView->setArcList(arcList);
+
+    QList<DL_CircleData> circleList = creationClass->getCircleList();
+    ui->ExpoView->setCircleList(circleList);
+
+    delete dxf;
+    delete creationClass;
 }
 
 void DialogDxfFileLoad::SetDisplayMode(DISPLAY_MODE eMode_)
