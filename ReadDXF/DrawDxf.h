@@ -35,13 +35,21 @@ public:
     QList<DL_CircleData> getCircleList() const;
     void setCircleList(const QList<DL_CircleData> &circleList);
 
+    QList<DL_TextData> getTextDataList() const;
+    void setTextDataList(const QList<DL_TextData> &textDataList);
+
+    QList<DL_VertexData> getVertexList() const;
+    void setVertexList(const QList<DL_VertexData> &vertexList);
+
 private:
     Test_CreationClass* creationClass;
     QList<DL_LineData> m_lineList;
     QList<DL_ArcData> m_arcList;
+    QList<DL_TextData> m_textDataList;
     QList<DL_MTextData> m_textList;
     QList<DL_EllipseData> m_ellipseList;
     QList<DL_CircleData> m_circleList;
+    QList<DL_VertexData> m_vertexList;
 
 protected:
     void paintEvent(QPaintEvent * event);
@@ -50,6 +58,7 @@ protected:
     void paint_arc(QPainter& painter);
     void paint_ellipse(QPainter& painter);
     void paint_circle(QPainter& painter);
+    void paint_vertex(QPainter& painter);
     void wheelEvent(QWheelEvent *event);
 
 signals:

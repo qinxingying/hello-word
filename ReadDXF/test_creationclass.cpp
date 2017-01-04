@@ -59,11 +59,11 @@ qDebug()<<"\n *******Polyline********\n --- num,m,n ="<<data.number<<data.m<<dat
 /**
  * Sample implementation of the method which handles vertices.
  */
-void Test_CreationClass::addVertex(const DL_VertexData& data) {
-    printf("VERTEX   (%6.3f, %6.3f, %6.3f) %6.3f\n",
-           data.x, data.y, data.z,
-           data.bulge);
+void Test_CreationClass::addVertex(const DL_VertexData& data)
+{
     printAttributes();
+    m_vertexList.append(data);
+qDebug()<<"\n *******addVertex********\n ---x, y, z, bulge="<<data.x<<data.y<<data.z<<data.bulge;
 }
 
 
@@ -88,6 +88,33 @@ void Test_CreationClass::addEllipse(const DL_EllipseData &data)
     m_ellipseList.append(data);
 qDebug()<<"\n *******Ellipse********\n ---cx,y ="<<data.cx<<data.cy<<"\n mx,y ="<<data.mx<<data.my<<"\n ratio ="<<data.ratio;
 qDebug()<<"angle1,2 ="<<data.angle1<<data.angle2;
+}
+
+void Test_CreationClass::addText(const DL_TextData &data)
+{
+    m_textDataList.append(data);
+qDebug()<<"\n *****addText****\n ---text ="<<data.text.c_str()<<"\n factor = "<<data.xScaleFactor;
+qDebug()<<"\n angle, height, hJustification,v="<<data.angle<<data.height<<data.hJustification<<data.vJustification;
+}
+
+void Test_CreationClass::addInsert(const DL_InsertData &data)
+{
+qDebug()<<"\n *****TEST-1***\n ---name ="<<data.name.c_str();
+}
+
+void Test_CreationClass::addComment(const std::string &data)
+{
+qDebug()<<"\n *****TEST-2****\n ---text ="<<data.c_str();
+}
+
+void Test_CreationClass::addXLine(const DL_XLineData &data)
+{
+qDebug()<<"\n *****TEST-3****\n ---bx ="<<data.bx;
+}
+
+void Test_CreationClass::addRay(const DL_RayData &data)
+{
+qDebug()<<"\n *****TEST-4****\n ---bx ="<<data.bx;
 }
 
 void Test_CreationClass::printAttributes() {
@@ -161,6 +188,26 @@ QList<DL_CircleData> Test_CreationClass::getCircleList() const
 void Test_CreationClass::setCircleList(const QList<DL_CircleData> &circleList)
 {
     m_circleList = circleList;
+}
+
+QList<DL_TextData> Test_CreationClass::getTextDataList() const
+{
+    return m_textDataList;
+}
+
+void Test_CreationClass::setTextDataList(const QList<DL_TextData> &textDataList)
+{
+    m_textDataList = textDataList;
+}
+
+QList<DL_VertexData> Test_CreationClass::getVertexList() const
+{
+    return m_vertexList;
+}
+
+void Test_CreationClass::setVertexList(const QList<DL_VertexData> &vertexList)
+{
+    m_vertexList = vertexList;
 }
 
 // EOF
