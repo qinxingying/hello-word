@@ -79,28 +79,9 @@ void DrawDxf::paintEvent (QPaintEvent*)
 
     paint_text(painter);
 
+    paint_arc(painter);
+
     paint_circle(painter);
-
-
-//    double r = 34.897;
-//    double x = 148 - sqrt(2)*r/2;
-//    double y = 138.500 - sqrt(2)*r/2;
-//    double startAngle = 23.259*16;
-//    double endAngle = 217.747*16;
-
-//    painter.drawArc(m_zoom*x + width()/2, -m_zoom*y + height()/2, m_zoom*sqrt(2)*r, m_zoom*sqrt(2)*r,
-//                    startAngle, abs(endAngle - startAngle));
-
-//    double r2 = 34.594;
-//    double x2 = 189.684 - sqrt(2)*r2/2;
-//    double y2 = 97.727 - sqrt(2)*r2/2;
-//    double startAngle2 = 191.213*16;
-//    double endAngle2 = 10.027*16;
-
-//    painter.drawArc(m_zoom*x2 + width()/2, -m_zoom*y2 + height()/2, m_zoom*sqrt(2)*r2,
-//                    m_zoom*sqrt(2)*r2, startAngle2, abs(endAngle2 - startAngle2));
-//    painter.drawEllipse(m_zoom*15 + width()/2, -m_zoom*15 + height()/2, m_zoom*15, m_zoom*15);
-
 
     QVector<qreal> dashes;
     dashes << 3 << 5;

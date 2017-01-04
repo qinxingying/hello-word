@@ -8,7 +8,6 @@ Test_CreationClass::Test_CreationClass() {
 
 }
 
-
 /**
  * Sample implementation of the method which handles layers.
  */
