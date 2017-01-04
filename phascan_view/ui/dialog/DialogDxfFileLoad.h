@@ -48,6 +48,7 @@ private slots:
 	void on_PartFileListDbClicked(QModelIndex index);
 	void on_BtnNccPathClicked();
 	void on_BtnNccDefaultPathClicked();
+    void slot_doubleSpinBox_zoom_setValue(double value);
 
 private:
     Ui::DialogDxfFileLoad *ui;

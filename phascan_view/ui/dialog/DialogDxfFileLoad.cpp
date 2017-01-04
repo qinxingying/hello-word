@@ -37,6 +37,7 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
     connect(ui->ListPartFile, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_PartFileListDbClicked(QModelIndex)));
     connect(ui->BtnNccPath, SIGNAL(clicked()), this, SLOT(on_BtnNccPathClicked()));
     connect(ui->BtnNccDefaultPath, SIGNAL(clicked()), this, SLOT(on_BtnNccDefaultPathClicked()));
+    connect(ui->ExpoView, SIGNAL(zoom(double)), this, SLOT(slot_doubleSpinBox_zoom_setValue(double)));
 }
 
 DialogDxfFileLoad::~DialogDxfFileLoad()
@@ -309,5 +310,10 @@ void DialogDxfFileLoad::on_BtnNccDefaultPathClicked()
     SetWndName();
 	UpdateDisplay();
 	UpdateWeld();
-	ListPartFiles();
+    ListPartFiles();
+}
+
+void DialogDxfFileLoad::slot_doubleSpinBox_zoom_setValue(double value)
+{
+    ui->doubleSpinBox_zoom->setValue(value);
 }
