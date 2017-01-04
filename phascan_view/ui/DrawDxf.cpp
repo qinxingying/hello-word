@@ -64,6 +64,26 @@ void DrawDxf::setCircleList(const QList<DL_CircleData> &circleList)
     m_circleList = circleList;
 }
 
+QList<DL_TextData> DrawDxf::getTextDataList() const
+{
+    return m_textDataList;
+}
+
+void DrawDxf::setTextDataList(const QList<DL_TextData> &textDataList)
+{
+    m_textDataList = textDataList;
+}
+
+QList<DL_VertexData> DrawDxf::getVertexList() const
+{
+    return m_vertexList;
+}
+
+void DrawDxf::setVertexList(const QList<DL_VertexData> &vertexList)
+{
+    m_vertexList = vertexList;
+}
+
 void DrawDxf::paintEvent (QPaintEvent*)
 {
     QPainter painter(this);
@@ -82,6 +102,8 @@ void DrawDxf::paintEvent (QPaintEvent*)
     paint_arc(painter);
 
     paint_circle(painter);
+
+    paint_vertex(painter);
 
     QVector<qreal> dashes;
     dashes << 3 << 5;
@@ -103,15 +125,28 @@ void DrawDxf::paint_line(QPainter &painter)
                              m_zoom*m_lineList.at(i).x2 + width()/2, -m_zoom*m_lineList.at(i).y2 + height()/2);
         }
     }
+    if(m_vertexList.size() > 0){
+        for(int i = 1; i < m_vertexList.count(); i++){
+            painter.drawLine(m_zoom*m_vertexList.at(i-1).x + width()/2, -m_zoom*m_vertexList.at(i-1).y + height()/2,
+                             m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
+        }
+    }
 }
 
 void DrawDxf::paint_text(QPainter &painter)
 {
     if(m_textList.size() > 0){
         for(int i = 0; i < m_textList.count(); i++){
-            QString text =  m_textList.at(i).text.c_str();
             painter.drawText(m_zoom*(m_textList.at(i).ipx-2*m_textList.at(i).height) + width()/2, -m_zoom*m_textList.at(i).ipy + height()/2,
-                             m_zoom*4*m_textList.at(i).height, m_zoom*m_textList.at(i).height, Qt::AlignLeft, text.mid(1, -1));
+                             m_zoom*4*m_textList.at(i).height, m_zoom*m_textList.at(i).height, Qt::AlignLeft, m_textList.at(i).text.c_str());
+        }
+    }
+
+    if(m_textDataList.size() > 0){
+        for(int i = 0; i < m_textDataList.count(); i++){
+            painter.drawText(m_zoom*m_textDataList.at(i).ipx + width()/2, -m_zoom*m_textDataList.at(i).ipy + height()/2,
+                             m_zoom*8*m_textDataList.at(i).height, m_zoom*m_textDataList.at(i).height,
+                             Qt::AlignCenter, m_textDataList.at(i).text.c_str());
         }
     }
 }
@@ -121,13 +156,13 @@ void DrawDxf::paint_arc(QPainter &painter)
     if(m_arcList.size() > 0){
         for(int i = 0; i < m_arcList.count(); i++){
             double r = m_arcList.at(i).radius;
-            double x = m_arcList.at(i).cx - sqrt(2)*r/2;
-            double y = m_arcList.at(i).cy - sqrt(2)*r/2;
+            double x = m_arcList.at(i).cx - r;
+            double y = m_arcList.at(i).cy - r;
             double startAngle = m_arcList.at(i).angle1*16;
             double endAngle = m_arcList.at(i).angle2*16;
-            painter.drawArc(m_zoom*x + width()/2, -m_zoom*y + height()/2, m_zoom*sqrt(2)*r, m_zoom*sqrt(2)*r,
+
+            painter.drawArc(m_zoom*x + width()/2, m_zoom*y + height()/2, m_zoom*2*r, m_zoom*2*r,
                             startAngle, abs(endAngle - startAngle));
-qDebug()<<__func__<<"arc = "<<m_arcList.at(i).cx<<m_arcList.at(i).cy<<m_arcList.at(i).radius<<m_arcList.at(i).angle1<<m_arcList.at(i).angle2;
         }
     }
 }
@@ -156,6 +191,15 @@ void DrawDxf::paint_circle(QPainter &painter)
         for(int i = 0; i < m_circleList.count(); i++){
             painter.drawEllipse(m_zoom*m_circleList.at(i).cx + width()/2, -m_zoom*m_circleList.at(i).cy + height()/2,
                                 m_zoom*m_circleList.at(i).radius, m_zoom*m_circleList.at(i).radius);
+        }
+    }
+}
+
+void DrawDxf::paint_vertex(QPainter &painter)
+{
+    if(m_vertexList.size() > 0){
+        for(int i = 0; i < m_vertexList.count(); i++){
+            painter.drawPoint(m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
         }
     }
 }

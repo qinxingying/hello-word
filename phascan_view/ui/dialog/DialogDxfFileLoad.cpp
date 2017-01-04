@@ -85,6 +85,12 @@ void DialogDxfFileLoad::SetWndName()
     QList<DL_CircleData> circleList = creationClass->getCircleList();
     ui->ExpoView->setCircleList(circleList);
 
+    QList<DL_TextData> textDataList = creationClass->getTextDataList();
+    ui->ExpoView->setTextDataList(textDataList);
+
+    QList<DL_VertexData> vertexList = creationClass->getVertexList();
+    ui->ExpoView->setVertexList(vertexList);
+
     delete dxf;
     delete creationClass;
 }
