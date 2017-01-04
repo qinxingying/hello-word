@@ -58,6 +58,9 @@ qDebug()<<__func__<<"x1 = "<<lineList.at(0).x1;
 
     ui->lineEdit_filePath->setText(fileName);
     ui->doubleSpinBox_zoom->setValue(ui->widget_dxfImage->m_zoom);
+
+    delete dxf;
+    delete creationClass;
 }
 
 void MainWindow::slot_doubleSpinBox_setValue(double value)

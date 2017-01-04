@@ -20,8 +20,6 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    void testReading();
-
 private slots:
     void on_pushButton_openFile_clicked();
     void slot_doubleSpinBox_setValue(double value);

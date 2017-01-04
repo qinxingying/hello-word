@@ -128,9 +128,9 @@ void DrawDxf::paint_text(QPainter &painter)
 {
     if(m_textList.size() > 0){
         for(int i = 0; i < m_textList.count(); i++){
+            QString text =  m_textList.at(i).text.c_str();
             painter.drawText(m_zoom*(m_textList.at(i).ipx-2*m_textList.at(i).height) + width()/2, -m_zoom*m_textList.at(i).ipy + height()/2,
-                             m_zoom*4*m_textList.at(i).height, m_zoom*m_textList.at(i).height, Qt::AlignLeft, m_textList.at(i).text.c_str());
-qDebug()<<__func__<<"text = "<<m_textList.at(i).text.c_str();
+                             m_zoom*4*m_textList.at(i).height, m_zoom*m_textList.at(i).height, Qt::AlignLeft, text.mid(1, -1));
         }
     }
 }
@@ -171,7 +171,7 @@ qDebug()<<__func__<<"r = "<<m_ellipseList.at(i).ratio;
 
 void DrawDxf::paint_circle(QPainter &painter)
 {
-    if(m_circleList.size() > 0){
+    if(!m_circleList.isEmpty()){
         for(int i = 0; i < m_circleList.count(); i++){
             painter.drawEllipse(m_zoom*m_circleList.at(i).cx + width()/2, -m_zoom*m_circleList.at(i).cy + height()/2,
                                 m_zoom*m_circleList.at(i).radius, m_zoom*m_circleList.at(i).radius);
