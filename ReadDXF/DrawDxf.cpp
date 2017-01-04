@@ -125,6 +125,12 @@ void DrawDxf::paint_line(QPainter &painter)
                              m_zoom*m_lineList.at(i).x2 + width()/2, -m_zoom*m_lineList.at(i).y2 + height()/2);
         }
     }
+    if(m_vertexList.size() > 0){
+        for(int i = 1; i < m_vertexList.count(); i++){
+            painter.drawLine(m_zoom*m_vertexList.at(i-1).x + width()/2, -m_zoom*m_vertexList.at(i-1).y + height()/2,
+                             m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
+        }
+    }
 }
 
 void DrawDxf::paint_text(QPainter &painter)
@@ -193,7 +199,7 @@ void DrawDxf::paint_vertex(QPainter &painter)
 {
     if(m_vertexList.size() > 0){
         for(int i = 0; i < m_vertexList.count(); i++){
-            painter.drawPoint(m_vertexList.at(i).x + width()/2, -m_vertexList.at(i).y + height()/2);
+            painter.drawPoint(m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
         }
     }
 }
