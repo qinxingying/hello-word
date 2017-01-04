@@ -109,9 +109,8 @@ void DrawDxf::paint_text(QPainter &painter)
 {
     if(m_textList.size() > 0){
         for(int i = 0; i < m_textList.count(); i++){
-            QString text =  m_textList.at(i).text.c_str();
             painter.drawText(m_zoom*(m_textList.at(i).ipx-2*m_textList.at(i).height) + width()/2, -m_zoom*m_textList.at(i).ipy + height()/2,
-                             m_zoom*4*m_textList.at(i).height, m_zoom*m_textList.at(i).height, Qt::AlignLeft, text.mid(1, -1));
+                             m_zoom*4*m_textList.at(i).height, m_zoom*m_textList.at(i).height, Qt::AlignLeft, m_textList.at(i).text.c_str());
         }
     }
 }
@@ -127,7 +126,6 @@ void DrawDxf::paint_arc(QPainter &painter)
             double endAngle = m_arcList.at(i).angle2*16;
             painter.drawArc(m_zoom*x + width()/2, -m_zoom*y + height()/2, m_zoom*sqrt(2)*r, m_zoom*sqrt(2)*r,
                             startAngle, abs(endAngle - startAngle));
-qDebug()<<__func__<<"arc = "<<m_arcList.at(i).cx<<m_arcList.at(i).cy<<m_arcList.at(i).radius<<m_arcList.at(i).angle1<<m_arcList.at(i).angle2;
         }
     }
 }
