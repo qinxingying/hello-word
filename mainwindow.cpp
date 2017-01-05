@@ -68,6 +68,9 @@ void MainWindow::on_pushButton_openFile_clicked()
     QList<DL_ControlPointData> controlPointList = creationClass->getControlPointList();
     ui->widget_dxfImage->setControlPointList(controlPointList);
 
+    QList<DL_PolylineData> polyLineList = creationClass->getPolyLineList();
+    ui->widget_dxfImage->setPolyLineList(polyLineList);
+
     ui->lineEdit_filePath->setText(fileName);
     ui->doubleSpinBox_zoom->setValue(ui->widget_dxfImage->m_zoom);
 

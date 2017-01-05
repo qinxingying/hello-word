@@ -61,6 +61,9 @@ public:
     QList<DL_PointData> getPointList() const;
     void setPointList(const QList<DL_PointData> &pointList);
 
+    QList<DL_PolylineData> getPolyLineList() const;
+    void setPolyLineList(const QList<DL_PolylineData> &polyLineList);
+
 private:
     QList<DL_PointData> m_pointList;
     QList<DL_LineData> m_lineList;
@@ -70,7 +73,7 @@ private:
     QList<DL_EllipseData> m_ellipseList;
     QList<DL_CircleData> m_circleList;
     QList<DL_VertexData> m_vertexList;
-
+    QList<DL_PolylineData> m_polyLineList;
     QList<DL_SplineData> m_splineList;
     QList<DL_ControlPointData> m_controlPointList;
 };

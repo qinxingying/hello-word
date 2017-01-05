@@ -54,6 +54,7 @@ qDebug()<<"\n *******AddCircle(4)********\n --- cx,y,z = ("<<data.cx<<data.cy<<d
 void Test_CreationClass::addPolyline(const DL_PolylineData& data)
 {
     printAttributes();
+    m_polyLineList.append(data);
 qDebug()<<"\n *******AddPolyline(5)********\n --- num,m,n ="<<data.number<<data.m<<data.n<<"\n flag ="<<data.flags;
 }
 
@@ -253,6 +254,16 @@ QList<DL_PointData> Test_CreationClass::getPointList() const
 void Test_CreationClass::setPointList(const QList<DL_PointData> &pointList)
 {
     m_pointList = pointList;
+}
+
+QList<DL_PolylineData> Test_CreationClass::getPolyLineList() const
+{
+    return m_polyLineList;
+}
+
+void Test_CreationClass::setPolyLineList(const QList<DL_PolylineData> &polyLineList)
+{
+    m_polyLineList = polyLineList;
 }
 
 // EOF

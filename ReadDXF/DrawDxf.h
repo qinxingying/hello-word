@@ -50,6 +50,9 @@ public:
     QList<DL_PointData> getPointList() const;
     void setPointList(const QList<DL_PointData> &pointList);
 
+    QList<DL_PolylineData> getPolyLineList() const;
+    void setPolyLineList(const QList<DL_PolylineData> &polyLineList);
+
 private:
     Test_CreationClass* creationClass;
 
@@ -61,18 +64,20 @@ private:
     QList<DL_EllipseData> m_ellipseList;
     QList<DL_CircleData> m_circleList;
     QList<DL_VertexData> m_vertexList;
-
+    QList<DL_PolylineData> m_polyLineList;
     QList<DL_SplineData> m_splineList;
     QList<DL_ControlPointData> m_controlPointList;
 
 protected:
     void paintEvent(QPaintEvent * event);
+    void paint_point(QPainter& painter);
     void paint_line(QPainter& painter);
+    void paint_polyLine_0(QPainter& painter);
+    void paint_polyLine_1(QPainter& painter);
     void paint_text(QPainter& painter);
     void paint_arc(QPainter& painter);
-    void paint_ellipse(QPainter& painter);
     void paint_circle(QPainter& painter);
-    void paint_point(QPainter& painter);
+    void paint_ellipse(QPainter& painter);
     void wheelEvent(QWheelEvent *event);
 
 signals:
