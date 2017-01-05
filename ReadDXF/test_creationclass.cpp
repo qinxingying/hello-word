@@ -71,21 +71,23 @@ void Test_CreationClass::addMText(const DL_MTextData &data)
 {
     printAttributes();
     m_textList.append(data);
-qDebug()<<"\n *******AddMText(7)********\n ---ipx, y ="<<data.ipx<<data.ipy<<"\n width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str();
+qDebug()<<"\n *******AddMText(7)********\n ---ipx, y ="<<data.ipx<<data.ipy;
+qDebug()<<"width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str();
 }
 
 void Test_CreationClass::addEllipse(const DL_EllipseData &data)
 {
     m_ellipseList.append(data);
-qDebug()<<"\n *******AddEllipse(8)********\n ---cx,y ="<<data.cx<<data.cy<<"\n mx,y ="<<data.mx<<data.my<<"\n ratio ="<<data.ratio;
-qDebug()<<"angle1,2 ="<<data.angle1<<data.angle2;
+qDebug()<<"\n *******AddEllipse(8)********\n ---cx,y ="<<data.cx<<data.cy<<"\n mx,y ="<<data.mx<<data.my;
+qDebug()<<"ratio ="<<data.ratio<<"angle1,2 ="<<data.angle1<<data.angle2;
 }
 
 void Test_CreationClass::addText(const DL_TextData &data)
 {
     m_textDataList.append(data);
-qDebug()<<"\n *****AddText(9)****\n ---text ="<<data.text.c_str()<<"\n factor = "<<data.xScaleFactor;
-qDebug()<<"\n angle, height, hJustification,v="<<data.angle<<data.height<<data.hJustification<<data.vJustification;
+qDebug()<<"\n *****AddText(9)****\n ---text ="<<data.text.c_str()<<"factor = "<<data.xScaleFactor;
+qDebug()<<"ipx,y = "<<data.ipx<<data.ipy<<"apx,y ="<<data.apx<<data.apy;
+qDebug()<<"angle, height, hJustification,v="<<data.angle<<data.height<<data.hJustification<<data.vJustification;
 }
 
 void Test_CreationClass::addSpline(const DL_SplineData &data)

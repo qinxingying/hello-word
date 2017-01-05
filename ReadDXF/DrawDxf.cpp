@@ -175,9 +175,9 @@ void DrawDxf::paint_text(QPainter &painter)
 
     if(m_textDataList.size() > 0){
         for(int i = 0; i < m_textDataList.count(); i++){
-            painter.drawText(m_zoom*m_textDataList.at(i).ipx + width()/2, -m_zoom*m_textDataList.at(i).ipy + height()/2,
-                             m_zoom*8*m_textDataList.at(i).height, m_zoom*m_textDataList.at(i).height,
-                             Qt::AlignCenter, m_textDataList.at(i).text.c_str());
+            painter.drawText(m_zoom*m_textDataList.at(i).ipx + width()/2, -m_zoom*m_textDataList.at(i).ipy - m_textDataList.at(i).height + height()/2,
+                             m_zoom*9*m_textDataList.at(i).height, m_zoom*m_textDataList.at(i).height,
+                             Qt::AlignLeft, m_textDataList.at(i).text.c_str());
         }
     }
 }
