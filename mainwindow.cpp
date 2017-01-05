@@ -44,6 +44,9 @@ void MainWindow::on_pushButton_openFile_clicked()
         return;
     }
 
+    QList<DL_PointData> pointList = creationClass->getPointList();
+    ui->widget_dxfImage->setPointList(pointList);
+
     QList<DL_LineData> lineList = creationClass->getLineList();
     ui->widget_dxfImage->setLineList(lineList);
 
@@ -61,6 +64,9 @@ void MainWindow::on_pushButton_openFile_clicked()
 
     QList<DL_VertexData> vertexList = creationClass->getVertexList();
     ui->widget_dxfImage->setVertexList(vertexList);
+
+    QList<DL_ControlPointData> controlPointList = creationClass->getControlPointList();
+    ui->widget_dxfImage->setControlPointList(controlPointList);
 
     ui->lineEdit_filePath->setText(fileName);
     ui->doubleSpinBox_zoom->setValue(ui->widget_dxfImage->m_zoom);

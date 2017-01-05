@@ -84,6 +84,36 @@ void DrawDxf::setVertexList(const QList<DL_VertexData> &vertexList)
     m_vertexList = vertexList;
 }
 
+QList<DL_SplineData> DrawDxf::getSplineList() const
+{
+    return m_splineList;
+}
+
+void DrawDxf::setSplineList(const QList<DL_SplineData> &splineList)
+{
+    m_splineList = splineList;
+}
+
+QList<DL_ControlPointData> DrawDxf::getControlPointList() const
+{
+    return m_controlPointList;
+}
+
+void DrawDxf::setControlPointList(const QList<DL_ControlPointData> &controlPointList)
+{
+    m_controlPointList = controlPointList;
+}
+
+QList<DL_PointData> DrawDxf::getPointList() const
+{
+    return m_pointList;
+}
+
+void DrawDxf::setPointList(const QList<DL_PointData> &pointList)
+{
+    m_pointList = pointList;
+}
+
 void DrawDxf::paintEvent (QPaintEvent*)
 {
     QPainter painter(this);
@@ -103,7 +133,7 @@ void DrawDxf::paintEvent (QPaintEvent*)
 
     paint_circle(painter);
 
-    paint_vertex(painter);
+    paint_point(painter);
 
     QVector<qreal> dashes;
     dashes << 3 << 5;
@@ -125,12 +155,21 @@ void DrawDxf::paint_line(QPainter &painter)
                              m_zoom*m_lineList.at(i).x2 + width()/2, -m_zoom*m_lineList.at(i).y2 + height()/2);
         }
     }
+
     if(m_vertexList.size() > 0){
         for(int i = 1; i < m_vertexList.count(); i++){
             painter.drawLine(m_zoom*m_vertexList.at(i-1).x + width()/2, -m_zoom*m_vertexList.at(i-1).y + height()/2,
                              m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
         }
     }
+
+//    if(m_controlPointList.size() > 0){
+//        for(int i = 1; i < m_controlPointList.count(); i++){
+//            painter.drawLine(m_zoom*m_controlPointList.at(i-1).x + width()/2, -m_zoom*m_controlPointList.at(i-1).y + height()/2,
+//                             m_zoom*m_controlPointList.at(i).x + width()/2, -m_zoom*m_controlPointList.at(i).y + height()/2);
+
+//        }
+//    }
 }
 
 void DrawDxf::paint_text(QPainter &painter)
@@ -195,11 +234,23 @@ void DrawDxf::paint_circle(QPainter &painter)
     }
 }
 
-void DrawDxf::paint_vertex(QPainter &painter)
+void DrawDxf::paint_point(QPainter &painter)
 {
     if(m_vertexList.size() > 0){
         for(int i = 0; i < m_vertexList.count(); i++){
             painter.drawPoint(m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
+        }
+    }
+
+    if(m_controlPointList.size() > 0){
+        for(int i = 0; i < m_controlPointList.count(); i++){
+            painter.drawPoint(m_zoom*m_controlPointList.at(i).x + width()/2, -m_zoom*m_controlPointList.at(i).y + height()/2);
+        }
+    }
+
+    if(m_pointList.size() > 0){
+        for(int i = 0; i < m_pointList.count(); i++){
+            painter.drawPoint(m_zoom*m_pointList.at(i).x + width()/2, -m_zoom*m_pointList.at(i).y + height()/2);
         }
     }
 }
