@@ -162,14 +162,6 @@ void DrawDxf::paint_line(QPainter &painter)
                              m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
         }
     }
-
-//    if(m_controlPointList.size() > 0){
-//        for(int i = 1; i < m_controlPointList.count(); i++){
-//            painter.drawLine(m_zoom*m_controlPointList.at(i-1).x + width()/2, -m_zoom*m_controlPointList.at(i-1).y + height()/2,
-//                             m_zoom*m_controlPointList.at(i).x + width()/2, -m_zoom*m_controlPointList.at(i).y + height()/2);
-
-//        }
-//    }
 }
 
 void DrawDxf::paint_text(QPainter &painter)
@@ -217,7 +209,6 @@ void DrawDxf::paint_ellipse(QPainter &painter)
             double endAngle = m_ellipseList.at(i).angle2*16;
             painter.drawArc(m_zoom*x + width()/2, -m_zoom*y + height()/2, m_zoom*sqrt(2)*r, m_zoom*sqrt(2)*r,
                             startAngle, abs(endAngle - startAngle));
-      //      painter.drawEllipse();
 
 qDebug()<<__func__<<"r = "<<m_ellipseList.at(i).ratio;
         }
@@ -228,8 +219,9 @@ void DrawDxf::paint_circle(QPainter &painter)
 {
     if(!m_circleList.isEmpty()){
         for(int i = 0; i < m_circleList.count(); i++){
-            painter.drawEllipse(m_zoom*m_circleList.at(i).cx + width()/2, -m_zoom*m_circleList.at(i).cy + height()/2,
-                                m_zoom*m_circleList.at(i).radius, m_zoom*m_circleList.at(i).radius);
+            painter.drawEllipse(m_zoom*m_circleList.at(i).cx - m_zoom*m_circleList.at(i).radius + width()/2,
+                                -m_zoom*m_circleList.at(i).cy - m_zoom*m_circleList.at(i).radius + height()/2,
+                                2*m_zoom*m_circleList.at(i).radius, 2*m_zoom*m_circleList.at(i).radius);
         }
     }
 }
@@ -257,13 +249,18 @@ void DrawDxf::paint_point(QPainter &painter)
 
 void DrawDxf::wheelEvent(QWheelEvent *event)
 {
-    if(event->delta() > 0){
-        m_zoom += 0.5;
+    if(event->delta() >0){
+            m_zoom += 1;
+
     }else{
-        if(m_zoom > 0){
-            m_zoom -= 0.5;
+        if(m_zoom > 1){
+            m_zoom -= 1;
+
+        }else if(0 < m_zoom && m_zoom <= 1){
+            m_zoom = 0.5*m_zoom;
         }
     }
+
     update();
     emit zoom(m_zoom);
 }
