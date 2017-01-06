@@ -71,6 +71,9 @@ void MainWindow::on_pushButton_openFile_clicked()
     QList<DL_PolylineData> polyLineList = creationClass->getPolyLineList();
     ui->widget_dxfImage->setPolyLineList(polyLineList);
 
+    QList<DL_EllipseData> ellipseList = creationClass->getEllipseList();
+    ui->widget_dxfImage->setEllipseList(ellipseList);
+
     ui->lineEdit_filePath->setText(fileName);
     ui->doubleSpinBox_zoom->setValue(ui->widget_dxfImage->m_zoom);
 
