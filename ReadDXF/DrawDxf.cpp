@@ -284,11 +284,11 @@ void DrawDxf::paint_ellipse(QPainter &painter)
 
     for(int i = 0; i < m_ellipseList.count(); i++){
         double k = m_ellipseList.at(i).ratio;
-        double r1 = m_zoom*sqrt(pow((m_ellipseList.at(i).mx - m_ellipseList.at(i).cx), 2.0) +
+        double r1 = sqrt(pow((m_ellipseList.at(i).mx - m_ellipseList.at(i).cx), 2.0) +
                          pow((m_ellipseList.at(i).my - m_ellipseList.at(i).cy), 2.0));
         double r2 = k*r1;
         painter.drawEllipse(m_zoom*m_ellipseList.at(i).cx  - m_zoom*r1 + width()/2,
-                            -m_zoom*m_ellipseList.at(i).cy  - m_zoom*r2 + height()/2, 2*r1, 2*r2);
+                            -m_zoom*m_ellipseList.at(i).cy  - m_zoom*r2 + height()/2, 2*m_zoom*r1, 2*m_zoom*r2);
 //qDebug()<<__func__<<"r1 = "<<r1<<"i = "<<i;
     }
 }
