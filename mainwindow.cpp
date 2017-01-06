@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->widget_dxfImage->setPalette(palette);
 
     connect(ui->widget_dxfImage, SIGNAL(zoom(double)), this, SLOT(slot_doubleSpinBox_setValue(double)));
+
 }
 
 MainWindow::~MainWindow()

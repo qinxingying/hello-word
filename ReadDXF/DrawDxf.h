@@ -77,6 +77,7 @@ protected:
     void paint_text(QPainter& painter);
     void paint_arc(QPainter& painter);
     void paint_circle(QPainter& painter);
+    double calc_rotateAngle(double cx, double cy, double mx, double my);
     void paint_ellipse(QPainter& painter);
     void wheelEvent(QWheelEvent *event);
 
