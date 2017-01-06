@@ -189,15 +189,16 @@ void DrawDxf::paint_line(QPainter &painter)
         }
     }
 
-    if(m_polyLineList.size() > 0){
-        for(int i = 0; i < m_polyLineList.count(); i++){
-            if(m_polyLineList.at(i).flags && m_polyLineList.at(i).number){
-                paint_polyLine_1(painter);
-            }else{
-                paint_polyLine_0(painter);
-            }
-        }
-    }
+//    if(m_polyLineList.size() > 0){
+//        for(int i = 0; i < m_polyLineList.count(); i++){
+//            if(m_polyLineList.at(i).flags){
+//                paint_polyLine_1(painter);
+//            }else{
+//                paint_polyLine_0(painter);
+//            }
+//        }
+//    }
+    paint_polyLine_1(painter);
 }
 
 void DrawDxf::paint_polyLine_0(QPainter &painter)
