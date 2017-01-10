@@ -203,7 +203,7 @@ void DrawDxf::paint_line(QPainter &painter)
 //            }
 //        }
 //    }
-    paint_polyLine_1(painter);
+    paint_polyLine_0(painter);
 }
 
 void DrawDxf::paint_polyLine_0(QPainter &painter)
@@ -237,14 +237,17 @@ void DrawDxf::paint_text(QPainter &painter)
 {
     if(m_textList.size() > 0){
         for(int i = 0; i < m_textList.count(); i++){
-            painter.drawText(m_zoom*(m_textList.at(i).ipx-2*m_textList.at(i).height) + width()/2, -m_zoom*m_textList.at(i).ipy + height()/2,
-                             m_zoom*4*m_textList.at(i).height, m_zoom*m_textList.at(i).height, Qt::AlignLeft, m_textList.at(i).text.c_str());
+            painter.drawText(m_zoom*(m_textList.at(i).ipx-2*m_textList.at(i).height) + width()/2,
+                             -m_zoom*m_textList.at(i).ipy + height()/2,
+                             m_zoom*4*m_textList.at(i).height, m_zoom*m_textList.at(i).height,
+                             Qt::AlignLeft, m_textList.at(i).text.c_str());
         }
     }
 
     if(m_textDataList.size() > 0){
         for(int i = 0; i < m_textDataList.count(); i++){
-            painter.drawText(m_zoom*m_textDataList.at(i).ipx + width()/2, -m_zoom*m_textDataList.at(i).ipy - m_textDataList.at(i).height + height()/2,
+            painter.drawText(m_zoom*m_textDataList.at(i).ipx + width()/2,
+                            -m_zoom*m_textDataList.at(i).ipy - m_textDataList.at(i).height + height()/2,
                              m_zoom*9*m_textDataList.at(i).height, m_zoom*m_textDataList.at(i).height,
                              Qt::AlignLeft, m_textDataList.at(i).text.c_str());
         }
@@ -333,11 +336,19 @@ void DrawDxf::paint_ellipse(QPainter &painter)
 
         painter.translate(m_zoom*m_ellipseList.at(i).cx  - m_zoom*r1 + width()/2,
                           -m_zoom*m_ellipseList.at(i).cy  - m_zoom*k*r1 + height()/2);
-      //  painter.rotate(2*M_PI - rotateAngle);
 
-   qDebug()<<"rotateAngle = "<<rotateAngle*180/M_PI<<"StartAngle = "<<m_ellipseList.at(i).angle1*180/M_PI;
+        painter.rotate(360 - rotateAngle*180/M_PI);
+
         painter.scale(1, k);
-        painter.drawArc(0, 0, m_zoom*2*r1, m_zoom*2*r1, startAngle, 16*360 - fabs(endAngle - startAngle));
+
+        double Angle = 16*360 - fabs(endAngle - startAngle);
+        if(Angle < 1e-10){
+            painter.drawArc(0, 0, m_zoom*2*r1, m_zoom*2*r1, startAngle, 16*360);
+        }else{
+            painter.drawArc(0, 0, m_zoom*2*r1, m_zoom*2*r1, startAngle, Angle);
+        }
+qDebug()<<"\n rotateAngle = "<<rotateAngle*180/M_PI<<"StartAngle = "<<startAngle/16<<"endAngle ="<<endAngle/16<<"r1="<<r1;
+qDebug()<<"\n Angle = "<<fabs(endAngle - startAngle)/16<<Angle/16;
     }
 }
 
