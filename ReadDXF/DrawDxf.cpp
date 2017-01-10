@@ -333,13 +333,11 @@ void DrawDxf::paint_ellipse(QPainter &painter)
 
         painter.translate(m_zoom*m_ellipseList.at(i).cx  - m_zoom*r1 + width()/2,
                           -m_zoom*m_ellipseList.at(i).cy  - m_zoom*k*r1 + height()/2);
-//        painter.rotate(2*M_PI - rotateAngle);
+      //  painter.rotate(2*M_PI - rotateAngle);
 
-   qDebug()<<"rotateAngle = "<<rotateAngle*180/M_PI;
+   qDebug()<<"rotateAngle = "<<rotateAngle*180/M_PI<<"StartAngle = "<<m_ellipseList.at(i).angle1*180/M_PI;
         painter.scale(1, k);
-        painter.drawEllipse(0, 0, 2*m_zoom*r1, 2*m_zoom*r1);
-
-        painter.drawArc(0, 0, m_zoom*2*r1, m_zoom*2*r1, startAngle, fabs(endAngle - startAngle));
+        painter.drawArc(0, 0, m_zoom*2*r1, m_zoom*2*r1, startAngle, 16*360 - fabs(endAngle - startAngle));
     }
 }
 
