@@ -334,19 +334,22 @@ void DrawDxf::paint_ellipse(QPainter &painter)
         double startAngle  = 16*m_ellipseList.at(i).angle1*180/M_PI;
         double endAngle    = 16*m_ellipseList.at(i).angle2*180/M_PI;
 
-        painter.translate(m_zoom*m_ellipseList.at(i).cx  - m_zoom*r1 + width()/2,
-                          -m_zoom*m_ellipseList.at(i).cy  - m_zoom*k*r1 + height()/2);
-
+        painter.translate(width()/2, height()/2);
         painter.rotate(360 - rotateAngle*180/M_PI);
 
         painter.scale(1, k);
 
         double Angle = 16*360 - fabs(endAngle - startAngle);
         if(Angle < 1e-10){
-            painter.drawArc(0, 0, m_zoom*2*r1, m_zoom*2*r1, startAngle, 16*360);
+            painter.drawArc(m_zoom*m_ellipseList.at(i).cx  - m_zoom*r1,
+                            -m_zoom*m_ellipseList.at(i).cy  - m_zoom*r1,
+                            m_zoom*2*r1, m_zoom*2*r1, startAngle, 16*360);
         }else{
-            painter.drawArc(0, 0, m_zoom*2*r1, m_zoom*2*r1, startAngle, Angle);
+            painter.drawArc(m_zoom*m_ellipseList.at(i).cx  - m_zoom*r1,
+                            -m_zoom*m_ellipseList.at(i).cy  - m_zoom*r1,
+                            m_zoom*2*r1, m_zoom*2*r1, startAngle, Angle);
         }
+
 qDebug()<<"\n rotateAngle = "<<rotateAngle*180/M_PI<<"StartAngle = "<<startAngle/16<<"endAngle ="<<endAngle/16<<"r1="<<r1;
 qDebug()<<"\n Angle = "<<fabs(endAngle - startAngle)/16<<Angle/16;
     }
