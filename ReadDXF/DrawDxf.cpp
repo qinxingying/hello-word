@@ -331,15 +331,15 @@ void DrawDxf::paint_ellipse(QPainter &painter)
         double startAngle  = 16*m_ellipseList.at(i).angle1*180/M_PI;
         double endAngle    = 16*m_ellipseList.at(i).angle2*180/M_PI;
 
-//        painter.translate(m_zoom*m_ellipseList.at(i).cx, -m_zoom*m_ellipseList.at(i).cy);
+        painter.translate(m_zoom*m_ellipseList.at(i).cx  - m_zoom*r1 + width()/2,
+                          -m_zoom*m_ellipseList.at(i).cy  - m_zoom*k*r1 + height()/2);
 //        painter.rotate(2*M_PI - rotateAngle);
+
    qDebug()<<"rotateAngle = "<<rotateAngle*180/M_PI;
         painter.scale(1, k);
-        painter.drawEllipse(m_zoom*m_ellipseList.at(i).cx  - m_zoom*r1 + width()/2,
-                            -m_zoom*m_ellipseList.at(i).cy  - m_zoom*r1 + height()/2, 2*m_zoom*r1, 2*m_zoom*r1);
+        painter.drawEllipse(0, 0, 2*m_zoom*r1, 2*m_zoom*r1);
 
-        painter.drawArc(m_zoom*m_ellipseList.at(i).cx -m_zoom*r1 + width()/2, -m_zoom*m_ellipseList.at(i).cy - m_zoom*r1 + height()/2,
-                        m_zoom*2*r1, m_zoom*2*r1, startAngle, fabs(endAngle - startAngle));
+        painter.drawArc(0, 0, m_zoom*2*r1, m_zoom*2*r1, startAngle, fabs(endAngle - startAngle));
     }
 }
 
