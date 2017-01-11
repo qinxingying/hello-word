@@ -100,6 +100,9 @@ void DialogDxfFileLoad::SetWndName()
     QList<DL_PolylineData> polyLineList = creationClass->getPolyLineList();
     ui->ExpoView->setPolyLineList(polyLineList);
 
+    QList<DL_EllipseData> ellipseList = creationClass->getEllipseList();
+    ui->ExpoView->setEllipseList(ellipseList);
+
     delete dxf;
     delete creationClass;
 }
