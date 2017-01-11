@@ -84,6 +84,46 @@ void DrawDxf::setVertexList(const QList<DL_VertexData> &vertexList)
     m_vertexList = vertexList;
 }
 
+QList<DL_SplineData> DrawDxf::getSplineList() const
+{
+    return m_splineList;
+}
+
+void DrawDxf::setSplineList(const QList<DL_SplineData> &splineList)
+{
+    m_splineList = splineList;
+}
+
+QList<DL_ControlPointData> DrawDxf::getControlPointList() const
+{
+    return m_controlPointList;
+}
+
+void DrawDxf::setControlPointList(const QList<DL_ControlPointData> &controlPointList)
+{
+    m_controlPointList = controlPointList;
+}
+
+QList<DL_PointData> DrawDxf::getPointList() const
+{
+    return m_pointList;
+}
+
+void DrawDxf::setPointList(const QList<DL_PointData> &pointList)
+{
+    m_pointList = pointList;
+}
+
+QList<DL_PolylineData> DrawDxf::getPolyLineList() const
+{
+    return m_polyLineList;
+}
+
+void DrawDxf::setPolyLineList(const QList<DL_PolylineData> &polyLineList)
+{
+    m_polyLineList = polyLineList;
+}
+
 void DrawDxf::paintEvent (QPaintEvent*)
 {
     QPainter painter(this);
@@ -103,7 +143,7 @@ void DrawDxf::paintEvent (QPaintEvent*)
 
     paint_circle(painter);
 
-    paint_vertex(painter);
+    paint_point(painter);
 
     QVector<qreal> dashes;
     dashes << 3 << 5;
@@ -117,6 +157,27 @@ void DrawDxf::paintEvent (QPaintEvent*)
     painter.setPen(pen);
 }
 
+void DrawDxf::paint_point(QPainter &painter)
+{
+    if(m_vertexList.size() > 0){
+        for(int i = 0; i < m_vertexList.count(); i++){
+            painter.drawPoint(m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
+        }
+    }
+
+    if(m_controlPointList.size() > 0){
+        for(int i = 0; i < m_controlPointList.count(); i++){
+            painter.drawPoint(m_zoom*m_controlPointList.at(i).x + width()/2, -m_zoom*m_controlPointList.at(i).y + height()/2);
+        }
+    }
+
+    if(m_pointList.size() > 0){
+        for(int i = 0; i < m_pointList.count(); i++){
+            painter.drawPoint(m_zoom*m_pointList.at(i).x + width()/2, -m_zoom*m_pointList.at(i).y + height()/2);
+        }
+    }
+}
+
 void DrawDxf::paint_line(QPainter &painter)
 {
     if (m_lineList.size() > 0){
@@ -125,10 +186,37 @@ void DrawDxf::paint_line(QPainter &painter)
                              m_zoom*m_lineList.at(i).x2 + width()/2, -m_zoom*m_lineList.at(i).y2 + height()/2);
         }
     }
+
+    if(m_polyLineList.size() > 0){
+        for(int i = 0; i < m_polyLineList.count(); i++){
+            if(m_polyLineList.at(i).flags && m_polyLineList.at(i).number){
+                paint_polyLine_1(painter);
+            }else{
+                paint_polyLine_0(painter);
+            }
+        }
+    }
+}
+
+void DrawDxf::paint_polyLine_0(QPainter &painter)
+{
     if(m_vertexList.size() > 0){
         for(int i = 1; i < m_vertexList.count(); i++){
             painter.drawLine(m_zoom*m_vertexList.at(i-1).x + width()/2, -m_zoom*m_vertexList.at(i-1).y + height()/2,
                              m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
+        }
+    }
+}
+
+void DrawDxf::paint_polyLine_1(QPainter &painter)
+{
+    if(m_vertexList.size() > 0){
+        for(int i = 1; i < m_vertexList.count(); i++){
+            painter.drawLine(m_zoom*m_vertexList.at(i-1).x + width()/2, -m_zoom*m_vertexList.at(i-1).y + height()/2,
+                             m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
+            painter.drawLine(m_zoom*m_vertexList.at(0).x + width()/2, -m_zoom*m_vertexList.at(0).y + height()/2,
+                             m_zoom*m_vertexList.at(m_vertexList.count()-1).x + width()/2,
+                             -m_zoom*m_vertexList.at(m_vertexList.count()-1).y + height()/2);
         }
     }
 }
@@ -144,9 +232,9 @@ void DrawDxf::paint_text(QPainter &painter)
 
     if(m_textDataList.size() > 0){
         for(int i = 0; i < m_textDataList.count(); i++){
-            painter.drawText(m_zoom*m_textDataList.at(i).ipx + width()/2, -m_zoom*m_textDataList.at(i).ipy + height()/2,
-                             m_zoom*8*m_textDataList.at(i).height, m_zoom*m_textDataList.at(i).height,
-                             Qt::AlignCenter, m_textDataList.at(i).text.c_str());
+            painter.drawText(m_zoom*m_textDataList.at(i).ipx + width()/2, -m_zoom*m_textDataList.at(i).ipy - m_textDataList.at(i).height + height()/2,
+                             m_zoom*9*m_textDataList.at(i).height, m_zoom*m_textDataList.at(i).height,
+                             Qt::AlignLeft, m_textDataList.at(i).text.c_str());
         }
     }
 }
@@ -156,13 +244,22 @@ void DrawDxf::paint_arc(QPainter &painter)
     if(m_arcList.size() > 0){
         for(int i = 0; i < m_arcList.count(); i++){
             double r = m_arcList.at(i).radius;
-            double x = m_arcList.at(i).cx - r;
-            double y = m_arcList.at(i).cy - r;
             double startAngle = m_arcList.at(i).angle1*16;
             double endAngle = m_arcList.at(i).angle2*16;
 
-            painter.drawArc(m_zoom*x + width()/2, m_zoom*y + height()/2, m_zoom*2*r, m_zoom*2*r,
-                            startAngle, abs(endAngle - startAngle));
+            painter.drawArc(m_zoom*m_arcList.at(i).cx -m_zoom*r + width()/2, -m_zoom*m_arcList.at(i).cy - m_zoom*r + height()/2,
+                            m_zoom*2*r, m_zoom*2*r, startAngle, abs(endAngle - startAngle));
+        }
+    }
+}
+
+void DrawDxf::paint_circle(QPainter &painter)
+{
+    if(!m_circleList.isEmpty()){
+        for(int i = 0; i < m_circleList.count(); i++){
+            painter.drawEllipse(m_zoom*m_circleList.at(i).cx - m_zoom*m_circleList.at(i).radius + width()/2,
+                                -m_zoom*m_circleList.at(i).cy - m_zoom*m_circleList.at(i).radius + height()/2,
+                                2*m_zoom*m_circleList.at(i).radius, 2*m_zoom*m_circleList.at(i).radius);
         }
     }
 }
@@ -178,41 +275,26 @@ void DrawDxf::paint_ellipse(QPainter &painter)
             double endAngle = m_ellipseList.at(i).angle2*16;
             painter.drawArc(m_zoom*x + width()/2, -m_zoom*y + height()/2, m_zoom*sqrt(2)*r, m_zoom*sqrt(2)*r,
                             startAngle, abs(endAngle - startAngle));
-      //      painter.drawEllipse();
 
 qDebug()<<__func__<<"r = "<<m_ellipseList.at(i).ratio;
         }
     }
 }
 
-void DrawDxf::paint_circle(QPainter &painter)
-{
-    if(!m_circleList.isEmpty()){
-        for(int i = 0; i < m_circleList.count(); i++){
-            painter.drawEllipse(m_zoom*m_circleList.at(i).cx + width()/2, -m_zoom*m_circleList.at(i).cy + height()/2,
-                                m_zoom*m_circleList.at(i).radius, m_zoom*m_circleList.at(i).radius);
-        }
-    }
-}
-
-void DrawDxf::paint_vertex(QPainter &painter)
-{
-    if(m_vertexList.size() > 0){
-        for(int i = 0; i < m_vertexList.count(); i++){
-            painter.drawPoint(m_zoom*m_vertexList.at(i).x + width()/2, -m_zoom*m_vertexList.at(i).y + height()/2);
-        }
-    }
-}
-
 void DrawDxf::wheelEvent(QWheelEvent *event)
 {
-    if(event->delta() > 0){
-        m_zoom += 0.5;
+    if(event->delta() >0){
+            m_zoom += 1;
+
     }else{
-        if(m_zoom > 0){
-            m_zoom -= 0.5;
+        if(m_zoom > 1){
+            m_zoom -= 1;
+
+        }else if(0 < m_zoom && m_zoom <= 1){
+            m_zoom = 0.5*m_zoom;
         }
     }
+
     update();
     emit zoom(m_zoom);
 }

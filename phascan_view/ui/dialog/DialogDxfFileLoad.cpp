@@ -73,6 +73,9 @@ void DialogDxfFileLoad::SetWndName()
         ui->LabelPartFilePath->setText("could not be opened");
         return;
     }
+    QList<DL_PointData> pointList = creationClass->getPointList();
+    ui->ExpoView->setPointList(pointList);
+
     QList<DL_LineData> lineList = creationClass->getLineList();
     ui->ExpoView->setLineList(lineList);
 
@@ -90,6 +93,12 @@ void DialogDxfFileLoad::SetWndName()
 
     QList<DL_VertexData> vertexList = creationClass->getVertexList();
     ui->ExpoView->setVertexList(vertexList);
+
+    QList<DL_ControlPointData> controlPointList = creationClass->getControlPointList();
+    ui->ExpoView->setControlPointList(controlPointList);
+
+    QList<DL_PolylineData> polyLineList = creationClass->getPolyLineList();
+    ui->ExpoView->setPolyLineList(polyLineList);
 
     delete dxf;
     delete creationClass;
