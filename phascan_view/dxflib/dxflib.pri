@@ -11,9 +11,9 @@ HEADERS += \
     $$PWD/dl_extrusion.h \
     $$PWD/dl_writer.h \
     $$PWD/dl_writer_ascii.h \
-    $$PWD/test_creationclass.h
+    $$PWD/dxf_data.h
 
 SOURCES += \
     $$PWD/dl_dxf.cpp \
     $$PWD/dl_writer_ascii.cpp \
-    $$PWD/test_creationclass.cpp
+    $$PWD/dxf_data.cpp

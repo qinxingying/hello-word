@@ -36,7 +36,7 @@ void DopplerColorBar::paintEvent(QPaintEvent*)
     for(i = 0 ; i<= _nHeight ; i++)
     {
         _nColor = 255 - i * 255 / _nHeight ;
-        _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2]))) ;
-        _painter.drawLine(QPointF(0 , i) , QPointF(_nWidth , i));
+        _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
+        _painter.drawLine(QPointF(0, i) , QPointF(_nWidth , i));
     }
 }

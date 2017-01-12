@@ -9,8 +9,6 @@
 DrawDxf::DrawDxf(QWidget *parent) :
 	QWidget(parent)
 {
-    creationClass = new Test_CreationClass();
-
     m_zoom = 1.0;
 }
 
@@ -350,8 +348,8 @@ void DrawDxf::paint_ellipse(QPainter &painter)
                             m_zoom*2*r1, m_zoom*2*r1, startAngle, Angle);
         }
 
-//qDebug()<<"\n rotateAngle = "<<rotateAngle*180/M_PI<<"StartAngle = "<<startAngle/16<<"endAngle ="<<endAngle/16<<"r1="<<r1;
-//qDebug()<<"\n Angle = "<<fabs(endAngle - startAngle)/16<<Angle/16;
+qDebug()<<"\n rotateAngle = "<<rotateAngle*180/M_PI<<"StartAngle = "<<startAngle/16<<"endAngle ="<<endAngle/16<<"r1="<<r1;
+qDebug()<<"\n Angle = "<<fabs(endAngle - startAngle)/16<<Angle/16;
     }
 }
 
