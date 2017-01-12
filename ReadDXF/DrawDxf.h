@@ -2,7 +2,7 @@
 #define DrawDxf_H
 
 #include "dl_creationadapter.h"
-#include "test_creationclass.h"
+#include "dxf_data.h"
 
 #include <QWidget>
 #include <QPaintEvent>
@@ -54,8 +54,6 @@ public:
     void setPolyLineList(const QList<DL_PolylineData> &polyLineList);
 
 private:
-    Test_CreationClass* creationClass;
-
     QList<DL_PointData> m_pointList;
     QList<DL_LineData> m_lineList;
     QList<DL_ArcData> m_arcList;

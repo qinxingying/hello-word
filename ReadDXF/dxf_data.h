@@ -1,13 +1,13 @@
-#ifndef TEST_CREATIONCLASS_H
-#define TEST_CREATIONCLASS_H
+#ifndef DXF_DATA_H
+#define DXF_DATA_H
 
 #include "dl_creationadapter.h"
-#include <QPainter>
+#include <QList>
 
-class Test_CreationClass : public DL_CreationAdapter {
+class Dxf_Data : public DL_CreationAdapter {
 
 public:
-    Test_CreationClass();
+    Dxf_Data();
 
     virtual void addLayer(const DL_LayerData& data);
     virtual void addPoint(const DL_PointData& data);

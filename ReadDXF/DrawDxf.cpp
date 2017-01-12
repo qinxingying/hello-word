@@ -9,8 +9,6 @@
 DrawDxf::DrawDxf(QWidget *parent) :
 	QWidget(parent)
 {
-    creationClass = new Test_CreationClass();
-
     m_zoom = 1.0;
 }
 
@@ -358,7 +356,7 @@ qDebug()<<"\n Angle = "<<fabs(endAngle - startAngle)/16<<Angle/16;
 void DrawDxf::wheelEvent(QWheelEvent *event)
 {
     if(event->delta() >0){
-            m_zoom += 1;
+        m_zoom += 1;
 
     }else{
         if(m_zoom > 1){

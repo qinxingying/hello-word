@@ -3,7 +3,7 @@
 
 #include "dl_dxf.h"
 #include "dl_creationadapter.h"
-#include "test_creationclass.h"
+#include "dxf_data.h"
 
 #include <QFileDialog>
 #include <QDebug>
@@ -37,49 +37,49 @@ void MainWindow::on_pushButton_openFile_clicked()
 
     if(fileName.isEmpty())  return;
 
-    Test_CreationClass* creationClass = new Test_CreationClass();
+    Dxf_Data* dxfData = new Dxf_Data();
     DL_Dxf* dxf = new DL_Dxf();
 
-    if (!dxf->in(fileName.toLatin1().data(), creationClass)) {
+    if (!dxf->in(fileName.toLatin1().data(), dxfData)) {
         ui->lineEdit_filePath->setText("could not be opened");
         return;
     }
 
-    QList<DL_PointData> pointList = creationClass->getPointList();
+    QList<DL_PointData> pointList = dxfData->getPointList();
     ui->widget_dxfImage->setPointList(pointList);
 
-    QList<DL_LineData> lineList = creationClass->getLineList();
+    QList<DL_LineData> lineList = dxfData->getLineList();
     ui->widget_dxfImage->setLineList(lineList);
 
-    QList<DL_MTextData> textList = creationClass->getTextList();
+    QList<DL_MTextData> textList = dxfData->getTextList();
     ui->widget_dxfImage->setTextList(textList);
 
-    QList<DL_ArcData> arcList = creationClass->getArcList();
+    QList<DL_ArcData> arcList = dxfData->getArcList();
     ui->widget_dxfImage->setArcList(arcList);
 
-    QList<DL_CircleData> circleList = creationClass->getCircleList();
+    QList<DL_CircleData> circleList = dxfData->getCircleList();
     ui->widget_dxfImage->setCircleList(circleList);
 
-    QList<DL_TextData> textDataList = creationClass->getTextDataList();
+    QList<DL_TextData> textDataList = dxfData->getTextDataList();
     ui->widget_dxfImage->setTextDataList(textDataList);
 
-    QList<DL_VertexData> vertexList = creationClass->getVertexList();
+    QList<DL_VertexData> vertexList = dxfData->getVertexList();
     ui->widget_dxfImage->setVertexList(vertexList);
 
-    QList<DL_ControlPointData> controlPointList = creationClass->getControlPointList();
+    QList<DL_ControlPointData> controlPointList = dxfData->getControlPointList();
     ui->widget_dxfImage->setControlPointList(controlPointList);
 
-    QList<DL_PolylineData> polyLineList = creationClass->getPolyLineList();
+    QList<DL_PolylineData> polyLineList = dxfData->getPolyLineList();
     ui->widget_dxfImage->setPolyLineList(polyLineList);
 
-    QList<DL_EllipseData> ellipseList = creationClass->getEllipseList();
+    QList<DL_EllipseData> ellipseList = dxfData->getEllipseList();
     ui->widget_dxfImage->setEllipseList(ellipseList);
 
     ui->lineEdit_filePath->setText(fileName);
     ui->doubleSpinBox_zoom->setValue(ui->widget_dxfImage->m_zoom);
 
     delete dxf;
-    delete creationClass;
+    delete dxfData;
 
 }
 

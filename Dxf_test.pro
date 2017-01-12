@@ -17,8 +17,8 @@ SOURCES += main.cpp\
     mainwindow.cpp \
     ReadDXF/dl_dxf.cpp \
     ReadDXF/dl_writer_ascii.cpp \
-    ReadDXF/test_creationclass.cpp \
-    ReadDXF/DrawDxf.cpp
+    ReadDXF/DrawDxf.cpp \
+    ReadDXF/dxf_data.cpp
 
 HEADERS  += mainwindow.h \
     ReadDXF/dl_attributes.h \
@@ -32,7 +32,7 @@ HEADERS  += mainwindow.h \
     ReadDXF/dl_global.h \
     ReadDXF/dl_writer.h \
     ReadDXF/dl_writer_ascii.h \
-    ReadDXF/test_creationclass.h \
-    ReadDXF/DrawDxf.h
+    ReadDXF/DrawDxf.h \
+    ReadDXF/dxf_data.h
 
 FORMS    += mainwindow.ui
