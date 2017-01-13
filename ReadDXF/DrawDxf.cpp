@@ -258,10 +258,14 @@ void DrawDxf::paint_arc(QPainter &painter)
         return;
     }
 
+    double r = 0;
+    double startAngle = 0;
+    double endAngle = 0;
+
     for(int i = 0; i < m_arcList.count(); i++){
-        double r = m_arcList.at(i).radius;
-        double startAngle = m_arcList.at(i).angle1*16;
-        double endAngle = m_arcList.at(i).angle2*16;
+        r = m_arcList.at(i).radius;
+        startAngle = m_arcList.at(i).angle1*16;
+        endAngle = m_arcList.at(i).angle2*16;
 
         painter.drawArc(m_zoom*m_arcList.at(i).cx -m_zoom*r + width()/2, -m_zoom*m_arcList.at(i).cy - m_zoom*r + height()/2,
                         m_zoom*2*r, m_zoom*2*r, startAngle, fabs(endAngle - startAngle));
@@ -323,21 +327,28 @@ void DrawDxf::paint_ellipse(QPainter &painter)
         return;
     }
 
+    double k  = 0;
+    double r1 = 0;
+    double rotateAngle = 0;
+    double startAngle  = 0;
+    double endAngle    = 0;
+    double Angle = 0;
+
     for(int i = 0; i < m_ellipseList.count(); i++){
-        double k  = m_ellipseList.at(i).ratio;
-        double r1 = sqrt(pow((m_ellipseList.at(i).mx - m_ellipseList.at(i).cx), 2.0) +
+        k  = m_ellipseList.at(i).ratio;
+        r1 = sqrt(pow((m_ellipseList.at(i).mx - m_ellipseList.at(i).cx), 2.0) +
                          pow((m_ellipseList.at(i).my - m_ellipseList.at(i).cy), 2.0));
-        double rotateAngle = calc_rotateAngle(m_ellipseList.at(i).cx, m_ellipseList.at(i).cy,
+        rotateAngle = calc_rotateAngle(m_ellipseList.at(i).cx, m_ellipseList.at(i).cy,
                                               m_ellipseList.at(i).mx, m_ellipseList.at(i).my);
-        double startAngle  = 16*m_ellipseList.at(i).angle1*180/M_PI;
-        double endAngle    = 16*m_ellipseList.at(i).angle2*180/M_PI;
+        startAngle  = 16*m_ellipseList.at(i).angle1*180/M_PI;
+        endAngle    = 16*m_ellipseList.at(i).angle2*180/M_PI;
 
         painter.translate(width()/2, height()/2);
         painter.rotate(360 - rotateAngle*180/M_PI);
 
         painter.scale(1, k);
 
-        double Angle = 16*360 - fabs(endAngle - startAngle);
+        Angle = 16*360 - fabs(endAngle - startAngle);
         if(Angle < 1e-10){
             painter.drawArc(m_zoom*m_ellipseList.at(i).cx  - m_zoom*r1,
                             -m_zoom*m_ellipseList.at(i).cy  - m_zoom*r1,
