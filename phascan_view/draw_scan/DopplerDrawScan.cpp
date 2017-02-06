@@ -27,6 +27,3 @@ void DopplerDrawScan::SetColorIndex(void* pColor_)
 {
     m_pColor = (unsigned char (*)[3])pColor_ ;
 }
-
-
-

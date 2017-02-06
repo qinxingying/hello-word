@@ -6744,38 +6744,59 @@
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>50</height>
+               <height>60</height>
               </size>
              </property>
              <property name="title">
               <string>CAD DXF File</string>
              </property>
-             <widget class="QLabel" name="label_dxfLoad">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>20</y>
-                <width>70</width>
-                <height>25</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Load:</string>
-              </property>
-             </widget>
-             <widget class="QPushButton" name="BtnLoadDxfFile">
-              <property name="geometry">
-               <rect>
-                <x>90</x>
-                <y>20</y>
-                <width>105</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <property name="text">
-               <string>Weld</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLabel" name="label_dxfLoad">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Load:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="BtnLoadDxfFile">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>23</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Weld</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="CheckDxfFileShow">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>19</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Show</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
            <item>

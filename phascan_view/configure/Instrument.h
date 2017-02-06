@@ -153,8 +153,8 @@ struct WEDGE_CONFIG
 	float	fHeight;/*楔块高度*/
 
 	//ut 探头参数
-	float		fRefPoint ;
-	unsigned int nWedgeDelay ;
+    float		fRefPoint;
+    unsigned int nWedgeDelay;
 };
 
 struct MATERIAL
@@ -187,8 +187,8 @@ struct WELD
 	setup_WELD_TYPE   				 eType	;		/* 焊缝 */
 	setup_WELD_SYMMETRY_TYPE		 eSymmetry;		/* 对称 */
 
-	float	   weland_height;
-	float	   weland_offset;
+    float	weland_height;
+    float	weland_offset;
 	float	fizone_height;
 	float	fizone_angle ;
 	float	fizone_radius;
@@ -257,7 +257,7 @@ enum setup_ANGLE_TYPE
 
 struct LAW_CONFIG
 {
-	setup_LAW_TYPE	 eLawType   ;				//  setup_LAW_TYPE
+    setup_LAW_TYPE	 eLawType;				//  setup_LAW_TYPE
 
 	setup_ANGLE_TYPE   eAngleType ;
 	// refract angle
