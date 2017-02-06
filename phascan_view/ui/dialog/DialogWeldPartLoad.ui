@@ -117,6 +117,36 @@
          <string>U shape</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>double V-1 shape</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>double V-2 shape</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>J-1 shape</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>J-2 shape</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>VY-1 shape</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>VY-2 shape</string>
+        </property>
+       </item>
       </widget>
       <widget class="QLabel" name="LabelType">
        <property name="geometry">
@@ -236,7 +266,7 @@
         <item row="3" column="0" colspan="2">
          <widget class="QLabel" name="LabelFRadius">
           <property name="text">
-           <string>Fizone Radius</string>
+           <string>Fizone Radius:</string>
           </property>
          </widget>
         </item>

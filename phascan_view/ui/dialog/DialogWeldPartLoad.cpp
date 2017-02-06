@@ -59,7 +59,7 @@ void DialogWeldPartLoad::SetWndName()
     ui->ComWeldType->setCurrentIndex(m_cPart.weld.eType);
     DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
     ui->LabelPartFilePath->setText(m_pConfig->AppEvn.strNccFilePath);
-//    ui->LabelPartFilePath->setText(tr("Path : ") + "/init/part/ncc/");
+
 }
 
 void DialogWeldPartLoad::SetDisplayMode(DISPLAY_MODE eMode_)
