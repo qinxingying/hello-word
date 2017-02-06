@@ -182,7 +182,7 @@
              </item>
              <item>
               <property name="text">
-               <string>double V shpe</string>
+               <string>double_V shape</string>
               </property>
              </item>
              <item>
@@ -192,32 +192,17 @@
              </item>
              <item>
               <property name="text">
-               <string>double V-1 shape</string>
+               <string>diff_V shape</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>double V-2 shape</string>
+               <string>J shape</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>J-1 shape</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>J-2 shape</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>VY-1 shape</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>VY-2 shape</string>
+               <string>VY shape</string>
               </property>
              </item>
             </widget>

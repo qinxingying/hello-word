@@ -28,6 +28,9 @@ protected:
 	void  DrawWeldV(QPainter& painter);
     void  DrawWeldDV(QPainter& painter);
     void  DrawWeldU (QPainter& painter);
+    void  DrawWeldDiffDV(QPainter& painter);
+    void  DrawWeldJ(QPainter& painter);
+    void  DrawWeldVY(QPainter& painter);
     void  UpdateDisplayRangle();
     void  PositionTransfer(QPointF& pos_);
 

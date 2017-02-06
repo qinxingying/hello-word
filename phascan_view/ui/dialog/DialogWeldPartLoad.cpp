@@ -81,7 +81,7 @@ void DialogWeldPartLoad::SetDisplayMode(DISPLAY_MODE eMode_)
 
 void DialogWeldPartLoad::ListPartFiles()
 {
-    QString g_strPartDir = QDir::currentPath() + "/init//part/ncc/";
+    QString g_strPartDir = QDir::currentPath() + "/init/part/ncc/";
     QDir dir(g_strPartDir);
 	if(!dir.exists()) {
 		return;
@@ -172,6 +172,13 @@ void DialogWeldPartLoad::UpdateDisplay()
 		ui->LabelUnitFRadius->setVisible(false);
 		break;
 	case setup_WELD_U :
+    case setup_WELD_DIFF_DV:
+
+        break;
+
+    case setup_WELD_J:
+    case setup_WELD_VY:
+
 	case setup_WELD_NCC:
 		ui->SpinFHeight->setVisible(true);
 		ui->SpinFRadius->setVisible(true);
