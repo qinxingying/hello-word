@@ -45,6 +45,8 @@ private slots:
     void on_SpinFHeight_valueChanged(double arg1);
     void on_SpinFRadius_valueChanged(double arg1);
     void on_SpinFAngle_valueChanged(double arg1);
+    void on_SpinFHeight_2_valueChanged(double arg1);
+    void on_SpinFAngle_2_valueChanged(double arg1);
 	void on_PartFileListDbClicked(QModelIndex index);
 	void on_BtnNccPathClicked();
 	void on_BtnNccDefaultPathClicked();

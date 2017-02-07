@@ -187,29 +187,24 @@
       <widget class="QFrame" name="frame_5">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>110</y>
-         <width>181</width>
-         <height>151</height>
+         <x>0</x>
+         <y>103</y>
+         <width>201</width>
+         <height>201</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item row="0" column="0" colspan="2">
+        <item row="0" column="0">
          <widget class="QLabel" name="LabelWHeight">
           <property name="text">
            <string>Weland Height:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="2">
+         <widget class="QDoubleSpinBox" name="SpinWHeight">
+          <property name="decimals">
+           <number>1</number>
           </property>
          </widget>
         </item>
@@ -220,10 +215,17 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0" colspan="2">
+        <item row="1" column="0">
          <widget class="QLabel" name="LabelWOffset">
           <property name="text">
            <string>Weland Offset:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="2">
+         <widget class="QDoubleSpinBox" name="SpinWoffset">
+          <property name="decimals">
+           <number>1</number>
           </property>
          </widget>
         </item>
@@ -234,10 +236,17 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0" colspan="2">
+        <item row="2" column="0">
          <widget class="QLabel" name="LabelFHeight">
           <property name="text">
            <string>Fizone Height:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="2">
+         <widget class="QDoubleSpinBox" name="SpinFHeight">
+          <property name="decimals">
+           <number>1</number>
           </property>
          </widget>
         </item>
@@ -248,64 +257,85 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="2">
+        <item row="3" column="0">
+         <widget class="QLabel" name="LabelFHeight_2">
+          <property name="text">
+           <string>Fiz_down Height:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QLabel" name="LabelUnitFHeight_2">
+          <property name="text">
+           <string>mm</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
          <widget class="QLabel" name="LabelFRadius">
           <property name="text">
            <string>Fizone Radius:</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="3">
+        <item row="4" column="3">
          <widget class="QLabel" name="LabelUnitFRadius">
           <property name="text">
            <string>mm</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0" colspan="2">
+        <item row="5" column="0">
          <widget class="QLabel" name="LabelFAngle">
           <property name="text">
            <string>Fizone Angle:</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="3">
+        <item row="5" column="1">
+         <widget class="QDoubleSpinBox" name="SpinFAngle">
+          <property name="decimals">
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2" colspan="2">
          <widget class="QLabel" name="LabelUnitFAngle">
           <property name="text">
            <string>deg</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QDoubleSpinBox" name="SpinWHeight">
+        <item row="6" column="0">
+         <widget class="QLabel" name="LabelFAngle_2">
+          <property name="text">
+           <string>Fiz_down Angle:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QDoubleSpinBox" name="SpinFAngle_2">
           <property name="decimals">
            <number>1</number>
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QDoubleSpinBox" name="SpinWoffset">
+        <item row="6" column="2" colspan="2">
+         <widget class="QLabel" name="LabelUnitFAngle_2">
+          <property name="text">
+           <string>deg</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" colspan="2">
+         <widget class="QDoubleSpinBox" name="SpinFHeight_2">
           <property name="decimals">
            <number>1</number>
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="QDoubleSpinBox" name="SpinFHeight">
-          <property name="decimals">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
+        <item row="4" column="1" colspan="2">
          <widget class="QDoubleSpinBox" name="SpinFRadius">
-          <property name="decimals">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QDoubleSpinBox" name="SpinFAngle">
           <property name="decimals">
            <number>1</number>
           </property>

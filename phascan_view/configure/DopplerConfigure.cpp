@@ -560,9 +560,11 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_weld.eSymmetry = setup_WELD_SYMMETRY  ;
 	_weld.weland_height  = 5.0 ;
 	_weld.weland_offset  = 5.0 ;
-	_weld.fizone_height  = 15  ;
+    _weld.fizone_height  = 15  ;
 	_weld.fizone_angle   = 30  ;
 	_weld.fizone_radius  = 10  ;
+    _weld.fizone_down_height = 10;
+    _weld.fizone_down_angle = 60;
 
 	memcpy((void*)&_pConfig->wedge[0] , (void*)&DEFAULT_WEDGE_PA , sizeof(WEDGE_CONFIG)) ;
 	memcpy((void*)&_pConfig->wedge[1] , (void*)&DEFAULT_WEDGE_PA , sizeof(WEDGE_CONFIG))  ;

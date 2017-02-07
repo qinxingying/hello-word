@@ -196,6 +196,8 @@ struct WELD
 	float	fizone_angle ;
 	float	fizone_radius;
 	float	weldtype_pos ;
+    float   fizone_down_height;
+    float	fizone_down_angle ;
 } ;
 
 enum setup_PART_GEOMETRY

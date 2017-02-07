@@ -139,11 +139,20 @@ void DialogWeldPartLoad::UpdateWeld()
 	ui->SpinFHeight->setValue(m_cPart.weld.fizone_height);
 	ui->SpinFRadius->setValue(m_cPart.weld.fizone_radius);
 	ui->SpinFAngle->setValue(m_cPart.weld.fizone_angle);
+    ui->SpinFHeight_2->setValue(m_cPart.weld.fizone_down_height);
+    ui->SpinFAngle_2->setValue(m_cPart.weld.fizone_down_angle);
 }
 
 void DialogWeldPartLoad::UpdateDisplay()
 {
 	ui->ExpoView->update();
+    ui->LabelFHeight_2->setVisible(false);
+    ui->SpinFHeight_2->setVisible(false);
+    ui->LabelUnitFHeight_2->setVisible(false);
+    ui->LabelFAngle_2->setVisible(false);
+    ui->SpinFAngle_2->setVisible(false);
+    ui->LabelUnitFAngle_2->setVisible(false);
+
 	switch(m_cPart.weld.eType)
 	{
 	case setup_WELD_I :
@@ -173,12 +182,19 @@ void DialogWeldPartLoad::UpdateDisplay()
 		break;
 	case setup_WELD_U :
     case setup_WELD_DIFF_DV:
+        ui->LabelFHeight_2->setVisible(true);
+        ui->SpinFHeight_2->setVisible(true);
+        ui->LabelUnitFHeight_2->setVisible(true);
+        ui->LabelFAngle_2->setVisible(true);
+        ui->SpinFAngle_2->setVisible(true);
+        ui->LabelUnitFAngle_2->setVisible(true);
+        break;
+    case setup_WELD_J:
 
         break;
-
-    case setup_WELD_J:
     case setup_WELD_VY:
 
+        break;
 	case setup_WELD_NCC:
 		ui->SpinFHeight->setVisible(true);
 		ui->SpinFRadius->setVisible(true);
@@ -257,6 +273,20 @@ void DialogWeldPartLoad::on_SpinFAngle_valueChanged(double arg1)
 {
     if(!ui->SpinFAngle->hasFocus())  return;
     m_cPart.weld.fizone_angle = arg1;
+    UpdateDisplay();
+}
+
+void DialogWeldPartLoad::on_SpinFHeight_2_valueChanged(double arg1)
+{
+    if(!ui->SpinFHeight_2->hasFocus())  return;
+    m_cPart.weld.fizone_down_height = arg1 ;
+    UpdateDisplay();
+}
+
+void DialogWeldPartLoad::on_SpinFAngle_2_valueChanged(double arg1)
+{
+    if(!ui->SpinFAngle_2->hasFocus())  return;
+    m_cPart.weld.fizone_down_angle = arg1;
     UpdateDisplay();
 }
 
