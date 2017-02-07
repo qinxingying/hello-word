@@ -1287,7 +1287,177 @@ void DopplerViewItems::DrawWeldDiffDV(QPainterPath &path)
 
 void DopplerViewItems::DrawWeldJ(QPainterPath &path)
 {
+    if(m_cPart.weld.weland_offset >= m_cPart.weld.fizone_radius )
+    {
+        DrawWeldV(path) ;
+        return ;
+    }
 
+    QPointF _pos[5] ;
+    double _fStartV , _fStopV , _fSliderStartV, _fSliderStopV;
+    m_pDataView->GetRulerRange(&_fStartV , &_fStopV , &_fSliderStartV, &_fSliderStopV, DopplerDataView::DATA_VIEW_RULER_LEFT ) ;
+    _pos[0].setX(0);
+    _pos[0].setY(_fStartV);
+    _pos[1].setX(0);
+    _pos[1].setY(_fStopV);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+
+    double _fFizoneAngle = DEGREE_TO_ARCH(m_cPart.weld.fizone_angle) ;
+    double _nTmpY2 = sin(_fFizoneAngle) * m_cPart.weld.fizone_radius  ;
+    double _nTmpY1 = sqrt(m_cPart.weld.fizone_radius * m_cPart.weld.fizone_radius - m_cPart.weld.weland_offset * m_cPart.weld.weland_offset );
+    if(_nTmpY2 > _nTmpY1)
+    {
+        DrawWeldV( path ) ;
+        return ;
+    }
+    double _fPosX = cos(_fFizoneAngle) * m_cPart.weld.fizone_radius  ;
+    double _fPosY = m_cPart.weld.fizone_height - _nTmpY1 + _nTmpY2   ;
+
+    double _fAngleStart = m_cPart.weld.fizone_angle + 180 ;
+    double _asine = ARCH_TO_DEGREE(asin(m_cPart.weld.weland_offset / m_cPart.weld.fizone_radius)) ;
+    double _fAngleStop   = 270  - _asine  - _fAngleStart	 ;
+    double _fAngleStart1 = 180  - _fAngleStart - _fAngleStop ;
+
+    int _nStart = _fStartV / m_fInterval ;
+    int _nStop  = _fStopV  / m_fInterval + 1;
+    for(int i = _nStart ; i < _nStop  ; i++)
+    {
+        if(i%2)
+        {
+            double _nOffsetY = m_fInterval * (i+1) ;
+            QPointF _lefttop , _rightbottom;
+            _lefttop.setX(-m_cPart.weld.fizone_radius);
+            _lefttop.setY(_nOffsetY - m_cPart.weld.fizone_height + _nTmpY1 + m_cPart.weld.fizone_radius);
+            _rightbottom.setX(m_cPart.weld.fizone_radius);
+            _rightbottom.setY(_nOffsetY - m_cPart.weld.fizone_height + _nTmpY1 - m_cPart.weld.fizone_radius);
+            _lefttop = m_pDataView->TranslateToScenePlan(&_lefttop) ;
+            _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom) ;
+            QRectF rectangle(_lefttop , _rightbottom);
+
+            if(m_cPart.weld.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld.eSymmetry == setup_WELD_LEFT )
+            {
+                _pos[0].setX(-_fPosX - tan(_fFizoneAngle) * _fPosY);
+                _pos[0].setY(_nOffsetY);
+                _pos[1].setX(-_fPosX);
+                _pos[1].setY(_nOffsetY - _fPosY);
+                _pos[2].setX(-m_cPart.weld.weland_offset);
+                _pos[2].setY(_nOffsetY - m_cPart.weld.fizone_height);
+                _pos[3].setX(-m_cPart.weld.weland_offset);
+                _pos[3].setY(_nOffsetY - m_cPart.weld.fizone_height - m_cPart.weld.weland_height);
+
+                _pos[4].setX(-m_cPart.weld.weland_offset - tan(DEGREE_TO_ARCH(m_cPart.weld.fizone_down_angle)) * m_cPart.weld.fizone_down_height);
+                _pos[4].setY(_nOffsetY - m_cPart.weld.fizone_down_height - m_cPart.weld.fizone_height - m_cPart.weld.weland_height);
+
+                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]) ;
+                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]) ;
+                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]) ;
+                path.moveTo(_pos[0]);
+                path.lineTo(_pos[1]);
+                path.arcTo( rectangle , _fAngleStart , _fAngleStop);
+                path.moveTo(_pos[2]);
+                path.lineTo(_pos[3]);
+                path.lineTo(_pos[4]);
+            }
+
+            if(m_cPart.weld.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld.eSymmetry == setup_WELD_RIGHT )
+            {
+                _pos[0].setX(_fPosX + tan(_fFizoneAngle) * _fPosY);
+                _pos[0].setY(_nOffsetY);
+                _pos[1].setX(_fPosX);
+                _pos[1].setY(_nOffsetY - _fPosY);
+                _pos[2].setX(m_cPart.weld.weland_offset);
+                _pos[2].setY(_nOffsetY - m_cPart.weld.fizone_height);
+                _pos[3].setX(m_cPart.weld.weland_offset);
+                _pos[3].setY(_nOffsetY - m_cPart.weld.fizone_height - m_cPart.weld.weland_height);
+
+                _pos[4].setX(m_cPart.weld.weland_offset + tan(DEGREE_TO_ARCH(m_cPart.weld.fizone_down_angle)) * m_cPart.weld.fizone_down_height);
+                _pos[4].setY(_nOffsetY - m_cPart.weld.fizone_down_height - m_cPart.weld.fizone_height - m_cPart.weld.weland_height);
+
+                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]) ;
+                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]) ;
+                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]) ;
+
+                path.moveTo(_pos[4]);
+                path.lineTo(_pos[3]);
+                path.lineTo(_pos[2]);
+                path.arcTo(rectangle , _fAngleStart1 , _fAngleStop);
+                path.moveTo(_pos[1]);
+                path.lineTo(_pos[0]);
+            }
+        }else{
+            double _nOffsetY = m_fInterval * i ;
+            QPointF _lefttop , _rightbottom;
+            _lefttop.setX(-m_cPart.weld.fizone_radius);
+            _lefttop.setY(_nOffsetY + m_cPart.weld.fizone_height - _nTmpY1 - m_cPart.weld.fizone_radius);
+            _rightbottom.setX(m_cPart.weld.fizone_radius);
+            _rightbottom.setY(_nOffsetY + m_cPart.weld.fizone_height - _nTmpY1 + m_cPart.weld.fizone_radius);
+            _lefttop = m_pDataView->TranslateToScenePlan(&_lefttop) ;
+            _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom) ;
+            QRectF rectangle(_lefttop , _rightbottom);
+
+            if(m_cPart.weld.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld.eSymmetry == setup_WELD_LEFT )
+            {
+                _pos[0].setX(-_fPosX - tan(_fFizoneAngle) * _fPosY);
+                _pos[0].setY(_nOffsetY);
+                _pos[1].setX(-_fPosX);
+                _pos[1].setY(_nOffsetY + _fPosY);
+                _pos[2].setX(-m_cPart.weld.weland_offset);
+                _pos[2].setY(_nOffsetY + m_cPart.weld.fizone_height);
+                _pos[3].setX(-m_cPart.weld.weland_offset);
+                _pos[3].setY(_nOffsetY + m_cPart.weld.fizone_height + m_cPart.weld.weland_height);
+
+                _pos[4].setX(-m_cPart.weld.weland_offset - tan(DEGREE_TO_ARCH(m_cPart.weld.fizone_down_angle)) * m_cPart.weld.fizone_down_height);
+                _pos[4].setY(_nOffsetY + m_cPart.weld.fizone_down_height + m_cPart.weld.fizone_height + m_cPart.weld.weland_height);
+
+                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]) ;
+                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]) ;
+                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]) ;
+                path.moveTo(_pos[0]);
+                path.lineTo(_pos[1]);
+                path.arcTo(rectangle , _fAngleStart , _fAngleStop);
+                path.moveTo(_pos[2]);
+                path.lineTo(_pos[3]);
+                path.lineTo(_pos[4]);
+            }
+
+            if(m_cPart.weld.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld.eSymmetry == setup_WELD_RIGHT )
+            {
+                _pos[0].setX(_fPosX + tan(_fFizoneAngle) * _fPosY);
+                _pos[0].setY(_nOffsetY);
+                _pos[1].setX(_fPosX);
+                _pos[1].setY(_nOffsetY + _fPosY);
+                _pos[2].setX(m_cPart.weld.weland_offset);
+                _pos[2].setY(_nOffsetY + m_cPart.weld.fizone_height);
+                _pos[3].setX(m_cPart.weld.weland_offset);
+                _pos[3].setY(_nOffsetY + m_cPart.weld.fizone_height + m_cPart.weld.weland_height);
+
+                _pos[4].setX(m_cPart.weld.weland_offset + tan(DEGREE_TO_ARCH(m_cPart.weld.fizone_down_angle)) * m_cPart.weld.fizone_down_height);
+                _pos[4].setY(_nOffsetY + m_cPart.weld.fizone_down_height + m_cPart.weld.fizone_height + m_cPart.weld.weland_height);
+
+                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]) ;
+                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]) ;
+                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]) ;
+
+                path.moveTo(_pos[4]);
+                path.lineTo(_pos[3]);
+                path.lineTo(_pos[2]);
+                path.arcTo(rectangle , _fAngleStart1 , _fAngleStop);
+                path.moveTo(_pos[1]);
+                path.lineTo(_pos[0]);
+            }
+        }
+    }
 }
 
 void DopplerViewItems::DrawWeldVY(QPainterPath &path)
