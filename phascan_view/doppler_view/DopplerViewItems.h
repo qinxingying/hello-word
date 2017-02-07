@@ -82,6 +82,9 @@ protected:
 	void  DrawWeldV (QPainterPath& path) ;
 	void  DrawWeldDV(QPainterPath& path) ;
 	void  DrawWeldU (QPainterPath& path) ;
+    void  DrawWeldDiffDV(QPainterPath& path);
+    void  DrawWeldJ(QPainterPath& path);
+    void  DrawWeldVY(QPainterPath& path);
 	void  DrawWeldNcc (QPainterPath& path);
 
 	DopplerDataView*     m_pDataView  ;

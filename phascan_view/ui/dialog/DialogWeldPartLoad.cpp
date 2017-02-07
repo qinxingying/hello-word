@@ -299,8 +299,7 @@ void DialogWeldPartLoad::on_BtnNccPathClicked()
 
 	QString _strPath = QFileDialog::getExistingDirectory(this,
 														 QString(tr("")),
-														 _pConfig->AppEvn.strNccFilePath
-														 );
+                                                         _pConfig->AppEvn.strNccFilePath);
 	strcpy(_strBuf, (char*)(qPrintable(_strPath)));
 	sprintf(_pConfig->AppEvn.strNccFilePath, "%s/", _strBuf);
     SetWndName();

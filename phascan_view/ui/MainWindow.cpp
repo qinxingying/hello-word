@@ -109,7 +109,7 @@ void MainWindow::init_ui()
     SetDispTabText();
 
     m_fileName  = "";
-    m_titleName = tr("Doppler V1.1.2 : ");
+    m_titleName = tr("Doppler V1.1.3 : ");
     this->setWindowTitle(m_titleName + m_fileName);
 }
 
