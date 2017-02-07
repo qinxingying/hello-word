@@ -186,7 +186,11 @@ void DialogWeldPartLoad::UpdateDisplay()
         ui->frame_7->setVisible(true);
         break;
     case setup_WELD_VY:
-
+        ui->frame_3->setVisible(true);
+        ui->frame_4->setVisible(true);
+        ui->frame_5->setVisible(false);
+        ui->frame_6->setVisible(true);
+        ui->frame_7->setVisible(true);
         break;
 	case setup_WELD_NCC:
 

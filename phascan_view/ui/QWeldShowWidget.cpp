@@ -422,7 +422,50 @@ void QWeldShowWidget::DrawWeldJ(QPainter &painter)
 
 void QWeldShowWidget::DrawWeldVY(QPainter &painter)
 {
+    QPointF _pos[4];
 
+    _pos[0].setX(m_pPart->weld.weland_offset + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) * m_pPart->weld.fizone_height
+                 + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_down_angle)) * m_pPart->weld.fizone_down_height);
+    _pos[0].setY(0);
+    _pos[1].setX(m_pPart->weld.weland_offset + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_down_angle)) * m_pPart->weld.fizone_down_height);
+    _pos[1].setY(m_pPart->weld.fizone_height);
+    _pos[2].setX(m_pPart->weld.weland_offset);
+    _pos[2].setY(m_pPart->weld.fizone_height + m_pPart->weld.fizone_down_height);
+    _pos[3].setX(m_pPart->weld.weland_offset);
+    _pos[3].setY(m_pPart->weld.fizone_height + m_pPart->weld.fizone_down_height + m_pPart->weld.weland_height);
+
+    PositionTransfer(_pos[0]);
+    PositionTransfer(_pos[1]);
+    PositionTransfer(_pos[2]);
+    PositionTransfer(_pos[3]);
+
+    double _fOrgX = m_cRange.fWidth / 2;
+    double _fOrgY = m_cRange.fStartY;
+    double _fXTop, _fXWeldand,  _fYFizone, _fYWeland, _fXBottom, _fYBottom;
+
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_LEFT){
+        _fXTop	 = _fOrgX - _pos[0].x();
+        _fXWeldand = _fOrgX - _pos[1].x();
+        _fYFizone  = _fOrgY + _pos[1].y();
+        _fYWeland  = _fOrgY + _pos[2].y();
+        _fXBottom  = _fOrgX - _pos[3].x();
+        _fYBottom  = _fOrgY + _pos[3].y();
+        painter.drawLine( _fXTop, _fOrgY, _fXWeldand, _fYFizone);
+        painter.drawLine( _fXWeldand, _fYFizone, _fXBottom, _fYWeland);
+        painter.drawLine(_fXBottom, _fYWeland, _fXBottom, _fYBottom);
+    }
+
+    if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT){
+        _fXTop = _fOrgX + _pos[0].x();
+        _fXWeldand = _fOrgX + _pos[1].x();
+        _fYFizone  = _fOrgY + _pos[1].y();
+        _fYWeland  = _fOrgY + _pos[2].y();
+        _fXBottom  = _fOrgX + _pos[3].x();
+        _fYBottom  = _fOrgY + _pos[3].y();
+        painter.drawLine( _fXTop, _fOrgY, _fXWeldand, _fYFizone);
+        painter.drawLine( _fXWeldand, _fYFizone, _fXBottom, _fYWeland);
+        painter.drawLine(_fXBottom, _fYWeland, _fXBottom, _fYBottom);
+    }
 }
 
 void QWeldShowWidget::UpdateDisplayRangle()
