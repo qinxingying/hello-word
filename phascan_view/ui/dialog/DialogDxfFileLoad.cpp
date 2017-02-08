@@ -22,7 +22,7 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
 
 	SetPart();
     UpdateWeld();
-    //ui->ExpoView->SerPart(&m_cPart);
+    ui->ExpoView->SerPart(&m_cPart);
 
 	ui->ExpoView->setAutoFillBackground(true);
 	QPalette palette;
@@ -181,61 +181,72 @@ void DialogDxfFileLoad::UpdateWeld()
 	ui->SpinFHeight->setValue(m_cPart.weld.fizone_height);
 	ui->SpinFRadius->setValue(m_cPart.weld.fizone_radius);
 	ui->SpinFAngle->setValue(m_cPart.weld.fizone_angle);
+    ui->SpinFHeight_2->setValue(m_cPart.weld.fizone_down_height);
+    ui->SpinFAngle_2->setValue(m_cPart.weld.fizone_down_angle);
 }
 
 void DialogDxfFileLoad::UpdateDisplay()
 {
-	ui->ExpoView->update();
-	switch(m_cPart.weld.eType)
-	{
-	case setup_WELD_I :
-		ui->SpinFHeight->setVisible(false);
-		ui->SpinFRadius->setVisible(false);
-		ui->SpinFAngle->setVisible(false);
+    ui->ExpoView->update();
 
-        ui->LabelFHeight->setVisible(false);
-        ui->LabelFAngle->setVisible(false);
-        ui->LabelFRadius->setVisible(false);
-		ui->LabelUnitFHeight->setVisible(false);
-		ui->LabelUnitFAngle->setVisible(false);
-		ui->LabelUnitFRadius->setVisible(false);
-		break;
-	case setup_WELD_V :
-	case setup_WELD_DV :
-		ui->SpinFHeight->setVisible(true);
-		ui->SpinFRadius->setVisible(false);
-		ui->SpinFAngle->setVisible(true);
+    switch(m_cPart.weld.eType)
+    {
+    case setup_WELD_I:
+        ui->frame_3->setVisible(false);
+        ui->frame_4->setVisible(false);
+        ui->frame_5->setVisible(false);
+        ui->frame_6->setVisible(false);
+        ui->frame_7->setVisible(false);
+        break;
+    case setup_WELD_V:
+    case setup_WELD_DV:
+        ui->frame_3->setVisible(true);
+        ui->frame_4->setVisible(false);
+        ui->frame_5->setVisible(false);
+        ui->frame_6->setVisible(true);
+        ui->frame_7->setVisible(false);
+        break;
+    case setup_WELD_U:
+        ui->frame_3->setVisible(true);
+        ui->frame_4->setVisible(false);
+        ui->frame_5->setVisible(true);
+        ui->frame_6->setVisible(true);
+        ui->frame_7->setVisible(false);
+        break;
+    case setup_WELD_DIFF_DV:
+        ui->frame_3->setVisible(true);
+        ui->frame_4->setVisible(true);
+        ui->frame_5->setVisible(false);
+        ui->frame_6->setVisible(true);
+        ui->frame_7->setVisible(true);
+        break;
+    case setup_WELD_J:
+        ui->frame_3->setVisible(true);
+        ui->frame_4->setVisible(true);
+        ui->frame_5->setVisible(true);
+        ui->frame_6->setVisible(true);
+        ui->frame_7->setVisible(true);
+        break;
+    case setup_WELD_VY:
+        ui->frame_3->setVisible(true);
+        ui->frame_4->setVisible(true);
+        ui->frame_5->setVisible(false);
+        ui->frame_6->setVisible(true);
+        ui->frame_7->setVisible(true);
+        break;
+    case setup_WELD_NCC:
 
-        ui->LabelFHeight->setVisible(true);
-        ui->LabelFAngle->setVisible(true);
-        ui->LabelFRadius->setVisible(false);
-		ui->LabelUnitFHeight->setVisible(true);
-		ui->LabelUnitFAngle->setVisible(true);
-		ui->LabelUnitFRadius->setVisible(false);
-		break;
-	case setup_WELD_U :
-	case setup_WELD_NCC:
-		ui->SpinFHeight->setVisible(true);
-		ui->SpinFRadius->setVisible(true);
-		ui->SpinFAngle->setVisible(true);
-
-        ui->LabelFHeight->setVisible(true);
-        ui->LabelFAngle->setVisible(true);
-        ui->LabelFRadius->setVisible(true);
-		ui->LabelUnitFHeight->setVisible(true);
-		ui->LabelUnitFAngle->setVisible(true);
-		ui->LabelUnitFRadius->setVisible(true);
-		break;
-	default:
-		break;
+        break;
+    default :
+        break;
     };
 
-	if(m_cPart.weld.eType == setup_WELD_NCC) {
+    if(m_cPart.weld.eType == setup_WELD_NCC) {
         ui->ComWeldSymetry->setEnabled(false);
-        ui->frame_5->setDisabled(true);
-	} else {
+        ui->frame_value->setDisabled(true);
+    } else {
         ui->ComWeldSymetry->setEnabled(true);
-        ui->frame_5->setEnabled(true);
+        ui->frame_value->setEnabled(true);
 	}
 }
 
@@ -292,6 +303,20 @@ void DialogDxfFileLoad::on_SpinFAngle_valueChanged(double arg1)
 {
     if(!ui->SpinFAngle->hasFocus())  return;
     m_cPart.weld.fizone_angle = arg1;
+    UpdateDisplay();
+}
+
+void DialogDxfFileLoad::on_SpinFHeight_2_valueChanged(double arg1)
+{
+    if(!ui->SpinFHeight_2->hasFocus())  return;
+    m_cPart.weld.fizone_down_height = arg1;
+    UpdateDisplay();
+}
+
+void DialogDxfFileLoad::on_SpinFAngle_2_valueChanged(double arg1)
+{
+    if(!ui->SpinFAngle_2->hasFocus())  return;
+    m_cPart.weld.fizone_down_angle = arg1;
     UpdateDisplay();
 }
 

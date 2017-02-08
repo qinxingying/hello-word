@@ -783,5 +783,3 @@ QPointF DopplerPart::CoordinateTrans(float x_, float y_)
 
 	return _point;
 }
-
-

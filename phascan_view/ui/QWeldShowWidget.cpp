@@ -73,7 +73,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 void QWeldShowWidget::SerPart(PART_CONFIG* pInfo_)
 {
 	m_pPart = pInfo_;
-	m_fThickness = m_pPart->afSize[0];
+    m_fThickness = m_pPart->afSize[0];
 }
 
 void QWeldShowWidget::DrawWeld(QPainter& painter)

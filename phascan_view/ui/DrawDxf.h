@@ -6,6 +6,7 @@
 
 #include <QWidget>
 #include <QPaintEvent>
+#include "Instrument.h"
 
 namespace DplDxf {
     class DrawDxf;
@@ -18,6 +19,7 @@ class DrawDxf : public QWidget
 public:
     explicit DrawDxf(QWidget *parent = 0);
 
+    void SerPart(PART_CONFIG* pInfo_);
     double m_zoom;
 
     QList<DL_LineData> getLineList() const;
@@ -67,6 +69,30 @@ private:
     QList<DL_ControlPointData> m_controlPointList;
 
 protected:
+    struct RANGE_INFO
+    {
+        double fWidth;
+        double fHeight;
+        double fStartY;
+        double fStopY;
+        double fPixelSize;
+    };
+
+    void  DrawWeld(QPainter& painter);
+    void  DrawWeldI(QPainter& painter);
+    void  DrawWeldV(QPainter& painter);
+    void  DrawWeldDV(QPainter& painter);
+    void  DrawWeldU (QPainter& painter);
+    void  DrawWeldDiffDV(QPainter& painter);
+    void  DrawWeldJ(QPainter& painter);
+    void  DrawWeldVY(QPainter& painter);
+    void  UpdateDisplayRangle();
+    void  PositionTransfer(QPointF& pos_);
+
+    PART_CONFIG* m_pPart;
+    RANGE_INFO m_cRange;
+    float m_fThickness;
+
     void paintEvent(QPaintEvent * event);
     void paint_point(QPainter& painter);
     void paint_line(QPainter& painter);
