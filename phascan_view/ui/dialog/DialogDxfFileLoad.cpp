@@ -234,14 +234,14 @@ void DialogDxfFileLoad::UpdateDisplay()
         ui->frame_6->setVisible(true);
         ui->frame_7->setVisible(true);
         break;
-    case setup_WELD_NCC:
+    case setup_WELD_DXF:
 
         break;
     default :
         break;
     };
 
-    if(m_cPart.weld.eType == setup_WELD_NCC) {
+    if(m_cPart.weld.eType == setup_WELD_DXF) {
         ui->ComWeldSymetry->setEnabled(false);
         ui->frame_value->setDisabled(true);
     } else {
@@ -323,7 +323,7 @@ void DialogDxfFileLoad::on_SpinFAngle_2_valueChanged(double arg1)
 void DialogDxfFileLoad::on_PartFileListDbClicked(QModelIndex index)
 {
 	QString _str = index.data().toString();
-	m_cPart.weld.eType = setup_WELD_NCC;
+    m_cPart.weld.eType = setup_WELD_DXF;
 
     sprintf(m_cPart.strPartFile, "%s%s", m_path.toLatin1().data(), (char*)(qPrintable(_str)));
 

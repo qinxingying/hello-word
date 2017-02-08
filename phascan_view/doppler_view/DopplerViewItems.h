@@ -86,6 +86,7 @@ protected:
     void  DrawWeldJ(QPainterPath& path);
     void  DrawWeldVY(QPainterPath& path);
 	void  DrawWeldNcc (QPainterPath& path);
+    void  DrawWeldDxf(QPainterPath &path);
 
 	DopplerDataView*     m_pDataView  ;
 	DopplerDefectItem*   m_pDefect[DEFECT_SIGN_MAX];

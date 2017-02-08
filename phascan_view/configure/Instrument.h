@@ -175,6 +175,7 @@ enum setup_WELD_TYPE
     setup_WELD_J,
     setup_WELD_VY,
 	setup_WELD_NCC,
+    setup_WELD_DXF,
 	setup_WELD_MAX
 };
 

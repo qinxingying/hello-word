@@ -51,7 +51,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 		_NewPen.setColor(QColor(0, 0, 255));
 		_painter.setPen(_NewPen);
 
-		_pPart->DrawOriginLine(_painter);
+        _pPart->DrawOriginLine(_painter);
 
     }else{
         _painter.drawLine (0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
@@ -67,7 +67,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 		_painter.setPen(_NewPen);
         _painter.drawLine (m_cRange.fWidth / 2, 0, m_cRange.fWidth / 2, m_cRange.fHeight);
 	}
-	_painter.setPen(_pen);
+    _painter.setPen(_pen);
 }
 
 void QWeldShowWidget::SerPart(PART_CONFIG* pInfo_)

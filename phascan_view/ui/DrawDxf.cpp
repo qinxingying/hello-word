@@ -137,7 +137,7 @@ void DrawDxf::paintEvent (QPaintEvent*)
     painter.setPen(NewPen);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    if(m_pPart->weld.eType == setup_WELD_NCC){
+    if(m_pPart->weld.eType == setup_WELD_DXF){
         paint_line(painter);
 
         paint_text(painter);

@@ -1613,7 +1613,7 @@ void DopplerGroupTab::on_ComField4_currentIndexChanged(int index)
 {
 	if(!ui->ComField4->hasFocus()) return ;
 	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->SetupMeasureData(m_nGroupId , 3 , index)  ;
+    _process->SetupMeasureData(m_nGroupId , 3 , index);
 
 	if(ui->CheckMeasureShow->checkState())
 	{
