@@ -1544,10 +1544,19 @@ void DopplerGroupTab::on_BtnDepthCal_clicked()
 void DopplerGroupTab::on_CheckPartFileShow_clicked(bool checked)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->SetupShowWeldPart(m_nGroupId , checked)  ;
+    _process->SetupShowWeldPart(m_nGroupId , checked);
 
 	ProcessDisplay _display ;
-	_display.UpdateAllViewOfGroup(m_nGroupId);
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+}
+
+void DopplerGroupTab::on_CheckDxfFileShow_clicked(bool checked)
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupShowWeldPart(m_nGroupId , checked);
+
+    ProcessDisplay _display ;
+    _display.UpdateAllViewOfGroup(m_nGroupId);
 }
 
 void DopplerGroupTab::on_CheckMeasureShow_clicked(bool checked)
