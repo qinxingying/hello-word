@@ -1,7 +1,6 @@
 #ifndef DOPPLERPART_H
 #define DOPPLERPART_H
 
-//#include <math.h>
 #include <QPainter>
 #include <QObject>
 #include <configure/Instrument.h>

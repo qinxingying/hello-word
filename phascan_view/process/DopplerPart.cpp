@@ -77,8 +77,6 @@ DopplerPart* DopplerPart::Instance()
 
 DopplerPart::DopplerPart(QObject *parent) :  QObject(parent)
 {
-	//g_pDopplerPar = DopplerPart::Instance() ;
-
 	m_pPart      = NULL;
 	m_fThickness = 20;
 
@@ -88,15 +86,8 @@ DopplerPart::DopplerPart(QObject *parent) :  QObject(parent)
 	m_Info.fY = 0;
 
 	m_listCmd   = new QList<NCC_CMD*>;
-//	m_listLines = new QList<QPointF*>;
+
 }
-/*
-DopplerPart::~DopplerPart()
-{
-	m_listCmd->clear();
-	QObject::~QObject();
-}
-*/
 
 int DopplerPart::SetPart(PART_CONFIG* pInfo_)
 {
