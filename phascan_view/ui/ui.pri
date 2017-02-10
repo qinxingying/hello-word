@@ -6,6 +6,9 @@ HEADERS += \
     $$PWD/dialog/DialogColorSelect.h \
     $$PWD/dialog/DialogReportSetting.h \
     $$PWD/dialog/DialogWeldPartLoad.h \
+    $$PWD/painter/DopplerPart.h \
+    $$PWD/painter/DrawDxf.h \
+    $$PWD/painter/QWeldShowWidget.h \
     $$PWD/DataViewSettingWidget.h \
     $$PWD/DopplerColorBtn.h \
     $$PWD/DopplerGroupTab.h \
@@ -16,9 +19,8 @@ HEADERS += \
     $$PWD/PoppingTabBar.h \
     $$PWD/PoppingTabWidget.h \
     $$PWD/ProcessDisplay.h \
-    $$PWD/QWeldShowWidget.h \
-    $$PWD/dialog/DialogDxfFileLoad.h \
-    $$PWD/DrawDxf.h
+    $$PWD/dialog/DialogDxfFileLoad.h
+
 
 SOURCES += \
     $$PWD/util/GYSplitter.cpp \
@@ -26,6 +28,9 @@ SOURCES += \
     $$PWD/dialog/DialogColorSelect.cpp \
     $$PWD/dialog/DialogReportSetting.cpp \
     $$PWD/dialog/DialogWeldPartLoad.cpp \
+    $$PWD/painter/DopplerPart.cpp \
+    $$PWD/painter/DrawDxf.cpp \
+    $$PWD/painter/QWeldShowWidget.cpp \
     $$PWD/DataViewSettingWidget.cpp \
     $$PWD/DopplerColorBtn.cpp \
     $$PWD/DopplerGroupTab.cpp \
@@ -36,9 +41,7 @@ SOURCES += \
     $$PWD/PoppingTabBar.cpp \
     $$PWD/PoppingTabWidget.cpp \
     $$PWD/ProcessDisplay.cpp \
-    $$PWD/QWeldShowWidget.cpp \
-    $$PWD/dialog/DialogDxfFileLoad.cpp \
-    $$PWD/DrawDxf.cpp
+    $$PWD/dialog/DialogDxfFileLoad.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
