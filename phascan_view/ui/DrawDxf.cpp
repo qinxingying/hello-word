@@ -7,6 +7,17 @@
 #include <QPen>
 #include <QDebug>
 
+DrawDxf * g_pDrawDxf = NULL;
+
+DrawDxf *DrawDxf::Instance()
+{
+    if(!g_pDrawDxf){
+        g_pDrawDxf = new DrawDxf();
+        qDebug()<<__func__<<__LINE__;
+    }
+    return g_pDrawDxf;
+}
+
 DrawDxf::DrawDxf(QWidget *parent) :
 	QWidget(parent)
 {
@@ -854,4 +865,17 @@ void DrawDxf::PositionTransfer(QPointF& pos_)
 
     pos_.setX(_fX);
     pos_.setY(_fY);
+}
+
+void DrawDxf::DrawDxfPart(QPainterPath &path)
+{
+    qDebug()<<__func__<<__LINE__<<m_lineList.size();
+    if(m_lineList.size() > 0){
+        for(int i = 0; i < m_lineList.count(); i++){
+            path.moveTo(m_lineList.at(i).x1, m_lineList.at(i).y1);
+            path.lineTo(m_lineList.at(i).x2, m_lineList.at(i).y2);
+            qDebug()<<"line.P(X, Y) = "<<m_lineList.at(i).x1<<m_lineList.at(i).y1;
+        qDebug()<<__func__<<__LINE__;
+        }
+    }
 }

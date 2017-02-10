@@ -70,6 +70,7 @@ DopplerPart* DopplerPart::Instance()
 	if(!g_pDopplerPar)
 	{
 		g_pDopplerPar = new DopplerPart() ;
+         qDebug()<<__func__<<__LINE__<<"DopplerPart";
 	}
 	return g_pDopplerPar ;
 }
@@ -162,6 +163,7 @@ void DopplerPart::AdaptiveArea()
 		m_Info.fY = (0 - y1 + _fOff + _Mar) / m_Info.fScaleY;
 	}
 }
+
 NCC_CMD* DopplerPart::GetNccCmd(char* str_)
 {
 	char* _strCmd = str_;

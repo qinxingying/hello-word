@@ -44,9 +44,7 @@ class DopplerPart : public QObject
 {
     Q_OBJECT
 public:
-	QList<NCC_CMD*>*  m_listCmd;
-	//QList<QPointF*>*  m_listLines;
-	//QPolygonF         m_Lines;
+    QList<NCC_CMD*>*  m_listCmd;
 
 	QPointF			m_ptCur;
 	PART_CONFIG*	m_pPart;

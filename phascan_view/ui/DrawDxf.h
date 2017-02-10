@@ -12,12 +12,28 @@ namespace DplDxf {
     class DrawDxf;
 }
 
+typedef struct _DRAW_DXF_INFO
+{
+//	QPointF	Origin;
+    float fX;
+    float fY;
+    int   fWidth;
+    int   fHeight;
+    float fScaleX;
+    float fScaleY;
+}DRAW_DXF_INFO;
+
 class DrawDxf : public QWidget
 {
 	Q_OBJECT
 
 public:
     explicit DrawDxf(QWidget *parent = 0);
+
+    static   DrawDxf* Instance();
+    DRAW_DXF_INFO	m_Info;
+    void SetInfo(DRAW_DXF_INFO info_) {m_Info = info_;}
+    void DrawDxfPart(QPainterPath& path);
 
     void SerPart(PART_CONFIG* pInfo_);
     double m_zoom;

@@ -1598,10 +1598,11 @@ void  DopplerViewItems::DrawWeldNcc (QPainterPath& path)
 
 }
 
+#include "DrawDxf.h"
 void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
 {
-    DRAW_PART_INFO _info;
-   // DopplerPart* _pPart = DopplerPart::Instance();
+    DRAW_DXF_INFO _info;
+    DrawDxf* pDxfPart = DrawDxf::Instance();
 
     QSize size = m_pDataView->GetViewSize();
 
@@ -1626,8 +1627,8 @@ void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
     _info.fScaleX = _fXScale;
     _info.fScaleY = _fYScale;
 
-//    _pPart->SetPart(&m_cPart);
-//    _pPart->SetInfo(_info);
-
-//    _pPart->DrawNccPart(path);
+    pDxfPart->SerPart(&m_cPart);
+    pDxfPart->SetInfo(_info);
+ //   pDxfPart->getLineList();
+    pDxfPart->DrawDxfPart(path);
 }
