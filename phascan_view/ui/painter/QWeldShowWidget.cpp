@@ -1,6 +1,7 @@
 #include "QWeldShowWidget.h"
 #include "gHeader.h"
 #include "DopplerPart.h"
+#include "DrawDxf.h"
 
 #include <QPainter>
 #include <QPen>
@@ -15,17 +16,15 @@ QWeldShowWidget::QWeldShowWidget(QWidget *parent) :
 
 void QWeldShowWidget::paintEvent (QPaintEvent*)
 {
-    QPainter _painter(this);
+    QPainter painter(this);
     UpdateDisplayRangle();
 
-	QPen _pen = _painter.pen();
-
-    QPen _NewPen(_pen);
-	_NewPen.setWidth(2);
-	_NewPen.setColor(QColor(255, 0, 0));
-	_painter.setPen(_NewPen);
-
-	_painter.setRenderHint(QPainter::Antialiasing, true);
+    QPen pen = painter.pen();
+    QPen NewPen(pen);
+    NewPen.setWidth(2);
+    NewPen.setColor(QColor(255, 0, 0));
+    painter.setPen(NewPen);
+    painter.setRenderHint(QPainter::Antialiasing, true);
 
     if(m_pPart->weld.eType == setup_WELD_NCC){
 		DRAW_PART_INFO _info;
@@ -42,32 +41,46 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 		_pPart->SetInfo(_info);
 		_pPart->AdaptiveArea();
 
-		_pPart->DrawNccPart(_painter);
+        _pPart->DrawNccPart(painter);
 
 		QVector<qreal> dashes;
         dashes << 3 << 5;
-		_NewPen.setWidth(1);
-		_NewPen.setDashPattern(dashes);
-		_NewPen.setColor(QColor(0, 0, 255));
-		_painter.setPen(_NewPen);
+        NewPen.setWidth(1);
+        NewPen.setDashPattern(dashes);
+        NewPen.setColor(QColor(0, 0, 255));
+        painter.setPen(NewPen);
 
-        _pPart->DrawOriginLine(_painter);
+        _pPart->DrawOriginLine(painter);
 
+    }else if(m_pPart->weld.eType == setup_WELD_DXF){
+        NewPen.setColor(QColor(0, 255, 0));
+        painter.setPen(NewPen);
+        DrawDxf* drawDxf = DrawDxf::Instance();
+        drawDxf->DrawDxfPart(painter);
+        drawDxf->setPart(m_pPart);
+
+        QVector<qreal> dashes;
+        dashes << 3 << 5;
+        NewPen.setWidth(1);
+        NewPen.setDashPattern(dashes);
+        NewPen.setColor(QColor(0, 0, 255));
+        painter.setPen(NewPen);
+        painter.drawLine(0, height()/2, width(), height()/2);
+        painter.drawLine(width()/2, 0, width()/2, height());
     }else{
-        _painter.drawLine (0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
-        _painter.drawLine (0, m_cRange.fStopY, m_cRange.fWidth, m_cRange.fStopY);
+        painter.drawLine (0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
+        painter.drawLine (0, m_cRange.fStopY, m_cRange.fWidth, m_cRange.fStopY);
 
-        DrawWeld(_painter);
+        DrawWeld(painter);
 
 		QVector<qreal> dashes;
         dashes << 3 << 5;
-		_NewPen.setWidth(1);
-		_NewPen.setDashPattern(dashes);
-		_NewPen.setColor(QColor(0, 0, 255));
-		_painter.setPen(_NewPen);
-        _painter.drawLine (m_cRange.fWidth / 2, 0, m_cRange.fWidth / 2, m_cRange.fHeight);
+        NewPen.setWidth(1);
+        NewPen.setDashPattern(dashes);
+        NewPen.setColor(QColor(0, 0, 255));
+        painter.setPen(NewPen);
+        painter.drawLine (m_cRange.fWidth / 2, 0, m_cRange.fWidth / 2, m_cRange.fHeight);
 	}
-    _painter.setPen(_pen);
 }
 
 void QWeldShowWidget::SerPart(PART_CONFIG* pInfo_)

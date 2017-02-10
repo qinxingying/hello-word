@@ -881,7 +881,7 @@
   <customwidget>
    <class>QWeldShowWidget</class>
    <extends>QWidget</extends>
-   <header location="global">ui/QWeldShowWidget.h</header>
+   <header>ui/painter/QWeldShowWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

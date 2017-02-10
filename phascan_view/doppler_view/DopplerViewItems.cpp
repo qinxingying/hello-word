@@ -1,7 +1,9 @@
 #include "DopplerViewItems.h"
+#include "painter/DopplerPart.h"
+#include "painter/DrawDxf.h"
+
 #include <QColor>
 #include <gHeader.h>
-#include <process/DopplerPart.h>
 #include <process/ParameterProcess.h>
 
 static const QColor COLOR_GATE_A  =  QColor(255 , 0 , 0)   ;
@@ -1598,7 +1600,6 @@ void  DopplerViewItems::DrawWeldNcc (QPainterPath& path)
 
 }
 
-#include "DrawDxf.h"
 void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
 {
     DRAW_DXF_INFO _info;
@@ -1628,7 +1629,7 @@ void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
     _info.fScaleY = _fYScale;
 
     pDxfPart->SerPart(&m_cPart);
+    pDxfPart->setPart(&m_cPart);
     pDxfPart->SetInfo(_info);
- //   pDxfPart->getLineList();
     pDxfPart->DrawDxfPart(path);
 }

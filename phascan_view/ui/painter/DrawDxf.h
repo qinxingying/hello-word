@@ -33,9 +33,11 @@ public:
     static   DrawDxf* Instance();
     DRAW_DXF_INFO	m_Info;
     void SetInfo(DRAW_DXF_INFO info_) {m_Info = info_;}
+    void DrawDxfPart(QPainter& painter);
     void DrawDxfPart(QPainterPath& path);
 
     void SerPart(PART_CONFIG* pInfo_);
+    int setPart(PART_CONFIG* pInfo_);
     double m_zoom;
 
     QList<DL_LineData> getLineList() const;
@@ -72,6 +74,7 @@ public:
     void setPolyLineList(const QList<DL_PolylineData> &polyLineList);
 
 private:
+    int getDxfData();
     QList<DL_PointData> m_pointList;
     QList<DL_LineData> m_lineList;
     QList<DL_ArcData> m_arcList;
@@ -94,22 +97,10 @@ protected:
         double fPixelSize;
     };
 
-    void  DrawWeld(QPainter& painter);
-    void  DrawWeldI(QPainter& painter);
-    void  DrawWeldV(QPainter& painter);
-    void  DrawWeldDV(QPainter& painter);
-    void  DrawWeldU (QPainter& painter);
-    void  DrawWeldDiffDV(QPainter& painter);
-    void  DrawWeldJ(QPainter& painter);
-    void  DrawWeldVY(QPainter& painter);
-    void  UpdateDisplayRangle();
-    void  PositionTransfer(QPointF& pos_);
-
     PART_CONFIG* m_pPart;
     RANGE_INFO m_cRange;
     float m_fThickness;
 
-    void paintEvent(QPaintEvent * event);
     void paint_point(QPainter& painter);
     void paint_line(QPainter& painter);
     void paint_polyLine_0(QPainter& painter);

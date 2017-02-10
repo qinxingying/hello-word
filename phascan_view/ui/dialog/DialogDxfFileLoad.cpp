@@ -10,6 +10,7 @@
 #include <QFileDialog>
 #include <QDir.h>
 #include <QStandardItem>
+#include "painter/DrawDxf.h"
 
 DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
 	QDialog(parent),
@@ -37,7 +38,8 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
     connect(ui->ListPartFile, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_PartFileListDbClicked(QModelIndex)));
     connect(ui->BtnNccPath, SIGNAL(clicked()), this, SLOT(on_BtnNccPathClicked()));
     connect(ui->BtnNccDefaultPath, SIGNAL(clicked()), this, SLOT(on_BtnNccDefaultPathClicked()));
-    connect(ui->ExpoView, SIGNAL(zoom(double)), this, SLOT(slot_doubleSpinBox_zoom_setValue(double)));
+    DrawDxf* drawDxf = DrawDxf::Instance();
+    connect(drawDxf, SIGNAL(zoom(double)), this, SLOT(slot_doubleSpinBox_zoom_setValue(double)));
 }
 
 DialogDxfFileLoad::~DialogDxfFileLoad()
@@ -64,47 +66,6 @@ void DialogDxfFileLoad::SetWndName()
     ui->ComWeldType->setCurrentIndex(m_cPart.weld.eType);
 
     ui->LabelPartFilePath->setText(m_path);
-
-    Dxf_Data* dxfData = new Dxf_Data();
-    DL_Dxf* dxf = new DL_Dxf();
-
-    QString dxfFile = m_cPart.strPartFile;
-    if (!dxf->in(dxfFile.toLatin1().data(), dxfData)) {
-        ui->LabelPartFilePath->setText("could not be opened");
-        return;
-    }
-    QList<DL_PointData> pointList = dxfData->getPointList();
-    ui->ExpoView->setPointList(pointList);
-
-    QList<DL_LineData> lineList = dxfData->getLineList();
-    ui->ExpoView->setLineList(lineList);
-
-    QList<DL_MTextData> textList = dxfData->getTextList();
-    ui->ExpoView->setTextList(textList);
-
-    QList<DL_ArcData> arcList = dxfData->getArcList();
-    ui->ExpoView->setArcList(arcList);
-
-    QList<DL_CircleData> circleList = dxfData->getCircleList();
-    ui->ExpoView->setCircleList(circleList);
-
-    QList<DL_TextData> textDataList = dxfData->getTextDataList();
-    ui->ExpoView->setTextDataList(textDataList);
-
-    QList<DL_VertexData> vertexList = dxfData->getVertexList();
-    ui->ExpoView->setVertexList(vertexList);
-
-    QList<DL_ControlPointData> controlPointList = dxfData->getControlPointList();
-    ui->ExpoView->setControlPointList(controlPointList);
-
-    QList<DL_PolylineData> polyLineList = dxfData->getPolyLineList();
-    ui->ExpoView->setPolyLineList(polyLineList);
-
-    QList<DL_EllipseData> ellipseList = dxfData->getEllipseList();
-    ui->ExpoView->setEllipseList(ellipseList);
-
-    delete dxf;
-    delete dxfData;
 }
 
 void DialogDxfFileLoad::SetDisplayMode(DISPLAY_MODE eMode_)

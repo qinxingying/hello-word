@@ -828,7 +828,7 @@
        </widget>
       </item>
       <item>
-       <widget class="DrawDxf" name="ExpoView" native="true">
+       <widget class="QWeldShowWidget" name="ExpoView" native="true">
         <property name="palette">
          <palette>
           <active>
@@ -948,9 +948,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DrawDxf</class>
+   <class>QWeldShowWidget</class>
    <extends>QWidget</extends>
-   <header>drawdxf.h</header>
+   <header>ui/painter/QWeldShowWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
