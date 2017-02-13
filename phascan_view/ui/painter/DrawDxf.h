@@ -1,7 +1,6 @@
 #ifndef DrawDxf_H
 #define DrawDxf_H
 
-#include "dl_creationadapter.h"
 #include "dxf_data.h"
 
 #include <QWidget>

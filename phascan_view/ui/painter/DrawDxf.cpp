@@ -1,7 +1,5 @@
 #include "DrawDxf.h"
 #include "dl_dxf.h"
-#include "dl_creationadapter.h"
-#include "gHeader.h"
 
 #include <QPainter>
 #include <QPen>
@@ -51,8 +49,8 @@ int DrawDxf::getDxfData()
     m_polyLineList = dxfData->getPolyLineList();
     m_ellipseList = dxfData->getEllipseList();
 
-//    delete dxf;
-//    delete dxfData;
+    delete dxf;
+    delete dxfData;
     return 0;
 }
 

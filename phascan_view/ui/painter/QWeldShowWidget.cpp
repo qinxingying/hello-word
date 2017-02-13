@@ -3,8 +3,6 @@
 #include "DopplerPart.h"
 #include "DrawDxf.h"
 
-#include <QPainter>
-#include <QPen>
 #include <QPointF>
 
 QWeldShowWidget::QWeldShowWidget(QWidget *parent) :

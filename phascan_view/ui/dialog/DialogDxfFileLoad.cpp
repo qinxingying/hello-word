@@ -2,15 +2,11 @@
 #include "ui_DialogDxfFileLoad.h"
 #include "ParameterProcess.h"
 #include "DopplerConfigure.h"
-
-#include "dl_dxf.h"
-#include "dl_creationadapter.h"
-#include "dxf_data.h"
+#include "painter/DrawDxf.h"
 
 #include <QFileDialog>
 #include <QDir.h>
 #include <QStandardItem>
-#include "painter/DrawDxf.h"
 
 DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
 	QDialog(parent),

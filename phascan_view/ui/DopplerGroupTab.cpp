@@ -1,8 +1,6 @@
 #include "DopplerGroupTab.h"
 #include "ui_DopplerGroupTab.h"
 
-#include "DopplerConfigure.h"
-#include "ParameterProcess.h"
 #include "const.h"
 #include "gHeader.h"
 #include "ProcessDisplay.h"
@@ -10,7 +8,6 @@
 #include "dialog/DialogWeldPartLoad.h"
 #include "dialog/DialogDxfFileLoad.h"
 
-#include <QtGui>
 #include <QPushButton>
 
 const int MAX_ITEM_QTY = 50;
