@@ -10,6 +10,7 @@ QWeldShowWidget::QWeldShowWidget(QWidget *parent) :
 {
 	m_pPart = NULL;
 	m_fThickness = 20;
+    m_zoom = 1.0;
 }
 
 void QWeldShowWidget::paintEvent (QPaintEvent*)
@@ -28,10 +29,9 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         NewPen.setColor(QColor(0, 255, 0));
         painter.setPen(NewPen);
         DrawDxf* drawDxf = DrawDxf::Instance();
-        m_zoom = drawDxf->m_zoom;
 
         drawDxf->setPart(m_pPart);
-        drawDxf->DrawDxfPart(painter);
+        drawDxf->draw_dxfPart(painter, m_zoom);
 
         QVector<qreal> dashes;
         dashes << 3 << 5;
