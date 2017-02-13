@@ -26,13 +26,6 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
     painter.setRenderHint(QPainter::Antialiasing, true);
 
     if(m_pPart->weld.eType == setup_WELD_DXF){
-        NewPen.setColor(QColor(0, 255, 0));
-        painter.setPen(NewPen);
-        DrawDxf* drawDxf = DrawDxf::Instance();
-
-        drawDxf->setPart(m_pPart);
-        drawDxf->draw_dxfPart(painter, m_zoom);
-
         QVector<qreal> dashes;
         dashes << 3 << 5;
         NewPen.setWidth(1);
@@ -42,19 +35,28 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         painter.drawLine(0, height()/2, width(), height()/2);
         painter.drawLine(width()/2, 0, width()/2, height());
 
+        QPen dxf_pen(pen);
+        dxf_pen.setWidth(2);
+        dxf_pen.setColor(QColor(0, 255, 0));
+        painter.setPen(dxf_pen);
+
+        DrawDxf* drawDxf = DrawDxf::Instance();
+        drawDxf->setPart(m_pPart);
+      //  drawDxf->SetInfo(info);
+        drawDxf->draw_dxfPart(painter, m_zoom);
+
     }else if(m_pPart->weld.eType == setup_WELD_NCC){
-        DRAW_PART_INFO _info;
+        DRAW_PART_INFO info;
+        info.fWidth = m_cRange.fWidth;
+        info.fHeight = m_cRange.fHeight;
+        info.fX = m_cRange.fWidth / 10;
+        info.fY = m_cRange.fStartY;
+        info.fScaleX = m_cRange.fPixelSize;
+        info.fScaleY = m_cRange.fPixelSize;
+
         DopplerPart* _pPart = DopplerPart::Instance();
-
-        _info.fWidth = m_cRange.fWidth;
-        _info.fHeight = m_cRange.fHeight;
-        _info.fX = m_cRange.fWidth / 10;
-        _info.fY = m_cRange.fStartY;
-        _info.fScaleX = m_cRange.fPixelSize;
-        _info.fScaleY = m_cRange.fPixelSize;
-
         _pPart->SetPart(m_pPart);
-        _pPart->SetInfo(_info);
+        _pPart->SetInfo(info);
         _pPart->AdaptiveArea();
 
         _pPart->DrawNccPart(painter);

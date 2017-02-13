@@ -32,10 +32,11 @@ public:
     static   DrawDxf* Instance();
     DRAW_DXF_INFO	m_Info;
     void SetInfo(DRAW_DXF_INFO info_) {m_Info = info_;}
-    void draw_dxfPart(QPainter& painter, double zoom);
-    void DrawDxfPart(QPainterPath& path);
 
     int setPart(PART_CONFIG* pInfo_);
+    void draw_dxfPart(QPainter& painter, double zoom);
+
+    void DrawDxfPart(QPainterPath& path);
 
 private:
     int getDxfData();
@@ -52,17 +53,7 @@ private:
     QList<DL_ControlPointData> m_controlPointList;
 
 protected:
-//    struct RANGE_INFO
-//    {
-//        double fWidth;
-//        double fHeight;
-//        double fStartY;
-//        double fStopY;
-//        double fPixelSize;
-//    };
-
     PART_CONFIG* m_pPart;
-  //  RANGE_INFO m_cRange;
     float m_fThickness;
 
     void paint_point(QPainter& painter, double zoom);
