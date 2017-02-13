@@ -36,42 +36,8 @@ public:
     void DrawDxfPart(QPainter& painter);
     void DrawDxfPart(QPainterPath& path);
 
-    void SerPart(PART_CONFIG* pInfo_);
     int setPart(PART_CONFIG* pInfo_);
     double m_zoom;
-
-    QList<DL_LineData> getLineList() const;
-    void setLineList(const QList<DL_LineData> &lineList);
-
-    QList<DL_ArcData> getArcList() const;
-    void setArcList(const QList<DL_ArcData> &arcList);
-
-    QList<DL_MTextData> getTextList() const;
-    void setTextList(const QList<DL_MTextData> &textList);
-
-    QList<DL_EllipseData> getEllipseList() const;
-    void setEllipseList(const QList<DL_EllipseData> &ellipseList);
-
-    QList<DL_CircleData> getCircleList() const;
-    void setCircleList(const QList<DL_CircleData> &circleList);
-
-    QList<DL_TextData> getTextDataList() const;
-    void setTextDataList(const QList<DL_TextData> &textDataList);
-
-    QList<DL_VertexData> getVertexList() const;
-    void setVertexList(const QList<DL_VertexData> &vertexList);
-
-    QList<DL_SplineData> getSplineList() const;
-    void setSplineList(const QList<DL_SplineData> &splineList);
-
-    QList<DL_ControlPointData> getControlPointList() const;
-    void setControlPointList(const QList<DL_ControlPointData> &controlPointList);
-
-    QList<DL_PointData> getPointList() const;
-    void setPointList(const QList<DL_PointData> &pointList);
-
-    QList<DL_PolylineData> getPolyLineList() const;
-    void setPolyLineList(const QList<DL_PolylineData> &polyLineList);
 
 private:
     int getDxfData();
@@ -110,10 +76,6 @@ protected:
     void paint_circle(QPainter& painter);
     double calc_rotateAngle(double cx, double cy, double mx, double my);
     void paint_ellipse(QPainter& painter);
-    void wheelEvent(QWheelEvent *event);
-
-signals:
-    void zoom(double v);
 };
 
 #endif // DrawDxf_H

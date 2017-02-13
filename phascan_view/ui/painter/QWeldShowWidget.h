@@ -12,6 +12,8 @@ public:
 	explicit QWeldShowWidget(QWidget *parent = 0);
 	void SerPart(PART_CONFIG* pInfo_);
 
+    double m_zoom;
+
 protected:
 	struct RANGE_INFO
 	{
@@ -34,9 +36,14 @@ protected:
     void  UpdateDisplayRangle();
     void  PositionTransfer(QPointF& pos_);
 
+    void wheelEvent(QWheelEvent *event);
+
 	PART_CONFIG* m_pPart;
     RANGE_INFO m_cRange;
     float m_fThickness;
+
+signals:
+    void zoom(double v);
 };
 
 #endif // QWELDSHOWWIDGET_H

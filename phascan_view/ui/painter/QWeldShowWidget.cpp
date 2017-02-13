@@ -26,38 +26,14 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
     painter.setPen(NewPen);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    if(m_pPart->weld.eType == setup_WELD_NCC){
-		DRAW_PART_INFO _info;
-		DopplerPart* _pPart = DopplerPart::Instance();
-
-		_info.fWidth = m_cRange.fWidth;
-		_info.fHeight = m_cRange.fHeight;
-		_info.fX = m_cRange.fWidth / 10;
-		_info.fY = m_cRange.fStartY;
-		_info.fScaleX = m_cRange.fPixelSize;
-		_info.fScaleY = m_cRange.fPixelSize;
-
-		_pPart->SetPart(m_pPart);
-		_pPart->SetInfo(_info);
-		_pPart->AdaptiveArea();
-
-        _pPart->DrawNccPart(painter);
-
-		QVector<qreal> dashes;
-        dashes << 3 << 5;
-        NewPen.setWidth(1);
-        NewPen.setDashPattern(dashes);
-        NewPen.setColor(QColor(0, 0, 255));
-        painter.setPen(NewPen);
-
-        _pPart->DrawOriginLine(painter);
-
-    }else if(m_pPart->weld.eType == setup_WELD_DXF){
+    if(m_pPart->weld.eType == setup_WELD_DXF){
         NewPen.setColor(QColor(0, 255, 0));
         painter.setPen(NewPen);
         DrawDxf* drawDxf = DrawDxf::Instance();
-        drawDxf->DrawDxfPart(painter);
+        m_zoom = drawDxf->m_zoom;
+
         drawDxf->setPart(m_pPart);
+        drawDxf->DrawDxfPart(painter);
 
         QVector<qreal> dashes;
         dashes << 3 << 5;
@@ -67,20 +43,48 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         painter.setPen(NewPen);
         painter.drawLine(0, height()/2, width(), height()/2);
         painter.drawLine(width()/2, 0, width()/2, height());
+
+    }else if(m_pPart->weld.eType == setup_WELD_NCC){
+        DRAW_PART_INFO _info;
+        DopplerPart* _pPart = DopplerPart::Instance();
+
+        _info.fWidth = m_cRange.fWidth;
+        _info.fHeight = m_cRange.fHeight;
+        _info.fX = m_cRange.fWidth / 10;
+        _info.fY = m_cRange.fStartY;
+        _info.fScaleX = m_cRange.fPixelSize;
+        _info.fScaleY = m_cRange.fPixelSize;
+
+        _pPart->SetPart(m_pPart);
+        _pPart->SetInfo(_info);
+        _pPart->AdaptiveArea();
+
+        _pPart->DrawNccPart(painter);
+
+        QVector<qreal> dashes;
+        dashes << 3 << 5;
+        NewPen.setWidth(1);
+        NewPen.setDashPattern(dashes);
+        NewPen.setColor(QColor(0, 0, 255));
+        painter.setPen(NewPen);
+
+        _pPart->DrawOriginLine(painter);
+
     }else{
         painter.drawLine (0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
         painter.drawLine (0, m_cRange.fStopY, m_cRange.fWidth, m_cRange.fStopY);
 
         DrawWeld(painter);
 
-		QVector<qreal> dashes;
+        QVector<qreal> dashes;
         dashes << 3 << 5;
         NewPen.setWidth(1);
         NewPen.setDashPattern(dashes);
         NewPen.setColor(QColor(0, 0, 255));
         painter.setPen(NewPen);
         painter.drawLine (m_cRange.fWidth / 2, 0, m_cRange.fWidth / 2, m_cRange.fHeight);
-	}
+    }
+ //   painter.setPen(pen);
 }
 
 void QWeldShowWidget::SerPart(PART_CONFIG* pInfo_)
@@ -542,5 +546,23 @@ void QWeldShowWidget::PositionTransfer(QPointF& pos_)
     double _fY = pos_.y() / m_cRange.fPixelSize;
 
 	pos_.setX(_fX);
-	pos_.setY(_fY);
+    pos_.setY(_fY);
+}
+
+void QWeldShowWidget::wheelEvent(QWheelEvent *event)
+{
+    if(event->delta() >0){
+        m_zoom += 1;
+
+    }else{
+        if(m_zoom > 1){
+            m_zoom -= 1;
+
+        }else if(0 < m_zoom && m_zoom <= 1){
+            m_zoom = 0.5*m_zoom;
+        }
+    }
+
+    update();
+    emit zoom(m_zoom);
 }

@@ -38,8 +38,8 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
     connect(ui->ListPartFile, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_PartFileListDbClicked(QModelIndex)));
     connect(ui->BtnNccPath, SIGNAL(clicked()), this, SLOT(on_BtnNccPathClicked()));
     connect(ui->BtnNccDefaultPath, SIGNAL(clicked()), this, SLOT(on_BtnNccDefaultPathClicked()));
-    DrawDxf* drawDxf = DrawDxf::Instance();
-    connect(drawDxf, SIGNAL(zoom(double)), this, SLOT(slot_doubleSpinBox_zoom_setValue(double)));
+
+    connect(ui->ExpoView, SIGNAL(zoom(double)), this, SLOT(slot_doubleSpinBox_zoom_setValue(double)));
 }
 
 DialogDxfFileLoad::~DialogDxfFileLoad()
@@ -208,7 +208,7 @@ void DialogDxfFileLoad::UpdateDisplay()
     } else {
         ui->ComWeldSymetry->setEnabled(true);
         ui->frame_value->setEnabled(true);
-	}
+    }
 }
 
 void DialogDxfFileLoad::on_comboBox_currentIndexChanged(int index)

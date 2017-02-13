@@ -18,137 +18,12 @@ DrawDxf *DrawDxf::Instance()
     return g_pDrawDxf;
 }
 
-void DrawDxf::DrawDxfPart(QPainter &painter)
-{
-    paint_line(painter);
-
-    paint_text(painter);
-
-    paint_arc(painter);
-
-    paint_circle(painter);
-
-    paint_point(painter);
-
-    paint_ellipse(painter);
-}
-
 DrawDxf::DrawDxf(QWidget *parent) :
 	QWidget(parent)
 {
     m_pPart = NULL;
     m_fThickness = 20;
     m_zoom = 1.0;
-}
-
-QList<DL_LineData> DrawDxf::getLineList() const
-{
-    return m_lineList;
-}
-
-void DrawDxf::setLineList(const QList<DL_LineData> &lineList)
-{
-    m_lineList = lineList;
-}
-
-QList<DL_ArcData> DrawDxf::getArcList() const
-{
-    return m_arcList;
-}
-
-void DrawDxf::setArcList(const QList<DL_ArcData> &arcList)
-{
-    m_arcList = arcList;
-}
-
-QList<DL_MTextData> DrawDxf::getTextList() const
-{
-    return m_textList;
-}
-
-void DrawDxf::setTextList(const QList<DL_MTextData> &textList)
-{
-    m_textList = textList;
-}
-
-QList<DL_EllipseData> DrawDxf::getEllipseList() const
-{
-    return m_ellipseList;
-}
-
-void DrawDxf::setEllipseList(const QList<DL_EllipseData> &ellipseList)
-{
-    m_ellipseList = ellipseList;
-}
-
-QList<DL_CircleData> DrawDxf::getCircleList() const
-{
-    return m_circleList;
-}
-
-void DrawDxf::setCircleList(const QList<DL_CircleData> &circleList)
-{
-    m_circleList = circleList;
-}
-
-QList<DL_TextData> DrawDxf::getTextDataList() const
-{
-    return m_textDataList;
-}
-
-void DrawDxf::setTextDataList(const QList<DL_TextData> &textDataList)
-{
-    m_textDataList = textDataList;
-}
-
-QList<DL_VertexData> DrawDxf::getVertexList() const
-{
-    return m_vertexList;
-}
-
-void DrawDxf::setVertexList(const QList<DL_VertexData> &vertexList)
-{
-    m_vertexList = vertexList;
-}
-
-QList<DL_SplineData> DrawDxf::getSplineList() const
-{
-    return m_splineList;
-}
-
-void DrawDxf::setSplineList(const QList<DL_SplineData> &splineList)
-{
-    m_splineList = splineList;
-}
-
-QList<DL_ControlPointData> DrawDxf::getControlPointList() const
-{
-    return m_controlPointList;
-}
-
-void DrawDxf::setControlPointList(const QList<DL_ControlPointData> &controlPointList)
-{
-    m_controlPointList = controlPointList;
-}
-
-QList<DL_PointData> DrawDxf::getPointList() const
-{
-    return m_pointList;
-}
-
-void DrawDxf::setPointList(const QList<DL_PointData> &pointList)
-{
-    m_pointList = pointList;
-}
-
-QList<DL_PolylineData> DrawDxf::getPolyLineList() const
-{
-    return m_polyLineList;
-}
-
-void DrawDxf::setPolyLineList(const QList<DL_PolylineData> &polyLineList)
-{
-    m_polyLineList = polyLineList;
 }
 
 int DrawDxf::getDxfData()
@@ -165,39 +40,35 @@ int DrawDxf::getDxfData()
         return -1;
     }
 
-        QList<DL_PointData> pointList = dxfData->getPointList();
-        setPointList(pointList);
+    m_pointList = dxfData->getPointList();
+    m_lineList = dxfData->getLineList();
+    m_textList = dxfData->getTextList();
+    m_arcList = dxfData->getArcList();
+    m_circleList = dxfData->getCircleList();
+    m_textDataList = dxfData->getTextDataList();
+    m_vertexList = dxfData->getVertexList();
+    m_controlPointList = dxfData->getControlPointList();
+    m_polyLineList = dxfData->getPolyLineList();
+    m_ellipseList = dxfData->getEllipseList();
 
-        QList<DL_LineData> lineList = dxfData->getLineList();
-        setLineList(lineList);
-
-        QList<DL_MTextData> textList = dxfData->getTextList();
-        setTextList(textList);
-
-        QList<DL_ArcData> arcList = dxfData->getArcList();
-        setArcList(arcList);
-
-        QList<DL_CircleData> circleList = dxfData->getCircleList();
-        setCircleList(circleList);
-
-        QList<DL_TextData> textDataList = dxfData->getTextDataList();
-        setTextDataList(textDataList);
-
-        QList<DL_VertexData> vertexList = dxfData->getVertexList();
-        setVertexList(vertexList);
-
-        QList<DL_ControlPointData> controlPointList = dxfData->getControlPointList();
-        setControlPointList(controlPointList);
-
-        QList<DL_PolylineData> polyLineList = dxfData->getPolyLineList();
-        setPolyLineList(polyLineList);
-
-        QList<DL_EllipseData> ellipseList = dxfData->getEllipseList();
-        setEllipseList(ellipseList);
-
-    delete dxf;
-    delete dxfData;
+//    delete dxf;
+//    delete dxfData;
     return 0;
+}
+
+void DrawDxf::DrawDxfPart(QPainter &painter)
+{
+    paint_line(painter);
+
+    paint_text(painter);
+
+    paint_arc(painter);
+
+    paint_circle(painter);
+
+    paint_point(painter);
+
+    paint_ellipse(painter);
 }
 
 void DrawDxf::paint_point(QPainter &painter)
@@ -391,33 +262,11 @@ qDebug()<<"\n Angle = "<<fabs(endAngle - startAngle)/16<<Angle/16;
     }
 }
 
-void DrawDxf::wheelEvent(QWheelEvent *event)
-{
-    if(event->delta() >0){
-        m_zoom += 1;
-
-    }else{
-        if(m_zoom > 1){
-            m_zoom -= 1;
-
-        }else if(0 < m_zoom && m_zoom <= 1){
-            m_zoom = 0.5*m_zoom;
-        }
-    }
-
-    update();
-    emit zoom(m_zoom);
-}
-
-void DrawDxf::SerPart(PART_CONFIG* pInfo_)
+int DrawDxf::setPart(PART_CONFIG *pInfo_)
 {
     m_pPart = pInfo_;
     m_fThickness = m_pPart->afSize[0];
-}
 
-int DrawDxf::setPart(PART_CONFIG *pInfo_)
-{
-    SerPart(pInfo_);
     int ret = getDxfData();
     return ret;
 }

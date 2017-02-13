@@ -1628,7 +1628,6 @@ void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
     _info.fScaleX = _fXScale;
     _info.fScaleY = _fYScale;
 
-    pDxfPart->SerPart(&m_cPart);
     pDxfPart->setPart(&m_cPart);
     pDxfPart->SetInfo(_info);
     pDxfPart->DrawDxfPart(path);
