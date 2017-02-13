@@ -34,7 +34,7 @@ public:
     void SetInfo(DRAW_DXF_INFO info_) {m_Info = info_;}
 
     int setPart(PART_CONFIG* pInfo_);
-    void draw_dxfPart(QPainter& painter, double zoom);
+    void draw_dxfPart(QPainter& painter, double zoom, double centerX, double centerY);
 
     void DrawDxfPart(QPainterPath& path);
 
@@ -56,15 +56,15 @@ protected:
     PART_CONFIG* m_pPart;
     float m_fThickness;
 
-    void paint_point(QPainter& painter, double zoom);
-    void paint_line(QPainter& painter, double zoom);
-    void paint_polyLine_0(QPainter& painter, double zoom);
-    void paint_polyLine_1(QPainter& painter, double zoom);
-    void paint_text(QPainter& painter, double zoom);
-    void paint_arc(QPainter& painter, double zoom);
-    void paint_circle(QPainter& painter, double zoom);
+    void paint_point(QPainter& painter, double zoom, double centerX, double centerY);
+    void paint_line(QPainter& painter, double zoom, double centerX, double centerY);
+    void paint_polyLine_0(QPainter& painter, double zoom, double centerX, double centerY);
+    void paint_polyLine_1(QPainter& painter, double zoom, double centerX, double centerY);
+    void paint_text(QPainter& painter, double zoom, double centerX, double centerY);
+    void paint_arc(QPainter& painter, double zoom, double centerX, double centerY);
+    void paint_circle(QPainter& painter, double zoom, double centerX, double centerY);
     double calc_rotateAngle(double cx, double cy, double mx, double my);
-    void paint_ellipse(QPainter& painter, double zoom);
+    void paint_ellipse(QPainter& painter, double zoom, double centerX, double centerY);
 };
 
 #endif // DrawDxf_H

@@ -43,7 +43,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         DrawDxf* drawDxf = DrawDxf::Instance();
         drawDxf->setPart(m_pPart);
       //  drawDxf->SetInfo(info);
-        drawDxf->draw_dxfPart(painter, m_zoom);
+        drawDxf->draw_dxfPart(painter, m_zoom, width()/2, height()/2);
 
     }else if(m_pPart->weld.eType == setup_WELD_NCC){
         DRAW_PART_INFO info;
