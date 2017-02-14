@@ -1622,5 +1622,5 @@ void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
 
     pDxfPart->setPart(&m_cPart);
     pDxfPart->SetInfo(_info);
-    pDxfPart->DrawDxfPart(path, _x0);
+    pDxfPart->DrawDxfPart(path, _x0, 1/_fXScale, 1/_fYScale);
 }
