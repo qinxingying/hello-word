@@ -269,17 +269,10 @@ int DrawDxf::setPart(PART_CONFIG *pInfo_)
 
 void DrawDxf::DrawDxfPart(QPainterPath &path, double originX)
 {
-    draw_point(path);
     draw_line(path, originX);
-    draw_polyLine(path);
-    draw_arc(path);
-    draw_circle(path);
-    draw_ellipse(path);
-}
-
-void DrawDxf::draw_point(QPainterPath &path)
-{
-
+    draw_arc(path, originX);
+    draw_circle(path, originX);
+    draw_ellipse(path, originX);
 }
 
 void DrawDxf::draw_line(QPainterPath &path, double originX)
@@ -292,24 +285,75 @@ void DrawDxf::draw_line(QPainterPath &path, double originX)
         }
     }
 
+    if(m_vertexList.isEmpty()){
+        return;
+    }
+
+    for(int i = 1; i < m_vertexList.count(); i++){
+        path.moveTo(m_vertexList.at(i-1).x + originX, m_vertexList.at(i-1).y);
+        path.lineTo(m_vertexList.at(i).x + originX, m_vertexList.at(i).y);
+    }
 }
 
-void DrawDxf::draw_polyLine(QPainterPath &path)
+void DrawDxf::draw_arc(QPainterPath &path, double originX)
 {
+    if(m_arcList.isEmpty()){
+        return;
+    }
 
+    for(int i = 0; i < m_arcList.count(); i++){
+        double r = m_arcList.at(i).radius;
+        double startAngle = m_arcList.at(i).angle1*16;
+        double endAngle = m_arcList.at(i).angle2*16;
+
+     //   path.arcMoveTo(m_arcList.at(i).cx -r + centerX, -zoom*m_arcList.at(i).cy - zoom*r + centerY,
+     //                  2*r, 2*r, startAngle, fabs(endAngle - startAngle));
+        path.arcTo(m_arcList.at(i).cx -r + originX, m_arcList.at(i).cy + r,
+                   2*r, 2*r, startAngle, fabs(endAngle - startAngle));
+    }
 }
 
-void DrawDxf::draw_arc(QPainterPath &path)
+void DrawDxf::draw_circle(QPainterPath &path, double originX)
 {
+    if(m_circleList.isEmpty()){
+        return;
+    }
 
+    for(int i = 0; i < m_circleList.count(); i++){
+        path.addEllipse(m_circleList.at(i).cx - m_circleList.at(i).radius + originX,
+                        m_circleList.at(i).cy - m_circleList.at(i).radius,
+                        2*m_circleList.at(i).radius, 2*m_circleList.at(i).radius);
+    }
 }
 
-void DrawDxf::draw_circle(QPainterPath &path)
+void DrawDxf::draw_ellipse(QPainterPath &path, double originX)
 {
+    if(m_ellipseList.isEmpty()){
+        return;
+    }
 
-}
+    for(int i = 0; i < m_ellipseList.count(); i++){
+        double k  = m_ellipseList.at(i).ratio;
+        double r1 = sqrt(pow((m_ellipseList.at(i).mx - m_ellipseList.at(i).cx), 2.0) +
+                         pow((m_ellipseList.at(i).my - m_ellipseList.at(i).cy), 2.0));
+        double rotateAngle = calc_rotateAngle(m_ellipseList.at(i).cx, m_ellipseList.at(i).cy,
+                                              m_ellipseList.at(i).mx, m_ellipseList.at(i).my);
+        double startAngle  = 16*m_ellipseList.at(i).angle1*180/M_PI;
+        double endAngle    = 16*m_ellipseList.at(i).angle2*180/M_PI;
 
-void DrawDxf::draw_ellipse(QPainterPath &path)
-{
+        path.translate(originX, 0);
+      //  path.angleAtPercent(rotateAngle/2*M_PI);
+      //  painter.rotate(360 - rotateAngle*180/M_PI);
 
+        double Angle = 16*360 - fabs(endAngle - startAngle);
+        if(Angle < 1e-10){
+           path.arcTo(m_ellipseList.at(i).cx  - r1,
+                            m_ellipseList.at(i).cy  - k*r1,
+                            2*r1, 2*r1, startAngle, 16*360);
+        }else{
+            path.arcTo(m_ellipseList.at(i).cx  - r1,
+                            m_ellipseList.at(i).cy  - k*r1,
+                            2*r1, 2*r1, startAngle, Angle);
+        }
+    }
 }
