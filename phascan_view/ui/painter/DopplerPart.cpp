@@ -67,12 +67,10 @@ DopplerPart* g_pDopplerPar = NULL ;
 
 DopplerPart* DopplerPart::Instance()
 {
-	if(!g_pDopplerPar)
-	{
-		g_pDopplerPar = new DopplerPart() ;
-         qDebug()<<__func__<<__LINE__<<"DopplerPart";
+    if(!g_pDopplerPar){
+        g_pDopplerPar = new DopplerPart();
 	}
-	return g_pDopplerPar ;
+    return g_pDopplerPar;
 }
 
 DopplerPart::DopplerPart(QObject *parent) :  QObject(parent)

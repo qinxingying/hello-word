@@ -58,7 +58,6 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         _pPart->SetPart(m_pPart);
         _pPart->SetInfo(info);
         _pPart->AdaptiveArea();
-
         _pPart->DrawNccPart(painter);
 
         QVector<qreal> dashes;

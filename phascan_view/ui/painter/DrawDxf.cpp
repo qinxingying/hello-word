@@ -11,7 +11,6 @@ DrawDxf *DrawDxf::Instance()
 {
     if(!g_pDrawDxf){
         g_pDrawDxf = new DrawDxf();
-        qDebug()<<__func__<<__LINE__;
     }
     return g_pDrawDxf;
 }
@@ -268,15 +267,49 @@ int DrawDxf::setPart(PART_CONFIG *pInfo_)
     return ret;
 }
 
-void DrawDxf::DrawDxfPart(QPainterPath &path)
+void DrawDxf::DrawDxfPart(QPainterPath &path, double originX)
 {
-    qDebug()<<__func__<<__LINE__<<m_lineList.size();
+    draw_point(path);
+    draw_line(path, originX);
+    draw_polyLine(path);
+    draw_arc(path);
+    draw_circle(path);
+    draw_ellipse(path);
+}
+
+void DrawDxf::draw_point(QPainterPath &path)
+{
+
+}
+
+void DrawDxf::draw_line(QPainterPath &path, double originX)
+{
     if(m_lineList.size() > 0){
         for(int i = 0; i < m_lineList.count(); i++){
-            path.moveTo(m_lineList.at(i).x1, m_lineList.at(i).y1);
-            path.lineTo(m_lineList.at(i).x2, m_lineList.at(i).y2);
+            path.moveTo(m_lineList.at(i).x1 + originX, m_lineList.at(i).y1);
+            path.lineTo(m_lineList.at(i).x2 + originX, m_lineList.at(i).y2);
             qDebug()<<"line.P(X, Y) = "<<m_lineList.at(i).x1<<m_lineList.at(i).y1;
-        qDebug()<<__func__<<__LINE__;
         }
     }
+
+}
+
+void DrawDxf::draw_polyLine(QPainterPath &path)
+{
+
+}
+
+void DrawDxf::draw_arc(QPainterPath &path)
+{
+
+}
+
+void DrawDxf::draw_circle(QPainterPath &path)
+{
+
+}
+
+void DrawDxf::draw_ellipse(QPainterPath &path)
+{
+
 }

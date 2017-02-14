@@ -29,7 +29,6 @@ typedef struct _NCC_CMD
 
 typedef struct _DRAW_PART_INFO
 {
-//	QPointF	Origin;
 	float fX;
 	float fY;
 	int   fWidth;

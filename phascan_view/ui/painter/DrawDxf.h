@@ -36,7 +36,13 @@ public:
     int setPart(PART_CONFIG* pInfo_);
     void draw_dxfPart(QPainter& painter, double zoom, double centerX, double centerY);
 
-    void DrawDxfPart(QPainterPath& path);
+    void DrawDxfPart(QPainterPath& path, double originX);
+    void draw_point(QPainterPath& path);
+    void draw_line(QPainterPath& path, double originX);
+    void draw_polyLine(QPainterPath& path);
+    void draw_arc(QPainterPath& path);
+    void draw_circle(QPainterPath& path);
+    void draw_ellipse(QPainterPath& path);
 
 private:
     int getDxfData();

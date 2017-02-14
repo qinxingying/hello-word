@@ -495,16 +495,13 @@ void DopplerViewItems::UpdateItemsWeld()
 
 	if(m_eShow & OVERLAYS_WELD )
 	{
-		QPainterPath _path ;
+        QPainterPath _path;
 		DrawWeld(_path);
-		if(m_pLawMarker)
-		{
+		if(m_pLawMarker){
 			m_pLawMarker->SetWeldColor(COLOR_WELD);
 			m_pLawMarker->SetWeldInfo(true , &_path);
 		}
-	}
-	else
-	{
+    }else{
 		if(m_pLawMarker) m_pLawMarker->SetWeldInfo(false, NULL);
 	}
 }
@@ -520,7 +517,7 @@ void DopplerViewItems::UpdateScanMarker()
 	{
 		m_pScanMarker = new DopplerScanMarker(COLOR_SCAN_MARKER);
 		m_pScanMarker->SetItemType(DOPPLER_GRAPHICS_ITEM_SCAN ) ;
-		m_pScanMarker->SetLineType(m_bScanMarkerHorizental ?  DopplerLineItem::LINE_HORIZENTAL : DopplerLineItem::LINE_VERTICAL );
+        m_pScanMarker->SetLineType(m_bScanMarkerHorizental ? DopplerLineItem::LINE_HORIZENTAL : DopplerLineItem::LINE_VERTICAL );
 		m_pScanMarker->SetMoveType(m_bScanMarkerHorizental ? DopplerLineItem::LINE_MOVE_VERTICAL : DopplerLineItem::LINE_MOVE_HORIZENTAL);
 		m_pDataView->AddOverlayItems(m_pScanMarker);
 	}
@@ -675,11 +672,6 @@ void DopplerViewItems::SetScanMarkerPos(float fPos_)
 	m_fScanPos  = fPos_ ;
 }
 
-//void DopplerViewItems::SetWeldInfo(WELD* pWeld_)
-//{
-//	if(pWeld_)
-//	  memcpy((void*)&m_cWeld, (void*)pWeld_ , sizeof(WELD)) ;
-//}
 void DopplerViewItems::SetPartInfo(PART_CONFIG* pPart_)
 {
 	if(pPart_)
@@ -1578,12 +1570,12 @@ void  DopplerViewItems::DrawWeldNcc (QPainterPath& path)
 	m_pDataView->GetRulerRange(&_fYStart, &_fYStop, &_fYSliderStart, &_fYSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 
 	double _fWidth  = size.width();
-	double _fHeight = size.height();
+    double _fHeight = size.height();
 
 	double _fXScale = (_fXStop - _fXStart) / _fWidth;
 	double _fYScale = (_fYStop - _fYStart) / _fHeight;
 
-	double _x0 = (0 - _fXStart) / _fXScale;
+    double _x0 = (0 - _fXStart) / _fXScale;
 	double _y0 = (0 - _fYStart) / _fYScale;
 
 	_info.fWidth  = _fWidth;
@@ -1595,7 +1587,7 @@ void  DopplerViewItems::DrawWeldNcc (QPainterPath& path)
 
 	_pPart->SetPart(&m_cPart);
 	_pPart->SetInfo(_info);
-	//_pPart->AdaptiveArea();
+  //  _pPart->AdaptiveArea();
 	_pPart->DrawNccPart(path);
 
 }
@@ -1630,5 +1622,5 @@ void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
 
     pDxfPart->setPart(&m_cPart);
     pDxfPart->SetInfo(_info);
-    pDxfPart->DrawDxfPart(path);
+    pDxfPart->DrawDxfPart(path, _x0);
 }
