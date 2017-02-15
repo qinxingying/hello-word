@@ -22,7 +22,7 @@
 static const QSize FIXED_SCENE_SIZE( 480 , 360);
 
 
-#define DPL_BASE_IMAGE_FORMATE	 (QImage::Format_RGB888)
+#define DPL_BASE_IMAGE_FORMATE	 (QImage::Format_RGB888)  //存入格式为R, G, B 对应 0,1,2
 
 class GraphicsViewBase:public QGraphicsWidget
 {
@@ -32,7 +32,7 @@ public:
 	{
 		//m_hMutex.lock();
 		setWindowFlags(Qt::Window | Qt::CustomizeWindowHint
-									 | Qt::WindowTitleHint | Qt::FramelessWindowHint);
+                     | Qt::WindowTitleHint | Qt::FramelessWindowHint);
 		m_cSize = cSize_ ;
 		m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE) ;
 		ClearImage() ;

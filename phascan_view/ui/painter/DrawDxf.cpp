@@ -281,7 +281,6 @@ void DrawDxf::draw_line(QPainterPath &path, double originX, double kx, double ky
         for(int i = 0; i < m_lineList.count(); i++){
             path.moveTo(kx*m_lineList.at(i).x1 + originX, ky*m_lineList.at(i).y1);
             path.lineTo(kx*m_lineList.at(i).x2 + originX, ky*m_lineList.at(i).y2);
-            qDebug()<<"line.P(X, Y) = "<<m_lineList.at(i).x1<<m_lineList.at(i).y1;
         }
     }
 
