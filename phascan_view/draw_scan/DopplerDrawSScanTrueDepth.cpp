@@ -26,23 +26,24 @@ void DopplerDrawSScanTrueDepth::UpdateDrawInfo()
 	ParameterProcess* _process = ParameterProcess::Instance();
 
 	LAW_CONFIG* _law = _process->GetLawConfig(m_cInfo.nGroupId);
-	m_SScaninfo.fStartAngle  =  DEGREE_TO_ARCH(_law->nAngleStartRefract / 10.0) ;
+    m_SScaninfo.fStartAngle  =  DEGREE_TO_ARCH(_law->nAngleStartRefract / 10.0) ;
 
 	m_SScaninfo.fStepAngle   =  DEGREE_TO_ARCH(_law->nAngleStepRefract / 10.0)  ;
-	m_SScaninfo.fStopAngle   =  DEGREE_TO_ARCH(_law->nAngleStopRefract / 10.0)  ;
+    m_SScaninfo.fStopAngle   =  DEGREE_TO_ARCH(_law->nAngleStopRefract / 10.0)  ;
 
-	m_SScaninfo.nStartElement=  _law->nFirstElemFir  ;
+    m_SScaninfo.nStartElement=  _law->nFirstElemFir  ;
 	m_SScaninfo.nStopElement =  _law->nLastElemFir   ;
 	m_SScaninfo.nStepElement =  _law->nElemStepFir   ;
 	m_SScaninfo.nElementQty  =  _law->nElemQtyFir	;
 
 	m_SScaninfo.fSampleRange =  _process->GetSampleRangeSoundpath(m_cInfo.nGroupId) ;
 	m_SScaninfo.fSampleStart =  _process->GetSampleStartSoundpath(m_cInfo.nGroupId) ;
-	m_SScaninfo.nPointQty	=  _process->GetGroupPointQty(m_cInfo.nGroupId) ;
+    m_SScaninfo.nPointQty	 =  _process->GetGroupPointQty(m_cInfo.nGroupId) ;
 	m_SScaninfo.pExitPoint   =  _process->GetBeamInsertPos(m_cInfo.nGroupId) ;
-	m_SScaninfo.width		=  m_nWidth ;
-	m_SScaninfo.height	   =  m_nHeight ;
-	setup_PROBE_ANGLE _eAngle =  _process->GetProbeAngle(m_cInfo.nGroupId) ;
+    m_SScaninfo.width		 =  m_nWidth ;
+    m_SScaninfo.height	     =  m_nHeight ;
+    setup_PROBE_ANGLE _eAngle=  _process->GetProbeAngle(m_cInfo.nGroupId) ;
+
 	if(_eAngle >= setup_PROBE_PART_SKEW_180 )
 		m_SScaninfo.direction   =  1 ;
 	else
@@ -70,7 +71,7 @@ void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
 	{
 		m_bClear = false ;
 		int _nWidthStep   = pImage_->bytesPerLine()  ;
-	U8* _pImageBits = pImage_->bits() ;
+        U8* _pImageBits = pImage_->bits() ;
 		memset(_pImageBits , 0 , m_nHeight * _nWidthStep) ;
 	}
 
@@ -313,13 +314,17 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 	int _nWidthStep   = pImage_->bytesPerLine()  ;
 
 	ParameterProcess* _process = ParameterProcess::Instance();
-	int _nLawSize	 = m_cInfo.nPointQty + 32   ;
+    int _nLawSize	= m_cInfo.nPointQty + 32   ;
 	m_nScanPos		= _process->GetScanIndexPos()  ;
 	m_nFrameOffset	= _process->GetTotalDataSize() ;
 	m_nGroupOffset	= _process->GetGroupDataOffset(m_cInfo.nGroupId)  ;
 
 	volatile WDATA* _pData  = _process->GetShadowDataPointer()   ;
-	if(!_pData) {m_hMutex.unlock(); return;}
+    if(!_pData) {
+        m_hMutex.unlock();
+        return;
+    }
+
 	int _nIndex = _process->GetRealScanIndex(m_cInfo.nGroupId, m_nScanPos);
 	_pData += m_nFrameOffset * _nIndex + m_nGroupOffset;
 
@@ -340,11 +345,11 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 					_idx2 = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
 					_iData = (int)(_pData[_idx2] * (COLOR_STEP - m_pDrawRate[_idx1]) +
 					_pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] ) ;
-					_iData = _iData>>COLOR_SHIFT ;
+                    _iData = _iData>>COLOR_SHIFT ;  //ÓÒÒÆ
 					_pImg2 = _pImg1 + j * 3 ;
 					_iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
 
-					memcpy(_pImg2, &m_pColor[_iData], 3);
+                    memcpy(_pImg2, &m_pColor[_iData], 3);
 				}
 			}
 		}
