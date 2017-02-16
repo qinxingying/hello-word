@@ -316,26 +316,26 @@ void DopplerPart::CmdArcPositive(QPainter& painter, NCC_CMD* pCmd_)
 	switch(_nMode)
 	{
 	case 1:
-		x1  = _fTmp + x0 - pCmd_->data[0]  ;
-		y1  = _fTmp + y0  ;
+        x1 = _fTmp + x0 - pCmd_->data[0]  ;
+        y1 = _fTmp + y0  ;
 		x2 = x0 - pCmd_->data[0]  ;
 		y2 = pCmd_->data[0] + y0  ;
 		break;
 	case 2:
-		x1  = _fTmp + x0 - pCmd_->data[0]  ;
-		y1  = _fTmp + y0  ;
+        x1 = _fTmp + x0 - pCmd_->data[0]  ;
+        y1 = _fTmp + y0  ;
 		x2 = x0 - pCmd_->data[0]  ;
 		y2 = pCmd_->data[0] + y0  ;
 		break;
 	case 3:
-		x1  = pCmd_->data[0] -_fTmp + x0 ;
-		y1  = -_fTmp + y0  ;
+        x1 = pCmd_->data[0] -_fTmp + x0 ;
+        y1 = -_fTmp + y0  ;
 		x2 = x0 + pCmd_->data[0]  ;
 		y2 = -pCmd_->data[0] + y0  ;
 		break;
 	case 4:
-		x1  = x0  + _fTmp ;
-		y1  = -_fTmp + y0 + pCmd_->data[0];
+        x1 = x0  + _fTmp ;
+        y1 = -_fTmp + y0 + pCmd_->data[0];
 		x2 = x0 + pCmd_->data[0]  ;
 		y2 = y0 + pCmd_->data[0] ;
 		break;
@@ -573,7 +573,7 @@ void DopplerPart::CmdArcPositive(QPainterPath& path, NCC_CMD* pCmd_)
 	else if(fabs(_fTmp - 3) < 0.5)	_nMode = 3;
 	else if(fabs(_fTmp - 4) < 0.5)	_nMode = 4;
 
-	_fTmp = pCmd_->data[0]; //* sin(80 * PI / 180) ;
+    _fTmp = pCmd_->data[0];
 
 	double x0 = m_ptCur.x();
 	double y0 = m_ptCur.x();

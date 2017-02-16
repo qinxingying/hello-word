@@ -2,10 +2,10 @@
 #define DrawDxf_H
 
 #include "dxf_data.h"
+#include "Instrument.h"
 
 #include <QWidget>
 #include <QPaintEvent>
-#include "Instrument.h"
 
 namespace DplDxf {
     class DrawDxf;
@@ -13,7 +13,6 @@ namespace DplDxf {
 
 typedef struct _DRAW_DXF_INFO
 {
-//	QPointF	Origin;
     float fX;
     float fY;
     int   fWidth;

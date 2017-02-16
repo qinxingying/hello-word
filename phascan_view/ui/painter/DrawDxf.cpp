@@ -305,6 +305,8 @@ void DrawDxf::draw_arc(QPainterPath &path, double originX, double kx, double ky)
         double startAngle = m_arcList.at(i).angle1*16;
         double endAngle = m_arcList.at(i).angle2*16;
 
+        path.arcMoveTo(kx*m_arcList.at(i).cx -r + originX, ky*m_arcList.at(i).cy - r,
+                   2*r, 2*r, startAngle);
         path.arcTo(kx*m_arcList.at(i).cx -r + originX, ky*m_arcList.at(i).cy - r,
                    2*r, 2*r, startAngle, fabs(endAngle - startAngle));
     }
@@ -343,6 +345,8 @@ void DrawDxf::draw_ellipse(QPainterPath &path, double originX, double kx, double
       //  painter.rotate(360 - rotateAngle*180/M_PI);
 
         double Angle = 16*360 - fabs(endAngle - startAngle);
+        path.arcMoveTo(kx*m_ellipseList.at(i).cx - r1 + originX, ky*m_ellipseList.at(i).cy - k*r1,
+                   2*r1, 2*k*r1, startAngle);
         if(Angle < 1e-10){
            path.arcTo(kx*m_ellipseList.at(i).cx - r1 + originX, ky*m_ellipseList.at(i).cy - k*r1,
                       2*r1, 2*k*r1, startAngle, 16*360);
