@@ -292,6 +292,9 @@
                    <height>16777215</height>
                   </size>
                  </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
                  <property name="decimals">
                   <number>1</number>
                  </property>
@@ -367,6 +370,9 @@
                    <height>20</height>
                   </size>
                  </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
                  <property name="decimals">
                   <number>1</number>
                  </property>
@@ -436,6 +442,9 @@
                    <height>20</height>
                   </size>
                  </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
                  <property name="decimals">
                   <number>1</number>
                  </property>
@@ -498,6 +507,9 @@
                    <width>58</width>
                    <height>20</height>
                   </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
                  </property>
                  <property name="decimals">
                   <number>1</number>
@@ -568,6 +580,9 @@
                    <height>20</height>
                   </size>
                  </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
                  <property name="decimals">
                   <number>1</number>
                  </property>
@@ -637,6 +652,9 @@
                    <height>20</height>
                   </size>
                  </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
                  <property name="decimals">
                   <number>1</number>
                  </property>
@@ -705,6 +723,9 @@
                    <width>58</width>
                    <height>20</height>
                   </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
                  </property>
                  <property name="decimals">
                   <number>1</number>
@@ -950,7 +971,7 @@
   <customwidget>
    <class>QWeldShowWidget</class>
    <extends>QWidget</extends>
-   <header>ui/painter/QWeldShowWidget.h</header>
+   <header>painter/QWeldShowWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

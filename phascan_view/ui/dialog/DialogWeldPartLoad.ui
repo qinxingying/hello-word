@@ -254,6 +254,9 @@
                <height>16777215</height>
               </size>
              </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
              <property name="decimals">
               <number>1</number>
              </property>
@@ -329,6 +332,9 @@
                <height>20</height>
               </size>
              </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
              <property name="decimals">
               <number>1</number>
              </property>
@@ -398,6 +404,9 @@
                <height>20</height>
               </size>
              </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
              <property name="decimals">
               <number>1</number>
              </property>
@@ -460,6 +469,9 @@
                <width>58</width>
                <height>20</height>
               </size>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
              <property name="decimals">
               <number>1</number>
@@ -530,6 +542,9 @@
                <height>20</height>
               </size>
              </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
              <property name="decimals">
               <number>1</number>
              </property>
@@ -598,6 +613,9 @@
                <width>58</width>
                <height>20</height>
               </size>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
              <property name="decimals">
               <number>1</number>
@@ -668,6 +686,9 @@
                <height>20</height>
               </size>
              </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
              <property name="decimals">
               <number>1</number>
              </property>
@@ -733,6 +754,9 @@
           </property>
           <property name="text">
            <string>TextLabel</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
