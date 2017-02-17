@@ -240,17 +240,17 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 	double	  _angle = fabs(_fAngle);
 
     double _real_height = _fRange * cos(_angle);
-	double  _real_width = fabs(_fStopPos - _fStartPos) + _fRange * sin(_angle) ;	// 实际高度
-	double	    _xScale = _width / _real_width ;									// X轴比例(像素/实际)
-	double	     _xVacc = tan(_angle) * _real_height * _xScale ;					// 角度横向偏移量(像素)
-	double	    _fScale = _xVacc / _height ;										// [角度横向偏移量(像素)]/[角度纵向偏移量(像素)]
-	double  _beam_width = _width - _xVacc ;											// 波束宽度(像素)
+    double  _real_width = fabs(_fStopPos - _fStartPos) + _fRange * sin(_angle) ;// 实际高度
+    double	    _xScale = _width / _real_width ;// X轴比例(像素/实际)
+    double	     _xVacc = tan(_angle) * _real_height * _xScale;// 角度横向偏移量(像素)
+    double	    _fScale = _xVacc / _height ;	// [角度横向偏移量(像素)]/[角度纵向偏移量(像素)]
+    double  _beam_width = _width - _xVacc ;		// 波束宽度(像素)
 
 	bool _bWedgeRev = (_fStopPos - _fStartPos) > 0 ? false : true ;
 
-	double tmpX , xxx;		// 波束索引 中间变量
-	double tmpDrawRate ;	// 波束索引
-	double tmpDataNo   ;	// 数据位置索引
+    double tmpX , xxx;  // 波束索引 中间变量
+    double tmpDrawRate;	// 波束索引
+    double tmpDataNo;	// 数据位置索引
 
 	int i ,  j  , index ;
 	for( i = 0 ; i < _height ; i++)
