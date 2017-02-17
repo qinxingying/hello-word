@@ -84,8 +84,8 @@ void DopplerDrawSScanTrueDepth::CalcMatrix()
 
 	if(m_SScaninfo.eType)
 		CalcMatrixLinear(&m_SScaninfo) ;
-	else
-		CalcMatrixAzimuthal(&m_SScaninfo) ;
+    else
+        CalcMatrixAzimuthal(&m_SScaninfo) ;
 }
 
 void DopplerDrawSScanTrueDepth::CreateMatrixBuff()
@@ -164,6 +164,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
 	float _nPosJunction[256]; // 每个Y轴坐标上声线的位置
 	int i, j, k, t, _index;
 	float _fX, _fY, _nTmp;
+
 	for(j = 0 ; j < _height ; j++)
 	{
 		_fY = _nStartY + j * _nStepY ;	// current y position
@@ -188,9 +189,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
 					if(_nDirection)
 					{// if draw direction is inverse , transfer the x coordinate
 						_index = _width - i + j * _width  ;
-					}
-					else
-					{
+                    }else{
 						_index = i + j * _width  ;
 					}
 					m_pAngleZoom[_index]  = t ;
@@ -203,12 +202,11 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
 					}
 					// get current point data index in data block
 					m_pDataNo[_index] = _nPointQty * (_nTmp - _nSampleStart) / _nSampleRange ;
-					if((_nPosJunction[t+1] - _fX) < FLOAT_ZERO_GATE)
+
+                    if((_nPosJunction[t+1] - _fX) < FLOAT_ZERO_GATE)
 					{
 						m_pDrawRate[_index] = COLOR_STEP  ;
-					}
-					else
-					{
+					}else{
 						_nTmp = cos(_nAngles[t]) * (_fX - _nPosJunction[t])
 							/ ( cos(_nAngles[t+1]) * (_nPosJunction[t+1] - _fX))  ;
 						_nTmp = _nTmp / (1 + _nTmp) ;
@@ -241,7 +239,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 	float  _fStopPos = _pExitPoint [_nBeamMaxId] ;
 	double	  _angle = fabs(_fAngle);
 
-	double _real_height = _fRange * cos(_angle);									// 实际宽度
+    double _real_height = _fRange * cos(_angle);
 	double  _real_width = fabs(_fStopPos - _fStartPos) + _fRange * sin(_angle) ;	// 实际高度
 	double	    _xScale = _width / _real_width ;									// X轴比例(像素/实际)
 	double	     _xVacc = tan(_angle) * _real_height * _xScale ;					// 角度横向偏移量(像素)
@@ -264,9 +262,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 			if(_bDirection) // reverse
 			{
 				index  = _width - j + i * _width ;
-			}
-			else
-			{
+            }else{
 				index  = j + i * _width ;
 			}
 			if( _fAngle >=0 )
@@ -277,9 +273,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 			if( xxx >= 0 && xxx < _beam_width)
 			{
 				m_pDraw[index] = 255 ;
-			}
-			else
-			{
+            }else{
 				continue ;
 			}
 
@@ -288,9 +282,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 			{
 				m_pAngleZoom[index] = _nBeamMaxId - (U8)tmpDrawRate ;
 				tmpDrawRate =  (int)(tmpDrawRate + 1) - tmpDrawRate  ;
-			}
-			else
-			{
+            }else{
 				m_pAngleZoom[index] = (U8)tmpDrawRate ;
 				tmpDrawRate =  tmpDrawRate - (int)tmpDrawRate  ;
 			}
@@ -310,16 +302,16 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 		return;
 	}
 
-	U8* _pImageBits = pImage_->bits() ;
-	int _nWidthStep   = pImage_->bytesPerLine()  ;
+    U8* _pImageBits = pImage_->bits();
+    int _nWidthStep = pImage_->bytesPerLine();
 
 	ParameterProcess* _process = ParameterProcess::Instance();
-    int _nLawSize	= m_cInfo.nPointQty + 32   ;
-	m_nScanPos		= _process->GetScanIndexPos()  ;
-	m_nFrameOffset	= _process->GetTotalDataSize() ;
-	m_nGroupOffset	= _process->GetGroupDataOffset(m_cInfo.nGroupId)  ;
+    int _nLawSize	= m_cInfo.nPointQty + 32;
+    m_nScanPos		= _process->GetScanIndexPos();
+    m_nFrameOffset	= _process->GetTotalDataSize();
+    m_nGroupOffset	= _process->GetGroupDataOffset(m_cInfo.nGroupId);
 
-	volatile WDATA* _pData  = _process->GetShadowDataPointer()   ;
+    volatile WDATA* _pData  = _process->GetShadowDataPointer();
     if(!_pData) {
         m_hMutex.unlock();
         return;
