@@ -239,8 +239,8 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 	float  _fStopPos = _pExitPoint [_nBeamMaxId] ;
 	double	  _angle = fabs(_fAngle);
 
-    double _real_height = _fRange * cos(_angle);
-    double  _real_width = fabs(_fStopPos - _fStartPos) + _fRange * sin(_angle) ;// 实际高度
+    double _real_height = _fRange * cos(_angle); // 实际高度
+    double  _real_width = fabs(_fStopPos - _fStartPos) + _fRange * sin(_angle) ;
     double	    _xScale = _width / _real_width ;// X轴比例(像素/实际)
     double	     _xVacc = tan(_angle) * _real_height * _xScale;// 角度横向偏移量(像素)
     double	    _fScale = _xVacc / _height ;	// [角度横向偏移量(像素)]/[角度纵向偏移量(像素)]
@@ -334,9 +334,9 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 				_idx1 = i * m_nWidth + j ;
 				if(m_pDraw[_idx1] != 0)
 				{
-					_idx2 = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
+                    _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
 					_iData = (int)(_pData[_idx2] * (COLOR_STEP - m_pDrawRate[_idx1]) +
-					_pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] ) ;
+                             _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] ) ;
                     _iData = _iData>>COLOR_SHIFT ;  //右移
 					_pImg2 = _pImg1 + j * 3 ;
 					_iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
