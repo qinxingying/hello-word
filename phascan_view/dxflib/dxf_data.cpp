@@ -156,114 +156,59 @@ void Dxf_Data::printAttributes() {
     printf(" Type: %s\n", attributes.getLinetype().c_str());
 }
 
-QList<DL_LineData> Dxf_Data::getLineList() const
+const QList<DL_LineData> &Dxf_Data::getLineList() const
 {
     return m_lineList;
 }
 
-void Dxf_Data::setLineList(const QList<DL_LineData> &lineList)
-{
-    m_lineList = lineList;
-}
-
-QList<DL_ArcData> Dxf_Data::getArcList() const
+const QList<DL_ArcData> &Dxf_Data::getArcList() const
 {
     return m_arcList;
 }
 
-void Dxf_Data::setArcList(const QList<DL_ArcData> &arcList)
-{
-    m_arcList = arcList;
-}
-
-QList<DL_MTextData> Dxf_Data::getTextList() const
+const QList<DL_MTextData> &Dxf_Data::getTextList() const
 {
     return m_textList;
 }
 
-void Dxf_Data::setTextList(const QList<DL_MTextData> &textList)
-{
-    m_textList = textList;
-}
-
-QList<DL_EllipseData> Dxf_Data::getEllipseList() const
+const QList<DL_EllipseData> &Dxf_Data::getEllipseList() const
 {
     return m_ellipseList;
 }
 
-void Dxf_Data::setEllipseList(const QList<DL_EllipseData> &ellipseList)
-{
-    m_ellipseList = ellipseList;
-}
-
-QList<DL_CircleData> Dxf_Data::getCircleList() const
+const QList<DL_CircleData> &Dxf_Data::getCircleList() const
 {
     return m_circleList;
 }
 
-void Dxf_Data::setCircleList(const QList<DL_CircleData> &circleList)
-{
-    m_circleList = circleList;
-}
-
-QList<DL_TextData> Dxf_Data::getTextDataList() const
+const QList<DL_TextData> &Dxf_Data::getTextDataList() const
 {
     return m_textDataList;
 }
 
-void Dxf_Data::setTextDataList(const QList<DL_TextData> &textDataList)
-{
-    m_textDataList = textDataList;
-}
-
-QList<DL_VertexData> Dxf_Data::getVertexList() const
+const QList<DL_VertexData> &Dxf_Data::getVertexList() const
 {
     return m_vertexList;
 }
 
-void Dxf_Data::setVertexList(const QList<DL_VertexData> &vertexList)
-{
-    m_vertexList = vertexList;
-}
-
-QList<DL_SplineData> Dxf_Data::getSplineList() const
+const QList<DL_SplineData> &Dxf_Data::getSplineList() const
 {
     return m_splineList;
 }
 
-void Dxf_Data::setSplineList(const QList<DL_SplineData> &splineList)
-{
-    m_splineList = splineList;
-}
-
-QList<DL_ControlPointData> Dxf_Data::getControlPointList() const
+const QList<DL_ControlPointData> &Dxf_Data::getControlPointList() const
 {
     return m_controlPointList;
 }
 
-void Dxf_Data::setControlPointList(const QList<DL_ControlPointData> &controlPointList)
-{
-    m_controlPointList = controlPointList;
-}
-
-QList<DL_PointData> Dxf_Data::getPointList() const
+const QList<DL_PointData> &Dxf_Data::getPointList() const
 {
     return m_pointList;
 }
 
-void Dxf_Data::setPointList(const QList<DL_PointData> &pointList)
-{
-    m_pointList = pointList;
-}
-
-QList<DL_PolylineData> Dxf_Data::getPolyLineList() const
+const QList<DL_PolylineData> &Dxf_Data::getPolyLineList() const
 {
     return m_polyLineList;
-}
-
-void Dxf_Data::setPolyLineList(const QList<DL_PolylineData> &polyLineList)
-{
-    m_polyLineList = polyLineList;
 }
 
 // EOF
