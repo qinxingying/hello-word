@@ -38,15 +38,17 @@ void DrawDxf::getDxfData(QString dxf_file)
 
     delete dxf;
     delete dxfData;
+
+    QPainterPath newPath;
+    m_path = newPath;
 }
 
 void DrawDxf::paint_line()
 {
     if(m_lineList.isEmpty()) return;
-
     for(int i = 0; i < m_lineList.count(); i++){
-        m_path.moveTo(m_lineList.at(i).x1 + width()/2, -m_lineList.at(i).y1 + height()/2);
-        m_path.lineTo(m_lineList.at(i).x2 + width()/2, -m_lineList.at(i).y2 + height()/2);
+        m_path.moveTo(m_lineList.at(i).x1, -m_lineList.at(i).y1);
+        m_path.lineTo(m_lineList.at(i).x2, -m_lineList.at(i).y2);
     }
 }
 
@@ -56,7 +58,7 @@ void DrawDxf::paintEvent (QPaintEvent*)
     QPen pen = painter.pen();
     QPen NewPen(pen);
 
-    NewPen.setWidth(1);
+    NewPen.setWidth(1/m_zoom);
     NewPen.setColor(QColor(0, 255, 0));
     painter.setPen(NewPen);
     painter.setRenderHint(QPainter::Antialiasing, true);
