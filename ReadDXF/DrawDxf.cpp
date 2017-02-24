@@ -6,6 +6,9 @@
 #include <QPen>
 #include <QDebug>
 
+#define QPAINTER 0
+#define QPAINTERPATH 1
+
 DrawDxf::DrawDxf(QWidget *parent) :
 	QWidget(parent)
 {
@@ -37,6 +40,16 @@ void DrawDxf::getDxfData(QString dxf_file)
     delete dxfData;
 }
 
+void DrawDxf::paint_line()
+{
+    if(m_lineList.isEmpty()) return;
+
+    for(int i = 0; i < m_lineList.count(); i++){
+        m_path.moveTo(m_lineList.at(i).x1 + width()/2, -m_lineList.at(i).y1 + height()/2);
+        m_path.lineTo(m_lineList.at(i).x2 + width()/2, -m_lineList.at(i).y2 + height()/2);
+    }
+}
+
 void DrawDxf::paintEvent (QPaintEvent*)
 {
     QPainter painter(this);
@@ -47,18 +60,19 @@ void DrawDxf::paintEvent (QPaintEvent*)
     NewPen.setColor(QColor(0, 255, 0));
     painter.setPen(NewPen);
     painter.setRenderHint(QPainter::Antialiasing, true);
-
+#if QPAINTER
     paint_line(painter);
-
     paint_text(painter);
-
     paint_arc(painter);
-
     paint_circle(painter);
-
     paint_point(painter);
-
     paint_ellipse(painter);
+#endif
+#if QPAINTERPATH
+    m_path.translate(endPoint.x()-lastPoint.x(), endPoint.y()-lastPoint.y());
+    painter.drawPath(m_path);
+    lastPoint = endPoint;
+#endif
     painter.setPen(pen);
 
     QPainter painter1(this);
@@ -295,4 +309,27 @@ void DrawDxf::wheelEvent(QWheelEvent *event)
 
     update();
     emit zoom(m_zoom);
+}
+
+void DrawDxf::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        lastPoint = event->pos();
+    }
+}
+
+void DrawDxf::mouseMoveEvent(QMouseEvent *event)
+{
+    if(event->buttons() & Qt::LeftButton){
+        endPoint = event->pos();
+        update();//拖动时有痕迹
+    }
+}
+
+void DrawDxf::mouseReleaseEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        endPoint = event->pos();
+        update();
+    }
 }

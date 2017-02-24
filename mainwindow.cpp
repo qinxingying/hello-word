@@ -26,7 +26,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_openFile_clicked()
 {
-    fileName = QFileDialog::getOpenFileName(this,
+    QString fileName = QFileDialog::getOpenFileName(this,
                             "Open File Dialog",
                             "",
                             "Part Files(*.dxf)");
@@ -34,6 +34,8 @@ void MainWindow::on_pushButton_openFile_clicked()
     if(fileName.isEmpty())  return;
 
     ui->widget_dxfImage->getDxfData(fileName);
+
+    ui->widget_dxfImage->paint_line();
 }
 
 void MainWindow::slot_doubleSpinBox_setValue(double value)

@@ -21,6 +21,8 @@ public:
     double m_zoom;
 
     void getDxfData(QString dxf_file);
+    void paint_line();
+  //  void paint_ellipse();
 
 private:
     QList<DL_PointData> m_pointList;
@@ -35,6 +37,11 @@ private:
     QList<DL_SplineData> m_splineList;
     QList<DL_ControlPointData> m_controlPointList;
 
+    QPainterPath m_path;
+    QPoint lastPoint;
+    QPoint endPoint;
+
+
 protected:
     void paintEvent(QPaintEvent * event);
     void paint_point(QPainter& painter);
@@ -47,6 +54,10 @@ protected:
     double calc_rotateAngle(double cx, double cy, double mx, double my);
     void paint_ellipse(QPainter& painter);
     void wheelEvent(QWheelEvent *event);
+
+    void mousePressEvent (QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 signals:
     void zoom(double v);
