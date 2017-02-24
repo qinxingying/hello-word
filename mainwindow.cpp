@@ -39,6 +39,12 @@ void MainWindow::on_pushButton_openFile_clicked()
     ui->widget_dxfImage->getDxfData(fileName);
 
     ui->widget_dxfImage->paint_line();
+    ui->widget_dxfImage->paint_vertexToLine();
+    ui->widget_dxfImage->paint_circle();
+    ui->widget_dxfImage->paint_arc();
+    ui->widget_dxfImage->paint_ellipse();
+   // ui->widget_dxfImage->paint_text();
+   // ui->widget_dxfImage->paint_textData();
 }
 
 void MainWindow::slot_doubleSpinBox_setValue(double value)

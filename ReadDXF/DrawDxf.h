@@ -22,7 +22,13 @@ public:
 
     void getDxfData(QString dxf_file);
     void paint_line();
-  //  void paint_ellipse();
+    void paint_vertexToLine();
+    void paint_circle();
+    void paint_arc();
+    void paint_ellipse();
+    void paint_text();
+    void paint_textData();
+
 
 private:
     QList<DL_PointData> m_pointList;

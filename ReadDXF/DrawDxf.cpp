@@ -6,7 +6,7 @@
 #include <QPen>
 #include <QDebug>
 
-#define QPAINTER 0
+#define QPAINTER 1
 #define QPAINTERPATH 1
 
 DrawDxf::DrawDxf(QWidget *parent) :
@@ -49,6 +49,74 @@ void DrawDxf::paint_line()
     for(int i = 0; i < m_lineList.count(); i++){
         m_path.moveTo(m_lineList.at(i).x1, -m_lineList.at(i).y1);
         m_path.lineTo(m_lineList.at(i).x2, -m_lineList.at(i).y2);
+    }
+}
+
+void DrawDxf::paint_vertexToLine()
+{
+    if(m_vertexList.isEmpty()) return;
+
+    for(int i = 1; i < m_vertexList.count(); i++){
+        m_path.moveTo(m_vertexList.at(i-1).x, -m_vertexList.at(i-1).y);
+        m_path.lineTo(m_vertexList.at(i).x, -m_vertexList.at(i).y);
+    }
+}
+
+void DrawDxf::paint_circle()
+{
+    if(m_circleList.isEmpty()) return;
+
+    for(int i = 0; i < m_circleList.count(); i++){
+        m_path.addEllipse(m_circleList.at(i).cx - m_circleList.at(i).radius,
+                         -m_circleList.at(i).cy - m_circleList.at(i).radius,
+                          2*m_circleList.at(i).radius, 2*m_circleList.at(i).radius);
+    }
+}
+
+void DrawDxf::paint_arc()
+{
+    if(m_arcList.isEmpty()) return;
+
+    float r = 0;
+    float startAngle = 0;
+    float endAngle = 0;
+
+    for(int i = 0; i < m_arcList.count(); i++){
+        r = m_arcList.at(i).radius;
+        startAngle = m_arcList.at(i).angle1;
+        endAngle = m_arcList.at(i).angle2;
+
+        m_path.arcTo(m_arcList.at(i).cx -r, -m_zoom*m_arcList.at(i).cy - r,
+                     2*r, 2*r, startAngle, fabs(endAngle - startAngle));
+    }
+}
+
+void DrawDxf::paint_ellipse()
+{
+
+}
+
+void DrawDxf::paint_text()
+{
+    if(m_textList.isEmpty()) return;
+
+    QFont font;
+    for(int i = 0; i < m_textList.count(); i++){
+        m_path.addText(m_textList.at(i).ipx, -m_textList.at(i).ipy,
+                       font, m_textList.at(i).text.c_str());
+        qDebug()<<"text ="<<m_textList.at(i).text.c_str();
+    }
+}
+
+void DrawDxf::paint_textData()
+{
+    if(m_textDataList.isEmpty())  return;
+
+    QFont font;
+    for(int i = 0; i < m_textDataList.count(); i++){
+        m_path.addText(m_textDataList.at(i).ipx, -m_textDataList.at(i).ipy,
+                       font, m_textDataList.at(i).text.c_str());
+        qDebug()<<"textData ="<<m_textDataList.at(i).text.c_str();
     }
 }
 
