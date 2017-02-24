@@ -33,6 +33,9 @@ void MainWindow::on_pushButton_openFile_clicked()
 
     if(fileName.isEmpty())  return;
 
+
+    ui->lineEdit_filePath->setText(fileName);
+
     ui->widget_dxfImage->getDxfData(fileName);
 
     ui->widget_dxfImage->paint_line();

@@ -70,6 +70,7 @@ void DrawDxf::paintEvent (QPaintEvent*)
 #endif
 #if QPAINTERPATH
     m_path.translate(endPoint.x()-lastPoint.x(), endPoint.y()-lastPoint.y());
+    painter.scale(m_zoom, m_zoom);
     painter.drawPath(m_path);
     lastPoint = endPoint;
 #endif
