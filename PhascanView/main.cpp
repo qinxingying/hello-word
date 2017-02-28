@@ -10,8 +10,10 @@
 
 MainWindow* g_pMainWnd = NULL;
 
-#ifdef QT_NO_DEBUG
+#if 0
+//#ifdef QT_NO_DEBUG
 int SoftwareRegister();
+//#endif
 #endif
 
 
@@ -29,10 +31,12 @@ int main(int argc, char *argv[])
 	_mainWindow.showMaximized();
 	_mainWindow.setMinimumSize(_mainWindow.width(), _mainWindow.height());
 
-#ifdef QT_NO_DEBUG
+#if 0
+//#ifdef QT_NO_DEBUG
 	if(SoftwareRegister() < REG_DAYS_MIN) {
 		_mainWindow.SoftwareRegisterError();
 	} else
+//#endif
 #endif
 	{
 		if(argc > 1) {
@@ -46,7 +50,8 @@ int main(int argc, char *argv[])
 	return app.exec();
 }
 
-#ifdef QT_NO_DEBUG
+#if 0
+//#ifdef QT_NO_DEBUG
 int SoftwareRegister()
 {
 	while(g_pMainWnd == NULL);
@@ -107,6 +112,7 @@ int SoftwareRegister()
 
 	return _regDays;
 }
+//#endif
 #endif
 
 

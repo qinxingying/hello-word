@@ -19,7 +19,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Doppler</string>
+   <string>Doppler V1.1.1</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../res.qrc">
@@ -173,7 +173,7 @@
      <x>0</x>
      <y>0</y>
      <width>805</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="autoFillBackground">

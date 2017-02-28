@@ -941,8 +941,14 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.eSkew		   = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos	 ;
 
 		QList<MATERIAL*>* _list = m_pConfig->m_listMaterial ;
-		MATERIAL* _material = _list->at(_pGroupInfo->part.Material_pos) ;
-		memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;
+
+		if ( _list->size() > _pGroupInfo->part.Material_pos ) {
+			MATERIAL* _material = _list->at(_pGroupInfo->part.Material_pos) ;
+			memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;
+		}
+
+	//	MATERIAL* _material = _list->at(_pGroupInfo->part.Material_pos) ;
+	//	memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;
 		_group.part.weld.eSymmetry       = (setup_WELD_SYMMETRY_TYPE) _pGroupInfo->part.symmetry ;
 		_group.part.weld.eType	         = (setup_WELD_TYPE) _pGroupInfo->part.Weld ;
 		_group.part.weld.weland_height   = _pGroupInfo->part.weland_height / 1000.0 ;

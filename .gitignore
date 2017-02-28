@@ -1,7 +1,8 @@
 /Win32
-/build-phascan_view-win32-Debug
-/build-phascan_view-win32-Release
-/phascan_view/data/DPL DEFECTS
+/ipch
+/PhascanView/GeneratedFiles
+/PhascanView/data/DPL DEFECTS
+/PhascanView/data/Report
 *.obj
 *.user
 *.autosave

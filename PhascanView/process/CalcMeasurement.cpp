@@ -277,13 +277,17 @@ int TOFD_GetDepth(int nGroupId_ ,  float* pResult_ , int nIndex_)
 
 int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ , float* pResult_)
 {
+	DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
+	GROUP_CONFIG* config = &(m_pConfig->group[nGroupId_]);
+
 	CalGatePeakInfo(nGroupId_ , nLaw_);
 
 	int ret = 0 ;
 	switch(eIndex_)
 	{
 	case FEILD_A100:
-		*pResult_ = g_PeakInfo[setup_GATE_A].fAmp;
+	//	*pResult_ = g_PeakInfo[setup_GATE_A].fAmp;
+		*pResult_ = pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp;
 		break;
 	case FEILD_AdBA:
 		*pResult_ = g_PeakInfo[setup_GATE_A].fXdXA;
