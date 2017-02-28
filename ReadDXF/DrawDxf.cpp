@@ -6,7 +6,7 @@
 #include <QPen>
 #include <QDebug>
 
-#define QPAINTER 1
+#define QPAINTER 0
 #define QPAINTERPATH 1
 
 DrawDxf::DrawDxf(QWidget *parent) :
@@ -85,15 +85,40 @@ void DrawDxf::paint_arc()
         r = m_arcList.at(i).radius;
         startAngle = m_arcList.at(i).angle1;
         endAngle = m_arcList.at(i).angle2;
+qDebug()<<"angle1 = "<<startAngle;
+qDebug()<<"angle2 = "<<endAngle;
+        if(startAngle < 90){
 
-        m_path.arcTo(m_arcList.at(i).cx -r, -m_zoom*m_arcList.at(i).cy - r,
+        }
+        m_path.arcTo(m_arcList.at(i).cx -r, -m_arcList.at(i).cy - r,
                      2*r, 2*r, startAngle, fabs(endAngle - startAngle));
     }
 }
 
 void DrawDxf::paint_ellipse()
 {
+    if(m_ellipseList.isEmpty()){
+        return;
+    }
 
+    double k  = 0;
+    double r1 = 0;
+    double startAngle  = 0;
+    double endAngle    = 0;
+
+    for(int i = 0; i < m_ellipseList.count(); i++){
+        k  = m_ellipseList.at(i).ratio;
+        r1 = sqrt(pow((m_ellipseList.at(i).mx - m_ellipseList.at(i).cx), 2.0) +
+                      pow((m_ellipseList.at(i).my - m_ellipseList.at(i).cy), 2.0));
+
+        startAngle = m_ellipseList.at(i).angle1*180/M_PI;
+        endAngle   = m_ellipseList.at(i).angle2*180/M_PI;
+
+       qDebug()<<"startAngle = "<<startAngle<<"   endAngle = "<<endAngle;
+//--------------------------------------------------//
+        m_path.addEllipse(m_ellipseList.at(i).cx - r1, -m_ellipseList.at(i).cy - k*r1,
+                          2*r1, 2*k*r1);
+    }
 }
 
 void DrawDxf::paint_text()
@@ -139,6 +164,19 @@ void DrawDxf::paintEvent (QPaintEvent*)
     paint_ellipse(painter);
 #endif
 #if QPAINTERPATH
+    float rotateAngle = 0;
+
+    for(int i = 0; i < m_ellipseList.count(); i++){
+        rotateAngle = calc_rotateAngle(m_ellipseList.at(i).cx, m_ellipseList.at(i).cy,
+                                       m_ellipseList.at(i).mx, m_ellipseList.at(i).my);
+    }
+
+    if(!m_ellipseList.isEmpty()){
+        painter.rotate(360 - rotateAngle*180/M_PI);
+    }else{
+        painter.rotate(rotateAngle*180/M_PI);
+    }
+
     m_path.translate(endPoint.x()-lastPoint.x(), endPoint.y()-lastPoint.y());
     painter.scale(m_zoom, m_zoom);
     painter.drawPath(m_path);
