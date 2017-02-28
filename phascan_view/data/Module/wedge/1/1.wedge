@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!-- Doppler Wedge Define File -->
+
+<WEDGE>
+  <wedge name="name"></wedge>
+  <serial value="serial"></serial>
+  <type value="PA"></type>
+  <size length="50" width="50" height="50"></size>
+  <!-- PA Wedge Define -->
+  <angle wedge="36.0" roof="0"></angle>
+  <velocity lon="2330" tra="1230"></velocity>
+  <offset fir="30" sec="10" firstheight="8"></offset>
+  <!-- PA Wedge Define -->
+  <UT ref="9.5" wedgedelay="6000"></UT>
+  <direction value="0"></direction>
+</WEDGE>

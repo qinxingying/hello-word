@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>754</width>
+    <height>543</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>新宋体</family>
+    <weight>50</weight>
+    <bold>false</bold>
+    <stylestrategy>PreferAntialias</stylestrategy>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string/>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../mainwindow.qrc">
+    <normaloff>:/file/resource/main/0-01.png</normaloff>:/file/resource/main/0-01.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="PoppingTabWidget" name="TabWidget_display">
+       <property name="baseSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="tabPosition">
+        <enum>QTabWidget::North</enum>
+       </property>
+       <property name="tabShape">
+        <enum>QTabWidget::Rounded</enum>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="elideMode">
+        <enum>Qt::ElideLeft</enum>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
+       </property>
+       <widget class="DopplerViewFrame" name="Display1">
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <attribute name="title">
+         <string>DISP 1</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="AddDisplay">
+        <attribute name="icon">
+         <iconset resource="../mainwindow.qrc">
+          <normaloff>:/file/resource/main_menu/0-36.png</normaloff>:/file/resource/main_menu/0-36.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string/>
+        </attribute>
+       </widget>
+      </widget>
+      <widget class="PoppingTabWidget" name="TabWidget_parameter">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+         <kerning>true</kerning>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>true</bool>
+       </property>
+       <property name="tabPosition">
+        <enum>QTabWidget::West</enum>
+       </property>
+       <property name="tabShape">
+        <enum>QTabWidget::Rounded</enum>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
+       </property>
+       <widget class="DopplerGroupTab" name="Group1">
+        <attribute name="icon">
+         <iconset resource="../mainwindow.qrc">
+          <normaloff>:/file/resource/main_menu/0-27.png</normaloff>:/file/resource/main_menu/0-27.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Group 1</string>
+        </attribute>
+       </widget>
+       <widget class="InstrumentSettingWidget" name="ScanHardware">
+        <attribute name="icon">
+         <iconset resource="../mainwindow.qrc">
+          <normaloff>:/file/resource/main_menu/0-28.png</normaloff>:/file/resource/main_menu/0-28.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Scan</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="GroupAdd">
+        <attribute name="icon">
+         <iconset resource="../mainwindow.qrc">
+          <normaloff>:/file/resource/main_menu/0-36.png</normaloff>:/file/resource/main_menu/0-36.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string/>
+        </attribute>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>754</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionNew_Config"/>
+    <addaction name="actionOpen"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuLanguage">
+    <property name="title">
+     <string>Language</string>
+    </property>
+    <addaction name="actionEnglish"/>
+    <addaction name="actionChinese"/>
+    <addaction name="actionJapanese"/>
+    <addaction name="actionKorean"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionMenu"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuReport">
+    <property name="title">
+     <string>Report</string>
+    </property>
+    <addaction name="actionReport_PreView"/>
+    <addaction name="actionSaveReport"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuLanguage"/>
+   <addaction name="menuReport"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>32</height>
+    </size>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNew"/>
+   <addaction name="actionOpenFile"/>
+   <addaction name="actionSaveFile"/>
+   <addaction name="separator"/>
+   <addaction name="actionRepoet_Add_One_Item"/>
+   <addaction name="actionRepoet_Del_One_Item"/>
+   <addaction name="actionRepoet_Setting"/>
+   <addaction name="actionSave_Report"/>
+   <addaction name="separator"/>
+   <addaction name="actionTOFD_LW_Straitening"/>
+   <addaction name="actionTOFD_BW_Straitening"/>
+   <addaction name="actionTOFD_LW_Removal"/>
+   <addaction name="actionTOFD_SAFT"/>
+   <addaction name="separator"/>
+   <addaction name="actionTOFD_Repeal"/>
+   <addaction name="actionTOFD_Redo"/>
+   <addaction name="separator"/>
+   <addaction name="actionTOFD_Length_Measurement"/>
+   <addaction name="actionTOFD_Height_Measurement"/>
+   <addaction name="actionTOFD_Depth_Measurement"/>
+   <addaction name="actionSave_Defect"/>
+   <addaction name="separator"/>
+   <addaction name="actionLanguage"/>
+   <addaction name="separator"/>
+   <addaction name="actionScreenShot"/>
+  </widget>
+  <action name="actionNew_Config">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>New File</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Open File</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Save File</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close File</string>
+   </property>
+  </action>
+  <action name="actionOpen_Scan_Data">
+   <property name="text">
+    <string>Open Scan Data</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionEnglish">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>English</string>
+   </property>
+  </action>
+  <action name="actionChinese">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Chinese</string>
+   </property>
+  </action>
+  <action name="actionJapanese">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Japanese</string>
+   </property>
+  </action>
+  <action name="actionKorean">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Korean</string>
+   </property>
+  </action>
+  <action name="actionMenu">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionReport_Format">
+   <property name="text">
+    <string>Report Format</string>
+   </property>
+  </action>
+  <action name="actionReport_PreView">
+   <property name="text">
+    <string>Report PreView</string>
+   </property>
+  </action>
+  <action name="actionSaveReport">
+   <property name="text">
+    <string>Save </string>
+   </property>
+  </action>
+  <action name="actionOpenFile">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-02.png</normaloff>:/file/resource/toolbar/0-02.png</iconset>
+   </property>
+   <property name="text">
+    <string>OpenFile</string>
+   </property>
+   <property name="toolTip">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-01.png</normaloff>:/file/resource/toolbar/0-01.png</iconset>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="toolTip">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionSaveFile">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-03.png</normaloff>:/file/resource/toolbar/0-03.png</iconset>
+   </property>
+   <property name="text">
+    <string>SaveFile</string>
+   </property>
+   <property name="toolTip">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionRepoet_Add_One_Item">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-04.png</normaloff>:/file/resource/toolbar/0-04.png</iconset>
+   </property>
+   <property name="text">
+    <string>Repoet Add One Item</string>
+   </property>
+   <property name="toolTip">
+    <string>Repoet Add One Item</string>
+   </property>
+  </action>
+  <action name="actionRepoet_Del_One_Item">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-05.png</normaloff>:/file/resource/toolbar/0-05.png</iconset>
+   </property>
+   <property name="text">
+    <string>Repoet Del One Item</string>
+   </property>
+   <property name="toolTip">
+    <string>Repoet Del One Item</string>
+   </property>
+  </action>
+  <action name="actionRepoet_Setting">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-06.png</normaloff>:/file/resource/toolbar/0-06.png</iconset>
+   </property>
+   <property name="text">
+    <string>Repoet Setting</string>
+   </property>
+   <property name="toolTip">
+    <string>Repoet Setting</string>
+   </property>
+  </action>
+  <action name="actionSave_Report">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-07.png</normaloff>:/file/resource/toolbar/0-07.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Report</string>
+   </property>
+   <property name="toolTip">
+    <string>Save Report</string>
+   </property>
+  </action>
+  <action name="actionTOFD_LW_Straitening">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-10.png</normaloff>:/file/resource/toolbar/0-10.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD LW Straitening</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD LW Straitening</string>
+   </property>
+  </action>
+  <action name="actionTOFD_BW_Straitening">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-11.png</normaloff>:/file/resource/toolbar/0-11.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD BW Straitening</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD BW Straitening</string>
+   </property>
+  </action>
+  <action name="actionTOFD_LW_Removal">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-12.png</normaloff>:/file/resource/toolbar/0-12.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD LW Removal</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD LW Removal</string>
+   </property>
+  </action>
+  <action name="actionTOFD_SAFT">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-13.png</normaloff>:/file/resource/toolbar/0-13.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD SAFT</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD SAFT</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Repeal">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-14.png</normaloff>:/file/resource/toolbar/0-14.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Repeal</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Repeal</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Redo">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-15.png</normaloff>:/file/resource/toolbar/0-15.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Redo</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Redo</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Length_Measurement">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-16.png</normaloff>:/file/resource/toolbar/0-16.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Length Measurement</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Length Measurement</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Height_Measurement">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-17.png</normaloff>:/file/resource/toolbar/0-17.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Height Measurement</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Height Measurement</string>
+   </property>
+  </action>
+  <action name="actionTOFD_Depth_Measurement">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-18.png</normaloff>:/file/resource/toolbar/0-18.png</iconset>
+   </property>
+   <property name="text">
+    <string>TOFD Depth Measurement</string>
+   </property>
+   <property name="toolTip">
+    <string>TOFD Depth Measurement</string>
+   </property>
+  </action>
+  <action name="actionSave_Defect">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-19.png</normaloff>:/file/resource/toolbar/0-19.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Defect</string>
+   </property>
+   <property name="toolTip">
+    <string>Save Defect</string>
+   </property>
+  </action>
+  <action name="actionLanguage">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-20.png</normaloff>:/file/resource/toolbar/0-20.png</iconset>
+   </property>
+   <property name="text">
+    <string>Language</string>
+   </property>
+   <property name="toolTip">
+    <string>CH/EN</string>
+   </property>
+  </action>
+  <action name="actionScreenShot">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-21.png</normaloff>:/file/resource/toolbar/0-21.png</iconset>
+   </property>
+   <property name="text">
+    <string>ScreenShot</string>
+   </property>
+   <property name="toolTip">
+    <string>ScreenShot</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PoppingTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header location="global">ui/PoppingTabWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DopplerGroupTab</class>
+   <extends>QWidget</extends>
+   <header location="global">ui/DopplerGroupTab.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DopplerViewFrame</class>
+   <extends>QWidget</extends>
+   <header location="global">ui/DopplerViewFrame.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>InstrumentSettingWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">ui/InstrumentSettingWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../mainwindow.qrc"/>
+ </resources>
+ <connections/>
+</ui>
