@@ -165,11 +165,18 @@ void DrawDxf::paint_arc(QPainter &painter, double zoom, double centerX, double c
 
     for(int i = 0; i < m_arcList.count(); i++){
         double r = m_arcList.at(i).radius;
-        double startAngle = m_arcList.at(i).angle1*16;
-        double endAngle = m_arcList.at(i).angle2*16;
+        double startAngle = m_arcList.at(i).angle1;
+        double endAngle = m_arcList.at(i).angle2;
+        double spanAngle = 0.0;
+
+        if(startAngle < endAngle) {
+            spanAngle = endAngle - startAngle;
+        } else {
+            spanAngle = 360 - startAngle + endAngle;
+        }
 
         painter.drawArc(zoom*m_arcList.at(i).cx -zoom*r + centerX, -zoom*m_arcList.at(i).cy - zoom*r + centerY,
-                        zoom*2*r, zoom*2*r, startAngle, fabs(endAngle - startAngle));
+                        zoom*2*r, zoom*2*r, startAngle * 16, spanAngle *16);
     }
 }
 
