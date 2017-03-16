@@ -66,7 +66,8 @@ protected:
     void paint_text(QPainter& painter, double zoom, double centerX, double centerY);
     void paint_arc(QPainter& painter, double zoom, double centerX, double centerY);
     void paint_circle(QPainter& painter, double zoom, double centerX, double centerY);
-    double calc_rotateAngle(double cx, double cy, double mx, double my);
+    double calc_rotateAngle(double mx, double my);
+    double getMagnitude2D(double x, double y);
     void paint_ellipse(QPainter& painter, double zoom, double centerX, double centerY);
 };
 
