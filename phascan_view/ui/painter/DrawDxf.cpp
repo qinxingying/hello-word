@@ -100,9 +100,9 @@ void DrawDxf::paint_line(QPainter &painter, double zoom, double centerX, double 
 //    if(m_polyLineList.size() > 0){
 //        for(int i = 0; i < m_polyLineList.count(); i++){
 //            if(m_polyLineList.at(i).flags){
-//                paint_polyLine_1(painter, zoom);
+//                paint_polyLine_1(painter, zoom, centerX, centerY);
 //            }else{
-//                paint_polyLine_0(painter, zoom);
+//                paint_polyLine_0(painter, zoom, centerX, centerY);
 //            }
 //        }
 //    }
@@ -115,10 +115,14 @@ void DrawDxf::paint_polyLine_0(QPainter &painter, double zoom, double centerX, d
         return;
     }
 
-    for(int i = 1; i < m_vertexList.count(); i++){
-        painter.drawLine(zoom*m_vertexList.at(i-1).x + centerX, -zoom*m_vertexList.at(i-1).y + centerY,
-                         zoom*m_vertexList.at(i).x + centerX, -zoom*m_vertexList.at(i).y + centerY);
+    for(int i = 0; i < m_polyLineList.count(); i++) {
+        int number = m_polyLineList.at(i).number;
+        for(int j = 1; j < number; j++){
+            painter.drawLine(zoom * m_vertexList.at(j - 1).x + centerX, - zoom * m_vertexList.at(j - 1).y + centerY,
+                             zoom * m_vertexList.at(j).x + centerX, - zoom * m_vertexList.at(j).y + centerY);
+        }
     }
+
 }
 
 void DrawDxf::paint_polyLine_1(QPainter &painter, double zoom, double centerX, double centerY)
@@ -198,18 +202,21 @@ double DrawDxf::calc_rotateAngle(double mx, double my)
 {
     double rotateAngle = 0;
     double m = getMagnitude2D(mx, my);
-
+    qDebug() << m;
     if(m > 1e-6) {
         double ret = mx / m;
+        qDebug() << ret;
         if(ret >= 1.0) {
             rotateAngle = 0.0;
         }  else if(ret < -1.0){
             rotateAngle = M_PI;
         } else {
             rotateAngle = acos(ret);
+            qDebug() << rotateAngle;
         }
         if(my < 0.0) {
             rotateAngle = 2 * M_PI - rotateAngle;
+            qDebug() << rotateAngle;
         }
     }
     return rotateAngle;
@@ -246,7 +253,8 @@ void DrawDxf::paint_ellipse(QPainter &painter, double zoom, double centerX, doub
             painter.drawArc(zoom * m_ellipseList.at(i).cx - zoom * r1, - zoom * m_ellipseList.at(i).cy - zoom * k * r1,
                             zoom * 2 * r1, zoom * 2 * k * r1, startAngle * 16, spanAngle * 16);
         }
-
+//        painter.drawLine(0, -height(), 0, height());
+//        painter.drawLine(-width(), 0, width(), 0);
         if(rotateAngle > 1e-9) {
             painter.rotate(rotateAngle * 180 / M_PI);
         }
