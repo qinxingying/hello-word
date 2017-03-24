@@ -40,7 +40,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         dxf_pen.setColor(QColor(0, 255, 0));
         painter.setPen(dxf_pen);
 
-        DrawDxf* drawDxf = DrawDxf::Instance();
+        DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
         drawDxf->setPart(m_pPart);
       //  drawDxf->SetInfo(info);
         drawDxf->draw_dxfPart(painter, m_zoom, width()/2, height()/2);
