@@ -2,6 +2,7 @@
 #define DrawDxf_H
 
 #include "dxf_data.h"
+#include "rvector.h"
 #include "Instrument.h"
 
 #include <QWidget>
@@ -67,8 +68,12 @@ protected:
     void paint_arc(QPainter& painter, double zoom, double centerX, double centerY);
     void paint_circle(QPainter& painter, double zoom, double centerX, double centerY);
     double calc_rotateAngle(double mx, double my);
-    double getMagnitude2D(double x, double y);
+    double get_magnitude2D(double x, double y);
     void paint_ellipse(QPainter& painter, double zoom, double centerX, double centerY);
+    void createEllipse(QPolygonF& pa, const RVector& cp, double radius1, double radius2,
+                       double angle, double angle1, double angle2, bool reversed);
+    double get_span_angle(double angle1, double angle2, bool isRad);
+
 };
 
 #endif // DrawDxf_H
