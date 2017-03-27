@@ -62,6 +62,7 @@ private:
     double get_magnitude2D(double x, double y);
 
     int getDxfData();
+    QPointF coordinate_trans(float x_, float y_);
 
     DrawDxfPrivate *d;
 //    QList<DL_PointData> m_pointList;

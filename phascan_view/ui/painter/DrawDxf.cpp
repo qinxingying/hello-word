@@ -220,6 +220,14 @@ DrawDxf::DrawDxf(QWidget *parent) :
 {
     m_pPart = NULL;
     m_fThickness = 20;
+
+    m_pPart      = NULL;
+    m_fThickness = 20;
+
+    m_Info.fScaleX = 1;
+    m_Info.fScaleY = 1;
+    m_Info.fX = 0;
+    m_Info.fY = 0;
 }
 
 DrawDxf::~DrawDxf()
@@ -232,8 +240,7 @@ int DrawDxf::getDxfData()
     if(m_pPart == NULL)
         return -1;
 
-//    DrawDxfPrivate* dxfData = new DrawDxfPrivate();
-    DL_Dxf dxf/* = new DL_Dxf()*/;
+    DL_Dxf dxf;
 
     QString dxfFile = m_pPart->strPartFile;
     if (!dxf.in(dxfFile.toLatin1().data(), d)) {
@@ -241,25 +248,11 @@ int DrawDxf::getDxfData()
         return -1;
     }
 
-//    m_pointList = dxfData->getPointList();
-//    m_lineList = dxfData->getLineList();
-//    m_textList = dxfData->getTextList();
-//    m_arcList = dxfData->getArcList();
-//    m_circleList = dxfData->getCircleList();
-//    m_textDataList = dxfData->getTextDataList();
-//    m_vertexList = dxfData->getVertexList();
-//    m_controlPointList = dxfData->getControlPointList();
-//    m_polyLineList = dxfData->getPolyLineList();
-//    m_ellipseList = dxfData->getEllipseList();
-
-//    delete dxf;
-//    delete dxfData;
     return 0;
 }
 
 void DrawDxf::draw_dxfPart(QPainter &painter, double zoom, double centerX, double centerY)
 {
-    qDebug() << "run1";
     paint_line(painter, zoom, centerX, centerY);
 
     paint_text(painter, zoom, centerX, centerY);
@@ -271,26 +264,31 @@ void DrawDxf::draw_dxfPart(QPainter &painter, double zoom, double centerX, doubl
     paint_point(painter, zoom, centerX, centerY);
 
     paint_ellipse(painter, zoom, centerX, centerY);
-    qDebug() << "run2";
 }
 
 void DrawDxf::paint_point(QPainter &painter, double zoom, double centerX, double centerY)
 {
     if(d->m_vertexList.size() > 0){
         for(int i = 0; i < d->m_vertexList.count(); i++){
-            painter.drawPoint(zoom*d->m_vertexList.at(i).x + centerX, -zoom*d->m_vertexList.at(i).y + centerY);
+            QPointF _point = coordinate_trans(d->m_vertexList.at(i).x, - d->m_vertexList.at(i).y);
+            painter.drawPoint(_point);
+//            painter.drawPoint(zoom*d->m_vertexList.at(i).x + centerX, -zoom*d->m_vertexList.at(i).y + centerY);
         }
     }
 
     if(d->m_controlPointList.size() > 0){
         for(int i = 0; i < d->m_controlPointList.count(); i++){
-            painter.drawPoint(zoom*d->m_controlPointList.at(i).x + centerX, -zoom*d->m_controlPointList.at(i).y + centerY);
+            QPointF _point = coordinate_trans(d->m_controlPointList.at(i).x, - d->m_controlPointList.at(i).y);
+            painter.drawPoint(_point);
+//            painter.drawPoint(zoom*d->m_controlPointList.at(i).x + centerX, -zoom*d->m_controlPointList.at(i).y + centerY);
         }
     }
 
     if(d->m_pointList.size() > 0){
         for(int i = 0; i < d->m_pointList.count(); i++){
-            painter.drawPoint(zoom*d->m_pointList.at(i).x + centerX, -zoom*d->m_pointList.at(i).y + centerY);
+            QPointF _point = coordinate_trans(d->m_pointList.at(i).x, - d->m_pointList.at(i).y);
+            painter.drawPoint(_point);
+//            painter.drawPoint(zoom*d->m_pointList.at(i).x + centerX, -zoom*d->m_pointList.at(i).y + centerY);
         }
     }
 }
@@ -299,10 +297,13 @@ void DrawDxf::paint_line(QPainter &painter, double zoom, double centerX, double 
 {
     if (d->m_lineList.size() > 0){
         for(int i = 0; i < d->m_lineList.count(); i++){
-            painter.drawLine(zoom * d->m_lineList.at(i).x1 + centerX,
-                             - zoom * d->m_lineList.at(i).y1 + centerY,
-                             zoom * d->m_lineList.at(i).x2 + centerX,
-                             - zoom * d->m_lineList.at(i).y2 + centerY);
+            QPointF _point1 = coordinate_trans(d->m_lineList.at(i).x1, - d->m_lineList.at(i).y1);
+            QPointF _point2 = coordinate_trans(d->m_lineList.at(i).x2, - d->m_lineList.at(i).y2);
+            painter.drawLine(_point1, _point2);
+//            painter.drawLine(zoom * d->m_lineList.at(i).x1 + centerX,
+//                             - zoom * d->m_lineList.at(i).y1 + centerY,
+//                             zoom * d->m_lineList.at(i).x2 + centerX,
+//                             - zoom * d->m_lineList.at(i).y2 + centerY);
         }
     }
 
@@ -328,8 +329,12 @@ void DrawDxf::paint_polyLine_0(QPainter &painter, double zoom, double centerX, d
     for(int i = 0; i < d->m_polyLineList.count(); i++) {
         int number = d->m_polyLineList.at(i).number;
         for(int j = count; j < number; j++){
-            painter.drawLine(zoom * d->m_vertexList.at(j - 1).x + centerX, - zoom * d->m_vertexList.at(j - 1).y + centerY,
-                             zoom * d->m_vertexList.at(j).x + centerX, - zoom * d->m_vertexList.at(j).y + centerY);
+            QPointF _point1 = coordinate_trans(d->m_vertexList.at(j - 1).x, - d->m_vertexList.at(j - 1).y);
+            QPointF _point2 = coordinate_trans(d->m_vertexList.at(j).x, - d->m_vertexList.at(j).y);
+            painter.drawLine(_point1, _point2);
+
+//            painter.drawLine(zoom * d->m_vertexList.at(j - 1).x + centerX, - zoom * d->m_vertexList.at(j - 1).y + centerY,
+//                             zoom * d->m_vertexList.at(j).x + centerX, - zoom * d->m_vertexList.at(j).y + centerY);
             count++;
         }
     }
@@ -338,17 +343,17 @@ void DrawDxf::paint_polyLine_0(QPainter &painter, double zoom, double centerX, d
 
 void DrawDxf::paint_polyLine_1(QPainter &painter, double zoom, double centerX, double centerY)
 {
-    if(d->m_vertexList.isEmpty()){
-        return;
-    }
+//    if(d->m_vertexList.isEmpty()){
+//        return;
+//    }
 
-    for(int i = 1; i < d->m_vertexList.count(); i++){
-        painter.drawLine(zoom*d->m_vertexList.at(i-1).x + centerX, -zoom*d->m_vertexList.at(i-1).y + centerY,
-                         zoom*d->m_vertexList.at(i).x + centerX, -zoom*d->m_vertexList.at(i).y + centerY);
-        painter.drawLine(zoom*d->m_vertexList.at(0).x + centerX, -zoom*d->m_vertexList.at(0).y + centerY,
-                         zoom*d->m_vertexList.at(d->m_vertexList.count()-1).x + centerX,
-                         -zoom*d->m_vertexList.at(d->m_vertexList.count()-1).y + centerY);
-    }
+//    for(int i = 1; i < d->m_vertexList.count(); i++){
+//        painter.drawLine(zoom*d->m_vertexList.at(i-1).x + centerX, -zoom*d->m_vertexList.at(i-1).y + centerY,
+//                         zoom*d->m_vertexList.at(i).x + centerX, -zoom*d->m_vertexList.at(i).y + centerY);
+//        painter.drawLine(zoom*d->m_vertexList.at(0).x + centerX, -zoom*d->m_vertexList.at(0).y + centerY,
+//                         zoom*d->m_vertexList.at(d->m_vertexList.count()-1).x + centerX,
+//                         -zoom*d->m_vertexList.at(d->m_vertexList.count()-1).y + centerY);
+//    }
 }
 
 void DrawDxf::paint_text(QPainter &painter, double zoom, double centerX, double centerY)
@@ -384,9 +389,12 @@ void DrawDxf::paint_arc(QPainter &painter, double zoom, double centerX, double c
         double endAngle = d->m_arcList.at(i).angle2;
         double spanAngle = get_span_angle(startAngle, endAngle, false);
 
-        painter.drawArc(zoom * d->m_arcList.at(i).cx -zoom*r + centerX,
-                        - zoom * d->m_arcList.at(i).cy - zoom*r + centerY,
-                        zoom*2*r, zoom*2*r, startAngle * 16, spanAngle *16);
+        QPointF _point = coordinate_trans(d->m_arcList.at(i).cx - r, - d->m_arcList.at(i).cy - r);
+        QRectF rect = QRectF(_point.x(), _point.y(), 2 * r * m_Info.fScaleX, 2 * r * m_Info.fScaleY);
+        painter.drawArc(rect, 16 * startAngle, 16 * spanAngle);
+//        painter.drawArc(zoom * d->m_arcList.at(i).cx -zoom*r + centerX,
+//                        - zoom * d->m_arcList.at(i).cy - zoom*r + centerY,
+//                        zoom*2*r, zoom*2*r, startAngle * 16, spanAngle *16);
     }
 }
 
@@ -397,11 +405,13 @@ void DrawDxf::paint_circle(QPainter &painter, double zoom, double centerX, doubl
     }
 
     for(int i = 0; i < d->m_circleList.count(); i++){
-        painter.drawEllipse(zoom*d->m_circleList.at(i).cx - zoom*d->m_circleList.at(i).radius + centerX,
-                            -zoom*d->m_circleList.at(i).cy - zoom*d->m_circleList.at(i).radius + centerY,
-                            2*zoom*d->m_circleList.at(i).radius, 2*zoom*d->m_circleList.at(i).radius);
+        double r = d->m_circleList.at(i).radius;
+        QPointF _point = coordinate_trans(d->m_circleList.at(i).cx - r, - d->m_circleList.at(i).cy - r);
+        painter.drawEllipse(_point.x(), _point.y(), 2 * r * m_Info.fScaleX, 2 * r * m_Info.fScaleY);
+//        painter.drawEllipse(zoom*d->m_circleList.at(i).cx - zoom*d->m_circleList.at(i).radius + centerX,
+//                            -zoom*d->m_circleList.at(i).cy - zoom*d->m_circleList.at(i).radius + centerY,
+//                            2*zoom*d->m_circleList.at(i).radius, 2*zoom*d->m_circleList.at(i).radius);
     }
-
 }
 
 double DrawDxf::calc_rotateAngle(double mx, double my)
@@ -430,7 +440,7 @@ void DrawDxf::paint_ellipse(QPainter &painter, double zoom, double centerX, doub
         return;
     }
 
-    painter.translate(centerX, centerY);
+//    painter.translate(centerX, centerY);
     for(int i = 0; i < d->m_ellipseList.count(); i++){
         double k  = d->m_ellipseList.at(i).ratio;
         double r1 = get_magnitude2D(d->m_ellipseList.at(i).mx, d->m_ellipseList.at(i).my);
@@ -439,32 +449,43 @@ void DrawDxf::paint_ellipse(QPainter &painter, double zoom, double centerX, doub
         double endAngle = d->m_ellipseList.at(i).angle2 * 180 / M_PI;
         double spanAngle = get_span_angle(startAngle, endAngle, false);
 
+        QPointF _point1 = coordinate_trans(d->m_ellipseList.at(i).cx, - d->m_ellipseList.at(i).cy);
+        QPointF _point2 = coordinate_trans(d->m_ellipseList.at(i).cx - r1, - d->m_ellipseList.at(i).cy - k * r1);
+        QRectF rect = QRectF(_point2.x(), _point2.y(), 2 * r1 * m_Info.fScaleX, 2 * k * r1 * m_Info.fScaleY);
+
         if(rotateAngle > 1e-9) {
-            painter.translate(zoom * d->m_ellipseList.at(i).cx,
-                              - zoom * d->m_ellipseList.at(i).cy);//以椭圆的中心点为中心旋转
+            painter.translate(_point1.x(), _point1.y());//以椭圆的中心点为中心旋转
             painter.rotate(- rotateAngle * 180 / M_PI);
-            painter.translate(- zoom * d->m_ellipseList.at(i).cx,
-                              zoom * d->m_ellipseList.at(i).cy);
+            painter.translate(- _point1.x(), - _point1.y());
+//            painter.translate(zoom * d->m_ellipseList.at(i).cx,
+//                              - zoom * d->m_ellipseList.at(i).cy);//以椭圆的中心点为中心旋转
+//            painter.rotate(- rotateAngle * 180 / M_PI);
+//            painter.translate(- zoom * d->m_ellipseList.at(i).cx,
+//                              zoom * d->m_ellipseList.at(i).cy);
         }
 
-        qDebug() << "spanAngle" << spanAngle;
-        painter.drawArc(zoom * d->m_ellipseList.at(i).cx - zoom * r1,
-                        - zoom * d->m_ellipseList.at(i).cy - zoom * k * r1,
-                        zoom * 2 * r1, zoom * 2 * k * r1,
-                        startAngle * 16, spanAngle * 16);
+        qDebug() << "spanAngle" << spanAngle;               
+        painter.drawArc(rect, 16 * startAngle, 16 * spanAngle);
+//        painter.drawArc(zoom * d->m_ellipseList.at(i).cx - zoom * r1,
+//                        - zoom * d->m_ellipseList.at(i).cy - zoom * k * r1,
+//                        zoom * 2 * r1, zoom * 2 * k * r1,
+//                        startAngle * 16, spanAngle * 16);
 
         if(rotateAngle > 1e-9) {
-            painter.translate(zoom * d->m_ellipseList.at(i).cx,
-                              - zoom * d->m_ellipseList.at(i).cy);
+            painter.translate(_point1.x(), _point1.y());
             painter.rotate(rotateAngle * 180 / M_PI);
-            painter.translate(- zoom * d->m_ellipseList.at(i).cx,
-                              zoom * d->m_ellipseList.at(i).cy);
+            painter.translate(- _point1.x(), - _point1.y());
+//            painter.translate(zoom * d->m_ellipseList.at(i).cx,
+//                              - zoom * d->m_ellipseList.at(i).cy);
+//            painter.rotate(rotateAngle * 180 / M_PI);
+//            painter.translate(- zoom * d->m_ellipseList.at(i).cx,
+//                              zoom * d->m_ellipseList.at(i).cy);
         }
 
         qDebug()<<"\ncx = "<<d->m_ellipseList.at(i).cx<<"cy = "<<d->m_ellipseList.at(i).cy<<"mx = "<<d->m_ellipseList.at(i).mx<<"my = "<<d->m_ellipseList.at(i).my;
         qDebug()<<"rotateAngle = "<<rotateAngle*180/M_PI<<"StartAngle = "<<startAngle<<"endAngle ="<<endAngle<<"r1="<<r1;
     }
-    painter.translate(-centerX, -centerY);
+//    painter.translate(-centerX, -centerY);
 }
 
 int DrawDxf::setPart(PART_CONFIG *pInfo_)
@@ -684,6 +705,24 @@ double DrawDxf::get_span_angle(double angle1, double angle2, bool isRad)
         }
     }
     return spanAngle;
+}
+
+QPointF DrawDxf::coordinate_trans(float x_, float y_)
+{
+    float _fScaleX = m_Info.fScaleX;
+    float _fScaleY = m_Info.fScaleY;
+    float     _fX0 = m_Info.fX;
+    float     _fY0 = m_Info.fY;
+
+    qDebug() << _fScaleX << _fScaleY << _fX0 << _fY0;
+    float _fX = x_ * _fScaleX + _fX0;
+    float _fY = y_ * _fScaleY + _fY0;
+
+    QPointF _point;
+    _point.setX(_fX);
+    _point.setY(_fY);
+
+    return _point;
 }
 
 }

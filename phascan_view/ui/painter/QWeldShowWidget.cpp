@@ -40,9 +40,18 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         dxf_pen.setColor(QColor(0, 255, 0));
         painter.setPen(dxf_pen);
 
+        DRAW_DXF_INFO info;
+        double _zoom = int(m_zoom * 100) / 100;
+        info.fWidth = width();
+        info.fHeight = height();
+        info.fX = width()/2;
+        info.fY = height()/2;
+        info.fScaleX = _zoom;
+        info.fScaleY = _zoom;
+
         DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
         drawDxf->setPart(m_pPart);
-      //  drawDxf->SetInfo(info);
+        drawDxf->SetInfo(info);
         drawDxf->draw_dxfPart(painter, m_zoom, width()/2, height()/2);
 
     }else if(m_pPart->weld.eType == setup_WELD_NCC){
@@ -558,9 +567,12 @@ void QWeldShowWidget::wheelEvent(QWheelEvent *event)
             m_zoom -= 1;
 
         }else if(0 < m_zoom && m_zoom <= 1){
-            m_zoom = 0.5*m_zoom;
+            m_zoom -= 0.5*m_zoom;
         }
     }
+//    if(m_zoom <= 0) {
+//        m_zoom = 0.01;
+//    }
 
     update();
     emit zoom(m_zoom);
