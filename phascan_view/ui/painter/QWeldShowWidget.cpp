@@ -50,9 +50,11 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         info.fScaleY = _zoom;
 
         DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
+        drawDxf->set(width(), height(), width()/2, height()/2, _zoom, _zoom);
         drawDxf->setPart(m_pPart);
         drawDxf->SetInfo(info);
-        drawDxf->draw_dxfPart(painter, m_zoom, width()/2, height()/2);
+//        drawDxf->draw_dxfPart(painter, m_zoom, width()/2, height()/2);
+        drawDxf->draw_dxf_part(painter);
 
     }else if(m_pPart->weld.eType == setup_WELD_NCC){
         DRAW_PART_INFO info;

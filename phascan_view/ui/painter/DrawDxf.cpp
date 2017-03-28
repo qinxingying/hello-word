@@ -46,13 +46,21 @@ public:
     QList<DL_SplineData> m_splineList;
     QList<DL_ControlPointData> m_controlPointList;
 
-private:
+    double m_width;
+    double m_height;
+    double m_centerX;
+    double m_centerY;
+    double m_scaleX;
+    double m_scaleY;
 
 };
 
 DrawDxfPrivate::DrawDxfPrivate()
 {
-
+    m_centerX = 0;
+    m_centerY = 0;
+    m_scaleX = 1;
+    m_scaleY = 1;
 }
 
 //void DrawDxfPrivate::addLayer(const DL_LayerData& data) {
@@ -106,8 +114,8 @@ void DrawDxfPrivate::addMText(const DL_MTextData &data)
 {
     printAttributes();
     m_textList.append(data);
-    qDebug()<<"\n *******AddMText(7)********\n ---ipx, y ="<<data.ipx<<data.ipy;
-    qDebug()<<"width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str();
+    qDebug()<<"\n *******AddMText(7)********\n ---ipx, y ="<<data.ipx<<data.ipy<<"\n angle ="<<data.angle<<"\n attachmentPoint, drawingDirection"<<data.attachmentPoint<<data.drawingDirection;
+    qDebug()<<"width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str()<<"\n dirx,y ="<<data.dirx<<data.diry;
 }
 
 void DrawDxfPrivate::addEllipse(const DL_EllipseData &data)
@@ -251,22 +259,22 @@ int DrawDxf::getDxfData()
     return 0;
 }
 
-void DrawDxf::draw_dxfPart(QPainter &painter, double zoom, double centerX, double centerY)
+void DrawDxf::draw_dxf_part(QPainter &painter)
 {
-    paint_line(painter, zoom, centerX, centerY);
+    paint_line(painter);
 
-    paint_text(painter, zoom, centerX, centerY);
+    paint_text(painter);
 
-    paint_arc(painter, zoom, centerX, centerY);
+    paint_arc(painter);
 
-    paint_circle(painter, zoom, centerX, centerY);
+    paint_circle(painter);
 
-    paint_point(painter, zoom, centerX, centerY);
+    paint_point(painter);
 
-    paint_ellipse(painter, zoom, centerX, centerY);
+    paint_ellipse(painter);
 }
 
-void DrawDxf::paint_point(QPainter &painter, double zoom, double centerX, double centerY)
+void DrawDxf::paint_point(QPainter &painter)
 {
     if(d->m_vertexList.size() > 0){
         for(int i = 0; i < d->m_vertexList.count(); i++){
@@ -293,7 +301,7 @@ void DrawDxf::paint_point(QPainter &painter, double zoom, double centerX, double
     }
 }
 
-void DrawDxf::paint_line(QPainter &painter, double zoom, double centerX, double centerY)
+void DrawDxf::paint_line(QPainter &painter)
 {
     if (d->m_lineList.size() > 0){
         for(int i = 0; i < d->m_lineList.count(); i++){
@@ -316,10 +324,10 @@ void DrawDxf::paint_line(QPainter &painter, double zoom, double centerX, double 
 //            }
 //        }
 //    }
-    paint_polyLine_0(painter, zoom, centerX, centerY);
+    paint_polyLine_0(painter);
 }
 
-void DrawDxf::paint_polyLine_0(QPainter &painter, double zoom, double centerX, double centerY)
+void DrawDxf::paint_polyLine_0(QPainter &painter)
 {
     if(d->m_vertexList.isEmpty()){
         return;
@@ -341,7 +349,7 @@ void DrawDxf::paint_polyLine_0(QPainter &painter, double zoom, double centerX, d
 
 }
 
-void DrawDxf::paint_polyLine_1(QPainter &painter, double zoom, double centerX, double centerY)
+void DrawDxf::paint_polyLine_1(QPainter &painter)
 {
 //    if(d->m_vertexList.isEmpty()){
 //        return;
@@ -356,28 +364,65 @@ void DrawDxf::paint_polyLine_1(QPainter &painter, double zoom, double centerX, d
 //    }
 }
 
-void DrawDxf::paint_text(QPainter &painter, double zoom, double centerX, double centerY)
+void DrawDxf::paint_text(QPainter &painter)
 {
     if(d->m_textList.size() > 0){
         for(int i = 0; i < d->m_textList.count(); i++){
-            painter.drawText(zoom*(d->m_textList.at(i).ipx-2*d->m_textList.at(i).height) + centerX,
-                             -zoom*d->m_textList.at(i).ipy + centerY,
-                             zoom*4*d->m_textList.at(i).height, zoom*d->m_textList.at(i).height,
-                             Qt::AlignLeft, d->m_textList.at(i).text.c_str());
+            QString str = format_text(QString::fromStdString(d->m_textList.at(i).text));
+            double height = d->m_textList.at(i).height;
+            double width = d->m_textList.at(i).width;
+            Qt::AlignmentFlag flagV = get_v_flag(d->m_textList.at(i).attachmentPoint);
+            Qt::AlignmentFlag flagH = get_h_flag(d->m_textList.at(i).attachmentPoint);
+
+            QPointF _point = coordinate_trans(d->m_textList.at(i).ipx,  - d->m_textList.at(i).ipy);
+            double rotateAngle = d->m_textList.at(i).angle;
+
+            if(rotateAngle < 0) {
+                rotateAngle = 2 * M_PI + rotateAngle;
+            }
+
+            if(rotateAngle > 1e-9) {
+                painter.translate(_point.x(), _point.y());//以矩形的中心点为中心旋转
+                painter.rotate(- rotateAngle * 180 / M_PI);
+                painter.translate(- _point.x(), - _point.y());
+            }
+
+            if(width > 0) {
+                painter.drawText(_point, str);
+            } else {
+                QPointF _point1 = coordinate_trans(d->m_textList.at(i).ipx - fontMetrics().width(str) / 2,  - d->m_textList.at(i).ipy/* - height*/);
+                QRectF rect = QRectF(_point1.x(), _point1.y(), fontMetrics().width(str) * m_Info.fScaleX, height * m_Info.fScaleY);
+                painter.drawText(rect, flagV | flagH, str);
+            }
+
+            if(rotateAngle > 1e-9) {
+                painter.translate(_point.x(), _point.y());//以矩形的中心点为中心旋转
+                painter.rotate(rotateAngle * 180 / M_PI);
+                painter.translate(- _point.x(), - _point.y());
+            }
+//            double zoom = d->m_scaleX;
+//            double centerX = d->m_centerX;
+//            double centerY = d->m_centerY;
+//            painter.drawText(zoom*(d->m_textList.at(i).ipx-2*d->m_textList.at(i).height) + centerX,
+//                             -zoom*d->m_textList.at(i).ipy + centerY,
+//                             zoom*4*d->m_textList.at(i).height, zoom*d->m_textList.at(i).height,
+//                             Qt::AlignLeft, d->m_textList.at(i).text.c_str());
         }
     }
 
     if(d->m_textDataList.size() > 0){
         for(int i = 0; i < d->m_textDataList.count(); i++){
-            painter.drawText(zoom * d->m_textDataList.at(i).ipx + centerX,
-                             - zoom * d->m_textDataList.at(i).ipy - d->m_textDataList.at(i).height + centerY,
-                             zoom * 9 * d->m_textDataList.at(i).height, zoom * d->m_textDataList.at(i).height,
-                             Qt::AlignLeft, d->m_textDataList.at(i).text.c_str());
+            QPointF _point = coordinate_trans(d->m_textDataList.at(i).ipx, - d->m_textDataList.at(i).ipy);
+            painter.drawText(_point, d->m_textDataList.at(i).text.c_str());
+//            painter.drawText(zoom * d->m_textDataList.at(i).ipx + centerX,
+//                             - zoom * d->m_textDataList.at(i).ipy - d->m_textDataList.at(i).height + centerY,
+//                             zoom * 9 * d->m_textDataList.at(i).height, zoom * d->m_textDataList.at(i).height,
+//                             Qt::AlignLeft, d->m_textDataList.at(i).text.c_str());
         }
     }
 }
 
-void DrawDxf::paint_arc(QPainter &painter, double zoom, double centerX, double centerY)
+void DrawDxf::paint_arc(QPainter &painter)
 {
     if(d->m_arcList.isEmpty()){
         return;
@@ -398,7 +443,7 @@ void DrawDxf::paint_arc(QPainter &painter, double zoom, double centerX, double c
     }
 }
 
-void DrawDxf::paint_circle(QPainter &painter, double zoom, double centerX, double centerY)
+void DrawDxf::paint_circle(QPainter &painter)
 {
     if(d->m_circleList.isEmpty()){
         return;
@@ -434,7 +479,7 @@ double DrawDxf::calc_rotateAngle(double mx, double my)
     return rotateAngle;
 }
 
-void DrawDxf::paint_ellipse(QPainter &painter, double zoom, double centerX, double centerY)
+void DrawDxf::paint_ellipse(QPainter &painter)
 {
     if(d->m_ellipseList.isEmpty()){
         return;
@@ -709,12 +754,11 @@ double DrawDxf::get_span_angle(double angle1, double angle2, bool isRad)
 
 QPointF DrawDxf::coordinate_trans(float x_, float y_)
 {
-    float _fScaleX = m_Info.fScaleX;
-    float _fScaleY = m_Info.fScaleY;
-    float     _fX0 = m_Info.fX;
-    float     _fY0 = m_Info.fY;
+    float _fScaleX = d->m_scaleX;
+    float _fScaleY = d->m_scaleY;
+    float     _fX0 = d->m_centerX;
+    float     _fY0 = d->m_centerY;
 
-    qDebug() << _fScaleX << _fScaleY << _fX0 << _fY0;
     float _fX = x_ * _fScaleX + _fX0;
     float _fY = y_ * _fScaleY + _fY0;
 
@@ -723,6 +767,53 @@ QPointF DrawDxf::coordinate_trans(float x_, float y_)
     _point.setY(_fY);
 
     return _point;
+}
+
+void DrawDxf::set(double width, double height, double centerX, double centerY, double scaleX, double scaleY)
+{
+    d->m_width = width;
+    d->m_height = height;
+    d->m_centerX = centerX;
+    d->m_centerY = centerY;
+    d->m_scaleX = scaleX;
+    d->m_scaleY = scaleY;
+}
+
+QString DrawDxf::format_text(QString str)
+{
+    if(str.contains("%%D")) {
+        str = str.left(str.indexOf("%%D")) + "°";
+    }
+    if(str.contains("\A1;")) {
+        str = str.right(str.length() - str.indexOf("\A1;") - 3);
+    }
+    return str;
+}
+
+Qt::AlignmentFlag DrawDxf::get_v_flag(int flag)
+{
+    Qt::AlignmentFlag _flag;
+    if(flag <= 3) {
+        _flag = Qt::AlignTop;
+    } else if(flag <= 6) {
+        _flag = Qt::AlignVCenter;
+    } else {
+        _flag = Qt::AlignBottom;
+    }
+    return _flag;
+}
+
+Qt::AlignmentFlag DrawDxf::get_h_flag(int flag)
+{
+    Qt::AlignmentFlag _flag;
+    if(flag % 3 == 1) {
+        _flag = Qt::AlignLeft;
+    } else if(flag % 3 == 2) {
+        _flag = Qt::AlignHCenter;
+    } else {
+        _flag = Qt::AlignRight;
+    }
+    return _flag;
 }
 
 }
