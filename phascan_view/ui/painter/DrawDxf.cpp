@@ -308,19 +308,10 @@ void DrawDxf::paint_line(QPainter &painter)
         }
     }
 
-//    if(m_polyLineList.size() > 0){
-//        for(int i = 0; i < m_polyLineList.count(); i++){
-//            if(m_polyLineList.at(i).flags){
-//                paint_polyLine_1(painter, zoom, centerX, centerY);
-//            }else{
-//                paint_polyLine_0(painter, zoom, centerX, centerY);
-//            }
-//        }
-//    }
-    paint_polyLine_0(painter);
+    paint_polyLine(painter);
 }
 
-void DrawDxf::paint_polyLine_0(QPainter &painter)
+void DrawDxf::paint_polyLine(QPainter &painter)
 {
     if(d->m_vertexList.isEmpty()){
         return;
@@ -336,21 +327,6 @@ void DrawDxf::paint_polyLine_0(QPainter &painter)
             count++;
         }
     }
-}
-
-void DrawDxf::paint_polyLine_1(QPainter &painter)
-{
-//    if(d->m_vertexList.isEmpty()){
-//        return;
-//    }
-
-//    for(int i = 1; i < d->m_vertexList.count(); i++){
-//        painter.drawLine(zoom*d->m_vertexList.at(i-1).x + centerX, -zoom*d->m_vertexList.at(i-1).y + centerY,
-//                         zoom*d->m_vertexList.at(i).x + centerX, -zoom*d->m_vertexList.at(i).y + centerY);
-//        painter.drawLine(zoom*d->m_vertexList.at(0).x + centerX, -zoom*d->m_vertexList.at(0).y + centerY,
-//                         zoom*d->m_vertexList.at(d->m_vertexList.count()-1).x + centerX,
-//                         -zoom*d->m_vertexList.at(d->m_vertexList.count()-1).y + centerY);
-//    }
 }
 
 void DrawDxf::paint_text(QPainter &painter)
@@ -370,11 +346,7 @@ void DrawDxf::paint_text(QPainter &painter)
                 rotateAngle = 2 * M_PI + rotateAngle;
             }
 
-            if(rotateAngle > 1e-9) {
-                painter.translate(_point.x(), _point.y());//以矩形的中心点为中心旋转
-                painter.rotate(- rotateAngle * 180 / M_PI);
-                painter.translate(- _point.x(), - _point.y());
-            }
+            rotate(painter, _point, - rotateAngle);//以矩形的中心点为中心旋转
 
             if(width > 0) {
                 painter.drawText(_point, str);
@@ -384,11 +356,7 @@ void DrawDxf::paint_text(QPainter &painter)
                 painter.drawText(rect, flagV | flagH, str);
             }
 
-            if(rotateAngle > 1e-9) {
-                painter.translate(_point.x(), _point.y());//以矩形的中心点为中心旋转
-                painter.rotate(rotateAngle * 180 / M_PI);
-                painter.translate(- _point.x(), - _point.y());
-            }
+            rotate(painter, _point, rotateAngle);//以矩形的中心点为中心旋转
         }
     }
 
@@ -478,11 +446,7 @@ void DrawDxf::paint_ellipse(QPainter &painter)
         QRectF rect = QRectF(_point1.x() - _point2.x(), _point1.y() - _point2.y(),
                              2 * r1 * d->m_scaleX, 2 * k * r1 * d->m_scaleY);
 
-        if(rotateAngle > 1e-9) {
-            painter.translate(_point1.x(), _point1.y());//以椭圆的中心点为中心旋转
-            painter.rotate(- rotateAngle * 180 / M_PI);
-            painter.translate(- _point1.x(), - _point1.y());
-        }
+        rotate(painter, _point1, - rotateAngle);//以椭圆的中心点为中心旋转
 
         if(m_axis == Axis_Normal) {
             painter.drawArc(rect, 16 * startAngle, 16 * spanAngle);
@@ -490,11 +454,7 @@ void DrawDxf::paint_ellipse(QPainter &painter)
             painter.drawArc(rect, - 16 * endAngle, 16 * spanAngle);
         }
 
-        if(rotateAngle > 1e-9) {
-            painter.translate(_point1.x(), _point1.y());
-            painter.rotate(rotateAngle * 180 / M_PI);
-            painter.translate(- _point1.x(), - _point1.y());
-        }
+        rotate(painter, _point1, rotateAngle);
     }
 }
 
@@ -514,7 +474,6 @@ void DrawDxf::draw_dxf_part(QPainterPath &path)
     if(!d->m_lineList.isEmpty()) {
         draw_line(path);
     }
-
 
     if(!d->m_vertexList.isEmpty()) {
         draw_polyLine(path);
@@ -629,7 +588,6 @@ void DrawDxf::draw_ellipse(QPainterPath &path)
                                r1 * d->m_scaleX, k * r1 * d->m_scaleY,
                                rotateAngle, d->m_ellipseList.at(i).angle1, d->m_ellipseList.at(i).angle2, 1);
             }
-
             path.addPolygon(pa);
         }
     }
@@ -800,6 +758,15 @@ Qt::AlignmentFlag DrawDxf::get_h_flag(int flag)
 void DrawDxf::set_axis_orientation(DrawDxf::AxisOrientation value)
 {
     m_axis = value;
+}
+
+void DrawDxf::rotate(QPainter &painter, QPointF point, double angle)
+{
+    if(fabs(angle) > 1e-9) {
+        painter.translate(point.x(), point.y());
+        painter.rotate(angle * 180 / M_PI);
+        painter.translate(- point.x(), - point.y());
+    }
 }
 
 }

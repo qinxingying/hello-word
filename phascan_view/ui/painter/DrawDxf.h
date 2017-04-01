@@ -58,13 +58,13 @@ private:
 
     void paint_point(QPainter& painter);
     void paint_line(QPainter& painter);
-    void paint_polyLine_0(QPainter& painter);
-    void paint_polyLine_1(QPainter& painter);
+    void paint_polyLine(QPainter& painter);
     void paint_text(QPainter& painter);
     void paint_arc(QPainter& painter);
     void paint_circle(QPainter& painter);
     void paint_ellipse(QPainter& painter);
 
+    void rotate(QPainter& painter, QPointF point, double angle);
     void create_ellipse(QPolygonF& pa, const RVector& cp, double radius1, double radius2,
                         double angle, double angle1, double angle2, int factor);
     double get_span_angle(double angle1, double angle2, bool isRad);
@@ -78,17 +78,6 @@ private:
     QPointF coordinate_trans(float x_, float y_, bool isRadius);
 
     DrawDxfPrivate *d;
-//    QList<DL_PointData> m_pointList;
-//    QList<DL_LineData> m_lineList;
-//    QList<DL_ArcData> m_arcList;
-//    QList<DL_TextData> m_textDataList;
-//    QList<DL_MTextData> m_textList;
-//    QList<DL_EllipseData> m_ellipseList;
-//    QList<DL_CircleData> m_circleList;
-//    QList<DL_VertexData> m_vertexList;
-//    QList<DL_PolylineData> m_polyLineList;
-//    QList<DL_SplineData> m_splineList;
-//    QList<DL_ControlPointData> m_controlPointList;
 
 };
 
