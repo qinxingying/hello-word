@@ -50,6 +50,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         info.fScaleY = _zoom;
 
         DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
+        drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
         drawDxf->set(width(), height(), width()/2, height()/2, _zoom, _zoom);
         drawDxf->setPart(m_pPart);
         drawDxf->SetInfo(info);
