@@ -56,7 +56,7 @@ private:
     void paint_circle(QPainter& painter);
     void paint_ellipse(QPainter& painter);
 
-    void createEllipse(QPolygonF& pa, const RVector& cp, double radius1, double radius2,
+    void create_ellipse(QPolygonF& pa, const RVector& cp, double radius1, double radius2,
                        double angle, double angle1, double angle2, bool reversed);
     double get_span_angle(double angle1, double angle2, bool isRad);
     double calc_rotateAngle(double mx, double my);

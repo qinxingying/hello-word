@@ -1607,11 +1607,11 @@ void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
     double _fWidth  = size.width();
     double _fHeight = size.height();
 
-    double _fXScale = (_fXStop - _fXStart) / _fWidth;
-    double _fYScale = (_fYStop - _fYStart) / _fHeight;
+    double _fXScale = _fWidth / (_fXStop - _fXStart);
+    double _fYScale = _fHeight / (_fYStop - _fYStart);
 
-    double _x0 = (0 - _fXStart) / _fXScale;
-    double _y0 = (0 - _fYStart) / _fYScale;
+    double _x0 = (0 - _fXStart) * _fXScale;
+    double _y0 = (0 - _fYStart) * _fYScale;
 
     _info.fWidth  = _fWidth;
     _info.fHeight = _fHeight;
@@ -1620,6 +1620,8 @@ void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
     _info.fScaleX = _fXScale;
     _info.fScaleY = _fYScale;
 
+//    pDxfPart->set(width(), height(), width()/2, height()/2, _zoom, _zoom);
+    pDxfPart->set(_fWidth, _fHeight, _x0, _y0, _fXScale, _fYScale);
     pDxfPart->setPart(&m_cPart);
     pDxfPart->SetInfo(_info);
     pDxfPart->DrawDxfPart(path, _x0, 1/_fXScale, 1/_fYScale);

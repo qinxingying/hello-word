@@ -337,7 +337,6 @@ void DrawDxf::paint_polyLine_0(QPainter &painter)
             count++;
         }
     }
-
 }
 
 void DrawDxf::paint_polyLine_1(QPainter &painter)
@@ -382,7 +381,7 @@ void DrawDxf::paint_text(QPainter &painter)
                 painter.drawText(_point, str);
             } else {
                 QPointF _point1 = coordinate_trans(d->m_textList.at(i).ipx - fontMetrics().width(str) / 2,  - d->m_textList.at(i).ipy/* - height*/);
-                QRectF rect = QRectF(_point1.x(), _point1.y(), fontMetrics().width(str) * m_Info.fScaleX, height * m_Info.fScaleY);
+                QRectF rect = QRectF(_point1.x(), _point1.y(), fontMetrics().width(str) * d->m_scaleX, height * d->m_scaleY);
                 painter.drawText(rect, flagV | flagH, str);
             }
 
@@ -415,7 +414,7 @@ void DrawDxf::paint_arc(QPainter &painter)
         double spanAngle = get_span_angle(startAngle, endAngle, false);
 
         QPointF _point = coordinate_trans(d->m_arcList.at(i).cx - r, - d->m_arcList.at(i).cy - r);
-        QRectF rect = QRectF(_point.x(), _point.y(), 2 * r * m_Info.fScaleX, 2 * r * m_Info.fScaleY);
+        QRectF rect = QRectF(_point.x(), _point.y(), 2 * r * d->m_scaleX, 2 * r * d->m_scaleY);
         painter.drawArc(rect, 16 * startAngle, 16 * spanAngle);
     }
 }
@@ -429,7 +428,7 @@ void DrawDxf::paint_circle(QPainter &painter)
     for(int i = 0; i < d->m_circleList.count(); i++){
         double r = d->m_circleList.at(i).radius;
         QPointF _point = coordinate_trans(d->m_circleList.at(i).cx - r, - d->m_circleList.at(i).cy - r);
-        painter.drawEllipse(_point.x(), _point.y(), 2 * r * m_Info.fScaleX, 2 * r * m_Info.fScaleY);
+        painter.drawEllipse(_point.x(), _point.y(), 2 * r * d->m_scaleX, 2 * r * d->m_scaleY);
     }
 }
 
@@ -469,7 +468,7 @@ void DrawDxf::paint_ellipse(QPainter &painter)
 
         QPointF _point1 = coordinate_trans(d->m_ellipseList.at(i).cx, - d->m_ellipseList.at(i).cy);
         QPointF _point2 = coordinate_trans(d->m_ellipseList.at(i).cx - r1, - d->m_ellipseList.at(i).cy - k * r1);
-        QRectF rect = QRectF(_point2.x(), _point2.y(), 2 * r1 * m_Info.fScaleX, 2 * k * r1 * m_Info.fScaleY);
+        QRectF rect = QRectF(_point2.x(), _point2.y(), 2 * r1 * d->m_scaleX, 2 * k * r1 * d->m_scaleY);
 
         if(rotateAngle > 1e-9) {
             painter.translate(_point1.x(), _point1.y());//以椭圆的中心点为中心旋转
@@ -510,8 +509,12 @@ void DrawDxf::draw_line(QPainterPath &path, double originX, double kx, double ky
 {
     if(d->m_lineList.size() > 0){
         for(int i = 0; i < d->m_lineList.count(); i++){
-            path.moveTo(kx*d->m_lineList.at(i).x1 + originX, ky*d->m_lineList.at(i).y1);
-            path.lineTo(kx*d->m_lineList.at(i).x2 + originX, ky*d->m_lineList.at(i).y2);
+            QPointF _point1 = coordinate_trans(d->m_lineList.at(i).x1, d->m_lineList.at(i).y1);
+            QPointF _point2 = coordinate_trans(d->m_lineList.at(i).x2, d->m_lineList.at(i).y2);
+            path.moveTo(_point1);
+            path.lineTo(_point2);
+//            path.moveTo(kx*d->m_lineList.at(i).x1 + originX, ky*d->m_lineList.at(i).y1);
+//            path.lineTo(kx*d->m_lineList.at(i).x2 + originX, ky*d->m_lineList.at(i).y2);
         }
     }
 
@@ -519,10 +522,22 @@ void DrawDxf::draw_line(QPainterPath &path, double originX, double kx, double ky
         return;
     }
 
-    for(int i = 1; i < d->m_vertexList.count(); i++){
-        path.moveTo(kx*d->m_vertexList.at(i-1).x + originX, ky*d->m_vertexList.at(i-1).y);
-        path.lineTo(kx*d->m_vertexList.at(i).x + originX, ky*d->m_vertexList.at(i).y);
+    int count = 1;
+    for(int i = 0; i < d->m_polyLineList.count(); i++) {
+        int number = d->m_polyLineList.at(i).number;
+        for(int j = count; j < number; j++){
+            QPointF _point1 = coordinate_trans(d->m_vertexList.at(j - 1).x, /*- */d->m_vertexList.at(j - 1).y);
+            QPointF _point2 = coordinate_trans(d->m_vertexList.at(j).x, /*- */d->m_vertexList.at(j).y);
+            path.moveTo(_point1);
+            path.lineTo(_point2);
+            count++;
+        }
     }
+
+//    for(int i = 1; i < d->m_vertexList.count(); i++){
+//        path.moveTo(kx*d->m_vertexList.at(i-1).x + originX, ky*d->m_vertexList.at(i-1).y);
+//        path.lineTo(kx*d->m_vertexList.at(i).x + originX, ky*d->m_vertexList.at(i).y);
+//    }
 }
 
 void DrawDxf::draw_arc(QPainterPath &path, double originX, double kx, double ky)
@@ -537,13 +552,17 @@ void DrawDxf::draw_arc(QPainterPath &path, double originX, double kx, double ky)
         double endAngle = d->m_arcList.at(i).angle2;
         double spanAngle = get_span_angle(startAngle, endAngle, false);
 
-        path.arcMoveTo(kx * d->m_arcList.at(i).cx - r + originX,
-                       ky * d->m_arcList.at(i).cy - r,
-                       2 * r, 2 * r, startAngle);
-        path.arcTo(kx * d->m_arcList.at(i).cx -r + originX,
-                   ky * d->m_arcList.at(i).cy - r,
-                   2 * r, 2 * r, 16 * startAngle, 16 * spanAngle);
-    }
+        QPointF _point = coordinate_trans(d->m_arcList.at(i).cx - r, /*- */d->m_arcList.at(i).cy - r);
+        QRectF rect = QRectF(_point.x(), _point.y(), 2 * r * d->m_scaleX, 2 * r * d->m_scaleY);
+        path.arcMoveTo(rect, - endAngle);
+        path.arcTo(rect, - endAngle, spanAngle);
+//        path.arcMoveTo(kx * d->m_arcList.at(i).cx - r + originX,
+//                       ky * d->m_arcList.at(i).cy - r,
+//                       2 * r, 2 * r, 16 * startAngle);
+//        path.arcTo(kx * d->m_arcList.at(i).cx -r + originX,
+//                   ky * d->m_arcList.at(i).cy - r,
+//                   2 * r, 2 * r, 16 * startAngle, 16 * spanAngle);
+    }   
 }
 
 void DrawDxf::draw_circle(QPainterPath &path, double originX, double kx, double ky)
@@ -553,9 +572,13 @@ void DrawDxf::draw_circle(QPainterPath &path, double originX, double kx, double 
     }
 
     for(int i = 0; i < d->m_circleList.count(); i++){
-        path.addEllipse(kx * d->m_circleList.at(i).cx - d->m_circleList.at(i).radius + originX,
-                        ky * d->m_circleList.at(i).cy - d->m_circleList.at(i).radius,
-                        2*d->m_circleList.at(i).radius, 2*d->m_circleList.at(i).radius);
+        double r = d->m_circleList.at(i).radius;
+        QPointF _point = coordinate_trans(d->m_circleList.at(i).cx - r, /*- */d->m_circleList.at(i).cy - r);
+        path.addEllipse(_point.x(), _point.y(), 2 * r * d->m_scaleX, 2 * r * d->m_scaleY);
+
+//        path.addEllipse(kx * d->m_circleList.at(i).cx - d->m_circleList.at(i).radius + originX,
+//                        ky * d->m_circleList.at(i).cy - d->m_circleList.at(i).radius,
+//                        2*d->m_circleList.at(i).radius, 2*d->m_circleList.at(i).radius);
     }
 }
 
@@ -573,19 +596,27 @@ void DrawDxf::draw_ellipse(QPainterPath &path, double originX, double kx, double
         double endAngle = d->m_ellipseList.at(i).angle2 * 180 / M_PI;
         double spanAngle = get_span_angle(startAngle, endAngle, false);
 
+        QPointF _point1 = coordinate_trans(d->m_ellipseList.at(i).cx, d->m_ellipseList.at(i).cy);
+        QPointF _point2 = coordinate_trans(d->m_ellipseList.at(i).cx - r1, d->m_ellipseList.at(i).cy - k * r1);
+        QRectF rect = QRectF(_point2.x(), _point2.y(), 2 * r1 * d->m_scaleX, 2 * k * r1 * d->m_scaleY);
+
         if(rotateAngle <= 1e-9) {
             qDebug() << "spanAngle" << spanAngle;
-            path.arcMoveTo(kx *(d->m_ellipseList.at(i).cx - r1) + originX,
-                           - ky * (d->m_ellipseList.at(i).cy - k * r1),
-                           2 * kx * r1, 2 * ky * k * r1, 16 * startAngle);
-            path.arcTo(kx *(d->m_ellipseList.at(i).cx - r1) + originX,
-                       - ky * (d->m_ellipseList.at(i).cy - k * r1),
-                       2 * kx * r1, 2 * ky * k * r1,
-                       16 * startAngle, 16 * spanAngle);
+            path.arcMoveTo(rect, - endAngle);
+            path.arcTo(rect, - endAngle, spanAngle);
+//            path.arcMoveTo(kx *(d->m_ellipseList.at(i).cx - r1) + originX,
+//                           - ky * (d->m_ellipseList.at(i).cy - k * r1),
+//                           2 * kx * r1, 2 * ky * k * r1, 16 * startAngle);
+//            path.arcTo(kx *(d->m_ellipseList.at(i).cx - r1) + originX,
+//                       - ky * (d->m_ellipseList.at(i).cy - k * r1),
+//                       2 * kx * r1, 2 * ky * k * r1,
+//                       16 * startAngle, 16 * spanAngle);
         } else {
             QPolygonF pa;
-            createEllipse(pa, RVector(kx * d->m_ellipseList.at(i).cx, - ky * d->m_ellipseList.at(i).cy), r1, k * r1,
-                          rotateAngle, d->m_ellipseList.at(i).angle1, d->m_ellipseList.at(i).angle2, false);
+//            create_ellipse(pa, RVector(_point1.x(), _point1.y()), r1, k * r1,
+//                           rotateAngle, d->m_ellipseList.at(i).angle1, d->m_ellipseList.at(i).angle2, false);
+            create_ellipse(pa, RVector(_point2.x(), _point2.y()), m_Info.fScaleX * r1, k * r1 * m_Info.fScaleY,
+                           rotateAngle, d->m_ellipseList.at(i).angle1, d->m_ellipseList.at(i).angle2, false);
             path.addPolygon(pa);
         }
     }
@@ -623,8 +654,8 @@ void DrawDxf::draw_ellipse(QPainterPath &path, double originX, double kx, double
 //    }
 //}
 
-void DrawDxf::createEllipse(QPolygonF& pa, const RVector& cp, double radius1, double radius2,
-                            double angle, double angle1, double angle2,  bool reversed)
+void DrawDxf::create_ellipse(QPolygonF& pa, const RVector& cp, double radius1, double radius2,
+                             double angle, double angle1, double angle2,  bool reversed)
 {
     const RVector vr(radius1, radius2);
     const RVector rvp(radius2, radius1);
@@ -639,12 +670,12 @@ void DrawDxf::createEllipse(QPolygonF& pa, const RVector& cp, double radius1, do
     }else
         ea2 = ea1 +(reversed ? - dA : dA);
 
-    const RVector angleVector(- angle);
+    const RVector angleVector(angle);
     /*
       draw a new line after tangent changes by 0.01 rad
       ds^2 = (a^2 sin^2 + b^2 cos^2) da^2
       */
-    RVector vp(- ea1);
+    RVector vp(ea1);
     vp.scale(vr);
     vp.rotate(angleVector);
     vp.move(cp);
@@ -652,7 +683,7 @@ void DrawDxf::createEllipse(QPolygonF& pa, const RVector& cp, double radius1, do
     const double minDea = fabs(ea2 - ea1) / 2048;
     // Arc Counterclockwise:
     do {
-        RVector va(- ea1);
+        RVector va(ea1);
         vp = va;
         double r2 = va.scale(rvp).squared();
         if( r2 < 1.5e-15) r2 = RS_TOLERANCE15;
@@ -674,7 +705,7 @@ void DrawDxf::createEllipse(QPolygonF& pa, const RVector& cp, double radius1, do
         pa << QPointF((qreal)vp.x, (qreal)vp.y);
     } while(fabs(angle1 - ea1) < dA);
 
-    vp.set(cos(ea2)*radius1, -sin(ea2)*radius2);
+    vp.set(cos(ea2)*radius1, sin(ea2)*radius2);
     vp.rotate(angleVector);
     vp.move(cp);
     pa << QPointF((qreal)vp.x, (qreal)vp.y);//增加椭圆在angle2的坐标
