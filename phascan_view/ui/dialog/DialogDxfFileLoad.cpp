@@ -144,6 +144,7 @@ void DialogDxfFileLoad::UpdateWeld()
 
 void DialogDxfFileLoad::UpdateDisplay()
 {
+    ui->ExpoView->clear_point();
     ui->ExpoView->update();
 
     switch(m_cPart.weld.eType)

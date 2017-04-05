@@ -35,16 +35,30 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         painter.drawLine(0, height()/2, width(), height()/2);
         painter.drawLine(width()/2, 0, width()/2, height());
 
+        double _zoom = int(m_zoom * 100) / 100;
+
         QPen dxf_pen(pen);
         dxf_pen.setWidth(2);
         dxf_pen.setColor(QColor(0, 255, 0));
+//        dxf_pen.setStyle(Qt::DashLine);
         painter.setPen(dxf_pen);
 
-        double _zoom = int(m_zoom * 100) / 100;
+        if(m_lastPoint.isNull()) {
+            m_lastPoint = QPoint(width() / 2, height() / 2);
+        }
 
+        int x = m_lastPoint.x() + m_endPoint.x() - m_startPoint.x();
+        int y = m_lastPoint.y() + m_endPoint.y() - m_startPoint.y();
+//        painter.drawLine(x, (y - 50) * _zoom, x, (y + 50) * _zoom);//y轴
+//        painter.drawLine((x - 50) * _zoom, y, (x + 50) * _zoom, y);//x轴
+
+//        dxf_pen.setStyle(Qt::SolidLine);
+//        painter.setPen(dxf_pen);
         DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
         drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
-        drawDxf->set(width(), height(), width()/2, height()/2, _zoom, _zoom);
+
+        drawDxf->set(width(), height(), x, y, _zoom, _zoom);
+
         drawDxf->set_part(m_pPart);
         drawDxf->draw_dxf_part(painter);
 
@@ -570,4 +584,35 @@ void QWeldShowWidget::wheelEvent(QWheelEvent *event)
 
     update();
     emit zoom(m_zoom);
+}
+
+void QWeldShowWidget::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        m_lastPoint = m_lastPoint + m_endPoint - m_startPoint;
+        m_startPoint = event->pos();
+    }
+}
+
+void QWeldShowWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if(event->buttons() & Qt::LeftButton){
+        m_endPoint = event->pos();
+        update();
+    }
+}
+
+void QWeldShowWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        m_endPoint = event->pos();
+        update();
+    }
+}
+
+void QWeldShowWidget::clear_point()
+{
+    m_lastPoint = QPoint();
+    m_startPoint = QPoint();
+    m_endPoint = QPoint();
 }
