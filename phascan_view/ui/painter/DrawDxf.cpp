@@ -243,7 +243,7 @@ DrawDxf::~DrawDxf()
     delete d;
 }
 
-int DrawDxf::getDxfData()
+int DrawDxf::get_dxf_data()
 {
     if(m_pPart == NULL)
         return -1;
@@ -351,7 +351,7 @@ void DrawDxf::paint_text(QPainter &painter)
             if(width > 0) {
                 painter.drawText(_point, str);
             } else {
-                QPointF _point1 = coordinate_trans(d->m_textList.at(i).ipx - fontMetrics().width(str) / 2,  d->m_textList.at(i).ipy/* - height*/, false);
+                QPointF _point1 = coordinate_trans(d->m_textList.at(i).ipx - fontMetrics().width(str) / 2, d->m_textList.at(i).ipy/* - height*/, false);
                 QRectF rect = QRectF(_point1.x(), _point1.y(), fontMetrics().width(str) * d->m_scaleX, height * d->m_scaleY);
                 painter.drawText(rect, flagV | flagH, str);
             }
@@ -407,7 +407,7 @@ void DrawDxf::paint_circle(QPainter &painter)
     }
 }
 
-double DrawDxf::calc_rotateAngle(double mx, double my)
+double DrawDxf::calc_rotate_angle(double mx, double my)
 {
     double rotateAngle = 0;
     double m = get_magnitude2D(mx, my);
@@ -436,7 +436,7 @@ void DrawDxf::paint_ellipse(QPainter &painter)
     for(int i = 0; i < d->m_ellipseList.count(); i++){
         double k  = d->m_ellipseList.at(i).ratio;
         double r1 = get_magnitude2D(d->m_ellipseList.at(i).mx, d->m_ellipseList.at(i).my);
-        double rotateAngle = calc_rotateAngle(d->m_ellipseList.at(i).mx, d->m_ellipseList.at(i).my);
+        double rotateAngle = calc_rotate_angle(d->m_ellipseList.at(i).mx, d->m_ellipseList.at(i).my);
         double startAngle = d->m_ellipseList.at(i).angle1 * 180 / M_PI;
         double endAngle = d->m_ellipseList.at(i).angle2 * 180 / M_PI;
         double spanAngle = get_span_angle(startAngle, endAngle, false);
@@ -458,14 +458,14 @@ void DrawDxf::paint_ellipse(QPainter &painter)
     }
 }
 
-int DrawDxf::setPart(PART_CONFIG *pInfo_)
+int DrawDxf::set_part(PART_CONFIG *pInfo_)
 {
     d->clear();
 
     m_pPart = pInfo_;
     m_fThickness = m_pPart->afSize[0];
 
-    int ret = getDxfData();
+    int ret = get_dxf_data();
     return ret;
 }
 
@@ -559,7 +559,7 @@ void DrawDxf::draw_ellipse(QPainterPath &path)
     for(int i = 0; i < d->m_ellipseList.count(); i++){
         double k  = d->m_ellipseList.at(i).ratio;
         double r1 = get_magnitude2D(d->m_ellipseList.at(i).mx, d->m_ellipseList.at(i).my);
-        double rotateAngle = calc_rotateAngle(d->m_ellipseList.at(i).mx, d->m_ellipseList.at(i).my);
+        double rotateAngle = calc_rotate_angle(d->m_ellipseList.at(i).mx, d->m_ellipseList.at(i).my);
         double startAngle = d->m_ellipseList.at(i).angle1 * 180 / M_PI;
         double endAngle = d->m_ellipseList.at(i).angle2 * 180 / M_PI;
         double spanAngle = get_span_angle(startAngle, endAngle, false);

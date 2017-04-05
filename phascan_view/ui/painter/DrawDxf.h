@@ -37,8 +37,8 @@ public:
     explicit DrawDxf(QWidget *parent = 0);
     ~DrawDxf();
     static   DrawDxf* Instance();
-    void SetInfo(DRAW_DXF_INFO info_) {m_Info = info_;}
-    int setPart(PART_CONFIG* pInfo_);
+    void set_info(DRAW_DXF_INFO info_) {m_Info = info_;}
+    int set_part(PART_CONFIG* pInfo_);
     void draw_dxf_part(QPainter& painter);
     void set(double width, double height, double centerX, double centerY, double scaleX, double scaleY);
     void draw_dxf_part(QPainterPath& path);
@@ -68,13 +68,13 @@ private:
     void create_ellipse(QPolygonF& pa, const RVector& cp, double radius1, double radius2,
                         double angle, double angle1, double angle2, int factor);
     double get_span_angle(double angle1, double angle2, bool isRad);
-    double calc_rotateAngle(double mx, double my);
+    double calc_rotate_angle(double mx, double my);
     double get_magnitude2D(double x, double y);
     QString format_text(QString str);
 
     Qt::AlignmentFlag get_v_flag(int flag);
     Qt::AlignmentFlag get_h_flag(int flag);
-    int getDxfData();
+    int get_dxf_data();
     QPointF coordinate_trans(float x_, float y_, bool isRadius);
 
     DrawDxfPrivate *d;

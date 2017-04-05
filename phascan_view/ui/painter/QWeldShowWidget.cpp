@@ -52,8 +52,8 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
         drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
         drawDxf->set(width(), height(), width()/2, height()/2, _zoom, _zoom);
-        drawDxf->setPart(m_pPart);
-        drawDxf->SetInfo(info);
+        drawDxf->set_part(m_pPart);
+        drawDxf->set_info(info);
         drawDxf->draw_dxf_part(painter);
 
     }else if(m_pPart->weld.eType == setup_WELD_NCC){
