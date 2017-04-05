@@ -315,12 +315,19 @@ void DrawDxf::paint_polyLine(QPainter &painter)
     int count = 1;
     for(int i = 0; i < d->m_polyLineList.count(); i++) {
         int number = d->m_polyLineList.at(i).number;
-        for(int j = count; j < number; j++){
+        if(d->m_polyLineList.at(i).flags) {
+            QPointF _point1 = coordinate_trans(d->m_vertexList.at(count + number - 2).x, d->m_vertexList.at(count + number - 2).y, false);
+            QPointF _point2 = coordinate_trans(d->m_vertexList.at(count - 1).x, d->m_vertexList.at(count - 1).y, false);
+            painter.drawLine(_point1, _point2);
+        }
+        int _count = count;
+        for(int j = count; j < _count + number - 1; j++){
             QPointF _point1 = coordinate_trans(d->m_vertexList.at(j - 1).x, d->m_vertexList.at(j - 1).y, false);
             QPointF _point2 = coordinate_trans(d->m_vertexList.at(j).x, d->m_vertexList.at(j).y, false);
             painter.drawLine(_point1, _point2);
             count++;
         }
+        count += 1;
     }
 }
 
