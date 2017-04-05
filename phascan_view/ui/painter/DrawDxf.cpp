@@ -231,11 +231,6 @@ DrawDxf::DrawDxf(QWidget *parent) :
 
     m_pPart      = NULL;
     m_fThickness = 20;
-
-    m_Info.fScaleX = 1;
-    m_Info.fScaleY = 1;
-    m_Info.fX = 0;
-    m_Info.fY = 0;
 }
 
 DrawDxf::~DrawDxf()

@@ -1594,7 +1594,6 @@ void  DopplerViewItems::DrawWeldNcc (QPainterPath& path)
 
 void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
 {
-    DRAW_DXF_INFO _info;
     DplDxf::DrawDxf* pDxfPart = DplDxf::DrawDxf::Instance();
 
     QSize size = m_pDataView->GetViewSize();
@@ -1613,16 +1612,8 @@ void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
     double _x0 = (0 - _fXStart) * _fXScale;
     double _y0 = (0 - _fYStart) * _fYScale;
 
-    _info.fWidth  = _fWidth;
-    _info.fHeight = _fHeight;
-    _info.fX      = _x0;
-    _info.fY      = _y0;
-    _info.fScaleX = _fXScale;
-    _info.fScaleY = _fYScale;
-
     pDxfPart->set_axis_orientation(DplDxf::DrawDxf::Axis_Vertical_Flip);
     pDxfPart->set(_fWidth, _fHeight, _x0, _y0, _fXScale, _fYScale);
     pDxfPart->set_part(&m_cPart);
-    pDxfPart->set_info(_info);
     pDxfPart->draw_dxf_part(path);
 }

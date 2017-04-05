@@ -40,20 +40,12 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         dxf_pen.setColor(QColor(0, 255, 0));
         painter.setPen(dxf_pen);
 
-        DRAW_DXF_INFO info;
         double _zoom = int(m_zoom * 100) / 100;
-        info.fWidth = width();
-        info.fHeight = height();
-        info.fX = width()/2;
-        info.fY = height()/2;
-        info.fScaleX = _zoom;
-        info.fScaleY = _zoom;
 
         DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
         drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
         drawDxf->set(width(), height(), width()/2, height()/2, _zoom, _zoom);
         drawDxf->set_part(m_pPart);
-        drawDxf->set_info(info);
         drawDxf->draw_dxf_part(painter);
 
     }else if(m_pPart->weld.eType == setup_WELD_NCC){

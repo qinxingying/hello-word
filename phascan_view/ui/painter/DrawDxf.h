@@ -9,16 +9,6 @@
 #include <QWidget>
 #include <QPaintEvent>
 
-typedef struct _DRAW_DXF_INFO
-{
-    float fX;
-    float fY;
-    int   fWidth;
-    int   fHeight;
-    float fScaleX;
-    float fScaleY;
-}DRAW_DXF_INFO;
-
 namespace DplDxf {
 
 class DrawDxfPrivate;
@@ -37,14 +27,12 @@ public:
     explicit DrawDxf(QWidget *parent = 0);
     ~DrawDxf();
     static   DrawDxf* Instance();
-    void set_info(DRAW_DXF_INFO info_) {m_Info = info_;}
     int set_part(PART_CONFIG* pInfo_);
     void draw_dxf_part(QPainter& painter);
     void set(double width, double height, double centerX, double centerY, double scaleX, double scaleY);
     void draw_dxf_part(QPainterPath& path);
     void set_axis_orientation(DrawDxf::AxisOrientation value);
 
-    DRAW_DXF_INFO m_Info;
     PART_CONFIG* m_pPart;
     float m_fThickness;
     DplDxf::DrawDxf::AxisOrientation m_axis;
