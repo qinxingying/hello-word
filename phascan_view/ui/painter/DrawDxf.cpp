@@ -441,15 +441,15 @@ void DrawDxf::paint_ellipse(QPainter &painter)
         QRectF rect = QRectF(_point1.x() - _point2.x(), _point1.y() - _point2.y(),
                              2 * r1 * d->m_scaleX, 2 * k * r1 * d->m_scaleY);
 
-        rotate(painter, _point1, - rotateAngle);//以椭圆的中心点为中心旋转
-
         if(m_axis == Axis_Normal) {
+            rotate(painter, _point1, - rotateAngle);//以椭圆的中心点为中心旋转
             painter.drawArc(rect, 16 * startAngle, 16 * spanAngle);
+            rotate(painter, _point1, rotateAngle);
         } else if(m_axis == Axis_Vertical_Flip) {
+            rotate(painter, _point1, rotateAngle);//以椭圆的中心点为中心旋转
             painter.drawArc(rect, - 16 * endAngle, 16 * spanAngle);
+            rotate(painter, _point1, - rotateAngle);
         }
-
-        rotate(painter, _point1, rotateAngle);
     }
 }
 
@@ -545,7 +545,6 @@ void DrawDxf::draw_circle(QPainterPath &path)
         QPointF _point2 = coordinate_trans(r, r, true);
         path.addEllipse(_point1.x() - _point2.x(), _point1.y() - _point2.y(),
                         2 * r * d->m_scaleX, 2 * r * d->m_scaleY);
-
     }
 }
 

@@ -1,7 +1,6 @@
 #ifndef DrawDxf_H
 #define DrawDxf_H
 
-//#include "dxf_data.h"
 #include "dl_creationadapter.h"
 #include "rvector.h"
 #include "Instrument.h"
@@ -66,7 +65,6 @@ private:
     QPointF coordinate_trans(float x_, float y_, bool isRadius);
 
     DrawDxfPrivate *d;
-
 };
 
 }
