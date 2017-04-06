@@ -616,3 +616,9 @@ void QWeldShowWidget::clear_point()
     m_startPoint = QPoint();
     m_endPoint = QPoint();
 }
+
+void QWeldShowWidget::do_zoom_change(double value)
+{
+    m_zoom = value;
+    update();
+}

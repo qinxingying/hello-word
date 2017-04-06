@@ -51,6 +51,9 @@ private:
     QPoint m_endPoint;
     QPoint m_lastPoint;
 
+public slots:
+    void do_zoom_change(double value);
+
 signals:
     void zoom(double v);
 };
