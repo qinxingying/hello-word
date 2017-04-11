@@ -2,6 +2,7 @@
 #define DrawDxf_H
 
 #include "dl_creationadapter.h"
+#include "dxf_headeradapter.h"
 #include "rvector.h"
 #include "Instrument.h"
 
@@ -12,7 +13,9 @@ namespace DplDxf {
 
 class DrawDxfPrivate;
 
-class DrawDxf : public QWidget, public DL_CreationAdapter
+class DrawDxfHeaderPrivate;
+
+class DrawDxf : public QWidget, public DL_CreationAdapter, public Dxf_HeaderAdapter
 {
     Q_OBJECT
 
@@ -28,7 +31,9 @@ public:
     static   DrawDxf* Instance();
     int set_part(PART_CONFIG* pInfo_);
     void draw_dxf_part(QPainter& painter);
+    void draw_dxf_header(QPainter& painter);
     void set(double width, double height, double centerX, double centerY, double scaleX, double scaleY);
+    void draw_dxf_header(QPainterPath& path);
     void draw_dxf_part(QPainterPath& path);
     void set_axis_orientation(DrawDxf::AxisOrientation value);
 
@@ -51,6 +56,14 @@ private:
     void paint_circle(QPainter& painter);
     void paint_ellipse(QPainter& painter);
 
+//    void draw_wcs_axis(QPainterPath& path);
+//    void draw_ucs_axis(QPainterPath& path);
+
+    void paint_wcs_axis(QPainter& painter);
+    void paint_ucs_axis(QPainter& painter);
+
+    int get_dxf_header();
+
     void rotate(QPainter& painter, QPointF point, double angle);
     void create_ellipse(QPolygonF& pa, const RVector& cp, double radius1, double radius2,
                         double angle, double angle1, double angle2, int factor);
@@ -65,6 +78,7 @@ private:
     QPointF coordinate_trans(float x_, float y_, bool isRadius);
 
     DrawDxfPrivate *d;
+    DrawDxfHeaderPrivate *h;
 };
 
 }

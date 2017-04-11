@@ -19,8 +19,7 @@ HEADERS += \
     $$PWD/PoppingTabBar.h \
     $$PWD/PoppingTabWidget.h \
     $$PWD/ProcessDisplay.h \
-    $$PWD/dialog/DialogDxfFileLoad.h \
-    $$PWD/painter/DrawDxfHeader.h
+    $$PWD/dialog/DialogDxfFileLoad.h
 
 
 SOURCES += \
@@ -42,8 +41,7 @@ SOURCES += \
     $$PWD/PoppingTabBar.cpp \
     $$PWD/PoppingTabWidget.cpp \
     $$PWD/ProcessDisplay.cpp \
-    $$PWD/dialog/DialogDxfFileLoad.cpp \
-    $$PWD/painter/DrawDxfHeader.cpp
+    $$PWD/dialog/DialogDxfFileLoad.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \

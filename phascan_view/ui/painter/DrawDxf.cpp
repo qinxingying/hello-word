@@ -1,5 +1,6 @@
 #include "DrawDxf.h"
 #include "dl_dxf.h"
+#include "dxf_header.h"
 
 #include <QPainter>
 #include <QPen>
@@ -213,6 +214,134 @@ void DrawDxfPrivate::clear()
     m_controlPointList.clear();
 }
 
+class DrawDxfHeaderPrivate : public Dxf_HeaderAdapter
+{
+public:
+    DrawDxfHeaderPrivate();
+
+    virtual void add_version(const DXF_HEADER_ACADVER& data);
+    virtual void add_angle_dir(const DXF_HEADER_ANGDIR& data);
+    virtual void add_unit(const DXF_HEADER_INSUNITS& data);
+
+    virtual void add_PUCS_name(const DXF_HEADER_PUCSNAME& data);
+    virtual void add_point_PUCSORG(const DXF_HEADER_PUCSORG& data);
+    virtual void add_point_PUCSXDIR(const DXF_HEADER_PUCSXDIR& data);
+    virtual void add_point_PUCSYDIR(const DXF_HEADER_PUCSYDIR& data);
+
+    virtual void add_UCS_name(const DXF_HEADER_UCSNAME& data);
+    virtual void add_point_UCSORG(const DXF_HEADER_UCSORG& data);
+    virtual void add_point_UCSXDIR(const DXF_HEADER_UCSXDIR& data);
+    virtual void add_point_UCSYDIR(const DXF_HEADER_UCSYDIR& data);
+
+    virtual void add_line_scale(const DXF_HEADER_LTSCALE& data);
+    void clear();
+
+    QList<DXF_HEADER_ACADVER> m_dataACadVer;
+    QList<DXF_HEADER_ANGDIR> m_dataAngDir;
+    QList<DXF_HEADER_INSUNITS> m_dataInsUnits;
+    QList<DXF_HEADER_PUCSNAME> m_dataPUCSName;
+    QList<DXF_HEADER_PUCSORG> m_dataPUCSOrg;
+    QList<DXF_HEADER_PUCSXDIR> m_dataPUCSXDir;
+    QList<DXF_HEADER_PUCSYDIR> m_dataPUCSYDir;
+    QList<DXF_HEADER_UCSNAME> m_dataUCSName;
+    QList<DXF_HEADER_UCSORG> m_dataUCSOrg;
+    QList<DXF_HEADER_UCSXDIR> m_dataUCSXDir;
+    QList<DXF_HEADER_UCSYDIR> m_dataUCSYDir;
+    QList<DXF_HEADER_LTSCALE> m_dataLtScale;
+};
+
+DrawDxfHeaderPrivate::DrawDxfHeaderPrivate()
+{
+}
+
+void DrawDxfHeaderPrivate::add_version(const DXF_HEADER_ACADVER& data)
+{
+    m_dataACadVer.append(data);
+    qDebug()<<"\n *****ACADVER(1)*****\n --- version = "<<data.version.c_str();
+}
+
+void DrawDxfHeaderPrivate::add_angle_dir(const DXF_HEADER_ANGDIR& data)
+{
+    m_dataAngDir.append(data);
+    qDebug()<<"\n *****ANGDIR(2)*****\n --- flag = "<<data.flags;
+}
+
+void DrawDxfHeaderPrivate::add_unit(const DXF_HEADER_INSUNITS& data)
+{
+    m_dataInsUnits.append(data);
+    qDebug()<<"\n *****INSUNITS(3)*****\n --- flag = ("<<data.flags;
+}
+
+void DrawDxfHeaderPrivate::add_PUCS_name(const DXF_HEADER_PUCSNAME& data)
+{
+    m_dataPUCSName.append(data);
+    qDebug()<<"\n *******PUCSNAME(4)********\n --- name = ("<<data.name.c_str();
+}
+
+void DrawDxfHeaderPrivate::add_point_PUCSORG(const DXF_HEADER_PUCSORG& data)
+{
+    m_dataPUCSOrg.append(data);
+    qDebug()<<"\n *******PUCSORG(5)********\n --- x, y, z ="<<data.x<<data.y<<data.z;
+}
+
+void DrawDxfHeaderPrivate::add_point_PUCSXDIR(const DXF_HEADER_PUCSXDIR& data)
+{
+    m_dataPUCSXDir.append(data);
+    qDebug()<<"\n *******PUCSXDIR(6)********\n ---x, y, z ="<<data.x<<data.y<<data.z;
+}
+
+void DrawDxfHeaderPrivate::add_point_PUCSYDIR(const DXF_HEADER_PUCSYDIR& data)
+{
+    m_dataPUCSYDir.append(data);
+    qDebug()<<"\n *******PUCSYDIR(7)********\n ---x, y, z ="<<data.x<<data.y<<data.z;
+}
+
+void DrawDxfHeaderPrivate::add_UCS_name(const DXF_HEADER_UCSNAME& data)
+{
+    m_dataUCSName.append(data);
+    qDebug()<<"\n *******UCSNAME(8)********\n ---name ="<<data.name.c_str();
+}
+
+void DrawDxfHeaderPrivate::add_point_UCSORG(const DXF_HEADER_UCSORG& data)
+{
+    m_dataUCSOrg.append(data);
+    qDebug()<<"\n *****UCSORG(9)****\n ---x, y, z ="<<data.x<<data.y<<data.z;
+}
+
+void DrawDxfHeaderPrivate::add_point_UCSXDIR(const DXF_HEADER_UCSXDIR& data)
+{
+    m_dataUCSXDir.append(data);
+    qDebug()<<"\n *****UCSXDIR(10)****\n ---x, y, z ="<<data.x<<data.y<<data.z;
+}
+
+void DrawDxfHeaderPrivate::add_point_UCSYDIR(const DXF_HEADER_UCSYDIR& data)
+{
+    m_dataUCSYDir.append(data);
+    qDebug()<<"\n *****UCSYDIR(11)****\n ---x,y,z,w ="<<data.x<<data.y<<data.z;
+}
+
+void DrawDxfHeaderPrivate::add_line_scale(const DXF_HEADER_LTSCALE& data)
+{
+    m_dataLtScale.append(data);
+    qDebug()<<"\n *****LTSCALE***\n ---lineScale ="<<data.lineScale;
+}
+
+void DrawDxfHeaderPrivate::clear()
+{
+    m_dataACadVer.clear();
+    m_dataAngDir.clear();
+    m_dataInsUnits.clear();
+    m_dataPUCSName.clear();
+    m_dataPUCSOrg.clear();
+    m_dataPUCSXDir.clear();
+    m_dataPUCSYDir.clear();
+    m_dataUCSName.clear();
+    m_dataUCSOrg.clear();
+    m_dataUCSXDir.clear();
+    m_dataUCSYDir.clear();
+    m_dataLtScale.clear();
+}
+
 DrawDxf * g_pDrawDxf = NULL;
 DrawDxf *DrawDxf::Instance()
 {
@@ -224,18 +353,17 @@ DrawDxf *DrawDxf::Instance()
 
 DrawDxf::DrawDxf(QWidget *parent) :
     QWidget(parent),
-    d(new DrawDxfPrivate())
+    d(new DrawDxfPrivate()),
+    h(new DrawDxfHeaderPrivate())
 {
     m_pPart = NULL;
-    m_fThickness = 20;
-
-    m_pPart      = NULL;
     m_fThickness = 20;
 }
 
 DrawDxf::~DrawDxf()
 {
     delete d;
+    delete h;
 }
 
 int DrawDxf::get_dxf_data()
@@ -247,6 +375,22 @@ int DrawDxf::get_dxf_data()
 
     QString dxfFile = m_pPart->strPartFile;
     if (!dxf.in(dxfFile.toLatin1().data(), d)) {
+        qDebug()<<"could not be opened";
+        return -1;
+    }
+
+    return 0;
+}
+
+int DrawDxf::get_dxf_header()
+{
+    if(m_pPart == NULL)
+        return -1;
+
+    DxfHeader header;
+
+    QString dxfFile = m_pPart->strPartFile;
+    if (!header.in(dxfFile.toLatin1().data(), h)) {
         qDebug()<<"could not be opened";
         return -1;
     }
@@ -460,6 +604,156 @@ void DrawDxf::paint_ellipse(QPainter &painter)
     }
 }
 
+void DrawDxf::draw_dxf_header(QPainter &painter)
+{
+
+    paint_wcs_axis(painter);
+
+    paint_ucs_axis(painter);
+}
+
+void DrawDxf::paint_wcs_axis(QPainter &painter)
+{
+    if(!h->m_dataPUCSOrg.isEmpty()) {
+        for(int i = 0; i < h->m_dataPUCSOrg.count(); i ++) {
+            double x0 = h->m_dataPUCSOrg.at(i).x;
+            double y0 = h->m_dataPUCSOrg.at(i).y;
+            double x1 = x0 + 100 * h->m_dataPUCSXDir.at(i).x;
+            double y1 = y0 + 100 * h->m_dataPUCSXDir.at(i).y;
+            double x2 = x0 + 100 * h->m_dataPUCSYDir.at(i).x;
+            double y2 = y0 + 100 * h->m_dataPUCSYDir.at(i).y;
+
+            QPointF _point1 = coordinate_trans(x0, y0, false);
+            QPointF _point2 = coordinate_trans(x1, y1, false);
+            QPointF _point3 = coordinate_trans(x2, y2, false);
+
+            painter.drawLine(_point1, _point2); // X Axis
+            painter.drawLine(_point1, _point3); // Y Axis
+
+            painter.drawLine(coordinate_trans(x1 - 5, y1 + 5, false), _point2);
+            painter.drawLine(coordinate_trans(x1 - 5, y1 - 5, false), _point2);
+
+            painter.drawLine(coordinate_trans(x2 - 5, y2 - 5, false), _point3);
+            painter.drawLine(coordinate_trans(x2 + 5, y2 - 5, false), _point3);
+        }
+    }
+}
+
+void DrawDxf::paint_ucs_axis(QPainter &painter)
+{
+    if(!h->m_dataUCSOrg.isEmpty()) {
+        for(int i = 0; i < h->m_dataUCSOrg.count(); i ++) {
+            double x0 = h->m_dataUCSOrg.at(i).x;
+            double y0 = h->m_dataUCSOrg.at(i).y;
+            double x1 = x0 + 100 * h->m_dataUCSXDir.at(i).x;
+            double y1 = y0 + 100 * h->m_dataUCSXDir.at(i).y;
+            double x2 = x0 + 100 * h->m_dataUCSYDir.at(i).x;
+            double y2 = y0 + 100 * h->m_dataUCSYDir.at(i).y;
+
+            QPointF _point1 = coordinate_trans(x0, y0, false);
+            QPointF _point2 = coordinate_trans(x1, y1, false);
+            QPointF _point3 = coordinate_trans(x2, y2, false);
+
+            painter.drawLine(_point1, _point2); // X Axis
+            painter.drawLine(_point1, _point3); // Y Axis
+
+            /* X Axis Arrow */
+            painter.drawLine(coordinate_trans(x1 - 5, y1 + 5, false), _point2);
+            painter.drawLine(coordinate_trans(x1 - 5, y1 - 5, false), _point2);
+
+            /* Y Axis Arrow */
+            if(h->m_dataPUCSYDir.at(i).y * h->m_dataUCSYDir.at(i).y < 0) {
+                painter.drawLine(coordinate_trans(x2 - 5, y2 + 5, false), _point3);
+                painter.drawLine(coordinate_trans(x2 + 5, y2 + 5, false), _point3);
+            } else {
+                painter.drawLine(coordinate_trans(x2 - 5, y2 - 5, false), _point3);
+                painter.drawLine(coordinate_trans(x2 + 5, y2 - 5, false), _point3);
+            }
+
+            /* Text */
+            painter.drawText(coordinate_trans(x1, y0 - 10, false), "X");
+            painter.drawText(coordinate_trans(x0 + 10, y2, false), "Y");
+            painter.drawText(coordinate_trans(x0 + 5, y0 - 10, false), "UCS");
+        }
+    }
+}
+
+void DrawDxf::draw_dxf_header(QPainterPath &path)
+{
+//    draw_wcs_axis(path);
+
+//    draw_ucs_axis(path);
+}
+
+//void DrawDxf::draw_wcs_axis(QPainterPath &path)
+//{
+//    if(!h->m_dataPUCSOrg.isEmpty()) {
+//        for(int i = 0; i < h->m_dataPUCSOrg.count(); i ++) {
+//            double x0 = h->m_dataPUCSOrg.at(i).x;
+//            double y0 = h->m_dataPUCSOrg.at(i).y;
+//            double x1 = x0 + 100 * h->m_dataPUCSXDir.at(i).x;
+//            double y1 = y0 + 100 * h->m_dataPUCSXDir.at(i).y;
+//            double x2 = x0 + 100 * h->m_dataPUCSYDir.at(i).x;
+//            double y2 = y0 + 100 * h->m_dataPUCSYDir.at(i).y;
+
+//            QPointF _point1 = coordinate_trans(x0, y0, false);
+//            QPointF _point2 = coordinate_trans(x1, y1, false);
+//            QPointF _point3 = coordinate_trans(x2, y2, false);
+
+//            path.moveTo(_point1);
+//            path.lineTo(_point2); // X Axis
+//            path.moveTo(_point1);
+//            path.lineTo(_point3); // Y Axis
+
+//            path.moveTo(coordinate_trans(x1 - 5, y1 + 5, false));
+//            path.lineTo(_point2);
+//            path.lineTo(coordinate_trans(x1 - 5, y1 - 5, false));
+
+//            path.moveTo(coordinate_trans(x2 - 5, y2 - 5, false));
+//            path.lineTo(_point3);
+//            path.lineTo(coordinate_trans(x2 + 5, y2 - 5, false));
+
+//        }
+//    }
+//}
+
+//void DrawDxf::draw_ucs_axis(QPainterPath &path)
+//{
+//    if(!h->m_dataUCSOrg.isEmpty()) {
+//        for(int i = 0; i < h->m_dataUCSOrg.count(); i ++) {
+//            double x0 = h->m_dataUCSOrg.at(i).x;
+//            double y0 = h->m_dataUCSOrg.at(i).y;
+//            double x1 = x0 + 100 * h->m_dataUCSXDir.at(i).x;
+//            double y1 = y0 + 100 * h->m_dataUCSXDir.at(i).y;
+//            double x2 = x0 + 100 * h->m_dataUCSYDir.at(i).x;
+//            double y2 = y0 + 100 * h->m_dataUCSYDir.at(i).y;
+
+//            QPointF _point1 = coordinate_trans(x0, y0, false);
+//            QPointF _point2 = coordinate_trans(x1, y1, false);
+//            QPointF _point3 = coordinate_trans(x2, y2, false);
+
+//            path.moveTo(_point1);
+//            path.lineTo(_point2);// X Axis
+//            path.moveTo(_point1);
+//            path.lineTo( _point3);// Y Axis
+
+//            path.moveTo(coordinate_trans(x1 - 5, y1 + 5, false));
+//            path.lineTo(_point2);
+//            path.lineTo(coordinate_trans(x1 - 5, y1 - 5, false));
+
+//            if(h->m_dataPUCSYDir.at(i).y * h->m_dataUCSYDir.at(i).y < 0) {
+//                path.moveTo(coordinate_trans(x2 - 5, y2 + 5, false));
+//                path.lineTo(_point3);
+//                path.lineTo(coordinate_trans(x2 + 5, y2 + 5, false));
+//            } else {
+//                path.moveTo(coordinate_trans(x2 - 5, y2 - 5, false));
+//                path.lineTo(_point3);
+//                path.lineTo(coordinate_trans(x2 + 5, y2 - 5, false));
+//            }
+//        }
+//    }
+//}
+
 int DrawDxf::set_part(PART_CONFIG *pInfo_)
 {
     d->clear();
@@ -468,7 +762,9 @@ int DrawDxf::set_part(PART_CONFIG *pInfo_)
     m_fThickness = m_pPart->afSize[0];
 
     int ret = get_dxf_data();
-    return ret;
+    int ret_ = get_dxf_header();
+
+    return ret & ret_;
 }
 
 void DrawDxf::draw_dxf_part(QPainterPath &path)
@@ -508,16 +804,36 @@ void DrawDxf::draw_line(QPainterPath &path)
 
 void DrawDxf::draw_polyLine(QPainterPath& path)
 {
+//    int count = 1;
+//    for(int i = 0; i < d->m_polyLineList.count(); i++) {
+//        int number = d->m_polyLineList.at(i).number;
+//        for(int j = count; j < number; j++){
+//            QPointF _point1 = coordinate_trans(d->m_vertexList.at(j - 1).x, d->m_vertexList.at(j - 1).y, false);
+//            QPointF _point2 = coordinate_trans(d->m_vertexList.at(j).x, d->m_vertexList.at(j).y, false);
+//            path.moveTo(_point1);
+//            path.lineTo(_point2);
+//            count++;
+//        }
+//    }
+
     int count = 1;
     for(int i = 0; i < d->m_polyLineList.count(); i++) {
         int number = d->m_polyLineList.at(i).number;
-        for(int j = count; j < number; j++){
+        if(d->m_polyLineList.at(i).flags & 0x1) {
+            QPointF _point1 = coordinate_trans(d->m_vertexList.at(count + number - 2).x, d->m_vertexList.at(count + number - 2).y, false);
+            QPointF _point2 = coordinate_trans(d->m_vertexList.at(count - 1).x, d->m_vertexList.at(count - 1).y, false);
+            path.moveTo(_point1);
+            path.lineTo(_point2);
+        }
+        int _count = count;
+        for(int j = count; j < _count + number - 1; j++){
             QPointF _point1 = coordinate_trans(d->m_vertexList.at(j - 1).x, d->m_vertexList.at(j - 1).y, false);
             QPointF _point2 = coordinate_trans(d->m_vertexList.at(j).x, d->m_vertexList.at(j).y, false);
             path.moveTo(_point1);
             path.lineTo(_point2);
             count++;
         }
+        count += 1;
     }
 }
 

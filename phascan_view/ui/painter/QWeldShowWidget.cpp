@@ -44,25 +44,19 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 
         int x = m_lastPoint.x() + m_endPoint.x() - m_startPoint.x();
         int y = m_lastPoint.y() + m_endPoint.y() - m_startPoint.y();
-        qDebug() << "1";
-        DplDxf::DrawDxfHeader* drawDxfHeader = DplDxf::DrawDxfHeader::Instance();
-        qDebug() << "2";
-        drawDxfHeader->set_axis_orientation(DplDxf::DrawDxfHeader::Axis_Normal);
-        qDebug() << "3";
-        drawDxfHeader->set(width(), height(), x, y, _zoom, _zoom);
-        qDebug() << "4";
-        drawDxfHeader->set_part(m_pPart);
-        qDebug() << "5";
-        drawDxfHeader->draw_dxf_header(painter);
+//        DplDxf::DrawDxfHeader* drawDxfHeader = DplDxf::DrawDxfHeader::Instance();
+//        drawDxfHeader->set_axis_orientation(DplDxf::DrawDxfHeader::Axis_Normal);
+//        drawDxfHeader->set(width(), height(), x, y, _zoom, _zoom);
+//        drawDxfHeader->set_part(m_pPart);
+//        drawDxfHeader->draw_dxf_header(painter);
 
-//        DplDxf::DxfHeader header;
-//        QString file = m_pPart->strPartFile;
-//        if (!header.in(file.toLatin1().data(),)) {
-//            qDebug()<<"could not be opened";
-//            return;
-//        }
+        DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
+        drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
 
+        drawDxf->set(width(), height(), x, y, _zoom, _zoom);
 
+        drawDxf->set_part(m_pPart);
+        drawDxf->draw_dxf_header(painter);
 
         QPen dxf_pen(pen);
         dxf_pen.setWidth(2);
@@ -76,12 +70,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 
 //        dxf_pen.setStyle(Qt::SolidLine);
 //        painter.setPen(dxf_pen);
-        DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
-        drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
 
-        drawDxf->set(width(), height(), x, y, _zoom, _zoom);
-
-        drawDxf->set_part(m_pPart);
         drawDxf->draw_dxf_part(painter);
 
     }else if(m_pPart->weld.eType == setup_WELD_NCC){
