@@ -2,6 +2,7 @@
 #include "gHeader.h"
 #include "DopplerPart.h"
 #include "DrawDxf.h"
+#include "DrawDxfHeader.h"
 
 #include <QPointF>
 
@@ -32,16 +33,10 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         NewPen.setDashPattern(dashes);
         NewPen.setColor(QColor(0, 0, 255));
         painter.setPen(NewPen);
-        painter.drawLine(0, height()/2, width(), height()/2);
-        painter.drawLine(width()/2, 0, width()/2, height());
+//        painter.drawLine(0, height()/2, width(), height()/2);
+//        painter.drawLine(width()/2, 0, width()/2, height());
 
         double _zoom = int(m_zoom * 100) / 100;
-
-        QPen dxf_pen(pen);
-        dxf_pen.setWidth(2);
-        dxf_pen.setColor(QColor(0, 255, 0));
-//        dxf_pen.setStyle(Qt::DashLine);
-        painter.setPen(dxf_pen);
 
         if(m_lastPoint.isNull()) {
             m_lastPoint = QPoint(width() / 2, height() / 2);
@@ -49,6 +44,33 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 
         int x = m_lastPoint.x() + m_endPoint.x() - m_startPoint.x();
         int y = m_lastPoint.y() + m_endPoint.y() - m_startPoint.y();
+        qDebug() << "1";
+        DplDxf::DrawDxfHeader* drawDxfHeader = DplDxf::DrawDxfHeader::Instance();
+        qDebug() << "2";
+        drawDxfHeader->set_axis_orientation(DplDxf::DrawDxfHeader::Axis_Normal);
+        qDebug() << "3";
+        drawDxfHeader->set(width(), height(), x, y, _zoom, _zoom);
+        qDebug() << "4";
+        drawDxfHeader->set_part(m_pPart);
+        qDebug() << "5";
+        drawDxfHeader->draw_dxf_header(painter);
+
+//        DplDxf::DxfHeader header;
+//        QString file = m_pPart->strPartFile;
+//        if (!header.in(file.toLatin1().data(),)) {
+//            qDebug()<<"could not be opened";
+//            return;
+//        }
+
+
+
+        QPen dxf_pen(pen);
+        dxf_pen.setWidth(2);
+        dxf_pen.setColor(QColor(0, 255, 0));
+//        dxf_pen.setStyle(Qt::DashLine);
+        painter.setPen(dxf_pen);
+
+
 //        painter.drawLine(x, (y - 50) * _zoom, x, (y + 50) * _zoom);//y轴
 //        painter.drawLine((x - 50) * _zoom, y, (x + 50) * _zoom, y);//x轴
 
