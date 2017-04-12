@@ -833,18 +833,6 @@ void DrawDxf::draw_line(QPainterPath &path)
 
 void DrawDxf::draw_polyLine(QPainterPath& path)
 {
-//    int count = 1;
-//    for(int i = 0; i < d->m_polyLineList.count(); i++) {
-//        int number = d->m_polyLineList.at(i).number;
-//        for(int j = count; j < number; j++){
-//            QPointF _point1 = coordinate_trans(d->m_vertexList.at(j - 1).x, d->m_vertexList.at(j - 1).y, false);
-//            QPointF _point2 = coordinate_trans(d->m_vertexList.at(j).x, d->m_vertexList.at(j).y, false);
-//            path.moveTo(_point1);
-//            path.lineTo(_point2);
-//            count++;
-//        }
-//    }
-
     int count = 1;
     for(int i = 0; i < d->m_polyLineList.count(); i++) {
         int number = d->m_polyLineList.at(i).number;
@@ -908,6 +896,13 @@ void DrawDxf::draw_ellipse(QPainterPath &path)
         double rotateAngle = calc_rotate_angle(d->m_ellipseList.at(i).mx, d->m_ellipseList.at(i).my);
         double startAngle = d->m_ellipseList.at(i).angle1 * 180 / M_PI;
         double endAngle = d->m_ellipseList.at(i).angle2 * 180 / M_PI;
+
+        if (d->m_ellipseList.at(i).ez <= -0.999999) {
+            double tmp = startAngle;
+            startAngle = 360 - endAngle;
+            endAngle = 360 - tmp;
+        }
+
         double spanAngle = get_span_angle(startAngle, endAngle, false);
 
         QPointF _point1 = coordinate_trans(d->m_ellipseList.at(i).cx, d->m_ellipseList.at(i).cy, false);
@@ -928,11 +923,11 @@ void DrawDxf::draw_ellipse(QPainterPath &path)
             if(m_axis == Axis_Normal) {
                 create_ellipse(pa, RVector(_point1.x(), _point1.y()),
                                r1 * d->m_scaleX, k * r1 * d->m_scaleY,
-                               rotateAngle, d->m_ellipseList.at(i).angle1, d->m_ellipseList.at(i).angle2, -1);
+                               rotateAngle, startAngle * M_PI / 180, endAngle * M_PI / 180, -1);
             } else if(m_axis == Axis_Vertical_Flip) {
                 create_ellipse(pa, RVector(_point1.x(), _point1.y()),
                                r1 * d->m_scaleX, k * r1 * d->m_scaleY,
-                               rotateAngle, d->m_ellipseList.at(i).angle1, d->m_ellipseList.at(i).angle2, 1);
+                               rotateAngle, startAngle * M_PI / 180, endAngle * M_PI / 180, 1);
             }
             path.addPolygon(pa);
         }
