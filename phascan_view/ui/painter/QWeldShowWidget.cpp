@@ -26,7 +26,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
     painter.setPen(NewPen);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    if(m_pPart->weld.eType == setup_WELD_DXF){
+    if(m_pPart->weld.eType == setup_WELD_DXF) {
         QVector<qreal> dashes;
         dashes << 3 << 5;
         NewPen.setWidth(1);
@@ -51,11 +51,12 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 //        drawDxfHeader->draw_dxf_header(painter);
 
         DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
+        drawDxf->set_part(m_pPart);
         drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
 
         drawDxf->set(width(), height(), x, y, _zoom, _zoom);
 
-        drawDxf->set_part(m_pPart);
+
         drawDxf->draw_dxf_header(painter);
 
         QPen dxf_pen(pen);
@@ -73,7 +74,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 
         drawDxf->draw_dxf_part(painter);
 
-    }else if(m_pPart->weld.eType == setup_WELD_NCC){
+    } else if(m_pPart->weld.eType == setup_WELD_NCC) {
         DRAW_PART_INFO info;
         info.fWidth = m_cRange.fWidth;
         info.fHeight = m_cRange.fHeight;
@@ -97,7 +98,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 
         _pPart->DrawOriginLine(painter);
 
-    }else{
+    } else {
         painter.drawLine (0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
         painter.drawLine (0, m_cRange.fStopY, m_cRange.fWidth, m_cRange.fStopY);
 

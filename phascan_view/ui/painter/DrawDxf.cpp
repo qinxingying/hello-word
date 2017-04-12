@@ -658,8 +658,13 @@ void DrawDxf::paint_ucs_axis(QPainter &painter)
             painter.drawLine(_point1, _point3); // Y Axis
 
             /* X Axis Arrow */
-            painter.drawLine(coordinate_trans(x1 - 5, y1 + 5, false), _point2);
-            painter.drawLine(coordinate_trans(x1 - 5, y1 - 5, false), _point2);
+            if(h->m_dataPUCSXDir.at(i).x * h->m_dataUCSXDir.at(i).x < 0) {
+                painter.drawLine(coordinate_trans(x1 + 5, y1 + 5, false), _point2);
+                painter.drawLine(coordinate_trans(x1 + 5, y1 - 5, false), _point2);
+            } else {
+                painter.drawLine(coordinate_trans(x1 - 5, y1 + 5, false), _point2);
+                painter.drawLine(coordinate_trans(x1 - 5, y1 - 5, false), _point2);
+            }
 
             /* Y Axis Arrow */
             if(h->m_dataPUCSYDir.at(i).y * h->m_dataUCSYDir.at(i).y < 0) {
@@ -757,6 +762,7 @@ void DrawDxf::draw_dxf_header(QPainterPath &path)
 int DrawDxf::set_part(PART_CONFIG *pInfo_)
 {
     d->clear();
+    h->clear();
 
     m_pPart = pInfo_;
     m_fThickness = m_pPart->afSize[0];
@@ -995,26 +1001,48 @@ QPointF DrawDxf::coordinate_trans(float x_, float y_, bool isRadius)
 {
     float _fX;
     float _fY;
+    float _fX0;
+    float _fY0;
 
     float _fScaleX = d->m_scaleX;
     float _fScaleY = d->m_scaleY;
-    float     _fX0 = d->m_centerX;
-    float     _fY0 = d->m_centerY;
+//    if(h->m_dataUCSOrg.isEmpty()) {
+        _fX0 = d->m_centerX;
+        _fY0 = d->m_centerY;
+//    } else {
+//        _fX0 = d->m_centerX - h->m_dataUCSOrg.at(0).x;
+//        _fY0 = d->m_centerY + h->m_dataUCSOrg.at(0).y;
+//    }
+
 
     if(isRadius) {
         _fX = x_ * _fScaleX;
         _fY = y_ * _fScaleY;
     } else {
-        //QPainter中坐标系统的第一象限相当于数学坐标中的第四象限
-        if(m_axis == Axis_Normal) {
-            _fX = x_ * _fScaleX + _fX0;
-            _fY = - y_ * _fScaleY + _fY0;//x不变，y轴上下翻转
-        } else if(m_axis == Axis_Vertical_Flip){
-            _fX = x_ * _fScaleX + _fX0;
-            _fY = y_ * _fScaleY + _fY0;//x不变，y不变
-        } else {
-            _fX = - x_ * _fScaleX + _fX0;
-            _fY = - y_ * _fScaleY + _fY0;//x轴左右翻转，y轴上下翻转
+        double x0 = 0.0;
+        double y0 = 0.0;
+        if(!h->m_dataUCSOrg.isEmpty()) {
+            x0 = h->m_dataUCSOrg.at(0).x;
+            y0 = h->m_dataUCSOrg.at(0).y;
+        }
+        switch (m_axis) {
+        case Axis_Normal:
+            _fX = (x_ - x0) * _fScaleX + _fX0;
+            _fY = (- y_ + y0) * _fScaleY + _fY0;//x不变，y轴上下翻转
+            break;
+        case Axis_Vertical_Flip:
+            _fX = (x_ - x0) * _fScaleX + _fX0;
+            _fY = (y_ - y0) * _fScaleY + _fY0;//x不变，y不变
+            break;
+        case Axis_Horizontal_Flip:
+            _fX = (- x_ + x0) * _fScaleX + _fX0;
+            _fY = (- y_ + y0) * _fScaleY + _fY0;//x轴左右翻转，y轴上下翻转
+            break;
+        case Axis_Rotate_180:
+            _fX = (- x_ + x0) * _fScaleX + _fX0;
+            _fY = (y_ - y0) * _fScaleY + _fY0;//x轴左右翻转，y不变
+        default:
+            break;
         }
     }
 
@@ -1029,8 +1057,32 @@ void DrawDxf::set(double width, double height, double centerX, double centerY, d
 {
     d->m_width = width;
     d->m_height = height;
-    d->m_centerX = centerX;
-    d->m_centerY = centerY;
+    qDebug() << "m_axis" << m_axis;
+//    if(h->m_dataUCSOrg.isEmpty()) {
+        d->m_centerX = centerX;
+        d->m_centerY = centerY;
+//    } else {
+//        switch (m_axis) {
+//        case Axis_Normal:
+//            d->m_centerX = centerX - h->m_dataUCSOrg.at(0).x;
+//            d->m_centerY = centerY + h->m_dataUCSOrg.at(0).y;
+//            break;
+//        case Axis_Vertical_Flip:
+//            d->m_centerX = centerX - h->m_dataUCSOrg.at(0).x;
+//            d->m_centerY = centerY - h->m_dataUCSOrg.at(0).y;
+//            break;
+//        case Axis_Horizontal_Flip:
+//            d->m_centerX = centerX + h->m_dataUCSOrg.at(0).x;
+//            d->m_centerY = centerY + h->m_dataUCSOrg.at(0).y;
+//            break;
+//        case Axis_Rotate_180:
+//            d->m_centerX = centerX + h->m_dataUCSOrg.at(0).x;
+//            d->m_centerY = centerY - h->m_dataUCSOrg.at(0).y;
+//        default:
+//            break;
+//        }
+//    }
+
     d->m_scaleX = scaleX;
     d->m_scaleY = scaleY;
 }
@@ -1077,6 +1129,29 @@ void DrawDxf::set_axis_orientation(DrawDxf::AxisOrientation value)
     m_axis = value;
 }
 
+void DrawDxf::set_axis_orientation_s_scan(DrawDxf::AxisOrientation value)
+{
+    if(h->m_dataUCSOrg.isEmpty()) {
+        m_axis = value;
+    } else {
+        double x = h->m_dataUCSXDir.at(0).x;
+        double y = h->m_dataUCSYDir.at(0).y;
+        if(x > 0 && y > 0) {
+//            m_axis = Axis_Normal;
+            m_axis = Axis_Vertical_Flip;
+        } else if(x > 0 && y < 0) {
+//            m_axis = Axis_Vertical_Flip;
+            m_axis = Axis_Normal;
+        } else if(x < 0 && y > 0) {
+//            m_axis = Axis_Horizontal_Flip;
+            m_axis = Axis_Rotate_180;
+        } else {
+//            m_axis = Axis_Rotate_180;
+            m_axis = Axis_Horizontal_Flip;
+        }
+    }
+}
+
 void DrawDxf::rotate(QPainter &painter, QPointF point, double angle)
 {
     if(fabs(angle) > 1e-9) {
@@ -1085,5 +1160,6 @@ void DrawDxf::rotate(QPainter &painter, QPointF point, double angle)
         painter.translate(- point.x(), - point.y());
     }
 }
+
 
 }

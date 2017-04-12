@@ -1612,8 +1612,11 @@ void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
     double _x0 = (0 - _fXStart) * _fXScale;
     double _y0 = (0 - _fYStart) * _fYScale;
 
-    pDxfPart->set_axis_orientation(DplDxf::DrawDxf::Axis_Vertical_Flip);
-    pDxfPart->set(_fWidth, _fHeight, _x0, _y0, _fXScale, _fYScale);
     pDxfPart->set_part(&m_cPart);
+    pDxfPart->set_axis_orientation_s_scan(DplDxf::DrawDxf::Axis_Vertical_Flip);
+    pDxfPart->set(_fWidth, _fHeight, _x0, _y0, _fXScale, _fYScale);
+//    pDxfPart->set(_fWidth, _fHeight, _x0, _y0, 1, 1);
+//    pDxfPart->set(_fWidth, _fHeight, 425, 425, 1, 1);
+
     pDxfPart->draw_dxf_part(path);
 }

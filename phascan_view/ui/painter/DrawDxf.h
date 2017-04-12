@@ -23,7 +23,8 @@ public:
     enum AxisOrientation {
         Axis_Normal,
         Axis_Vertical_Flip,
-        Axis_Horizontal_Flip
+        Axis_Horizontal_Flip,
+        Axis_Rotate_180
     };
 
     explicit DrawDxf(QWidget *parent = 0);
@@ -36,6 +37,7 @@ public:
     void draw_dxf_header(QPainterPath& path);
     void draw_dxf_part(QPainterPath& path);
     void set_axis_orientation(DrawDxf::AxisOrientation value);
+    void set_axis_orientation_s_scan(DrawDxf::AxisOrientation value);
 
     PART_CONFIG* m_pPart;
     float m_fThickness;
