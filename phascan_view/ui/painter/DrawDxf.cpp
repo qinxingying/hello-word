@@ -402,7 +402,7 @@ void DrawDxf::draw_dxf_part(QPainter &painter)
 {
     paint_line(painter);
 
-    paint_text(painter);
+//    paint_text(painter);
 
     paint_arc(painter);
 
@@ -422,12 +422,12 @@ void DrawDxf::paint_point(QPainter &painter)
         }
     }
 
-    if(d->m_controlPointList.size() > 0){
-        for(int i = 0; i < d->m_controlPointList.count(); i++){
-            QPointF _point = coordinate_trans(d->m_controlPointList.at(i).x, d->m_controlPointList.at(i).y, false);
-            painter.drawPoint(_point);
-        }
-    }
+//    if(d->m_controlPointList.size() > 0){
+//        for(int i = 0; i < d->m_controlPointList.count(); i++){
+//            QPointF _point = coordinate_trans(d->m_controlPointList.at(i).x, d->m_controlPointList.at(i).y, false);
+//            painter.drawPoint(_point);
+//        }
+//    }
 
     if(d->m_pointList.size() > 0){
         for(int i = 0; i < d->m_pointList.count(); i++){
@@ -585,12 +585,21 @@ void DrawDxf::paint_ellipse(QPainter &painter)
         double rotateAngle = calc_rotate_angle(d->m_ellipseList.at(i).mx, d->m_ellipseList.at(i).my);
         double startAngle = d->m_ellipseList.at(i).angle1 * 180 / M_PI;
         double endAngle = d->m_ellipseList.at(i).angle2 * 180 / M_PI;
+
+        if (d->m_ellipseList.at(i).ez <= -0.999999) {
+            double tmp = startAngle;
+            startAngle = 360 - endAngle;
+            endAngle = 360 - tmp;
+        }
+
         double spanAngle = get_span_angle(startAngle, endAngle, false);
 
         QPointF _point1 = coordinate_trans(d->m_ellipseList.at(i).cx, d->m_ellipseList.at(i).cy, false);
         QPointF _point2 = coordinate_trans(r1, k * r1, true);
         QRectF rect = QRectF(_point1.x() - _point2.x(), _point1.y() - _point2.y(),
                              2 * r1 * d->m_scaleX, 2 * k * r1 * d->m_scaleY);
+
+        qDebug() << i << k << r1 << k*r1 << rotateAngle * 180 / M_PI << startAngle << endAngle << spanAngle;
 
         if(m_axis == Axis_Normal) {
             rotate(painter, _point1, - rotateAngle);//以椭圆的中心点为中心旋转
@@ -636,6 +645,20 @@ void DrawDxf::paint_wcs_axis(QPainter &painter)
             painter.drawLine(coordinate_trans(x2 - 5, y2 - 5, false), _point3);
             painter.drawLine(coordinate_trans(x2 + 5, y2 - 5, false), _point3);
         }
+    } else {
+        double x0 = 100;
+        double y0 = 100;
+        QPointF _point1 = coordinate_trans(x0, 0, false);
+        QPointF _point2 = coordinate_trans(0, y0, false);
+
+        painter.drawLine(_point1, coordinate_trans(0, 0, false)); // X Axis
+        painter.drawLine(_point2, coordinate_trans(0, 0, false)); // Y Axis
+
+        painter.drawLine(coordinate_trans(x0 - 5, 5, false), _point1);
+        painter.drawLine(coordinate_trans(x0 - 5, - 5, false), _point1);
+
+        painter.drawLine(coordinate_trans(- 5, y0 - 5, false), _point2);
+        painter.drawLine(coordinate_trans(5, y0 - 5, false), _point2);
     }
 }
 

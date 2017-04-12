@@ -1131,7 +1131,10 @@ void DL_Dxf::addEllipse(DL_CreationInterface* creationInterface) {
                      getRealValue(31, 0.0),
                      getRealValue(40, 1.0),
                      getRealValue(41, 0.0),
-                     getRealValue(42, 2*M_PI));
+                     getRealValue(42, 2*M_PI),
+                     getRealValue(210, 0.0),
+                     getRealValue(220, 0.0),
+                     getRealValue(230, 0.0));
 
     creationInterface->addEllipse(d);
 }

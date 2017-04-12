@@ -622,7 +622,8 @@ struct DXFLIB_EXPORT DL_EllipseData {
     DL_EllipseData(double cx, double cy, double cz,
                    double mx, double my, double mz,
                    double ratio,
-                   double angle1, double angle2)
+                   double angle1, double angle2,
+                   double ex, double ey, double ez)
         : cx(cx),
           cy(cy),
           cz(cz),
@@ -631,7 +632,10 @@ struct DXFLIB_EXPORT DL_EllipseData {
           mz(mz),
           ratio(ratio),
           angle1(angle1),
-          angle2(angle2) {
+          angle2(angle2),
+          ex(ex),
+          ey(ey),
+          ez(ez) {
     }
 
     /*! X Coordinate of center point. */
@@ -654,6 +658,13 @@ struct DXFLIB_EXPORT DL_EllipseData {
     double angle1;
     /*! Endangle of ellipse in rad. */
     double angle2;
+
+     /*! X coordinate of the extrusion direction. */
+    double ex;
+    /*! Y coordinate of the extrusion direction. */
+    double ey;
+    /*! Z coordinate of the extrusion direction. */
+    double ez;
 };
 
 
