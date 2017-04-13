@@ -33,8 +33,6 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         NewPen.setDashPattern(dashes);
         NewPen.setColor(QColor(0, 0, 255));
         painter.setPen(NewPen);
-//        painter.drawLine(0, height()/2, width(), height()/2);
-//        painter.drawLine(width()/2, 0, width()/2, height());
 
         double _zoom = int(m_zoom * 100) / 100;
 
@@ -44,11 +42,6 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 
         int x = m_lastPoint.x() + m_endPoint.x() - m_startPoint.x();
         int y = m_lastPoint.y() + m_endPoint.y() - m_startPoint.y();
-//        DplDxf::DrawDxfHeader* drawDxfHeader = DplDxf::DrawDxfHeader::Instance();
-//        drawDxfHeader->set_axis_orientation(DplDxf::DrawDxfHeader::Axis_Normal);
-//        drawDxfHeader->set(width(), height(), x, y, _zoom, _zoom);
-//        drawDxfHeader->set_part(m_pPart);
-//        drawDxfHeader->draw_dxf_header(painter);
 
         DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
         drawDxf->set_part(m_pPart);
@@ -64,13 +57,6 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
         dxf_pen.setColor(QColor(0, 255, 0));
 //        dxf_pen.setStyle(Qt::DashLine);
         painter.setPen(dxf_pen);
-
-
-//        painter.drawLine(x, (y - 50) * _zoom, x, (y + 50) * _zoom);//y轴
-//        painter.drawLine((x - 50) * _zoom, y, (x + 50) * _zoom, y);//x轴
-
-//        dxf_pen.setStyle(Qt::SolidLine);
-//        painter.setPen(dxf_pen);
 
         drawDxf->draw_dxf_part(painter);
 

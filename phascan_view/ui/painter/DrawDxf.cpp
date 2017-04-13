@@ -13,6 +13,8 @@ public:
     DrawDxfPrivate();
 
 //    virtual void addLayer(const DL_LayerData& data);
+    virtual void addBlock(const DL_BlockData& data);
+    virtual void endBlock();
     virtual void addPoint(const DL_PointData& data);
     virtual void addLine(const DL_LineData& data);
     virtual void addArc(const DL_ArcData& data);
@@ -54,6 +56,7 @@ public:
     double m_scaleX;
     double m_scaleY;
 
+    bool isBlock;
 };
 
 DrawDxfPrivate::DrawDxfPrivate()
@@ -62,6 +65,18 @@ DrawDxfPrivate::DrawDxfPrivate()
     m_centerY = 0;
     m_scaleX = 1;
     m_scaleY = 1;
+    isBlock = false;
+}
+
+void DrawDxfPrivate::addBlock(const DL_BlockData &data)
+{
+    Q_UNUSED(data);
+    isBlock = true;
+}
+
+void DrawDxfPrivate::endBlock()
+{
+    isBlock = false;
 }
 
 //void DrawDxfPrivate::addLayer(const DL_LayerData& data) {
@@ -71,80 +86,104 @@ DrawDxfPrivate::DrawDxfPrivate()
 
 void DrawDxfPrivate::addPoint(const DL_PointData& data)
 {
-    printAttributes();
-    m_pointList.append(data);
-    qDebug()<<"\n *****AddPoint(1)*****\n --- x,y,z = "<<data.x<<data.y<<data.z;
+    if(!isBlock) {
+        printAttributes();
+        m_pointList.append(data);
+        qDebug()<<"\n *****AddPoint(1)*****\n --- x,y,z = "<<data.x<<data.y<<data.z;
+    }
 }
 
 void DrawDxfPrivate::addLine(const DL_LineData& data)
 {
-    printAttributes();
-    m_lineList.append(data);
-    qDebug()<<"\n *****AddLine(2)*****\n --- x1,y1 = "<<data.x1<<data.y1<<"\n x2,y2 ="<<data.x2<<data.y2;
+    if(!isBlock) {
+        printAttributes();
+        m_lineList.append(data);
+        qDebug()<<"\n *****AddLine(2)*****\n --- x1,y1 = "<<data.x1<<data.y1<<"\n x2,y2 ="<<data.x2<<data.y2;
+    }
 }
 
 void DrawDxfPrivate::addArc(const DL_ArcData& data)
-{
-    printAttributes();
-    m_arcList.append(data);
-    qDebug()<<"\n *****AddArc(3)*****\n --- cx,y,z = ("<<data.cx<<data.cy<<data.cz<<") \n radius,Angle1,Angle2 ="<<data.radius<<data.angle1<<data.angle2;
+{    
+    if(!isBlock) {
+        printAttributes();
+            m_arcList.append(data);
+            qDebug()<<"\n *****AddArc(3)*****\n --- cx,y,z = ("<<data.cx<<data.cy<<data.cz<<") \n radius,Angle1,Angle2 ="<<data.radius<<data.angle1<<data.angle2;
+
+    }
 }
 
 void DrawDxfPrivate::addCircle(const DL_CircleData& data)
 {
-    printAttributes();
-    m_circleList.append(data);
-    qDebug()<<"\n *******AddCircle(4)********\n --- cx,y,z = ("<<data.cx<<data.cy<<data.cz<<") \n radius ="<<data.radius;
+    if(!isBlock) {
+        printAttributes();
+        m_circleList.append(data);
+        qDebug()<<"\n *******AddCircle(4)********\n --- cx,y,z = ("<<data.cx<<data.cy<<data.cz<<") \n radius ="<<data.radius;
+    }
 }
 
 void DrawDxfPrivate::addPolyline(const DL_PolylineData& data)
 {
-    printAttributes();
-    m_polyLineList.append(data);
-    qDebug()<<"\n *******AddPolyline(5)********\n --- num,m,n ="<<data.number<<data.m<<data.n<<"\n flag ="<<data.flags;
+    if(!isBlock) {
+        printAttributes();
+        m_polyLineList.append(data);
+        qDebug()<<"\n *******AddPolyline(5)********\n --- num,m,n ="<<data.number<<data.m<<data.n<<"\n flag ="<<data.flags;
+    }
 }
 
 void DrawDxfPrivate::addVertex(const DL_VertexData& data)
 {
-    printAttributes();
-    m_vertexList.append(data);
-    qDebug()<<"\n *******AddVertex(6)********\n ---x, y, z, bulge="<<data.x<<data.y<<data.z<<data.bulge;
+    if(!isBlock) {
+        printAttributes();
+        m_vertexList.append(data);
+        qDebug()<<"\n *******AddVertex(6)********\n ---x, y, z, bulge="<<data.x<<data.y<<data.z<<data.bulge;
+    }
 }
 
 void DrawDxfPrivate::addMText(const DL_MTextData &data)
 {
-    printAttributes();
-    m_textList.append(data);
-    qDebug()<<"\n *******AddMText(7)********\n ---ipx, y ="<<data.ipx<<data.ipy<<"\n angle ="<<data.angle<<"\n attachmentPoint, drawingDirection"<<data.attachmentPoint<<data.drawingDirection;
-    qDebug()<<"width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str()<<"\n dirx,y ="<<data.dirx<<data.diry;
+    if(!isBlock) {
+        printAttributes();
+        m_textList.append(data);
+        qDebug()<<"\n *******AddMText(7)********\n ---ipx, y ="<<data.ipx<<data.ipy<<"\n angle ="<<data.angle<<"\n attachmentPoint, drawingDirection"<<data.attachmentPoint<<data.drawingDirection;
+        qDebug()<<"width, height ="<<data.width<<data.height<<" \n TEXT ="<<data.text.c_str()<<"\n dirx,y ="<<data.dirx<<data.diry;
+    }
 }
 
 void DrawDxfPrivate::addEllipse(const DL_EllipseData &data)
 {
-    m_ellipseList.append(data);
-    qDebug()<<"\n *******AddEllipse(8)********\n ---cx,y ="<<data.cx<<data.cy<<"\n mx,y ="<<data.mx<<data.my;
-    qDebug()<<"ratio ="<<data.ratio<<"angle1,2 ="<<data.angle1<<data.angle2;
+    if(!isBlock) {
+        m_ellipseList.append(data);
+        qDebug()<<"\n *******AddEllipse(8)********\n ---cx,y ="<<data.cx<<data.cy<<"\n mx,y ="<<data.mx<<data.my;
+        qDebug()<<"ratio ="<<data.ratio<<"angle1,2 ="<<data.angle1<<data.angle2;
+    }
 }
 
 void DrawDxfPrivate::addText(const DL_TextData &data)
 {
-    m_textDataList.append(data);
-    qDebug()<<"\n *****AddText(9)****\n ---text ="<<data.text.c_str()<<"factor = "<<data.xScaleFactor;
-    qDebug()<<"ipx,y = "<<data.ipx<<data.ipy<<"apx,y ="<<data.apx<<data.apy;
-    qDebug()<<"angle, height, hJustification,v="<<data.angle<<data.height<<data.hJustification<<data.vJustification;
+    if(!isBlock) {
+        m_textDataList.append(data);
+        qDebug()<<"\n *****AddText(9)****\n ---text ="<<data.text.c_str()<<"factor = "<<data.xScaleFactor;
+        qDebug()<<"ipx,y = "<<data.ipx<<data.ipy<<"apx,y ="<<data.apx<<data.apy;
+        qDebug()<<"angle, height, hJustification,v="<<data.angle<<data.height<<data.hJustification<<data.vJustification;
+    }
 }
 
 void DrawDxfPrivate::addSpline(const DL_SplineData &data)
 {
-    m_splineList.append(data);
-    qDebug()<<"\n *****addSpline(10)****\n ---degree,nfits,nknots ="<<data.degree<<data.nFit<<data.nKnots;
-    qDebug()<<"tangentStartX,Y ="<<data.tangentStartX<<data.tangentStartY<<"\n tangentEndX,Y ="<<data.tangentEndX<<data.tangentEndY;
+    if(!isBlock) {
+        m_splineList.append(data);
+        qDebug()<<"\n *****addSpline(10)****\n ---degree,nfits,nknots ="<<data.degree<<data.nFit<<data.nKnots;
+        qDebug()<<"tangentStartX,Y ="<<data.tangentStartX<<data.tangentStartY<<"\n tangentEndX,Y ="<<data.tangentEndX<<data.tangentEndY;
+    }
 }
 
 void DrawDxfPrivate::addControlPoint(const DL_ControlPointData &data)
 {
-    m_controlPointList.append(data);
-    qDebug()<<"\n *****AddControlPoint(11)****\n ---x,y,z,w ="<<data.x<<data.y<<data.z<<data.w;
+    if(!isBlock) {
+        m_controlPointList.append(data);
+        qDebug()<<"\n *****AddControlPoint(11)****\n ---x,y,z,w ="<<data.x<<data.y<<data.z<<data.w;
+
+    }
 }
 
 //void DrawDxfPrivate::addInsert(const DL_InsertData &data)
@@ -402,7 +441,7 @@ void DrawDxf::draw_dxf_part(QPainter &painter)
 {
     paint_line(painter);
 
-//    paint_text(painter);
+    paint_text(painter);
 
     paint_arc(painter);
 
@@ -530,10 +569,22 @@ void DrawDxf::paint_arc(QPainter &painter)
         QPointF _point2 = coordinate_trans(r, r, true);
         QRectF rect = QRectF(_point1.x() -  _point2.x(), _point1.y() - _point2.y(),
                              2 * _point2.x(), 2 * _point2.y());
-        if(m_axis == Axis_Normal) {
+
+        switch (m_axis) {
+        case Axis_Normal:
             painter.drawArc(rect, 16 * startAngle, 16 * spanAngle);
-        } else if(m_axis == Axis_Vertical_Flip) {
+            break;
+        case Axis_Vertical_Flip:
             painter.drawArc(rect, - 16 * endAngle, 16 * spanAngle);
+            break;
+        case Axis_Horizontal_Flip:
+            painter.drawArc(rect, 16 * (360 - endAngle), 16 * spanAngle);
+            break;
+        case Axis_Rotate_180:
+            painter.drawArc(rect, 16 * (startAngle - 180), 16 * spanAngle);
+            break;
+        default:
+            break;
         }
     }
 }
@@ -599,16 +650,29 @@ void DrawDxf::paint_ellipse(QPainter &painter)
         QRectF rect = QRectF(_point1.x() - _point2.x(), _point1.y() - _point2.y(),
                              2 * r1 * d->m_scaleX, 2 * k * r1 * d->m_scaleY);
 
-        qDebug() << i << k << r1 << k*r1 << rotateAngle * 180 / M_PI << startAngle << endAngle << spanAngle;
-
-        if(m_axis == Axis_Normal) {
+        switch (m_axis) {
+        case Axis_Normal:
             rotate(painter, _point1, - rotateAngle);//以椭圆的中心点为中心旋转
             painter.drawArc(rect, 16 * startAngle, 16 * spanAngle);
             rotate(painter, _point1, rotateAngle);
-        } else if(m_axis == Axis_Vertical_Flip) {
+            break;
+        case Axis_Vertical_Flip:
             rotate(painter, _point1, rotateAngle);//以椭圆的中心点为中心旋转
             painter.drawArc(rect, - 16 * endAngle, 16 * spanAngle);
             rotate(painter, _point1, - rotateAngle);
+            break;
+        case Axis_Horizontal_Flip:
+            rotate(painter, _point1, - (M_PI - rotateAngle));//以椭圆的中心点为中心旋转
+            painter.drawArc(rect, 16 * (360 - endAngle), 16 * spanAngle);
+            rotate(painter, _point1, M_PI - rotateAngle);
+            break;
+        case Axis_Rotate_180:
+            rotate(painter, _point1, - rotateAngle);//以椭圆的中心点为中心旋转
+            painter.drawArc(rect, 16 * (startAngle - 180), 16 * spanAngle);
+            rotate(painter, _point1, rotateAngle);
+            break;
+        default:
+            break;
         }
     }
 }
@@ -867,12 +931,24 @@ void DrawDxf::draw_arc(QPainterPath &path)
         QRectF rect = QRectF(_point1.x() - _point2.x(), _point1.y() - _point2.y(),
                              2 * r * d->m_scaleX, 2 * r * d->m_scaleY);
 
-        if(m_axis == Axis_Normal) {
+        switch (m_axis) {
+        case Axis_Normal:
             path.arcMoveTo(rect, startAngle);
             path.arcTo(rect, startAngle, spanAngle);
-        } else if(m_axis == Axis_Vertical_Flip) {
+            break;
+        case Axis_Vertical_Flip:
             path.arcMoveTo(rect, -endAngle);
             path.arcTo(rect, -endAngle, spanAngle);
+            break;
+        case Axis_Horizontal_Flip:
+            path.arcMoveTo(rect, 360 - endAngle);
+            path.arcTo(rect, 360 - endAngle, spanAngle);
+            break;
+        case Axis_Rotate_180:
+            path.arcMoveTo(rect, startAngle - 180);
+            path.arcTo(rect, startAngle - 180, spanAngle);
+        default:
+            break;
         }
     }   
 }
@@ -920,15 +996,32 @@ void DrawDxf::draw_ellipse(QPainterPath &path)
             }
         } else {
             QPolygonF pa;
-            if(m_axis == Axis_Normal) {
+            switch (m_axis) {
+            case Axis_Normal:
                 create_ellipse(pa, RVector(_point1.x(), _point1.y()),
                                r1 * d->m_scaleX, k * r1 * d->m_scaleY,
                                rotateAngle, startAngle * M_PI / 180, endAngle * M_PI / 180, -1);
-            } else if(m_axis == Axis_Vertical_Flip) {
+                break;
+            case Axis_Vertical_Flip:
                 create_ellipse(pa, RVector(_point1.x(), _point1.y()),
                                r1 * d->m_scaleX, k * r1 * d->m_scaleY,
                                rotateAngle, startAngle * M_PI / 180, endAngle * M_PI / 180, 1);
+                break;
+            case Axis_Horizontal_Flip:
+                create_ellipse(pa, RVector(_point1.x(), _point1.y()),
+                               r1 * d->m_scaleX, k * r1 * d->m_scaleY,
+                               M_PI - rotateAngle, (360 - endAngle) * M_PI / 180, (spanAngle + endAngle - 360) * M_PI / 180, -1);
+                break;
+            case Axis_Rotate_180:
+                create_ellipse(pa, RVector(_point1.x(), _point1.y()),
+                               r1 * d->m_scaleX, k * r1 * d->m_scaleY,
+                               rotateAngle, (startAngle - 180) * M_PI / 180, (endAngle - 180) * M_PI / 180, -1);
+                break;
+            default:
+                break;
             }
+
+
             path.addPolygon(pa);
         }
     }
@@ -1019,19 +1112,11 @@ QPointF DrawDxf::coordinate_trans(float x_, float y_, bool isRadius)
 {
     float _fX;
     float _fY;
-    float _fX0;
-    float _fY0;
 
     float _fScaleX = d->m_scaleX;
     float _fScaleY = d->m_scaleY;
-//    if(h->m_dataUCSOrg.isEmpty()) {
-        _fX0 = d->m_centerX;
-        _fY0 = d->m_centerY;
-//    } else {
-//        _fX0 = d->m_centerX - h->m_dataUCSOrg.at(0).x;
-//        _fY0 = d->m_centerY + h->m_dataUCSOrg.at(0).y;
-//    }
-
+    float _fX0 = d->m_centerX;
+    float _fY0 = d->m_centerY;
 
     if(isRadius) {
         _fX = x_ * _fScaleX;
@@ -1075,32 +1160,8 @@ void DrawDxf::set(double width, double height, double centerX, double centerY, d
 {
     d->m_width = width;
     d->m_height = height;
-    qDebug() << "m_axis" << m_axis;
-//    if(h->m_dataUCSOrg.isEmpty()) {
-        d->m_centerX = centerX;
-        d->m_centerY = centerY;
-//    } else {
-//        switch (m_axis) {
-//        case Axis_Normal:
-//            d->m_centerX = centerX - h->m_dataUCSOrg.at(0).x;
-//            d->m_centerY = centerY + h->m_dataUCSOrg.at(0).y;
-//            break;
-//        case Axis_Vertical_Flip:
-//            d->m_centerX = centerX - h->m_dataUCSOrg.at(0).x;
-//            d->m_centerY = centerY - h->m_dataUCSOrg.at(0).y;
-//            break;
-//        case Axis_Horizontal_Flip:
-//            d->m_centerX = centerX + h->m_dataUCSOrg.at(0).x;
-//            d->m_centerY = centerY + h->m_dataUCSOrg.at(0).y;
-//            break;
-//        case Axis_Rotate_180:
-//            d->m_centerX = centerX + h->m_dataUCSOrg.at(0).x;
-//            d->m_centerY = centerY - h->m_dataUCSOrg.at(0).y;
-//        default:
-//            break;
-//        }
-//    }
-
+    d->m_centerX = centerX;
+    d->m_centerY = centerY;
     d->m_scaleX = scaleX;
     d->m_scaleY = scaleY;
 }
@@ -1154,18 +1215,16 @@ void DrawDxf::set_axis_orientation_s_scan(DrawDxf::AxisOrientation value)
     } else {
         double x = h->m_dataUCSXDir.at(0).x;
         double y = h->m_dataUCSYDir.at(0).y;
+
+        // S扫中坐标轴本身是Axis_Vertical_Flip
         if(x > 0 && y > 0) {
-//            m_axis = Axis_Normal;
-            m_axis = Axis_Vertical_Flip;
+            m_axis = Axis_Vertical_Flip; //Axis_Normal & Axis_Vertical_Flip
         } else if(x > 0 && y < 0) {
-//            m_axis = Axis_Vertical_Flip;
-            m_axis = Axis_Normal;
+            m_axis = Axis_Normal;//Axis_Vertical_Flip & Axis_Vertical_Flip
         } else if(x < 0 && y > 0) {
-//            m_axis = Axis_Horizontal_Flip;
-            m_axis = Axis_Rotate_180;
+            m_axis = Axis_Rotate_180;//Axis_Horizontal_Flip & Axis_Vertical_Flip
         } else {
-//            m_axis = Axis_Rotate_180;
-            m_axis = Axis_Horizontal_Flip;
+            m_axis = Axis_Horizontal_Flip;//Axis_Rotate_180 & Axis_Vertical_Flip
         }
     }
 }
