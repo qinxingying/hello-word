@@ -11,6 +11,7 @@ class QWeldShowWidget : public QWidget
 public:
 	explicit QWeldShowWidget(QWidget *parent = 0);
 	void SerPart(PART_CONFIG* pInfo_);
+    void clear_point();
 
     double m_zoom;
 
@@ -37,10 +38,21 @@ protected:
     void  PositionTransfer(QPointF& pos_);
 
     void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 	PART_CONFIG* m_pPart;
     RANGE_INFO m_cRange;
     float m_fThickness;
+
+private:
+    QPoint m_startPoint;
+    QPoint m_endPoint;
+    QPoint m_lastPoint;
+
+public slots:
+    void do_zoom_change(double value);
 
 signals:
     void zoom(double v);

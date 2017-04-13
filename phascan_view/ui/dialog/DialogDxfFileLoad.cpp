@@ -36,6 +36,7 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
     connect(ui->BtnNccDefaultPath, SIGNAL(clicked()), this, SLOT(on_BtnNccDefaultPathClicked()));
 
     connect(ui->ExpoView, SIGNAL(zoom(double)), this, SLOT(slot_doubleSpinBox_zoom_setValue(double)));
+    connect(ui->doubleSpinBox_zoom, SIGNAL(valueChanged(double)), ui->ExpoView, SLOT(do_zoom_change(double)));
 }
 
 DialogDxfFileLoad::~DialogDxfFileLoad()
@@ -144,6 +145,7 @@ void DialogDxfFileLoad::UpdateWeld()
 
 void DialogDxfFileLoad::UpdateDisplay()
 {
+    ui->ExpoView->clear_point();
     ui->ExpoView->update();
 
     switch(m_cPart.weld.eType)

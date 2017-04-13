@@ -1,73 +1,88 @@
 #ifndef DrawDxf_H
 #define DrawDxf_H
 
-#include "dxf_data.h"
+#include "dl_creationadapter.h"
+#include "dxf_headeradapter.h"
+#include "rvector.h"
 #include "Instrument.h"
 
 #include <QWidget>
 #include <QPaintEvent>
 
 namespace DplDxf {
-    class DrawDxf;
-}
 
-typedef struct _DRAW_DXF_INFO
-{
-    float fX;
-    float fY;
-    int   fWidth;
-    int   fHeight;
-    float fScaleX;
-    float fScaleY;
-}DRAW_DXF_INFO;
+class DrawDxfPrivate;
 
-class DrawDxf : public QWidget
+class DrawDxfHeaderPrivate;
+
+class DrawDxf : public QWidget, public DL_CreationAdapter, public Dxf_HeaderAdapter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
+    enum AxisOrientation {
+        Axis_Normal,
+        Axis_Vertical_Flip,
+        Axis_Horizontal_Flip,
+        Axis_Rotate_180
+    };
+
     explicit DrawDxf(QWidget *parent = 0);
-
+    ~DrawDxf();
     static   DrawDxf* Instance();
-    DRAW_DXF_INFO	m_Info;
-    void SetInfo(DRAW_DXF_INFO info_) {m_Info = info_;}
+    int set_part(PART_CONFIG* pInfo_);
+    void draw_dxf_part(QPainter& painter);
+    void draw_dxf_header(QPainter& painter);
+    void set(double width, double height, double centerX, double centerY, double scaleX, double scaleY);
+    void draw_dxf_header(QPainterPath& path);
+    void draw_dxf_part(QPainterPath& path);
+    void set_axis_orientation(DrawDxf::AxisOrientation value);
+    void set_axis_orientation_s_scan(DrawDxf::AxisOrientation value);
 
-    int setPart(PART_CONFIG* pInfo_);
-    void draw_dxfPart(QPainter& painter, double zoom, double centerX, double centerY);
-
-    void DrawDxfPart(QPainterPath& path, double originX, double kx, double ky);
-    void  draw_line(QPainterPath& path, double originX, double kx, double ky);
-    void draw_arc(QPainterPath& path, double originX, double kx, double ky);
-    void draw_circle(QPainterPath& path, double originX, double kx, double ky);
-    void draw_ellipse(QPainterPath& path, double originX, double kx, double ky);
-
-private:
-    int getDxfData();
-    QList<DL_PointData> m_pointList;
-    QList<DL_LineData> m_lineList;
-    QList<DL_ArcData> m_arcList;
-    QList<DL_TextData> m_textDataList;
-    QList<DL_MTextData> m_textList;
-    QList<DL_EllipseData> m_ellipseList;
-    QList<DL_CircleData> m_circleList;
-    QList<DL_VertexData> m_vertexList;
-    QList<DL_PolylineData> m_polyLineList;
-    QList<DL_SplineData> m_splineList;
-    QList<DL_ControlPointData> m_controlPointList;
-
-protected:
     PART_CONFIG* m_pPart;
     float m_fThickness;
+    DplDxf::DrawDxf::AxisOrientation m_axis;
 
-    void paint_point(QPainter& painter, double zoom, double centerX, double centerY);
-    void paint_line(QPainter& painter, double zoom, double centerX, double centerY);
-    void paint_polyLine_0(QPainter& painter, double zoom, double centerX, double centerY);
-    void paint_polyLine_1(QPainter& painter, double zoom, double centerX, double centerY);
-    void paint_text(QPainter& painter, double zoom, double centerX, double centerY);
-    void paint_arc(QPainter& painter, double zoom, double centerX, double centerY);
-    void paint_circle(QPainter& painter, double zoom, double centerX, double centerY);
-    double calc_rotateAngle(double cx, double cy, double mx, double my);
-    void paint_ellipse(QPainter& painter, double zoom, double centerX, double centerY);
+private:
+    void draw_line(QPainterPath& path);
+    void draw_polyLine(QPainterPath& path);
+    void draw_arc(QPainterPath& path);
+    void draw_circle(QPainterPath& path);
+    void draw_ellipse(QPainterPath& path);
+
+    void paint_point(QPainter& painter);
+    void paint_line(QPainter& painter);
+    void paint_polyLine(QPainter& painter);
+    void paint_text(QPainter& painter);
+    void paint_arc(QPainter& painter);
+    void paint_circle(QPainter& painter);
+    void paint_ellipse(QPainter& painter);
+
+//    void draw_wcs_axis(QPainterPath& path);
+//    void draw_ucs_axis(QPainterPath& path);
+
+    void paint_wcs_axis(QPainter& painter);
+    void paint_ucs_axis(QPainter& painter);
+
+    int get_dxf_header();
+
+    void rotate(QPainter& painter, QPointF point, double angle);
+    void create_ellipse(QPolygonF& pa, const RVector& cp, double radius1, double radius2,
+                        double angle, double angle1, double angle2, int factor);
+    double get_span_angle(double angle1, double angle2, bool isRad);
+    double calc_rotate_angle(double mx, double my);
+    double get_magnitude2D(double x, double y);
+    QString format_text(QString str);
+
+    Qt::AlignmentFlag get_v_flag(int flag);
+    Qt::AlignmentFlag get_h_flag(int flag);
+    int get_dxf_data();
+    QPointF coordinate_trans(float x_, float y_, bool isRadius);
+
+    DrawDxfPrivate *d;
+    DrawDxfHeaderPrivate *h;
 };
+
+}
 
 #endif // DrawDxf_H

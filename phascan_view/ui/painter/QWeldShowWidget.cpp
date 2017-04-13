@@ -2,6 +2,7 @@
 #include "gHeader.h"
 #include "DopplerPart.h"
 #include "DrawDxf.h"
+#include "DrawDxfHeader.h"
 
 #include <QPointF>
 
@@ -25,27 +26,41 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
     painter.setPen(NewPen);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    if(m_pPart->weld.eType == setup_WELD_DXF){
+    if(m_pPart->weld.eType == setup_WELD_DXF) {
         QVector<qreal> dashes;
         dashes << 3 << 5;
         NewPen.setWidth(1);
         NewPen.setDashPattern(dashes);
         NewPen.setColor(QColor(0, 0, 255));
         painter.setPen(NewPen);
-        painter.drawLine(0, height()/2, width(), height()/2);
-        painter.drawLine(width()/2, 0, width()/2, height());
+
+        double _zoom = int(m_zoom * 100) / 100;
+
+        if(m_lastPoint.isNull()) {
+            m_lastPoint = QPoint(width() / 2, height() / 2);
+        }
+
+        int x = m_lastPoint.x() + m_endPoint.x() - m_startPoint.x();
+        int y = m_lastPoint.y() + m_endPoint.y() - m_startPoint.y();
+
+        DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
+        drawDxf->set_part(m_pPart);
+        drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
+
+        drawDxf->set(width(), height(), x, y, _zoom, _zoom);
+
+
+        drawDxf->draw_dxf_header(painter);
 
         QPen dxf_pen(pen);
         dxf_pen.setWidth(2);
         dxf_pen.setColor(QColor(0, 255, 0));
+//        dxf_pen.setStyle(Qt::DashLine);
         painter.setPen(dxf_pen);
 
-        DrawDxf* drawDxf = DrawDxf::Instance();
-        drawDxf->setPart(m_pPart);
-      //  drawDxf->SetInfo(info);
-        drawDxf->draw_dxfPart(painter, m_zoom, width()/2, height()/2);
+        drawDxf->draw_dxf_part(painter);
 
-    }else if(m_pPart->weld.eType == setup_WELD_NCC){
+    } else if(m_pPart->weld.eType == setup_WELD_NCC) {
         DRAW_PART_INFO info;
         info.fWidth = m_cRange.fWidth;
         info.fHeight = m_cRange.fHeight;
@@ -69,7 +84,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 
         _pPart->DrawOriginLine(painter);
 
-    }else{
+    } else {
         painter.drawLine (0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
         painter.drawLine (0, m_cRange.fStopY, m_cRange.fWidth, m_cRange.fStopY);
 
@@ -558,10 +573,50 @@ void QWeldShowWidget::wheelEvent(QWheelEvent *event)
             m_zoom -= 1;
 
         }else if(0 < m_zoom && m_zoom <= 1){
-            m_zoom = 0.5*m_zoom;
+            m_zoom -= 0.5*m_zoom;
         }
     }
+//    if(m_zoom <= 0) {
+//        m_zoom = 0.01;
+//    }
 
     update();
     emit zoom(m_zoom);
+}
+
+void QWeldShowWidget::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        m_lastPoint = m_lastPoint + m_endPoint - m_startPoint;
+        m_startPoint = event->pos();
+    }
+}
+
+void QWeldShowWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if(event->buttons() & Qt::LeftButton){
+        m_endPoint = event->pos();
+        update();
+    }
+}
+
+void QWeldShowWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        m_endPoint = event->pos();
+        update();
+    }
+}
+
+void QWeldShowWidget::clear_point()
+{
+    m_lastPoint = QPoint();
+    m_startPoint = QPoint();
+    m_endPoint = QPoint();
+}
+
+void QWeldShowWidget::do_zoom_change(double value)
+{
+    m_zoom = value;
+    update();
 }

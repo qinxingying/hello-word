@@ -71,6 +71,12 @@
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
         </widget>
        </item>
        <item>
