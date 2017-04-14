@@ -46,11 +46,11 @@ static const WEDGE_CONFIG  DEFAULT_WEDGE_PA  =
 	"Doppler Serial" ,
 	setup_WEDGE_TYPE_PA ,
 	setup_WEDGE_ORIENTATION_NORMAL ,
-	36.1,
+    (float)36.1,
 	0 ,
 	2330 ,
 	2330 ,
-	7.12, -20.11 , 0 , 0 , 0 ,
+    (float)7.12, (float)-20.11 , 0 , 0 , 0 ,
 	60 , 30 , 40 ,
 	0 , 0 ,
 };
@@ -484,7 +484,7 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 
     _pConfig->fGain		   =  20	;
 	_pConfig->fRefGain	   =  0	 ;
-	_pConfig->fSumGain	   =  24.8  ;
+    _pConfig->fSumGain	   =  (float)24.8  ;
 	_pConfig->bPointQtyAuto  = -1;
 	_pConfig->bSumGainAuto   = -1;
 	/* ∑¢…‰Ω” ’ */
@@ -553,7 +553,7 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 
 	_material.fVelocityLon = 5920 ;
 	_material.fVelocityTran= 3230 ;
-	_material.fDensity	 = 7.9  ;
+    _material.fDensity	 = (float)7.9  ;
 
 	WELD& _weld		  = _part.weld   ;
 	_weld.eType	 = setup_WELD_V  ;
@@ -582,7 +582,7 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_curve.eType			= setup_CURVE_TYPE_NULL;
 	_curve.nPointQty		= 1;
 	_curve.fCurStep			= 0.5;
-	_curve.fMatAtten		= 0.1;
+    _curve.fMatAtten		= (float)0.1;
 	_curve.fAmpOffsetAmp	= 80;
 	_curve.fAmpOffsetLinear	= 80;
 	_curve.nLinearDelay		= 10 ;

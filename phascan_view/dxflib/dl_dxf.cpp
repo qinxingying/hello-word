@@ -3453,7 +3453,7 @@ void DL_Dxf::writeHatch2(DL_WriterA& dw,
         dw.dxfString(1001, "ACAD");
         dw.dxfReal(1010, data.originX);
         dw.dxfReal(1020, data.originY);
-        dw.dxfInt(1030, 0.0);
+        dw.dxfInt(1030, 0);
     }
 }
 
