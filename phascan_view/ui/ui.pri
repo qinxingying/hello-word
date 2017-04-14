@@ -29,7 +29,6 @@ SOURCES += \
     $$PWD/dialog/DialogReportSetting.cpp \
     $$PWD/dialog/DialogWeldPartLoad.cpp \
     $$PWD/painter/DopplerPart.cpp \
-    $$PWD/painter/DrawDxf.cpp \
     $$PWD/painter/QWeldShowWidget.cpp \
     $$PWD/DataViewSettingWidget.cpp \
     $$PWD/DopplerColorBtn.cpp \
@@ -41,7 +40,8 @@ SOURCES += \
     $$PWD/PoppingTabBar.cpp \
     $$PWD/PoppingTabWidget.cpp \
     $$PWD/ProcessDisplay.cpp \
-    $$PWD/dialog/DialogDxfFileLoad.cpp
+    $$PWD/dialog/DialogDxfFileLoad.cpp \
+    $$PWD/painter/drawdxf.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
