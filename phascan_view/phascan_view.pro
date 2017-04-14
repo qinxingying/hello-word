@@ -29,3 +29,9 @@ include(dxflib/dxflib.pri)
 SOURCES += main.cpp
 
 LIBS += -L$$PWD/./ -lDopplerFocalLaw
+
+LIBS += -L$$PWD/lib/opengl/ -lglut
+LIBS += -L$$PWD/lib/opengl/ -lglut32
+
+INCLUDEPATH += $$PWD/lib/opengl
+DEPENDPATH += $$PWD/lib/opengl

@@ -108,7 +108,6 @@ void DrawDxfPrivate::addArc(const DL_ArcData& data)
         printAttributes();
             m_arcList.append(data);
             qDebug()<<"\n *****AddArc(3)*****\n --- cx,y,z = ("<<data.cx<<data.cy<<data.cz<<") \n radius,Angle1,Angle2 ="<<data.radius<<data.angle1<<data.angle2;
-
     }
 }
 
