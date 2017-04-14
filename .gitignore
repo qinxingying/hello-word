@@ -10,4 +10,4 @@
 *.orig
 *.ts
 *.dxf
-build
+build-*
