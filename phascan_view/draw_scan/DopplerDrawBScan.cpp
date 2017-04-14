@@ -1,4 +1,4 @@
-#include "DopplerDrawBScan.h"
+﻿#include "DopplerDrawBScan.h"
 #include <process/ParameterProcess.h>
 #include <QImage>
 #include <QColor>

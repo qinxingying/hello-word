@@ -55,7 +55,7 @@ void DialogDxfFileLoad::SetWndName()
     char buf[256];
     if(_bPartFile) {
 		strcpy(buf, m_cPart.strPartFile);
-		CharFilter(buf, (char*)"/");
+        CharFilter(buf, (char*)"/");
         ui->LabelPartFileName->setText(QString(tr(buf)));
 	}
 
@@ -281,7 +281,7 @@ void DialogDxfFileLoad::on_SpinFAngle_2_valueChanged(double arg1)
 
 void DialogDxfFileLoad::on_PartFileListDbClicked(QModelIndex index)
 {
-	QString _str = index.data().toString();
+    QString _str = index.data().toString();
     m_cPart.weld.eType = setup_WELD_DXF;
 
     sprintf(m_cPart.strPartFile, "%s%s", m_path.toLatin1().data(), (char*)(qPrintable(_str)));
@@ -293,22 +293,23 @@ void DialogDxfFileLoad::on_PartFileListDbClicked(QModelIndex index)
 
 void DialogDxfFileLoad::on_BtnNccPathClicked()
 {
-    char _strBuf[256];
+//    char _strBuf[256];
 
-	QString _strPath = QFileDialog::getExistingDirectory(this,
-														 QString(tr("")),
-                                                         m_path
-														 );
-	strcpy(_strBuf, (char*)(qPrintable(_strPath)));
-    sprintf(m_path.toLatin1().data(), "%s/", _strBuf);
+    QString _strPath = QFileDialog::getExistingDirectory(this,
+                                                         QString(tr("Open Dxf File")),
+                                                         m_path);
+    m_path = _strPath + "/";
+//    strcpy(_strBuf, (char*)(qPrintable(_strPath)));
+//    sprintf(m_path.toLatin1().data(), "%s/", _strBuf);
     SetWndName();
-	UpdateDisplay();
-	UpdateWeld();
-	ListPartFiles();
+    UpdateDisplay();
+    UpdateWeld();
+    ListPartFiles();
 }
 
 void DialogDxfFileLoad::on_BtnNccDefaultPathClicked()
 {
+    m_path = QDir::currentPath() + "/init/part/dxf/";
     SetWndName();
 	UpdateDisplay();
 	UpdateWeld();

@@ -52,7 +52,7 @@ void DopplerDrawCScanH::UpdateDrawInfo_private()
 		m_afScale[i] = cos(DEGREE_TO_ARCH(_fAngle));
 	}
 
-	float _fGScale =  255.0 / 100.0;
+    float _fGScale =  (float)(255.0 / 100.0);
 	switch (m_CScanInfo.eType)
 	{
 		case CSCAN_POS_I :  m_CScanInfo.nGateHeight1  =  _group->gate[setup_GATE_I].nThreshold * _fGScale;   break;

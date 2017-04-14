@@ -1,4 +1,4 @@
-#ifndef DXF_HEADER_TYPE_H
+﻿#ifndef DXF_HEADER_TYPE_H
 #define DXF_HEADER_TYPE_H
 
 #include "dl_global.h"

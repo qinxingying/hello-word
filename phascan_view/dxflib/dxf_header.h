@@ -22,44 +22,6 @@ class Dxf_HeaderInterface;
 class DXFLIB_EXPORT DxfHeader
 {
 public:
-    /*角度方向*/
-    enum DxfAngdir {
-        DXF_ANGDIR_COUNTERCLOCKWISE,    /*0:逆时针角度*/
-        DXF_ANGDIR_CLOCKWISE,           /*1:顺时针角度*/
-        DXF_ANGDIR_MAX
-    };
-
-    /*图形单位*/
-    enum DxfUnits {
-        DXF_UNIT_NONE,      /*0 = 无单位*/
-        DXF_UNIT_INCHES,    /*1 = 英寸*/
-        DXF_UNIT_FEET,      /*2 = 英尺*/
-        DXF_UNIT_MILES,     /*3 = 英里*/
-        DXF_UNIT_MM,        /*4 = 毫米*/
-        DXF_UNIT_CM,        /*5 = 厘米*/
-        DXF_UNIT_M,         /*6 = 米*/
-        DXF_UNIT_KM,        /*7 = 千米*/
-        DXF_UNIT_MICROIN,   /*8 = 微英寸*/
-        DXF_UNIT_MILS,      /*9 = 密耳*/
-        DXF_UNIT_YARDS,     /*10 = 码*/
-        DXF_UNIT_ANGSTROMS, /*11 = 埃*/
-        DXF_UNIT_NM,        /*12 = 纳米*/
-        DXF_UNIT_NS,        /*13 = 微米*/
-        DXF_UNIT_DM,        /*14 = 分米*/
-        DXF_UNIT_DAM,       /*15 = 十米*/
-        DXF_UNIT_HM,        /*16 = 百米*/
-        DXF_UNIT_GM,        /*17 = 百万公里*/
-        DXF_UNIT_AU,        /*18 = 天文单位*/
-        DXF_UNIT_LY,        /*19 = 光年*/
-        DXF_UNIT_PS,        /*20 = 秒差距*/
-    };
-
-    enum DXF_AXIS_DIR {
-        DXF_AXIS_X_RIGHT = 1,
-        DXF_AXIS_X_LEFT  = -1,
-        DXF_AXIS_Y_UPWARD= 1,
-        DXF_AXIS_Y_DOWN  = -1
-    };
 
     enum DXF_HEADER_STYLE {
         HEADER_ACADMAINTVER  =  1,

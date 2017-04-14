@@ -1,4 +1,4 @@
-#include "dxf_header.h"
+﻿#include "dxf_header.h"
 
 #include <algorithm>
 #include <string>

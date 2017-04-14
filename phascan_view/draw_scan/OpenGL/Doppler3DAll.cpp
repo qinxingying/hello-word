@@ -2,6 +2,7 @@
 #include "Doppler3DAll.h"
 #include "gHeader.h"
 
+#include "lib/opengl/glut.h"
 #include <QtGui>
 #include <QtOpenGL>
 #include <math.h>

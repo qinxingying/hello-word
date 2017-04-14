@@ -1,4 +1,4 @@
-#include "DrawDxf.h"
+﻿#include "DrawDxf.h"
 #include "dl_dxf.h"
 #include "dxf_header.h"
 
@@ -103,12 +103,11 @@ void DrawDxfPrivate::addLine(const DL_LineData& data)
 }
 
 void DrawDxfPrivate::addArc(const DL_ArcData& data)
-{    
+{
     if(!isBlock) {
         printAttributes();
             m_arcList.append(data);
             qDebug()<<"\n *****AddArc(3)*****\n --- cx,y,z = ("<<data.cx<<data.cy<<data.cz<<") \n radius,Angle1,Angle2 ="<<data.radius<<data.angle1<<data.angle2;
-
     }
 }
 
@@ -624,6 +623,11 @@ double DrawDxf::calc_rotate_angle(double mx, double my)
     return rotateAngle;
 }
 
+double DrawDxf::get_magnitude2D(double x, double y)
+{
+    return sqrt(x * x + y * y);
+}
+
 void DrawDxf::paint_ellipse(QPainter &painter)
 {
     if(d->m_ellipseList.isEmpty()){
@@ -772,6 +776,7 @@ void DrawDxf::paint_ucs_axis(QPainter &painter)
 
 void DrawDxf::draw_dxf_header(QPainterPath &path)
 {
+    Q_UNUSED(path);
 //    draw_wcs_axis(path);
 
 //    draw_ucs_axis(path);
@@ -950,7 +955,7 @@ void DrawDxf::draw_arc(QPainterPath &path)
         default:
             break;
         }
-    }   
+    }
 }
 
 void DrawDxf::draw_circle(QPainterPath &path)
@@ -1082,11 +1087,6 @@ void DrawDxf::create_ellipse(QPolygonF& pa, const RVector& cp, double radius1, d
     pa << QPointF((qreal)vp.x, (qreal)vp.y);//增加椭圆在angle2的坐标
 }
 
-double DrawDxf::get_magnitude2D(double x, double y)
-{
-    return sqrt(x * x + y * y);
-}
-
 double DrawDxf::get_span_angle(double angle1, double angle2, bool isRad)
 {
     double spanAngle = 0.0;
@@ -1171,8 +1171,8 @@ QString DrawDxf::format_text(QString str)
     if(str.contains("%%D")) {
         str = str.left(str.indexOf("%%D")) + "°";
     }
-    if(str.contains("\A1;")) {
-        str = str.right(str.length() - str.indexOf("\A1;") - 3);
+    if(str.contains("\\A1;")) {
+        str = str.right(str.length() - str.indexOf("\\A1;") - 3);
     }
     return str;
 }
