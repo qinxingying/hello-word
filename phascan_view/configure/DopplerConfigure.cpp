@@ -102,12 +102,12 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
     m_listMaterial = new QList<MATERIAL*>;
 	m_listMaterial->clear();
 
-    QString _str = QDir::currentPath() + "/init/Material.init";
+    QString _str = QCoreApplication::applicationDirPath() + "/init/Material.init";
     DopplerXMLReader::LoadMaterial(&_str, m_listMaterial);
 
-    g_strColorAmp = QDir::currentPath() + "/init/palette/ONDT_Amplitude.pal";
-    g_strColorThickness	= QDir::currentPath() + "/init/palette/ONDT_Corrosion.pal";
-    g_strColorRectifier	= QDir::currentPath() + "/init/palette/ONDT_RFTOFD.pal";
+    g_strColorAmp = QCoreApplication::applicationDirPath() + "/init/palette/ONDT_Amplitude.pal";
+    g_strColorThickness	= QCoreApplication::applicationDirPath() + "/init/palette/ONDT_Corrosion.pal";
+    g_strColorRectifier	= QCoreApplication::applicationDirPath() + "/init/palette/ONDT_RFTOFD.pal";
 
     InitCommonConfig();
 	m_szFileInUse.clear();
@@ -136,9 +136,9 @@ DopplerConfigure::~DopplerConfigure()
 
 void DopplerConfigure::OpenEvn()
 {
-    QString g_strDataFilePath = QDir::currentPath() + "/data";
-    QString g_strPartDir = QDir::currentPath() + "/init/part/ncc/";
-    QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
+    QString g_strDataFilePath = QCoreApplication::applicationDirPath() + "/data";
+    QString g_strPartDir = QCoreApplication::applicationDirPath() + "/init/part/ncc/";
+    QString _strPathName = QCoreApplication::applicationDirPath() + "/init/EVN.DPL";
 
     QFile file(_strPathName);
 	file.open (QIODevice::ReadOnly);
@@ -238,7 +238,7 @@ void DopplerConfigure::SaveEvn()
 		SetLastDate();
 	}
 
-    QString _strPathName = QDir::currentPath() + "/init/EVN.DPL";
+    QString _strPathName = QCoreApplication::applicationDirPath() + "/init/EVN.DPL";
 	QFile file(_strPathName);
 	file.open (QIODevice::WriteOnly);
 	QDataStream write(&file);

@@ -81,7 +81,7 @@ void DialogWeldPartLoad::SetDisplayMode(DISPLAY_MODE eMode_)
 
 void DialogWeldPartLoad::ListPartFiles()
 {
-    QString g_strPartDir = QDir::currentPath() + "/init/part/ncc/";
+    QString g_strPartDir = QCoreApplication::applicationDirPath() + "/init/part/ncc/";
     QDir dir(g_strPartDir);
 	if(!dir.exists()) {
 		return;
@@ -280,7 +280,7 @@ void DialogWeldPartLoad::on_SpinFAngle_2_valueChanged(double arg1)
 
 void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
 {
-    QString g_strPartDir = QDir::currentPath() + "/init/part/ncc/";
+    QString g_strPartDir = QCoreApplication::applicationDirPath() + "/init/part/ncc/";
 
 	QString _str = index.data().toString();
 	m_cPart.weld.eType = setup_WELD_NCC;
@@ -311,7 +311,7 @@ void DialogWeldPartLoad::on_BtnNccPathClicked()
 void DialogWeldPartLoad::on_BtnNccDefaultPathClicked()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    QString g_strPartDir = QDir::currentPath() + "/init/part/ncc/";
+    QString g_strPartDir = QCoreApplication::applicationDirPath() + "/init/part/ncc/";
     strcpy(_pConfig->AppEvn.strNccFilePath, g_strPartDir.toLatin1().data());
     SetWndName();
 	UpdateDisplay();

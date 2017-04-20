@@ -26,7 +26,7 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
     palette.setColor(QPalette::Background, QColor(0, 0, 0));
     ui->ExpoView->setPalette(palette);
 
-    m_path = QDir::currentPath() + "/init/part/dxf/";
+    m_path = QCoreApplication::applicationDirPath() + "/init/part/dxf/";
     SetWndName();
 	UpdateDisplay();
 
@@ -309,7 +309,7 @@ void DialogDxfFileLoad::on_BtnNccPathClicked()
 
 void DialogDxfFileLoad::on_BtnNccDefaultPathClicked()
 {
-    m_path = QDir::currentPath() + "/init/part/dxf/";
+    m_path = QCoreApplication::applicationDirPath() + "/init/part/dxf/";
     SetWndName();
 	UpdateDisplay();
 	UpdateWeld();

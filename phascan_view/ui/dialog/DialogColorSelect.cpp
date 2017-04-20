@@ -24,7 +24,7 @@ DialogColorSelect::~DialogColorSelect()
 void DialogColorSelect::InitListWidget()
 {
     QListWidget* m_pSubList  = ui->ListName;
-    QString strPaletePath = QDir::currentPath() + "/init/palette";
+    QString strPaletePath = QCoreApplication::applicationDirPath() + "/init/palette";
 
     QDir _dir(strPaletePath);
     _dir.setFilter(QDir::Files | QDir::Readable);
@@ -52,7 +52,7 @@ void DialogColorSelect::slotSelectChanged(QString str_)
 {
     if(str_.isEmpty())  return ;
 
-    QString strPaletePath = QDir::currentPath() + "/init/palette/";
+    QString strPaletePath = QCoreApplication::applicationDirPath() + "/init/palette/";
     QListWidget* m_pSubList  = ui->ListName;
     QListWidgetItem* _pFile   = m_pSubList->currentItem();
 
