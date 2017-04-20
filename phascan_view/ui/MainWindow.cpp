@@ -680,7 +680,7 @@ void MainWindow::OpenFile()
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     QString _strFileName = QFileDialog::getOpenFileName(this,
                             "Open File Dialog",
-                            _pConfig->AppEvn.strDataFilePath,
+                            QString::fromLocal8Bit(_pConfig->AppEvn.strDataFilePath, 256),
                             "Doppler Files(*.cfg *.data)");
 
     OpenFilePro(_strFileName);

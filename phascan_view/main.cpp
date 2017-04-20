@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
         sleep(200);
 
         if(argv[1]) {
-            _mainWindow.OpenFilePro(QString(argv[1]));
+            _mainWindow.OpenFilePro(QString::fromLocal8Bit(argv[1]));
         }
     }
 
