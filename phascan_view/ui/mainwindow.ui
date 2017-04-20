@@ -210,8 +210,6 @@
     </property>
     <addaction name="actionEnglish"/>
     <addaction name="actionChinese"/>
-    <addaction name="actionJapanese"/>
-    <addaction name="actionKorean"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
