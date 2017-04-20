@@ -36,21 +36,31 @@ const char* string_filter[]    = {
 DopplerHtmlReport::DopplerHtmlReport()
 {
 	m_pFile = NULL ;
-    QString g_strReportDir  = "data/Report/";
+
     QString g_strReportLogo = "data/logo/logo.png";
 
 #ifdef QT_NO_DEBUG
-    GetExePathName1(g_strReportDir.toLatin1().data(), m_strReportDir);
     GetExePathName1(g_strReportLogo.toLatin1().data(), m_strReportLogo);
 #else
-    strcpy(m_strReportDir, g_strReportDir.toLatin1().data());
     strcpy(m_strReportLogo, g_strReportLogo.toLatin1().data());
 #endif
 }
 
 void DopplerHtmlReport::InitReportInfo()
 {
-	sprintf(tableWidth, "width=%d style=\"table-layout:fixed\"", TABLE_WIDTH);
+    QString g_strReportDir;
+    if(!m_dataFilePath.isEmpty()) {
+        g_strReportDir = m_dataFilePath + "/Report/";
+#ifdef QT_NO_DEBUG
+        std::string _str1 = g_strReportDir.toStdString();
+        const char* _str2 = _str1.c_str();
+        strcpy(m_strReportDir, _str2);
+#else
+        strcpy(m_strReportDir, g_strReportDir.toLatin1().data());
+#endif
+    }
+
+    sprintf(tableWidth, "width=%d style=\"table-layout:fixed\"", TABLE_WIDTH);
 	{
         strcpy(m_cInfo.strPartName, "Part");
         strcpy(m_cInfo.strPartNo, "No. 1");
@@ -297,10 +307,6 @@ void DopplerHtmlReport::BuildReport()
     m_strFile  = QDir::currentPath() + "/" + QString(_strName);
 #endif
 
-    m_pFile = fopen(_strName, "w+");
-
-    if(m_pFile == NULL)  return;
-
     m_strFolder.clear();
     m_strFolderDir.clear();
     m_szDataFile = _pConfig->m_szFileInUse;
@@ -310,40 +316,41 @@ void DopplerHtmlReport::BuildReport()
     m_strFolder	= QString(_strName);
     m_strFolderDir.sprintf("%s%s" , m_strReportDir, _strName);
 
-	// folder ready
+    // folder ready
     CreateFolder();
-	// report start...........
-    BuildStarter();
-	//## logo and header
-    CreateHeader();
+    m_pFile = fopen(TOCHAR(m_strFile), "w+");
+    if(m_pFile == NULL)  return;
 
-	// group info
-	//枚举group，每一个group，都是一个独立的信息
+    // report start...........
+    BuildStarter();
+    //## logo and header
+    CreateHeader();
+    // group info
+    //枚举group，每一个group，都是一个独立的信息
     int _nGroupQty = _pConfig->common.nGroupQty;
     for (int i = 0; i < _nGroupQty; ++i)
-	{
-		UpdateGroupConfig(i);
-		if(m_cInfo.eMode) SprintfGroupProbeConfig(i);
+    {
+        UpdateGroupConfig(i);
+        if(m_cInfo.eMode) SprintfGroupProbeConfig(i);
 
-		GROUP_CONFIG&   _group = _pConfig->group[i];
-		if(_group.eTxRxMode == setup_TX_RX_MODE_TOFD && m_cInfo.eMode)
-			CreateTofdHeader(i);
+        GROUP_CONFIG&   _group = _pConfig->group[i];
+        if(_group.eTxRxMode == setup_TX_RX_MODE_TOFD && m_cInfo.eMode)
+            CreateTofdHeader(i);
 
-		int _nDfNO = _pConfig->GetDefectCnt(i);
+        int _nDfNO = _pConfig->GetDefectCnt(i);
+        if(_nDfNO > 0) {
+            CreateDefect(i);
+            for(int k = 0; k < _nDfNO; k++) {
+                CreateDefectCell(i, k);
+            }
+        }
+    }
+    //# table
+    if(m_cInfo.eMode)  SprintfReportTable();
 
-		if(_nDfNO > 0) {
-			CreateDefect(i);
-			for(int k = 0; k < _nDfNO; k++) {
-				CreateDefectCell(i, k);
-			}
-		}
-	}
-	//# table
-	if(m_cInfo.eMode)  SprintfReportTable();
-
-	SprintfGroupMeasure();
+    SprintfGroupMeasure();
     SfprintfReportSignature();
-	// report end...........
+    // report end...........
     BuildEnder();
     fclose(m_pFile);
 }
@@ -1069,9 +1076,13 @@ void DopplerHtmlReport::CreateFolder()
 
 	_str.clear();
     _str.sprintf("%s%s" , m_strReportDir, TOCHAR(m_strFolder));
-
     if(!foder.exists(_str))  foder.mkdir(_str);
 
-    _str.sprintf("%s%s", TOCHAR(_str), "/logo.png");
+    _str.sprintf("%s%s%s", m_strReportDir, TOCHAR(m_strFolder), "/logo.png");
     CopyFileToPath(_str, QString(m_strReportLogo));
+}
+
+void DopplerHtmlReport::set_data_path(QString &str)
+{
+    m_dataFilePath = str;
 }

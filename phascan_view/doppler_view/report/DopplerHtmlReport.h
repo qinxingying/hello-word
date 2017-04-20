@@ -49,6 +49,7 @@ public:
     void CreateTofdHeader(int nGroupId_);
     void CreateDefect(int nGroupId_);
 	void CreateDefectCell(int nGroupId_, int index_);
+    void set_data_path(QString &str);
 
 protected:
     void BuildStarter () ;
@@ -67,7 +68,7 @@ protected:
     void SfprintfReportSignature() ;
 
     void CreateFolder()  ;
-    bool CopyFileToPath(QString sourceDir ,QString toDir) ;
+    bool CopyFileToPath(QString toDir ,QString sourceDir);
 
     ReportInfo m_cInfo ;
     FILE*      m_pFile ;
@@ -180,6 +181,7 @@ protected:
 
     QString  m_szField[8][5];
     QString  m_szFieldUnit[8][5];
+    QString m_dataFilePath;
 
 	char m_strReportDir[1024];
 	char m_strReportLogo[1024];

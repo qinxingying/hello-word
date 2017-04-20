@@ -302,6 +302,7 @@ int DopplerConfigure::OpenData(QString& path_)
 	CreateShadowData(_iMax);
 	memcpy(&comTmp, &common, sizeof(COMMON_CONFIG));
 
+    m_pReport->set_data_path(QFileInfo(path_).absolutePath());
 	m_pReport->InitReportInfo();
 	return 0;
 }
