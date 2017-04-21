@@ -180,6 +180,10 @@ private slots:
 	void on_lineEditReMark_textChanged(QString str);
 	void on_BtnDefectDelete_clicked();
 
+    void on_ValueCScanThicknessMin_editingFinished();
+
+    void on_ValueCScanThicknessMax_editingFinished();
+
 private:
     Ui::DopplerGroupTab *ui;
 };

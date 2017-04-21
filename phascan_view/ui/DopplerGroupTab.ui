@@ -52,7 +52,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -8412,7 +8412,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-190</y>
         <width>321</width>
         <height>700</height>
        </rect>

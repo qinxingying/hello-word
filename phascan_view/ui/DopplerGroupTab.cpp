@@ -1794,27 +1794,28 @@ void DopplerGroupTab::on_ComColorLineColor_currentIndexChanged(int index)
 
 void DopplerGroupTab::on_ValueCScanThicknessMin_valueChanged(double)
 {
-	if(!ui->ValueCScanThicknessMin->hasFocus()) return ;
+    if(!ui->ValueCScanThicknessMin->hasFocus()) return ;
 	m_pGroup->fMinThickness = ui->ValueCScanThicknessMin->value() ;
 
 	ProcessDisplay _display ;
-	_display.UpdateAllViewOverlay();
+    _display.UpdateAllViewOverlay();
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
 
 void DopplerGroupTab::on_ValueCScanThicknessMax_valueChanged(double)
 {
-	if(!ui->ValueCScanThicknessMax->hasFocus()) return ;
+    if(!ui->ValueCScanThicknessMax->hasFocus()) return ;
 	m_pGroup->fMaxThickness = ui->ValueCScanThicknessMax->value() ;
 
 	ProcessDisplay _display ;
-	_display.UpdateAllViewOverlay();
+    _display.UpdateAllViewOverlay();
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
 
 void DopplerGroupTab::on_ComCScanSource1_currentIndexChanged(int index)
 {
 	if(!ui->ComCScanSource1->hasFocus()) return ;
+    qDebug() << "changed";
 	m_pGroup->eCScanSource[0] = (setup_CSCAN_SOURCE_MODE)index ;
 	g_pMainWnd->UpdateAllDisplay();
 	g_pMainWnd->RunDrawThreadOnce();
@@ -1926,4 +1927,20 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 void DopplerGroupTab::retranslateGroupTabUi()
 {
     ui->retranslateUi(this);
+}
+
+void DopplerGroupTab::on_ValueCScanThicknessMin_editingFinished()
+{
+    ProcessDisplay _display ;
+    _display.UpdateAllViewOverlay();
+    g_pMainWnd->UpdateAllDisplay();
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueCScanThicknessMax_editingFinished()
+{
+    ProcessDisplay _display ;
+    _display.UpdateAllViewOverlay();
+    g_pMainWnd->UpdateAllDisplay();
+    g_pMainWnd->RunDrawThreadOnce(true);
 }
