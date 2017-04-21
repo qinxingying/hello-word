@@ -52,7 +52,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>1</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -1346,8 +1346,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>338</width>
-        <height>510</height>
+        <width>321</width>
+        <height>786</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -1371,6 +1371,12 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>786</height>
+          </size>
          </property>
          <property name="maximumSize">
           <size>
@@ -6103,13 +6109,13 @@
         <x>0</x>
         <y>0</y>
         <width>321</width>
-        <height>700</height>
+        <height>855</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>300</width>
-        <height>700</height>
+        <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -6152,7 +6158,7 @@
          <property name="minimumSize">
           <size>
            <width>313</width>
-           <height>600</height>
+           <height>855</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -6173,13 +6179,13 @@
             <x>0</x>
             <y>0</y>
             <width>320</width>
-            <height>700</height>
+            <height>855</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>312</width>
-            <height>500</height>
+            <height>0</height>
            </size>
           </property>
           <property name="maximumSize">

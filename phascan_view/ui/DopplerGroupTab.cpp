@@ -757,8 +757,12 @@ void DopplerGroupTab::UpdateTofdParam()
 	if(m_pGroup->eTxRxMode != setup_TX_RX_MODE_TOFD )
 	{
 		ui->BoxPartTofd->hide();
+        ui->scrollGeometry->setMinimumHeight(600);
+        ui->scrollGeometry->resize(ui->scrollGeometry->width(), 600);
     }else{
 		ui->BoxPartTofd->show();
+        ui->scrollGeometry->setMinimumHeight(855);
+        ui->scrollGeometry->resize(ui->scrollGeometry->width(), 855);
 		ui->CheckLwBwShow->setChecked(m_pGroup->bShowLwBw);
 
 		SCANNER& _scaner = m_pConfig->common.scanner ;
