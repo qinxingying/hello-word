@@ -253,7 +253,7 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 				_rect.setWidth(_fWidth);
 			}
 
-			if(_rect.right() >= _size.height()) {
+            if(_rect.bottom() >= _size.height()) {
 				_rect.setTop(_size.height() - _nHeight);
 				_rect.setHeight(_nHeight);
 			}
@@ -268,14 +268,14 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 		}
 
 		//centerOn(mapToScene((event->pos())));
-		centerOn(_nCenter);
-		SetupMatrixScale( m_nScaleH , m_nScaleV ) ;
+        centerOn(_nCenter);
+        SetupMatrixScale( m_nScaleH , m_nScaleV ) ;
 	}
 }
 
 void DopplerGraphicView::resizeEvent(QResizeEvent *event)
 {
-	QGraphicsView::resizeEvent(event);
+    QGraphicsView::resizeEvent(event);
     int _nWidth = event->size().width();
     int _nHeight= event->size().height();
 
@@ -740,14 +740,14 @@ QRectF DopplerGraphicView::RangeTranslate(QRectF& rect_)
 	//_nStartY = ((int) (_nStartY * 100)) / 100.0 ;
 	//_nStopY  = ((int) (_nStopY  * 100)) / 100.0 ;
 
-	return QRectF( _nStartX , _nStartY , _nStopX - _nStartX ,  _nStopY - _nStartY )  ;
+    return QRectF( _nStartX , _nStartY , _nStopX - _nStartX ,  _nStopY - _nStartY )  ;
 }
 
 
 void DopplerGraphicView::AddOverlayItems(QGraphicsItem* item_)
 {
 	if(item_)
-		m_pScene->addItem(item_);
+        m_pScene->addItem(item_);
 }
 
 QSize DopplerGraphicView::GetSceneSize()
@@ -786,7 +786,7 @@ void DopplerGraphicView::UpdateDrawing()
 void DopplerGraphicView::UpdateSceneRegion()
 {
 	if(m_pScene)
-		m_pScene->update();
+        m_pScene->update();
 }
 
 /****************************************************************************
@@ -796,7 +796,7 @@ void DopplerGraphicView::slotUpdateDrawing()
 {
 	if(m_pDrawScan)
 	{
-		m_pBackGround->update();
+        m_pBackGround->update();
 	}
 }
 
