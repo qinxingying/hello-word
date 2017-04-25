@@ -23,7 +23,7 @@ DopplerGateItem::DopplerGateItem(const QColor& cColor_)
 
 void DopplerGateItem::SetDrawMode(GATE_DRAW_MODE eMode_)
 {
-	m_eMode  = eMode_  ;
+    m_eMode  = eMode_  ;
 }
 
 QRectF DopplerGateItem::boundingRect() const
@@ -43,14 +43,13 @@ QRectF DopplerGateItem::boundingRect() const
 			_rect = QRectF( -_nWidth , 0,  2 * _nWidth + 1 , m_nHeight );
 		}
 		break;
-	case GATE_MODE_LINE_HORIZENTAL:
-	case GATE_MODE_LINE_VERTICAL:
-			_rect = QRectF( 0 , 0,  m_nWidth , m_nHeight );
+    case GATE_MODE_LINE_HORIZENTAL:
+    case GATE_MODE_LINE_VERTICAL:
+            _rect = QRectF( 0 , 0,  m_nWidth , m_nHeight );
 		break;
 	default:
 		break;
-	}
-
+    }
 	return _rect ;
 }
 
@@ -66,7 +65,7 @@ QPainterPath DopplerGateItem::shape() const
 
 void DopplerGateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* /*widget*/)
 {
-	int _nLineWidth;
+    int _nLineWidth;
 	QColor fillColor;
 	if(option->state & QStyle::State_Selected) {
 		fillColor = m_cColor.dark(150) ;
@@ -89,28 +88,28 @@ void DopplerGateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	{
 	case GATE_MODE_GATE_HORIZENTAL :
 		{
-			int nTmp = (g_nGateMarkerHeight + 1) / 2 ;
+            int nTmp = (g_nGateMarkerHeight + 1) / 2 ;
 
-			painter->setPen(_NewPen);
-			painter->drawLine(QPointF(0 , - nTmp) , QPointF(0 , nTmp));
-			painter->drawLine(QPointF(m_nWidth + 1, -nTmp) , QPointF(m_nWidth + 1, nTmp));
+            painter->setPen(_NewPen);
+            painter->drawLine(QPointF(0 , - nTmp) , QPointF(0 , nTmp));
+            painter->drawLine(QPointF(m_nWidth + 1, -nTmp) , QPointF(m_nWidth + 1, nTmp));
 
-			_NewPen.setWidth(_nLineWidth);
-			painter->setPen(_NewPen);
-			painter->drawLine(QPointF(0, 0) , QPointF(m_nWidth  , 0));
+            _NewPen.setWidth(_nLineWidth);
+            painter->setPen(_NewPen);
+            painter->drawLine(QPointF(0, 0) , QPointF(m_nWidth  , 0));
 		}
 		break;
 	case GATE_MODE_GATE_VERTICAL:
 		{
-			int nTmp = (g_nGateMarkerHeight + 1) / 2 ;
+            int nTmp = (g_nGateMarkerHeight + 1) / 2 ;
 
-			painter->setPen(_NewPen);
-			painter->drawLine(QPointF(-nTmp , 0) , QPointF(nTmp , 0));
-			painter->drawLine(QPointF(-nTmp , m_nHeight + 1) , QPointF(nTmp , m_nHeight + 1));
+            painter->setPen(_NewPen);
+            painter->drawLine(QPointF(-nTmp , 0) , QPointF(nTmp , 0));
+            painter->drawLine(QPointF(-nTmp , m_nHeight + 1) , QPointF(nTmp , m_nHeight + 1));
 
-			_NewPen.setWidth(_nLineWidth);
-			painter->setPen(_NewPen);
-			painter->drawLine(QPointF(0 , 0) , QPointF( 0, m_nHeight));
+            _NewPen.setWidth(_nLineWidth);
+            painter->setPen(_NewPen);
+            painter->drawLine(QPointF(0 , 0) , QPointF( 0, m_nHeight));
 		}
 		break;
 	case GATE_MODE_LINE_HORIZENTAL:
@@ -179,12 +178,22 @@ void DopplerGateItem::SetItemGeometry (QRectF& rect_)
 		this->setPos(rect_.topLeft());
 		break;
 	case GATE_MODE_LINE_HORIZENTAL:
+    {
+        QGraphicsScene* _pScene = scene () ;
+        if(_pScene)
+            m_nHeight = _pScene->height() ;
 		this->setPos(rect_.left() , 0);
+    }
 		break;
-	case GATE_MODE_LINE_VERTICAL:
+    case GATE_MODE_LINE_VERTICAL:
+    {
+        QGraphicsScene* _pScene = scene () ;
+        if(_pScene)
+            m_nWidth = _pScene->width() ;
 		this->setPos(0 , rect_.top());
 		break;
+    }
 	default:
 		break;
-	}
+    }
 }
