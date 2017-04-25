@@ -108,7 +108,7 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 	m_pScene	  = NULL ;
 	m_pBackGround = NULL ;
 	m_nScaleH = 1.0 ;
-	m_nScaleV = 1.0 ;
+    m_nScaleV = 1.0 ;
 	InitGraphicView(size());
 
 	// connect update signal for multi threads update user interface
@@ -222,11 +222,15 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 		m_nScaleH += numSteps / 10.0 ;
 		m_nScaleV += numSteps / 10.0 ;
 
-		if(m_nScaleH < 1) {m_nScaleV = m_nScaleH = 1 ;}
-		if(m_nScaleH > 10) {m_nScaleV = m_nScaleH = 10 ;}
+        if(m_nScaleH < 1) {m_nScaleH = 1 ;}
+        if(m_nScaleH > 10) {m_nScaleH = 10 ;}
+        if(m_nScaleV < 1) {m_nScaleV = 1 ;}
+        if(m_nScaleV > 10) {m_nScaleV = 10 ;}
+
 		//****************************************
 		QPointF _nCenter = mapToScene((event->pos()));
-		if(m_nScaleH > 1) {
+
+        if(m_nScaleH > 1 && m_nScaleV > 1) {
 			QSize _size = size();
 			//float _fWidth   = ((double)_size.width()) / m_nScaleH;
 			//float _nHeight  = ((double)_size.height()) / m_nScaleV;
@@ -357,7 +361,7 @@ void DopplerGraphicView::mouseMoveEvent(QMouseEvent *event)
 void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(Qt::LeftButton == event->button())
-	{
+    {
 		if(!m_bItemSelected)
 		{
 			if(Qt::LeftButton == event->button())
