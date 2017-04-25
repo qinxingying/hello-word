@@ -318,7 +318,8 @@ struct DXFLIB_EXPORT DL_ArcData {
      */
     DL_ArcData(double acx, double acy, double acz,
                double aRadius,
-               double aAngle1, double aAngle2) {
+               double aAngle1, double aAngle2,
+               double aex, double aey, double aez) {
 
         cx = acx;
         cy = acy;
@@ -326,6 +327,9 @@ struct DXFLIB_EXPORT DL_ArcData {
         radius = aRadius;
         angle1 = aAngle1;
         angle2 = aAngle2;
+        ex = aex;
+        ey = aey;
+        ez = aez;
     }
 
     /*! X Coordinate of center point. */
@@ -341,6 +345,13 @@ struct DXFLIB_EXPORT DL_ArcData {
     double angle1;
     /*! Endangle of arc in degrees. */
     double angle2;
+
+    /*! X coordinate of the extrusion direction. */
+   double ex;
+   /*! Y coordinate of the extrusion direction. */
+   double ey;
+   /*! Z coordinate of the extrusion direction. */
+   double ez;
 };
 
 
@@ -354,12 +365,16 @@ struct DXFLIB_EXPORT DL_CircleData {
      * Parameters: see member variables.
      */
     DL_CircleData(double acx, double acy, double acz,
-                  double aRadius) {
+                  double aRadius,
+                  double aex, double aey, double aez) {
 
         cx = acx;
         cy = acy;
         cz = acz;
         radius = aRadius;
+        ex = aex;
+        ey = aey;
+        ez = aez;
     }
 
     /*! X Coordinate of center point. */
@@ -371,6 +386,13 @@ struct DXFLIB_EXPORT DL_CircleData {
 
     /*! Radius of arc. */
     double radius;
+
+    /*! X coordinate of the extrusion direction. */
+   double ex;
+   /*! Y coordinate of the extrusion direction. */
+   double ey;
+   /*! Z coordinate of the extrusion direction. */
+   double ez;
 };
 
 

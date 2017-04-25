@@ -307,13 +307,13 @@ void DrawDxfHeaderPrivate::add_angle_dir(const DXF_HEADER_ANGDIR& data)
 void DrawDxfHeaderPrivate::add_unit(const DXF_HEADER_INSUNITS& data)
 {
     m_dataInsUnits.append(data);
-    qDebug()<<"\n *****INSUNITS(3)*****\n --- flag = ("<<data.flags;
+    qDebug()<<"\n *****INSUNITS(3)*****\n --- flag = "<<data.flags;
 }
 
 void DrawDxfHeaderPrivate::add_PUCS_name(const DXF_HEADER_PUCSNAME& data)
 {
     m_dataPUCSName.append(data);
-    qDebug()<<"\n *******PUCSNAME(4)********\n --- name = ("<<data.name.c_str();
+    qDebug()<<"\n *******PUCSNAME(4)********\n --- name = "<<data.name.c_str();
 }
 
 void DrawDxfHeaderPrivate::add_point_PUCSORG(const DXF_HEADER_PUCSORG& data)
@@ -564,7 +564,7 @@ void DrawDxf::paint_arc(QPainter &painter)
         double endAngle = d->m_arcList.at(i).angle2;
         double spanAngle = get_span_angle(startAngle, endAngle, false);
 
-        QPointF _point1 = coordinate_trans(d->m_arcList.at(i).cx, d->m_arcList.at(i).cy, false);
+        QPointF _point1 = coordinate_trans(d->m_arcList.at(i).cx * d->m_arcList.at(i).ez, d->m_arcList.at(i).cy, false);
         QPointF _point2 = coordinate_trans(r, r, true);
         QRectF rect = QRectF(_point1.x() -  _point2.x(), _point1.y() - _point2.y(),
                              2 * _point2.x(), 2 * _point2.y());
@@ -596,7 +596,7 @@ void DrawDxf::paint_circle(QPainter &painter)
 
     for(int i = 0; i < d->m_circleList.count(); i++){
         double r = d->m_circleList.at(i).radius;
-        QPointF _point1 = coordinate_trans(d->m_circleList.at(i).cx, d->m_circleList.at(i).cy, false);
+        QPointF _point1 = coordinate_trans(d->m_circleList.at(i).cx * d->m_circleList.at(i).ez, d->m_circleList.at(i).cy, false);
         QPointF _point2 = coordinate_trans(r, r, true);
         painter.drawEllipse(_point1.x() - _point2.x(), _point1.y() - _point2.y(),
                             2 * _point2.x(), 2 *  _point2.y());
@@ -931,7 +931,7 @@ void DrawDxf::draw_arc(QPainterPath &path)
         double endAngle = d->m_arcList.at(i).angle2;
         double spanAngle = get_span_angle(startAngle, endAngle, false);
 
-        QPointF _point1 = coordinate_trans(d->m_arcList.at(i).cx, d->m_arcList.at(i).cy, false);
+        QPointF _point1 = coordinate_trans(d->m_arcList.at(i).cx * d->m_arcList.at(i).ez, d->m_arcList.at(i).cy, false);
         QPointF _point2 = coordinate_trans(r, r, true);
         QRectF rect = QRectF(_point1.x() - _point2.x(), _point1.y() - _point2.y(),
                              2 * r * d->m_scaleX, 2 * r * d->m_scaleY);
@@ -962,7 +962,7 @@ void DrawDxf::draw_circle(QPainterPath &path)
 {
     for(int i = 0; i < d->m_circleList.count(); i++){
         double r = d->m_circleList.at(i).radius;
-        QPointF _point1 = coordinate_trans(d->m_circleList.at(i).cx, /*- */d->m_circleList.at(i).cy, false);
+        QPointF _point1 = coordinate_trans(d->m_circleList.at(i).cx * d->m_circleList.at(i).ez, /*- */d->m_circleList.at(i).cy, false);
         QPointF _point2 = coordinate_trans(r, r, true);
         path.addEllipse(_point1.x() - _point2.x(), _point1.y() - _point2.y(),
                         2 * r * d->m_scaleX, 2 * r * d->m_scaleY);
