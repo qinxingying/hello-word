@@ -457,7 +457,7 @@ void DopplerGraphicView::DrawMeasureValue()
 		_painter.setBackgroundMode(Qt::OpaqueMode);
 	} else {
 		_painter.setBackgroundMode(Qt::TransparentMode);
-	}
+    }
 	//_painter.setBackgroundMode(g_pMainWnd->ParamBackMode());
 
 	if(_iDisplay >= setup_DISPLAY_MODE_S) {
@@ -525,7 +525,7 @@ void DopplerGraphicView::DrawMeasureValue()
 		for(; (i < m_nMeasureQty) && (i < MAX_MEASURE_DATA_DISPLAY) ; i++)
 		{
 			if(!m_strMeasure[i].isEmpty())
-				_painter.drawText(_x0 , _y0 + 12 * i , m_strMeasure[i]);
+                _painter.drawText(_x0 , _y0 + 12 * i , m_strMeasure[i]);
 		}
 
 		if(_iDisplay == setup_DISPLAY_MODE_B_H || _iDisplay == setup_DISPLAY_MODE_B_V)
@@ -577,7 +577,7 @@ void DopplerGraphicView::DrawMeasureValue()
 
 		}
 	}
-
+    this->viewport()->update();
 	_painter.end();
 }
 
