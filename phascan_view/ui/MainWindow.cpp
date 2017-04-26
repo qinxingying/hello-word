@@ -910,14 +910,19 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
         {
             int _nCurGroup;
+
             DopplerDataView* _pView = (DopplerDataView*)m_pViewList[_nTabIndex]->at(i);
             _pView->GetDataViewConfigure( &_nCurGroup,  &_nLawId,  &_nDisplay);
 
-            if(_nDisplay < 8 && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
+            if(_nDisplay < 4 && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
                 if(_nId == _pView->GetLawIdentify()) {
                     _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
                     _proDispy.UpdateAll(_pView);
                 }
+            } else if(_nDisplay < 8  && _nGroupId == _nCurGroup) {
+                _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
+                _proDispy.UpdateDataViewTitle(_pView);
+                _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
             } else {
                 _proDispy.UpdateDataViewTitle(_pView);
             }
