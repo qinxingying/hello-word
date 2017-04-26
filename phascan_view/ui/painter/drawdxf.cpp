@@ -411,8 +411,8 @@ int DrawDxf::get_dxf_data()
 
     DL_Dxf dxf;
 
-    QString dxfFile = m_pPart->strPartFile;
-    if (!dxf.in(dxfFile.toLatin1().data(), d)) {
+    QString dxfFile = QString(m_pPart->strPartFile);
+    if(!dxf.in(dxfFile.toLocal8Bit().data(), d)) {
         qDebug()<<"could not be opened";
         return -1;
     }
@@ -427,8 +427,8 @@ int DrawDxf::get_dxf_header()
 
     DxfHeader header;
 
-    QString dxfFile = m_pPart->strPartFile;
-    if (!header.in(dxfFile.toLatin1().data(), h)) {
+    QString dxfFile = QString(m_pPart->strPartFile);
+    if (!header.in(dxfFile.toLocal8Bit().data(), h)) {
         qDebug()<<"could not be opened";
         return -1;
     }

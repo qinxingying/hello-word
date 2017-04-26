@@ -284,7 +284,10 @@ void DialogDxfFileLoad::on_PartFileListDbClicked(QModelIndex index)
     QString _str = index.data().toString();
     m_cPart.weld.eType = setup_WELD_DXF;
 
-    sprintf(m_cPart.strPartFile, "%s%s", m_path.toLatin1().data(), (char*)(qPrintable(_str)));
+    std::string str = m_path.toStdString();
+    const char* p = str.c_str();
+
+    sprintf(m_cPart.strPartFile, "%s%s", p, (char*)(qPrintable(_str)));
 
     SetWndName();
 	UpdateDisplay();
@@ -294,10 +297,10 @@ void DialogDxfFileLoad::on_PartFileListDbClicked(QModelIndex index)
 void DialogDxfFileLoad::on_BtnNccPathClicked()
 {
 //    char _strBuf[256];
-
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     QString _strPath = QFileDialog::getExistingDirectory(this,
                                                          QString(tr("Open Dxf File")),
-                                                         m_path);
+                                                         QString::fromLocal8Bit(_pConfig->AppEvn.strNccFilePath));
     m_path = _strPath + "/";
 //    strcpy(_strBuf, (char*)(qPrintable(_strPath)));
 //    sprintf(m_path.toLatin1().data(), "%s/", _strBuf);
