@@ -465,7 +465,11 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
          QString(QObject::tr("TOFD")),
      };
 
-    m_videoFilter = g_strOnOff[_pGroup->bVedioFilter];
+    if(_pGroup->bVedioFilter > 0) {
+        m_videoFilter = g_strOnOff[1];
+    } else {
+        m_videoFilter = g_strOnOff[0];
+    }
 
     m_rectification = g_strRectifier[_pGroup->eRectifier];
     m_bandPassFilter.sprintf("%s" , string_filter[_pGroup->eFileter]);
