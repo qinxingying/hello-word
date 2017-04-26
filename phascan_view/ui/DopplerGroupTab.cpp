@@ -1267,7 +1267,8 @@ void DopplerGroupTab::GatePro()
 	_process->SetupGateInfo(m_nGroupId , (setup_GATE_NAME)ui->ComGateSelect->currentIndex() , &_gate) ;
 
 	ProcessDisplay _display ;
-	_display.UpdateAllViewOverlay();
+    _display.UpdateAllViewOverlay();
+//    _display.UpdateAllViewGateOfGroup(m_nGroupId);
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -1358,39 +1359,39 @@ void DopplerGroupTab::on_ComMaterial_currentIndexChanged(int index)
 	UpdateVelocitySelection() ;
 }
 
-void DopplerGroupTab::on_ValueScanOffset_editingFinished()
-{
-	if(!ui->ValueScanOffset->hasFocus())  return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue1 = ui->ValueScanOffset->value()  ;
-	double _fValue2 = ui->ValueIndexOffset->value() ;
-	_process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
+//void DopplerGroupTab::on_ValueScanOffset_editingFinished()
+//{
+//    if(!ui->ValueScanOffset->hasFocus())  return ;
+//    ParameterProcess* _process = ParameterProcess::Instance();
+//    double _fValue1 = ui->ValueScanOffset->value()  ;
+//    double _fValue2 = ui->ValueIndexOffset->value() ;
+//    _process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
 
-	DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
-	_pConfig->ResetShadowData();
+//    DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
+//    _pConfig->ResetShadowData();
 
-	g_pMainWnd->RunDrawThreadOnce(true);
-	ProcessDisplay _display ;
-	//_display.UpdateAllViewOfGroup(m_nGroupId);
-	_display.UpdateAllView();
-	sleep(20);
-	_display.UpdateAllView();
-	g_pMainWnd->RunDrawThreadOnce(true);
-	sleep(20);
-}
+//    g_pMainWnd->RunDrawThreadOnce(true);
+//    ProcessDisplay _display ;
+//    //_display.UpdateAllViewOfGroup(m_nGroupId);
+//    _display.UpdateAllView();
+//    sleep(20);
+//    _display.UpdateAllView();
+//    g_pMainWnd->RunDrawThreadOnce(true);
+//    sleep(20);
+//}
 
-void DopplerGroupTab::on_ValueIndexOffset_editingFinished()
-{
-	if(!ui->ValueIndexOffset->hasFocus())  return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	double _fValue1 = ui->ValueScanOffset->value()  ;
-	double _fValue2 = ui->ValueIndexOffset->value() ;
-	_process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
+//void DopplerGroupTab::on_ValueIndexOffset_editingFinished()
+//{
+//    if(!ui->ValueIndexOffset->hasFocus())  return ;
+//    ParameterProcess* _process = ParameterProcess::Instance();
+//    double _fValue1 = ui->ValueScanOffset->value()  ;
+//    double _fValue2 = ui->ValueIndexOffset->value() ;
+//    _process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
 
-	ProcessDisplay _display ;
-	_display.UpdateAllViewOfGroup(m_nGroupId);
-	g_pMainWnd->RunDrawThreadOnce(true);
-}
+//    ProcessDisplay _display ;
+//    _display.UpdateAllViewOfGroup(m_nGroupId);
+//    g_pMainWnd->RunDrawThreadOnce(true);
+//}
 
 void DopplerGroupTab::on_ComSkewAngle_currentIndexChanged(int index)
 {
@@ -1942,5 +1943,39 @@ void DopplerGroupTab::on_ValueCScanThicknessMax_editingFinished()
     ProcessDisplay _display ;
     _display.UpdateAllViewOverlay();
     g_pMainWnd->UpdateAllDisplay();
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueScanOffset_valueChanged(double)
+{
+    if(!ui->ValueScanOffset->hasFocus())  return ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    double _fValue1 = ui->ValueScanOffset->value()  ;
+    double _fValue2 = ui->ValueIndexOffset->value() ;
+    _process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
+
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
+    _pConfig->ResetShadowData();
+
+    g_pMainWnd->RunDrawThreadOnce(true);
+    ProcessDisplay _display ;
+    //_display.UpdateAllViewOfGroup(m_nGroupId);
+    _display.UpdateAllView();
+    sleep(20);
+    _display.UpdateAllView();
+    g_pMainWnd->RunDrawThreadOnce(true);
+    sleep(20);
+}
+
+void DopplerGroupTab::on_ValueIndexOffset_valueChanged(double)
+{
+    if(!ui->ValueIndexOffset->hasFocus())  return ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    double _fValue1 = ui->ValueScanOffset->value()  ;
+    double _fValue2 = ui->ValueIndexOffset->value() ;
+    _process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
+
+    ProcessDisplay _display ;
+    _display.UpdateAllViewOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }

@@ -126,8 +126,8 @@ private slots:
     void on_ValuePartSize1_valueChanged(double arg);
     void on_ValuePartSize2_valueChanged(double arg);
     void on_ValuePartSize3_valueChanged(double arg);
-	void on_ValueScanOffset_editingFinished();
-	void on_ValueIndexOffset_editingFinished();
+//    void on_ValueScanOffset_editingFinished();
+//    void on_ValueIndexOffset_editingFinished();
     void on_ComSkewAngle_currentIndexChanged(int index);
     void on_BtnLoadPartFile_clicked();
     void on_BtnLoadDxfFile_clicked();
@@ -181,8 +181,9 @@ private slots:
 	void on_BtnDefectDelete_clicked();
 
     void on_ValueCScanThicknessMin_editingFinished();
-
     void on_ValueCScanThicknessMax_editingFinished();
+    void on_ValueScanOffset_valueChanged(double);
+    void on_ValueIndexOffset_valueChanged(double);
 
 private:
     Ui::DopplerGroupTab *ui;
