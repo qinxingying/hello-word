@@ -301,7 +301,12 @@ void DialogDxfFileLoad::on_BtnNccPathClicked()
     QString _strPath = QFileDialog::getExistingDirectory(this,
                                                          QString(tr("Open Dxf File")),
                                                          QString::fromLocal8Bit(_pConfig->AppEvn.strNccFilePath));
-    m_path = _strPath + "/";
+    if(QFileInfo(_strPath).isRoot()) {
+        m_path = _strPath;
+    } else {
+        m_path = _strPath + "/";
+    }
+
 //    strcpy(_strBuf, (char*)(qPrintable(_strPath)));
 //    sprintf(m_path.toLatin1().data(), "%s/", _strBuf);
     SetWndName();
