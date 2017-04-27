@@ -548,13 +548,12 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_part.afSize[0] = 20  ;
 	_part.afSize[1] = _part.afSize[2] = 100 ;
 
-//    QString materialName = QString(QObject::tr("Steel common"));
     MATERIAL& _material  = _part.material ;
+    QString _name = QString::fromLocal8Bit("∆’Õ®∏÷");
     strcpy(_material.strName[0] , "Steel common") ;
-    strcpy(_material.strName[1] , "∆’Õ®∏÷") ;
+    strcpy(_material.strName[1] , _name.toUtf8().data()) ;
     strcpy(_material.strName[2] , " ") ;
     strcpy(_material.strName[3] , " ") ;
-//    strcpy(_material.strName, materialName.toLocal8Bit().data());
 
 	_material.fVelocityLon = 5920 ;
 	_material.fVelocityTran= 3230 ;

@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -159,7 +159,7 @@
              </property>
              <property name="maximumSize">
               <size>
-               <width>300</width>
+               <width>310</width>
                <height>16777215</height>
               </size>
              </property>
@@ -722,7 +722,7 @@
             <widget class="QGroupBox" name="BoxPulserReceiver">
              <property name="maximumSize">
               <size>
-               <width>300</width>
+               <width>310</width>
                <height>16777215</height>
               </size>
              </property>
@@ -1130,7 +1130,7 @@
             <widget class="QGroupBox" name="groupBox_2">
              <property name="maximumSize">
               <size>
-               <width>300</width>
+               <width>310</width>
                <height>16777215</height>
               </size>
              </property>

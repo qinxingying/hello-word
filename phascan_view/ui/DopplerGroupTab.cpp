@@ -91,7 +91,7 @@ void DopplerGroupTab::UpdateVelocitySelection()
 	QString _strTmp[3];
     DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
     int _iLang = _pConfig->AppEvn.eLanguage;
-    _strTmp[0] = _material.strName[_iLang] ;
+    _strTmp[0] = QString(_material.strName[_iLang]) ;
 
 	_strTmp[1].sprintf("[L]%.0f" , _material.fVelocityLon) ;
 	_strTmp[2].sprintf("[T]%.0f" , _material.fVelocityTran) ;
