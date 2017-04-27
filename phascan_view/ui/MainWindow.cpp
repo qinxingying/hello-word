@@ -1301,6 +1301,7 @@ void MainWindow::slot_actionEnglish_triggered()
     int _nGroupQty = _pConfig->common.nGroupQty;
     for(int i = 0; i < _nGroupQty; i++){
         m_pGroupList.at(i)->retranslateGroupTabUi();
+        m_pGroupList.at(i)->UpdateGroupConfig();
     }
 
     ui->retranslateUi(this);
@@ -1323,6 +1324,7 @@ void MainWindow::slot_actionChinese_triggered()
     int _nGroupQty = _pConfig->common.nGroupQty;
     for(int i = 0; i < _nGroupQty; i++){
         m_pGroupList.at(i)->retranslateGroupTabUi();
+        m_pGroupList.at(i)->UpdateGroupConfig();
     }
 
     ui->retranslateUi(this);
