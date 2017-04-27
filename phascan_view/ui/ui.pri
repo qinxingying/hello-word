@@ -5,8 +5,8 @@ HEADERS += \
     $$PWD/dialog/DialogAddOneGroup.h \
     $$PWD/dialog/DialogColorSelect.h \
     $$PWD/dialog/DialogReportSetting.h \
-    $$PWD/dialog/DialogWeldPartLoad.h \
-    $$PWD/painter/DopplerPart.h \
+#    $$PWD/dialog/DialogWeldPartLoad.h \
+#    $$PWD/painter/DopplerPart.h \
     $$PWD/painter/DrawDxf.h \
     $$PWD/painter/QWeldShowWidget.h \
     $$PWD/DataViewSettingWidget.h \
@@ -27,8 +27,8 @@ SOURCES += \
     $$PWD/dialog/DialogAddOneGroup.cpp \
     $$PWD/dialog/DialogColorSelect.cpp \
     $$PWD/dialog/DialogReportSetting.cpp \
-    $$PWD/dialog/DialogWeldPartLoad.cpp \
-    $$PWD/painter/DopplerPart.cpp \
+#    $$PWD/dialog/DialogWeldPartLoad.cpp \
+#    $$PWD/painter/DopplerPart.cpp \
     $$PWD/painter/QWeldShowWidget.cpp \
     $$PWD/DataViewSettingWidget.cpp \
     $$PWD/DopplerColorBtn.cpp \
@@ -47,7 +47,7 @@ FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
     $$PWD/dialog/DialogColorSelect.ui \
     $$PWD/dialog/DialogReportSetting.ui \
-    $$PWD/dialog/DialogWeldPartLoad.ui \
+#    $$PWD/dialog/DialogWeldPartLoad.ui \
     $$PWD/DopplerGroupTab.ui \
     $$PWD/InstrumentSettingWidget.ui \
     $$PWD/mainwindow.ui \

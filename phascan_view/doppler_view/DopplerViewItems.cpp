@@ -1,5 +1,5 @@
 #include "DopplerViewItems.h"
-#include "painter/DopplerPart.h"
+//#include "painter/DopplerPart.h"
 #include "painter/DrawDxf.h"
 
 #include <QColor>
@@ -709,9 +709,9 @@ void  DopplerViewItems::DrawWeld(QPainterPath& path)
         DrawWeldVY(path);
         break;
 
-	case setup_WELD_NCC :
-		DrawWeldNcc(path);
-		break;
+//	case setup_WELD_NCC :
+//		DrawWeldNcc(path);
+//		break;
     case setup_WELD_DXF: //New Add
         DrawWeldDxf(path);
         break;
@@ -1557,40 +1557,40 @@ void DopplerViewItems::DrawWeldVY(QPainterPath &path)
     }
 }
 
-void  DopplerViewItems::DrawWeldNcc (QPainterPath& path)
-{
-	DRAW_PART_INFO _info;
-	DopplerPart* _pPart = DopplerPart::Instance();
+//void  DopplerViewItems::DrawWeldNcc (QPainterPath& path)
+//{
+//	DRAW_PART_INFO _info;
+//	DopplerPart* _pPart = DopplerPart::Instance();
 
-	QSize size = m_pDataView->GetViewSize();
+//	QSize size = m_pDataView->GetViewSize();
 
-	double _fXStart, _fXStop, _fYStart, _fYStop;
-	double _fXSliderStart, _fXSliderStop, _fYSliderStart, _fYSliderStop;
-	m_pDataView->GetRulerRange(&_fXStart, &_fXStop, &_fXSliderStart, &_fXSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
-	m_pDataView->GetRulerRange(&_fYStart, &_fYStop, &_fYSliderStart, &_fYSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
+//	double _fXStart, _fXStop, _fYStart, _fYStop;
+//	double _fXSliderStart, _fXSliderStop, _fYSliderStart, _fYSliderStop;
+//	m_pDataView->GetRulerRange(&_fXStart, &_fXStop, &_fXSliderStart, &_fXSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+//	m_pDataView->GetRulerRange(&_fYStart, &_fYStop, &_fYSliderStart, &_fYSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 
-	double _fWidth  = size.width();
-    double _fHeight = size.height();
+//	double _fWidth  = size.width();
+//    double _fHeight = size.height();
 
-	double _fXScale = (_fXStop - _fXStart) / _fWidth;
-	double _fYScale = (_fYStop - _fYStart) / _fHeight;
+//	double _fXScale = (_fXStop - _fXStart) / _fWidth;
+//	double _fYScale = (_fYStop - _fYStart) / _fHeight;
 
-    double _x0 = (0 - _fXStart) / _fXScale;
-	double _y0 = (0 - _fYStart) / _fYScale;
+//    double _x0 = (0 - _fXStart) / _fXScale;
+//	double _y0 = (0 - _fYStart) / _fYScale;
 
-	_info.fWidth  = _fWidth;
-	_info.fHeight = _fHeight;
-	_info.fX      = _x0;
-	_info.fY      = _y0;
-	_info.fScaleX = _fXScale;
-	_info.fScaleY = _fYScale;
+//	_info.fWidth  = _fWidth;
+//	_info.fHeight = _fHeight;
+//	_info.fX      = _x0;
+//	_info.fY      = _y0;
+//	_info.fScaleX = _fXScale;
+//	_info.fScaleY = _fYScale;
 
-    _pPart->SetPart(&m_cPart);
-	_pPart->SetInfo(_info);
-  //  _pPart->AdaptiveArea();
-	_pPart->DrawNccPart(path);
+//    _pPart->SetPart(&m_cPart);
+//	_pPart->SetInfo(_info);
+//  //  _pPart->AdaptiveArea();
+//	_pPart->DrawNccPart(path);
 
-}
+//}
 
 void DopplerViewItems::DrawWeldDxf(QPainterPath &path)
 {

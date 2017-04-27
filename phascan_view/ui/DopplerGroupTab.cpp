@@ -5,7 +5,7 @@
 #include "gHeader.h"
 #include "ProcessDisplay.h"
 #include "dialog/DialogColorSelect.h"
-#include "dialog/DialogWeldPartLoad.h"
+//#include "dialog/DialogWeldPartLoad.h"
 #include "dialog/DialogDxfFileLoad.h"
 
 #include <QPushButton>
@@ -106,11 +106,15 @@ void DopplerGroupTab::InitComBoxMaterialSelection()
 	ui->ComMaterial->clear();
 	QStringList _strList;
 
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+    int _iLang = _pConfig->AppEvn.eLanguage;
+
 	int _nIndex = 0;
 	for(int i = 0 ; i< _list->count() ; i++)
 	{
 		MATERIAL* _pMaterial = _list->at(i) ;
 		QString _str ;
+//        qDebug() << _iLang << QString::fromLocal8Bit(_pMaterial->strName[_iLang]).toUtf8().data();
         _str.sprintf("[%s][L:%.0f][T:%.0f]" , QString(tr(_pMaterial->strName)).toUtf8().data(), _pMaterial->fVelocityLon , _pMaterial->fVelocityTran ) ;
 		_strList.append(_str);
         if(!strcmp( _pMaterial->strName, m_pGroup->part.material.strName) )
@@ -708,7 +712,8 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ui->ValueScanOffset->setValue(m_pGroup->fScanOffset);
 	ui->ValueIndexOffset->setValue(m_pGroup->fIndexOffset);
 	ui->ComSkewAngle->setCurrentIndex(m_pGroup->eSkew);
-	ui->CheckPartFileShow->setChecked(_process->GetShowWeldPart(m_nGroupId));
+//	ui->CheckPartFileShow->setChecked(_process->GetShowWeldPart(m_nGroupId));
+    ui->CheckDxfFileShow->setChecked(_process->GetShowWeldPart(m_nGroupId));
 
 	SCANNER& _scanner = m_pConfig->common.scanner ;
 	if(_scanner.eEncoderType == setup_ENCODER_TYPE_TIMER) {
@@ -757,12 +762,12 @@ void DopplerGroupTab::UpdateTofdParam()
 	if(m_pGroup->eTxRxMode != setup_TX_RX_MODE_TOFD )
 	{
 		ui->BoxPartTofd->hide();
-        ui->scrollGeometry->setMinimumHeight(600);
-        ui->scrollGeometry->resize(ui->scrollGeometry->width(), 600);
+        ui->scrollGeometry->setMinimumHeight(450);
+        ui->scrollGeometry->resize(ui->scrollGeometry->width(), 450);
     }else{
 		ui->BoxPartTofd->show();
-        ui->scrollGeometry->setMinimumHeight(855);
-        ui->scrollGeometry->resize(ui->scrollGeometry->width(), 855);
+        ui->scrollGeometry->setMinimumHeight(760);
+        ui->scrollGeometry->resize(ui->scrollGeometry->width(), 760);
 		ui->CheckLwBwShow->setChecked(m_pGroup->bShowLwBw);
 
 		SCANNER& _scaner = m_pConfig->common.scanner ;
@@ -851,6 +856,13 @@ void DopplerGroupTab::UpdateSizeingCurves()
 	default:
 		break;
 	}
+
+    if(m_pSizingCurveValue[0]->isHidden()) {
+        ui->scrollAreaGateAndCurve->setMinimumHeight(450);
+    } else {
+        ui->scrollAreaGateAndCurve->setMinimumHeight(800);
+    }
+
 	ui->ComSizingCurve->setCurrentIndex((int)_curve.eType);
 	ui->ComCurvePointId->clear();
 	char strBuf[256];
@@ -1405,20 +1417,20 @@ void DopplerGroupTab::on_ComSkewAngle_currentIndexChanged(int index)
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
 
-void DopplerGroupTab::on_BtnLoadPartFile_clicked()
-{
-	DialogWeldPartLoad _dialog(this);
-	int _nRet = _dialog.exec();
+//void DopplerGroupTab::on_BtnLoadPartFile_clicked()
+//{
+//	DialogWeldPartLoad _dialog(this);
+//	int _nRet = _dialog.exec();
 
-	if(_nRet)
-	{
-		ParameterProcess* _process = ParameterProcess::Instance();
-		_process->SetupPart(m_nGroupId,  _dialog.GetPart());
-	}
+//	if(_nRet)
+//	{
+//		ParameterProcess* _process = ParameterProcess::Instance();
+//		_process->SetupPart(m_nGroupId,  _dialog.GetPart());
+//	}
 
-    ProcessDisplay _display;
-    _display.UpdateAllViewOfGroup(m_nGroupId);
-}
+//    ProcessDisplay _display;
+//    _display.UpdateAllViewOfGroup(m_nGroupId);
+//}
 
 void DopplerGroupTab::on_BtnLoadDxfFile_clicked()
 {
@@ -1543,14 +1555,14 @@ void DopplerGroupTab::on_BtnDepthCal_clicked()
 	ui->SpinBoxZeroOff->setValue(_tofd->fZeroOff);
 }
 
-void DopplerGroupTab::on_CheckPartFileShow_clicked(bool checked)
-{
-	ParameterProcess* _process = ParameterProcess::Instance();
-    _process->SetupShowWeldPart(m_nGroupId , checked);
+//void DopplerGroupTab::on_CheckPartFileShow_clicked(bool checked)
+//{
+//	ParameterProcess* _process = ParameterProcess::Instance();
+//    _process->SetupShowWeldPart(m_nGroupId , checked);
 
-	ProcessDisplay _display ;
-    _display.UpdateAllViewOfGroup(m_nGroupId);
-}
+//	ProcessDisplay _display ;
+//    _display.UpdateAllViewOfGroup(m_nGroupId);
+//}
 
 void DopplerGroupTab::on_CheckDxfFileShow_clicked(bool checked)
 {

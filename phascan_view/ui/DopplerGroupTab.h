@@ -129,7 +129,7 @@ private slots:
 //    void on_ValueScanOffset_editingFinished();
 //    void on_ValueIndexOffset_editingFinished();
     void on_ComSkewAngle_currentIndexChanged(int index);
-    void on_BtnLoadPartFile_clicked();
+//    void on_BtnLoadPartFile_clicked();
     void on_BtnLoadDxfFile_clicked();
 	void on_CheckLwBwShow_clicked(bool checked);
 	void on_ComBoxProMode_currentIndexChanged(int index_);
@@ -139,7 +139,7 @@ private slots:
     void on_SpinBoxDepthEnd_valueChanged(double);
     void on_SpinBoxDepthCal_valueChanged(double);
     void on_BtnDepthCal_clicked();
-    void on_CheckPartFileShow_clicked(bool checked);
+//    void on_CheckPartFileShow_clicked(bool checked);
     void on_CheckDxfFileShow_clicked(bool checked);
     void on_CheckMeasureShow_clicked(bool checked);
 	void on_CheckBackShow_clicked(bool checked);

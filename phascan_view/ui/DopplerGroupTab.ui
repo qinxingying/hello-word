@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>338</width>
-    <height>720</height>
+    <width>350</width>
+    <height>924</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,6 +15,12 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -42,6 +48,12 @@
    </property>
    <item>
     <widget class="QToolBox" name="toolBox">
+     <property name="minimumSize">
+      <size>
+       <width>290</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="baseSize">
       <size>
        <width>0</width>
@@ -52,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>2</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -62,14 +74,14 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>338</width>
-        <height>510</height>
+        <width>350</width>
+        <height>714</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>480</height>
+        <height>0</height>
        </size>
       </property>
       <attribute name="icon">
@@ -80,6 +92,9 @@
        <string>Ut Setting</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QScrollArea" name="scrollAreaUtSetting">
          <property name="sizePolicy">
@@ -87,6 +102,12 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>560</height>
+          </size>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -117,7 +138,7 @@
             <number>0</number>
            </property>
            <property name="rightMargin">
-            <number>6</number>
+            <number>0</number>
            </property>
            <item>
             <widget class="QGroupBox" name="BoxGeneral">
@@ -1346,7 +1367,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>321</width>
+        <width>333</width>
         <height>786</height>
        </rect>
       </property>
@@ -1358,7 +1379,13 @@
        <string>Probe/Wedge</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
        <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
         <number>0</number>
        </property>
        <property name="bottomMargin">
@@ -1410,7 +1437,7 @@
             <number>0</number>
            </property>
            <property name="rightMargin">
-            <number>6</number>
+            <number>0</number>
            </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,0">
@@ -2898,13 +2925,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>321</width>
-        <height>618</height>
+        <width>350</width>
+        <height>714</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
-        <width>313</width>
+        <width>0</width>
         <height>0</height>
        </size>
       </property>
@@ -2916,16 +2943,31 @@
        <string>Focallaw</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QScrollArea" name="scrollArea">
          <property name="minimumSize">
           <size>
-           <width>313</width>
-           <height>600</height>
+           <width>0</width>
+           <height>645</height>
           </size>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
          </property>
          <property name="widgetResizable">
           <bool>true</bool>
@@ -2935,23 +2977,17 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>313</width>
-            <height>600</height>
+            <width>341</width>
+            <height>705</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>312</width>
-            <height>560</height>
+            <width>0</width>
+            <height>0</height>
            </size>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>1777125</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_17" stretch="1,6,5,5">
+          <layout class="QVBoxLayout" name="verticalLayout_17" stretch="0,6,5,0,0">
            <property name="leftMargin">
             <number>0</number>
            </property>
@@ -2961,68 +2997,79 @@
            <property name="rightMargin">
             <number>0</number>
            </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
-             <property name="leftMargin">
-              <number>3</number>
+            <widget class="QWidget" name="widget" native="true">
+             <property name="maximumSize">
+              <size>
+               <width>310</width>
+               <height>30</height>
+              </size>
              </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>9</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="LabelLawType">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>70</width>
-                 <height>25</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Law Type:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="ComLawType">
-               <item>
-                <property name="text">
-                 <string>Azimuthal Sector</string>
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>1</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>1</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="LabelLawType">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>Linear Sector</string>
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>25</height>
+                 </size>
                 </property>
-               </item>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="BtnProcessLaw">
-               <property name="text">
-                <string>Process</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+                <property name="text">
+                 <string>Law Type:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="ComLawType">
+                <item>
+                 <property name="text">
+                  <string>Azimuthal Sector</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Linear Sector</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="BtnProcessLaw">
+                <property name="text">
+                 <string>Process</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
            <item>
             <widget class="QGroupBox" name="BoxAngle">
              <property name="maximumSize">
               <size>
                <width>310</width>
-               <height>16777215</height>
+               <height>250</height>
               </size>
              </property>
              <property name="title">
@@ -3032,8 +3079,14 @@
               <property name="spacing">
                <number>3</number>
               </property>
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
               <property name="topMargin">
                <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
               </property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -3168,7 +3221,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3211,7 +3264,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3254,7 +3307,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3290,6 +3343,12 @@
                 </item>
                 <item row="2" column="0">
                  <widget class="QLabel" name="LabelSecSteering">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
@@ -3317,8 +3376,8 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
-                    <height>20</height>
+                    <width>60</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="frame">
@@ -3360,7 +3419,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3403,7 +3462,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3463,7 +3522,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3506,7 +3565,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3549,7 +3608,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3609,7 +3668,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3649,7 +3708,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3689,7 +3748,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3730,7 +3789,7 @@
              <property name="maximumSize">
               <size>
                <width>310</width>
-               <height>16777215</height>
+               <height>210</height>
               </size>
              </property>
              <property name="title">
@@ -3740,8 +3799,14 @@
               <property name="spacing">
                <number>3</number>
               </property>
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
               <property name="topMargin">
                <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
               </property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -3881,7 +3946,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3921,7 +3986,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -3961,7 +4026,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -4021,7 +4086,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -4064,7 +4129,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -4127,7 +4192,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -4170,7 +4235,7 @@
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
                     <height>20</height>
                    </size>
                   </property>
@@ -4214,15 +4279,21 @@
              <property name="maximumSize">
               <size>
                <width>310</width>
-               <height>16777215</height>
+               <height>180</height>
               </size>
              </property>
              <property name="title">
               <string>Aperture</string>
              </property>
              <layout class="QGridLayout" name="gridLayout_24">
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
               <property name="topMargin">
                <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
               </property>
               <item row="0" column="0">
                <layout class="QGridLayout" name="gridLayout_12">
@@ -4641,6 +4712,19 @@
              </layout>
             </widget>
            </item>
+           <item>
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
           </layout>
          </widget>
         </widget>
@@ -4652,20 +4736,14 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>320</width>
-        <height>510</height>
+        <width>333</width>
+        <height>823</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
-        <width>312</width>
-        <height>510</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>320</width>
-        <height>16777215</height>
+        <width>0</width>
+        <height>0</height>
        </size>
       </property>
       <property name="toolTip">
@@ -4679,6 +4757,9 @@
        <string>Gate and Sizing Curves</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QScrollArea" name="scrollAreaGateAndCurve">
          <property name="sizePolicy">
@@ -4689,12 +4770,15 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>320</width>
-           <height>0</height>
+           <width>0</width>
+           <height>805</height>
           </size>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
          </property>
          <property name="widgetResizable">
           <bool>true</bool>
@@ -4705,18 +4789,18 @@
             <x>0</x>
             <y>0</y>
             <width>320</width>
-            <height>600</height>
+            <height>800</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>320</width>
-            <height>600</height>
+            <width>0</width>
+            <height>0</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>177125</width>
+            <width>320</width>
             <height>800</height>
            </size>
           </property>
@@ -4728,10 +4812,16 @@
             <number>0</number>
            </property>
            <property name="rightMargin">
-            <number>6</number>
+            <number>0</number>
            </property>
            <item>
             <widget class="QGroupBox" name="groupBox_3">
+             <property name="minimumSize">
+              <size>
+               <width>290</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
                <width>310</width>
@@ -5105,6 +5195,12 @@
            </item>
            <item>
             <widget class="QGroupBox" name="groupBox_curves">
+             <property name="minimumSize">
+              <size>
+               <width>290</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="maximumSize">
               <size>
                <width>310</width>
@@ -5114,7 +5210,7 @@
              <property name="title">
               <string>Sizing Curves</string>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_24" stretch="0,0,16">
+             <layout class="QVBoxLayout" name="verticalLayout_24" stretch="1,1,0">
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_12">
                 <item>
@@ -6108,8 +6204,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>321</width>
-        <height>855</height>
+        <width>330</width>
+        <height>770</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -6158,7 +6254,7 @@
          <property name="minimumSize">
           <size>
            <width>313</width>
-           <height>855</height>
+           <height>770</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -6179,7 +6275,7 @@
             <x>0</x>
             <y>0</y>
             <width>320</width>
-            <height>855</height>
+            <height>770</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -6206,6 +6302,18 @@
            </property>
            <item>
             <widget class="QGroupBox" name="BoxPart">
+             <property name="minimumSize">
+              <size>
+               <width>290</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>310</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Part</string>
              </property>
@@ -6499,6 +6607,18 @@
            </item>
            <item>
             <widget class="QGroupBox" name="BoxPartPosition">
+             <property name="minimumSize">
+              <size>
+               <width>290</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>310</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>Position</string>
              </property>
@@ -6686,71 +6806,17 @@
             </widget>
            </item>
            <item>
-            <widget class="QGroupBox" name="groupBox_5">
-             <property name="title">
-              <string>Weld &amp; Part File</string>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_8">
-              <item row="0" column="0">
-               <widget class="QLabel" name="LabelPartFileLoad">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>70</width>
-                  <height>25</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>70</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Load:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QPushButton" name="BtnLoadPartFile">
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>150</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Weld</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QCheckBox" name="CheckPartFileShow">
-                <property name="text">
-                 <string>Show</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
             <widget class="QGroupBox" name="groupBox_dxfCAD">
              <property name="minimumSize">
               <size>
-               <width>0</width>
+               <width>290</width>
                <height>60</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>310</width>
+               <height>16777215</height>
               </size>
              </property>
              <property name="title">
@@ -6807,6 +6873,18 @@
            </item>
            <item>
             <widget class="QGroupBox" name="BoxPartTofd">
+             <property name="minimumSize">
+              <size>
+               <width>290</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>310</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="title">
               <string>TOFD</string>
              </property>
@@ -6914,6 +6992,12 @@
                 </item>
                 <item row="6" column="0">
                  <widget class="QLabel" name="LabelZeroOff">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="text">
                    <string>Wedge delay correction:</string>
                   </property>
@@ -7127,7 +7211,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>321</width>
+        <width>333</width>
         <height>850</height>
        </rect>
       </property>
@@ -7173,7 +7257,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>321</width>
+            <width>333</width>
             <height>850</height>
            </rect>
           </property>
@@ -8412,9 +8496,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-190</y>
-        <width>321</width>
-        <height>700</height>
+        <y>0</y>
+        <width>330</width>
+        <height>714</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -8477,8 +8561,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>321</width>
-            <height>700</height>
+            <width>330</width>
+            <height>714</height>
            </rect>
           </property>
           <property name="minimumSize">

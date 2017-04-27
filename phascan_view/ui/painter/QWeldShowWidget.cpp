@@ -1,6 +1,6 @@
 #include "QWeldShowWidget.h"
 #include "gHeader.h"
-#include "DopplerPart.h"
+//#include "DopplerPart.h"
 #include "DrawDxf.h"
 #include "DrawDxfHeader.h"
 
@@ -60,7 +60,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 
         drawDxf->draw_dxf_part(painter);
 
-    } else if(m_pPart->weld.eType == setup_WELD_NCC) {
+    }/* else if(m_pPart->weld.eType == setup_WELD_NCC) {
         DRAW_PART_INFO info;
         info.fWidth = m_cRange.fWidth;
         info.fHeight = m_cRange.fHeight;
@@ -84,7 +84,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
 
         _pPart->DrawOriginLine(painter);
 
-    } else {
+    } */else {
         painter.drawLine (0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
         painter.drawLine (0, m_cRange.fStopY, m_cRange.fWidth, m_cRange.fStopY);
 

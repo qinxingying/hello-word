@@ -192,20 +192,20 @@ void DialogWeldPartLoad::UpdateDisplay()
         ui->frame_6->setVisible(true);
         ui->frame_7->setVisible(true);
         break;
-	case setup_WELD_NCC:
+//	case setup_WELD_NCC:
 
-		break;
+//		break;
     default :
 		break;
     };
 
-	if(m_cPart.weld.eType == setup_WELD_NCC) {
-        ui->ComWeldSymetry->setEnabled(false);
-        ui->frame_value->setDisabled(true);
-	} else {
+//	if(m_cPart.weld.eType == setup_WELD_NCC) {
+//        ui->ComWeldSymetry->setEnabled(false);
+//        ui->frame_value->setDisabled(true);
+//	} else {
         ui->ComWeldSymetry->setEnabled(true);
         ui->frame_value->setEnabled(true);
-	}
+//	}
 }
 
 void DialogWeldPartLoad::on_comboBox_currentIndexChanged(int index)
@@ -283,7 +283,7 @@ void DialogWeldPartLoad::on_PartFileListDbClicked(QModelIndex index)
     QString g_strPartDir = QCoreApplication::applicationDirPath() + "/init/part/ncc/";
 
 	QString _str = index.data().toString();
-	m_cPart.weld.eType = setup_WELD_NCC;
+//	m_cPart.weld.eType = setup_WELD_NCC;
 
     sprintf(m_cPart.strPartFile, "%s%s", g_strPartDir.toLatin1().data(), (char*)(qPrintable(_str)));
 
