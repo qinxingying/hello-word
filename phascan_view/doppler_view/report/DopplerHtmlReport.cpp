@@ -431,6 +431,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG* _pGroup = &_pConfig->group[nGroupId_];
+    int _iLang = _pConfig->AppEvn.eLanguage;
 
     m_probeModel.sprintf("%s" , _pGroup->probe[0].strName);
     m_probeSerial.sprintf("%s" , _pGroup->probe[0].strSerial);
@@ -566,7 +567,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 	default:
 		break;
 	}
-    m_material = _pGroup->part.material.strName;
+    m_material = _pGroup->part.material.strName[_iLang];
     QString g_strGeometry[]={
         QString(QObject::tr("Plate")),
         QString(QObject::tr("OD")),

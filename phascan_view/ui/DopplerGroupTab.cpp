@@ -89,8 +89,9 @@ void DopplerGroupTab::UpdateVelocitySelection()
 	ui->ComVelocitySelection->clear();
 
 	QString _strTmp[3];
-
-    _strTmp[0] = _material.strName;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+    int _iLang = _pConfig->AppEvn.eLanguage;
+    _strTmp[0] = _material.strName[_iLang] ;
 
 	_strTmp[1].sprintf("[L]%.0f" , _material.fVelocityLon) ;
 	_strTmp[2].sprintf("[T]%.0f" , _material.fVelocityTran) ;
@@ -113,14 +114,13 @@ void DopplerGroupTab::InitComBoxMaterialSelection()
 	for(int i = 0 ; i< _list->count() ; i++)
 	{
 		MATERIAL* _pMaterial = _list->at(i) ;
-		QString _str ;
-//        qDebug() << _iLang << QString::fromLocal8Bit(_pMaterial->strName[_iLang]).toUtf8().data();
-        _str.sprintf("[%s][L:%.0f][T:%.0f]" , QString(tr(_pMaterial->strName)).toUtf8().data(), _pMaterial->fVelocityLon , _pMaterial->fVelocityTran ) ;
-		_strList.append(_str);
-        if(!strcmp( _pMaterial->strName, m_pGroup->part.material.strName) )
+        QString _str ;
+        _str.sprintf("[%s][L:%.0f][T:%.0f]" , QString(tr(_pMaterial->strName[_iLang])).toUtf8().data(), _pMaterial->fVelocityLon , _pMaterial->fVelocityTran ) ;
+        _strList.append(_str);
+        if(!strcmp( _pMaterial->strName[0], m_pGroup->part.material.strName[0]) )
 			_nIndex= i ;
 		//-------------------------------------------------------------
-	}
+    }
 	ui->ComMaterial->addItems(_strList);
 	ui->ComMaterial->setCurrentIndex(_nIndex);
 }
@@ -1827,8 +1827,7 @@ void DopplerGroupTab::on_ValueCScanThicknessMax_valueChanged(double)
 
 void DopplerGroupTab::on_ComCScanSource1_currentIndexChanged(int index)
 {
-	if(!ui->ComCScanSource1->hasFocus()) return ;
-    qDebug() << "changed";
+    if(!ui->ComCScanSource1->hasFocus()) return ;
 	m_pGroup->eCScanSource[0] = (setup_CSCAN_SOURCE_MODE)index ;
 	g_pMainWnd->UpdateAllDisplay();
 	g_pMainWnd->RunDrawThreadOnce();

@@ -1269,12 +1269,11 @@ void MainWindow::on_actionLanguage_triggered()
     DopplerConfigure* pConfig = DopplerConfigure::Instance();
 
     if(m_currentLang == setup_LANG_ENGLISH) {
-        slot_actionChinese_triggered();
         pConfig->AppEvn.eLanguage = setup_LANG_CHINESE;
-
+        slot_actionChinese_triggered();
     }else if(m_currentLang == setup_LANG_CHINESE){
-        slot_actionEnglish_triggered();
         pConfig->AppEvn.eLanguage = setup_LANG_ENGLISH;
+        slot_actionEnglish_triggered();
     }
 
     m_currentLang = pConfig->AppEvn.eLanguage;

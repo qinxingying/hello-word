@@ -159,7 +159,7 @@ struct WEDGE_CONFIG
 
 struct MATERIAL
 {
-    char   strName[64];
+    char   strName[4][64];
 	float  fVelocityLon;
 	float  fVelocityTran;
     float  fDensity;

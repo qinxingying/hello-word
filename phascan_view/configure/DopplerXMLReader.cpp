@@ -1,5 +1,7 @@
 #include "DopplerXMLReader.h"
 
+#include <cstring>
+
 #include <QXmlStreamReader>
 #include <QFile>
 #include <QTextStream>
@@ -43,28 +45,28 @@ void DopplerXMLReader::LoadMaterial(QString* str_ , QList<MATERIAL*>* list_)
                 std::string _str1 = _str0.toStdString();
                 const char* _str2 = _str1.c_str();
                 if(_str2) {
-                    memcpy(_pNew->strName, (char*)_str2 , strlen(_str2)< 63 ?strlen(_str2): 63)  ;
+                    memcpy(_pNew->strName[0], (char*)_str2 , strlen(_str2)< 63 ?strlen(_str2): 63)  ;
                 }
 
                 _str0 = xml.attributes().value("CHS").toString();
                 _str1 = _str0.toStdString();
                 _str2 = _str1.c_str();
                 if(_str2) {
-                    memcpy(_pNew->strName, (char*)_str2 , strlen(_str2)< 63 ?strlen(_str2): 63)  ;
+                    memcpy(_pNew->strName[1], (char*)_str2 , strlen(_str2)< 63 ?strlen(_str2): 63)  ;
                 }
 
                 _str0 = xml.attributes().value("KOR").toString();
                 _str1 = _str0.toStdString();
                 _str2 = _str1.c_str();
                 if(_str2) {
-                    memcpy(_pNew->strName, (char*)_str2 , strlen(_str2)< 63 ?strlen(_str2): 63)  ;
+                    memcpy(_pNew->strName[2], (char*)_str2 , strlen(_str2)< 63 ?strlen(_str2): 63)  ;
                 }
 
                 _str0 = xml.attributes().value("JP").toString();
                 _str1 = _str0.toStdString();
                 _str2 = _str1.c_str();
                 if(_str2) {
-                    memcpy(_pNew->strName, (char*)_str2 , strlen(_str2)< 63 ?strlen(_str2): 63)  ;
+                    memcpy(_pNew->strName[3], (char*)_str2 , strlen(_str2)< 63 ?strlen(_str2): 63)  ;
                 }
                 list_->append(_pNew);
             }
