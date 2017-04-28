@@ -259,7 +259,12 @@ void DopplerOverlays::CreateOverlaysBH()
 
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(true);
-	_pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+//	_pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+    if(m_pConfigure->common.scanner.fScanStart > m_pConfigure->common.scanner.fScanPos) {
+       _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanStart);
+    } else {
+        _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+    }
 
 	_pItemGroup->UpdateItems();
 }
@@ -340,7 +345,12 @@ void DopplerOverlays::CreateOverlaysBV()
 
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(false);
-	_pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+//	_pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+    if(m_pConfigure->common.scanner.fScanStart > m_pConfigure->common.scanner.fScanPos) {
+       _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanStart);
+    } else {
+        _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+    }
 
 	_pItemGroup->UpdateItems();
 }
@@ -364,7 +374,12 @@ void DopplerOverlays::CreateOverlaysCH()
 	}
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(false);
-	_pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+
+    if(m_pConfigure->common.scanner.fScanStart > m_pConfigure->common.scanner.fScanPos) {
+       _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanStart);
+    } else {
+        _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+    }
 
 	_pItemGroup->UpdateItems();
 }
@@ -389,7 +404,13 @@ void DopplerOverlays::CreateOverlaysCV()
 
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(true);
-	_pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+
+//	_pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+    if(m_pConfigure->common.scanner.fScanStart > m_pConfigure->common.scanner.fScanPos) {
+       _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanStart);
+    } else {
+        _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
+    }
 
 	_pItemGroup->UpdateItems();
 	_pItemGroup->UpdateItems();

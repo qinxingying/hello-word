@@ -704,6 +704,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
 
     if(!_ret)
     {
+        _pConfig->ResetShadowData();
         UpdateTableParameter();
         UpdateStatusBarInfo();
         UpdateTableDisplay();
@@ -736,6 +737,7 @@ void MainWindow::ScreenShot()
     _strPath.sprintf("ScreenShot%04d.png", _nScreenShotId++);
     QPixmap pixmap = QPixmap::grabWidget(this);
     QString _strTemp = QDir::currentPath() + "/" + _strPath + ".png";
+
     do{
         _nScreenShotId++;
         _strPath.sprintf("ScreenShot%04d.png", _nScreenShotId++);
