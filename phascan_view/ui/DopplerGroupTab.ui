@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -4968,6 +4968,9 @@
                   <property name="decimals">
                    <number>1</number>
                   </property>
+                  <property name="maximum">
+                   <double>5000.000000000000000</double>
+                  </property>
                   <property name="singleStep">
                    <double>0.100000000000000</double>
                   </property>
@@ -5039,6 +5042,9 @@
                   </property>
                   <property name="decimals">
                    <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <double>5000.000000000000000</double>
                   </property>
                   <property name="singleStep">
                    <double>0.100000000000000</double>
@@ -6203,7 +6209,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-56</y>
         <width>330</width>
         <height>770</height>
        </rect>
