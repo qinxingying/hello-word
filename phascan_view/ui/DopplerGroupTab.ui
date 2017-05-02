@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>924</height>
+    <height>1023</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>5</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -75,7 +75,7 @@
         <x>0</x>
         <y>0</y>
         <width>350</width>
-        <height>714</height>
+        <height>813</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -1367,8 +1367,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>333</width>
-        <height>786</height>
+        <width>350</width>
+        <height>813</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -2926,7 +2926,7 @@
         <x>0</x>
         <y>0</y>
         <width>350</width>
-        <height>714</height>
+        <height>813</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -2978,7 +2978,7 @@
             <x>0</x>
             <y>0</y>
             <width>341</width>
-            <height>705</height>
+            <height>804</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -4735,9 +4735,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-35</y>
         <width>333</width>
-        <height>823</height>
+        <height>848</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -4771,7 +4771,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>805</height>
+           <height>830</height>
           </size>
          </property>
          <property name="frameShape">
@@ -4788,20 +4788,14 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>320</width>
-            <height>800</height>
+            <width>324</width>
+            <height>830</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>0</width>
             <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>320</width>
-            <height>800</height>
            </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -5216,7 +5210,48 @@
              <property name="title">
               <string>Sizing Curves</string>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_24" stretch="1,1,0">
+             <layout class="QVBoxLayout" name="verticalLayout_24" stretch="0,1,1,0">
+              <item>
+               <widget class="QWidget" name="widget_2" native="true">
+                <layout class="QGridLayout" name="gridLayout_8">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="LabelDACTCG">
+                   <property name="minimumSize">
+                    <size>
+                     <width>70</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>70</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>DAC/TCG</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QCheckBox" name="CheckCurveShow">
+                   <property name="text">
+                    <string>Show</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_12">
                 <item>
@@ -6209,9 +6244,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-56</y>
+        <y>0</y>
         <width>330</width>
-        <height>770</height>
+        <height>813</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -6281,7 +6316,7 @@
             <x>0</x>
             <y>0</y>
             <width>320</width>
-            <height>770</height>
+            <height>813</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -8504,7 +8539,7 @@
         <x>0</x>
         <y>0</y>
         <width>330</width>
-        <height>714</height>
+        <height>800</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -8568,7 +8603,7 @@
             <x>0</x>
             <y>0</y>
             <width>330</width>
-            <height>714</height>
+            <height>800</height>
            </rect>
           </property>
           <property name="minimumSize">

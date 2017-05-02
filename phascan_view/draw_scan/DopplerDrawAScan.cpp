@@ -3,7 +3,6 @@
 #include <QPainter>
 #include <math.h>
 
-
 DopplerDrawAScanH::DopplerDrawAScanH():DopplerDrawScan()
 {
 	bDrawLimit = 0 ;
@@ -112,20 +111,23 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 		painter.drawPolyline(LimitLow);
 	}
 
-	switch(m_pGroup->curve.eType)
-	{
-	case setup_CURVE_TYPE_DAC:
-		DrawDacCurve(&painter, _nWidth, _nHeight);
-		break;
-	case setup_CURVE_TYPE_LINEAR_DAC:
-		DrawLinearDacCurve(&painter, _nWidth, _nHeight);
-		break;
-	case setup_CURVE_TYPE_TCG:
-		DrawTcgCurve(&painter, _nWidth, _nHeight);
-		break;
-	default:
-		break;
-	}
+    qDebug() << "curve" << m_pGroup->bShowCurve;
+    if(m_pGroup->bShowCurve) {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_DAC:
+            DrawDacCurve(&painter, _nWidth, _nHeight);
+            break;
+        case setup_CURVE_TYPE_LINEAR_DAC:
+            DrawLinearDacCurve(&painter, _nWidth, _nHeight);
+            break;
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight);
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 void DopplerDrawAScanH::SetColor(QColor* pColor_ , A_SCAN_LINE_TYPE eLineType_ )
@@ -468,20 +470,23 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
 		painter.drawPolyline(LimitLow);
 	}
 
-	switch(m_pGroup->curve.eType)
-	{
-	case setup_CURVE_TYPE_DAC:
-		DrawDacCurve(&painter, _nWidth, _nHeight);
-		break;
-	case setup_CURVE_TYPE_LINEAR_DAC:
-		DrawLinearDacCurve(&painter, _nWidth, _nHeight);
-		break;
-	case setup_CURVE_TYPE_TCG:
-		DrawTcgCurve(&painter, _nWidth, _nHeight);
-		break;
-	default:
-		break;
-	}
+    if(m_pGroup->bShowCurve) {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_DAC:
+            DrawDacCurve(&painter, _nWidth, _nHeight);
+            break;
+        case setup_CURVE_TYPE_LINEAR_DAC:
+            DrawLinearDacCurve(&painter, _nWidth, _nHeight);
+            break;
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight);
+            break;
+        default:
+            break;
+        }
+    }
+
 }
 
 void DopplerDrawAScanV::DrawDacCurve(QPainter *painter, int nWidth_, int nHeight_)

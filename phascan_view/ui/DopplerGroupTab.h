@@ -184,6 +184,7 @@ private slots:
     void on_ValueCScanThicknessMax_editingFinished();
     void on_ValueScanOffset_valueChanged(double);
     void on_ValueIndexOffset_valueChanged(double);
+    void on_CheckCurveShow_clicked(bool checked);
 
 private:
     Ui::DopplerGroupTab *ui;

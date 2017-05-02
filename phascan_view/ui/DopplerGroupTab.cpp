@@ -439,7 +439,23 @@ void DopplerGroupTab::SetWidgetInvalide()
 
     ui->ComGateSync->setDisabled(true);
     ui->ComGateMeasure->setDisabled(true);
-    ui->groupBox_curves->setDisabled(true);
+
+    ui->ValueSizingCurve1->setDisabled(true);
+    ui->ValueSizingCurve2->setDisabled(true);
+    ui->ValueSizingCurve3->setDisabled(true);
+    ui->ValueSizingCurve4->setDisabled(true);
+    ui->ValueSizingCurve5->setDisabled(true);
+    ui->ValueSizingCurve6->setDisabled(true);
+    ui->ValueSizingCurve7->setDisabled(true);
+    ui->ValueSizingCurve8->setDisabled(true);
+    ui->ValueSizingCurve9->setDisabled(true);
+    ui->ValueSizingCurve10->setDisabled(true);
+    ui->ValueSizingCurve11->setDisabled(true);
+    ui->ValueSizingCurve12->setDisabled(true);
+    ui->ValueSizingCurve13->setDisabled(true);
+    ui->ValueSizingCurve14->setDisabled(true);
+    ui->ValueSizingCurve15->setDisabled(true);
+    ui->ValueSizingCurve16->setDisabled(true);
 
     ui->ComGeometry->setDisabled(true);
     ui->ComMaterial->setDisabled(true);
@@ -788,7 +804,9 @@ void DopplerGroupTab::UpdateSizeingCurves()
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
 
-	ui->ComSizingCurve->setEnabled(false);
+    ui->CheckCurveShow->setCheckState(m_pGroup->bShowCurve ? Qt::Checked : Qt::Unchecked);
+
+    ui->ComSizingCurve->setEnabled(false);
 	ui->ComCurvePointId->setEnabled(false);
 
 	ui->BtnAddPoint->setEnabled(false);
@@ -1986,6 +2004,15 @@ void DopplerGroupTab::on_ValueIndexOffset_valueChanged(double)
     double _fValue2 = ui->ValueIndexOffset->value() ;
     _process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
 
+    ProcessDisplay _display ;
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_CheckCurveShow_clicked(bool checked)
+{
+    m_pGroup->bShowCurve = checked ;
+    qDebug() << "showCurve" << m_pGroup->bShowCurve;
     ProcessDisplay _display ;
     _display.UpdateAllViewOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
