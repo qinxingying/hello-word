@@ -145,6 +145,7 @@ void DopplerConfigure::OpenEvn()
 	QDataStream reader(&file);
 
     int ret = reader.readRawData((char*)&AppEvn, sizeof(SYSTEM_ENVIRMENT));
+
     if(ret < 0)
 	{
         GetExePathName1(g_strDataFilePath.toLatin1().data(), _strPathName.toLatin1().data());
@@ -192,9 +193,9 @@ void DopplerConfigure::OpenEvn()
 		group[i].aeMeasureType[4] = AppEvn.anMeasureSelection[0][4] ;
 
 		group[i].bShowCursor	= AppEvn.bShowCursor[i] ;
-        group[i].bShowGate		= true;
-        group[i].bShowThickness = false;
-        group[i].bShowWeldPart  = false;
+        group[i].bShowGate		= AppEvn.bShowGate[i];
+        group[i].bShowThickness = AppEvn.bShowThickness[i];
+        group[i].bShowWeldPart  = AppEvn.bShowWeld[i];
 		group[i].bShowMeasure   = AppEvn.bShowMeasure[i] ;
 		group[i].bShowLwBw	    = AppEvn.bShowLwBw[i] ;
         group[i].bShowDefect	= true;
