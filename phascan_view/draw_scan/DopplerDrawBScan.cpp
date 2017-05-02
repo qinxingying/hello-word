@@ -29,6 +29,7 @@ void DopplerDrawBScanH::UpdateDisplayRange(int nType_, int nRangle_ , int nPos_)
 {
 	if(nPos_ < 0) nPos_ = 0;
 
+    m_PosStop = nRangle_;
 	if(nPos_<= m_PosStart)
 	{
 		m_PosStart = nPos_  ;

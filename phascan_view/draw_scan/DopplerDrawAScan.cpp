@@ -111,7 +111,6 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 		painter.drawPolyline(LimitLow);
 	}
 
-    qDebug() << "curve" << m_pGroup->bShowCurve;
     if(m_pGroup->bShowCurve) {
         switch(m_pGroup->curve.eType)
         {

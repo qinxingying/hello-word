@@ -2012,8 +2012,5 @@ void DopplerGroupTab::on_ValueIndexOffset_valueChanged(double)
 void DopplerGroupTab::on_CheckCurveShow_clicked(bool checked)
 {
     m_pGroup->bShowCurve = checked ;
-    qDebug() << "showCurve" << m_pGroup->bShowCurve;
-    ProcessDisplay _display ;
-    _display.UpdateAllViewOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
