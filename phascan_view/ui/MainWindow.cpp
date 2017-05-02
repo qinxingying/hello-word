@@ -734,16 +734,16 @@ void MainWindow::ScreenShot()
 {
     static int _nScreenShotId = 0;
     QString _strPath;
-    _strPath.sprintf("ScreenShot%04d.png", _nScreenShotId++);
+    _strPath.sprintf("ScreenShot%04d.png", _nScreenShotId);
     QPixmap pixmap = QPixmap::grabWidget(this);
-    QString _strTemp = QDir::currentPath() + "/" + _strPath + ".png";
+    QString _strTemp = QDir::currentPath() + "/" + _strPath;
 
     do{
-        _nScreenShotId++;
         _strPath.sprintf("ScreenShot%04d.png", _nScreenShotId++);
-        _strTemp = QDir::currentPath() + "/" + _strPath + ".png";
+        _strTemp = QDir::currentPath() + "/" + _strPath;
     }
-    while(QFileInfo(_strTemp).exists());
+    while(QFile(_strTemp).exists());
+
     pixmap.save(QDir::currentPath() + "/" + _strPath, "png");
     QClipboard *clipboard = QApplication::clipboard();   //获取系统剪贴板指针
     clipboard->setPixmap(pixmap);
