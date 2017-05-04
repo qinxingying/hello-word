@@ -246,7 +246,7 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanPos_valueChanged(double arg1)
 	 if(_nPos1 == _nPos2)  return ;
 
 	 _scanner.fScanPos = arg1 ;
-	 ui->SliderCurrentScanPos->setValue(_nPos1);
+     ui->SliderCurrentScanPos->setValue(_nPos1 - _scanner.fScanStart);
 
 	 ProcessDisplay _proDisplay ;
 	 _proDisplay.UpdateAllView();
