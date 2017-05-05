@@ -846,20 +846,24 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 	if(iEnd_ < 0) {
 		iEnd_ = 0;
 	}
-	if(iEnd_ >= nPointQty_) {
-		iEnd_ = nPointQty_ - 1;
-	}
+//	if(iEnd_ >= nPointQty_) {
+//		iEnd_ = nPointQty_ - 1;
+//	}
 	if(iStart_ > iEnd_) {
 		iStart_ = iEnd_;
 	}
 	int _iS = iStart_;
-	int _iE = iEnd_;
+    int _iE;
+    if(iEnd_ >= nPointQty_) {
+        _iE = nPointQty_ - 1;
+    } else {
+        _iE = iEnd_;
+    }
 	int _iH = iHeight_;
 
 	int _iFro = 0;//pData_[iStart_];
 	int _iTmp = 0;
-	int _iPos = iEnd_;
-
+    int _iPos = iEnd_;
 	if(!bRectify_) {// ÉäÆµ
 		int mode = 0;
 		if(iHeight_ > WAVE_HALF)
@@ -895,7 +899,7 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 		}
 	}
 
-	*_pPos = _iPos;
+    *_pPos = _iPos;
 	return _iFro;
 }
 
@@ -909,14 +913,19 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
 	if(iEnd_ < 0) {
 		iEnd_ = 0;
 	}
-	if(iEnd_ >= nPointQty_) {
-		iEnd_ = nPointQty_ - 1;
-	}
+//	if(iEnd_ >= nPointQty_) {
+//		iEnd_ = nPointQty_ - 1;
+//	}
 	if(iStart_ > iEnd_) {
 		iStart_ = iEnd_;
 	}
 	int _iS = iStart_;
-	int _iE = iEnd_;
+    int _iE;
+    if(iEnd_ >= nPointQty_) {
+        _iE = nPointQty_ - 1;
+    } else {
+        _iE = iEnd_;
+    }
 
 	int _iAmp = 0;
 	int _iTmp = 0;
@@ -992,7 +1001,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	float _fStart = _fScale * (_pGate->fStart - _fSampleStart) ;
 	float _fWidth = _fScale * _pGate->fWidth;
 	float _fHeigh = _pGate->nThreshold * WAVE_MAX / 100;
-	if(_fStart+_fWidth >= _nPointQty) _fWidth = _nPointQty - _fStart - 1;
+//	if(_fStart+_fWidth >= _nPointQty) _fWidth = _nPointQty - _fStart - 1;
 
 	pInfo_[setup_GATE_I].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_I].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
 	pInfo_[setup_GATE_I].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_I].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
@@ -1029,16 +1038,16 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 		break;
 	default:	break;
 	}
-	if(_fStart+_fWidth >= _nPointQty) _fWidth = _nPointQty - _fStart - 1;
+//	if(_fStart+_fWidth >= _nPointQty) _fWidth = _nPointQty - _fStart - 1;
 
 	pInfo_[setup_GATE_A].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_A].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
 	pInfo_[setup_GATE_A].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_A].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
 
-	pInfo_[setup_GATE_A].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
-	pInfo_[setup_GATE_A].fGw   = _fWidth / _fScale;//_pGate->fWidth;
+    pInfo_[setup_GATE_A].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
+    pInfo_[setup_GATE_A].fGw   = /*_fWidth / _fScale;//*/_pGate->fWidth;
 	pInfo_[setup_GATE_A].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
 
-	_fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_I].iXEdge);
+    _fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_A].iXEdge);
 	pInfo_[setup_GATE_A].fSEdge = _fEdge;
 	pInfo_[setup_GATE_A].fHEdge = _fEdge * _fCos;
 	pInfo_[setup_GATE_A].fLEdge = _fEdge * _fSin;
@@ -1069,20 +1078,20 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 		break;
 	default:	break;
 	}
-	if(_fStart+_fWidth >= _nPointQty) _fWidth = _nPointQty - _fStart - 1;
+//    if(_fStart+_fWidth >= _nPointQty) _fWidth = _nPointQty - _fStart - 1;
 
 	pInfo_[setup_GATE_B].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_B].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
 	pInfo_[setup_GATE_B].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_B].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
 
-	pInfo_[setup_GATE_B].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
-	pInfo_[setup_GATE_B].fGw   = _fWidth / _fScale;//_pGate->fWidth;
+    pInfo_[setup_GATE_B].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
+    pInfo_[setup_GATE_B].fGw   = /*_fWidth / _fScale;//*/_pGate->fWidth;
 	pInfo_[setup_GATE_B].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
 
-	_fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_I].iXEdge);
-	pInfo_[setup_GATE_A].fSEdge = _fEdge;
-	pInfo_[setup_GATE_A].fHEdge = _fEdge * _fCos;
-	pInfo_[setup_GATE_A].fLEdge = _fEdge * _fSin;
-	pInfo_[setup_GATE_A].fDEdge = GetDepth(pInfo_[setup_GATE_A].fHEdge, _fThick);
+    _fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_B].iXEdge);
+    pInfo_[setup_GATE_B].fSEdge = _fEdge;
+    pInfo_[setup_GATE_B].fHEdge = _fEdge * _fCos;
+    pInfo_[setup_GATE_B].fLEdge = _fEdge * _fSin;
+    pInfo_[setup_GATE_B].fDEdge = GetDepth(pInfo_[setup_GATE_B].fHEdge, _fThick);
 
 	_fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_B].iX);
 	pInfo_[setup_GATE_B].fS     = _fDist;
