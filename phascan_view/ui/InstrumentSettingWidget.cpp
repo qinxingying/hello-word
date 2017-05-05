@@ -248,8 +248,10 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanPos_valueChanged(double arg1)
 	 _scanner.fScanPos = arg1 ;
      ui->SliderCurrentScanPos->setValue(_nPos1 - _scanner.fScanStart);
 
-	 ProcessDisplay _proDisplay ;
-	 _proDisplay.UpdateAllView();
+     ProcessDisplay _proDisplay ;
+     for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
+          _proDisplay.UpdateAllViewCursorOfGroup(i);
+     }
 	 g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -269,8 +271,10 @@ void InstrumentSettingWidget::on_SliderCurrentScanPos_valueChanged(int value)
 	}
 	ui->SpinBoxCurrentScanPos->setValue(_scanner.fScanPos);
 
-	 ProcessDisplay _proDisplay ;
-	_proDisplay.UpdateAllView();
+     ProcessDisplay _proDisplay ;
+     for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
+          _proDisplay.UpdateAllViewCursorOfGroup(i);
+     }
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
 
