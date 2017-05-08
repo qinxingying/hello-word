@@ -830,10 +830,11 @@ float ParameterProcess::GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLa
 		return 0;
 	}
 	F32	_fScale    = GetRefGainScale(nGroupId_) ;
-	bool _bRectify = GetRectifierMode(nGroupId_);
+    bool _bRectify = (GetRectifierMode(nGroupId_) == setup_RECTIFIER_RF );
 	F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
+    int bRectify_  = GetRectifierMode(nGroupId_);
 
-	return CalPeakAmp(_fData, _bRectify);
+    return CalPeakAmp(_fData, bRectify_);
 }
 
 int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeight_, bool bRectify_, int nPointQty_)
