@@ -8,6 +8,5 @@
 *.autosave
 *.o
 *.orig
-*.ts
 *.dxf
 build-*
