@@ -1957,6 +1957,7 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 void DopplerGroupTab::retranslateGroupTabUi()
 {
     ui->retranslateUi(this);
+    model->setHeaderData(0, Qt::Horizontal, tr("Display Mode"));
 }
 
 void DopplerGroupTab::on_ValueCScanThicknessMin_editingFinished()
