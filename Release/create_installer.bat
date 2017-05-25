@@ -1,0 +1,1 @@
+binarycreator -c bin/config/config.xml -p bin/packages PhascanView_installer.exe -v

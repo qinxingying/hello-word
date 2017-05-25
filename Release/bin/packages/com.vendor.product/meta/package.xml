@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>The root component</DisplayName>
+    <Description>Install this component.</Description>
+    <Version>1.1.4</Version>
+    <ReleaseDate>2017-04-17</ReleaseDate>
+    <Default>true</Default>
+    <Script>installscript.qs</Script>
+	<Translations>
+		<Translations>qt_ca.qm</Translations>
+		<Translations>qt_cs.qm</Translations>
+		<Translations>qt_de.qm</Translations>
+		<Translations>qt_en.qm</Translations>
+		<Translations>qt_fi.qm</Translations>
+		<Translations>qt_fr.qm</Translations>
+		<Translations>qt_he.qm</Translations>
+		<Translations>qt_hu.qm</Translations>
+		<Translations>qt_it.qm</Translations>
+		<Translations>qt_ja.qm</Translations>
+		<Translations>qt_ko.qm</Translations>
+		<Translations>qt_lv.qm</Translations>
+		<Translations>qt_pl.qm</Translations>
+		<Translations>qt_ru.qm</Translations>
+		<Translations>qt_sk.qm</Translations>
+		<Translations>qt_uk.qm</Translations>
+	</Translations>
+	<UserInterfaces>
+        <UserInterface>registerfilecheckboxform.ui</UserInterface>
+        <UserInterface>openfilecheckboxform.ui</UserInterface>
+    </UserInterfaces>
+</Package>
