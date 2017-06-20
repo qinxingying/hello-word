@@ -46,12 +46,17 @@ public:
 
     virtual void Draw(QImage* pImage_) = 0;
     virtual void UpdateDrawInfo () = 0;
+
+protected:
+    virtual void UpdateDisplayRange(int nType_, int nRangle_ , int nPos_);
 protected:
 	unsigned char		(*m_pColor)[3];
 	DrawInfo			m_cInfo   ;
 	DopplerConfigure*	m_pConfig;
 	GROUP_CONFIG*		m_pGroup;
 	QMutex				m_hMutex;
+    int                 m_PosStart ;
+    int                 m_PosStop  ;
 
 signals:
 	void signalScanRangeMove(int nType_, int nStart_, int nStop_) ;

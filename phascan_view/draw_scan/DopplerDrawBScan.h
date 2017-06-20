@@ -19,11 +19,7 @@ public:
     void UpdateDrawInfo();
     virtual void Draw (QImage* pImage_);
 protected:
-	void UpdateDisplayRange(int nType_, int nRangle_ , int nPos_);
-
     B_SCAN_DRAW_INFO m_BScanInfo ;
-    int m_PosStart ;
-    int m_PosStop  ;
 };
 
 class DopplerDrawBScanV : public DopplerDrawBScanH

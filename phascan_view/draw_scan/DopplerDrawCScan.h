@@ -60,7 +60,6 @@ protected:
         GATE_B = 8 ,
         GATE_I = 12
     };
-	void UpdateScanPos(int nType_, int nRange_ , int nPos_);
 
     inline void GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pBuff_);
     inline void GetPixValuePos(U32* pBuff_);
@@ -68,8 +67,6 @@ protected:
 
 	virtual void DrawGateAmplitude (QImage* pImage_ , GATE_TYPE eGate_) ;
     virtual void DrawGatePos (QImage* pImage_ , GATE_TYPE eGate1_ , GATE_TYPE eGate2_);
-    int m_PosStart ;
-    int m_PosStop  ;
     float m_afScale[256]  ;
 
     C_SCAN_DRAW_INFO m_CScanInfo ;

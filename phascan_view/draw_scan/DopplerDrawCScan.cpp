@@ -140,7 +140,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
 	int _nLawSpaceQty = _nLawQty - 1 ;
 	int _nScanPos	 = _process->GetScanIndexPos()  ;
-	UpdateScanPos(2, _nWidth , _nScanPos) ;
+    UpdateDisplayRange(2, _nWidth , _nScanPos) ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
@@ -190,7 +190,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 
 	ParameterProcess* _process = ParameterProcess::Instance();
 	int _nScanPos	 = _process->GetScanIndexPos()  ;
-    UpdateScanPos(2, _nWidth , _nScanPos);
+    UpdateDisplayRange(2, _nWidth , _nScanPos);
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
@@ -224,37 +224,6 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 			}
 		}
 	}
-}
-
-#define MAX_SCAN_INDEX  10000
-void DopplerDrawCScanH::UpdateScanPos(int nType_, int nRangle_ , int nPos_)
-{
-	if(nPos_ < 0) nPos_ = 0;
-
-	if(nPos_<= m_PosStart)
-	{
-		m_PosStart = nPos_  ;
-		m_PosStop  = m_PosStart + nRangle_ - 1 ;
-		if(m_PosStop > MAX_SCAN_INDEX)
-		{
-			m_PosStart = MAX_SCAN_INDEX -  nRangle_ + 1 ;
-			m_PosStop  = MAX_SCAN_INDEX;
-		}
-		//emit signalScanRangeMove(nType_, m_PosStart, m_PosStop) ;
-	}
-	else if(nPos_ >= m_PosStop)
-	{
-		m_PosStop = nPos_  ;
-		m_PosStart  = m_PosStop - nRangle_ + 1 ;
-
-		if(m_PosStart < 0)
-		{
-			m_PosStart = 0  ;
-			m_PosStop  = nRangle_ - 1  ;
-		}
-		//emit signalScanRangeMove(nType_, m_PosStart, m_PosStop) ;
-	}
-	emit signalScanRangeMove(nType_, m_PosStart, m_PosStop) ;
 }
 
 void DopplerDrawCScanH::GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pBuff_)
@@ -377,7 +346,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 
 	ParameterProcess* _process = ParameterProcess::Instance();
 	int _nScanPos	 = _process->GetScanIndexPos()  ;
-	UpdateScanPos(3, _nHeight , _nScanPos) ;
+    UpdateDisplayRange(3, _nHeight , _nScanPos) ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
 	int _nLawSpaceQty = _nLawQty - 1 ;
@@ -429,7 +398,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 
 	ParameterProcess* _process = ParameterProcess::Instance();
 	int _nScanPos	 = _process->GetScanIndexPos()  ;
-	UpdateScanPos(3, _nHeight , _nScanPos) ;
+    UpdateDisplayRange(3, _nHeight , _nScanPos) ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
