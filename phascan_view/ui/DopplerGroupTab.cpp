@@ -336,12 +336,15 @@ void DopplerGroupTab::UpdateCurrentAngleCom()
 		ui->ComCurrentAngle->addItem(_str);
 	}
 	int _nCurrentId  = (int)m_pGroup->afCursor[setup_CURSOR_LAW]  ;
-	if(_nCurrentId > ui->ComCurrentAngle->count() - 1)
-	{
-		_nCurrentId  = 0  ;
-		m_pGroup->afCursor[setup_CURSOR_LAW] = 0;
-	}
-	ui->ComCurrentAngle->setCurrentIndex(_nCurrentId);
+    if(m_pGroup->law.eLawType != setup_LAW_TYPE_LINEAR)
+    {
+        if(_nCurrentId > ui->ComCurrentAngle->count() - 1)
+        {
+            _nCurrentId  = 0  ;
+            m_pGroup->afCursor[setup_CURSOR_LAW] = 0;
+        }
+        ui->ComCurrentAngle->setCurrentIndex(_nCurrentId);
+    }
 }
 /****************************************************************************
   Description: ²ÉÑù·¶Î§
