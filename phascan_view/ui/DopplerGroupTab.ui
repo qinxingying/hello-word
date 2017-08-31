@@ -74,8 +74,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>350</width>
-        <height>813</height>
+        <width>83</width>
+        <height>578</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -1367,8 +1367,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>350</width>
-        <height>813</height>
+        <width>83</width>
+        <height>786</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -2925,8 +2925,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>350</width>
-        <height>813</height>
+        <width>83</width>
+        <height>654</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -2977,8 +2977,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>341</width>
-            <height>804</height>
+            <width>310</width>
+            <height>645</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -4735,8 +4735,8 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-35</y>
-        <width>333</width>
+        <y>0</y>
+        <width>83</width>
         <height>848</height>
        </rect>
       </property>
@@ -4788,7 +4788,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>324</width>
+            <width>290</width>
             <height>830</height>
            </rect>
           </property>
@@ -6245,8 +6245,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>330</width>
-        <height>813</height>
+        <width>300</width>
+        <height>770</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -6315,8 +6315,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>320</width>
-            <height>813</height>
+            <width>313</width>
+            <height>770</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -7495,7 +7495,7 @@
               <item row="0" column="2">
                <widget class="QCheckBox" name="CheckCursorSync">
                 <property name="text">
-                 <string>Background</string>
+                 <string>Cursor Sync</string>
                 </property>
                </widget>
               </item>
@@ -8538,8 +8538,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>330</width>
-        <height>800</height>
+        <width>310</width>
+        <height>700</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -8602,8 +8602,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>330</width>
-            <height>800</height>
+            <width>310</width>
+            <height>700</height>
            </rect>
           </property>
           <property name="minimumSize">
