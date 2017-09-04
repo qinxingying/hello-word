@@ -776,11 +776,17 @@ void MainWindow::ReportAddOneItem()
     {
         if(_pMeasure[i]){
             _value.szValue[_nQty] = CalcMeasurement::GetMeasureValue(_nGroup, _nLawId, (FEILD_VALUE_INDEX)_pMeasure[i]);
+            _value.szField[_nQty] = CalcMeasurement::GetMeasureString(_nGroup , (FEILD_VALUE_INDEX)_pMeasure[i]);
+            _value.szFieldUnit[_nQty] = CalcMeasurement::GetMeasureUnit((FEILD_VALUE_INDEX)_pMeasure[i]) ;
             _nQty++;
         }
     }
 
-    for(int i = _nQty; i < 5; i ++)  _value.szValue[i] = QString("-");
+    for(int i = _nQty; i < 5; i ++) {
+        _value.szValue[i] = QString("-");
+        _value.szField[i] = QString("-");
+        _value.szFieldUnit[i] = QString("-");
+    }
     QString _strPath;
     _strPath.sprintf("img%04d.png", _nPixId++);
     _value.szPixmap = _strPath;

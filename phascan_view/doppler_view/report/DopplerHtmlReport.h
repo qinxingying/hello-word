@@ -31,6 +31,8 @@ struct ReportValueItem
     int   nLawId   ;
     QString szValue[5];
     QString szPixmap;
+    QString szField[5];
+    QString szFieldUnit[5];
 } ;
 
 

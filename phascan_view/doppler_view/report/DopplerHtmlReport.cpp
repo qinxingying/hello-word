@@ -230,11 +230,9 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strGroup));
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strLaw));
 
-	fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[nGroupId_][0]) ,TOCHAR(m_szFieldUnit[nGroupId_][0]));
-	fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[nGroupId_][1]) ,TOCHAR(m_szFieldUnit[nGroupId_][1]));
-	fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[nGroupId_][2]) ,TOCHAR(m_szFieldUnit[nGroupId_][2]));
-	fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[nGroupId_][3]) ,TOCHAR(m_szFieldUnit[nGroupId_][3]));
-	fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[nGroupId_][4]) ,TOCHAR(m_szFieldUnit[nGroupId_][4]));
+    for(int i = 0 ; i < 5 ; i++){
+        fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , _pDfInfo->m_strSzField[i] ,_pDfInfo->m_strSzFieldUnit[i]);
+    }
 
 	fprintf(m_pFile,"</tr>\n\n");
 	fprintf(m_pFile,"<tr>\n");
@@ -997,11 +995,9 @@ void DopplerHtmlReport::SprintfGroupMeasure()
         fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , TOCHAR(str_2));
         fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , TOCHAR(str_3));
 
-		fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[_nGroupId][0]) ,TOCHAR(m_szFieldUnit[_nGroupId][0]));
-		fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[_nGroupId][1]) ,TOCHAR(m_szFieldUnit[_nGroupId][1]));
-		fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[_nGroupId][2]) ,TOCHAR(m_szFieldUnit[_nGroupId][2]));
-		fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[_nGroupId][3]) ,TOCHAR(m_szFieldUnit[_nGroupId][3]));
-		fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(m_szField[_nGroupId][4]) ,TOCHAR(m_szFieldUnit[_nGroupId][4]));
+        for(int i = 0 ; i < 5 ; i++){
+            fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(_value.szField[i]) ,TOCHAR(_value.szFieldUnit[i]));
+        }
 
 		fprintf(m_pFile ,"\t\t\t<tr>\n");
         fprintf(m_pFile ,"\t\t\t<td%s><%s>%.2f</%s></td>\n", newLineFormat ,bodyFormat , _value.fPos, bodyFormat);

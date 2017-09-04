@@ -83,6 +83,8 @@ struct DEFECT_INFO
 
 	int   nLawNo;
 	char  m_strMeasure[5][50]  ;
+    char  m_strSzField[5][20];
+    char  m_strSzFieldUnit[5][20];
 };
 
 struct DEFECT_PARAM
