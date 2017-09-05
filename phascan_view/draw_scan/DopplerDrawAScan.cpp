@@ -77,11 +77,14 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 		_fXRatio = _nWidth / (_nPointQty -1) ;
 	}
 	//---------------
-
-	int i;
+    float _nStart = _process->GetSampleStart(m_cInfo.nGroupId,m_cInfo.nBeamId);
+    float _fS, _fE;
+    _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fS ,  &_fE);
+    float start = (float)m_nWidth * (_nStart - _fS) / m_AScanInfo.fDRangeS;
+    int i;
 	for(i = 0 ; i < _nPointQty ; i++)
 	{
-		_fX = i * _fXRatio ;
+        _fX = i * _fXRatio +start;
 		_fY = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
 		_fY = _nHeight -_fY * _fYRatio ;
 		Lines<<QPointF(_fX , _fY) ;
@@ -436,10 +439,14 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
 		_fYRatio = _nHeight / (_nPointQty -1) ;
 	}
 	//---------------
-	int i  ;
+    float _nStart = _process->GetSampleStart(m_cInfo.nGroupId,m_cInfo.nBeamId);
+    float _fS, _fE;
+    _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fS ,  &_fE);
+    float start = (float)m_nHeight*(_nStart - _fS) / m_AScanInfo.fDRangeS;
+    int i  ;
 	for(i = 0 ; i < _nPointQty  ; i++)
 	{
-		_fY = i * _fYRatio ;
+        _fY = i * _fYRatio + start;
 		_fX = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
 		_fX = _fX * _fXRatio ;
 
