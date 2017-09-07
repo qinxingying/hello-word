@@ -634,7 +634,7 @@ void DopplerHtmlReport::fprintfReportGroupProbe()
         QString(QObject::tr("Probe Frequency")),
         QString(QObject::tr("Wedge Model")),
         QString(QObject::tr("Wedge Angle")),
-        QString(QObject::tr("Wedge Aperture"))
+        QString(QObject::tr("Aperture"))
     };
 	int i;
 	fprintf(m_pFile , "<br />\n");
