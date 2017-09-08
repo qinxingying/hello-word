@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>PhascanView</Name>
-    <Version>1.1.4</Version>
+    <Version>1.1.5</Version>
     <Title>PhascanView Installer</Title>
     <Publisher>Doppler</Publisher>
 	<InstallerWindowIcon>app</InstallerWindowIcon>
     <InstallerApplicationIcon>app</InstallerApplicationIcon>
     <Logo>app.ico</Logo>
 	<!--
-    <RunProgram>@TargetDir@/PhascanView-1.1.4.exe</RunProgram>
+    <RunProgram>@TargetDir@/PhascanView-1.1.5.exe</RunProgram>
     <RunProgramArguments>
-		<Argument>@TargetDir@/PhascanView-1.1.4.exe</Argument>
+		<Argument>@TargetDir@/PhascanView-1.1.5.exe</Argument>
 	</RunProgramArguments>
     <RunProgramDescription>Run PhascanView now.</RunProgramDescription>
 	-->
     <StartMenuDir>PhascanView</StartMenuDir>
     <AllowNonAsciiCharacters>true</AllowNonAsciiCharacters>
-    <TargetDir>@homeDir@/PhascanView-1.1.4</TargetDir>
-    <AdminTargetDir>@rootDir@/PhascanView-1.1.4</AdminTargetDir>
+    <TargetDir>@homeDir@/PhascanView-1.1.5</TargetDir>
+    <AdminTargetDir>@rootDir@/PhascanView-1.1.5</AdminTargetDir>
 </Installer>

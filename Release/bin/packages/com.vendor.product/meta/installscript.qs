@@ -56,18 +56,18 @@ Component.prototype.createOperations = function()
         component.createOperations();
 
         if (systemInfo.productType === "windows") {
-            component.addOperation("CreateShortcut", "@TargetDir@/PhascanView-1.1.4.exe", "@StartMenuDir@/PhascanView-1.1.4.lnk",
+            component.addOperation("CreateShortcut", "@TargetDir@/PhascanView-1.1.5.exe", "@StartMenuDir@/PhascanView-1.1.5.lnk",
                 "workingDirectory=@TargetDir@", "iconPath=@TargetDir@/app.ico",
                 "iconId=doppler");
         }
 
         if (installer.value("os") === "win") {
             var iconId = 0;
-            var notepadPath = installer.environmentVariable("SystemRoot") + "\\PhascanView-1.1.4.exe";
+            var notepadPath = installer.environmentVariable("SystemRoot") + "\\PhascanView-1.1.5.exe";
             component.addOperation("RegisterFileType",
                                    component.unusualFileType,
                                    notepadPath + " '%1'",
-                                   "PhascanView-1.1.4",
+                                   "PhascanView-1.1.5",
                                    "text/plain",
                                    notepadPath + "," + iconId,
                                    "ProgId=Phascan.PhascanView." + component.unusualFileType);
