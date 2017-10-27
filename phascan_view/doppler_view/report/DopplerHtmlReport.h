@@ -46,7 +46,7 @@ public:
     void SaveReport()    ;
     void BuildReport()   ;
     void AddOneValueItem(ReportValueItem* value)  ;
-    void DelOneValueItem()  ;
+    int DelOneValueItem()  ;
 
     void CreateTofdHeader(int nGroupId_);
     void CreateDefect(int nGroupId_);

@@ -109,7 +109,7 @@ void MainWindow::init_ui()
     SetDispTabText();
 
     m_fileName  = "";
-    m_titleName = tr("Doppler V1.1.5 : ");
+    m_titleName = tr("Doppler V1.1.6 : ");
     this->setWindowTitle(m_titleName + m_fileName);
 }
 
@@ -744,9 +744,12 @@ void MainWindow::ScreenShot()
     }
     while(QFile(_strTemp).exists());
 
-    pixmap.save(QDir::currentPath() + "/" + _strPath, "png");
+    if(pixmap.save(QDir::currentPath() + "/" + _strPath, "png"))
+    {
     QClipboard *clipboard = QApplication::clipboard();   //获取系统剪贴板指针
     clipboard->setPixmap(pixmap);
+    QMessageBox::information(this,tr("prompt"),tr("save in ")+QDir::currentPath()+"/"+_strPath);
+    }
 }
 
 /****************************************************************************
@@ -793,6 +796,7 @@ void MainWindow::ReportAddOneItem()
 
     _pReport->AddOneValueItem(&_value);
     SaveCurScreenshot(_strPath);
+    QMessageBox::information(this,tr("prompt"),tr("increase success!"));
 }
 
 /****************************************************************************
@@ -802,7 +806,9 @@ void MainWindow::ReportDelOneItem()
 {
     DopplerConfigure* _pConfig  = DopplerConfigure::Instance();
     DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
-    _pReport->DelOneValueItem();
+    if(0 == _pReport->DelOneValueItem())
+        QMessageBox::information(this,tr("prompt"),tr("delete success!"));
+
 }
 
 /****************************************************************************

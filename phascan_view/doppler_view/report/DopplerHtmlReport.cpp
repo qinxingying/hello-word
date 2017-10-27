@@ -287,10 +287,14 @@ void DopplerHtmlReport::AddOneValueItem(ReportValueItem* value)
 	m_cValueList.append(*value);
 }
 
-void DopplerHtmlReport::DelOneValueItem()
+int DopplerHtmlReport::DelOneValueItem()
 {
 	if(m_cValueList.count())
+    {
 		m_cValueList.removeLast();
+        return 0;
+    }
+    return 1;
 }
 
 
