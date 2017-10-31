@@ -79,8 +79,13 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 	//---------------
     float _nStart = _process->GetSampleStart(m_cInfo.nGroupId,m_cInfo.nBeamId);
     float _fS, _fE;
-    _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fS ,  &_fE);
-    float start = (float)m_nWidth * (_nStart - _fS) / m_AScanInfo.fDRangeS;
+    float start;
+    if(0 == _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fS ,  &_fE))
+    {
+     start = (float)m_nWidth * (_nStart - _fS) / m_AScanInfo.fDRangeS;
+    }
+    else
+    start = 0;
     int i;
 	for(i = 0 ; i < _nPointQty ; i++)
 	{
@@ -441,8 +446,13 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
 	//---------------
     float _nStart = _process->GetSampleStart(m_cInfo.nGroupId,m_cInfo.nBeamId);
     float _fS, _fE;
-    _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fS ,  &_fE);
-    float start = (float)m_nHeight*(_nStart - _fS) / m_AScanInfo.fDRangeS;
+    float start;
+    if(0 ==_process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fS ,  &_fE))
+    {
+     start = (float)m_nHeight*(_nStart - _fS) / m_AScanInfo.fDRangeS;
+    }
+    else
+        start =0;
     int i  ;
 	for(i = 0 ; i < _nPointQty  ; i++)
 	{
