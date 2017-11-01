@@ -1536,12 +1536,12 @@ void ParameterProcess::GetSImageHorizentalRange(int nGroupId_ , float* fStart_ ,
 	if(FLOAT_EQ(*fStart_ , *fStop_)) *fStop_ = *fStart_ + 1 ;
 }
 
-void  ParameterProcess::GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_)
+int  ParameterProcess::GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_)
 {
 	*fStart_ = 0 ;
 	*fStop_  = 0 ;
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
-	if(_group.eGroupMode != setup_GROUP_MODE_PA)  return  ;
+    if(_group.eGroupMode != setup_GROUP_MODE_PA)  return 1 ;
 	LAW_CONFIG _law = _group.law ;
 	float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
 	float _fAngleStop  = _law.nAngleStopRefract / 10.0 ;
@@ -1567,6 +1567,7 @@ void  ParameterProcess::GetSImageVerticalRange(int nGroupId_ , float* fStart_ , 
 	}
 
 	if(FLOAT_EQ(*fStart_ , *fStop_)) *fStop_ = *fStart_ + 1 ;
+    return 0;
 }
 
 void ParameterProcess::GetSScanHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_)
@@ -1606,9 +1607,9 @@ void ParameterProcess::GetSScanHorizentalRange(int nGroupId_ , float* fStart_ , 
 	}
 }
 
-void  ParameterProcess::GetSScanVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_)
+int  ParameterProcess::GetSScanVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_)
 {
-	GetSImageVerticalRange(nGroupId_ , fStart_ , fStop_);
+    return GetSImageVerticalRange(nGroupId_ , fStart_ , fStop_);
 }
 
 
