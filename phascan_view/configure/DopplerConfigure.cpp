@@ -1487,10 +1487,11 @@ DEFECT_INFO* DopplerConfigure::GetDefectPointer(int iGroupId_, int index_)
 	return _pDfInfo;
 }
 
-DEFECT_INFO* DopplerConfigure::SetDefectInfo(int iGroupId_, int index_, char* strInfo_)
+DEFECT_INFO* DopplerConfigure::SetDefectInfo(int iGroupId_, int index_, char* strInfo_,char* strInfo2)
 {
-	DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
-	strcpy(_pDfInfo->srtInfo, strInfo_);
+    DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
+    strcpy(_pDfInfo->srtInfo, strInfo_);
+    strcpy(_pDfInfo->srtInfo2,strInfo2);
 	SaveDefectFile(m_szDefectPathName);
 	return _pDfInfo;
 }

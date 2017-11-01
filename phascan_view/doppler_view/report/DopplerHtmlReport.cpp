@@ -237,9 +237,9 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
 	fprintf(m_pFile,"</tr>\n\n");
 	fprintf(m_pFile,"<tr>\n");
 
-	//int i = index_+1;
-	if(strlen(_pDfInfo->srtInfo) > 0) {
-		fprintf(m_pFile,"<td %s>%d: %s</td>\n" ,tableTdStyle , index_+1, _pDfInfo->srtInfo);
+    //int i = index_+1;
+    if(strlen(_pDfInfo->srtInfo2) > 0) {
+        fprintf(m_pFile,"<td %s>%d: %s</td>\n" ,tableTdStyle , index_+1, _pDfInfo->srtInfo2);
 	} else {
 		fprintf(m_pFile,"<td %s>%d</td>\n" ,tableTdStyle , index_+1);
 	}
@@ -289,8 +289,8 @@ void DopplerHtmlReport::AddOneValueItem(ReportValueItem* value)
 
 void DopplerHtmlReport::DelOneValueItem()
 {
-	if(m_cValueList.count())
-		m_cValueList.removeLast();
+    if(m_cValueList.count())
+        m_cValueList.removeLast();
 }
 
 

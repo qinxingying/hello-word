@@ -66,6 +66,7 @@ struct DEFECT_INFO
 	DEFECT_INFO *pNext;
 
 	char  srtInfo[256];
+    char  srtInfo2[256];
 	char  srtImageName[256];
 
 	bool  bValid;
@@ -150,7 +151,7 @@ public:
 	float DefectDepthValue(int iGroupId_, int index_ = -1);
 	float DefectDepthPos(int iGroupId_, int index_ = -1);
 	DEFECT_INFO* GetDefectPointer(int iGroupId_, int index_);
-	DEFECT_INFO* SetDefectInfo(int iGroupId_, int index_, char* strInfo_);
+    DEFECT_INFO* SetDefectInfo(int iGroupId_, int index_, char* strInfo_,char* strInfo2);
 	char* GetDefectInfo(int iGroupId_, int index_);
 	void SetLastDate();
 	QDate GetLastDate();

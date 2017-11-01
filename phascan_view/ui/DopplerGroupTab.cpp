@@ -1934,10 +1934,14 @@ void DopplerGroupTab::on_ComDefectIndex_currentIndexChanged(int index)
 void DopplerGroupTab::on_lineEditReMark_textChanged(QString str)
 {
 	if(!ui->lineEditReMark->hasFocus()) return ;
-	//QString str = ui->lineEditReMark->text();
+   // QString t1 = ui->lineEditReMark->text();
 	DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
 	int _index = _pConfig->m_dfParam[m_nGroupId].index;
-	_pConfig->SetDefectInfo(m_nGroupId, _index, (char*)(qPrintable(str)));
+    QString t1 = QString::fromLocal8Bit(qPrintable(str));
+    std::string t2 = t1.toStdString();
+    const char * t3 = t2.c_str();
+    _pConfig->SetDefectInfo(m_nGroupId, _index, (char *)t3,(char*)(qPrintable(str)));
+    //_pConfig->SetDefectInfo(m_nGroupId, _index, (char*)(qPrintable(str)));
 
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOverlay();
