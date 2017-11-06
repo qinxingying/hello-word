@@ -258,7 +258,7 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
 							QString(QObject::tr("/")) +
 							QString(QObject::tr(_pDfInfo->srtImageName)) +
 							QString(QObject::tr(".png"));
-	QString _sourceImgName = m_strFolder + QString("/") +
+    QString _sourceImgName =QString::fromUtf8( m_strFolder.toLocal8Bit().data()) + QString("/") +
 							QString(QObject::tr(_pDfInfo->srtImageName)) +
 							QString(QObject::tr(".png"));
 	QString _strDir = m_strReportDir + _sourceImgName ;
@@ -315,7 +315,7 @@ void DopplerHtmlReport::BuildReport()
     memset(_strName, 0, 1024);
     strcpy(_strName, m_cInfo.strReportName);
     strcat(_strName, "_files");
-    m_strFolder	= QString(_strName);
+    m_strFolder	= QString::fromLocal8Bit(_strName);
     m_strFolderDir.sprintf("%s%s" , m_strReportDir, _strName);
 
     // folder ready
@@ -390,7 +390,7 @@ void DopplerHtmlReport::CreateHeader()
 
     fprintf(m_pFile,"<table %s>\n", tableWidth);
 	fprintf(m_pFile,"<tr>\n");
-    fprintf(m_pFile,"<td align=left><img src = \"%s/logo.png\"></td>\n", TOCHAR(m_strFolder));
+    fprintf(m_pFile,"<td align=left><img src = \"%s/logo.png\"></td>\n", TOCHAR(QString::fromUtf8(m_strFolder.toLocal8Bit().data())));
     fprintf(m_pFile,"<td align=right><h1>%s</h1></td>\n", TOCHAR(strReportName));
 	fprintf(m_pFile,"</tr>\n");
 	fprintf(m_pFile,"<tr>\n");
@@ -1011,7 +1011,7 @@ void DopplerHtmlReport::SprintfGroupMeasure()
 		fprintf(m_pFile ,"\t\t\t</tr>\n");
 		fprintf(m_pFile , "</table></td></tr>\n</table>\n\n");//table
 
-        QString sourceImageName = m_strFolder + QString("\\") + _value.szPixmap;
+        QString sourceImageName =QString::fromUtf8( m_strFolder.toLocal8Bit().data()) + QString("\\") + _value.szPixmap;
         QString _strDir = m_strReportDir + sourceImageName;
         fprintf(m_pFile, "\t\t<img src=\"%s\" width=%d>\n",  TOCHAR(sourceImageName), TABLE_WIDTH);
 //		fprintf(m_pFile ,"\t\t</br>\n");
