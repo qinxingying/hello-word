@@ -157,9 +157,9 @@ public:
 	void  GetCScanScanAxisRange(int nGroupId_ , int nDist_ , double* fStart_ , double* fStop_, double* fSliderStart_ , double* fSliderStop_);
     void  GetCScanIndexAxisRange(int nGroupId_ , double* fStart_ , double* fStop_);
     void  GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);
-    void  GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_);
+    int  GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_);
     void  GetSScanHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);
-    void  GetSScanVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_);
+    int  GetSScanVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_);
 	int DistMmToDotPos(int nGroupId_, int nLawId_, float fDist_);
     float DistDotPosToMm(int nGroupId_ , int nPos_);
     float DistUsToMm(int nGroupId_ , float fTime_);
