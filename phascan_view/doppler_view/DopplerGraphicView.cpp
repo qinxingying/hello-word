@@ -462,7 +462,15 @@ void DopplerGraphicView::DrawMeasureValue()
 
 	if(_iDisplay >= setup_DISPLAY_MODE_S) {
 		int _nMeaNum = _process->GetShowMeasureNumber(_iGroupId);
-		int _nLawNum = m_nMeasureQty / _nMeaNum;
+        int _nLawNum;
+        if (_nMeaNum !=0)
+        {
+            _nLawNum = m_nMeasureQty / _nMeaNum;
+        }
+        else
+        {
+             _nLawNum=0;
+        }
 
 		if(_iDisplay == setup_DISPLAY_MODE_S_ATHUMIZ || _iDisplay == setup_DISPLAY_MODE_S_LINEAR)
 		{
@@ -492,7 +500,7 @@ void DopplerGraphicView::DrawMeasureValue()
 			}
 		}
 
-		if(_nLawNum <= 1) {
+        if(_nLawNum <= 1) {
 			int i= 0;
 			for(; (i < m_nMeasureQty) && (i < MAX_MEASURE_DATA_DISPLAY) ; i++)
 			{
