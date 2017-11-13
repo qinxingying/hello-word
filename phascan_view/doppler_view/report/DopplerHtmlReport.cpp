@@ -48,6 +48,7 @@ DopplerHtmlReport::DopplerHtmlReport()
 
 void DopplerHtmlReport::InitReportInfo()
 {
+    QDir dir;
     QString g_strReportDir;
     if(!m_dataFilePath.isEmpty()) {
         if(QFileInfo(m_dataFilePath).isRoot()) {
@@ -55,6 +56,17 @@ void DopplerHtmlReport::InitReportInfo()
         } else {
             g_strReportDir = m_dataFilePath + "/Report/";
         }
+#ifdef QT_NO_DEBUG
+        std::string _str1 = g_strReportDir.toStdString();
+        const char* _str2 = _str1.c_str();
+        strcpy(m_strReportDir, _str2);
+#else
+        strcpy(m_strReportDir, g_strReportDir.toLatin1().data());
+#endif
+    }
+    else
+    	{
+            g_strReportDir=dir.currentPath()+"/REPORT/";
 #ifdef QT_NO_DEBUG
         std::string _str1 = g_strReportDir.toStdString();
         const char* _str2 = _str1.c_str();
