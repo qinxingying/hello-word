@@ -943,12 +943,37 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 	//	MATERIAL* _material = _list->at(_pGroupInfo->part.Material_pos) ;
 	//	memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;
 		_group.part.weld.eSymmetry       = (setup_WELD_SYMMETRY_TYPE) _pGroupInfo->part.symmetry ;
-		_group.part.weld.eType	         = (setup_WELD_TYPE) _pGroupInfo->part.Weld ;
+        _group.part.weld.eType	         = (setup_WELD_TYPE) ((_pGroupInfo->part.Weld == 4)?_pGroupInfo->part.Weld+2:_pGroupInfo->part.Weld) ;
 		_group.part.weld.weland_height   = _pGroupInfo->part.weland_height / 1000.0 ;
 		_group.part.weld.weland_offset   = _pGroupInfo->part.weland_offset / 1000.0 ;
 		_group.part.weld.fizone_angle	 = _pGroupInfo->part.fizone_angle  / 1000.0 ;
 		_group.part.weld.fizone_height   = _pGroupInfo->part.fizone_height / 1000.0 ;
 		_group.part.weld.fizone_radius   = _pGroupInfo->part.fizone_radius / 1000.0 ;
+
+        if(2 == _group.part.weld.eType)
+        {
+           if(((_group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_height) != _group.part.weld.fizone_height)||(_group.part.weld.fizone_radius !=_group.part.weld.fizone_angle))
+           {
+               _group.part.weld.eType = (setup_WELD_TYPE)4;
+               _group.part.weld.fizone_down_height = _group.part.weld.fizone_height;
+               _group.part.weld.fizone_height = _group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_height;
+               _group.part.weld.fizone_down_angle = _group.part.weld.fizone_radius;
+           }
+        }
+
+        else if(5 == _group.part.weld.eType)
+        {
+            _group.part.weld.fizone_down_height = _group.part.weld.weland_height;
+            _group.part.weld.weland_height = _group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_height;
+            _group.part.weld.fizone_down_angle = _group.part.weld.weland_offset;
+            unsigned short b=*(unsigned short *)_pGroupInfo->gate[0].tt;
+            _group.part.weld.weland_offset = b/1000;
+        }
+        else if(6 == _group.part.weld.eType)
+        {
+            _group.part.weld.fizone_down_height = _group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_height;
+            _group.part.weld.fizone_down_angle = _group.part.weld.fizone_radius;
+        }
 
 		DopplerColorIndex _color ;
 
