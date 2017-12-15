@@ -25,7 +25,7 @@ static const char* g_strDisplayMode[] =
 	"S-A-B SCAN" , "S-A-B SCAN" ,"S-A-B SCAN" ,
 	"S-A-B-C SCAN" , "S-A-B-C SCAN" , "S-A-B-C SCAN" ,
 	"S-A-C SCAN"  , "S-A-C SCAN"  ,
-	"S-A-C-C SCAN"  , "S-A-C-C SCAN"
+    "S-A-C-C SCAN"  , "S-A-C-C SCAN","S-A-B-C SCAN","S-A-C SCAN"
 };
 
 DopplerGroupTab::DopplerGroupTab(QWidget *parent) :

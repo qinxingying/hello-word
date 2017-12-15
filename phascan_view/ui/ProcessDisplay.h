@@ -49,7 +49,9 @@ public:
         DISP_S_AH_CV            = 22,
         DISP_S_AV_CH_CH         = 23,
         DISP_S_AH_CV_CV         = 24,
-        DISP_ALLGROUP           = 25
+        DISP_S_AV_CH_BH         = 25,
+        DISP_S_AV_CH_N          = 26,
+        DISP_ALLGROUP           = 27
     };
     explicit ProcessDisplay(QObject *parent = 0);
     int CreateViews(QWidget* parent_ , int eType_);
@@ -77,6 +79,8 @@ public:
     int CreateViews_S_AH_CV(QWidget*);
     int CreateViews_S_AV_CH_CH(QWidget*);
     int CreateViews_S_AH_CV_CV(QWidget*);
+    int CreateViews_S_AV_CH_BH(QWidget*);
+    int CreateViews_S_AV_CH_N(QWidget*);
     int CreateViews_AllGroups(QWidget*);
 
     void ConnectSingals(DopplerDataView** pViews_ , int nQty_) ;
