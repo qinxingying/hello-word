@@ -1,4 +1,4 @@
-#include "gHeader.h"
+﻿#include "gHeader.h"
 #include "const.h"
 
 #include <string.h>
@@ -53,6 +53,8 @@ const char* g_strMeasureFildName[][4] =
 	{"T-D(m)"	  , "Tofd Ultrasonic Axis Measure Cursor Depth"} ,
 	{"T-S(m-r)"	, "Tofd Scan Axis Cursor Measure to Reference"} ,
 	{"T-D(m-r)"	, "Tofd Ultrasonic Axis Cursor Measure to Reference"} ,
+    {"A^-I^","Distance between peaks in gate A and gate I"},
+    {"B^-I^","Distance between peaks in gate A and gate I"},
 };
 
 const char* g_strMeasureFildUnit[][4] =
@@ -102,7 +104,9 @@ const char* g_strMeasureFildUnit[][4] =
 	{"T-D(r)" , "mm"} ,
 	{"T-D(m)" , "mm"} ,
 	{"T-S(m-r)" , "mm"} ,
-	{"T-D(m-r)" , "mm"}
+    {"T-D(m-r)" , "mm"},
+    {"A^-I^", "mm"},
+    {"B^-I^", "mm"},
 };
 
 QString GetExePathName2(char* dir)
