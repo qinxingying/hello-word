@@ -298,7 +298,8 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 		ret = CalGateAmp2Ref(nGroupId_ , nLaw_ , setup_GATE_A , pResult_ );
 		break;
 	case FEILD_B100:
-		*pResult_ = g_PeakInfo[setup_GATE_B].fAmp;
+        //*pResult_ = g_PeakInfo[setup_GATE_B].fAmp;
+        *pResult_ = pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_B].fAmp;
 		break;
 	case FEILD_BdBB:
 		*pResult_ = g_PeakInfo[setup_GATE_B].fXdXA;
