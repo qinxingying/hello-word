@@ -440,8 +440,8 @@ void DopplerGroupTab::SetWidgetInvalide()
 
     ui->FocalLaw->setDisabled(true);
 
-    ui->ComGateSync->setDisabled(true);
-    ui->ComGateMeasure->setDisabled(true);
+    ui->ComGateSync->setDisabled(false);
+    ui->ComGateMeasure->setDisabled(false);
 
     ui->ValueSizingCurve1->setDisabled(true);
     ui->ValueSizingCurve2->setDisabled(true);
@@ -1271,8 +1271,8 @@ void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 	{
 		ui->ComGateSync->setCurrentIndex(0);
 		ui->ComGateMeasure->setCurrentIndex(0);
-		ui->ComGateMeasure->setEnabled(false);
-		ui->ComGateSync->setEnabled(false);
+        ui->ComGateMeasure->setEnabled(true);
+        ui->ComGateSync->setEnabled(true);
     }else{
 		ui->ComGateMeasure->setEnabled(true);
 		ui->ComGateSync->setEnabled(true);
