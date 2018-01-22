@@ -282,7 +282,11 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 	DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
 	GROUP_CONFIG* config = &(m_pConfig->group[nGroupId_]);
 
-	CalGatePeakInfo(nGroupId_ , nLaw_);
+    ParameterProcess* _process = ParameterProcess::Instance() ;
+    CalGatePeakInfo(nGroupId_ , nLaw_);
+    GATE_CONFIG* A_pGate = _process->GetGateInfo(nGroupId_ , setup_GATE_A ) ;
+    GATE_CONFIG* B_pGate = _process->GetGateInfo(nGroupId_ , setup_GATE_B ) ;
+    GATE_CONFIG* I_pGate = _process->GetGateInfo(nGroupId_ , setup_GATE_I ) ;
 
 	int ret = 0 ;
 	switch(eIndex_)
@@ -309,15 +313,34 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 		break;
 	case FEILD_APos://A^
 		*pResult_ = g_PeakInfo[setup_GATE_A].fH;
+
+        if(A_pGate->eMeasure)
+            {
+            *pResult_ = g_PeakInfo[setup_GATE_A].fDEdge;
+            if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh) {
+                ret = -1;
+        }
+            }
 		break;
 	case FEILD_BPos://B^
 		*pResult_ = g_PeakInfo[setup_GATE_B].fH;
+        if(B_pGate->eMeasure)
+            {
+            *pResult_ = g_PeakInfo[setup_GATE_B].fDEdge;
+            if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh) {
+                ret = -1;
+        }
+            }
 		break;
 	case FEILD_IEdge://I/
-		*pResult_ = g_PeakInfo[setup_GATE_I].fDEdge;
-		if(g_PeakInfo[setup_GATE_I].fAmp < g_PeakInfo[setup_GATE_I].fGh) {
-			ret = -1;
-		}
+        *pResult_ = g_PeakInfo[setup_GATE_I].fH;
+        if(I_pGate->eMeasure)
+            {
+            *pResult_ = g_PeakInfo[setup_GATE_I].fDEdge;
+            if(g_PeakInfo[setup_GATE_I].fAmp < g_PeakInfo[setup_GATE_I].fGh) {
+                ret = -1;
+        }
+            }
 		break;
 	case FEILD_IEdgeInWater://I(W)/
 		*pResult_ = CalIEdgeInWater(nGroupId_ , g_PeakInfo[setup_GATE_I].fDEdge);
