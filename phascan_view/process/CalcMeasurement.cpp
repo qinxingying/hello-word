@@ -1,4 +1,4 @@
-#include "CalcMeasurement.h"
+﻿#include "CalcMeasurement.h"
 #include <process/ParameterProcess.h>
 #include <configure/DopplerConfigure.h>
 #include <gHeader.h>
@@ -482,6 +482,12 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 	case FEILD_TofdHeight :
 		ret = TOFD_GetDepth(nGroupId_  , pResult_ , 3) ;
 		break;
+    case FEILD_APos_DEC_IPos:
+        *pResult_ = g_PeakInfo[setup_GATE_A].fH - g_PeakInfo[setup_GATE_I].fH;
+        break;
+    case FEILD_BPos_DEC_IPos:
+        *pResult_ = g_PeakInfo[setup_GATE_B].fH - g_PeakInfo[setup_GATE_I].fH;
+        break;
 	default:
 		break;
 	} ;

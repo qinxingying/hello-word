@@ -121,7 +121,9 @@ enum FEILD_VALUE_INDEX
 	FEILD_TofdDepth2 ,
 	FEILD_TofdLength ,
 	FEILD_TofdHeight ,
-	FEILD_VALUE_INDEX_MAX
+    FEILD_APos_DEC_IPos,
+    FEILD_BPos_DEC_IPos,
+    FEILD_VALUE_INDEX_MAX,
 };
 #endif // CONST_H
 
