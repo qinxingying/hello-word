@@ -761,8 +761,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */
 		_group.fMaxThickness  = _pGroupInfo->max_thickness/1000.0 ;		/* Measurements->Thickness->max */
 		// wedge position
-		_group.fScanOffset	  = _pGroupInfo->scan_offset  / 10.0 ;		/*mm*/
-		_group.fIndexOffset   = _pGroupInfo->index_offset  / 10.0;			/*mm*/
+        _group.fScanOffset	  = _pGroupInfo->scan_offset  / 1000.0 ;		/*mm*/
+        _group.fIndexOffset   = _pGroupInfo->index_offset  / 1000.0;			/*mm*/
 		_group.eSkew		  = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos;
 
 		/*  У׼״̬  */
@@ -929,8 +929,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_wedge.nWedgeDelay = _Wedge.Probe_delay  ;
 
 		_group.part.afSize[0]  = _pGroupInfo->part.Thickness / 1000.0 ;
-		_group.fScanOffset	   = _pGroupInfo->scan_offset / 10.0 ;
-		_group.fIndexOffset	   = _pGroupInfo->index_offset / 10.0 ;
+        _group.fScanOffset	   = _pGroupInfo->scan_offset / 1000.0 ;
+        _group.fIndexOffset	   = _pGroupInfo->index_offset / 1000.0 ;
 		_group.eSkew		   = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos	 ;
 
 		QList<MATERIAL*>* _list = m_pConfig->m_listMaterial ;
