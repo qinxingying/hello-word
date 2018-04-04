@@ -1262,7 +1262,7 @@ void DopplerGroupTab::on_ValueElementStepPri_editingFinished()
 {
 	ElementAlign() ;
 }
-int _Gate = 0;
+int _Gate = 0 ;
 // gate
 void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 {
@@ -1296,6 +1296,7 @@ void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 void DopplerGroupTab::on_CheckGateShow_clicked(bool checked)
 {
 	m_pGroup->bShowGate = checked ;
+    _Gate = ui->ComGateSelect->currentIndex() ;
     if(_Gate == 0)
         m_pGroup->bShowGateA = checked;
     else if(_Gate == 1)
