@@ -579,7 +579,10 @@ void MainWindow::SaveCurScreenshot(QString strPath_)
 {
     QString _strPath = strPath_;
     QPixmap pixmap = QPixmap::grabWidget(ui->TabWidget_display->currentWidget());
-    pixmap.save(_strPath, "png");
+    if(0 == pixmap.save(_strPath, "png"))
+        QMessageBox::information(this,tr("prompt"),tr("The defect was saved failed!"));
+    else
+        QMessageBox::information(this,tr("prompt"),tr("The defect was saved successfully!"));
 }
 
 void MainWindow::UpdateTableDisplay()
