@@ -712,7 +712,13 @@ void DopplerGroupTab::UpdateGroupConfig()
 	//**********   Gate and Sizeing curves
 	int _nGate = ui->ComGateSelect->currentIndex() ;
 	GATE_CONFIG& gate = m_pGroup->gate[_nGate] ;
-	ui->CheckGateShow->setCheckState(m_pGroup->bShowGate ? Qt::Checked : Qt::Unchecked);
+    if(_nGate == 0)
+        ui->CheckGateShow->setCheckState(m_pGroup->bShowGateA ? Qt::Checked : Qt::Unchecked);
+    else if(_nGate == 1)
+        ui->CheckGateShow->setCheckState(m_pGroup->bShowGateB ? Qt::Checked : Qt::Unchecked);
+    else if(_nGate == 2)
+        ui->CheckGateShow->setCheckState(m_pGroup->bShowGateI ? Qt::Checked : Qt::Unchecked);
+    //ui->CheckGateShow->setCheckState(m_pGroup->bShowGate ? Qt::Checked : Qt::Unchecked);
 	ui->ValueGateStart->setValue(gate.fStart);
 	ui->ValueGateWidth->setValue(gate.fWidth);
 	ui->ValueGateHeight->setValue(gate.nThreshold);
@@ -728,8 +734,8 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ui->CheckUnifiedPartSetting->setCheckState(m_pConfig->common.bUnifiedPart ? Qt::Checked : Qt::Unchecked);
 	//if(m_nGroupId && m_pConfig->common.bUnifiedPart)   ui->BoxPart->setEnabled(false);
 
-	ui->ValueScanOffset->setValue(m_pGroup->fScanOffset);
-	ui->ValueIndexOffset->setValue(m_pGroup->fIndexOffset);
+    ui->ValueScanOffset->setValue(m_pGroup->fScanOffset);
+    ui->ValueIndexOffset->setValue(m_pGroup->fIndexOffset);
 	ui->ComSkewAngle->setCurrentIndex(m_pGroup->eSkew);
 //	ui->CheckPartFileShow->setChecked(_process->GetShowWeldPart(m_nGroupId));
     ui->CheckDxfFileShow->setChecked(_process->GetShowWeldPart(m_nGroupId));
@@ -1256,7 +1262,7 @@ void DopplerGroupTab::on_ValueElementStepPri_editingFinished()
 {
 	ElementAlign() ;
 }
-
+int _Gate = 0;
 // gate
 void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 {
@@ -1266,7 +1272,13 @@ void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 	ui->ValueGateStart->setValue(_gate.fStart);
 	ui->ValueGateWidth->setValue(_gate.fWidth);
 	ui->ValueGateHeight->setValue(_gate.nThreshold);
-
+    _Gate = index; 
+    if(_Gate == 0)
+        ui->CheckGateShow->setCheckState(m_pGroup->bShowGateA ? Qt::Checked : Qt::Unchecked);
+    else if(_Gate == 1)
+        ui->CheckGateShow->setCheckState(m_pGroup->bShowGateB ? Qt::Checked : Qt::Unchecked);
+    else if(_Gate == 2)
+        ui->CheckGateShow->setCheckState(m_pGroup->bShowGateI ? Qt::Checked : Qt::Unchecked);
 	if(index == 2) //gate i
 	{
 		ui->ComGateSync->setCurrentIndex(0);
@@ -1284,6 +1296,12 @@ void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 void DopplerGroupTab::on_CheckGateShow_clicked(bool checked)
 {
 	m_pGroup->bShowGate = checked ;
+    if(_Gate == 0)
+        m_pGroup->bShowGateA = checked;
+    else if(_Gate == 1)
+        m_pGroup->bShowGateB = checked;
+    else if(_Gate == 2)
+        m_pGroup->bShowGateI = checked;
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOverlay();
 }

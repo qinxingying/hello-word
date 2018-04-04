@@ -494,6 +494,9 @@ typedef struct _Group
 	int						bShowCursor;
 	int						bShowWeldPart;
 	int						bShowGate;
+    int                     bShowGateA;
+    int                     bShowGateB;
+    int                     bShowGateI;
 	int						bShowThickness;
 	int						bShowCurve;
 	int						bShowLwBw;

@@ -241,40 +241,50 @@ void DopplerViewItems::UpdateItemsLwBw()
 
 void DopplerViewItems::UpdateItemsGate()
 {
+    extern int _Gate;
 	if(!(m_eShow & OVERLAYS_GATE))
 	{
-		if(m_pGate[0])  m_pGate[0]->hide() ;
-		if(m_pGate[1])  m_pGate[1]->hide() ;
-		if(m_pGate[2])  m_pGate[2]->hide() ;
+        if(m_pGate[0] && _Gate == 0)  m_pGate[0]->hide() ;
+        if(m_pGate[1] && _Gate == 1)  m_pGate[1]->hide() ;
+        if(m_pGate[2] && _Gate == 2)  m_pGate[2]->hide() ;
 		return ;
 	}
 
-	if(!m_pGate[0])
+    if(!m_pGate[0] && _Gate == 0)
 	{
 		m_pGate[0] = new DopplerGateItem(COLOR_GATE_A) ;
 		m_pDataView->AddOverlayItems(m_pGate[0]);
 	}
-	if(!m_pGate[1])
+    if(!m_pGate[1] && _Gate == 1)
 	{
 		m_pGate[1] = new DopplerGateItem(COLOR_GATE_B) ;
 		m_pDataView->AddOverlayItems(m_pGate[1]);
 	}
-	if(!m_pGate[2])
+    if(!m_pGate[2] && _Gate == 2)
 	{
 		m_pGate[2] = new DopplerGateItem(COLOR_GATE_I) ;
 		m_pDataView->AddOverlayItems(m_pGate[2]);
 	}
 
-	for(int i = 0 ; i < 3 ; i++)
-	{
+    //for(int i = 0 ; i < 3 ; i++)
+    //{
+    int i;
+    if(_Gate == 0)
+        i = 0;
+    else if(_Gate == 1)
+        i = 1;
+    else if(_Gate == 2)
+        i = 2;
 		m_pGate[i]->SetDrawMode(m_eGateMode);
 		m_pGate[i]->SetItemType(DOPPLER_GRAPHICS_ITEM_GATE ) ;
 		m_pGate[i]->SetItemId(i);
 		GateMove(i , afGatePos[i][0] , afGatePos[i][1] , afGatePos[i][2]);
-	}
-
+    //}
+    if (_Gate == 0)
 	m_pGate[0]->show() ;
+    else if(_Gate == 1)
 	m_pGate[1]->show() ;
+    else if(_Gate == 2)
 	m_pGate[2]->show() ;
 
 }
