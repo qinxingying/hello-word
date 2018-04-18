@@ -149,6 +149,7 @@ void DialogDxfFileLoad::UpdateWeld()
         ui->SpinFHeight->setValue(m_cPart.weld.weland_offset);
         ui->SpinFRadius->setValue(m_cPart.afSize[0]);
         ui->SpinFAngle->setValue(m_cPart.weld.Diameter);
+        ui->SpinFAngle->setMaximum(m_cPart.afSize[0]);
         ui->SpinFHeight_2->setValue(m_cPart.weld.fizone_radius);
         ui->SpinFAngle_2->setValue(m_cPart.weld.fizone_angle);
 
@@ -324,7 +325,10 @@ void DialogDxfFileLoad::on_SpinFRadius_valueChanged(double arg1)
 {
     if(!ui->SpinFRadius->hasFocus())  return;
     if(m_cPart.weld.eType == setup_WELD_TKY)
+    {
         m_cPart.afSize[0] = arg1;
+        ui->SpinFAngle->setMaximum(m_cPart.afSize[0]);
+    }
     else
         m_cPart.weld.fizone_radius = arg1;
     UpdateDisplay();
@@ -334,7 +338,9 @@ void DialogDxfFileLoad::on_SpinFAngle_valueChanged(double arg1)
 {
     if(!ui->SpinFAngle->hasFocus())  return;
     if(m_cPart.weld.eType == setup_WELD_TKY)
+    {
         m_cPart.weld.Diameter = arg1;
+    }
     else
         m_cPart.weld.fizone_angle = arg1;
     UpdateDisplay();
