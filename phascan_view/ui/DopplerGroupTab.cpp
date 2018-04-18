@@ -1263,6 +1263,9 @@ void DopplerGroupTab::on_ValueElementStepPri_editingFinished()
 	ElementAlign() ;
 }
 int _Gate = 0 ;
+int _GateA = 0;
+int _GateB = 0;
+int _GateI = 0;
 // gate
 void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 {
@@ -1303,6 +1306,9 @@ void DopplerGroupTab::on_CheckGateShow_clicked(bool checked)
         m_pGroup->bShowGateB = checked;
     else if(_Gate == 2)
         m_pGroup->bShowGateI = checked;
+    _GateA = m_pGroup->bShowGateA;
+    _GateB = m_pGroup->bShowGateB;
+    _GateI = m_pGroup->bShowGateI;
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOverlay();
 }
