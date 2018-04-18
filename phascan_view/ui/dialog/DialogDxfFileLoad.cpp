@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QDir.h>
 #include <QStandardItem>
+#include <QDebug>
 
 DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
 	QDialog(parent),
@@ -141,13 +142,42 @@ void DialogDxfFileLoad::UpdateWeld()
 	ui->SpinFAngle->setValue(m_cPart.weld.fizone_angle);
     ui->SpinFHeight_2->setValue(m_cPart.weld.fizone_down_height);
     ui->SpinFAngle_2->setValue(m_cPart.weld.fizone_down_angle);
+    if(m_cPart.weld.eType == setup_WELD_TKY)
+    {
+        ui->SpinWHeight->setValue(m_cPart.weld.weland_height);
+        ui->SpinWoffset->setValue(m_cPart.weld.fizone_height);
+        ui->SpinFHeight->setValue(m_cPart.weld.weland_offset);
+        ui->SpinFRadius->setValue(m_cPart.afSize[0]);
+        ui->SpinFAngle->setValue(m_cPart.weld.Diameter);
+        ui->SpinFHeight_2->setValue(m_cPart.weld.fizone_radius);
+        ui->SpinFAngle_2->setValue(m_cPart.weld.fizone_angle);
+
+    }
 }
 
 void DialogDxfFileLoad::UpdateDisplay()
 {
     ui->ExpoView->clear_point();
     ui->ExpoView->update();
-
+    ui->LabelWHeight->setText(tr("Weland Height:"));
+    ui->LabelWOffset->setText(tr("Weland Offset:"));
+    ui->LabelFHeight->setText(tr("Fizone Height:"));
+    ui->LabelFHeight_2->setText(tr("Fiz_down Height:"));
+    ui->LabelFRadius->setText(tr("Fizone Radius:"));
+    ui->LabelFAngle->setText(tr("Fizone Angle:"));
+    ui->LabelFAngle_2->setText(tr("Fiz_down Angle:"));
+    ui->LabelUnitFAngle->setText(tr("deg"));
+    ui->ComWeldSymetry->setItemText(0,tr("Symmetry"));
+    ui->ComWeldSymetry->setItemText(1,tr("Left"));
+    ui->ComWeldSymetry->setItemText(2,tr("Right"));
+    while(ui->ComWeldSymetry->count() > 3 && m_cPart.weld.eType != setup_WELD_TKY)
+    {
+        ui->ComWeldSymetry->removeItem(3);
+        ui->ComWeldSymetry->removeItem(4);
+        ui->ComWeldSymetry->removeItem(5);
+        ui->ComWeldSymetry->removeItem(6);
+    }
+    ui->LabelSymetry->setText(tr("Symmetry:"));
     switch(m_cPart.weld.eType)
     {
     case setup_WELD_I:
@@ -193,6 +223,38 @@ void DialogDxfFileLoad::UpdateDisplay()
         ui->frame_6->setVisible(true);
         ui->frame_7->setVisible(true);
         break;
+    case setup_WELD_TKY:
+        ui->frame_3->setVisible(true);
+        ui->frame_4->setVisible(true);
+        ui->frame_5->setVisible(true);
+        ui->frame_6->setVisible(true);
+        ui->frame_7->setVisible(true);
+        ui->LabelWHeight->setText(tr("X1:"));
+        ui->LabelWOffset->setText(tr("X2:"));
+        ui->LabelFHeight->setText(tr("Y1:"));
+        ui->LabelFHeight_2->setText(tr("Y2:"));
+        ui->LabelFRadius->setText(tr("T1:"));
+        ui->LabelFAngle->setText(tr("T2:"));
+        ui->LabelFAngle_2->setText(tr("angle:"));
+        ui->LabelUnitFAngle->setText(tr("mm"));
+        ui->SpinFAngle_2->setRange(0,180.0);
+        ui->LabelSymetry->setText(tr("Position:"));
+        if(ui->ComWeldSymetry->count() != 7)
+        {
+        ui->ComWeldSymetry->addItem("none",3);
+        ui->ComWeldSymetry->addItem("none",4);
+        ui->ComWeldSymetry->addItem("none",5);
+        ui->ComWeldSymetry->addItem("none",6);
+        }
+        ui->ComWeldSymetry->setItemText(0,tr("1"));
+        ui->ComWeldSymetry->setItemText(1,tr("2"));
+        ui->ComWeldSymetry->setItemText(2,tr("3"));
+        ui->ComWeldSymetry->setItemText(3,tr("4"));
+        ui->ComWeldSymetry->setItemText(4,tr("5"));
+        ui->ComWeldSymetry->setItemText(5,tr("6"));
+        ui->ComWeldSymetry->setItemText(6,tr("7"));
+        qDebug()<<"ui->SpinFAngle_2->maximum() is"<<ui->SpinFAngle_2->maximum()<<endl;
+        break;
     case setup_WELD_DXF:
 
         break;
@@ -226,6 +288,7 @@ void DialogDxfFileLoad::on_ComWeldType_currentIndexChanged(int index)
 void DialogDxfFileLoad::on_ComWeldSymetry_currentIndexChanged(int index)
 {
     if(!ui->ComWeldSymetry->hasFocus())  return;
+    if(index >= 0)
     m_cPart.weld.eSymmetry = (setup_WELD_SYMMETRY_TYPE) index;
     UpdateDisplay();
 }
@@ -240,42 +303,60 @@ void DialogDxfFileLoad::on_SpinWHeight_valueChanged(double arg1)
 void DialogDxfFileLoad::on_SpinWoffset_valueChanged(double arg1)
 {
     if(!ui->SpinWoffset->hasFocus())  return;
-    m_cPart.weld.weland_offset = arg1;
+    if(m_cPart.weld.eType == setup_WELD_TKY)
+        m_cPart.weld.fizone_height = arg1;
+    else
+        m_cPart.weld.weland_offset = arg1;
     UpdateDisplay();
 }
 
 void DialogDxfFileLoad::on_SpinFHeight_valueChanged(double arg1)
 {
     if(!ui->SpinFHeight->hasFocus())  return;
-	m_cPart.weld.fizone_height = arg1 ;
+    if(m_cPart.weld.eType == setup_WELD_TKY)
+        m_cPart.weld.weland_offset = arg1;
+    else
+        m_cPart.weld.fizone_height = arg1 ;
     UpdateDisplay();
 }
 
 void DialogDxfFileLoad::on_SpinFRadius_valueChanged(double arg1)
 {
     if(!ui->SpinFRadius->hasFocus())  return;
-    m_cPart.weld.fizone_radius = arg1;
+    if(m_cPart.weld.eType == setup_WELD_TKY)
+        m_cPart.afSize[0] = arg1;
+    else
+        m_cPart.weld.fizone_radius = arg1;
     UpdateDisplay();
 }
 
 void DialogDxfFileLoad::on_SpinFAngle_valueChanged(double arg1)
 {
     if(!ui->SpinFAngle->hasFocus())  return;
-    m_cPart.weld.fizone_angle = arg1;
+    if(m_cPart.weld.eType == setup_WELD_TKY)
+        m_cPart.weld.Diameter = arg1;
+    else
+        m_cPart.weld.fizone_angle = arg1;
     UpdateDisplay();
 }
 
 void DialogDxfFileLoad::on_SpinFHeight_2_valueChanged(double arg1)
 {
     if(!ui->SpinFHeight_2->hasFocus())  return;
-    m_cPart.weld.fizone_down_height = arg1;
+    if(m_cPart.weld.eType == setup_WELD_TKY)
+        m_cPart.weld.fizone_radius = arg1;
+    else
+        m_cPart.weld.fizone_down_height = arg1;
     UpdateDisplay();
 }
 
 void DialogDxfFileLoad::on_SpinFAngle_2_valueChanged(double arg1)
 {
     if(!ui->SpinFAngle_2->hasFocus())  return;
-    m_cPart.weld.fizone_down_angle = arg1;
+    if(m_cPart.weld.eType == setup_WELD_TKY)
+        m_cPart.weld.fizone_angle = arg1;
+    else
+        m_cPart.weld.fizone_down_angle = arg1;
     UpdateDisplay();
 }
 

@@ -175,6 +175,7 @@ enum setup_WELD_TYPE
     setup_WELD_J,
     setup_WELD_VY,
 //	setup_WELD_NCC,
+    setup_WELD_TKY,
     setup_WELD_DXF,
 	setup_WELD_MAX
 };
@@ -199,6 +200,7 @@ struct WELD
 	float	weldtype_pos ;
     float   fizone_down_height;
     float	fizone_down_angle ;
+    float   Diameter;
 } ;
 
 enum setup_PART_GEOMETRY

@@ -949,7 +949,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.part.weld.fizone_angle	 = _pGroupInfo->part.fizone_angle  / 1000.0 ;
 		_group.part.weld.fizone_height   = _pGroupInfo->part.fizone_height / 1000.0 ;
 		_group.part.weld.fizone_radius   = _pGroupInfo->part.fizone_radius / 1000.0 ;
-
+        _group.part.weld.Diameter        = _pGroupInfo->part.Diameter      / 1000.0 ;
         if(2 == _group.part.weld.eType)
         {
            if(((_group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_height) != _group.part.weld.fizone_height)||(_group.part.weld.fizone_radius !=_group.part.weld.fizone_angle))

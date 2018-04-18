@@ -140,102 +140,195 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="213"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="210"/>
+        <source>TKY shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="218"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="180"/>
         <source>Symmetry:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="221"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="226"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="170"/>
         <source>Symmetry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="226"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="231"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="171"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="231"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="236"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="172"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="289"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="294"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="162"/>
         <source>Weland Height:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="324"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="396"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="468"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="534"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="606"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="329"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="401"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="473"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="539"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="611"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="239"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="367"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="372"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="163"/>
         <source>Weland Offset:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="439"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="444"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="164"/>
         <source>Fizone Height:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="505"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="510"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="165"/>
         <source>Fiz_down Height:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="577"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="582"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="166"/>
         <source>Fizone Radius:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="649"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="654"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="167"/>
         <source>Fizone Angle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="678"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="750"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="683"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="764"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="169"/>
         <source>deg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="721"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="726"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="168"/>
         <source>Fiz_down Angle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="784"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="798"/>
         <source>Part File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="805"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="819"/>
         <source>Default path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="824"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="838"/>
         <source>Path Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="837"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="851"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="52"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="53"/>
         <source>Not Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="302"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="232"/>
+        <source>X1:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="233"/>
+        <source>X2:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="234"/>
+        <source>Y1:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="235"/>
+        <source>Y2:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="236"/>
+        <source>T1:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="237"/>
+        <source>T2:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="238"/>
+        <source>angle:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="241"/>
+        <source>Position:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="249"/>
+        <source>1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="250"/>
+        <source>2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="251"/>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="252"/>
+        <source>4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="253"/>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="254"/>
+        <source>6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="255"/>
+        <source>7</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="383"/>
         <source>Open Dxf File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1717,7 +1810,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.cpp" line="493"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1985"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1991"/>
         <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>

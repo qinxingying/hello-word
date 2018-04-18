@@ -1484,6 +1484,11 @@ void DopplerGroupTab::on_BtnLoadDxfFile_clicked()
 
     ProcessDisplay _display;
     _display.UpdateAllViewOfGroup(m_nGroupId);
+    _display.UpdateAllView();
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+    g_pMainWnd->RunDrawThreadOnce(true);
+    ui->ComSkewAngle->setCurrentIndex(m_pGroup->eSkew);
+    ui->ValuePartSize1->setValue(m_pGroup->part.afSize[0]);
 
 }
 

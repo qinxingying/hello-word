@@ -205,6 +205,11 @@
                <string>VY shape</string>
               </property>
              </item>
+             <item>
+              <property name="text">
+               <string>TKY shape</string>
+              </property>
+             </item>
             </widget>
            </item>
            <item row="1" column="0">
@@ -724,6 +729,12 @@
                </item>
                <item>
                 <widget class="QDoubleSpinBox" name="SpinFAngle_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>58</width>
+                   <height>20</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
                    <width>58</width>
@@ -735,6 +746,9 @@
                  </property>
                  <property name="decimals">
                   <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <double>180.000000000000000</double>
                  </property>
                 </widget>
                </item>

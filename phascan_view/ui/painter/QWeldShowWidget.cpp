@@ -133,6 +133,9 @@ void QWeldShowWidget::DrawWeld(QPainter& painter)
     case setup_WELD_VY: //New Add
         DrawWeldVY(painter);
         break;
+    case setup_WELD_TKY:
+        DrawWeldTKY(painter);
+        break;
 	default:
 		break;
 	}
@@ -215,7 +218,7 @@ void QWeldShowWidget::DrawWeldDV(QPainter& painter)
 	_pos[2].setY(m_pPart->weld.fizone_height + m_pPart->weld.weland_height);
 	_pos[3].setX(m_pPart->weld.weland_offset + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) * m_pPart->weld.fizone_height);
 	_pos[3].setY(m_pPart->weld.fizone_height * 2 + m_pPart->weld.weland_height);
-
+    qDebug()<<"m_cRange.fPixelSize is "<<m_cRange.fPixelSize<<endl;
     PositionTransfer(_pos[0]);
     PositionTransfer(_pos[1]);
     PositionTransfer(_pos[2]);
@@ -499,6 +502,215 @@ void QWeldShowWidget::DrawWeldVY(QPainter &painter)
     }
 }
 
+void QWeldShowWidget::DrawWeldTKY(QPainter &painter)
+{
+    QPointF _pos[8];
+    double fx0,fx1,fx2,fx3,fx4,fx5,fx6,fx7,fy0,fy1,fy2,fy3,fy4,fy5,fy6,fy7;
+    double width1 = m_pPart->weld.weland_height + 0.5 * m_pPart->weld.Diameter/sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle));
+    double width2 = m_pPart->weld.fizone_height + 0.5 * m_pPart->weld.Diameter/sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle));
+    double R = 4 * m_pPart->weld.weland_offset + m_fThickness + 20;
+    if(m_pPart->weld.eSymmetry == 0 || m_pPart->weld.eSymmetry == 1 || m_pPart->weld.eSymmetry == 2 || m_pPart->weld.eSymmetry == 3 || m_pPart->weld.eSymmetry == 6 )
+    {
+    _pos[0].setX(width1);
+    _pos[0].setY(0);
+    _pos[1].setX(width2);
+    _pos[1].setY(0);
+    _pos[2].setX(0.5 * m_pPart->weld.Diameter/sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle))-m_pPart->weld.fizone_radius/tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)));
+    _pos[2].setY(m_pPart->weld.fizone_radius);
+    _pos[3].setX(R * cos(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle))-(m_pPart->weld.Diameter/2.0)*sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)));
+    _pos[3].setY(R * sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle))+(m_pPart->weld.Diameter/2.0)*cos(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)));
+    _pos[4].setX(R * cos(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle))+(m_pPart->weld.Diameter/2.0)*sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)));
+    _pos[4].setY(R * sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle))-(m_pPart->weld.Diameter/2.0)*cos(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)));
+    _pos[5].setX(0.5 * m_pPart->weld.Diameter/sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle))+m_pPart->weld.weland_offset/tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)));
+    _pos[5].setY(m_pPart->weld.weland_offset);
+    PositionTransfer(_pos[0]);
+    PositionTransfer(_pos[1]);
+    PositionTransfer(_pos[2]);
+    PositionTransfer(_pos[3]);
+    PositionTransfer(_pos[4]);
+    PositionTransfer(_pos[5]);
+    }
+    else if(m_pPart->weld.eSymmetry == 4 || m_pPart->weld.eSymmetry == 5)
+    {
+        double _nFizoneAngle = m_pPart->weld.fizone_angle;
+        double X1 = m_pPart->weld.weland_height;
+        double X2 = m_pPart->weld.fizone_height;
+        double Y1 = m_pPart->weld.weland_offset;
+        double Y2 = m_pPart->weld.fizone_radius;
+        double T2 = m_pPart->weld.Diameter;
+        double tempX,tempY,firswidth,w1,w2,w3,w4,w5,l1,h1,h2;
+
+        if((m_pPart->weld.eSymmetry == 4 && m_pPart->weld.fizone_angle >= 90.0) || ( m_pPart->weld.eSymmetry == 5 && m_pPart->weld.fizone_angle <90.0))
+        {
+            if(m_pPart->weld.fizone_angle >= 90.0)
+                _nFizoneAngle = m_pPart->weld.fizone_angle - 90.0;
+            else if(m_pPart->weld.fizone_angle < 90.0)
+            {
+                _nFizoneAngle = 180.0 - m_pPart->weld.fizone_angle - 90.0;
+                tempX = X1;
+                tempY = Y1;
+                X1 = X2;
+                Y1 = Y2;
+                X2 = tempX;
+                Y2 = tempY;
+            }
+            firswidth = T2 * tan(DEGREE_TO_ARCH(_nFizoneAngle));
+            w1 = firswidth / 2;
+            w2 = Y2 / cos(DEGREE_TO_ARCH(_nFizoneAngle)) + w1;
+            w3 = X2 * sin(DEGREE_TO_ARCH(_nFizoneAngle)) + w1;
+            R = 6 * w1 + 30;
+            l1 = T2 / cos(DEGREE_TO_ARCH(_nFizoneAngle));
+            w4 = Y1 / cos(DEGREE_TO_ARCH(_nFizoneAngle)) - T2 *  tan(DEGREE_TO_ARCH(_nFizoneAngle)) + w1;
+            w5 = (l1 + X1) * sin(DEGREE_TO_ARCH(_nFizoneAngle)) - w1;
+            h1 = X2 * cos(DEGREE_TO_ARCH(_nFizoneAngle));
+            h2 = (l1 + X1) * cos(DEGREE_TO_ARCH(_nFizoneAngle));
+
+            _pos[0].setX(w1);
+            _pos[1].setX(-w3);
+            _pos[2].setX(-w2);
+            _pos[3].setX(-R);
+            _pos[4].setX(-w1);
+            _pos[5].setX(w5);
+            _pos[6].setX(-w4);
+            _pos[7].setX(-R);
+            _pos[0].setY(0);
+            _pos[1].setY(h1 + T2);
+            _pos[2].setY(T2);
+            _pos[3].setY(T2);
+            _pos[4].setY(T2);
+            _pos[5].setY(h2 + T2);
+            _pos[6].setY(2 * T2);
+            _pos[7].setY(2 * T2);
+
+            PositionTransfer(_pos[0]);
+            PositionTransfer(_pos[1]);
+            PositionTransfer(_pos[2]);
+            PositionTransfer(_pos[3]);
+            PositionTransfer(_pos[4]);
+            PositionTransfer(_pos[5]);
+            PositionTransfer(_pos[6]);
+            PositionTransfer(_pos[7]);
+
+        }
+
+        if((m_pPart->weld.eSymmetry == 5 && m_pPart->weld.fizone_angle >= 90.0) || (m_pPart->weld.eSymmetry == 4 && m_pPart->weld.fizone_angle < 90.0))
+        {
+            if(m_pPart->weld.fizone_angle >= 90.0)
+                _nFizoneAngle = m_pPart->weld.fizone_angle - 90.0;
+            else if(m_pPart->weld.fizone_angle < 90.0)
+        {
+                _nFizoneAngle = 180.0 - m_pPart->weld.fizone_angle - 90.0;
+                tempX = X1;
+                tempY = Y1;
+                X1 = X2;
+                Y1 = Y2;
+                X2 = tempX;
+                Y2 = tempY;
+        }
+                firswidth = T2 * tan(DEGREE_TO_ARCH(_nFizoneAngle));
+                w1 = firswidth / 2;
+                w2 = Y1 / cos(DEGREE_TO_ARCH(_nFizoneAngle)) - w1;
+                w3 = X1 * sin(DEGREE_TO_ARCH(_nFizoneAngle)) + w1;
+                R = 6 * w1 + 30;
+                w4 = Y2 / cos(DEGREE_TO_ARCH(_nFizoneAngle)) + T2 * tan(DEGREE_TO_ARCH(_nFizoneAngle)) - w1;
+                l1 = T2 / cos(DEGREE_TO_ARCH(_nFizoneAngle));
+                w5 = (l1 + X2) * sin(DEGREE_TO_ARCH(_nFizoneAngle)) - w1;
+                h1 = (l1 + X1) * cos(DEGREE_TO_ARCH(_nFizoneAngle));
+                h2 = (l1 + X2) * cos(DEGREE_TO_ARCH(_nFizoneAngle));
+
+                fx0 = w1;
+                fx1 = R;
+                fx2 = R;
+                fx3 = w2;
+                fx4 = w3;
+                fx5 = w4;
+                fx6 = w5;
+                fy0 = T2;
+                fy1 = h1;
+                fy2 = T2 / 2;
+                fy3 = T2 + h2;
+                _pos[0].setX(-w1);
+                _pos[1].setX(w3);
+                _pos[2].setX(-w2);
+                _pos[3].setX(-R);
+                _pos[4].setX(w1);
+                _pos[5].setX(-w5);
+                _pos[6].setX(-w4);
+                _pos[7].setX(-R);
+                _pos[0].setY(0);
+                _pos[1].setY(h1);
+                _pos[2].setY(T2);
+                _pos[3].setY(T2);
+                _pos[4].setY(T2);
+                _pos[5].setY(T2+h2);
+                _pos[6].setY(2 * T2);
+                _pos[7].setY(2 * T2);
+                PositionTransfer(_pos[0]);
+                PositionTransfer(_pos[1]);
+                PositionTransfer(_pos[2]);
+                PositionTransfer(_pos[3]);
+                PositionTransfer(_pos[4]);
+                PositionTransfer(_pos[5]);
+                PositionTransfer(_pos[6]);
+                PositionTransfer(_pos[7]);
+
+        }
+
+    }
+    double _fOrgX = m_cRange.fWidth / 2;
+    double _fOrgY = m_cRange.fStartY; 
+    if(m_pPart->weld.eSymmetry == 0 || m_pPart->weld.eSymmetry == 1 || m_pPart->weld.eSymmetry == 2 || m_pPart->weld.eSymmetry == 3 || m_pPart->weld.eSymmetry == 6 )
+    {
+    fx0 = _fOrgX - _pos[0].x();
+    fy0 = _fOrgY;
+    fx1 = _fOrgX + _pos[1].x();
+    fy1 = _fOrgY;
+    fx2 = _fOrgX + _pos[2].x();
+    fy2 = _fOrgY + _pos[2].y();
+    fx3 = _fOrgX - _pos[3].x();
+    fy3 = _fOrgY + _pos[3].y();
+    fx4 = _fOrgX - _pos[4].x();
+    fy4 = _fOrgY + _pos[4].y();
+    fx5 = _fOrgX - _pos[5].x();
+    fy5 = _fOrgY + _pos[5].y();
+    painter.drawLine(fx0,fy0,fx1,fy1);
+    painter.drawLine(fx1,fy1,fx2,fy2);
+    painter.drawLine(fx2,fy2,fx3,fy3);
+    painter.drawLine(fx3,fy3,fx4,fy4);
+    painter.drawLine(fx4,fy4,fx5,fy5);
+    painter.drawLine(fx0,fy0,fx5,fy5);
+
+}
+    else if(m_pPart->weld.eSymmetry == 4 || m_pPart->weld.eSymmetry == 5)
+    {
+        fx0 = _fOrgX + _pos[0].x();
+        fy0 = _fOrgY + _pos[0].y();
+        fx1 = _fOrgX + _pos[1].x();
+        fy1 = _fOrgY + _pos[1].y();
+        fx2 = _fOrgX + _pos[2].x();
+        fy2 = _fOrgY + _pos[2].y();
+        fx3 = _fOrgX + _pos[3].x();
+        fy3 = _fOrgY + _pos[3].y();
+        fx4 = _fOrgX + _pos[4].x();
+        fy4 = _fOrgY + _pos[4].y();
+        fx5 = _fOrgX + _pos[5].x();
+        fy5 = _fOrgY + _pos[5].y();
+        fx6 = _fOrgX + _pos[6].x();
+        fy6 = _fOrgY + _pos[6].y();
+        fx7 = _fOrgX + _pos[7].x();
+        fy7 = _fOrgY + _pos[7].y();
+        painter.drawLine(fx0,fy0,fx1,fy1);
+        painter.drawLine(fx1,fy1,fx2,fy2);
+        painter.drawLine(fx2,fy2,fx3,fy3);
+
+        painter.drawLine(fx4,fy4,fx5,fy5);
+        painter.drawLine(fx5,fy5,fx6,fy6);
+        painter.drawLine(fx6,fy6,fx7,fy7);
+
+    }
+
+}
+
 void QWeldShowWidget::UpdateDisplayRangle()
 {
     double _fWidth = (double) width();
@@ -549,6 +761,28 @@ void QWeldShowWidget::UpdateDisplayRangle()
 		}
 	}
 		break;
+    case setup_WELD_TKY :
+    {
+        double _fMaxWidth = ((0.5 * m_pPart->weld.Diameter/sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)))+((m_pPart->weld.weland_height>m_pPart->weld.fizone_height)?m_pPart->weld.weland_height:m_pPart->weld.fizone_height))*3;
+        qDebug()<<"m_pPart->weld.Diameter is "<<m_pPart->weld.Diameter<<endl;
+        qDebug()<<"sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) is "<<sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle))<<endl;
+        qDebug()<<"m_pPart->weld.weland_height is "<<m_pPart->weld.weland_height<<endl;
+        qDebug()<<"m_pPart->weld.fizone_height is "<<m_pPart->weld.fizone_height<<endl;
+        //qDebug()<<"bigger is "<<(m_pPart->weld.weland_height>m_pPart->weld.fizone_height)?m_pPart->weld.weland_height:m_pPart->weld.fizone_height<<endl;
+        qDebug()<<"max is "<<_fMaxWidth<<endl;
+        m_cRange.fPixelSize = _fMaxWidth/ _fWidth;
+        double _fThickness = m_fThickness /   m_cRange.fPixelSize;
+        if(m_pPart->weld.eSymmetry == 0 || m_pPart->weld.eSymmetry == 1 || m_pPart->weld.eSymmetry == 6)
+        {
+            m_cRange.fStartY = 0.25 * _fHeight;
+            m_cRange.fStopY	 = 0.25 * _fHeight + _fThickness;
+        }
+        else if(m_pPart->weld.eSymmetry == 2 || m_pPart->weld.eSymmetry == 3)
+        {
+            m_cRange.fStartY = 0.25 * _fHeight;
+            m_cRange.fStopY = 0.25 * _fHeight + _fThickness;
+        }
+    }
 	default:
 		break;
 	}

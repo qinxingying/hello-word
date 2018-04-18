@@ -35,3 +35,8 @@ LIBS += -L$$PWD/lib/opengl/ -lglut32
 
 INCLUDEPATH += $$PWD/lib/opengl
 DEPENDPATH += $$PWD/lib/opengl
+
+DISTFILES += \
+    translator/phascan_view_chinese.ts \
+    translator/phascan_view_english.ts \
+    translator/phascan_view_japanese.ts
