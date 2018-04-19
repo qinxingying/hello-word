@@ -29,7 +29,7 @@ static const QColor COLOR_CURSOR_IMES  = QColor(255 , 0 , 0) ;
 
 static const QColor COLOR_WELD		 = QColor(180 , 180 , 180) ;
 static const QColor COLOR_THICKNESS	= QColor(128 , 128 , 128) ;
-static const QColor COLOR_SCAN_MARKER  = QColor(255 , 255 , 0  ) ;
+static const QColor COLOR_SCAN_MARKER  = QColor(0 , 0 , 0  ) ;
 
 
 DopplerViewItems::DopplerViewItems(QObject *parent) :
