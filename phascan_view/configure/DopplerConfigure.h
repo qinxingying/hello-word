@@ -159,6 +159,9 @@ public:
 
 	void SaveEvn() ;
 
+    static void setSetting(int group,const QString &valueName,int value);
+    static int getSetting(int group,const QString &valueName);
+
 protected:
 	explicit DopplerConfigure(QObject *parent = 0);
 	void OpenEvn() ;
