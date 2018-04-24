@@ -335,7 +335,7 @@ int  ParameterProcess::GetShowMeasureNumber(int nGroupId_)
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 
 	int _nNumber = 0;
-	for(int i = 0; i  < 5; i++){
+    for(int i = 0; i  < 8; i++){
 		if(_group.aeMeasureType[i]) {
 			_nNumber++;
 		}

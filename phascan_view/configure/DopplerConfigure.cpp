@@ -1228,7 +1228,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 			//---------------------------------------
 			int* _pMeasure = group[iGroupId_].aeMeasureType;
 			int _nQty = 0 ;
-			for(int i = 0 ; i < 5 ; i++) {
+            for(int i = 0 ; i < 8 ; i++) {
 				strcpy(_pDfInfo->m_strMeasure[i], "-");
                 strcpy(_pDfInfo->m_strSzField[i],"-");
                 strcpy(_pDfInfo->m_strSzFieldUnit[i],"-");

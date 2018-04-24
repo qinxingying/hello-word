@@ -290,14 +290,17 @@ void DopplerGroupTab::slotMeasureBoxTipInfo(int nIndex_)
 *****************************************************************************/
 void DopplerGroupTab::UpdateMeasureBox()
 {
-	QComboBox* _field[5] ;
+    QComboBox* _field[8] ;
 	_field[0] = ui->ComField1 ;
 	_field[1] = ui->ComField2 ;
 	_field[2] = ui->ComField3 ;
 	_field[3] = ui->ComField4 ;
 	_field[4] = ui->ComField5 ;
+    _field[5] = ui->ComField6 ;
+    _field[6] = ui->ComField7 ;
+    _field[7] = ui->ComField8 ;
 
-	for(int i = 0 ; i < 5 ; i ++)
+    for(int i = 0 ; i < 8 ; i ++)
 	{
 		_field[i]->clear();
 
@@ -758,6 +761,9 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ui->ComField3->setCurrentIndex(m_pGroup->aeMeasureType[2]);
 	ui->ComField4->setCurrentIndex(m_pGroup->aeMeasureType[3]);
 	ui->ComField5->setCurrentIndex(m_pGroup->aeMeasureType[4]);
+    ui->ComField6->setCurrentIndex(m_pGroup->aeMeasureType[5]);
+    ui->ComField7->setCurrentIndex(m_pGroup->aeMeasureType[6]);
+    ui->ComField8->setCurrentIndex(m_pGroup->aeMeasureType[7]);
 
 	//*********** measure
 	ui->CheckCursorShow->setCheckState(m_pGroup->bShowCursor ? Qt::Checked : Qt::Unchecked );
@@ -1695,6 +1701,42 @@ void DopplerGroupTab::on_ComField5_currentIndexChanged(int index)
 	if(ui->CheckMeasureShow->checkState())
 	{
 		 g_pMainWnd->RunDrawThreadOnce(true);
+    }
+}
+
+void DopplerGroupTab::on_ComField6_currentIndexChanged(int index)
+{
+    if(!ui->ComField6->hasFocus()) return ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupMeasureData(m_nGroupId , 5 , index)  ;
+
+    if(ui->CheckMeasureShow->checkState())
+    {
+         g_pMainWnd->RunDrawThreadOnce(true);
+    }
+}
+
+void DopplerGroupTab::on_ComField7_currentIndexChanged(int index)
+{
+    if(!ui->ComField7->hasFocus()) return ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupMeasureData(m_nGroupId , 6 , index)  ;
+
+    if(ui->CheckMeasureShow->checkState())
+    {
+         g_pMainWnd->RunDrawThreadOnce(true);
+    }
+}
+
+void DopplerGroupTab::on_ComField8_currentIndexChanged(int index)
+{
+    if(!ui->ComField8->hasFocus()) return ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupMeasureData(m_nGroupId , 7 , index)  ;
+
+    if(ui->CheckMeasureShow->checkState())
+    {
+         g_pMainWnd->RunDrawThreadOnce(true);
     }
 }
 

@@ -491,7 +491,7 @@ typedef struct _Group
 	unsigned int			anBeamDelay[setup_MAX_GROUP_LAW_QTY];
 	float					afBeamPos[setup_MAX_GROUP_LAW_QTY];
 
-	int						aeMeasureType[5];
+    int						aeMeasureType[8];
 	int						bShowMeasure;
 	int						bShowCursor;
 	int						bShowWeldPart;

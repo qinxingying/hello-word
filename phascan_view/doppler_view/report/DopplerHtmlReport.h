@@ -29,10 +29,10 @@ struct ReportValueItem
     float fPos ;
     int   nGroupId ;
     int   nLawId   ;
-    QString szValue[5];
+    QString szValue[8];
     QString szPixmap;
-    QString szField[5];
-    QString szFieldUnit[5];
+    QString szField[8];
+    QString szFieldUnit[8];
 } ;
 
 
@@ -181,8 +181,8 @@ protected:
     QString m_polarity;
     QString m_axis2;
 
-    QString  m_szField[8][5];
-    QString  m_szFieldUnit[8][5];
+    QString  m_szField[8][8];
+    QString  m_szFieldUnit[8][8];
     QString m_dataFilePath;
 
 	char m_strReportDir[1024];

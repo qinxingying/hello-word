@@ -120,7 +120,7 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 	//EnableRenderOpenGL(true) ;
 
 	setRenderHint(QPainter::Antialiasing, true);
-	for(int i = 0 ; i < 5 ; i++)  m_strMeasure[i].clear();
+    for(int i = 0 ; i < 8 ; i++)  m_strMeasure[i].clear();
 	m_nMeasureQty  = 0 ;
 
 //	m_bBCAutoZomm = true;

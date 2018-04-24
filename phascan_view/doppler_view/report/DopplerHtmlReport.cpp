@@ -242,7 +242,7 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strGroup));
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strLaw));
 
-    for(int i = 0 ; i < 5 ; i++){
+    for(int i = 0 ; i < 8 ; i++){
         fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , _pDfInfo->m_strSzField[i] ,_pDfInfo->m_strSzFieldUnit[i]);
     }
 
@@ -258,7 +258,7 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
 	fprintf(m_pFile ,"\t\t\t<th>%d</th>\n" , nGroupId_+1);
 	fprintf(m_pFile ,"\t\t\t<th>%d</th>\n" , _pDfInfo->nLawNo+1);
 
-	for(int i = 0; i < 5; i++) {
+    for(int i = 0; i < 8; i++) {
 		fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , _pDfInfo->m_strMeasure[i]);
 	}
 
@@ -593,7 +593,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
     int* _pMeasure = _pConfig->group[nGroupId_].aeMeasureType;
     int _nQty = 0;
 
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 8; i++)
 	{
 		if(_pMeasure[i])
 		{
@@ -603,7 +603,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 		}
 	}
 
-	for(int i = _nQty ; i< 5 ; i++)
+    for(int i = _nQty ; i< 8 ; i++)
 	{
 		m_szField[nGroupId_][i] = m_szFieldUnit[nGroupId_][i] = QString("-");
 	}
@@ -1011,7 +1011,7 @@ void DopplerHtmlReport::SprintfGroupMeasure()
         fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , TOCHAR(str_2));
         fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , TOCHAR(str_3));
 
-        for(int i = 0 ; i < 5 ; i++){
+        for(int i = 0 ; i < 8 ; i++){
             fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , TOCHAR(_value.szField[i]) ,TOCHAR(_value.szFieldUnit[i]));
         }
 
@@ -1024,6 +1024,9 @@ void DopplerHtmlReport::SprintfGroupMeasure()
         fprintf(m_pFile ,"\t\t\t<td%s><%s>%s</%s></td>\n", newLineFormat ,bodyFormat ,TOCHAR(_value.szValue[2]) ,bodyFormat);
         fprintf(m_pFile ,"\t\t\t<td%s><%s>%s</%s></td>\n", newLineFormat ,bodyFormat ,TOCHAR(_value.szValue[3]) ,bodyFormat);
         fprintf(m_pFile ,"\t\t\t<td%s><%s>%s</%s></td>\n", newLineFormat ,bodyFormat ,TOCHAR(_value.szValue[4]) ,bodyFormat);
+        fprintf(m_pFile ,"\t\t\t<td%s><%s>%s</%s></td>\n", newLineFormat ,bodyFormat ,TOCHAR(_value.szValue[5]) ,bodyFormat);
+        fprintf(m_pFile ,"\t\t\t<td%s><%s>%s</%s></td>\n", newLineFormat ,bodyFormat ,TOCHAR(_value.szValue[6]) ,bodyFormat);
+        fprintf(m_pFile ,"\t\t\t<td%s><%s>%s</%s></td>\n", newLineFormat ,bodyFormat ,TOCHAR(_value.szValue[7]) ,bodyFormat);
 		fprintf(m_pFile ,"\t\t\t</tr>\n");
 		fprintf(m_pFile , "</table></td></tr>\n</table>\n\n");//table
 

@@ -778,7 +778,7 @@ void MainWindow::ReportAddOneItem()
     int* _pMeasure  = _group.aeMeasureType;
     int _nQty = 0;
 
-    for(int i = 0; i < 5; i++)
+    for(int i = 0; i < 8; i++)
     {
         if(_pMeasure[i]){
             _value.szValue[_nQty] = CalcMeasurement::GetMeasureValue(_nGroup, _nLawId, (FEILD_VALUE_INDEX)_pMeasure[i]);
@@ -788,7 +788,7 @@ void MainWindow::ReportAddOneItem()
         }
     }
 
-    for(int i = _nQty; i < 5; i ++) {
+    for(int i = _nQty; i < 8; i ++) {
         _value.szValue[i] = QString("-");
         _value.szField[i] = QString("-");
         _value.szFieldUnit[i] = QString("-");
