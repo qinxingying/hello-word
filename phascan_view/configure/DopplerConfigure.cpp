@@ -735,10 +735,19 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.fSampleStart   = _process->DistNsToMm(i , _pGroupInfo->start) ;		/* 显示范围 单位 mm		*/
 		_group.fSampleRange   = _process->DistNsToMm(i , _pGroupInfo->range) ;		/* 扫描延时 单位 mm		*/
 		_group.nPointQty	  = _pGroupInfo->point_qty ;		/* 点个数 */
-
-		_group.fGain		  = _pGroupInfo->gain / 100.0;			/* 增益 0 - 80 db  _STEP 0.01dB */
-		_group.fRefGain	      = 0 ; //_pGroupInfo->gainr/ 100.0;
-		_group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
+        _group.on_off_status  = _pGroupInfo->on_off_status;
+        qDebug()<<"on_off is "<<_group.on_off_status<<endl;
+        if(!((_group.on_off_status & (0x01 << 0)) != 0))
+        {
+            _group.fGain		  = _pGroupInfo->gain / 100.0;			/* 增益 0 - 80 db  _STEP 0.01dB */
+            _group.fRefGain	      = 0;
+        }
+        else if((_group.on_off_status & (0x01 << 0)) != 0)
+        {
+            _group.fGain		  = _pGroupInfo->gainr / 100.0;			/* 增益 0 - 80 db  _STEP 0.01dB */
+            _group.fRefGain	      = _pGroupInfo->gain / 100.0 - _pGroupInfo->gainr / 100.0;
+        }
+        _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;
 		/* 发射接收 */

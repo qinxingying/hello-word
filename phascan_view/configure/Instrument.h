@@ -454,6 +454,7 @@ typedef struct _Group
 	float					fVelocity;				/* 声速 单位 m/s*/
 	float					fGain;					/* 增益 0 - 80 db  _STEP 0.01dB */
 	float					fRefGain;
+    int                     on_off_status;
 	float					fSumGain ;
 	int						bPointQtyAuto;
 	int						bSumGainAuto;
