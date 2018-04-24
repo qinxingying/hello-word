@@ -722,8 +722,9 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{
 		GROUP_INFO* _pGroupInfo = pConf_->GetGroupInfo(i) ;
-		GROUP_CONFIG& _group = group[i] ;
-        _group.bShowGateA     = _group.bShowGateB =_group.bShowGateI = 1;
+        GROUP_CONFIG& _group  = group[i] ;
+        _group.bShowGateA     = 1;
+        _group.bShowGateB =_group.bShowGateI = 0;
 		_group.eGroupMode	  = (setup_GROUP_MODE)_pGroupInfo->group_mode  ;
 		_group.eTravelMode	  = _pGroupInfo->ut_unit ? setup_TRAVEL_MODE_TRUE_DEPTH : setup_TRAVEL_MODE_HALF_PATH;
 		_group.eTxRxMode	  = (setup_TX_RX_MODE)_pGroupInfo->tx_rxmode1 ;
