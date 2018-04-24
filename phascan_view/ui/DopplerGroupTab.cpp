@@ -1263,9 +1263,9 @@ void DopplerGroupTab::on_ValueElementStepPri_editingFinished()
 	ElementAlign() ;
 }
 int _Gate = 0 ;
-int _GateA = 0;
-int _GateB = 0;
-int _GateI = 0;
+int _GateA = 1;
+int _GateB = 1;
+int _GateI = 1;
 // gate
 void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 {

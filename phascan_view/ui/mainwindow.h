@@ -63,7 +63,7 @@ public:
     bool ParamBackMode(void) {return m_bParamBackMode;}
     void SetParamBackMode(bool mode_) {m_bParamBackMode = mode_;}
     void UpdateCombinationDisplay();
-    void SaveCurScreenshot(QString strPath_);
+    int SaveCurScreenshot(QString strPath_);
 
 protected:
     void CreateStatusBar();

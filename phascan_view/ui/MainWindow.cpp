@@ -575,14 +575,14 @@ void MainWindow::UpdateCombinationDisplay(void)
     SetWndName();
 }
 
-void MainWindow::SaveCurScreenshot(QString strPath_)
+int MainWindow::SaveCurScreenshot(QString strPath_)
 {
     QString _strPath = strPath_;
     QPixmap pixmap = QPixmap::grabWidget(ui->TabWidget_display->currentWidget());
     if(0 == pixmap.save(_strPath, "png"))
-        QMessageBox::information(this,tr("prompt"),tr("The defect was saved failed!"));
+        return 0;
     else
-        QMessageBox::information(this,tr("prompt"),tr("The defect was saved successfully!"));
+        return 1;
 }
 
 void MainWindow::UpdateTableDisplay()
@@ -798,7 +798,7 @@ void MainWindow::ReportAddOneItem()
     _value.szPixmap = _strPath;
 
     _pReport->AddOneValueItem(&_value);
-    SaveCurScreenshot(_strPath);
+    if(1 == SaveCurScreenshot(_strPath))
     QMessageBox::information(this,tr("prompt"),tr("increase success!"));
 }
 
@@ -883,7 +883,10 @@ void MainWindow::DefectSign(DEFECT_SIGN_TYPE signType_)
 
             DEFECT_INFO* _pDfInfo = _pConfig->GetDefectPointer(m_iCurGroup, _index);
             QString _strPath = _pConfig->m_szDefectPathName + QString(tr("/")) + QString(tr(_pDfInfo->srtImageName)) + QString(tr(".png"));
-            SaveCurScreenshot(_strPath);
+            if(0 == SaveCurScreenshot(_strPath))
+                QMessageBox::information(this,tr("prompt"),tr("The defect was saved failed!"));
+            else
+                QMessageBox::information(this,tr("prompt"),tr("The defect was saved successfully!"));
             sleep(200);
             //_pGroup->bShowDefect = _bTmp;
             _pConfig->m_nCutBmpNo[m_iCurGroup] = 0;
