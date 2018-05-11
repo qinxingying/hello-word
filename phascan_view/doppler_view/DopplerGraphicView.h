@@ -10,7 +10,7 @@ class DopplerGraphicsItem;
 class GraphicsViewBase;
 class DopplerDrawScan;
 
-#define MAX_MEASURE_DATA_DISPLAY  15
+#define MAX_MEASURE_DATA_DISPLAY  24
 
 class DopplerGraphicView : public QGraphicsView
 {
