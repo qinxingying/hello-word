@@ -483,12 +483,12 @@ void DopplerGraphicView::DrawMeasureValue()
 			{
 				QSize _size((int)(m_pBackGround->size().width()) , (int)(m_pBackGround->size().height()))  ;
 				setup_PROBE_ANGLE _eAngle =  _process->GetProbeAngle(_iGroupId) ;
-				int _off = 80;
+                int _off = 120;
 				switch(_nLawNum)
 				{
-				case 1:_off = 80;						break;
-				case 2:_off = 80 + _nMeaNum * 12;		break;
-				case 3:_off = 80 + 2 * _nMeaNum * 12;	break;
+                case 1:_off = 120;						break;
+                case 2:_off = 120 + _nMeaNum * 12;		break;
+                case 3:_off = 120 + 2 * _nMeaNum * 12;	break;
 				}
 				if(_eAngle >= setup_PROBE_PART_SKEW_180 )
 				{
