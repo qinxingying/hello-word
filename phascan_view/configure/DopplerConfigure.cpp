@@ -326,6 +326,10 @@ int DopplerConfigure::RectifyScanLength()
 	}
 	common.scanner.fScanStop = _iMax * common.scanner.fScanStep + common.scanner.fScanStart;
 	common.nRecMax = _iMax+1;
+    if(common.scanner.eEncoderType)
+        common.scanner.fScanend     =   common.scanner.fScanStop;
+    else
+        common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf + common.scanner.fScanStart;
 
 	return _iMax+1;
 }
@@ -376,6 +380,11 @@ void DopplerConfigure::ResetShadowData()
 		}
 		common.scanner.fScanStart = comTmp.scanner.fScanStart + _fMinOff;	/**/
 		common.scanner.fScanStop  = comTmp.scanner.fScanStop  + _fMaxOff;	/**/
+        if(common.scanner.eEncoderType)
+            common.scanner.fScanend     =   common.scanner.fScanStop;
+        else
+            common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf + common.scanner.fScanStart;
+
     }
 
 //    int _nChanOffTmp[setup_MAX_GROUP_QTY];
@@ -452,7 +461,12 @@ void DopplerConfigure::InitCommonConfig()
 	common.scanner.fScanStop	=  800;
 	common.scanner.fIndexStop   =  800;
 	common.scanner.fScanStep	=  1.0;
-	common.scanner.fIndexStep   =  1.0;
+    common.scanner.fIndexStep   =  1.0;
+    common.scanner.fScanStart2  =   0;
+    common.scanner.fLawStart    =   0;
+    common.scanner.fLawStop     =   0;
+    common.scanner.fScanend     =   800;
+    common.scanner.fLawQty      =   0;
 
 	ENCODER_CONFIG _encoder = {
 		 setup_ENC_MODE_QUADRATURE  ,
@@ -681,7 +695,6 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	DRAW_INFO_PACK* _pack = pConf_->GetDrawInfo();
 	common.nGroupQty = _pack->nGroupNum ;
     common.scanner.fPrf  = pConf_->GetGroupInfo(0)->prf1 / 10.0;
-
 	if(_pack->nEncodeType)
 	{
         common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;
@@ -695,6 +708,13 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
         common.scanner.fIndexStart  =  _pack->nInspecStart	    / 1000.0;
         common.scanner.fIndexStop   =  _pack->nInspecEnd		/ 1000.0;
         common.scanner.fIndexStep   =  _pack->nInspecResolution / 1000.0;
+        common.scanner.fScanStart2  =   common.scanner.fScanStart;
+        common.scanner.fLawStart    =   0;
+        common.scanner.fLawStop     =   0;
+        common.scanner.fLawQty      =   0;
+
+        common.scanner.fScanend     =   common.scanner.fScanStop;//_process->SAxisstoptoIndex(common.scanner.fScanStop);
+
 	}
 	else
 	{
@@ -709,6 +729,11 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 		common.scanner.fIndexStart  =  0 ;
 		common.scanner.fIndexStop   =  _pack->nInspecEnd / 1000;
 		common.scanner.fIndexStep   =  1 ;
+        common.scanner.fScanStart2  =   common.scanner.fScanStart;
+        common.scanner.fLawStart    =   0;
+        common.scanner.fLawStop     =   0;
+        common.scanner.fLawQty      =   0;
+        common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf + common.scanner.fScanStart;
 	}
 	//common.scanner.eEncoderType = setup_ENCODER_TYPE_ENCODER_1 ;
 	int _nScanIndex = (common.scanner.fScanStop - common.scanner.fScanStart) / common.scanner.fScanStep + 1.5 ;

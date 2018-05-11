@@ -90,7 +90,7 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 	for(i = 0 ; i < _nPointQty ; i++)
 	{
         _fX = i * _fXRatio +start;
-		_fY = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
+        _fY = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
 		_fY = _nHeight -_fY * _fYRatio ;
 		Lines<<QPointF(_fX , _fY) ;
 	}
@@ -101,16 +101,16 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 	{
 		for(i = 0 ; i < _nPointQty ; i++)
 		{
-			if(_pData[i] > aLimitHigh[i])  aLimitHigh[i] = _pData[i];
-			if(_pData[i] < aLimitLow [i])  aLimitLow [i] = _pData[i];
+            if(_pData[i] > aLimitHigh[i])  aLimitHigh[i] = _pData[i];
+            if(_pData[i] < aLimitLow [i])  aLimitLow [i] = _pData[i];
 		}
 
 		double _fY1;
 		for(i = 0 ; i < _nPointQty  ; i++)
 		{
 			_fX  = i * _fXRatio ;
-			_fY  = _nHeight - aLimitHigh[i] * _fYRatio;
-			_fY1 = _nHeight - aLimitLow[i] * _fYRatio;
+            _fY  = _nHeight - aLimitHigh[i] * _fYRatio;
+            _fY1 = _nHeight - aLimitLow[i] * _fYRatio;
 			LimitHigh<<QPointF(_fX , _fY);
 			LimitLow<<QPointF(_fX , _fY1);
 		}

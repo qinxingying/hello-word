@@ -26,6 +26,9 @@ Date     : 2016-12-06
 #include <QFileDialog>
 #include <QPixmap>
 
+int lastgroup = 0;
+int currentgroup = 0;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -55,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->TabWidget_display, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotRightTabRightButtonDoubleClicked(int)));
     connect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentGroupChanged(int)));
     connect(ui->TabWidget_display, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentDispChanged(int)));
+    //connect(ui->TabWidget_display,SIGNAL(currentChanged(int)),ui->
 
     connect(ui->actionEnglish, SIGNAL(triggered()), this, SLOT(slot_actionEnglish_triggered()));
     connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(slot_actionChinese_triggered()));
@@ -443,7 +447,10 @@ void MainWindow::slotCurrentGroupChanged(int nIndex_)
                         _pDraw = (DopplerDataView*)_list->at(0);
 
                         if(_pDraw->GetGroupId() == m_iCurGroup) {
+                            qDebug()<<"cuuuuu is"<<currentgroup<<endl;
                             ui->TabWidget_display->setCurrentIndex(i);
+                            qDebug()<<"cuuuuu is"<<currentgroup<<endl;
+                            currentgroup = m_iCurGroup;
                             break;
                         }
                     }
@@ -492,19 +499,32 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
 
                 if(_iGroup < _nGroupQty){
                     m_iCurGroup = _iGroup;
+                currentgroup = m_iCurGroup;
+                ParameterProcess* _process = ParameterProcess::Instance();
 
+                qDebug()<<"cyrrrrrr is"<<currentgroup<<endl;
                     if(ui->TabWidget_parameter->currentIndex() < _nGroupQty){
                         ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
                     }
+                    InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+                    _pScanner->UpdateScanPos();
+
                 }
             }
 
             ProcessDisplay _proDisplay;
             _proDisplay.UpdateAllView();
         }
+        else if(m_nAlloff == 0)
+        {
+            currentgroup = 0;
+        }
+        else
+            currentgroup = -1;
     }
     //------------------------------------------------------
     RunDrawThreadOnce(true);
+
 }
 
 void MainWindow::SetSelectedDataView(QWidget* pWidget_)
@@ -713,7 +733,8 @@ void MainWindow::OpenFilePro(QString strFileName_)
         UpdateTableDisplay();
         m_iCurGroup = 0;
     }
-
+    lastgroup = 0;
+    currentgroup = 0;
     m_fileName = strFileName_;
     this->setWindowTitle(m_titleName + m_fileName);
 }

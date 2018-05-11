@@ -4,6 +4,9 @@
 #include <QString>
 #include <gHeader.h>
 
+extern int currentgroup;
+extern int lastgroup;
+
 ParameterProcess* g_pParameterProcess = NULL ;
 
 ParameterProcess* ParameterProcess::Instance()
@@ -411,6 +414,8 @@ int  ParameterProcess::SetupScanPos(float fScanPos_)
 		_fPos = _scaner.fScanStop;
 
 	_scaner.fScanPos = _fPos;
+    if(_scaner.fScanPos > _scaner.fScanend)
+        _scaner.fScanend = _scaner.fScanPos;
 	return 0;
 	//return -1;
 }
@@ -635,16 +640,38 @@ int  ParameterProcess::GetScanIndexPos() const
 	return _nScanPos ;
 }
 
+int  ParameterProcess::GetScanIndexStart2() const
+{
+    SCANNER& _scaner = m_pConfig->common.scanner ;
+    int _nScanStart2 = SAxisDistToIndex(_scaner.fScanStart2);
+    return _nScanStart2 ;
+}
+
 int ParameterProcess::SAxisDistToIndex(float fDist_) const
 {
 	SCANNER& _scaner = m_pConfig->common.scanner ;
 	int _index;
 	if(_scaner.eEncoderType) {
-		_index = (fDist_ - _scaner.fScanStart) / _scaner.fScanStep + 0.5;
+        _index = (fDist_ - _scaner.fScanStart) / _scaner.fScanStep + 0.5;
 	} else {
 		_index =  (fDist_ * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep + 0.5;
 	}
 	return _index;
+}
+
+int ParameterProcess::SAxisstoptoIndex(float fStop) const
+{
+    SCANNER& _scaner = m_pConfig->common.scanner ;
+    int _index;
+    qDebug()<<"_scanner.eEncoderType is"<<_scaner.eEncoderType<<endl;
+    if(_scaner.eEncoderType) {
+        _index = (fStop - _scaner.fScanStart2) / _scaner.fScanStep + 0.5;
+    } else {
+        _index =  (fStop * _scaner.fPrf - _scaner.fScanStart2 *_scaner.fPrf ) / _scaner.fScanStep + 0.5;
+    }
+    qDebug()<<"fprf is"<<_scaner.fPrf<<endl;
+    qDebug()<<"index is"<<_index<<endl;
+    return _index;
 }
 
 float ParameterProcess::SAxisIndexToDist(int index_) const
@@ -1060,7 +1087,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
 	pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
 
-	pInfo_[setup_GATE_A].fAmp   = CalPeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
+    pInfo_[setup_GATE_A].fAmp   = CalPeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
 	pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
 	//-----------------------------------
 	// B
@@ -1334,6 +1361,42 @@ U8* ParameterProcess::GetScanMarker(int nGroupId_) const
 	return &m_pConfig->common.nRecMark[_nIdx];
 }
 
+float ParameterProcess::GetScanStart() const
+{
+    return m_pConfig->common.scanner.fScanStart;
+}
+
+float ParameterProcess::GetScanStop() const
+{
+    return m_pConfig->common.scanner.fScanStop;
+}
+
+float ParameterProcess::GetScanend() const
+{
+    return m_pConfig->common.scanner.fScanend;
+}
+
+int ParameterProcess::GetLawStart() const
+{
+    return m_pConfig->common.scanner.fLawStart;
+}
+
+int ParameterProcess::GetLawStop() const
+{
+    return m_pConfig->common.scanner.fLawStop;
+}
+
+void ParameterProcess::ChangeLawStop(int lawstop) const
+{
+    SCANNER& _scan = m_pConfig->common.scanner  ;
+    _scan.fLawStop = lawstop;
+}
+
+float ParameterProcess::GetScanPos() const
+{
+    return m_pConfig->common.scanner.fScanPos;
+}
+
 int ParameterProcess::GetScanOff(int nGroupId_) const
 {
 	return m_pConfig->common.nScanOff[nGroupId_];
@@ -1449,9 +1512,19 @@ void ParameterProcess::GetCScanScanAxisRange(int nGroupId_ , int nDist_ , double
 void ParameterProcess::GetCScanIndexAxisRange(int nGroupId_ , double* fStart_ , double* fStop_)
 {
 	int _nLawQty = GetGroupLawQty(nGroupId_) ;
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    if(lastgroup != currentgroup)
+    {
+        _scanner.fLawStart = 0;
+        _scanner.fLawStop = _nLawQty;
 
-	*fStart_  = 0.5			;
-	*fStop_   = _nLawQty + 0.5 ;
+
+    }
+
+
+    *fStart_  =_scanner.fLawStart 		;
+    *fStop_   = _scanner.fLawStop  ;
+
 
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 	if(setup_GROUP_MODE_PA == _group.eGroupMode)
@@ -1462,10 +1535,85 @@ void ParameterProcess::GetCScanIndexAxisRange(int nGroupId_ , double* fStart_ , 
 			float _fStartAngle  =  _law->nAngleStartRefract / 10.0 ;
 			float _fStepAngle   =  _law->nAngleStepRefract / 10.0  ;
 
-			*fStart_  = _fStartAngle - 0.5		   ;
-			*fStop_   = _fStartAngle + _nLawQty * _fStepAngle + 0.5 ;
+            *fStart_  = _fStartAngle + _scanner.fLawStart * _fStepAngle;		   ;
+            *fStop_   = _fStartAngle + _scanner.fLawStop * _fStepAngle ;
+
 		}
 	}
+}
+
+void ParameterProcess::ChangeCscanIndexRange( double* fStart_ , double* fStop_,double* fStart2_,double* fStop2_,double* fstep)
+{
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    int _nLawQty ;
+    if(currentgroup != -1)
+        _nLawQty= GetGroupLawQty(currentgroup) ;
+    else
+        _nLawQty = GetGroupLawQty(0) ;
+    if(lastgroup != currentgroup)
+    {
+        _scanner.fLawStart = 0 ;
+        _scanner.fLawStop   =   _nLawQty;
+    }
+    *fStart_  =_scanner.fLawStart 			;
+    *fStop_   = _scanner.fLawStop  ;
+    *fStart2_   =   0;
+    *fStop2_    =   _nLawQty ;
+    *fstep      =   1;
+    GROUP_CONFIG& _group = m_pConfig->group[currentgroup>0?currentgroup:0] ;
+    if(setup_GROUP_MODE_PA == _group.eGroupMode)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+        {
+            LAW_CONFIG* _law = GetLawConfig(currentgroup>0?currentgroup:0);
+            float _fStartAngle  =  _law->nAngleStartRefract / 10.0 ;
+            float _fStepAngle   =  _law->nAngleStepRefract / 10.0  ;
+
+            *fStart_  = _fStartAngle  + _scanner.fLawStart * _fStepAngle;		   ;
+            *fStop_   = _fStartAngle + _scanner.fLawStop * _fStepAngle  ;
+            *fStart2_  = _fStartAngle ;		   ;
+            *fStop2_   = _fStartAngle + _nLawQty * _fStepAngle ;
+            *fstep  =   _fStepAngle;
+        }
+    }
+}
+
+void ParameterProcess::ChangeCscanIndexstart( double* fStart_ )
+{
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    int _nLawQty = GetGroupLawQty(currentgroup>0?currentgroup:0) ;
+    _scanner.fLawStart = *fStart_ - 0.5;
+
+    GROUP_CONFIG& _group = m_pConfig->group[currentgroup>0?currentgroup:0] ;
+    if(setup_GROUP_MODE_PA == _group.eGroupMode)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+        {
+            LAW_CONFIG* _law = GetLawConfig(currentgroup>0?currentgroup:0);
+            float _fStartAngle  =  _law->nAngleStartRefract / 10.0 ;
+            float _fStepAngle   =  _law->nAngleStepRefract / 10.0  ;
+            _scanner.fLawStart  =   (*fStart_ - _fStartAngle ) / _fStepAngle;
+        }
+    }
+}
+
+void ParameterProcess::ChangeCscanIndexstop( double* fStop_ )
+{
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    int _nLawQty = GetGroupLawQty(currentgroup>0?currentgroup:0) ;
+    _scanner.fLawStop = *fStop_ - 0.5;
+
+    GROUP_CONFIG& _group = m_pConfig->group[currentgroup>0?currentgroup:0] ;
+    if(setup_GROUP_MODE_PA == _group.eGroupMode)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+        {
+            LAW_CONFIG* _law = GetLawConfig(currentgroup>0?currentgroup:0);
+            float _fStartAngle  =  _law->nAngleStartRefract / 10.0 ;
+            float _fStepAngle   =  _law->nAngleStepRefract / 10.0  ;
+            _scanner.fLawStop  =   (*fStop_ - _fStartAngle ) / _fStepAngle;
+        }
+    }
 }
 
 void ParameterProcess::GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_)

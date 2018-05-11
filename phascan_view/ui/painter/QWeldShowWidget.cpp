@@ -764,12 +764,7 @@ void QWeldShowWidget::UpdateDisplayRangle()
     case setup_WELD_TKY :
     {
         double _fMaxWidth = ((0.5 * m_pPart->weld.Diameter/sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)))+((m_pPart->weld.weland_height>m_pPart->weld.fizone_height)?m_pPart->weld.weland_height:m_pPart->weld.fizone_height))*3;
-        qDebug()<<"m_pPart->weld.Diameter is "<<m_pPart->weld.Diameter<<endl;
-        qDebug()<<"sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) is "<<sin(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle))<<endl;
-        qDebug()<<"m_pPart->weld.weland_height is "<<m_pPart->weld.weland_height<<endl;
-        qDebug()<<"m_pPart->weld.fizone_height is "<<m_pPart->weld.fizone_height<<endl;
-        //qDebug()<<"bigger is "<<(m_pPart->weld.weland_height>m_pPart->weld.fizone_height)?m_pPart->weld.weland_height:m_pPart->weld.fizone_height<<endl;
-        qDebug()<<"max is "<<_fMaxWidth<<endl;
+
         m_cRange.fPixelSize = _fMaxWidth/ _fWidth;
         double _fThickness = m_fThickness /   m_cRange.fPixelSize;
         if(m_pPart->weld.eSymmetry == 0 || m_pPart->weld.eSymmetry == 1 || m_pPart->weld.eSymmetry == 6)

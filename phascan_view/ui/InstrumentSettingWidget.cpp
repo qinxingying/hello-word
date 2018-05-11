@@ -6,6 +6,9 @@
 
 #include <QSlider>
 
+#include "ProcessDisplay.h"
+#include "MainWindow.h"
+
 InstrumentSettingWidget::InstrumentSettingWidget(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::InstrumentSettingWidget)
@@ -42,13 +45,16 @@ void InstrumentSettingWidget::UpdateScanRange()
 {
 	SCANNER& _scanner = m_pConfig->common.scanner ;
 	ui->ValueScanStart->setValue(_scanner.fScanStart);
-	ui->ValueScanEnd->setValue(_scanner.fScanStop);
+    if(_scanner.eEncoderType)
+        ui->ValueScanEnd->setValue(_scanner.fScanStop);
+    else
+        ui->ValueScanEnd->setValue(_scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart);
 	ui->ValueScanResolution->setValue(_scanner.fScanStep);
 	ui->ValueIndexStart->setValue(_scanner.fIndexStart);
 	ui->ValueIndexStop->setValue(_scanner.fIndexStop);
 	ui->ValueIndexResolution->setValue(_scanner.fIndexStep);
 }
-
+#include "qdebug.h"
 void InstrumentSettingWidget::InitCommonConfig()
 {
 	COMMON_CONFIG& config = m_pConfig->common ;
@@ -66,20 +72,61 @@ void InstrumentSettingWidget::InitCommonConfig()
 	SCANNER& _scanner = m_pConfig->common.scanner ;
 	if(_scanner.eEncoderType == setup_ENCODER_TYPE_TIMER) {
 		ui->LabelScanPosUnit->setText("sec");
+        ui->LabelScanStartUnit_2->setText("sec");
+        ui->LabelScanStopUnit->setText("sec");
+        ui->LabelIndexStartUnit->setText("   ");
+        ui->LabelIndexStopUnit->setText("   ");
 	} else {
 		ui->LabelScanPosUnit->setText("mm");
+        ui->LabelScanStartUnit_2->setText("mm");
+        ui->LabelScanStopUnit->setText("mm");
+        ui->LabelIndexStartUnit->setText("  ");
+        ui->LabelIndexStopUnit->setText("  ");
 	}
 	ui->LabelIndexPosUnit->setText("mm");
+    ParameterProcess* _process = ParameterProcess::Instance();
+    double fstart,fstop,fstart2,fstop2,fstep;
+    _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
 
-	ui->SpinBoxCurrentScanPos->setMaximum(_scanner.fScanStop);
-	ui->SpinBoxCurrentScanPos->setMinimum(_scanner.fScanStart);
-	ui->SpinBoxCurrentScanPos->setSingleStep(_scanner.fScanStep);
-	ui->SliderCurrentScanPos->setMinimum(0);
-	ui->SliderCurrentScanPos->setSingleStep(1);
-	ui->SliderCurrentScanPos->setMaximum( (_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5);
 
+    ui->SpinBoxCurrentScanPos->setMinimum(_scanner.fScanStart);
+
+    ui->SpinBoxCurrentScanend->setMinimum(_scanner.fScanStart2+1);
+    if(_scanner.eEncoderType)
+    {
+        ui->SpinBoxCurrentScanPos->setMaximum(_scanner.fScanStop);
+        ui->SpinBoxCurrentScanstart->setMaximum(_scanner.fScanStop - _scanner.fScanStep);
+        ui->SpinBoxCurrentScanend->setMaximum(_scanner.fScanStop);
+        ui->SpinBoxCurrentScanPos->setSingleStep(_scanner.fScanStep);
+        ui->SpinBoxCurrentScanstart->setSingleStep(_scanner.fScanStep);
+        ui->SpinBoxCurrentScanend->setSingleStep(_scanner.fScanStep);
+    }
+    else
+    {
+        ui->SpinBoxCurrentScanPos->setMaximum(_scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart);
+        ui->SpinBoxCurrentScanstart->setMaximum(_scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart - 1/_scanner.fPrf);
+        ui->SpinBoxCurrentScanend->setMaximum(_scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart);
+        ui->SpinBoxCurrentScanPos->setSingleStep(1/_scanner.fPrf);
+        ui->SpinBoxCurrentScanstart->setSingleStep(1/_scanner.fPrf);
+        ui->SpinBoxCurrentScanend->setSingleStep(1/_scanner.fPrf);
+        _scanner.fScanend = _scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart;
+    qDebug()<<"scanend is"<<_scanner.fScanend;
+    }
+    ui->SpinBoxCurrentScanstart->setMinimum(_scanner.fScanStart);
+
+//    ui->SpinBoxCurrentIndexend->setMinimum(fstart2 + 1);
+//    if(_scanner.fLawQty > 0)
+//    ui->SpinBoxCurrentIndexend->setMaximum(fstop2);
+//    ui->SpinBoxCurrentIndexend->setSingleStep(fstep);
+    ui->SliderCurrentScanPos->setMinimum(0);
+    ui->SliderCurrentScanPos->setSingleStep(_scanner.fScanStep);
+    ui->SliderCurrentScanPos->setMaximum( (_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep );
+    ui->SpinBoxCurrentIndexstart->setMaximum(fstop2 - fstep);
+    ui->SpinBoxCurrentIndexstart->setMinimum(fstart2);
+    ui->SpinBoxCurrentIndexstart->setSingleStep(fstep);
     UpdateScanPos();
     SetItemInvalide();
+
 }
 
 void InstrumentSettingWidget::SetItemInvalide()
@@ -97,9 +144,33 @@ void InstrumentSettingWidget::UpdateScanPos()
 	double _fScanPos = _scanner.fScanPos ;
 
 	ParameterProcess* _process = ParameterProcess::Instance();
-	int _nPos = _process->SAxisDistToIndex(_scanner.fScanPos);
+    int _nPos = _process->SAxisDistToIndex(_scanner.fScanPos);
 
-	ui->SpinBoxCurrentScanPos->setValue(_fScanPos) ;
+    ui->SpinBoxCurrentScanPos->setValue(_fScanPos) ;
+    ui->SpinBoxCurrentScanend->setValue(_scanner.fScanend) ;
+    double fstart,fstop,fstart2,fstop2,fstep;
+    _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
+    if(_scanner.eEncoderType == setup_ENCODER_TYPE_TIMER) {
+        ui->LabelScanPosUnit->setText("sec");
+        ui->LabelScanStartUnit_2->setText("sec");
+        ui->LabelScanStopUnit->setText("sec");
+        ui->LabelIndexStartUnit->setText("   ");
+        ui->LabelIndexStopUnit->setText("   ");
+    } else {
+        ui->LabelScanPosUnit->setText("mm");
+        ui->LabelScanStartUnit_2->setText("mm");
+        ui->LabelScanStopUnit->setText("mm");
+        ui->LabelIndexStartUnit->setText("  ");
+        ui->LabelIndexStopUnit->setText("  ");
+    }
+    ui->SpinBoxCurrentIndexend->setMinimum(fstart2 + fstep);
+    ui->SpinBoxCurrentIndexend->setMaximum(fstop2);
+    ui->SpinBoxCurrentIndexend->setSingleStep(fstep);
+    ui->SpinBoxCurrentIndexstart->setMaximum(fstop2 - fstep);
+    ui->SpinBoxCurrentIndexstart->setMinimum(fstart2);
+    ui->SpinBoxCurrentIndexstart->setSingleStep(fstep);
+    ui->SpinBoxCurrentIndexstart->setValue(fstart);
+    ui->SpinBoxCurrentIndexend->setValue(fstop) ;
 	ui->SliderCurrentScanPos->setValue(_nPos);
 }
 
@@ -232,8 +303,6 @@ void InstrumentSettingWidget::on_ValueEncoderOrg_editingFinished()
 	ResetEncoderSetting();
 }
 
-#include "ProcessDisplay.h"
-#include "MainWindow.h"
 void InstrumentSettingWidget::on_SpinBoxCurrentScanPos_valueChanged(double arg1)
 {
 	if(!ui->SpinBoxCurrentScanPos->hasFocus())  return ;
@@ -241,12 +310,16 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanPos_valueChanged(double arg1)
 
 	 ParameterProcess* _process = ParameterProcess::Instance();
 
-	 int _nPos1 = arg1  + 0.5;
-	 int _nPos2 = _process->SAxisDistToIndex(_scanner.fScanPos);
-	 if(_nPos1 == _nPos2)  return ;
+
 
 	 _scanner.fScanPos = arg1 ;
-     ui->SliderCurrentScanPos->setValue(_nPos1 - _scanner.fScanStart);
+     if(_scanner.eEncoderType) {
+        ui->SliderCurrentScanPos->setValue((arg1 - _scanner.fScanStart)/_scanner.fScanStep);
+     }
+     else
+     {
+         ui->SliderCurrentScanPos->setValue((arg1 - _scanner.fScanStart)*_scanner.fPrf);
+     }
 
      ProcessDisplay _proDisplay ;
      for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
@@ -259,7 +332,7 @@ void InstrumentSettingWidget::on_SliderCurrentScanPos_valueChanged(int value)
 {
 	if(!ui->SliderCurrentScanPos->hasFocus()) return ;
 	SCANNER& _scanner = m_pConfig->common.scanner	;
-
+    qDebug()<<"value is"<<value<<endl;
 	ParameterProcess* _process = ParameterProcess::Instance();
 	int _nPos = _process->SAxisDistToIndex(_scanner.fScanPos);
 	if(_nPos == value)  return ;
@@ -283,3 +356,146 @@ void InstrumentSettingWidget::retranslateUi()
     ui->retranslateUi(this);
 }
 
+
+void InstrumentSettingWidget::on_SpinBoxCurrentScanend_valueChanged(double arg1)
+{
+    if(!ui->SpinBoxCurrentScanend->hasFocus())  return ;
+    if(arg1 <= ui->SpinBoxCurrentScanstart->value())
+        return;
+    SCANNER& _scanner = m_pConfig->common.scanner ;
+    if(_scanner.eEncoderType)
+    {
+        ui->SpinBoxCurrentScanstart->setMaximum(arg1-_scanner.fScanStep);
+    }
+    else
+    {
+        ui->SpinBoxCurrentScanstart->setMaximum(arg1-1/_scanner.fPrf);
+    }
+
+    ParameterProcess* _process = ParameterProcess::Instance();
+
+    int _nPos1 = arg1  + 0.5;
+    int _nPos2 = _process->SAxisstoptoIndex(_scanner.fScanend);
+    if(_nPos1 == _nPos2)  return ;//?
+
+
+        _scanner.fScanend =  arg1 ;
+
+
+    ProcessDisplay _proDisplay ;
+
+    for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
+         _proDisplay.UpdateAllViewCursorOfGroup(i);
+    }
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void InstrumentSettingWidget::on_SpinBoxCurrentIndexend_valueChanged(double arg1)
+{
+    if(!ui->SpinBoxCurrentIndexend->hasFocus())  return ;
+
+    SCANNER& _scanner = m_pConfig->common.scanner ;
+
+
+    ParameterProcess* _process = ParameterProcess::Instance();
+    double fstart,fstop,fstart2,fstop2,fstep;
+    _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
+    ui->SpinBoxCurrentIndexstart->setMaximum(arg1 - fstep);
+
+
+    _process->ChangeCscanIndexstop(&arg1);
+
+    ProcessDisplay _proDisplay ;
+
+    for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
+        _proDisplay.UpdateAllViewOfGroup(i);
+         _proDisplay.UpdateAllViewCursorOfGroup(i);
+    }
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void InstrumentSettingWidget::on_SpinBoxCurrentScanstart_valueChanged(double arg1)
+{
+
+    if(!ui->SpinBoxCurrentScanstart->hasFocus())  return ;
+
+     SCANNER& _scanner = m_pConfig->common.scanner ;
+     if(arg1 >= ui->SpinBoxCurrentScanend->value())
+         return;
+     if(_scanner.eEncoderType)
+     {
+         ui->SpinBoxCurrentScanend->setMinimum(arg1+_scanner.fScanStep);
+     }
+     else
+     {
+         ui->SpinBoxCurrentScanend->setMinimum(arg1+1/_scanner.fPrf);
+     }
+     ParameterProcess* _process = ParameterProcess::Instance();
+
+
+         _scanner.fScanStart2 =  arg1 ;
+
+
+     ProcessDisplay _proDisplay ;
+     for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
+          _proDisplay.UpdateAllViewCursorOfGroup(i);
+     }
+     g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void InstrumentSettingWidget::on_SpinBoxCurrentIndexstart_valueChanged(double arg1)
+{
+    if(!ui->SpinBoxCurrentIndexstart->hasFocus())  return ;
+
+     SCANNER& _scanner = m_pConfig->common.scanner ;
+
+
+     ParameterProcess* _process = ParameterProcess::Instance();
+     double fstart,fstop,fstart2,fstop2,fstep;
+     _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
+     ui->SpinBoxCurrentIndexend->setMinimum(arg1 + fstep);
+
+
+     _process->ChangeCscanIndexstart(&arg1);
+
+     ProcessDisplay _proDisplay ;
+     for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
+         _proDisplay.UpdateAllViewOfGroup(i);
+          _proDisplay.UpdateAllViewCursorOfGroup(i);
+     }
+     g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void InstrumentSettingWidget::on_BtnReset_clicked()
+{
+    SCANNER& _scanner = m_pConfig->common.scanner ;
+
+
+    ParameterProcess* _process = ParameterProcess::Instance();
+    double fstart,fstop,fstart2,fstop2,fstep;
+    _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
+    ui->SpinBoxCurrentIndexstart->setValue(fstart2);
+    ui->SpinBoxCurrentIndexend->setValue(fstop2) ;
+    if(_scanner.eEncoderType)
+    {
+        ui->SpinBoxCurrentScanstart->setValue(_scanner.fScanStart);
+        ui->SpinBoxCurrentScanend->setValue(_scanner.fScanStop) ;
+        _scanner.fScanStart2 = _scanner.fScanStart;
+        _scanner.fScanend = _scanner.fScanStop;
+    }
+    else
+    {
+        ui->SpinBoxCurrentScanstart->setValue(_scanner.fScanStart);
+        ui->SpinBoxCurrentScanend->setValue(_scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart) ;
+        _scanner.fScanStart2 = _scanner.fScanStart;
+        _scanner.fScanend = _scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart;
+    }
+    _process->ChangeCscanIndexstart(&fstart2);
+    _process->ChangeCscanIndexstop(&fstop2);
+    ProcessDisplay _proDisplay ;
+    for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
+        _proDisplay.UpdateAllViewOfGroup(i);
+         _proDisplay.UpdateAllViewCursorOfGroup(i);
+    }
+    g_pMainWnd->RunDrawThreadOnce(true);
+}

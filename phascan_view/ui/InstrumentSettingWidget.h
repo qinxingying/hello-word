@@ -1,7 +1,7 @@
 #ifndef INSTRUMENTSETTINGWIDGET_H
 #define INSTRUMENTSETTINGWIDGET_H
 //##########################
-//    ¹«¹²²ÎÊýÉèÖÃ´°¿Ú £¬ ËùÓÐµÄ×é²ÎÊý¹²ÓÃ
+//    ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //##########################
 #include "FileStruct.h"
 
@@ -54,6 +54,16 @@ private slots:
     void on_ValueEncoderOrg_editingFinished();
     void on_SpinBoxCurrentScanPos_valueChanged(double arg1);
     void on_SliderCurrentScanPos_valueChanged(int value);
+
+    void on_SpinBoxCurrentScanend_valueChanged(double arg1);
+
+    void on_SpinBoxCurrentIndexend_valueChanged(double arg1);
+
+    void on_SpinBoxCurrentScanstart_valueChanged(double arg1);
+
+    void on_SpinBoxCurrentIndexstart_valueChanged(double arg1);
+
+    void on_BtnReset_clicked();
 
 private:
     Ui::InstrumentSettingWidget *ui;

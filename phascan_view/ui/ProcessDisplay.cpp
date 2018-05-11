@@ -1724,7 +1724,7 @@ void ProcessDisplay::UpdateDataViewFrameCH(DopplerDataView* pWidget_ , int nGrou
 	double _fScanStart , _fScanStop , _fSliderStart, _fSliderStop;
 	_process->GetCScanIndexAxisRange(nGroupId_ ,  &_fScanStart , &_fScanStop) ;
 	pWidget_->SetRulerRange(_fScanStart, _fScanStop , _fScanStart, _fScanStop , DopplerDataView::DATA_VIEW_RULER_LEFT);
-	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
+    pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
 
 	QString _strBottomUnit = _process->GetScanAxisUnit() ;
 	pWidget_->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;

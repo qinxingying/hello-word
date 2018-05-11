@@ -3,7 +3,7 @@
 #include <QImage>
 #include <gHeader.h>
 
-
+extern int lastgroup,currentgroup;
 DopplerDrawCScanH::DopplerDrawCScanH(QObject *parent) : DopplerDrawScan(parent)
 {
 	m_PosStart = 0  ;
@@ -128,19 +128,47 @@ void  DopplerDrawCScanH::Draw (QImage* pImage_)
 void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 {
 	U32 _aGateValue[256] ;
-	memset(_aGateValue, 0x00, sizeof(_aGateValue));
+    memset(_aGateValue, 0x00, sizeof(_aGateValue));
 	int _nHeight   = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
 
-	U8* _pImageBits = pImage_->bits() ;
+    //U8* _pImageBits = pImage_->bits() ;
 	U8* _pImageTmp;// , *_pColorTmp;
-	int _nWidthStep   = pImage_->bytesPerLine() ;
+    //int _nWidthStep   = pImage_->bytesPerLine() ;
+    SCANNER& _scanner = m_pConfig->common.scanner;
 
-	ParameterProcess* _process = ParameterProcess::Instance();
-	int _nLawQty	  = m_CScanInfo.nLawQty   ;
-	int _nLawSpaceQty = _nLawQty - 1 ;
-	int _nScanPos	 = _process->GetScanIndexPos()  ;
-    UpdateDisplayRange(2, _nWidth , _nScanPos) ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    int _nLawQty	  = m_CScanInfo.nLawQty   ;
+
+    int _nLawSpaceQty = _nLawQty - 1 ;
+    int lawstart    =_process->GetLawStart();
+    int lawstop     =_process->GetLawStop();
+
+
+    int _nScanPos	 = _process->GetScanIndexPos()  ;
+    int _nStart     = _process->GetScanIndexStart2();
+    int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    //UpdateDisplayRange(2, _nScanend>0?_nScanend:1 , _nScanPos) ;
+    emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+
+    if(0 == lawstop && _nLawQty > 0)
+    {
+        lawstop = _nLawQty;
+        _scanner.fLawStop = _nLawQty;
+        _scanner.fLawQty = _nLawQty;
+    }
+
+    if(currentgroup == -1)
+    {
+        lawstart = 0;
+        lawstop = _nLawQty;
+    }
+    QSize csize = QSize(_nScanend>0?_nScanend:1,(lawstop - lawstart)>0?(lawstop - lawstart):1);
+    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    unsigned char* _pData = TImage->bits() ;
+    memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
+    U8* _pImageBits = TImage->bits() ;
+    int _nWidthStep   = TImage->bytesPerLine() ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
@@ -150,26 +178,29 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetRealScanMax() + _nScanOff;
-
-	for(i = m_PosStart , j = 0 ; i <= m_PosStop && j < _nWidth; i++ , j++) {
+    for(i = _nStart , j = 0 ; i <= _nStart+_nScanend && j < (_nScanend); i++ , j++) {
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			GetPixValueInfo(i, eGate_, _aGateValue);
-			for(k = 0 ; k < _nHeight ; k++) {
-				_pImageTmp = _pImageBits + k * _nWidthStep + j * 3 ;
-				_nTmpValue = (0xFF & _aGateValue[k * _nLawSpaceQty / _nHeight])  * _fScale ;
+            for(k = lawstart ; k < lawstop ; k++) {
+                _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
+                _nTmpValue = (0xFF & _aGateValue[k ])  * _fScale ;
 				if(_nTmpValue > 255)	_nTmpValue = 255 ;
 				memcpy(_pImageTmp, &m_pColor[_nTmpValue], 3);
 			}
 		} else {
 			_pImageTmp = _pImageBits + j * 3 ;
 			if( *_pImageTmp || *(_pImageTmp + 1) || *(_pImageTmp+2)) {
-				for(k = 0 ; k < _nHeight ; k++) {
-					_pImageTmp = _pImageBits + k * _nWidthStep + j * 3 ;
+                for(k = lawstart ; k < lawstop ; k++) {
+                    _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
 					memset(_pImageTmp, 0, 3);
 				}
 			}
 		}
 	}
+    _pData = pImage_->bits() ;
+        memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
+    *pImage_ = TImage->scaled(_nWidth,_nHeight,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    delete TImage;
 }
 
 void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_TYPE eGate2_)
@@ -181,23 +212,49 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	int _nHeight	  = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
 
-	U8* _pImageBits = pImage_->bits() ;
+    //U8* _pImageBits = pImage_->bits() ;
 	U8* _pImageTmp , *_pColorTmp;
-	int _nWidthStep   = pImage_->bytesPerLine() ;
+    //int _nWidthStep   = pImage_->bytesPerLine() ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
 	int _nLawSpaceQty = _nLawQty - 1 ;
+    SCANNER& _scanner = m_pConfig->common.scanner;
 
 	ParameterProcess* _process = ParameterProcess::Instance();
-	int _nScanPos	 = _process->GetScanIndexPos()  ;
-    UpdateDisplayRange(2, _nWidth , _nScanPos);
+    int lawstart    =_process->GetLawStart();
+    int lawstop     =_process->GetLawStop();
+
+    int _nScanPos	 = _process->GetScanIndexPos()  ;
+    int _nStart     = _process->GetScanIndexStart2();
+    int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    //int _nScanPos	 = _process->GetScanIndexPos()  ;
+    //UpdateDisplayRange(2, _nScanend>0?_nScanend:1 , _nScanPos);
+    emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+
+    if(0 == lawstop && _nLawQty > 0)
+    {
+        lawstop = _nLawQty;
+        _scanner.fLawStop = _nLawQty;
+        _scanner.fLawQty = _nLawQty;
+    }
+    if(currentgroup == -1)
+    {
+        lawstart = 0;
+        lawstop = _nLawQty;
+    }
+    QSize csize = QSize(_nScanend>0?_nScanend:1,(lawstop - lawstart)>0?(lawstop - lawstart):1);
+    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    unsigned char* _pData = TImage->bits() ;
+    memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
+    U8* _pImageBits = TImage->bits() ;
+    int _nWidthStep   = TImage->bytesPerLine() ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetScanMax();
 
-	for(i = m_PosStart , j = 0 ; i <= m_PosStop && j < _nWidth; i++ , j++) {
+    for(i = _nStart , j = 0 ; i <= _nStart+_nScanend && j < (_nScanend); i++ , j++) {
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			if(eGate2_)	{
 				GetPixValueInfo(i, eGate1_, _aGateValue1);
@@ -208,22 +265,26 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 				GetPixValuePos(_aGateValue1);
 			}
 
-			for(k = 0 ; k < _nHeight ; k++) {
-				_pImageTmp	   = _pImageBits + k * _nWidthStep + j * 3 ;
-				_pColorTmp	   = m_pColor[_aGateValue1[k * _nLawSpaceQty / _nHeight]] ;
+            for(k = lawstart ; k < lawstop ; k++) {
+                _pImageTmp	   = _pImageBits + (k -lawstart) * _nWidthStep + j * 3 ;
+                _pColorTmp	   = m_pColor[_aGateValue1[k ]] ;
 				memcpy(_pImageTmp, _pColorTmp, 3);
 			}
 		} else {
 			_pImageTmp = _pImageBits + j * 3 ;
 			if( *_pImageTmp || *(_pImageTmp + 1) || *(_pImageTmp+2)) {
-				for(k = 0 ; k < _nHeight ; k++)
+                for(k = lawstart ; k < lawstop ; k++)
 				{
-					_pImageTmp = _pImageBits + k * _nWidthStep + j * 3 ;
+                    _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
 					memset(_pImageTmp, 0x00, 3);
 				}
 			}
 		}
 	}
+    _pData = pImage_->bits() ;
+        memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
+    *pImage_ = TImage->scaled(_nWidth,_nHeight,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    delete TImage;
 }
 
 void DopplerDrawCScanH::GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pBuff_)
@@ -340,16 +401,41 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 	int _nHeight	  = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
 
-	U8* _pImageBits = pImage_->bits() ;
+    //U8* _pImageBits = pImage_->bits() ;
 	U8* _pImageTmp1 , *_pImageTmp2;
-	int _nWidthStep   = pImage_->bytesPerLine() ;
+    //int _nWidthStep   = pImage_->bytesPerLine() ;
 
 	ParameterProcess* _process = ParameterProcess::Instance();
-	int _nScanPos	 = _process->GetScanIndexPos()  ;
-    UpdateDisplayRange(3, _nHeight , _nScanPos) ;
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    int lawstart    =_process->GetLawStart();
+    int lawstop     =_process->GetLawStop();
+
+    int _nScanPos	 = _process->GetScanIndexPos()  ;
+    int _nStart     = _process->GetScanIndexStart2();
+    int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    //UpdateDisplayRange(3, _nScanend>0?_nScanend:1 , _nScanPos) ;
+    emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
 	int _nLawSpaceQty = _nLawQty - 1 ;
+
+    if(0 == lawstop && _nLawQty > 0)
+    {
+        lawstop = _nLawQty;
+        _scanner.fLawStop = _nLawQty;
+        _scanner.fLawQty = _nLawQty;
+    }
+    if(currentgroup == -1)
+    {
+        lawstart = 0;
+        lawstop = _nLawQty;
+    }
+    QSize csize = QSize((lawstop - lawstart)>0?(lawstop - lawstart):1,_nScanend>0?_nScanend:1);
+    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    unsigned char* _pData = TImage->bits() ;
+    memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
+    U8* _pImageBits = TImage->bits() ;
+    int _nWidthStep   = TImage->bytesPerLine() ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
@@ -360,14 +446,14 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetRealScanMax() + _nScanOff;
 
-	for(i = m_PosStart , j = _nHeight - 1 ; i <= m_PosStop && j >= 0; i++ , j--) {
+    for(i = _nStart , j = _nScanend - 1 ; i <= _nStart + _nScanend && j >= 0; i++ , j--) {
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			GetPixValueInfo(i, eGate_, _aGateValue);
 			_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
 
-			for(k = 0 ; k < _nWidth ; k++) {
-				_pImageTmp2 = _pImageTmp1 + k * 3 ;
-				_nTmpValue = (0xFF & _aGateValue[k * _nLawSpaceQty / _nWidth])  * _fScale ;
+            for(k = lawstart ; k < lawstop ; k++) {
+                _pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
+                _nTmpValue = (0xFF & _aGateValue[k ])  * _fScale ;
 				if(_nTmpValue > 255) _nTmpValue = 255 ;
                 memcpy(_pImageTmp2, &m_pColor[_nTmpValue], 3);
 			}
@@ -378,6 +464,10 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 			}
 		}
 	}
+    _pData = pImage_->bits() ;
+        memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
+    *pImage_ = TImage->scaled(_nWidth,_nHeight,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    delete TImage;
 }
 
 void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_TYPE eGate2_)
@@ -389,16 +479,41 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	int _nHeight	  = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
 
-	U8* _pImageBits = pImage_->bits() ;
+    //U8* _pImageBits = pImage_->bits() ;
 	U8* _pImageTmp1 , *_pImageTmp2 , *_pColorTmp;
-	int _nWidthStep   = pImage_->bytesPerLine() ;
+    //int _nWidthStep   = pImage_->bytesPerLine() ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
 	int _nLawSpaceQty = _nLawQty - 1 ;
 
 	ParameterProcess* _process = ParameterProcess::Instance();
-	int _nScanPos	 = _process->GetScanIndexPos()  ;
-    UpdateDisplayRange(3, _nHeight , _nScanPos) ;
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    int lawstart    =_process->GetLawStart();
+    int lawstop     =_process->GetLawStop();
+
+    int _nScanPos	 = _process->GetScanIndexPos()  ;
+    int _nStart     = _process->GetScanIndexStart2();
+    int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    //UpdateDisplayRange(3, _nScanend>0?_nScanend:1 , _nScanPos) ;
+    emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+
+    if(0 == lawstop && _nLawQty > 0)
+    {
+        lawstop = _nLawQty;
+        _scanner.fLawStop = _nLawQty;
+        _scanner.fLawQty = _nLawQty;
+    }
+    if(currentgroup == -1)
+    {
+        lawstart = 0;
+        lawstop = _nLawQty;
+    }
+    QSize csize = QSize((lawstop - lawstart)>0?(lawstop - lawstart):1,_nScanend>0?_nScanend:1);
+    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    unsigned char* _pData = TImage->bits() ;
+    memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
+    U8* _pImageBits = TImage->bits() ;
+    int _nWidthStep   = TImage->bytesPerLine() ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
@@ -406,7 +521,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetScanMax();
 
-	for(i = m_PosStart , j = _nHeight - 1 ; i <= m_PosStop && j >= 0; i++ , j--) {
+    for(i = _nStart , j = _nScanend - 1 ; i <= _nStart + _nScanend && j >= 0; i++ , j--) {
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			if(eGate2_) {
 				GetPixValueInfo(i, eGate1_, _aGateValue1);
@@ -419,9 +534,9 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 
 			_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
 
-			for(k = 0 ; k < _nWidth ; k++) {
-				_pImageTmp2 = _pImageTmp1 + k * 3 ;
-				_pColorTmp = m_pColor[_aGateValue1[k * _nLawSpaceQty / _nWidth]] ;
+            for(k = lawstart ; k < lawstop ; k++) {
+                _pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
+                _pColorTmp = m_pColor[_aGateValue1[k ]] ;
                 memcpy(_pImageTmp2, _pColorTmp, 3);
 			}
 		} else {
@@ -431,4 +546,8 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 			}
 		}
 	}
+    _pData = pImage_->bits() ;
+        memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
+    *pImage_ = TImage->scaled(_nWidth,_nHeight,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+    delete TImage;
 }

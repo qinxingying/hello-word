@@ -117,7 +117,9 @@ public:
 
     int  GetGroupDataOffset(int nGroupId_) const ;
     int  GetScanIndexPos() const ;
+    int  GetScanIndexStart2() const;
     int SAxisDistToIndex(float fDist_) const;
+    int SAxisstoptoIndex(float fStop) const;
 	float SAxisIndexToDist(int index_) const;
     int  GetGroupLawDataOffset(int nGroupId_ , int nLawId_) const ;
 	int GetRealScanIndex(int nGroupId_, int nScanPos_);
@@ -135,6 +137,13 @@ public:
 
     unsigned int   GetLawGateDWORD(int nGroupId_ , int nLawId_ , setup_GATE_NAME eGate_);
 	U8* GetScanMarker(int nGroupId_) const;
+    float GetScanStart() const;
+    float GetScanStop() const;
+    float GetScanend() const;
+    int GetLawStart() const;
+    int GetLawStop() const;
+    void ChangeLawStop(int lawstop) const;
+    float GetScanPos() const;
 	int GetScanOff(int nGroupId_) const;
 	int GetScanMax() const;
 	int GetRealScanMax() const;
@@ -156,6 +165,9 @@ public:
     void  GetBScanIndexAxisRange(int nGroupId_ ,  int nDist_ , double* fStart_ , double* fStop_);
 	void  GetCScanScanAxisRange(int nGroupId_ , int nDist_ , double* fStart_ , double* fStop_, double* fSliderStart_ , double* fSliderStop_);
     void  GetCScanIndexAxisRange(int nGroupId_ , double* fStart_ , double* fStop_);
+    void ChangeCscanIndexRange( double* fStart_ , double* fStop_,double* fStart2_,double* fStop2_,double* fstep);
+    void ChangeCscanIndexstart( double* fStart_ );
+    void ChangeCscanIndexstop( double* fStop_ );
     void  GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);
     int  GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_);
     void  GetSScanHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);

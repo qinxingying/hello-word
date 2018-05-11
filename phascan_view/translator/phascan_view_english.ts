@@ -384,23 +384,23 @@
 <context>
     <name>DopplerConfigure</name>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1058"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1093"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1087"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1122"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1123"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1152"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1310"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1339"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1310"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1339"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -491,7 +491,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="8485"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8977"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9028"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="869"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="875"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1097,7 +1097,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5007"/>
         <location filename="../ui/DopplerGroupTab.ui" line="6585"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8478"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="942"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="948"/>
         <source>Width:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1209,8 +1209,8 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5809"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5822"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5835"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="838"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="839"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="844"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="845"/>
         <source>Ref Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1233,7 +1233,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="6215"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7581"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7644"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="854"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="860"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1291,8 +1291,8 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="6525"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8210"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="941"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="946"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="947"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="952"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1712,7 +1712,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="8766"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="940"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="946"/>
         <source>Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1824,38 +1824,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="493"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1997"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="496"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2039"/>
         <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="835"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="841"/>
         <source>Mat. Atten:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="836"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="842"/>
         <source>Delay:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="868"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="874"/>
         <source>dB/mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="880"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="886"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="944"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="950"/>
         <source>Inner Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="945"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="951"/>
         <source>Outer Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1881,174 +1881,203 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="891"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="900"/>
         <source>PA Voltage:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="949"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="958"/>
         <source>UT Voltage:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="82"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="73"/>
         <source>Scan Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="90"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="81"/>
         <source>One Line Scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="95"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="86"/>
         <source>Two Line Scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="121"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="612"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="112"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="615"/>
         <source>Encoder Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="129"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="120"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="134"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="620"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="125"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="623"/>
         <source>Encoder X</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="139"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="625"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="130"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="628"/>
         <source>Encoder Y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="165"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="156"/>
         <source>PRF:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="214"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="211"/>
         <source>Area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="234"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="231"/>
         <source>Scan Axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="253"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="250"/>
         <source>Index Axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="278"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="275"/>
         <source>Start:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="359"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="468"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="577"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="850"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1028"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1111"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="356"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="465"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="574"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="853"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1094"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1169"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1235"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1298"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1361"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1424"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="387"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="384"/>
         <source>End :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="496"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="651"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="493"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="654"/>
         <source>Resolution:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="592"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="595"/>
         <source>Encoder Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="695"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="698"/>
         <source>Steps/mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="723"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="726"/>
         <source>Polarity:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="731"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="734"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="736"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="739"/>
         <source>Inverse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="762"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="765"/>
         <source>Direction:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="770"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="773"/>
         <source>Quad</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="775"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="778"/>
         <source>Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="780"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="783"/>
         <source>Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="806"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="809"/>
         <source>Origin:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="899"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="913"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="908"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="922"/>
         <source>  50V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="904"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="918"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="913"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="927"/>
         <source>100V </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="923"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="932"/>
         <source>200V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="987"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1053"/>
         <source>Current Scan Pos:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1076"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1134"/>
         <source>Current Index Pos:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1209"/>
+        <source>Scan Start:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1272"/>
+        <source>Scan Stop:  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1335"/>
+        <source>Index Start:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1398"/>
+        <source>Index Stop:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1441"/>
+        <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2288,96 +2317,96 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="112"/>
+        <location filename="../ui/mainwindow.cpp" line="116"/>
         <source>Doppler V1.1.6-beta1 : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="261"/>
+        <location filename="../ui/mainwindow.cpp" line="265"/>
         <source>Com Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="301"/>
+        <location filename="../ui/mainwindow.cpp" line="305"/>
         <source>Delete Current Display Table ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="302"/>
-        <location filename="../ui/mainwindow.cpp" line="346"/>
-        <location filename="../ui/mainwindow.cpp" line="664"/>
+        <location filename="../ui/mainwindow.cpp" line="306"/>
+        <location filename="../ui/mainwindow.cpp" line="350"/>
+        <location filename="../ui/mainwindow.cpp" line="684"/>
         <source>YES</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="303"/>
-        <location filename="../ui/mainwindow.cpp" line="347"/>
-        <location filename="../ui/mainwindow.cpp" line="665"/>
+        <location filename="../ui/mainwindow.cpp" line="307"/>
+        <location filename="../ui/mainwindow.cpp" line="351"/>
+        <location filename="../ui/mainwindow.cpp" line="685"/>
         <source>NO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="345"/>
+        <location filename="../ui/mainwindow.cpp" line="349"/>
         <source>Add One View ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="394"/>
-        <location filename="../ui/mainwindow.cpp" line="541"/>
+        <location filename="../ui/mainwindow.cpp" line="398"/>
+        <location filename="../ui/mainwindow.cpp" line="561"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="887"/>
+        <location filename="../ui/mainwindow.cpp" line="908"/>
         <source>The defect was saved failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="889"/>
+        <location filename="../ui/mainwindow.cpp" line="910"/>
         <source>The defect was saved successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="663"/>
+        <location filename="../ui/mainwindow.cpp" line="683"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="674"/>
+        <location filename="../ui/mainwindow.cpp" line="694"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="754"/>
+        <location filename="../ui/mainwindow.cpp" line="775"/>
         <source>save in </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="802"/>
+        <location filename="../ui/mainwindow.cpp" line="823"/>
         <source>increase success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="813"/>
+        <location filename="../ui/mainwindow.cpp" line="834"/>
         <source>delete success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="885"/>
+        <location filename="../ui/mainwindow.cpp" line="906"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="885"/>
+        <location filename="../ui/mainwindow.cpp" line="906"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="754"/>
-        <location filename="../ui/mainwindow.cpp" line="802"/>
-        <location filename="../ui/mainwindow.cpp" line="813"/>
-        <location filename="../ui/mainwindow.cpp" line="887"/>
-        <location filename="../ui/mainwindow.cpp" line="889"/>
+        <location filename="../ui/mainwindow.cpp" line="775"/>
+        <location filename="../ui/mainwindow.cpp" line="823"/>
+        <location filename="../ui/mainwindow.cpp" line="834"/>
+        <location filename="../ui/mainwindow.cpp" line="908"/>
+        <location filename="../ui/mainwindow.cpp" line="910"/>
         <source>prompt</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2385,17 +2414,17 @@
 <context>
     <name>ParameterProcess</name>
     <message>
-        <location filename="../process/ParameterProcess.cpp" line="34"/>
+        <location filename="../process/ParameterProcess.cpp" line="37"/>
         <source> Message : Max Group Quantity is %1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../process/ParameterProcess.cpp" line="36"/>
+        <location filename="../process/ParameterProcess.cpp" line="39"/>
         <source> Message : Template Group Configure does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../process/ParameterProcess.cpp" line="68"/>
+        <location filename="../process/ParameterProcess.cpp" line="71"/>
         <source>Group Configure does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2966,22 +2995,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1043"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1046"/>
         <source>Technician Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1044"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1047"/>
         <source>Technician Signature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1045"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1048"/>
         <source>Contractor:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1046"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1049"/>
         <source>Date:</source>
         <translation type="unfinished"></translation>
     </message>

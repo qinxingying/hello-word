@@ -1,10 +1,10 @@
 #include "DataRefreshThread.h"
 #include "DopplerDataView.h"
 #include "gHeader.h"
-
+#include <process/ParameterProcess.h>
 #include <QtGlobal>
 #include <QList>
-
+extern int lastgroup,currentgroup;
 DataRefreshThread* DataRefreshThread::m_pThread =  new DataRefreshThread ;
 
 DataRefreshThread* DataRefreshThread::Instance()
@@ -39,6 +39,16 @@ void DataRefreshThread::run()
     if(m_nRunOnce)
     {
         msleep(0) ;
+        if(currentgroup == -1)
+        {
+
+        }
+        else if(lastgroup != currentgroup)
+        {
+            ParameterProcess* _process = ParameterProcess::Instance();
+            lastgroup = currentgroup;
+            _process->ChangeLawStop(_process->GetGroupLawQty(currentgroup));
+        }
         UpdateAllWidgetDrawing() ;
         m_nRunOnce -- ;
         return ;

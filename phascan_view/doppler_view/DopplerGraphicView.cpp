@@ -51,15 +51,19 @@ public:
 		return m_pImage;
 	}
 
+
+
 	void ResetBaseImage(QSizeF size_)
 	{
 		//m_hMutex.lock();
-		m_cSize = QSize((int)size_.width() , (int)size_.height())  ;
+        m_cSize = QSize((int)size_.width() , (int)size_.height())  ;
 		if(m_pImage) delete m_pImage ;
 		m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE) ;
 		ClearImage() ;
 		//m_hMutex.unlock();
 	}
+
+
 
 	void ClearImage()
 	{
@@ -75,10 +79,11 @@ public:
 
 	void paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget * = 0)
 	{
-		if(m_pImage)
+        if(m_pImage)
 		{
 			m_hMutex.lock();
-			painter->drawImage(QRect(0 , 0 , m_cSize.width() , m_cSize.height()), *m_pImage);
+            painter->setRenderHint(QPainter::Antialiasing, true);
+            painter->drawImage(QRect(0 , 0 , m_cSize.width() , m_cSize.height()), *m_pImage);
 			m_hMutex.unlock();
 		}
 	}
@@ -786,8 +791,9 @@ void DopplerGraphicView::UpdateDrawing()
 {
 	if(m_pDrawScan)
 	{
+
 		m_pBackGround->m_hMutex.lock();
-		m_pDrawScan->Draw (m_pBackGround->GetBaseImage());
+            m_pDrawScan->Draw (m_pBackGround->GetBaseImage());
 		m_pBackGround->m_hMutex.unlock();
 	}
 	emit signalUpdateDrawing();

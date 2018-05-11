@@ -579,6 +579,11 @@ struct SCANNER
 	float fIndexStop   ;
 	float fScanStep	;
 	float fIndexStep   ;
+    float fScanStart2;
+    float fScanend;
+    int fLawStart ;
+    int fLawStop;
+    int fLawQty;
 	// encoder
 	ENCODER_CONFIG  encoder[setup_ENCODER_TYPE_MAX]  ;
 } ;
