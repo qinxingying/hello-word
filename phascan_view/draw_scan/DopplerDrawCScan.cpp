@@ -183,7 +183,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 			GetPixValueInfo(i, eGate_, _aGateValue);
             for(k = lawstart ; k < lawstop ; k++) {
                 _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
-                _nTmpValue = (0xFF & _aGateValue[k ])  * _fScale ;
+                _nTmpValue = (0x1FF & _aGateValue[k ])  * _fScale ;
 				if(_nTmpValue > 255)	_nTmpValue = 255 ;
 				memcpy(_pImageTmp, &m_pColor[_nTmpValue], 3);
 			}
@@ -308,7 +308,7 @@ void DopplerDrawCScanH::GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pB
 	{
 		_process->GetGatePeakInfos(m_cInfo.nGroupId, nScanPos_, i, _info);
 		pBuff_[i] = (_info[_eGate].fD * 1000);
-		pBuff_[i] = (pBuff_[i] << 8) | ((U8)(_info[_eGate].iY));
+        pBuff_[i] = (pBuff_[i] << 9) | (_info[_eGate].iY);
 	}
 }
 
@@ -325,8 +325,9 @@ void DopplerDrawCScanH::GetPixValuePos(U32* pBuff_)
 	U32 _nDepth = 0;
 	for(U32 i = 0; i < _nBeamQty; i++)
 	{
+        //qDebug()<<"pbuff is"<<pBuff_[i]<<endl;
 		_nData  = pBuff_[i];
-		_nPeak  = _nData & 0xFF;
+        _nPeak  = _nData & 0x1FF;
 		if(_nPeak < _nGateHeight)
 		{
 			//pBuff_[i] = 255 ;
@@ -334,7 +335,7 @@ void DopplerDrawCScanH::GetPixValuePos(U32* pBuff_)
 		}
 		else
 		{
-			_nDepth = _nData >> 8;
+            _nDepth = _nData >> 9;
 			if(_nDepth < _nMin)
 				pBuff_[i] = 0 ;
 			else if(_nDepth > _nMax)
@@ -364,11 +365,11 @@ void DopplerDrawCScanH::GetPixValueDistance(U32* pBuff1_ , U32* pBuff2_)
 	for(U32 i = 0; i < _nBeamQty; i++)
 	{
 		_nData1  = pBuff1_[i];	  _nData2  = pBuff2_[i];
-		_nPeak1  = _nData1 & 0xFF;  _nPeak2  = _nData2 & 0xFF;
+        _nPeak1  = _nData1 & 0x1FF;  _nPeak2  = _nData2 & 0x1FF;
 		if(_nPeak1 >= _nGateHeight1 && _nPeak2 >= _nGateHeight2)
 		{
-			_nDepth1 = _nData1 >> 8;
-			_nDepth2 = _nData2 >> 8;
+            _nDepth1 = _nData1 >> 9;
+            _nDepth2 = _nData2 >> 9;
 
 			_nDepth1 = abs((int)(_nDepth2 - _nDepth1));
 
@@ -453,7 +454,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 
             for(k = lawstart ; k < lawstop ; k++) {
                 _pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
-                _nTmpValue = (0xFF & _aGateValue[k ])  * _fScale ;
+                _nTmpValue = (0x1FF & _aGateValue[k ])  * _fScale ;
 				if(_nTmpValue > 255) _nTmpValue = 255 ;
                 memcpy(_pImageTmp2, &m_pColor[_nTmpValue], 3);
 			}

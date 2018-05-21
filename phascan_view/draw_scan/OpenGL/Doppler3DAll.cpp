@@ -944,7 +944,9 @@ void Doppler3DAll::drawDefectAzimuthal(GLdouble y0_)
             {
                 for(i = 0; i < _nPointQty; i++)
                 {
-                    _iData = _pData1[i];
+                    _iData = _pData1[i] * 2 | 1;
+                    if(_iData > 255)
+                        _iData = 255;
                     //if(_iData > PEAK_CLIP)
                     {
                         _fS = _fSamStart + i * _fSamRange / _nPointQty;
@@ -1042,7 +1044,9 @@ void Doppler3DAll::drawDefectLiner(GLdouble y0_)
             {
                 for(i = 0; i < _nPointQty; i++)
                 {
-                    _iData = _pData1[i];
+                    _iData = _pData1[i] * 2 | 1;
+                    if(_iData > 255)
+                        _iData = 255;
                     //if(_iData > PEAK_CLIP)
                     {
                         _fS = _fSamStart + i * _fSamRange / _nPointQty;

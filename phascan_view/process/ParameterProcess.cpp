@@ -7,6 +7,9 @@
 extern int currentgroup;
 extern int lastgroup;
 
+float FreScale = 200/255.0;
+float NFreScale = 200/511.0;
+
 ParameterProcess* g_pParameterProcess = NULL ;
 
 ParameterProcess* ParameterProcess::Instance()
@@ -568,7 +571,7 @@ float  ParameterProcess::GetRefGainScale(int nGroupId_)
 
 WDATA ParameterProcess::GetRefGainScaleData(WDATA wData_, float fScale_, bool bRectify_)
 {
-	int _iData = wData_;
+    int _iData = wData_ * 2 | 1;
 
 	if(bRectify_)
 	{
@@ -835,6 +838,19 @@ void ParameterProcess::GroupDataMove(int nGroupId_, WDATA* pSource_, WDATA* pDes
 	}
 }
 
+float CalPeakAmp(float nPeak_, int nRectify_)
+{
+    float amp;
+    if(!nRectify_)
+    {
+       return amp = nPeak_ * FreScale;
+    }
+    else
+    {
+        return amp = nPeak_ * NFreScale;
+    }
+}
+
 float ParameterProcess::GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLawId_, float fUDist_)
 {
 	WDATA* _pShadow = GetShadowDataPointer();
@@ -858,10 +874,22 @@ float ParameterProcess::GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLa
 	}
 	F32	_fScale    = GetRefGainScale(nGroupId_) ;
     bool _bRectify = (GetRectifierMode(nGroupId_) == setup_RECTIFIER_RF );
-	F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
+    //F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
+    F32 _iData = _pData[_index] * 2 + 1;
+
+    if(_bRectify)
+    {
+    _iData  = _iData - WAVE_HALF ;
+    _iData = _iData * _fScale + WAVE_HALF;
+    if(_iData < 0 )		_iData = 0   ;
+    }
+    else
+    {
+    _iData = _iData * _fScale ;
+    }
     int bRectify_  = GetRectifierMode(nGroupId_);
 
-    return CalPeakAmp(_fData, bRectify_);
+    return CalPeakAmp(_iData, bRectify_);
 }
 
 int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeight_, bool bRectify_, int nPointQty_)
@@ -899,7 +927,7 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 
 		if(!mode) {
 			for(int i = _iS; i < _iE; i++) {
-				_iTmp = pData_[i];
+                _iTmp = pData_[i] * 2 | 1;
 				if(_iTmp <= _iH) {
 					_iFro = _iTmp;
 					_iPos = i;
@@ -908,7 +936,7 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 			}
 		} else {
 			for(int i = _iS; i < _iE; i++) {
-				_iTmp = pData_[i];
+                _iTmp = pData_[i] * 2 | 1;
 				if(_iTmp >= _iH) {
 					_iFro = _iTmp;
 					_iPos = i;
@@ -918,7 +946,7 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 		}
 	} else {
 		for(int i = _iS; i < _iE; i++) {
-			_iTmp = pData_[i];
+            _iTmp = pData_[i] * 2 | 1;
 			if(_iTmp >= _iH) {
 				_iFro = _iTmp;
 				_iPos = i;
@@ -963,7 +991,7 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
 		int _iMax = 0;
 		int _iData = 0;
 		for(int i = _iS; i < _iE; i++) {
-			_iTmp = pData_[i];
+            _iTmp = pData_[i] * 2 | 1;
 			_iData = abs(_iTmp - WAVE_HALF);
 
 			if(_iData > _iMax) {
@@ -974,7 +1002,7 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
 		}
 	} else {
 		for(int i = _iS; i < _iE; i++) {
-			_iTmp = pData_[i];
+            _iTmp = pData_[i] * 2 | 1;
 
 			if(_iTmp > _iAmp) {
 				_iAmp = _iTmp;
@@ -1045,6 +1073,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_I].fDEdge = GetDepth(pInfo_[setup_GATE_I].fHEdge, _fThick);
 
 	_fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_I].iX);
+
 	pInfo_[setup_GATE_I].fS     = _fDist;
 	pInfo_[setup_GATE_I].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_I].fL     = _fDist * _fSin;
@@ -1073,7 +1102,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 
     pInfo_[setup_GATE_A].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
     pInfo_[setup_GATE_A].fGw   = /*_fWidth / _fScale;//*/_pGate->fWidth;
-	pInfo_[setup_GATE_A].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
+    pInfo_[setup_GATE_A].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
 
     _fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_A].iXEdge);
 	pInfo_[setup_GATE_A].fSEdge = _fEdge;
@@ -1081,7 +1110,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].fLEdge = _fEdge * _fSin;
 	pInfo_[setup_GATE_A].fDEdge = GetDepth(pInfo_[setup_GATE_A].fHEdge, _fThick);
 
-	_fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_A].iX);
+    _fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_A].iX);
 	pInfo_[setup_GATE_A].fS     = _fDist;
 	pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
