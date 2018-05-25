@@ -139,13 +139,8 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 
     ParameterProcess* _process = ParameterProcess::Instance();
     int _nLawQty	  = m_CScanInfo.nLawQty   ;
-
-    int _nLawSpaceQty = _nLawQty - 1 ;
     int lawstart    =_process->GetLawStart();
     int lawstop     =_process->GetLawStop();
-
-
-    int _nScanPos	 = _process->GetScanIndexPos()  ;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     //UpdateDisplayRange(2, _nScanend>0?_nScanend:1 , _nScanPos) ;
@@ -217,14 +212,11 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     //int _nWidthStep   = pImage_->bytesPerLine() ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
-	int _nLawSpaceQty = _nLawQty - 1 ;
     SCANNER& _scanner = m_pConfig->common.scanner;
 
 	ParameterProcess* _process = ParameterProcess::Instance();
     int lawstart    =_process->GetLawStart();
     int lawstop     =_process->GetLawStop();
-
-    int _nScanPos	 = _process->GetScanIndexPos()  ;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     //int _nScanPos	 = _process->GetScanIndexPos()  ;
@@ -409,16 +401,12 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     SCANNER& _scanner = m_pConfig->common.scanner;
     int lawstart    =_process->GetLawStart();
     int lawstop     =_process->GetLawStop();
-
-    int _nScanPos	 = _process->GetScanIndexPos()  ;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     //UpdateDisplayRange(3, _nScanend>0?_nScanend:1 , _nScanPos) ;
     emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
-	int _nLawSpaceQty = _nLawQty - 1 ;
-
     if(0 == lawstop && _nLawQty > 0)
     {
         lawstop = _nLawQty;
@@ -484,14 +472,10 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     //int _nWidthStep   = pImage_->bytesPerLine() ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
-	int _nLawSpaceQty = _nLawQty - 1 ;
-
 	ParameterProcess* _process = ParameterProcess::Instance();
     SCANNER& _scanner = m_pConfig->common.scanner;
     int lawstart    =_process->GetLawStart();
     int lawstop     =_process->GetLawStop();
-
-    int _nScanPos	 = _process->GetScanIndexPos()  ;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     //UpdateDisplayRange(3, _nScanend>0?_nScanend:1 , _nScanPos) ;

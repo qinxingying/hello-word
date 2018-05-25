@@ -218,7 +218,6 @@ void QWeldShowWidget::DrawWeldDV(QPainter& painter)
 	_pos[2].setY(m_pPart->weld.fizone_height + m_pPart->weld.weland_height);
 	_pos[3].setX(m_pPart->weld.weland_offset + tan(DEGREE_TO_ARCH(m_pPart->weld.fizone_angle)) * m_pPart->weld.fizone_height);
 	_pos[3].setY(m_pPart->weld.fizone_height * 2 + m_pPart->weld.weland_height);
-    qDebug()<<"m_cRange.fPixelSize is "<<m_cRange.fPixelSize<<endl;
     PositionTransfer(_pos[0]);
     PositionTransfer(_pos[1]);
     PositionTransfer(_pos[2]);
