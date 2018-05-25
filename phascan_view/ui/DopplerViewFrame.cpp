@@ -87,7 +87,7 @@ void DopplerViewFrame::DropEventProcess(QDropEvent* event)
 *************************************************   */
 void DopplerViewFrame::slotCreateDrawWindow(QWidget* pWidget_, int _nId , int nGroupId_)
 {
-	ProcessDisplay _display ;
+    ProcessDisplay _display ;
 	_display.SetCurrentGroupId(nGroupId_);
 	_display.CreateViews(pWidget_  , _nId) ;
 	pWidget_->show();

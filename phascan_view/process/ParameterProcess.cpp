@@ -7,8 +7,8 @@
 extern int currentgroup;
 extern int lastgroup;
 
-float FreScale = 400/511.0;
-float NFreScale = 200/511.0;
+double FreScale = 400/511.0;
+double NFreScale = 200/511.0;
 
 ParameterProcess* g_pParameterProcess = NULL ;
 
@@ -666,14 +666,11 @@ int ParameterProcess::SAxisstoptoIndex(float fStop) const
 {
     SCANNER& _scaner = m_pConfig->common.scanner ;
     int _index;
-    qDebug()<<"_scanner.eEncoderType is"<<_scaner.eEncoderType<<endl;
     if(_scaner.eEncoderType) {
         _index = (fStop - _scaner.fScanStart2) / _scaner.fScanStep + 0.5;
     } else {
         _index =  (fStop * _scaner.fPrf - _scaner.fScanStart2 *_scaner.fPrf ) / _scaner.fScanStep + 0.5;
     }
-    qDebug()<<"fprf is"<<_scaner.fPrf<<endl;
-    qDebug()<<"index is"<<_index<<endl;
     return _index;
 }
 
@@ -1115,7 +1112,6 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
 	pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
-    qDebug()<<"210 is"<<GetDepth(DistDotPosToMm(nGroupId_ , 210) * _fCos, _fThick);
     pInfo_[setup_GATE_A].fAmp   = CalPeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
 	pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
 	//-----------------------------------
@@ -1550,6 +1546,11 @@ void ParameterProcess::GetCScanIndexAxisRange(int nGroupId_ , double* fStart_ , 
 
     }
 
+    if((_scanner.fLawStart == _scanner.fLawStop)&& (_scanner.fLawStart == 0))
+    {
+        _scanner.fLawStart = 0;
+        _scanner.fLawStop = _nLawQty;
+    }
 
     *fStart_  =_scanner.fLawStart 		;
     *fStop_   = _scanner.fLawStop  ;
@@ -1610,7 +1611,6 @@ void ParameterProcess::ChangeCscanIndexRange( double* fStart_ , double* fStop_,d
 void ParameterProcess::ChangeCscanIndexstart( double* fStart_ )
 {
     SCANNER& _scanner = m_pConfig->common.scanner;
-    int _nLawQty = GetGroupLawQty(currentgroup>0?currentgroup:0) ;
     _scanner.fLawStart = *fStart_ - 0.5;
 
     GROUP_CONFIG& _group = m_pConfig->group[currentgroup>0?currentgroup:0] ;
@@ -1629,7 +1629,6 @@ void ParameterProcess::ChangeCscanIndexstart( double* fStart_ )
 void ParameterProcess::ChangeCscanIndexstop( double* fStop_ )
 {
     SCANNER& _scanner = m_pConfig->common.scanner;
-    int _nLawQty = GetGroupLawQty(currentgroup>0?currentgroup:0) ;
     _scanner.fLawStop = *fStop_ - 0.5;
 
     GROUP_CONFIG& _group = m_pConfig->group[currentgroup>0?currentgroup:0] ;

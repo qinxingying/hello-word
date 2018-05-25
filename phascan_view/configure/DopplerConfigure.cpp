@@ -761,7 +761,6 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.fSampleRange   = _process->DistNsToMm(i , _pGroupInfo->range) ;		/* 扫描延时 单位 mm		*/
 		_group.nPointQty	  = _pGroupInfo->point_qty ;		/* 点个数 */
         _group.on_off_status  = _pGroupInfo->on_off_status;
-        qDebug()<<"on_off is "<<_group.on_off_status<<endl;
         if(!((_group.on_off_status & (0x01 << 0)) != 0))
         {
             _group.fGain		  = _pGroupInfo->gain / 100.0;			/* 增益 0 - 80 db  _STEP 0.01dB */
@@ -821,7 +820,6 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			_gate.fStart	   = _process->DistNsToMm(i , _Gate.start) ;
 			_gate.fWidth	   = _process->DistNsToMm(i , _Gate.width) ;
 			_gate.nThreshold   = _Gate.height ;
-            qDebug()<<"height is "<<_gate.nThreshold<<endl;
 			_gate.eMeasure	   = _Gate.measure;
 			_gate.eSynChro	   = (setup_GATE_AYNC_TYPE)_Gate.synchro;
 		}

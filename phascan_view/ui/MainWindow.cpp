@@ -447,9 +447,7 @@ void MainWindow::slotCurrentGroupChanged(int nIndex_)
                         _pDraw = (DopplerDataView*)_list->at(0);
 
                         if(_pDraw->GetGroupId() == m_iCurGroup) {
-                            qDebug()<<"cuuuuu is"<<currentgroup<<endl;
                             ui->TabWidget_display->setCurrentIndex(i);
-                            qDebug()<<"cuuuuu is"<<currentgroup<<endl;
                             currentgroup = m_iCurGroup;
                             break;
                         }
@@ -500,9 +498,6 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
                 if(_iGroup < _nGroupQty){
                     m_iCurGroup = _iGroup;
                 currentgroup = m_iCurGroup;
-                ParameterProcess* _process = ParameterProcess::Instance();
-
-                qDebug()<<"cyrrrrrr is"<<currentgroup<<endl;
                     if(ui->TabWidget_parameter->currentIndex() < _nGroupQty){
                         ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
                     }
@@ -658,7 +653,6 @@ void MainWindow::UpdateTableDisplay()
             _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
         }
     }
-
     ui->TabWidget_parameter->setEnabled(true);
     ui->TabWidget_display->setEnabled(true);
     ui->toolBar->setEnabled(true);

@@ -1986,7 +1986,7 @@ void ProcessDisplay::UpdateDataViewDrawCH(DopplerDataView* pWidget_ , int nGroup
 	{
 		_pDraw = new DopplerDrawCScanH() ;
 		pWidget_->SetDrawScan(_pDraw) ;
-		connect(_pDraw, SIGNAL(signalScanRangeMove(int, int, int)) , pWidget_, SLOT(slotScanRangeMove(int, int, int))) ;
+        connect(_pDraw, SIGNAL(signalScanRangeMove(int, int, int)) , pWidget_, SLOT(slotScanRangeMove(int, int, int))) ;
 	}
 	void* _pColor = NULL;
 	if(_eSource == setup_CSCAN_AMP_A || _eSource == setup_CSCAN_AMP_B)
@@ -2028,7 +2028,7 @@ void ProcessDisplay::UpdateDataViewDrawCV(DopplerDataView* pWidget_ , int nGroup
 	{
 		_pDraw = new DopplerDrawCScanV() ;
 		pWidget_->SetDrawScan(_pDraw) ;
-		connect(_pDraw, SIGNAL(signalScanRangeMove(int, int, int)) , pWidget_, SLOT(slotScanRangeMove(int, int, int))) ;
+        connect(_pDraw, SIGNAL(signalScanRangeMove(int, int, int)) , pWidget_, SLOT(slotScanRangeMove(int, int, int))) ;
 	}
 	void* _pColor = NULL;
 	if(_eSource == setup_CSCAN_AMP_A || _eSource == setup_CSCAN_AMP_B)

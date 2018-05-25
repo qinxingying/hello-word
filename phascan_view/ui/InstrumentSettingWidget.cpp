@@ -110,7 +110,6 @@ void InstrumentSettingWidget::InitCommonConfig()
         ui->SpinBoxCurrentScanstart->setSingleStep(1/_scanner.fPrf);
         ui->SpinBoxCurrentScanend->setSingleStep(1/_scanner.fPrf);
         _scanner.fScanend = _scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart;
-    qDebug()<<"scanend is"<<_scanner.fScanend;
     }
     ui->SpinBoxCurrentScanstart->setMinimum(_scanner.fScanStart);
 
@@ -308,10 +307,6 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanPos_valueChanged(double arg1)
 	if(!ui->SpinBoxCurrentScanPos->hasFocus())  return ;
 	 SCANNER& _scanner = m_pConfig->common.scanner ;
 
-	 ParameterProcess* _process = ParameterProcess::Instance();
-
-
-
 	 _scanner.fScanPos = arg1 ;
      if(_scanner.eEncoderType) {
         ui->SliderCurrentScanPos->setValue((arg1 - _scanner.fScanStart)/_scanner.fScanStep);
@@ -332,10 +327,6 @@ void InstrumentSettingWidget::on_SliderCurrentScanPos_valueChanged(int value)
 {
 	if(!ui->SliderCurrentScanPos->hasFocus()) return ;
 	SCANNER& _scanner = m_pConfig->common.scanner	;
-    qDebug()<<"value is"<<value<<endl;
-	ParameterProcess* _process = ParameterProcess::Instance();
-	int _nPos = _process->SAxisDistToIndex(_scanner.fScanPos);
-	if(_nPos == value)  return ;
 
 	if(_scanner.eEncoderType) {
 		_scanner.fScanPos = _scanner.fScanStep * value + _scanner.fScanStart ;
@@ -372,13 +363,6 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanend_valueChanged(double arg1)
         ui->SpinBoxCurrentScanstart->setMaximum(arg1-1/_scanner.fPrf);
     }
 
-    ParameterProcess* _process = ParameterProcess::Instance();
-
-    int _nPos1 = arg1  + 0.5;
-    int _nPos2 = _process->SAxisstoptoIndex(_scanner.fScanend);
-    if(_nPos1 == _nPos2)  return ;//?
-
-
         _scanner.fScanend =  arg1 ;
 
 
@@ -393,10 +377,6 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanend_valueChanged(double arg1)
 void InstrumentSettingWidget::on_SpinBoxCurrentIndexend_valueChanged(double arg1)
 {
     if(!ui->SpinBoxCurrentIndexend->hasFocus())  return ;
-
-    SCANNER& _scanner = m_pConfig->common.scanner ;
-
-
     ParameterProcess* _process = ParameterProcess::Instance();
     double fstart,fstop,fstart2,fstop2,fstep;
     _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
@@ -430,9 +410,6 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanstart_valueChanged(double arg
      {
          ui->SpinBoxCurrentScanend->setMinimum(arg1+1/_scanner.fPrf);
      }
-     ParameterProcess* _process = ParameterProcess::Instance();
-
-
          _scanner.fScanStart2 =  arg1 ;
 
 
@@ -446,10 +423,6 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanstart_valueChanged(double arg
 void InstrumentSettingWidget::on_SpinBoxCurrentIndexstart_valueChanged(double arg1)
 {
     if(!ui->SpinBoxCurrentIndexstart->hasFocus())  return ;
-
-     SCANNER& _scanner = m_pConfig->common.scanner ;
-
-
      ParameterProcess* _process = ParameterProcess::Instance();
      double fstart,fstop,fstart2,fstop2,fstep;
      _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
