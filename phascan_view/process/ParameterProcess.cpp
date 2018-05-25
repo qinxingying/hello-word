@@ -90,7 +90,7 @@ int  ParameterProcess::SetupGain(int nGroupId_ , double fValue_)
 int  ParameterProcess::SetupRefGain(int nGroupId_ , double fValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
-	group.fRefGain  = fValue_ ;
+    group.fRefGain  = fValue_ - group.RefGain;
 	return 0 ;
 }
 

@@ -684,7 +684,7 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ParameterProcess* _process = ParameterProcess::Instance();
 
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
-	ui->ValueRefGain->setValue(m_pGroup->fRefGain);
+    ui->ValueRefGain->setValue(m_pGroup->RefGain + m_pGroup->fRefGain);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
 	ui->ValueWedgeDelay->setValue(m_pGroup->nWedgeDelay / 1000.0);

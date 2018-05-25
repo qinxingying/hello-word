@@ -766,11 +766,13 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         {
             _group.fGain		  = _pGroupInfo->gain / 100.0;			/* 增益 0 - 80 db  _STEP 0.01dB */
             _group.fRefGain	      = 0;
+            _group.RefGain        = 0;
         }
         else if((_group.on_off_status & (0x01 << 0)) != 0)
         {
             _group.fGain		  = _pGroupInfo->gainr / 100.0;			/* 增益 0 - 80 db  _STEP 0.01dB */
-            _group.fRefGain	      = _pGroupInfo->gain / 100.0 - _pGroupInfo->gainr / 100.0;
+            _group.fRefGain	      = 0;
+            _group.RefGain        = _pGroupInfo->gain / 100.0 - _pGroupInfo->gainr / 100.0;
         }
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
