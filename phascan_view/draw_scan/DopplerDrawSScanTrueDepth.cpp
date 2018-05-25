@@ -335,8 +335,8 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 				if(m_pDraw[_idx1] != 0)
 				{
                     _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
-					_iData = (int)(_pData[_idx2] * (COLOR_STEP - m_pDrawRate[_idx1]) +
-                             _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] ) ;
+                    _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) +
+                             (_pData[_idx2 + _nLawSize] ) * m_pDrawRate[_idx1] ) ;
                     _iData = _iData>>COLOR_SHIFT ;  //ÓÒÒÆ
 					_pImg2 = _pImg1 + j * 3 ;
 					_iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);

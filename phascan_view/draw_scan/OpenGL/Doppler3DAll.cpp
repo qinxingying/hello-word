@@ -348,8 +348,8 @@ int Doppler3DAll::DrawPixbuff(GLdouble y0_)
                     if(m_pDraw[_idx1] != 0)
                     {
                         _idx2 = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
-                        _iData = (int)(_pData[_idx2] * (COLOR_STEP - m_pDrawRate[_idx1]) +
-                                          _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] ) ;
+                        _iData = (int)((_pData[_idx2] * 2 | 1) * (COLOR_STEP - m_pDrawRate[_idx1]) +
+                                         (_pData[_idx2 + _nLawSize] * 2 | 1) * m_pDrawRate[_idx1] ) ;
 
                         _iData = _iData>>COLOR_SHIFT ;
                         _iData = m_process->GetRefGainScaleData(_iData, _fScale, _bRectify);

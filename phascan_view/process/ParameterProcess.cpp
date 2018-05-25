@@ -7,7 +7,7 @@
 extern int currentgroup;
 extern int lastgroup;
 
-float FreScale = 200/255.0;
+float FreScale = 400/511.0;
 float NFreScale = 200/511.0;
 
 ParameterProcess* g_pParameterProcess = NULL ;
@@ -576,7 +576,7 @@ WDATA ParameterProcess::GetRefGainScaleData(WDATA wData_, float fScale_, bool bR
 	if(bRectify_)
 	{
 	_iData  = _iData - WAVE_HALF ;
-	_iData = _iData * fScale_ + WAVE_HALF;
+    _iData = _iData * fScale_ + 128;
 	if(_iData > WAVE_MAX )	_iData = WAVE_MAX ;
 	if(_iData < 0 )		_iData = 0   ;
 	}
@@ -843,7 +843,7 @@ float CalPeakAmp(float nPeak_, int nRectify_)
     float amp;
     if(!nRectify_)
     {
-       return amp = nPeak_ * FreScale;
+       return amp = nPeak_ * FreScale - 200;
     }
     else
     {
@@ -922,7 +922,7 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
     int _iPos = iEnd_;
 	if(!bRectify_) {// ÉäÆµ
 		int mode = 0;
-		if(iHeight_ > WAVE_HALF)
+        if(iHeight_ > 127.5)
 			mode = 1;
 
 		if(!mode) {
@@ -1115,7 +1115,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
 	pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
-
+    qDebug()<<"210 is"<<GetDepth(DistDotPosToMm(nGroupId_ , 210) * _fCos, _fThick);
     pInfo_[setup_GATE_A].fAmp   = CalPeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
 	pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
 	//-----------------------------------

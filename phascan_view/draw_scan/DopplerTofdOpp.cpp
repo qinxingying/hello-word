@@ -58,7 +58,7 @@ int DopplerTofdOpp::TofdSearchPos(WDATA* pSource_, int iStart_, int iMax_, int i
 	if(iEdge_ == 1) {
 		int _iMax = 0;
 		for(int i = _iStart; i < _iEnd; i++) {
-			_iData = pSource_[i];
+			_iData = pSource_[i] * 2 | 1;
 			if(!_bSearchStart) {
 				if(_iData < iMin_)
 					_bSearchStart = true;
@@ -70,9 +70,9 @@ int DopplerTofdOpp::TofdSearchPos(WDATA* pSource_, int iStart_, int iMax_, int i
 			}
 		}
 	} else {
-		int _iMin = 255;
+        int _iMin = 511;
 		for(int i = _iStart; i < _iEnd; i++) {
-			_iData = pSource_[i];
+            _iData = pSource_[i] * 2 | 1;
 			if(!_bSearchStart) {
 				if(_iData > iMax_)
 					_bSearchStart = true;
@@ -141,7 +141,7 @@ int DopplerTofdOpp::TofdDataProStart(int nGroupId_, TOFD_PRO_STATUS proSt_, GYRE
 
 	int _nScanOff = m_process->GetScanOff(nGroupId_) ;
 	//-----------------------------------------------
-	// ¼ÇÂ¼Æ«ÖÃÇ°µÄÎ»ÖÃ
+	// ï¿½ï¿½Â¼Æ«ï¿½ï¿½Ç°ï¿½ï¿½Î»ï¿½ï¿½
 	if(pRect_ == NULL) {
 		int _nScanMax = m_process->GetRealScanMax();
 		GYRECT _rect;
@@ -371,8 +371,8 @@ int DopplerTofdOpp::TofdLwStraitening(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDAT
 	WDATA*  _pScr =  m_process->GetDataAbsolutePosPointer(m_nGroupId, _nY, 0, pSource_);
 	WDATA*  _pDst =  NULL;
 
-	int	 _iMax = 128 + 128 * 0.1;
-	int	 _iMin = 128 - 128 * 0.1;
+    int	 _iMax = 256 + 256 * 0.1;
+    int	 _iMin = 256 - 256 * 0.1;
 	int	_iEdge = 0;
 	int   _iStart = (int)pInfo_->fX;
 	int	_iBase = TofdSearchPos(_pScr, _iStart, _iMax, _iMin, _iEdge);
@@ -401,8 +401,8 @@ int DopplerTofdOpp::TofdBwStraitening(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDAT
 	WDATA*  _pScr =  m_process->GetDataAbsolutePosPointer(m_nGroupId, _nY, 0, pSource_);
 	WDATA*  _pDst =  NULL;
 
-	int	 _iMax = 128 + 128 * 0.2;
-	int	 _iMin = 128 - 128 * 0.5;
+    int	 _iMax = 256 + 256 * 0.2;
+    int	 _iMin = 256 - 256 * 0.5;
 	int	_iEdge = 0;
 	int   _iStart = (int)pInfo_->fX;
 	int	_iBase = TofdSearchPos(_pScr, _iStart, _iMax, _iMin, _iEdge);
@@ -444,8 +444,9 @@ int DopplerTofdOpp::TofdDifference(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* 
 		_nStop = _nScanMax;
 
 	int x, y;
-	float _fHalf = WAVE_MAX/2.0f;
+    float _fHalf = 511/2.0f;
 	float _fData, _fPeak0, _fPeak1;
+    int fdata;
 	for(y = _nStart; y < _nStop; y++)
 	{
 		_pScr = m_process->GetDataAbsolutePosPointer(m_nGroupId, y, 0, pSource_);
@@ -453,8 +454,8 @@ int DopplerTofdOpp::TofdDifference(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* 
 
 		for(x = _rect.left; x < _rect.right; x++)
 		{
-			_fPeak0 = (float)_pBase[x] - _fHalf;
-			_fPeak1 = (float)_pScr[x] - _fHalf;
+            _fPeak0 = (float)(_pBase[x] * 2 | 1) - _fHalf;
+            _fPeak1 = (float)(_pScr[x] * 2 | 1) - _fHalf;
 
 			_fData =  _fPeak1 - _fPeak0;
 
@@ -462,9 +463,9 @@ int DopplerTofdOpp::TofdDifference(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* 
 			if(_fData >= _fHalf )	_fData = _fHalf;
 
 			_fData += _fHalf;
-			if(_fData > WAVE_MAX)	_fData = WAVE_MAX;
-
-			_pDst[x] = _fData;
+            if(_fData > 511)	_fData = WAVE_MAX;
+            fdata = _fData / 2;
+            _pDst[x] = fdata;
 		}
 	}
 	return 0;
@@ -493,7 +494,7 @@ int DopplerTofdOpp::TofdSaft(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSourc
 	if(_nStart < _nScanOff)	_nStart = _nScanOff;
 	if(_nStop > _nScanMax)	_nStop  = _nScanMax;
 
-	int x, y, i, n, _iData, _iAv;
+    int x, y, i, n, _iData, _iAv;
 	for(y = _nStart; y < _nStop; y++)
 	{
 		for(i = 0; i < _iCurveLen; i++)
@@ -516,7 +517,7 @@ int DopplerTofdOpp::TofdSaft(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSourc
 					n = x + m_pTofd->iSaftBuf[_iCurveLen * x + i];
 					if(n >= 0 && n < m_pGroup->nPointQty)
 					{
-						_iData += _pScr[i][n];
+                        _iData += _pScr[i][n] * 2 | 1;
 						_iAv++;
 					}
 				}
@@ -525,8 +526,8 @@ int DopplerTofdOpp::TofdSaft(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSourc
 			if(_iAv < 1)		_iAv = 1;
 			_iData /= _iAv;
 			if(_iData < 0)		_iData = 0;
-			if(_iData > WAVE_MAX)   _iData = WAVE_MAX;
-
+            if(_iData > 511)   _iData = 511;
+            _iData = _iData / 2;
 			_pDst[x] = _iData;
 		}
 	}

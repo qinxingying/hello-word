@@ -819,6 +819,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			_gate.fStart	   = _process->DistNsToMm(i , _Gate.start) ;
 			_gate.fWidth	   = _process->DistNsToMm(i , _Gate.width) ;
 			_gate.nThreshold   = _Gate.height ;
+            qDebug()<<"height is "<<_gate.nThreshold<<endl;
 			_gate.eMeasure	   = _Gate.measure;
 			_gate.eSynChro	   = (setup_GATE_AYNC_TYPE)_Gate.synchro;
 		}
