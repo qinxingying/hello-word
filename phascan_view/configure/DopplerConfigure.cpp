@@ -165,11 +165,17 @@ void DopplerConfigure::OpenEvn()
 		AppEvn.anMeasureSelection[0][2] = 34 ;
 		AppEvn.anMeasureSelection[0][3] = 0  ;
 		AppEvn.anMeasureSelection[0][4] = 0  ;
+        AppEvn.anMeasureSelection[0][5] = 0  ;
+        AppEvn.anMeasureSelection[0][6] = 0  ;
+        AppEvn.anMeasureSelection[0][7] = 0  ;
 		AppEvn.anMeasureSelection[1][0] = 42 ;
 		AppEvn.anMeasureSelection[1][1] = 43 ;
 		AppEvn.anMeasureSelection[1][2] = 44 ;
 		AppEvn.anMeasureSelection[1][3] = 45 ;
 		AppEvn.anMeasureSelection[1][4] = 0  ;
+        AppEvn.anMeasureSelection[1][5] = 0  ;
+        AppEvn.anMeasureSelection[1][6] = 0  ;
+        AppEvn.anMeasureSelection[1][7] = 0  ;
 
 		for(int i = 0 ; i < 8 ; i++)
 		{
@@ -191,6 +197,9 @@ void DopplerConfigure::OpenEvn()
 		group[i].aeMeasureType[2] = AppEvn.anMeasureSelection[0][2] ;
 		group[i].aeMeasureType[3] = AppEvn.anMeasureSelection[0][3] ;
 		group[i].aeMeasureType[4] = AppEvn.anMeasureSelection[0][4] ;
+        group[i].aeMeasureType[5] = AppEvn.anMeasureSelection[0][5] ;
+        group[i].aeMeasureType[6] = AppEvn.anMeasureSelection[0][6] ;
+        group[i].aeMeasureType[7] = AppEvn.anMeasureSelection[0][7] ;
 
 		group[i].bShowCursor	= AppEvn.bShowCursor[i] ;
         group[i].bShowGate		= 1 ;
@@ -217,12 +226,18 @@ void DopplerConfigure::SaveEvn()
 			AppEvn.anMeasureSelection[0][2] = group[i].aeMeasureType[2] ;
 			AppEvn.anMeasureSelection[0][3] = group[i].aeMeasureType[3] ;
 			AppEvn.anMeasureSelection[0][4] = group[i].aeMeasureType[4] ;
+            AppEvn.anMeasureSelection[0][5] = group[i].aeMeasureType[5] ;
+            AppEvn.anMeasureSelection[0][6] = group[i].aeMeasureType[6] ;
+            AppEvn.anMeasureSelection[0][7] = group[i].aeMeasureType[7] ;
         }else{
 			AppEvn.anMeasureSelection[1][0] = group[i].aeMeasureType[0] ;
 			AppEvn.anMeasureSelection[1][1] = group[i].aeMeasureType[1] ;
 			AppEvn.anMeasureSelection[1][2] = group[i].aeMeasureType[2] ;
 			AppEvn.anMeasureSelection[1][3] = group[i].aeMeasureType[3] ;
 			AppEvn.anMeasureSelection[1][4] = group[i].aeMeasureType[4] ;
+            AppEvn.anMeasureSelection[1][5] = group[i].aeMeasureType[5] ;
+            AppEvn.anMeasureSelection[1][6] = group[i].aeMeasureType[6] ;
+            AppEvn.anMeasureSelection[1][7] = group[i].aeMeasureType[7] ;
 		}
 
 
@@ -1032,6 +1047,9 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			_group.aeMeasureType[2]  = AppEvn.anMeasureSelection[0][2] ;
 			_group.aeMeasureType[3]  = AppEvn.anMeasureSelection[0][3] ;
 			_group.aeMeasureType[4]  = AppEvn.anMeasureSelection[0][4] ;
+            _group.aeMeasureType[5]  = AppEvn.anMeasureSelection[0][5] ;
+            _group.aeMeasureType[6]  = AppEvn.anMeasureSelection[0][6] ;
+            _group.aeMeasureType[7]  = AppEvn.anMeasureSelection[0][7] ;
 		}
 		else
 		{
@@ -1040,6 +1058,9 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			_group.aeMeasureType[2]  = AppEvn.anMeasureSelection[1][2] ;
 			_group.aeMeasureType[3]  = AppEvn.anMeasureSelection[1][3] ;
 			_group.aeMeasureType[4]  = AppEvn.anMeasureSelection[1][4] ;
+            _group.aeMeasureType[5]  = AppEvn.anMeasureSelection[1][5] ;
+            _group.aeMeasureType[6]  = AppEvn.anMeasureSelection[1][6] ;
+            _group.aeMeasureType[7]  = AppEvn.anMeasureSelection[1][7] ;
 		}
 
 		_group.afCursor[setup_CURSOR_TFOD_LW] = _group.fSampleStart + _group.fSampleRange  / 10;

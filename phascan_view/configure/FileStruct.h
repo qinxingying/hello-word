@@ -55,7 +55,7 @@ struct SYSTEM_ENVIRMENT
     bool bShowThickness[ENV_MAX_GROUP_QTY];
     bool bShowLwBw[ENV_MAX_GROUP_QTY];
     bool bShowDefect[ENV_MAX_GROUP_QTY];
-    unsigned int  anMeasureSelection[2][5];
+    unsigned int  anMeasureSelection[2][8];
 };
 
 #endif // FILESTRUCT_H
