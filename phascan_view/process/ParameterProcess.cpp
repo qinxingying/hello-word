@@ -655,9 +655,9 @@ int ParameterProcess::SAxisDistToIndex(float fDist_) const
 	SCANNER& _scaner = m_pConfig->common.scanner ;
 	int _index;
 	if(_scaner.eEncoderType) {
-        _index = (fDist_ - _scaner.fScanStart) / _scaner.fScanStep + 0.5;
+        _index = (fDist_ - _scaner.fScanStart) / _scaner.fScanStep ;
 	} else {
-		_index =  (fDist_ * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep + 0.5;
+        _index =  (fDist_ * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep;
 	}
 	return _index;
 }
@@ -667,9 +667,9 @@ int ParameterProcess::SAxisstoptoIndex(float fStop) const
     SCANNER& _scaner = m_pConfig->common.scanner ;
     int _index;
     if(_scaner.eEncoderType) {
-        _index = (fStop - _scaner.fScanStart2) / _scaner.fScanStep + 0.5;
+        _index = (fStop - _scaner.fScanStart2) / _scaner.fScanStep ;
     } else {
-        _index =  (fStop * _scaner.fPrf - _scaner.fScanStart2 *_scaner.fPrf ) / _scaner.fScanStep + 0.5;
+        _index =  (fStop * _scaner.fPrf - _scaner.fScanStart2 *_scaner.fPrf ) / _scaner.fScanStep;
     }
     return _index;
 }
@@ -1468,16 +1468,15 @@ void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , doubl
 	float _fStart ;
 	if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
 	{
-		_fRange = (nDist_ - 1 ) / _scan.fPrf  ;
+        _fRange = (nDist_ ) / _scan.fPrf  ;
 		_fStart = 0;// + _fScanOff;
 	}
 	else
 	{
-		_fRange = (nDist_ - 1) * _scan.fScanStep  ;
-		_fStart = _scan.fScanStart;// + _fScanOff;
+        _fRange = (nDist_) * _scan.fScanStep  ;
+        _fStart = _scan.fScanStart2;// + _fScanOff;
 	}
-
-	*fSliderStart_ = _scan.fScanStart;
+    *fSliderStart_ = _scan.fScanStart;
 	*fSliderStop_  = _scan.fScanStop;
 
 	if(FLOAT_EQ(*fStart_ , *fStop_))
@@ -1486,20 +1485,9 @@ void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , doubl
 		*fStop_  = _fStart + _fRange  ;
 	}
 
-	if(_fScanPos < *fStart_)
-	{
-		*fStart_ = _fScanPos  ;
-		*fStop_  = _fScanPos + _fRange  ;
-	}
-	else if(_fScanPos > *fStop_)
-	{
-		*fStart_ = _fScanPos - _fRange  ;
-		*fStop_  = _fScanPos ;
-	}
-	else
-	{
+        *fStart_ = _fStart;
 		*fStop_ = *fStart_ +  _fRange ;
-	}
+
 }
 
 void  ParameterProcess::GetBScanScanAxisRange(int nGroupId_ ,  int nDist_ , double* fStart_ , double* fStop_, double* fSliderStart_ , double* fSliderStop_)
