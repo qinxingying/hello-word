@@ -244,7 +244,39 @@ void DopplerConfigure::SaveEvn()
 	file.open (QIODevice::WriteOnly);
 	QDataStream write(&file);
     write.writeRawData((char*)&AppEvn, sizeof(SYSTEM_ENVIRMENT));
-	file.close();
+    file.close();
+}
+
+void DopplerConfigure::setSetting(int group, const QString &valueName, int value)
+{
+    QString strPathName = QCoreApplication::applicationDirPath() + "/init/setting.ini";
+    QSettings s(strPathName,QSettings::IniFormat);
+    if (s.status() != QSettings::NoError) {
+        qDebug("setting test error");
+        return ;
+    }
+    s.beginWriteArray("setings");
+    s.setArrayIndex(group);
+    s.setValue(valueName,value);
+    s.endArray();
+}
+
+int DopplerConfigure::getSetting(int group, const QString &valueName)
+{
+    QString strPathName = QCoreApplication::applicationDirPath() + "/init/setting.ini";
+    QSettings s(strPathName,QSettings::IniFormat);
+    if (s.status() != QSettings::NoError) {
+        qDebug("setting test error");
+        return -1;
+    }
+    s.beginReadArray("setings");
+    s.setArrayIndex(group);
+    if(! s.contains(valueName)){
+        return -1;
+    }
+    int value = s.value(valueName).toInt();
+    s.endArray();
+    return value;
 }
 
 int DopplerConfigure::OpenConfig(QString& path_)
@@ -792,8 +824,16 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		/* ²Î¿¼¹â±ê */
 		//_group.afCursor[setup_CURSOR_MAX]  ;
 		// thickness range for c scan display
-		_group.eCScanSource[0]= setup_CSCAN_AMP_A ;
-		_group.eCScanSource[1]= setup_CSCAN_POS_A ;
+        int CScanSource1 = getSetting(i,"CScansource1");
+        if(CScanSource1 < 0){
+            CScanSource1 = (int)setup_CSCAN_AMP_A;
+        }
+        int CScanSource2 = getSetting(i,"CScansource2");
+        if(CScanSource2 < 0){
+            CScanSource2 = (int)setup_CSCAN_POS_A;
+        }
+        _group.eCScanSource[0]= (setup_CSCAN_SOURCE_MODE)CScanSource1 ;
+        _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */
 		_group.fMaxThickness  = _pGroupInfo->max_thickness/1000.0 ;		/* Measurements->Thickness->max */
 		// wedge position
