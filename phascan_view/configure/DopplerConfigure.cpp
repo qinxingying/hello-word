@@ -1102,7 +1102,11 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.aeMeasureType[6]  = AppEvn.anMeasureSelection[1][6] ;
             _group.aeMeasureType[7]  = AppEvn.anMeasureSelection[1][7] ;
 		}
-
+        for(int i=0;i<8;i++){
+            if((_group.aeMeasureType[i] < FEILD_NONE) || (_group.aeMeasureType[i] >= FEILD_VALUE_INDEX_MAX)){
+                _group.aeMeasureType[i] = FEILD_NONE;
+            }
+        }
 		_group.afCursor[setup_CURSOR_TFOD_LW] = _group.fSampleStart + _group.fSampleRange  / 10;
 		_group.afCursor[setup_CURSOR_TFOD_BW] = _group.fSampleStart + 9 * _group.fSampleRange / 10;
 
