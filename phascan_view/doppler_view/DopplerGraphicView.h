@@ -4,7 +4,7 @@
 #include <QGraphicsView>
 #include <QRect>
 #include <QRectF>
-
+#include <QMutex>
 class QGraphicsScene;
 class DopplerGraphicsItem;
 class GraphicsViewBase;

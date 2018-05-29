@@ -1728,7 +1728,8 @@ void ProcessDisplay::UpdateDataViewFrameCH(DopplerDataView* pWidget_ , int nGrou
 
 	QString _strBottomUnit = _process->GetScanAxisUnit() ;
 	pWidget_->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
-	_process->GetCScanScanAxisRange(nGroupId_ ,  pWidget_->width() - 50 , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
+    SCANNER& _scan = m_pConfig->common.scanner ;
+    _process->GetCScanScanAxisRange(nGroupId_ ,  _scan.fScanend - _scan.fScanStart2 , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
 	pWidget_->SetRulerRange( _fScanStart , _fScanStop ,  _fSliderStart, _fSliderStop,DopplerDataView::DATA_VIEW_RULER_BOTTOM);
 	pWidget_->SetRulerUnit(&_strBottomUnit , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
 
@@ -1771,7 +1772,8 @@ void ProcessDisplay::UpdateDataViewFrameCV(DopplerDataView* pWidget_ , int nGrou
 //	_process->GetCScanScanAxisRange(nGroupId_ ,  pWidget_->height() - 35 , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
 //	pWidget_->SetRulerRange( _fScanStart , _fScanStop ,  _fSliderStart, _fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->GetRulerRange(&_fScanStop , &_fScanStart , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT ) ;
-	_process->GetCScanScanAxisRange(nGroupId_ ,  pWidget_->height() - 35 , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
+    SCANNER& _scan = m_pConfig->common.scanner ;
+    _process->GetCScanScanAxisRange(nGroupId_ ,  _scan.fScanend - _scan.fScanStart2 , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
 	pWidget_->SetRulerRange(_fScanStop , _fScanStart ,  _fSliderStart, _fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
 
