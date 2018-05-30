@@ -35,7 +35,8 @@ public:
 	QRect  GetZoomRect() {return m_cZoomRect;}
 	bool   GetZoomStatus() {return m_bZoom;}
 	//bool   GetBCZoomStatus() {return m_bBCAutoZomm;}
-
+public:
+    QMutex m_mutex;
 protected:
     void   wheelEvent ( QWheelEvent * event ) ;
     void   resizeEvent(QResizeEvent *event) ;
