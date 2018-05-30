@@ -431,6 +431,7 @@ void DopplerGraphicView::paintEvent(QPaintEvent *event)
 
 void DopplerGraphicView::SetMeasureString(int nIndex_, QString* str_)
 {
+    QMutexLocker locker(&m_mutex);
     m_strMeasure[nIndex_] = *str_;
 }
 
@@ -441,6 +442,7 @@ void DopplerGraphicView::SetMeasureStringQty(int nQty_)
 
 void DopplerGraphicView::DrawMeasureValue()
 {
+    QMutexLocker locker(&m_mutex);
 	QWidget* _pViewPort = (QWidget*)this->viewport();
 	QPainter _painter(_pViewPort) ;
 
