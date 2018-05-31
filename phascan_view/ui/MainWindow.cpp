@@ -632,8 +632,12 @@ void MainWindow::UpdateTableDisplay()
             _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
             _pViewFrame->SetViewFrameId(i);
 
+            int disp_mode = DopplerConfigure::getSetting(i-1,"DISP_MODE");
+            if(disp_mode < 0){
+                disp_mode = (int)ProcessDisplay::DISP_S_AV;
+            }
             if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
-                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_S_AV_CH_N);
+                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
             } else {
                 _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
             }
@@ -647,8 +651,12 @@ void MainWindow::UpdateTableDisplay()
         _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
         _pViewFrame->SetViewFrameId(0);
 
+        int disp_mode = DopplerConfigure::getSetting(0,"DISP_MODE");
+        if(disp_mode < 0){
+            disp_mode = (int)ProcessDisplay::DISP_S_AV;
+        }
         if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
-            _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_S_AV_CH_N);
+            _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
         } else {
             _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
         }

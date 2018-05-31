@@ -548,6 +548,8 @@ void DopplerGroupTab::StartDrags(QModelIndex index)
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("DOPPLER_DISPLAY_ITEM", itemData);
 
+    DopplerConfigure::setSetting(m_nGroupId,"DISP_MODE",_nId);
+
 	QDrag *drag = new QDrag(this);
 	drag->setMimeData(mimeData);
 
@@ -1924,6 +1926,7 @@ void DopplerGroupTab::on_ComCScanSource1_currentIndexChanged(int index)
 	m_pGroup->eCScanSource[0] = (setup_CSCAN_SOURCE_MODE)index ;
 	g_pMainWnd->UpdateAllDisplay();
 	g_pMainWnd->RunDrawThreadOnce();
+    DopplerConfigure::setSetting(m_nGroupId,"CScansource1",index);
 }
 
 void DopplerGroupTab::on_ComCScanSource2_currentIndexChanged(int index)
@@ -1932,6 +1935,7 @@ void DopplerGroupTab::on_ComCScanSource2_currentIndexChanged(int index)
 	m_pGroup->eCScanSource[1] = (setup_CSCAN_SOURCE_MODE)index ;
 	g_pMainWnd->UpdateAllDisplay();
 	g_pMainWnd->RunDrawThreadOnce();
+    DopplerConfigure::setSetting(m_nGroupId,"CScansource2",index);
 }
 
 void DopplerGroupTab::ComDispPro(int index, int iGroup)

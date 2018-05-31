@@ -1,4 +1,5 @@
 #include "DopplerDataFileOperateor.h"
+#include "DopplerConfigure.h"
 
 #include <QDataStream>
 
@@ -15,6 +16,7 @@ DopplerDataFileOperateor::~DopplerDataFileOperateor()
     {
         m_file->unmap(m_pBeamData);
         m_file->close ();
+        DopplerConfigure::Instance()->SaveEvn();
     }
     m_file = NULL ;
     m_pBeamData  = NULL ;
@@ -28,6 +30,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     {
         m_file->unmap(m_pBeamData);
         m_file->close ();
+        DopplerConfigure::Instance()->SaveEvn();
     }
     m_file = new QFile(strPath_);
     m_file->open (QIODevice::ReadOnly);
