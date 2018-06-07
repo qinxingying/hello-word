@@ -1725,12 +1725,20 @@ void ProcessDisplay::UpdateDataViewFrameCH(DopplerDataView* pWidget_ , int nGrou
 	_process->GetCScanIndexAxisRange(nGroupId_ ,  &_fScanStart , &_fScanStop) ;
 	pWidget_->SetRulerRange(_fScanStart, _fScanStop , _fScanStart, _fScanStop , DopplerDataView::DATA_VIEW_RULER_LEFT);
     pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
-
+    int _nWidth	   = pWidget_->width() - 50 ;
 	QString _strBottomUnit = _process->GetScanAxisUnit() ;
 	pWidget_->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
     SCANNER& _scan = m_pConfig->common.scanner ;
-    _process->GetCScanScanAxisRange(nGroupId_ ,  _scan.fScanend - _scan.fScanStart2 , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
-	pWidget_->SetRulerRange( _fScanStart , _fScanStop ,  _fSliderStart, _fSliderStop,DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+    int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    if(_nWidth < _nScanend)
+    {
+        _process->GetCScanScanAxisRange(nGroupId_ ,  _nWidth , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
+    }
+    else
+    {
+        _process->GetCScanScanAxisRange(nGroupId_ ,  _nScanend , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
+    }
+    pWidget_->SetRulerRange( _fScanStart , _fScanStop ,  _fSliderStart, _fSliderStop,DopplerDataView::DATA_VIEW_RULER_BOTTOM);
 	pWidget_->SetRulerUnit(&_strBottomUnit , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
 
 	if(_eSource == setup_CSCAN_AMP_A || _eSource == setup_CSCAN_AMP_B )
@@ -1764,7 +1772,7 @@ void ProcessDisplay::UpdateDataViewFrameCV(DopplerDataView* pWidget_ , int nGrou
 	else
 		_eSource = _process->GetCScanSource(nGroupId_ , 1) ;
 
-
+    int _nHeight	   = pWidget_->height() - 35 ;
 	QString _strLeftUnit = _process->GetScanAxisUnit()  ;
 	double _fScanStart , _fScanStop , _fSliderStart, _fSliderStop ;
 
@@ -1773,7 +1781,15 @@ void ProcessDisplay::UpdateDataViewFrameCV(DopplerDataView* pWidget_ , int nGrou
 //	pWidget_->SetRulerRange( _fScanStart , _fScanStop ,  _fSliderStart, _fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->GetRulerRange(&_fScanStop , &_fScanStart , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT ) ;
     SCANNER& _scan = m_pConfig->common.scanner ;
-    _process->GetCScanScanAxisRange(nGroupId_ ,  _scan.fScanend - _scan.fScanStart2 , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
+    int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    if(_nHeight < _nScanend)
+    {
+        _process->GetCScanScanAxisRange(nGroupId_ ,  _nHeight , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
+    }
+    else
+    {
+        _process->GetCScanScanAxisRange(nGroupId_ ,  _nScanend , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
+    }
 	pWidget_->SetRulerRange(_fScanStop , _fScanStart ,  _fSliderStart, _fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
 

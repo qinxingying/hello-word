@@ -9,6 +9,7 @@
 #include <QMouseEvent>
 #include <gHeader.h>
 #include <QMenu>
+#include "ProcessDisplay.h"
 
 static const QSize DEFAULT_SIZE( 800 , 600);
 static const QSize MINIMUM_SIZE( 150 , 150);
@@ -519,8 +520,11 @@ void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
 						_nSliderStart , _nSliderStop);
 		}
 		break;
-	}
-	this->update();
+    }
+    this->update();
+    if(m_pItemsGroup){
+        m_pItemsGroup->UpdateItems();
+    }
 }
 
 void DopplerDataView::mouseReleaseEvent(QMouseEvent* event)

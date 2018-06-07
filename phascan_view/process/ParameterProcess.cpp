@@ -1433,11 +1433,12 @@ void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , doubl
     Q_UNUSED(nGroupId_);
 //	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
 	//float      _fScanOff = _group.fScanOffset;
-
+    ParameterProcess* _process = ParameterProcess::Instance();
 	SCANNER& _scan = m_pConfig->common.scanner  ;
 	float _fScanPos = _scan.fScanPos;//  + _fScanOff;
 	float _fRange ;
 	float _fStart ;
+    int scanend = _process->SAxisstoptoIndex(_process->GetScanend());
 	if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
 	{
         _fRange = (nDist_ ) / _scan.fPrf  ;
@@ -1457,8 +1458,47 @@ void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , doubl
 		*fStop_  = _fStart + _fRange  ;
 	}
 
-        *fStart_ = _fStart;
-		*fStop_ = *fStart_ +  _fRange ;
+    if(_fScanPos < *fStart_)
+        {
+            *fStart_ = _fScanPos  ;
+            *fStop_  = _fScanPos + _fRange  ;
+        }
+        else if(_fScanPos > *fStop_)
+        {
+            *fStart_ = _fScanPos - _fRange  ;
+            *fStop_  = _fScanPos ;
+        }
+        else
+        {
+            *fStop_ = *fStart_ +  _fRange ;
+        }
+    if(_scan.fScanStart2 == _scan.fScanStart && _scan.fScanPos == _scan.fScanStart2)
+    {
+        if((_scan.eEncoderType && _scan.fScanStop == _scan.fScanend)||(!_scan.eEncoderType && _scan.fScanend == _scan.fScanStop/_scan.fPrf + _scan.fScanStart))
+        {
+            if(_scan.fScanPos == 0)
+            {
+                *fStart_ = _scan.fScanPos;
+                *fStop_  = _scan.fScanPos + _fRange;
+            }
+            else if(_scan.fScanPos > 0)
+            {
+                *fStop_  = _scan.fScanPos;
+                *fStart_ = _scan.fScanPos - _fRange;
+                if(*fStart_ < 0)
+                {
+                    *fStart_ = 0;
+                    *fStop_  = _fRange;
+                }
+            }
+
+       }
+    }
+    if(scanend == nDist_)
+    {
+        *fStart_ = _scan.fScanStart2;
+        *fStop_  = _scan.fScanend;
+    }
 
 }
 

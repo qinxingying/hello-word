@@ -455,6 +455,7 @@ void InstrumentSettingWidget::on_BtnReset_clicked()
         ui->SpinBoxCurrentScanend->setValue(_scanner.fScanStop) ;
         _scanner.fScanStart2 = _scanner.fScanStart;
         _scanner.fScanend = _scanner.fScanStop;
+        _scanner.fScanPos = _scanner.fScanStart2;
     }
     else
     {
@@ -462,7 +463,10 @@ void InstrumentSettingWidget::on_BtnReset_clicked()
         ui->SpinBoxCurrentScanend->setValue(_scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart) ;
         _scanner.fScanStart2 = _scanner.fScanStart;
         _scanner.fScanend = _scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart;
+        _scanner.fScanPos = _scanner.fScanStart2;
     }
+    ui->SpinBoxCurrentScanPos->setValue(_scanner.fScanPos);
+    ui->SliderCurrentScanPos->setValue(0);
     _process->ChangeCscanIndexstart(&fstart2);
     _process->ChangeCscanIndexstop(&fstop2);
     ProcessDisplay _proDisplay ;
