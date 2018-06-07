@@ -469,6 +469,7 @@ void InstrumentSettingWidget::on_BtnReset_clicked()
     ui->SliderCurrentScanPos->setValue(0);
     _process->ChangeCscanIndexstart(&fstart2);
     _process->ChangeCscanIndexstop(&fstop2);
+    InitCommonConfig();
     ProcessDisplay _proDisplay ;
     for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
         _proDisplay.UpdateAllViewOfGroup(i);
