@@ -144,8 +144,25 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     //UpdateDisplayRange(2, _nScanend>0?_nScanend:1 , _nScanPos) ;
-    emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+    if(_scanner.fScanPos == _scanner.fScanStart2)
+    {
 
+        m_PosStart = _scanner.fScanPos;
+        m_PosStop  = _scanner.fScanPos + _nWidth;
+
+    }
+    if(_nWidth <_nScanend)
+    {
+        _nScanend = _nWidth;
+        int _nScanPos	 = _process->GetScanIndexPos() ;
+        UpdateDisplayRange(2, _nWidth , _nScanPos) ;
+    }
+    else
+    {
+        m_PosStart = _nStart;
+        m_PosStop  = _nStart+_nScanend;
+        emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+    }
     if(0 == lawstop && _nLawQty > 0)
     {
         lawstop = _nLawQty;
@@ -173,7 +190,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetRealScanMax() + _nScanOff;
-    for(i = _nStart , j = 0 ; i <= _nStart+_nScanend && j < (_nScanend); i++ , j++) {
+    for(i = m_PosStart , j = 0 ; i <= m_PosStop && j < (_nScanend); i++ , j++) {
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			GetPixValueInfo(i, eGate_, _aGateValue);
             for(k = lawstart ; k < lawstop ; k++) {
@@ -219,9 +236,27 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     int lawstop     =_process->GetLawStop();
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    if(_scanner.fScanPos == _scanner.fScanStart2)
+    {
+
+        m_PosStart = _scanner.fScanPos;
+        m_PosStop  = _scanner.fScanPos + _nWidth;
+
+    }
+    if(_nWidth < _nScanend)
+    {
+        _nScanend = _nWidth;
+        int _nScanPos	 = _process->GetScanIndexPos() ;
+        UpdateDisplayRange(2, _nWidth , _nScanPos) ;
+    }
+    else
+    {
+        m_PosStart = _nStart;
+        m_PosStop  = _nStart+_nScanend;
+        emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+    }
     //int _nScanPos	 = _process->GetScanIndexPos()  ;
     //UpdateDisplayRange(2, _nScanend>0?_nScanend:1 , _nScanPos);
-    emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
 
     if(0 == lawstop && _nLawQty > 0)
     {
@@ -246,7 +281,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetScanMax();
 
-    for(i = _nStart , j = 0 ; i <= _nStart+_nScanend && j < (_nScanend); i++ , j++) {
+    for(i = m_PosStart , j = 0 ; i <= m_PosStop && j < (_nScanend); i++ , j++) {
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			if(eGate2_)	{
 				GetPixValueInfo(i, eGate1_, _aGateValue1);
@@ -404,7 +439,25 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     //UpdateDisplayRange(3, _nScanend>0?_nScanend:1 , _nScanPos) ;
-    emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+    if(_scanner.fScanPos == _scanner.fScanStart2)
+    {
+
+        m_PosStart = _scanner.fScanPos;
+        m_PosStop  = _scanner.fScanPos + _nWidth;
+
+    }
+    if(_nHeight < _nScanend)
+    {
+        _nScanend = _nHeight;
+        int _nScanPos	 = _process->GetScanIndexPos() ;
+        UpdateDisplayRange(3, _nHeight , _nScanPos) ;
+    }
+    else
+    {
+        m_PosStart = _nStart;
+        m_PosStop  = _nStart+_nScanend;
+        emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+    }
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
     if(0 == lawstop && _nLawQty > 0)
@@ -434,7 +487,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetRealScanMax() + _nScanOff;
 
-    for(i = _nStart , j = _nScanend - 1 ; i <= _nStart + _nScanend && j >= 0; i++ , j--) {
+    for(i = m_PosStart , j = _nScanend - 1 ; i <= m_PosStop && j >= 0; i++ , j--) {
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			GetPixValueInfo(i, eGate_, _aGateValue);
 			_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
@@ -479,7 +532,25 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     //UpdateDisplayRange(3, _nScanend>0?_nScanend:1 , _nScanPos) ;
-    emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+    if(_scanner.fScanPos == _scanner.fScanStart2)
+    {
+
+        m_PosStart = _scanner.fScanPos;
+        m_PosStop  = _scanner.fScanPos + _nWidth;
+
+    }
+    if(_nHeight < _nScanend)
+    {
+        _nScanend = _nHeight;
+        int _nScanPos	 = _process->GetScanIndexPos() ;
+        UpdateDisplayRange(3, _nHeight , _nScanPos) ;
+    }
+    else
+    {
+        m_PosStart = _nStart;
+        m_PosStop  = _nStart+_nScanend;
+        emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+    }
 
     if(0 == lawstop && _nLawQty > 0)
     {
@@ -505,7 +576,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetScanMax();
 
-    for(i = _nStart , j = _nScanend - 1 ; i <= _nStart + _nScanend && j >= 0; i++ , j--) {
+    for(i = m_PosStart , j = _nScanend - 1 ; i <= m_PosStop && j >= 0; i++ , j--) {
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			if(eGate2_) {
 				GetPixValueInfo(i, eGate1_, _aGateValue1);
