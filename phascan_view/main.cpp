@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     MainWindow _mainWindow;
     g_pMainWnd  = &_mainWindow;
     _mainWindow.show();
-    //_mainWindow.showMaximized();
+    _mainWindow.showMaximized();
     _mainWindow.setMinimumSize(_mainWindow.width(), _mainWindow.height());
 
     if(argc > 1) {
