@@ -6,7 +6,8 @@
 #include <gHeader.h>
 #include <process/ParameterProcess.h>
 #include "../ui/ProcessDisplay.h"
-
+int bHideCursor = 0;
+int HideMode = -1;
 static const QColor COLOR_GATE_A  =  QColor(255 , 0 , 0)   ;
 static const QColor COLOR_GATE_B  =  QColor(0 , 255 , 0)   ;
 static const QColor COLOR_GATE_I  =  QColor(255 , 255 , 0) ;
@@ -348,20 +349,20 @@ void DopplerViewItems::UpdateItemsCursor()
 	m_pCursor[0]->SetItemId(anCursorId[0]);
 	m_pCursor[1]->SetItemId(anCursorId[1]);
 	m_pCursor[2]->SetItemId(anCursorId[2]);
-	m_pCursor[3]->SetItemId(anCursorId[3]);
+    m_pCursor[3]->SetItemId(anCursorId[3]);
 	CursorMove(0 , afCursorPos[0])  ;
-	CursorMove(1 , afCursorPos[1])  ;
+    CursorMove(1 , afCursorPos[1])  ;
 	CursorMove(2 , afCursorPos[2])  ;
-	CursorMove(3 , afCursorPos[3])  ;
+    CursorMove(3 , afCursorPos[3])  ;
 
 	m_pCursor[0]->SetScenceSize(m_pDataView->GetViewSize());
 	m_pCursor[1]->SetScenceSize(m_pDataView->GetViewSize());
 	m_pCursor[2]->SetScenceSize(m_pDataView->GetViewSize());
-	m_pCursor[3]->SetScenceSize(m_pDataView->GetViewSize());
+    m_pCursor[3]->SetScenceSize(m_pDataView->GetViewSize());
 	m_pCursor[0]->show() ;
-	m_pCursor[1]->show() ;
+    m_pCursor[1]->show() ;
 	m_pCursor[2]->show() ;
-	m_pCursor[3]->show() ;
+    m_pCursor[3]->show() ;
 
 	if(m_eShow & OVERLAYS_PARABOLA)
 	{
@@ -376,7 +377,7 @@ void DopplerViewItems::UpdateItemsCursor()
 		m_pParabola[0]->SetPoint(_pos1);
 
 		m_pParabola[0]->setPos(_pos);
-		m_pParabola[0]->show();
+        m_pParabola[0]->show();
 
 
 		if(!m_pParabola[1])
@@ -390,8 +391,35 @@ void DopplerViewItems::UpdateItemsCursor()
 		m_pParabola[1]->SetPoint(_pos1);
 
 		m_pParabola[1]->setPos(_pos);
-		m_pParabola[1]->show();
+        m_pParabola[1]->show();
 	}
+    
+    if(bHideCursor)
+    {
+        if(HideMode == 0)
+        {
+            if(m_pCursor[0])  m_pCursor[0]->hide() ;
+            if(m_pCursor[1])  m_pCursor[1]->hide() ;
+        }
+        else if(HideMode == 2)
+        {
+            if(m_pCursor[2])  m_pCursor[2]->hide() ;
+            if(m_pCursor[3])  m_pCursor[3]->hide() ;
+            qDebug()<<"hide here"<<endl;
+        }
+
+        if(anCursorId[2] == setup_CURSOR_VPA_REF)
+        {
+            if(m_pCursor[2])  m_pCursor[2]->hide() ;
+            if(m_pCursor[3])  m_pCursor[3]->hide() ;
+        }
+        else if(anCursorId[0] == setup_CURSOR_VPA_REF)
+        {
+            if(m_pCursor[0])  m_pCursor[0]->hide() ;
+            if(m_pCursor[1])  m_pCursor[1]->hide() ;
+        }
+
+    }
 }
 
 void DopplerViewItems::UpdateItemsLawMarker()

@@ -11,7 +11,7 @@
 #include <QPushButton>
 
 const int MAX_ITEM_QTY = 50;
-
+extern int bHideCursor;
 //  Description: 所有显示窗口类型
 static const char* g_strDisplayMode[] =
 {
@@ -2097,4 +2097,11 @@ void DopplerGroupTab::on_CheckCurveShow_clicked(bool checked)
 {
     m_pGroup->bShowCurve = checked ;
     g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_CheckCursorHide_clicked(bool checked)
+{
+    bHideCursor = checked;
+    ProcessDisplay _display ;
+    _display.UpdateAllViewOverlay();
 }
