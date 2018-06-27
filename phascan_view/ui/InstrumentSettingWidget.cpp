@@ -146,6 +146,7 @@ void InstrumentSettingWidget::UpdateScanPos()
     int _nPos = _process->SAxisDistToIndex(_scanner.fScanPos);
 
     ui->SpinBoxCurrentScanPos->setValue(_fScanPos) ;
+    ui->SpinBoxCurrentScanstart->setValue(_scanner.fScanStart2) ;
     ui->SpinBoxCurrentScanend->setValue(_scanner.fScanend) ;
     double fstart,fstop,fstart2,fstop2,fstep;
     _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);

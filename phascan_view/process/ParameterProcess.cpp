@@ -1368,6 +1368,11 @@ float ParameterProcess::GetScanStop() const
     return m_pConfig->common.scanner.fScanStop;
 }
 
+float ParameterProcess::GetScanStart2() const
+{
+    return m_pConfig->common.scanner.fScanStart;
+}
+
 float ParameterProcess::GetScanend() const
 {
     return m_pConfig->common.scanner.fScanend;
@@ -1381,6 +1386,12 @@ int ParameterProcess::GetLawStart() const
 int ParameterProcess::GetLawStop() const
 {
     return m_pConfig->common.scanner.fLawStop;
+}
+
+void ParameterProcess::ChangeLawStart(int lawstart) const
+{
+    SCANNER& _scan = m_pConfig->common.scanner  ;
+    _scan.fLawStart = lawstart;
 }
 
 void ParameterProcess::ChangeLawStop(int lawstop) const
@@ -1611,8 +1622,7 @@ void ParameterProcess::ChangeCscanIndexRange( double* fStart_ , double* fStop_,d
 void ParameterProcess::ChangeCscanIndexstart( double* fStart_ )
 {
     SCANNER& _scanner = m_pConfig->common.scanner;
-    _scanner.fLawStart = *fStart_ - 0.5;
-
+    _scanner.fLawStart = *fStart_;
     GROUP_CONFIG& _group = m_pConfig->group[currentgroup>0?currentgroup:0] ;
     if(setup_GROUP_MODE_PA == _group.eGroupMode)
     {
@@ -1629,7 +1639,7 @@ void ParameterProcess::ChangeCscanIndexstart( double* fStart_ )
 void ParameterProcess::ChangeCscanIndexstop( double* fStop_ )
 {
     SCANNER& _scanner = m_pConfig->common.scanner;
-    _scanner.fLawStop = *fStop_ - 0.5;
+    _scanner.fLawStop = *fStop_;
 
     GROUP_CONFIG& _group = m_pConfig->group[currentgroup>0?currentgroup:0] ;
     if(setup_GROUP_MODE_PA == _group.eGroupMode)
@@ -1642,6 +1652,14 @@ void ParameterProcess::ChangeCscanIndexstop( double* fStop_ )
             _scanner.fLawStop  =   (*fStop_ - _fStartAngle ) / _fStepAngle;
         }
     }
+}
+
+void ParameterProcess::ChangeCscanruler( int fscanstart, int fscanend)
+{
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    _scanner.fScanStart2 = fscanstart;
+    _scanner.fScanend = fscanend;
+
 }
 
 void ParameterProcess::GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_)

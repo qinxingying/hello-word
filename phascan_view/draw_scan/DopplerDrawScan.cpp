@@ -5,7 +5,7 @@
 #include <QPen>
 #include <QPointF>
 #include <assert.h>
-
+#include <qmath.h>
 DopplerDrawScan::DopplerDrawScan(QObject *parent) :
     QObject(parent)
 {
@@ -26,6 +26,42 @@ DrawInfo* DopplerDrawScan::GetDrawInfo()
 void DopplerDrawScan::SetColorIndex(void* pColor_)
 {
     m_pColor = (unsigned char (*)[3])pColor_ ;
+}
+
+void DopplerDrawScan::TransformImage(int x1,int y1,U8 src[2048][2048],int x2,int y2,QImage* pImage)
+{
+    double widthscale = (double)x1/x2;
+    double hightscale = (double)y1/y2;
+    int srcx = 0;
+    int srcy = 0;
+    float transx = 0.0;
+    float transy = 0.0;
+    float diffx = 0.0;
+    float diffy = 0.0;
+    float midy1,midy2;
+    int midy3;
+    int i;
+    int j;
+    U8* _pImageTmp;
+    U8* _pImageBits = pImage->bits() ;
+    int _nWidthStep   = pImage->bytesPerLine() ;
+    for(i=0;i<x2;i++)
+    {
+        transx = (i+0.5)*widthscale-0.5;
+        srcx = qFloor(transx);
+        diffx = transx - srcx;
+       for(j=0;j<y2;j++)
+       {
+           _pImageTmp = _pImageBits + j * _nWidthStep + i * 3 ;
+           transy = (j+0.5)*hightscale-0.5;
+           srcy = qFloor(transy);
+           diffy = transy -srcy;
+           midy1 = (src[srcx][srcy+1]-src[srcx][srcy])*diffy + src[srcx][srcy];
+           midy2 = (src[srcx+1][srcy+1]-src[srcx+1][srcy])*diffy + src[srcx+1][srcy];
+           midy3 = (1-diffx)*(1-diffy)*src[srcx][srcy] + (1-diffx)*(diffy)*src[srcx][srcy+1]+diffx*(1-diffy)*src[srcx+1][srcy]+diffx*diffy*src[srcx+1][srcy+1];
+           memcpy(_pImageTmp,&m_pColor[midy3],3);
+       }
+    }
 }
 
 #define MAX_SCAN_INDEX  10000

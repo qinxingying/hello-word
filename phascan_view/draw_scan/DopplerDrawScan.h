@@ -42,7 +42,7 @@ public:
     void SetDrawInfo(DrawInfo* cInfo_)  ;
     DrawInfo* GetDrawInfo();
     void SetColorIndex(void* pColor_) ;
-
+    void TransformImage(int x1,int y1,U8 src[2048][2048],int x2,int y2,QImage* pImage);
 
     virtual void Draw(QImage* pImage_) = 0;
     virtual void UpdateDrawInfo () = 0;
