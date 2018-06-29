@@ -183,7 +183,6 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
     U8* _pImageBits = TImage->bits() ;
     int _nWidthStep   = TImage->bytesPerLine() ;
-
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
 
@@ -198,7 +197,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             for(k = lawstart ; k < lawstop ; k++) {
                 _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
                 _nTmpValue = (0xFF & _aGateValue[k ])  * _fScale ;
-				if(_nTmpValue > 255)	_nTmpValue = 255 ;
+                if(_nTmpValue > 255)	_nTmpValue = 255 ;
                 src[j][k-lawstart]=_nTmpValue;
                 //memcpy(_pImageTmp, &m_pColor[_nTmpValue], 3);
 			}
@@ -207,7 +206,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 			if( *_pImageTmp || *(_pImageTmp + 1) || *(_pImageTmp+2)) {
                 for(k = lawstart ; k < lawstop ; k++) {
                     _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
-					memset(_pImageTmp, 0, 3);
+                    memset(_pImageTmp, 0, 3);
 				}
 			}
 		}
@@ -215,8 +214,6 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
         TransformImage(m_PosStop - m_PosStart,lawstop-lawstart,src,_nWidth,_nHeight,pImage_);
-
-
 
     delete TImage;
 }

@@ -10,7 +10,6 @@ DopplerDataFileOperateor::DopplerDataFileOperateor(QObject *parent) :
     m_pBeamData  = NULL ;
 }
 
-float g_field_distance_calibration[setup_MAX_GROUP_QTY][setup_MAX_GROUP_LAW_QTY]={0};
 DopplerDataFileOperateor::~DopplerDataFileOperateor()
 {
     if(m_file)
@@ -51,12 +50,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
         return -1 ;
     //得到采样数据
     m_pBeamData = m_file->map(m_cFileHead.size , m_cFileHead.reserved) ;
-    memset(g_field_distance_calibration,0,sizeof(g_field_distance_calibration));
-    if((m_cFileHead.version - m_cFileHead.size - m_cFileHead.reserved) == 2 )
-    {
-        unsigned char *p_distance = m_file->map(m_cFileHead.size + m_cFileHead.reserved,sizeof(g_field_distance_calibration));
-        memcpy(g_field_distance_calibration,p_distance,sizeof(g_field_distance_calibration));
-    }
+
     return 0 ;
 }
 

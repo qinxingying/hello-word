@@ -4,7 +4,7 @@
 #include <gHeader.h>
 
 PEAK_CONFIG g_PeakInfo[setup_GATE_MAX];
-extern float g_field_distance_calibration[setup_MAX_GROUP_QTY][setup_MAX_GROUP_LAW_QTY];
+
 CalcMeasurement::CalcMeasurement(QObject *parent) :
 	QObject(parent)
 {
@@ -170,7 +170,7 @@ int CalPDist(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResul
 	if(_nHeight > _fAmp)
 		ret  =  -1 ;
 	else
-        *pResult_ = g_PeakInfo[eGate_].fL + _process->GetBeamInsertPos(nGroupId_  , nLaw_) + g_field_distance_calibration[nGroupId_][nLaw_];
+        *pResult_ = g_PeakInfo[eGate_].fL + _process->GetBeamInsertPos(nGroupId_  , nLaw_) ;
 	return ret ;
 }
 
