@@ -108,7 +108,7 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
                 _pImg2  = _pImg1 + j * 3; //第j个像素
 				_pData2 = _pData1 + j * _nPointQty / _nWidth;
 				_iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
-                src[j][k] = _iData;
+                src[j+1][k+1] = _iData;
                 //memcpy(_pImg2, &m_pColor[_iData], 3);
 			}
 		} else {
@@ -122,17 +122,19 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
     }
     else if (zoomflag == 1)
     {
-        for(i = m_PosStart , k =_nScanend   ; i <= m_PosStop && k >= 0; i++ , k--)	{
+        for(i = m_PosStart - 1 , k =_nScanend+1   ; i <= m_PosStop + 1 && k >= -1; i++ , k--)	{
             if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
                 _index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
                 _pImg1  = _pImageBits + _nWidthStep * k ;//第K行
                 _pData1 = _pData + _nOffset + _index * _nFrameOffset;
 
-                for(j = currangestart ; j <= currangestop ; j++) {
+                for(j = currangestart - 1; j <= currangestop+1 ; j++) {
+                    if(j<0)
+                        continue;
                     _pImg2  = _pImg1 + j * 3; //第j个像素
                     _pData2 = _pData1 + j * _nPointQty / _nWidth;
                     _iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
-                    src[j-currangestart][k] = _iData;
+                    src[j-currangestart+1][k+1] = _iData;
                     //memcpy(_pImg2, &m_pColor[_iData], 3);
                 }
             } else {
@@ -226,7 +228,7 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
 				_pImg2  = _pImg1 + k * 3 ;
 				_pData2 = _pData1 + j * _nPointQty / _nHeight  ;
 				_iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
-                src[k][j] = _iData;
+                src[k+1][j+1] = _iData;
 			}
 		} else {
 			_pImg1 = _pImageBits + 3 * k ;
@@ -242,16 +244,18 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
     }
     else if(zoomflag == 1)
     { 
-        for(i = m_PosStart , k = 0 ; i <= m_PosStop && k <= _nScanend; i++ , k++) {
+        for(i = m_PosStart-1 , k = -1 ; i <= m_PosStop+1 && k <= _nScanend+1; i++ , k++) {
             _index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
             if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
                 _pData1 = _index * _nFrameOffset + _pData + _nOffset ;
-                for(j = currangestart ; j <= currangestop ; j++)	{
+                for(j = currangestart-1 ; j <= currangestop+1 ; j++)	{
+                    if(j < 0)
+                        continue;
                     _pImg1  = _pImageBits + _nWidthStep * j ;
                     _pImg2  = _pImg1 + k * 3 ;
                     _pData2 = _pData1 + j * _nPointQty / _nHeight  ;
                     _iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
-                    src[k][j-currangestart] = _iData;
+                    src[k+1][j-currangestart+1] = _iData;
                 }
             } else {
                 _pImg1 = _pImageBits + 3 * k ;

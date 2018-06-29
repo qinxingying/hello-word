@@ -50,12 +50,14 @@ void DopplerDrawScan::TransformImage(int x1,int y1,U8 src[2048][2048],int x2,int
         transx = (i+0.5)*widthscale-0.5;
         srcx = qFloor(transx);
         diffx = transx - srcx;
+        srcx += 1;
        for(j=0;j<y2;j++)
        {
            _pImageTmp = _pImageBits + j * _nWidthStep + i * 3 ;
            transy = (j+0.5)*hightscale-0.5;
            srcy = qFloor(transy);
            diffy = transy -srcy;
+           srcy+=1;
            midy1 = (src[srcx][srcy+1]-src[srcx][srcy])*diffy + src[srcx][srcy];
            midy2 = (src[srcx+1][srcy+1]-src[srcx+1][srcy])*diffy + src[srcx+1][srcy];
            midy3 = (1-diffx)*(1-diffy)*src[srcx][srcy] + (1-diffx)*(diffy)*src[srcx][srcy+1]+diffx*(1-diffy)*src[srcx+1][srcy]+diffx*diffy*src[srcx+1][srcy+1];
