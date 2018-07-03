@@ -60,7 +60,6 @@ protected:
         GATE_B = 8 ,
         GATE_I = 12
     };
-
     inline void GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pBuff_);
     inline void GetPixValuePos(U32* pBuff_);
     inline void GetPixValueDistance(U32* pBuff1_ , U32* pBuff2_);

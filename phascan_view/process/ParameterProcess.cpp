@@ -1035,7 +1035,8 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 {
 //	if(!pData_) return false;
 	memset(pInfo_, 0x00, 3*sizeof(PEAK_CONFIG));
-
+    DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG* config = &(m_pConfig->group[nGroupId_]);
 	int      _nPointQty = GetGroupPointQty(nGroupId_);
 	float _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
 	float _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
@@ -1076,7 +1077,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_I].fD     = GetDepth(pInfo_[setup_GATE_I].fH, _fThick);
 
 	pInfo_[setup_GATE_I].fAmp   = CalPeakAmp(pInfo_[setup_GATE_I].iY, _nRectify);
-	pInfo_[setup_GATE_I].fXdXA  = A_DB_B(pInfo_[setup_GATE_I].fAmp, pInfo_[setup_GATE_I].fGh);
+    pInfo_[setup_GATE_I].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_I].fAmp, pInfo_[setup_GATE_I].fGh);
 	//-----------------------------------
 	// A
 	_pGate = GetGateInfo(nGroupId_ , setup_GATE_A);
@@ -1113,7 +1114,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
 
     pInfo_[setup_GATE_A].fAmp   = CalPeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
-	pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
+    pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
 	//-----------------------------------
 	// B
 	_pGate = GetGateInfo(nGroupId_ , setup_GATE_B);
@@ -1153,7 +1154,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_B].fD     = GetDepth(pInfo_[setup_GATE_B].fH, _fThick);
 
 	pInfo_[setup_GATE_B].fAmp   = CalPeakAmp(pInfo_[setup_GATE_B].iY, _nRectify);
-	pInfo_[setup_GATE_B].fXdXA  = A_DB_B(pInfo_[setup_GATE_B].fAmp, pInfo_[setup_GATE_B].fGh);
+    pInfo_[setup_GATE_B].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_B].fAmp, pInfo_[setup_GATE_B].fGh);
 	return true;
 }
 
@@ -1396,6 +1397,11 @@ float ParameterProcess::GetScanStop() const
     return m_pConfig->common.scanner.fScanStop;
 }
 
+float ParameterProcess::GetScanStart2() const
+{
+    return m_pConfig->common.scanner.fScanStart;
+}
+
 float ParameterProcess::GetScanend() const
 {
     return m_pConfig->common.scanner.fScanend;
@@ -1409,6 +1415,12 @@ int ParameterProcess::GetLawStart() const
 int ParameterProcess::GetLawStop() const
 {
     return m_pConfig->common.scanner.fLawStop;
+}
+
+void ParameterProcess::ChangeLawStart(int lawstart) const
+{
+    SCANNER& _scan = m_pConfig->common.scanner  ;
+    _scan.fLawStart = lawstart;
 }
 
 void ParameterProcess::ChangeLawStop(int lawstop) const
@@ -1639,8 +1651,7 @@ void ParameterProcess::ChangeCscanIndexRange( double* fStart_ , double* fStop_,d
 void ParameterProcess::ChangeCscanIndexstart( double* fStart_ )
 {
     SCANNER& _scanner = m_pConfig->common.scanner;
-    _scanner.fLawStart = *fStart_ - 0.5;
-
+    _scanner.fLawStart = *fStart_;
     GROUP_CONFIG& _group = m_pConfig->group[currentgroup>0?currentgroup:0] ;
     if(setup_GROUP_MODE_PA == _group.eGroupMode)
     {
@@ -1657,7 +1668,7 @@ void ParameterProcess::ChangeCscanIndexstart( double* fStart_ )
 void ParameterProcess::ChangeCscanIndexstop( double* fStop_ )
 {
     SCANNER& _scanner = m_pConfig->common.scanner;
-    _scanner.fLawStop = *fStop_ - 0.5;
+    _scanner.fLawStop = *fStop_;
 
     GROUP_CONFIG& _group = m_pConfig->group[currentgroup>0?currentgroup:0] ;
     if(setup_GROUP_MODE_PA == _group.eGroupMode)
@@ -1670,6 +1681,14 @@ void ParameterProcess::ChangeCscanIndexstop( double* fStop_ )
             _scanner.fLawStop  =   (*fStop_ - _fStartAngle ) / _fStepAngle;
         }
     }
+}
+
+void ParameterProcess::ChangeCscanruler( int fscanstart, int fscanend)
+{
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    _scanner.fScanStart2 = fscanstart;
+    _scanner.fScanend = fscanend;
+
 }
 
 void ParameterProcess::GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_)

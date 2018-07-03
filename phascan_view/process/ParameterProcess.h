@@ -139,9 +139,11 @@ public:
 	U8* GetScanMarker(int nGroupId_) const;
     float GetScanStart() const;
     float GetScanStop() const;
+    float GetScanStart2() const;
     float GetScanend() const;
     int GetLawStart() const;
     int GetLawStop() const;
+    void ChangeLawStart(int lawstart) const;
     void ChangeLawStop(int lawstop) const;
     float GetScanPos() const;
 	int GetScanOff(int nGroupId_) const;
@@ -168,6 +170,7 @@ public:
     void ChangeCscanIndexRange( double* fStart_ , double* fStop_,double* fStart2_,double* fStop2_,double* fstep);
     void ChangeCscanIndexstart( double* fStart_ );
     void ChangeCscanIndexstop( double* fStop_ );
+    void ChangeCscanruler( int fscanstart, int fscanend);
     void  GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);
     int  GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_);
     void  GetSScanHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);

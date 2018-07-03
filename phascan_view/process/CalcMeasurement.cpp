@@ -157,12 +157,12 @@ int CalIMRCursor(int nGroupId_ , float* pResult_)
 
 int CalPDist(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResult_ )
 {
-    Q_UNUSED(eGate_)
+    //Q_UNUSED(eGate_)
 	int ret = 0;
 
 	ParameterProcess* _process = ParameterProcess::Instance() ;
-	float _nHeight = g_PeakInfo[setup_GATE_A].fGh ;
-	float _fAmp    = g_PeakInfo[setup_GATE_A].fAmp;
+    float _nHeight = g_PeakInfo[eGate_].fGh ;
+    float _fAmp    = g_PeakInfo[eGate_].fAmp;
 
 	_fAmp = fabs(_fAmp);
 	if(_nHeight < 1) _nHeight = 1  ;
@@ -170,7 +170,7 @@ int CalPDist(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResul
 	if(_nHeight > _fAmp)
 		ret  =  -1 ;
 	else
-		*pResult_ = g_PeakInfo[setup_GATE_A].fL + _process->GetBeamInsertPos(nGroupId_  , nLaw_);
+        *pResult_ = g_PeakInfo[eGate_].fL + _process->GetBeamInsertPos(nGroupId_  , nLaw_) ;
 	return ret ;
 }
 

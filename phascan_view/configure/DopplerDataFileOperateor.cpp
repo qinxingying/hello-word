@@ -50,6 +50,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
         return -1 ;
     //得到采样数据
     m_pBeamData = m_file->map(m_cFileHead.size , m_cFileHead.reserved) ;
+
     return 0 ;
 }
 

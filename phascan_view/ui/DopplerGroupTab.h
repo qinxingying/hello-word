@@ -189,6 +189,8 @@ private slots:
     void on_ValueIndexOffset_valueChanged(double);
     void on_CheckCurveShow_clicked(bool checked);
 
+    void on_CheckCursorHide_clicked(bool checked);
+
 private:
     Ui::DopplerGroupTab *ui;
 };

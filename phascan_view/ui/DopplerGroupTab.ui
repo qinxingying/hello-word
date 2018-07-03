@@ -7251,7 +7251,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-37</y>
         <width>333</width>
         <height>850</height>
        </rect>
@@ -7515,6 +7515,13 @@
                 </property>
                </widget>
               </item>
+              <item row="2" column="0" colspan="4">
+               <widget class="Line" name="line_7">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
               <item row="0" column="1">
                <widget class="QCheckBox" name="CheckCursorShow">
                 <property name="text">
@@ -7522,21 +7529,14 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="2">
+              <item row="0" column="3">
                <widget class="QCheckBox" name="CheckCursorSync">
                 <property name="text">
                  <string>Cursor Sync</string>
                 </property>
                </widget>
               </item>
-              <item row="1" column="0" colspan="3">
-               <widget class="Line" name="line_7">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0" colspan="3">
+              <item row="3" column="0" colspan="4">
                <layout class="QGridLayout" name="gridLayout_16">
                 <item row="0" column="1">
                  <widget class="QDoubleSpinBox" name="ValueARef">
@@ -8049,6 +8049,13 @@
                  </widget>
                 </item>
                </layout>
+              </item>
+              <item row="0" column="2">
+               <widget class="QCheckBox" name="CheckCursorHide">
+                <property name="text">
+                 <string>Hide</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>

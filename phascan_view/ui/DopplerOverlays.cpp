@@ -1,7 +1,8 @@
 #include "DopplerOverlays.h"
 #include "DopplerConfigure.h"
 #include "DopplerViewItems.h"
-
+extern int bHideCursor;
+extern int HideMode;
 DopplerOverlays::DopplerOverlays(QObject *parent) :
 	QObject(parent)
 {
@@ -112,6 +113,10 @@ void DopplerOverlays::CreateOverlaysAH()
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_A_MES);
 		_pItemGroup->SetCursorId(2 , setup_CURSOR_U_REF);
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_U_MES);
+        if(bHideCursor)
+        {
+            HideMode = -1;
+        }
 	}
 
 	if(_group.bShowThickness)
@@ -172,6 +177,10 @@ void DopplerOverlays::CreateOverlaysAV()
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_U_MES);
 		_pItemGroup->SetCursorId(2 , setup_CURSOR_A_REF);
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_A_MES);
+        if(bHideCursor)
+        {
+            HideMode = -1;
+        }
 	}
 
 	if(_group.bShowThickness)
@@ -248,6 +257,10 @@ void DopplerOverlays::CreateOverlaysBH()
 			_pItemGroup->EnableItems(OVERLAYS_PARABOLA);
 			_pItemGroup->SetParabolaDirection(false);
 		}
+        if(bHideCursor)
+        {
+            HideMode = -1;
+        }
 	}
 
 	if(_group.bShowThickness)
@@ -334,6 +347,10 @@ void DopplerOverlays::CreateOverlaysBV()
 			_pItemGroup->EnableItems(OVERLAYS_PARABOLA);
 			_pItemGroup->SetParabolaDirection(true);
 		}
+        if(bHideCursor)
+        {
+            HideMode = -1;
+        }
 	}
 
 	if(_group.bShowThickness)
@@ -371,6 +388,10 @@ void DopplerOverlays::CreateOverlaysCH()
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_VPA_MES);
 		_pItemGroup->SetCursorId(2 , setup_CURSOR_S_REF);
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_S_MES);
+        if(bHideCursor)
+        {
+            HideMode = 0;
+        }
 	}
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(false);
@@ -400,6 +421,10 @@ void DopplerOverlays::CreateOverlaysCV()
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_VPA_MES);
 		_pItemGroup->SetCursorId(0 , setup_CURSOR_S_REF);
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_S_MES);
+        if(bHideCursor)
+        {
+            HideMode = 2;
+        }
 	}
 
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
@@ -541,6 +566,10 @@ void DopplerOverlays::CreateOverlaysSA()
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_U_MES);
 		_pItemGroup->SetCursorId(2 , setup_CURSOR_I_REF);
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_I_MES);
+        if(bHideCursor)
+        {
+            HideMode = 2;
+        }
 	}
 
 	if(group.bShowThickness)
@@ -619,6 +648,10 @@ void DopplerOverlays::CreateOverlaysSL()
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_U_MES);
 		_pItemGroup->SetCursorId(2 , setup_CURSOR_I_REF);
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_I_MES);
+        if(bHideCursor)
+        {
+            HideMode = 2;
+        }
 	}
 
 	if(group.bShowThickness)
