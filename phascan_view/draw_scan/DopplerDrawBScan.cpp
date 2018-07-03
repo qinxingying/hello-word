@@ -112,10 +112,10 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
                 //memcpy(_pImg2, &m_pColor[_iData], 3);
 			}
 		} else {
-			_pImg1 = _pImageBits + _nWidthStep * k ;
-			if(*_pImg1  || *(_pImg1+1) || *(_pImg1+2)) {
-				memset(_pImg1 , 0 , _nWidthStep) ;
-			}
+//			_pImg1 = _pImageBits + _nWidthStep * k ;
+//			if(*_pImg1  || *(_pImg1+1) || *(_pImg1+2)) {
+//				memset(_pImg1 , 0 , _nWidthStep) ;
+//			}
 		}
 	}
      TransformImage(_nWidth,m_PosStop-m_PosStart,src,_nWidth,_nHeight,pImage_);
@@ -138,10 +138,10 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
                     //memcpy(_pImg2, &m_pColor[_iData], 3);
                 }
             } else {
-                _pImg1 = _pImageBits + _nWidthStep * k ;
-                if(*_pImg1  || *(_pImg1+1) || *(_pImg1+2)) {
-                    memset(_pImg1 , 0 , _nWidthStep) ;
-                }
+//                _pImg1 = _pImageBits + _nWidthStep * k ;
+//                if(*_pImg1  || *(_pImg1+1) || *(_pImg1+2)) {
+//                    memset(_pImg1 , 0 , _nWidthStep) ;
+//                }
             }
         }
          TransformImage(currangestop-currangestart,m_PosStop-m_PosStart,src,_nWidth,_nHeight,pImage_);
@@ -231,13 +231,13 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
                 src[k+1][j+1] = _iData;
 			}
 		} else {
-			_pImg1 = _pImageBits + 3 * k ;
-			if(*_pImg1  || *(_pImg1+1) || *(_pImg1+2)) {
-                for(j = 0 ; j < _nHeight ; j++) {
-					_pImg2 = _pImg1 +  _nWidthStep * j ;
-					memset(_pImg2, 0, 3);
-				}
-			}
+//			_pImg1 = _pImageBits + 3 * k ;
+//			if(*_pImg1  || *(_pImg1+1) || *(_pImg1+2)) {
+//                for(j = 0 ; j < _nHeight ; j++) {
+//					_pImg2 = _pImg1 +  _nWidthStep * j ;
+//					memset(_pImg2, 0, 3);
+//				}
+//			}
 		}
 	}
     TransformImage(m_PosStop-m_PosStart,_nHeight,src,_nWidth,_nHeight,pImage_);
@@ -258,13 +258,13 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
                     src[k+1][j-currangestart+1] = _iData;
                 }
             } else {
-                _pImg1 = _pImageBits + 3 * k ;
-                if(*_pImg1  || *(_pImg1+1) || *(_pImg1+2)) {
-                    for(j = currangestart; j < currangestop ; j++) {
-                        _pImg2 = _pImg1 +  _nWidthStep * j ;
-                        memset(_pImg2, 0, 3);
-                    }
-                }
+//                _pImg1 = _pImageBits + 3 * k ;
+//                if(*_pImg1  || *(_pImg1+1) || *(_pImg1+2)) {
+//                    for(j = currangestart; j < currangestop ; j++) {
+//                        _pImg2 = _pImg1 +  _nWidthStep * j ;
+//                        memset(_pImg2, 0, 3);
+//                    }
+//                }
             }
         }
         TransformImage(m_PosStop-m_PosStart,currangestop-currangestart,src,_nWidth,_nHeight,pImage_);

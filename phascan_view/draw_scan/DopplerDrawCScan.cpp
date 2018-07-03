@@ -206,13 +206,13 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 //memcpy(_pImageTmp, &m_pColor[_nTmpValue], 3);
 			}
 		} else {
-			_pImageTmp = _pImageBits + j * 3 ;
-			if( *_pImageTmp || *(_pImageTmp + 1) || *(_pImageTmp+2)) {
-                for(k = lawstart ; k < lawstop ; k++) {
-                    _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
-                    memset(_pImageTmp, 0, 3);
-				}
-			}
+//			_pImageTmp = _pImageBits + j * 3 ;
+//			if( *_pImageTmp || *(_pImageTmp + 1) || *(_pImageTmp+2)) {
+//                for(k = lawstart ; k < lawstop ; k++) {
+//                    _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
+//                    memset(_pImageTmp, 0, 3);
+//				}
+//			}
 		}
 	}
     _pData = pImage_->bits() ;
@@ -310,14 +310,14 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 //memcpy(_pImageTmp, _pColorTmp, 3);
 			}
 		} else {
-			_pImageTmp = _pImageBits + j * 3 ;
-			if( *_pImageTmp || *(_pImageTmp + 1) || *(_pImageTmp+2)) {
-                for(k = lawstart ; k < lawstop ; k++)
-				{
-                    _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
-					memset(_pImageTmp, 0x00, 3);
-				}
-			}
+//			_pImageTmp = _pImageBits + j * 3 ;
+//			if( *_pImageTmp || *(_pImageTmp + 1) || *(_pImageTmp+2)) {
+//                for(k = lawstart ; k < lawstop ; k++)
+//				{
+//                    _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
+//					memset(_pImageTmp, 0x00, 3);
+//				}
+//			}
 		}
 	}
     _pData = pImage_->bits() ;
@@ -515,10 +515,10 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 //memcpy(_pImageTmp2, &m_pColor[_nTmpValue], 3);
 			}
 		} else {
-			_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
-			if( *_pImageTmp1 || *(_pImageTmp1 + 1) || *(_pImageTmp1+2)) {
-				memset(_pImageTmp1 , 0 , _nWidthStep);
-			}
+//			_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
+//			if( *_pImageTmp1 || *(_pImageTmp1 + 1) || *(_pImageTmp1+2)) {
+//				memset(_pImageTmp1 , 0 , _nWidthStep);
+//			}
 		}
 	}
     _pData = pImage_->bits() ;
@@ -616,10 +616,10 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 //memcpy(_pImageTmp2, _pColorTmp, 3);
 			}
 		} else {
-			_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
-			if( *_pImageTmp1 || *(_pImageTmp1 + 1) || *(_pImageTmp1+2)) {
-				memset(_pImageTmp1 , 0 , _nWidthStep);
-			}
+//			_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
+//			if( *_pImageTmp1 || *(_pImageTmp1 + 1) || *(_pImageTmp1+2)) {
+//				memset(_pImageTmp1 , 0 , _nWidthStep);
+//			}
 		}
 	}
     _pData = pImage_->bits() ;
