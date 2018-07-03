@@ -3,6 +3,8 @@
 #include <QImage>
 #include <QColor>
 
+int Bscan_range = 0;
+int Bsrc_start = 0;
 DopplerDrawBScanH::DopplerDrawBScanH(QObject *parent) :
 	DopplerDrawScan(parent)
 {
@@ -54,7 +56,7 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
 	S32 _nScanPos	 = _process->GetScanIndexPos();
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
-
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     if(_scanner.fScanPos == _scanner.fScanStart2)
     {
         m_PosStart = _scanner.fScanPos;
@@ -63,7 +65,23 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
     if(_nHeight <_nScanend)
     {
         _nScanend = _nHeight;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            if(Bscan_range == _nScanend)
+            {
+                m_PosStart = Bsrc_start;
+                m_PosStop = Bsrc_start + _nScanend;
+            }
+            else
+            {
+                Bscan_range = _nScanend;
+            }
+        }
         UpdateDisplayRange(0, _nHeight , _nScanPos) ;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            Bsrc_start = m_PosStart;
+        }
     }
     else
     {
@@ -172,7 +190,7 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
 		m_hMutex.unlock();
 		return ;
 	}
-
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 	S32 _nScanPos	 = _process->GetScanIndexPos();
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
@@ -184,7 +202,23 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
     if(_nWidth <_nScanend)
     {
         _nScanend = _nWidth;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            if(Bscan_range == _nScanend)
+            {
+                m_PosStart = Bsrc_start;
+                m_PosStop = Bsrc_start + _nScanend;
+            }
+            else
+            {
+                Bscan_range = _nScanend;
+            }
+        }
         UpdateDisplayRange(1, _nWidth , _nScanPos) ;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            Bsrc_start = m_PosStart;
+        }
     }
     else
     {

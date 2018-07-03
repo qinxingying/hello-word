@@ -10,7 +10,7 @@
 
 #include <report/DopplerHtmlReport.h>
 #include <process/ParameterProcess.h> 
-
+extern int Cscan_range,Csrc_start,Bscan_range,Bsrc_start;
 static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 	"Default PA" ,
 	"Doppler Serial" ,
@@ -742,6 +742,10 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	DRAW_INFO_PACK* _pack = pConf_->GetDrawInfo();
 	common.nGroupQty = _pack->nGroupNum ;
     common.scanner.fPrf  = pConf_->GetGroupInfo(0)->prf1 / 10.0;
+    Cscan_range = 0;
+    Csrc_start = 0;
+    Bscan_range = 0;
+    Bsrc_start = 0;
 	if(_pack->nEncodeType)
 	{
         common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;

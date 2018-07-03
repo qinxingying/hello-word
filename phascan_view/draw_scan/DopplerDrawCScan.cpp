@@ -4,6 +4,8 @@
 #include <gHeader.h>
 
 extern int lastgroup,currentgroup;
+int Cscan_range = 0;
+int Csrc_start = 0;
 DopplerDrawCScanH::DopplerDrawCScanH(QObject *parent) : DopplerDrawScan(parent)
 {
 	m_PosStart = 0  ;
@@ -138,7 +140,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 	U8* _pImageTmp;// , *_pColorTmp;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
     SCANNER& _scanner = m_pConfig->common.scanner;
-
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     ParameterProcess* _process = ParameterProcess::Instance();
     int _nLawQty	  = m_CScanInfo.nLawQty   ;
     int lawstart    =_process->GetLawStart();
@@ -156,8 +158,28 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     if(_nWidth <_nScanend)
     {
         _nScanend = _nWidth;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            qDebug()<<"Cscan_range is "<<Cscan_range<<endl;
+            qDebug()<<"_nScanend is "<<_nScanend<<endl;
+            if(Cscan_range == _nScanend)
+            {
+                m_PosStart = Csrc_start;
+                m_PosStop = Csrc_start + _nScanend;
+            }
+            else
+            {
+                Cscan_range = _nScanend;
+            }
+        }
+        
         int _nScanPos	 = _process->GetScanIndexPos() ;
         UpdateDisplayRange(2, _nWidth , _nScanPos) ;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            Csrc_start = m_PosStart;
+        }
+
     }
     else
     {
@@ -237,7 +259,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
     SCANNER& _scanner = m_pConfig->common.scanner;
-
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 	ParameterProcess* _process = ParameterProcess::Instance();
     int lawstart    =_process->GetLawStart();
     int lawstop     =_process->GetLawStop();
@@ -253,8 +275,24 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     if(_nWidth < _nScanend)
     {
         _nScanend = _nWidth;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            if(Cscan_range == _nScanend)
+            {
+                m_PosStart = Csrc_start;
+                m_PosStop = Csrc_start + _nScanend;
+            }
+            else
+            {
+                Cscan_range = _nScanend;
+            }
+        }
         int _nScanPos	 = _process->GetScanIndexPos() ;
         UpdateDisplayRange(2, _nWidth , _nScanPos) ;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            Csrc_start = m_PosStart;
+        }
     }
     else
     {
@@ -443,7 +481,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     //U8* _pImageBits = pImage_->bits() ;
 	U8* _pImageTmp1 , *_pImageTmp2;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
-
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 	ParameterProcess* _process = ParameterProcess::Instance();
     SCANNER& _scanner = m_pConfig->common.scanner;
     int lawstart    =_process->GetLawStart();
@@ -461,8 +499,24 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     if(_nHeight < _nScanend)
     {
         _nScanend = _nHeight;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            if(Cscan_range == _nScanend)
+            {
+                m_PosStart = Csrc_start;
+                m_PosStop = Csrc_start + _nScanend;
+            }
+            else
+            {
+                Cscan_range = _nScanend;
+            }
+        }
         int _nScanPos	 = _process->GetScanIndexPos() ;
         UpdateDisplayRange(3, _nHeight , _nScanPos) ;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            Csrc_start = m_PosStart;
+        }
     }
     else
     {
@@ -541,6 +595,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     //int _nWidthStep   = pImage_->bytesPerLine() ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 	ParameterProcess* _process = ParameterProcess::Instance();
     SCANNER& _scanner = m_pConfig->common.scanner;
     int lawstart    =_process->GetLawStart();
@@ -558,8 +613,24 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     if(_nHeight < _nScanend)
     {
         _nScanend = _nHeight;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            if(Cscan_range == _nScanend)
+            {
+                m_PosStart = Csrc_start;
+                m_PosStop = Csrc_start + _nScanend;
+            }
+            else
+            {
+                Cscan_range = _nScanend;
+            }
+        }
         int _nScanPos	 = _process->GetScanIndexPos() ;
         UpdateDisplayRange(3, _nHeight , _nScanPos) ;
+        if(_pConfig->AppEvn.bSAxisCursorSync)
+        {
+            Csrc_start = m_PosStart;
+        }
     }
     else
     {
