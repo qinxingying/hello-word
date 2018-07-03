@@ -1007,7 +1007,8 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 {
 //	if(!pData_) return false;
 	memset(pInfo_, 0x00, 3*sizeof(PEAK_CONFIG));
-
+    DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG* config = &(m_pConfig->group[nGroupId_]);
 	int      _nPointQty = GetGroupPointQty(nGroupId_);
 	float _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
 	float _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
@@ -1048,7 +1049,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_I].fD     = GetDepth(pInfo_[setup_GATE_I].fH, _fThick);
 
 	pInfo_[setup_GATE_I].fAmp   = CalPeakAmp(pInfo_[setup_GATE_I].iY, _nRectify);
-	pInfo_[setup_GATE_I].fXdXA  = A_DB_B(pInfo_[setup_GATE_I].fAmp, pInfo_[setup_GATE_I].fGh);
+    pInfo_[setup_GATE_I].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_I].fAmp, pInfo_[setup_GATE_I].fGh);
 	//-----------------------------------
 	// A
 	_pGate = GetGateInfo(nGroupId_ , setup_GATE_A);
@@ -1085,7 +1086,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
 
     pInfo_[setup_GATE_A].fAmp   = CalPeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
-	pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
+    pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
 	//-----------------------------------
 	// B
 	_pGate = GetGateInfo(nGroupId_ , setup_GATE_B);
@@ -1125,7 +1126,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_B].fD     = GetDepth(pInfo_[setup_GATE_B].fH, _fThick);
 
 	pInfo_[setup_GATE_B].fAmp   = CalPeakAmp(pInfo_[setup_GATE_B].iY, _nRectify);
-	pInfo_[setup_GATE_B].fXdXA  = A_DB_B(pInfo_[setup_GATE_B].fAmp, pInfo_[setup_GATE_B].fGh);
+    pInfo_[setup_GATE_B].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_B].fAmp, pInfo_[setup_GATE_B].fGh);
 	return true;
 }
 
