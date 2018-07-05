@@ -57,8 +57,8 @@ protected:
 
 	QVector<qreal> m_dashes;
 
-	void DrawDacCurve(QPainter *painter, int nWidth_, int nHeight_);
-	void DrawLinearDacCurve(QPainter *painter, int nWidth_, int nHeight_);
+    void DrawDacCurve(QPainter *painter, int nWidth_, int nHeight_,int mode);
+    void DrawLinearDacCurve(QPainter *painter, int nWidth_, int nHeight_,int mode);
 	void DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_);
 	void DrawPointRectangle(QPainter *painter_, float x_, float y_, QColor color_);
 	void ClearAll(QPainter *painter_);
@@ -77,8 +77,8 @@ public:
 	virtual void Draw (QImage* pImage_);
 
 protected:
-	void DrawDacCurve(QPainter *painter, int nWidth_, int nHeight_);
-	void DrawLinearDacCurve(QPainter *painter, int nWidth_, int nHeight_);
+    void DrawDacCurve(QPainter *painter, int nWidth_, int nHeight_,int mode);
+    void DrawLinearDacCurve(QPainter *painter, int nWidth_, int nHeight_,int mode);
 	void DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_);
 signals:
 

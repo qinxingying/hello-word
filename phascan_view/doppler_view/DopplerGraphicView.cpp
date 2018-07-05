@@ -1035,7 +1035,7 @@ void DopplerGraphicView::UpdateDrawing()
 	if(m_pDrawScan)
 	{
 
-		m_pBackGround->m_hMutex.lock();
+        m_pBackGround->m_hMutex.lock();
             m_pDrawScan->Draw (m_pBackGround->GetBaseImage());
 		m_pBackGround->m_hMutex.unlock();
 	}

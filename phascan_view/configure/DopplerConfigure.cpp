@@ -335,13 +335,14 @@ void DopplerConfigure::SaveConfig(QString& path_)
 	}
 	file.close();
 }
-
+extern int zoomflag;
 int DopplerConfigure::OpenData(QString& path_)
 {
 	FilePathPro(path_);
 
 	int ret = m_pDataFile->LoadDataFile(m_szFileInUse) ;
 	if(ret)  return -1;
+    zoomflag = 0;
 	OldConfigureToConfigure(m_pDataFile);
 	OldGroupToGroup(m_pDataFile) ;
 	m_pData = m_pDataFile->GetData();
@@ -1126,6 +1127,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_process->TofdCursorCalibration(i);
 
 	}
+    CUR_RES.bShowEL = CUR_RES.bShowRL = CUR_RES.bShowSL = CUR_RES.CurEL = CUR_RES.CurRL = CUR_RES.CurSL = 0;
 }
 
 void  DopplerConfigure::UpdateTofdConfig(int nGroupId_)

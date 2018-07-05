@@ -342,11 +342,31 @@ struct CURVES
 } ;
 //######################################################################
 //######################################################################
+
+struct CURVE_RL_EL_SL
+{
+    int CurRL;
+    int CurEL;
+    int CurSL;
+    int bShowRL;
+    int bShowEL;
+    int bShowSL;
+};
+
+extern CURVE_RL_EL_SL CUR_RES;
 enum setup_TRAVEL_MODE
 {
 	setup_TRAVEL_MODE_TRUE_DEPTH = 0,
 	setup_TRAVEL_MODE_HALF_PATH
 } ;
+
+enum DAC_MODE
+{
+    setup_DAC = 0,
+    setup_RL,
+    setup_EL,
+    setup_SL
+};
 
 enum setup_GROUP_MODE
 {

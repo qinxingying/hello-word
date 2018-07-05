@@ -191,6 +191,18 @@ private slots:
 
     void on_CheckCursorHide_clicked(bool checked);
 
+    void on_CheckRLShow_clicked(bool checked);
+
+    void on_ValueRL_valueChanged(double arg1);
+
+    void on_CheckELShow_clicked(bool checked);
+
+    void on_ValueEL_valueChanged(double arg1);
+
+    void on_CheckSLShow_clicked(bool checked);
+
+    void on_ValueSL_valueChanged(double arg1);
+
 private:
     Ui::DopplerGroupTab *ui;
 };

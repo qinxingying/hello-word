@@ -2105,3 +2105,39 @@ void DopplerGroupTab::on_CheckCursorHide_clicked(bool checked)
     ProcessDisplay _display ;
     _display.UpdateAllViewOverlay();
 }
+
+void DopplerGroupTab::on_CheckRLShow_clicked(bool checked)
+{
+    CUR_RES.bShowRL = checked;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueRL_valueChanged(double arg1)
+{
+    CUR_RES.CurRL = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_CheckELShow_clicked(bool checked)
+{
+    CUR_RES.bShowEL = checked;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueEL_valueChanged(double arg1)
+{
+    CUR_RES.CurEL = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_CheckSLShow_clicked(bool checked)
+{
+    CUR_RES.bShowSL = checked;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueSL_valueChanged(double arg1)
+{
+    CUR_RES.CurSL = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
