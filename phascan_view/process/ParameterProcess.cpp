@@ -414,6 +414,8 @@ int  ParameterProcess::SetupScanPos(float fScanPos_)
 		_fPos = _scaner.fScanStop;
 
 	_scaner.fScanPos = _fPos;
+    if(_scaner.fScanPos < _scaner.fScanStart2)
+        _scaner.fScanStart2 = _scaner.fScanPos;
     if(_scaner.fScanPos > _scaner.fScanend)
         _scaner.fScanend = _scaner.fScanPos;
 	return 0;
