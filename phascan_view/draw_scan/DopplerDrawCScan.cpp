@@ -135,7 +135,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     memset(_aGateValue, 0x00, sizeof(_aGateValue));
 	int _nHeight   = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
-
+    static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;
 	U8* _pImageTmp;// , *_pColorTmp;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
@@ -145,8 +145,30 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     int _nLawQty	  = m_CScanInfo.nLawQty   ;
     int lawstart    =_process->GetLawStart();
     int lawstop     =_process->GetLawStop();
+    int lawstart2 = lawstart;
+    int lawstop2 = lawstop;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    if(zoomflag == 1)
+    {
+        if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
+            flag = 1;
+        if(flag == 1)
+        {
+        if(_scanner.fScanPos < curscanstart)
+            curscanstart = _scanner.fScanPos;
+        if(_scanner.fScanPos > curscanstop)
+            curscanstop = _scanner.fScanPos;
+        }
+        _nStart     = _process->SAxisDistToIndex(curscanstart);
+        _nScanend    = _process->SAxisDistToIndex(curscanstop)-_nStart;
+        _process->ChangeCscanIndexstart(&curlawstart);
+        _process->ChangeCscanIndexstop(&curlawstop);
+        lawstart = _process->GetLawStart();
+        lawstop     =_process->GetLawStop();
+        _scanner.fLawStart = lawstart2;
+        _scanner.fLawStop = lawstop2;
+    }
     //UpdateDisplayRange(2, _nScanend>0?_nScanend:1 , _nScanPos) ;
     if(_scanner.fScanPos == _scanner.fScanStart2)
     {
@@ -158,6 +180,13 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     if(_nWidth <_nScanend)
     {
         _nScanend = _nWidth;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = srcCstart;
+            m_PosStop = srcCend;
+        }
         if(_pConfig->AppEvn.bSAxisCursorSync)
         {
             qDebug()<<"Cscan_range is "<<Cscan_range<<endl;
@@ -183,9 +212,21 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     }
     else
     {
-        m_PosStart = _nStart;
-        m_PosStop  = _nStart+_nScanend;
-        emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = srcCstart;
+            m_PosStop = srcCend;
+            _nScanend = m_PosStop - m_PosStart;
+            emit signalScanRangeMove(2, m_PosStart, m_PosStop) ;
+        }
+        else
+        {
+            m_PosStart = _nStart;
+            m_PosStop  = _nStart+_nScanend;
+            emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+        }
     }
     if(0 == lawstop && _nLawQty > 0)
     {
@@ -252,7 +293,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	memset(_aGateValue2, 0x00, sizeof(_aGateValue2));
 	int _nHeight	  = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
-
+    static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;
 	U8* _pImageTmp , *_pColorTmp;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
@@ -263,8 +304,30 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	ParameterProcess* _process = ParameterProcess::Instance();
     int lawstart    =_process->GetLawStart();
     int lawstop     =_process->GetLawStop();
+    int lawstart2 = lawstart;
+    int lawstop2 = lawstop;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    if(zoomflag == 1)
+    {
+        if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
+            flag = 1;
+        if(flag == 1)
+        {
+        if(_scanner.fScanPos < curscanstart)
+            curscanstart = _scanner.fScanPos;
+        if(_scanner.fScanPos > curscanstop)
+            curscanstop = _scanner.fScanPos;
+        }
+        _nStart     = _process->SAxisDistToIndex(curscanstart);
+        _nScanend    = _process->SAxisDistToIndex(curscanstop)-_nStart;
+        _process->ChangeCscanIndexstart(&curlawstart);
+        _process->ChangeCscanIndexstop(&curlawstop);
+        lawstart = _process->GetLawStart();
+        lawstop     =_process->GetLawStop();
+        _scanner.fLawStart = lawstart2;
+        _scanner.fLawStop = lawstop2;
+    }
     if(_scanner.fScanPos == _scanner.fScanStart2)
     {
 
@@ -275,6 +338,13 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     if(_nWidth < _nScanend)
     {
         _nScanend = _nWidth;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = srcCstart;
+            m_PosStop = srcCend;
+        }
         if(_pConfig->AppEvn.bSAxisCursorSync)
         {
             if(Cscan_range == _nScanend)
@@ -296,9 +366,21 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     }
     else
     {
-        m_PosStart = _nStart;
-        m_PosStop  = _nStart+_nScanend;
-        emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = srcCstart;
+            m_PosStop = srcCend;
+            _nScanend = m_PosStop - m_PosStart;
+            emit signalScanRangeMove(2, m_PosStart, m_PosStop) ;
+        }
+        else
+        {
+            m_PosStart = _nStart;
+            m_PosStop  = _nStart+_nScanend;
+            emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+        }
     }
     //int _nScanPos	 = _process->GetScanIndexPos()  ;
     //UpdateDisplayRange(2, _nScanend>0?_nScanend:1 , _nScanPos);
@@ -477,7 +559,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 	memset(_aGateValue, 0x00, sizeof(_aGateValue));
 	int _nHeight	  = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
-
+    static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;
 	U8* _pImageTmp1 , *_pImageTmp2;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
@@ -486,8 +568,30 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     SCANNER& _scanner = m_pConfig->common.scanner;
     int lawstart    =_process->GetLawStart();
     int lawstop     =_process->GetLawStop();
+    int lawstart2 = lawstart;
+    int lawstop2 = lawstop;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    if(zoomflag == 1)
+    {
+        if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
+            flag = 1;
+        if(flag == 1)
+        {
+        if(_scanner.fScanPos < curscanstart)
+            curscanstart = _scanner.fScanPos;
+        if(_scanner.fScanPos > curscanstop)
+            curscanstop = _scanner.fScanPos;
+        }
+        _nStart     = _process->SAxisDistToIndex(curscanstart);
+        _nScanend    =  _process->SAxisDistToIndex(curscanstop)-_nStart;
+        _process->ChangeCscanIndexstart(&curlawstart);
+        _process->ChangeCscanIndexstop(&curlawstop);
+        lawstart = _process->GetLawStart();
+        lawstop     =_process->GetLawStop();
+        _scanner.fLawStart = lawstart2;
+        _scanner.fLawStop = lawstop2;
+    }
     //UpdateDisplayRange(3, _nScanend>0?_nScanend:1 , _nScanPos) ;
     if(_scanner.fScanPos == _scanner.fScanStart2)
     {
@@ -499,6 +603,13 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     if(_nHeight < _nScanend)
     {
         _nScanend = _nHeight;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = srcCstart;
+            m_PosStop = srcCend;
+        }
         if(_pConfig->AppEvn.bSAxisCursorSync)
         {
             if(Cscan_range == _nScanend)
@@ -520,9 +631,21 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     }
     else
     {
-        m_PosStart = _nStart;
-        m_PosStop  = _nStart+_nScanend;
-        emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = srcCstart;
+            m_PosStop = srcCend;
+            _nScanend = m_PosStop - m_PosStart;
+            emit signalScanRangeMove(3, m_PosStart, m_PosStop) ;
+        }
+        else
+        {
+            m_PosStart = _nStart;
+            m_PosStop  = _nStart+_nScanend;
+            emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+        }
     }
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
@@ -589,7 +712,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	memset(_aGateValue2, 0x00, sizeof(_aGateValue2));
 	int _nHeight	  = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
-
+    static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;
 	U8* _pImageTmp1 , *_pImageTmp2 , *_pColorTmp;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
@@ -600,8 +723,30 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     SCANNER& _scanner = m_pConfig->common.scanner;
     int lawstart    =_process->GetLawStart();
     int lawstop     =_process->GetLawStop();
+    int lawstart2 = lawstart;
+    int lawstop2 = lawstop;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    if(zoomflag == 1)
+    {
+        if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
+            flag = 1;
+        if(flag == 1)
+        {
+        if(_scanner.fScanPos < curscanstart)
+            curscanstart = _scanner.fScanPos;
+        if(_scanner.fScanPos > curscanstop)
+            curscanstop = _scanner.fScanPos;
+        }
+        _nStart     = _process->SAxisDistToIndex(curscanstart);
+        _nScanend    =  _process->SAxisDistToIndex(curscanstop)-_nStart;
+        _process->ChangeCscanIndexstart(&curlawstart);
+        _process->ChangeCscanIndexstop(&curlawstop);
+        lawstart = _process->GetLawStart();
+        lawstop     =_process->GetLawStop();
+        _scanner.fLawStart = lawstart2;
+        _scanner.fLawStop = lawstop2;
+    }
     //UpdateDisplayRange(3, _nScanend>0?_nScanend:1 , _nScanPos) ;
     if(_scanner.fScanPos == _scanner.fScanStart2)
     {
@@ -613,6 +758,13 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     if(_nHeight < _nScanend)
     {
         _nScanend = _nHeight;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = srcCstart;
+            m_PosStop = srcCend;
+        }
         if(_pConfig->AppEvn.bSAxisCursorSync)
         {
             if(Cscan_range == _nScanend)
@@ -634,9 +786,21 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     }
     else
     {
-        m_PosStart = _nStart;
-        m_PosStop  = _nStart+_nScanend;
-        emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = srcCstart;
+            m_PosStop = srcCend;
+            _nScanend = m_PosStop - m_PosStart;
+            emit signalScanRangeMove(3, m_PosStart, m_PosStop) ;
+        }
+        else
+        {
+            m_PosStart = _nStart;
+            m_PosStop  = _nStart+_nScanend;
+            emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+        }
     }
 
     if(0 == lawstop && _nLawQty > 0)

@@ -335,14 +335,13 @@ void DopplerConfigure::SaveConfig(QString& path_)
 	}
 	file.close();
 }
-extern int zoomflag;
+
 int DopplerConfigure::OpenData(QString& path_)
 {
 	FilePathPro(path_);
 
 	int ret = m_pDataFile->LoadDataFile(m_szFileInUse) ;
 	if(ret)  return -1;
-    zoomflag = 0;
 	OldConfigureToConfigure(m_pDataFile);
 	OldGroupToGroup(m_pDataFile) ;
 	m_pData = m_pDataFile->GetData();

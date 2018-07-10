@@ -46,7 +46,21 @@ public:
 
     virtual void Draw(QImage* pImage_) = 0;
     virtual void UpdateDrawInfo () = 0;
-
+    int                 zoomflag;
+    float               srcscanstart;
+    float               srcscanstop;
+    float               curscanstart;
+    float               curscanstop;
+    float               srcCstart;
+    float               srcCend;
+    float               srcBstart;
+    float               srcBend;
+    int                 srclawstart;
+    int                 srclawstop;
+    double              curlawstart;
+    double              curlawstop;
+    int                 currangestart;
+    int                 currangestop;
 protected:
     virtual void UpdateDisplayRange(int nType_, int nRangle_ , int nPos_);
 protected:
@@ -57,6 +71,7 @@ protected:
 	QMutex				m_hMutex;
     int                 m_PosStart ;
     int                 m_PosStop  ;
+
 
 signals:
 	void signalScanRangeMove(int nType_, int nStart_, int nStop_) ;
