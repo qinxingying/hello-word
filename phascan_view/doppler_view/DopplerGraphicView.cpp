@@ -390,7 +390,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                             double _fScanStart , _fScanStop , _fSliderStart, _fSliderStop ;
                             double _nScaleX1,_nScaleX2,_nScaleY1,_nScaleY2;
                             double _fRangeStart,_fRangeStop;
-                            int scanstart , scanstop ;
+                            double scanstart , scanstop ;
                             double lawstart, lawstop ;
                             int lawstart2,lawstop2;
                             double flag1,flag2;
