@@ -196,7 +196,7 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
         }
          TransformImage(currangestop-currangestart,m_PosStop-m_PosStart,src,_nWidth,_nHeight,pImage_);
     }
-
+    delete TImage;
 	m_hMutex.unlock();
 }
 
@@ -368,5 +368,6 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
         }
         TransformImage(m_PosStop-m_PosStart,currangestop-currangestart,src,_nWidth,_nHeight,pImage_);
     }
+    delete TImage;
 	m_hMutex.unlock();
 }
