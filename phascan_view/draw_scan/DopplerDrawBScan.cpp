@@ -26,8 +26,7 @@ void DopplerDrawBScanH::UpdateDrawInfo()
 	m_hMutex.unlock();
 }
 extern U8 src[2048][2048];
-extern int zoomflag,srcrangestart,srcrangestop;
-extern int currangestart,currangestop;
+extern int srcrangestart,srcrangestop;
 
 void DopplerDrawBScanH::Draw (QImage* pImage_)
 {
@@ -41,7 +40,7 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
 	S32   _nHeight = pImage_->height();
 	S32	   _nWidth = pImage_->width() ;
 
-
+    static int flag = 0;
 
 //    U8* _pImageBits = pImage_->bits() ;//获取图像首地址
 //    S32 _nWidthStep = pImage_->bytesPerLine() ;//Image每行字节数
@@ -56,15 +55,36 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
 	S32 _nScanPos	 = _process->GetScanIndexPos();
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    if(zoomflag == 1)
+    {
+        if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
+            flag = 1;
+        if(flag == 1)
+        {
+            if((_scanner.fScanPos < curscanstart)&&(_process->SAxisDistToIndex(_scanner.fScanPos) >= _scanner.fScanStart))
+                curscanstart = _scanner.fScanPos;
+            if((_scanner.fScanPos > curscanstop)&&(_process->SAxisDistToIndex(_scanner.fScanPos) <= _scanner.fScanStop))
+                curscanstop = _scanner.fScanPos;
+        }
+        _nStart     = _process->SAxisDistToIndex(curscanstart);
+        _nScanend    = _process->SAxisDistToIndex(curscanstop) - _nStart;
+    }
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     if(_scanner.fScanPos == _scanner.fScanStart2)
     {
-        m_PosStart = _scanner.fScanPos;
-        m_PosStop = _scanner.fScanPos + _nHeight;
+        m_PosStart = _process->SAxisDistToIndex(_scanner.fScanPos);
+        m_PosStop = _process->SAxisDistToIndex(_scanner.fScanPos) + _nHeight;
     }
     if(_nHeight <_nScanend)
     {
         _nScanend = _nHeight;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = _process->SAxisDistToIndex(srcBstart);
+            m_PosStop = _process->SAxisDistToIndex(srcBend);
+        }
         if(_pConfig->AppEvn.bSAxisCursorSync)
         {
             if(Bscan_range == _nScanend)
@@ -85,9 +105,21 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
     }
     else
     {
-        m_PosStart = _nStart;
-        m_PosStop  = _nStart+_nScanend;
-        emit signalScanRangeMove(0, _nStart, _nStart+_nScanend) ;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = _process->SAxisDistToIndex(srcBstart);
+            m_PosStop = _process->SAxisDistToIndex(srcBend);
+            _nScanend = m_PosStop - m_PosStart;
+            emit signalScanRangeMove(0, m_PosStart, m_PosStop) ;
+        }
+        else
+        {
+            m_PosStart = _nStart;
+            m_PosStop  = _nStart+_nScanend;
+            emit signalScanRangeMove(0, _nStart, _nStart+_nScanend) ;
+        }
     }
 
     QSize csize = QSize(_nWidth,_nScanend>0?_nScanend:1);
@@ -179,7 +211,7 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
 	S32 _nPointQty = m_BScanInfo.nPointQty ;
 	S32   _nHeight = pImage_->height();
 	S32    _nWidth = pImage_->width() ;
-
+    static int flag = 0;
 //	U8* _pImageBits = pImage_->bits() ;
 //	S32 _nWidthStep = pImage_->bytesPerLine() ;
 
@@ -194,14 +226,35 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
 	S32 _nScanPos	 = _process->GetScanIndexPos();
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    if(zoomflag == 1)
+    {
+        if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
+            flag = 1;
+        if(flag == 1)
+        {
+            if((_scanner.fScanPos < curscanstart)&&(_process->SAxisDistToIndex(_scanner.fScanPos) >= _scanner.fScanStart))
+                curscanstart = _scanner.fScanPos;
+            if((_scanner.fScanPos > curscanstop)&&(_process->SAxisDistToIndex(_scanner.fScanPos) <= _scanner.fScanStop))
+                curscanstop = _scanner.fScanPos;
+        }
+        _nStart     = _process->SAxisDistToIndex(curscanstart);
+        _nScanend    = _process->SAxisDistToIndex(curscanstop)-_nStart;
+    }
     if(_scanner.fScanPos == _scanner.fScanStart2)
     {
-        m_PosStart = _scanner.fScanPos;
-        m_PosStop = _scanner.fScanPos + _nWidth;
+        m_PosStart = _process->SAxisDistToIndex(_scanner.fScanPos);
+        m_PosStop = _process->SAxisDistToIndex(_scanner.fScanPos) + _nWidth;
     }
     if(_nWidth <_nScanend)
     {
         _nScanend = _nWidth;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = _process->SAxisDistToIndex(srcBstart);
+            m_PosStop = _process->SAxisDistToIndex(srcBend);
+        }
         if(_pConfig->AppEvn.bSAxisCursorSync)
         {
             if(Bscan_range == _nScanend)
@@ -222,9 +275,21 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
     }
     else
     {
-        m_PosStart = _nStart;
-        m_PosStop  = _nStart+_nScanend;
-        emit signalScanRangeMove(1, _nStart, _nStart+_nScanend) ;
+        if(zoomflag == 2)
+        {
+            zoomflag = 0;
+            flag = 0;
+            m_PosStart = _process->SAxisDistToIndex(srcBstart);
+            m_PosStop = _process->SAxisDistToIndex(srcBend);
+            _nScanend = m_PosStop - m_PosStart;
+            emit signalScanRangeMove(1, m_PosStart, m_PosStop) ;
+        }
+        else
+        {
+            m_PosStart = _nStart;
+            m_PosStop  = _nStart+_nScanend;
+            emit signalScanRangeMove(1, _nStart, _nStart+_nScanend) ;
+        }
     }
 
     QSize csize = QSize(_nScanend>0?_nScanend:1,_nHeight);

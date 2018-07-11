@@ -3,7 +3,7 @@
 #include <QApplication>
 
 MainWindow* g_pMainWnd = NULL;
-
+CURVE_RL_EL_SL CUR_RES;
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);

@@ -10,6 +10,21 @@ DopplerDrawScan::DopplerDrawScan(QObject *parent) :
     QObject(parent)
 {
 	m_pConfig = DopplerConfigure::Instance() ;
+    zoomflag = 0;
+    srcscanstart = 0;
+    srcscanstop = 0;
+    curscanstart = 0;
+    curscanstop = 0;
+    srcCstart = 0;
+    srcCend = 0;
+    srcBstart = 0;
+    srcBend = 0;
+    srclawstart = 0;
+    srclawstop = 0;
+    curlawstart = 0;
+    curlawstop = 0;
+    currangestart = 0;
+    currangestop = 0;
 }
 
 void DopplerDrawScan::SetDrawInfo(DrawInfo* pInfo_)

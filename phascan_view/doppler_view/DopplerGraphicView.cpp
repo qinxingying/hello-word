@@ -362,10 +362,7 @@ void DopplerGraphicView::mouseMoveEvent(QMouseEvent *event)
 		emit signalItemMoved(_item) ;
 	}
 }
-int zoomflag = 0;
-float srcscanstart,srcscanstop;
-int srclawstart,srclawstop;
-int currangestart,currangestop;
+
 extern float srcrangestart,srcrangestop;
 void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -393,7 +390,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                             double _fScanStart , _fScanStop , _fSliderStart, _fSliderStop ;
                             double _nScaleX1,_nScaleX2,_nScaleY1,_nScaleY2;
                             double _fRangeStart,_fRangeStop;
-                            int scanstart , scanstop ;
+                            double scanstart , scanstop ;
                             double lawstart, lawstop ;
                             int lawstart2,lawstop2;
                             double flag1,flag2;
@@ -406,14 +403,17 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                 switch(_eMode){
                                 case setup_DISPLAY_MODE_C_H:
                                 case setup_DISPLAY_MODE_CC_H:
-                                    if(zoomflag == 0)
-                                    {
-                                        srcscanstart = _process->GetScanStart2();
-                                        srcscanstop = _process->GetScanend();
-                                        srclawstart = _process->GetLawStart();
-                                        srclawstop = _process->GetLawStop();
-                                    }
                                     _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
+                                    if(m_pDrawScan->zoomflag == 0)
+                                    {
+                                        m_pDrawScan->srcscanstart = _process->GetScanStart2();
+                                        m_pDrawScan->srcscanstop = _process->GetScanend();
+                                        m_pDrawScan->srclawstart = _process->GetLawStart();
+                                        m_pDrawScan->srclawstop = _process->GetLawStop();
+                                        m_pDrawScan->srcCstart = _fScanStart;
+                                        m_pDrawScan->srcCend = _fScanStop;
+                                    }
+
                                     _size = size();
                                     _nScaleX1 = ((double)m_cPosStart.x()) / _size.width() ;
                                     _nScaleY1 = ((double)m_cPosStart.y()) / _size.height() ;
@@ -434,25 +434,29 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                             break;
                                         lawstart=(double)lawstart2;
                                         lawstop=(double)lawstop2;
-                                        _process->ChangeCscanruler(scanstart,scanstop);
-                                        _process->ChangeCscanIndexstart(&lawstart);
-                                        _process->ChangeCscanIndexstop(&lawstop);
+                                        m_pDrawScan->curscanstart = scanstart;
+                                        m_pDrawScan->curscanstop = scanstop;
+                                        m_pDrawScan->curlawstart = lawstart;
+                                        m_pDrawScan->curlawstop = lawstop;
                                         _pParent->SetRulerRange( lawstart , lawstop ,  lawstart , lawstop , DopplerDataView::DATA_VIEW_RULER_LEFT);
-                                        zoomflag = 1;
+                                        m_pDrawScan->zoomflag = 1;
                                         UpdateDrawing();
                                     }
                                     break;
 
                                 case setup_DISPLAY_MODE_C_V:
                                 case setup_DISPLAY_MODE_CC_V:
-                                    if(zoomflag == 0)
-                                    {
-                                        srcscanstart = _process->GetScanStart2();
-                                        srcscanstop = _process->GetScanend();
-                                        srclawstart = _process->GetLawStart();
-                                        srclawstop = _process->GetLawStop();
-                                    }
                                     _pParent->GetRulerRange(&_fScanStop , &_fScanStart , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT ) ;
+                                    if(m_pDrawScan->zoomflag == 0)
+                                    {
+                                        m_pDrawScan->srcscanstart = _process->GetScanStart2();
+                                        m_pDrawScan->srcscanstop = _process->GetScanend();
+                                        m_pDrawScan->srclawstart = _process->GetLawStart();
+                                        m_pDrawScan->srclawstop = _process->GetLawStop();
+                                        m_pDrawScan->srcCstart = _fScanStart;
+                                        m_pDrawScan->srcCend = _fScanStop;
+                                    }
+
                                     _size = size();
                                     _nScaleX1 = ((double)m_cPosStart.x()) / _size.width() ;
                                     _nScaleY1 = ((double)m_cPosStart.y()) / _size.height() ;
@@ -470,24 +474,29 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                         if(scanstart>=scanstop)
                                             break;
                                         _process->ChangeCscanruler(scanstart,scanstop);
-                                        _process->ChangeCscanIndexstart(&lawstart);
-                                        _process->ChangeCscanIndexstop(&lawstop);
+                                        m_pDrawScan->curscanstart = scanstart;
+                                        m_pDrawScan->curscanstop = scanstop;
+                                        m_pDrawScan->curlawstart = lawstart;
+                                        m_pDrawScan->curlawstop = lawstop;
                                         _pParent->SetRulerRange( lawstart , lawstop ,  lawstart , lawstop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
-                                        zoomflag = 1;
+                                        m_pDrawScan->zoomflag = 1;
                                         UpdateDrawing();
                                     }
                                     break;
                                 case setup_DISPLAY_MODE_B_H:
-                                    if(zoomflag == 0)
+                                    _pParent->GetRulerRange(&_fScanStop , &_fScanStart , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT ) ;
+                                    if(m_pDrawScan->zoomflag == 0)
                                     {
-                                        srcscanstart = _process->GetScanStart2();
-                                        srcscanstop = _process->GetScanend();
+                                        m_pDrawScan->srcscanstart = _process->GetScanStart2();
+                                        m_pDrawScan->srcscanstop = _process->GetScanend();
                                         flag1 = 1;
                                         flag2 = 1;
-                                        currangestart = 0;
-                                        currangestop = 0;
+                                        m_pDrawScan->currangestart = 0;
+                                        m_pDrawScan->currangestop = 0;
+                                        m_pDrawScan->srcBstart = _fScanStart;
+                                        m_pDrawScan->srcBend = _fScanStop;
                                     }
-                                    _pParent->GetRulerRange(&_fScanStop , &_fScanStart , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT ) ;
+
                                     _size = size();
                                     _nScaleX1 = ((double)m_cPosStart.x()) / _size.width() ;
                                     _nScaleY1 = ((double)m_cPosStart.y()) / _size.height() ;
@@ -509,39 +518,43 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                             break;
                                         if(_fRangeStart>=_fRangeStop)
                                             break;
-                                        if(zoomflag == 0)
+                                        if(m_pDrawScan->zoomflag == 0)
                                         {
-                                            currangestart = m_cPosStart.x();
-                                            currangestop = m_cPosStop.x();
+                                            m_pDrawScan->currangestart = m_cPosStart.x();
+                                            m_pDrawScan->currangestop = m_cPosStop.x();
                                         }
-                                        else if(zoomflag == 1)
+                                        else if(m_pDrawScan->zoomflag == 1)
                                         {
-                                            distance = currangestop - currangestart;
+                                            distance = m_pDrawScan->currangestop - m_pDrawScan->currangestart;
                                             flag1 = (double)m_cPosStart.x()/_size.width();
                                             flag2 = (double)m_cPosStop.x()/_size.width();
-                                            currangestop = currangestart +  distance * flag2;
-                                            currangestart = currangestart + distance * flag1;
+                                            m_pDrawScan->currangestop = m_pDrawScan->currangestart +  distance * flag2;
+                                            m_pDrawScan->currangestart = m_pDrawScan->currangestart + distance * flag1;
                                         }
-                                        _process->ChangeCscanruler(scanstart,scanstop);
+                                        m_pDrawScan->curscanstart = scanstart;
+                                        m_pDrawScan->curscanstop = scanstop;
                                         _pParent->SetRulerRange( _fRangeStart , _fRangeStop ,  _fRangeStart , _fRangeStop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
 
 
-                                        zoomflag = 1;
+                                        m_pDrawScan->zoomflag = 1;
                                         UpdateDrawing();
                                     }
                                     break;
 
                                 case setup_DISPLAY_MODE_B_V:
-                                    if(zoomflag == 0)
+                                    _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
+                                    if(m_pDrawScan->zoomflag == 0)
                                     {
-                                        srcscanstart = _process->GetScanStart2();
-                                        srcscanstop = _process->GetScanend();
+                                        m_pDrawScan->srcscanstart = _process->GetScanStart2();
+                                        m_pDrawScan->srcscanstop = _process->GetScanend();
                                         flag1 = 1;
                                         flag2 = 1;
-                                        currangestart = 0;
-                                        currangestop = 0;
+                                        m_pDrawScan->currangestart = 0;
+                                        m_pDrawScan->currangestop = 0;
+                                        m_pDrawScan->srcBstart = _fScanStart;
+                                        m_pDrawScan->srcBend = _fScanStop;
                                     }
-                                    _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
+
                                     _size = size();
                                     _nScaleX1 = ((double)m_cPosStart.x()) / _size.width() ;
                                     _nScaleY1 = ((double)m_cPosStart.y()) / _size.height() ;
@@ -563,24 +576,25 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                             break;
                                         if(_fRangeStart>=_fRangeStop)
                                             break;
-                                        if(zoomflag == 0)
+                                        if(m_pDrawScan->zoomflag == 0)
                                         {
-                                            currangestart = m_cPosStart.y();
-                                            currangestop = m_cPosStop.y();
+                                            m_pDrawScan->currangestart = m_cPosStart.y();
+                                            m_pDrawScan->currangestop = m_cPosStop.y();
                                         }
-                                        else if(zoomflag == 1)
+                                        else if(m_pDrawScan->zoomflag == 1)
                                         {
-                                            distance = currangestop - currangestart;
+                                            distance = m_pDrawScan->currangestop - m_pDrawScan->currangestart;
                                             flag1 = (double)m_cPosStart.y()/_size.height();
                                             flag2 = (double)m_cPosStop.y()/_size.height();
-                                            currangestop = currangestart +  distance * flag2;
-                                            currangestart = currangestart + distance * flag1;
+                                            m_pDrawScan->currangestop = m_pDrawScan->currangestart +  distance * flag2;
+                                            m_pDrawScan->currangestart = m_pDrawScan->currangestart + distance * flag1;
                                         }
-                                        _process->ChangeCscanruler(scanstart,scanstop);
+                                        m_pDrawScan->curscanstart = scanstart;
+                                        m_pDrawScan->curscanstop = scanstop;
                                         _pParent->SetRulerRange( _fRangeStart , _fRangeStop ,  _fRangeStart , _fRangeStop , DopplerDataView::DATA_VIEW_RULER_LEFT);
 
 
-                                        zoomflag = 1;
+                                        m_pDrawScan->zoomflag = 1;
                                         UpdateDrawing();
                                     }
                                     break;
@@ -617,28 +631,32 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
         setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
         DopplerTofdOpp opp;
 		opp.TofdClearDragStatus(_iGroupId);
-        if(zoomflag == 1)
+        if(m_pDrawScan->zoomflag == 1)
         {
-            zoomflag = 0;
+
             ParameterProcess* _process = ParameterProcess::Instance();
-            _process->ChangeCscanruler(srcscanstart,srcscanstop);
-            _process->ChangeLawStart(srclawstart);
-            _process->ChangeLawStop(srclawstop);
+            _process->ChangeCscanruler(m_pDrawScan->srcscanstart,m_pDrawScan->srcscanstop);
+            _process->ChangeLawStart(m_pDrawScan->srclawstart);
+            _process->ChangeLawStop(m_pDrawScan->srclawstop);
             switch(_eMode){
             case setup_DISPLAY_MODE_C_H:
             case setup_DISPLAY_MODE_CC_H:
+                m_pDrawScan->zoomflag = 2;
                 _process->GetCScanIndexAxisRange(_iGroupId ,  &_fScanStart , &_fScanStop) ;
                 _pParent->SetRulerRange( _fScanStart , _fScanStop ,  _fScanStart , _fScanStop , DopplerDataView::DATA_VIEW_RULER_LEFT);
                 break;
             case setup_DISPLAY_MODE_C_V:
             case setup_DISPLAY_MODE_CC_V:
+                m_pDrawScan->zoomflag = 2;
                 _process->GetCScanIndexAxisRange(_iGroupId ,  &_fScanStart , &_fScanStop) ;
                 _pParent->SetRulerRange( _fScanStart , _fScanStop ,  _fScanStart , _fScanStop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
                 break;
             case setup_DISPLAY_MODE_B_H:
+                m_pDrawScan->zoomflag = 2;
                 _pParent->SetRulerRange( srcrangestart , srcrangestop ,  srcrangestart , srcrangestop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
                 break;
             case setup_DISPLAY_MODE_B_V:
+                m_pDrawScan->zoomflag = 2;
                 _pParent->SetRulerRange( srcrangestart , srcrangestop ,  srcrangestart , srcrangestop , DopplerDataView::DATA_VIEW_RULER_LEFT);
                 break;
             default:
@@ -1035,7 +1053,7 @@ void DopplerGraphicView::UpdateDrawing()
 	if(m_pDrawScan)
 	{
 
-		m_pBackGround->m_hMutex.lock();
+        m_pBackGround->m_hMutex.lock();
             m_pDrawScan->Draw (m_pBackGround->GetBaseImage());
 		m_pBackGround->m_hMutex.unlock();
 	}

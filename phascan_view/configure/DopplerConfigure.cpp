@@ -1126,6 +1126,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_process->TofdCursorCalibration(i);
 
 	}
+    CUR_RES.bShowEL = CUR_RES.bShowRL = CUR_RES.bShowSL = CUR_RES.CurEL = CUR_RES.CurRL = CUR_RES.CurSL = 0;
 }
 
 void  DopplerConfigure::UpdateTofdConfig(int nGroupId_)
