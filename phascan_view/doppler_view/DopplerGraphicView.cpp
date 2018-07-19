@@ -159,6 +159,7 @@ void DopplerGraphicView::InitGraphicView(const QSize& cSize_)
 		m_pScene->setItemIndexMethod(QGraphicsScene::NoIndex);
 		setScene(m_pScene);
 		m_pScene->addItem(m_pBackGround);
+        m_pScene->setSceneRect(cRect);
 	}
 	//set display zoom
 	this->setSceneRect(cRect);
@@ -294,6 +295,10 @@ void DopplerGraphicView::resizeEvent(QResizeEvent *event)
         setSceneRect(0, 0, _nWidth, _nHeight);
 	}
 
+    if(m_pScene)
+    {
+        m_pScene->setSceneRect(0, 0, _nWidth, _nHeight);
+    }
 	m_nScaleBaseH =  _nWidth / m_pBackGround->size().width()  ;
 	m_nScaleBaseV =  _nHeight/ m_pBackGround->size().height() ;
 
