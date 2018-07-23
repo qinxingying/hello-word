@@ -5288,7 +5288,7 @@
                      <bool>false</bool>
                     </property>
                     <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
+                     <enum>Qt::WheelFocus</enum>
                     </property>
                     <property name="contextMenuPolicy">
                      <enum>Qt::DefaultContextMenu</enum>
@@ -5429,7 +5429,7 @@
                      <bool>false</bool>
                     </property>
                     <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
+                     <enum>Qt::WheelFocus</enum>
                     </property>
                     <property name="contextMenuPolicy">
                      <enum>Qt::DefaultContextMenu</enum>
@@ -5520,7 +5520,7 @@
                      <bool>false</bool>
                     </property>
                     <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
+                     <enum>Qt::WheelFocus</enum>
                     </property>
                     <property name="contextMenuPolicy">
                      <enum>Qt::DefaultContextMenu</enum>
@@ -5623,7 +5623,7 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="">
+                <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
@@ -5705,10 +5705,7 @@
                 <zorder>layoutWidget</zorder>
                 <zorder>layoutWidget</zorder>
                 <zorder>layoutWidget</zorder>
-                <zorder>Label_REF_Gain</zorder>
-                <zorder>ValueREFGain</zorder>
-                <zorder>label_27</zorder>
-                <zorder>LabelRL_3</zorder>
+                <zorder>layoutWidget</zorder>
                 <zorder>layoutWidget_2</zorder>
                </widget>
               </item>
