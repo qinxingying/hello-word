@@ -345,12 +345,14 @@ struct CURVES
 
 struct CURVE_RL_EL_SL
 {
-    int CurRL;
-    int CurEL;
-    int CurSL;
+    int CurRL[8];
+    int CurEL[8];
+    int CurSL[8];
     int bShowRL;
     int bShowEL;
     int bShowSL;
+    float REF_Gain[8];
+    int Com_Gain[8];
 };
 
 extern CURVE_RL_EL_SL CUR_RES;
@@ -363,6 +365,7 @@ enum setup_TRAVEL_MODE
 enum DAC_MODE
 {
     setup_DAC = 0,
+    setup_TCG,
     setup_RL,
     setup_EL,
     setup_SL

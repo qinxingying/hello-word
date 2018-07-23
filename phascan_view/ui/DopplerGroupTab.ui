@@ -4735,7 +4735,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-35</y>
+        <y>0</y>
         <width>333</width>
         <height>848</height>
        </rect>
@@ -4789,7 +4789,7 @@
             <x>0</x>
             <y>0</y>
             <width>307</width>
-            <height>910</height>
+            <height>937</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -5216,7 +5216,7 @@
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>119</height>
+                  <height>146</height>
                  </size>
                 </property>
                 <property name="focusPolicy">
@@ -5226,7 +5226,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>90</y>
+                   <y>120</y>
                    <width>254</width>
                    <height>27</height>
                   </rect>
@@ -5319,7 +5319,7 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="">
+                <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
@@ -5363,11 +5363,11 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="">
+                <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>30</y>
+                   <y>60</y>
                    <width>252</width>
                    <height>27</height>
                   </rect>
@@ -5454,11 +5454,11 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="">
+                <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>60</y>
+                   <y>90</y>
                    <width>254</width>
                    <height>27</height>
                   </rect>
@@ -5551,6 +5551,165 @@
                   </item>
                  </layout>
                 </widget>
+                <widget class="QWidget" name="layoutWidget_2">
+                 <property name="geometry">
+                  <rect>
+                   <x>140</x>
+                   <y>30</y>
+                   <width>159</width>
+                   <height>27</height>
+                  </rect>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_17">
+                  <item>
+                   <widget class="QLabel" name="Label_Com_Gain">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>25</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>+ Com_Gain</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="ValueComGain">
+                    <property name="maximumSize">
+                     <size>
+                      <width>40</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="buttonSymbols">
+                     <enum>QAbstractSpinBox::NoButtons</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_29">
+                    <property name="minimumSize">
+                     <size>
+                      <width>20</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>20</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>db</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>30</y>
+                   <width>139</width>
+                   <height>27</height>
+                  </rect>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_16">
+                  <item>
+                   <widget class="QLabel" name="Label_REF_Gain">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>60</width>
+                      <height>25</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>REF_Gain</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="ValueREFGain">
+                    <property name="minimumSize">
+                     <size>
+                      <width>40</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>40</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="buttonSymbols">
+                     <enum>QAbstractSpinBox::NoButtons</enum>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_27">
+                    <property name="minimumSize">
+                     <size>
+                      <width>20</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>20</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>db</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <zorder>layoutWidget</zorder>
+                <zorder>layoutWidget</zorder>
+                <zorder>layoutWidget</zorder>
+                <zorder>layoutWidget</zorder>
+                <zorder>Label_REF_Gain</zorder>
+                <zorder>ValueREFGain</zorder>
+                <zorder>label_27</zorder>
+                <zorder>LabelRL_3</zorder>
+                <zorder>layoutWidget_2</zorder>
                </widget>
               </item>
               <item>

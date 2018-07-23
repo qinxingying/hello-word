@@ -687,6 +687,11 @@ void DopplerGroupTab::UpdateGroupConfig()
 
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
     ui->ValueRefGain->setValue(m_pGroup->RefGain + m_pGroup->fRefGain);
+    ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
+    ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
+    ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
+    ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
+    ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
 	ui->ValueWedgeDelay->setValue(m_pGroup->nWedgeDelay / 1000.0);
@@ -2114,7 +2119,7 @@ void DopplerGroupTab::on_CheckRLShow_clicked(bool checked)
 
 void DopplerGroupTab::on_ValueRL_valueChanged(double arg1)
 {
-    CUR_RES.CurRL = arg1;
+    CUR_RES.CurRL[m_nGroupId] = arg1;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -2126,7 +2131,7 @@ void DopplerGroupTab::on_CheckELShow_clicked(bool checked)
 
 void DopplerGroupTab::on_ValueEL_valueChanged(double arg1)
 {
-    CUR_RES.CurEL = arg1;
+    CUR_RES.CurEL[m_nGroupId] = arg1;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -2138,6 +2143,18 @@ void DopplerGroupTab::on_CheckSLShow_clicked(bool checked)
 
 void DopplerGroupTab::on_ValueSL_valueChanged(double arg1)
 {
-    CUR_RES.CurSL = arg1;
+    CUR_RES.CurSL[m_nGroupId] = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueREFGain_valueChanged(double arg1)
+{
+    CUR_RES.REF_Gain[m_nGroupId] = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
+{
+    CUR_RES.Com_Gain[m_nGroupId] = arg1;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
