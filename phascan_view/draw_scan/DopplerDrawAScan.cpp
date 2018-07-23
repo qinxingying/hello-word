@@ -2,6 +2,7 @@
 #include <process/ParameterProcess.h>
 #include <QPainter>
 #include <math.h>
+double RL_EL_SL[5]={0};
 DopplerDrawAScanH::DopplerDrawAScanH():DopplerDrawScan()
 {
 	bDrawLimit = 0 ;
@@ -459,22 +460,21 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
         if(mode == setup_RL)
         {
             midy = pow(10.0,CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
-            midy = midx / midy;
+            midy = midx * midy;
         }
         else if(mode == setup_EL)
         {
             midy = pow(10.0,CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
-            midy = midx / midy;
+            midy = midx * midy;
         }
         else if(mode == setup_SL)
         {
             midy = pow(10.0,CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
-            midy = midx / midy;
+            midy = midx * midy;
         }
-        qDebug()<<"midx is "<<midx<<endl;
-        qDebug()<<"midy is "<<midy<<endl;
-        m_linCurves[mode]<<QPointF(0 ,(1 - midy) * nHeight_) ;
-        m_linCurves[mode]<<QPointF(m_nWidth , (1 -midy) * nHeight_) ;
+        m_linCurves[mode]<<QPointF(0 ,(1 - midy) * m_nHeight) ;
+        m_linCurves[mode]<<QPointF(m_nWidth , (1 -midy) * m_nHeight) ;
+        RL_EL_SL[mode] = midy;
         painter->drawPolyline(m_linCurves[mode]);
 
     }
@@ -867,7 +867,30 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 
 	float _ptX[18] ;
 	float _ptY[18] ;
+    QColor _Color ;
+    if(mode == setup_TCG)
+    {
+        _Color = QColor(0, 100, 0);
+    }
+    else if(mode == setup_RL)
+    {
+        _Color = QColor(255, 0, 0);
+    }
+    else if(mode == setup_EL)
+    {
+        _Color = QColor(0, 0, 255);
+    }
+    else if(mode == setup_SL)
+    {
+        _Color = QColor(125, 125, 125);
+    }
+    QPen _NewPen ;
 
+    _NewPen.setColor(_Color);
+    _NewPen.setDashPattern(m_dashes);
+    painter->setPen(_NewPen);
+    if(mode == setup_TCG)
+    {
 	memset(_ptX, 0x00, sizeof(_ptX));
 	memset(_ptY, 0x00, sizeof(_ptY));
 	//------------------------------------------
@@ -911,5 +934,32 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 			DrawPointRectangle(painter, m_ptPos[0][i].x() , m_ptPos[0][i].y(), QColor(200 , 200 , 200));
 		}
 	}
+    }
+    else
+    {
+        float midx,midy;
+        midx = pow(10.0,(m_pGroup->fGain+m_pGroup->RefGain+m_pGroup->fRefGain-CUR_RES.REF_Gain[m_cInfo.nGroupId]-CUR_RES.Com_Gain[m_cInfo.nGroupId])/20.0);
+        midx = midx * 0.8;
+        if(mode == setup_RL)
+        {
+            midy = pow(10.0,CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
+            midy = midx * midy;
+        }
+        else if(mode == setup_EL)
+        {
+            midy = pow(10.0,CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
+            midy = midx * midy;
+        }
+        else if(mode == setup_SL)
+        {
+            midy = pow(10.0,CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
+            midy = midx * midy;
+        }
+        m_linCurves[mode]<<QPointF( midy * m_nWidth,0) ;
+        m_linCurves[mode]<<QPointF( midy * m_nWidth , m_nHeight) ;
+        RL_EL_SL[mode] = midy;
+        painter->drawPolyline(m_linCurves[mode]);
+
+    }
 	//------------------------------------------
 }

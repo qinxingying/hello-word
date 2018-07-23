@@ -5233,7 +5233,7 @@
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_15">
                   <item>
-                   <widget class="QLabel" name="LabelSL">
+                   <widget class="QLabel" name="LabelEL">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                       <horstretch>0</horstretch>
@@ -5253,12 +5253,12 @@
                      </size>
                     </property>
                     <property name="text">
-                     <string>  SL</string>
+                     <string>  EL</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="CheckSLShow">
+                   <widget class="QCheckBox" name="CheckELShow">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                       <horstretch>0</horstretch>
@@ -5277,7 +5277,7 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QDoubleSpinBox" name="ValueSL">
+                   <widget class="QDoubleSpinBox" name="ValueEL">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                       <horstretch>0</horstretch>
@@ -5465,7 +5465,7 @@
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_13">
                   <item>
-                   <widget class="QLabel" name="LabelEL">
+                   <widget class="QLabel" name="LabelSL">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                       <horstretch>0</horstretch>
@@ -5485,12 +5485,12 @@
                      </size>
                     </property>
                     <property name="text">
-                     <string>  EL</string>
+                     <string>  SL</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QCheckBox" name="CheckELShow">
+                   <widget class="QCheckBox" name="CheckSLShow">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                       <horstretch>0</horstretch>
@@ -5509,7 +5509,7 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QDoubleSpinBox" name="ValueEL">
+                   <widget class="QDoubleSpinBox" name="ValueSL">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                       <horstretch>0</horstretch>

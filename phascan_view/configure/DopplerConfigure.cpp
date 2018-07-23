@@ -826,7 +826,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         }
         CUR_RES.REF_Gain[i]   = _group.fGain;
         CUR_RES.Com_Gain[i]      = 4;
-        CUR_RES.CurRL[i]         = 4;
+        CUR_RES.CurRL[i]         = -4;
         CUR_RES.CurEL[i]         = -18;
         CUR_RES.CurSL[i]         = -12;
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);

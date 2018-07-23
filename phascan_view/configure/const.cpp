@@ -55,6 +55,9 @@ const char* g_strMeasureFildName[][4] =
 	{"T-D(m-r)"	, "Tofd Ultrasonic Axis Cursor Measure to Reference"} ,
     {"A^-I^","Distance between peaks in gate A and gate I"},
     {"B^-I^","Distance between peaks in gate A and gate I"},
+    {"RL    " , "None"},
+    {"EL    " , "None"},
+    {"SL    " , "None"},
 };
 
 const char* g_strMeasureFildUnit[][4] =
@@ -107,6 +110,9 @@ const char* g_strMeasureFildUnit[][4] =
     {"T-D(m-r)" , "mm"},
     {"A^-I^", "mm"},
     {"B^-I^", "mm"},
+    {"RL    " , "db"},
+    {"EL    " , "db"},
+    {"SL    " , "db"},
 };
 
 QString GetExePathName2(char* dir)

@@ -4,6 +4,7 @@
 #include <gHeader.h>
 
 PEAK_CONFIG g_PeakInfo[setup_GATE_MAX];
+extern double RL_EL_SL[5];
 
 CalcMeasurement::CalcMeasurement(QObject *parent) :
 	QObject(parent)
@@ -453,6 +454,15 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 	case FEILD_LB :
 		ret = CalLTimes(nGroupId_ , nLaw_ , setup_GATE_A , pResult_) ;
 		break;
+    case FEILD_RL :
+        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/(RL_EL_SL[setup_RL]*100));
+        break;
+    case FEILD_EL :
+        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/(RL_EL_SL[setup_EL]*100));
+        break;
+    case FEILD_SL :
+        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/(RL_EL_SL[setup_SL]*100));
+        break;
 #if 0
 	case FEILD_AWSDA:
 		break;
