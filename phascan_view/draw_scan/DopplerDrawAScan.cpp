@@ -130,7 +130,17 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_DAC);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG,0);
             break;
         default:
             break;
@@ -146,7 +156,17 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_RL);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL,0);
             break;
         default:
             break;
@@ -162,7 +182,17 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_EL);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL,0);
             break;
         default:
             break;
@@ -178,7 +208,17 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_SL);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL,0);
             break;
         default:
             break;
@@ -371,7 +411,7 @@ void DopplerDrawAScanH::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 	//------------------------------------------
 }
 #include <qdebug.h>
-void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_,int mode)
+void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_,int mode,int flag)
 {
 	CURVES& _curve = m_pGroup->curve;
 
@@ -399,11 +439,11 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
     }
     else if(mode == setup_EL)
     {
-        _Color = QColor(0, 0, 255);
+        _Color = QColor(125, 125, 125);
     }
     else if(mode == setup_SL)
     {
-        _Color = QColor(125, 125, 125);
+        _Color = QColor(0, 0, 255);
     }
     QPen _NewPen ;
 
@@ -412,6 +452,8 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
     painter->setPen(_NewPen);
     if(mode == setup_TCG)
     {
+        if(flag == 0)
+            return;
 	memset(_ptX, 0x00, sizeof(_ptX));
 	memset(_ptY, 0x00, sizeof(_ptY));
 	//------------------------------------------
@@ -475,7 +517,8 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
         m_linCurves[mode]<<QPointF(0 ,(1 - midy) * m_nHeight) ;
         m_linCurves[mode]<<QPointF(m_nWidth , (1 -midy) * m_nHeight) ;
         RL_EL_SL[mode] = midy;
-        painter->drawPolyline(m_linCurves[mode]);
+        if(flag)
+            painter->drawPolyline(m_linCurves[mode]);
 
     }
 	//------------------------------------------
@@ -628,7 +671,17 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_DAC);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG,0);
             break;
         default:
             break;
@@ -644,7 +697,17 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_RL);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL,0);
             break;
         default:
             break;
@@ -660,7 +723,17 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_EL);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL,0);
             break;
         default:
             break;
@@ -676,7 +749,17 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_SL);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL,0);
             break;
         default:
             break;
@@ -850,7 +933,7 @@ void DopplerDrawAScanV::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 	//------------------------------------------
 }
 
-void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_,int mode)
+void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_,int mode,int flag)
 {
 	CURVES& _curve = m_pGroup->curve;
 
@@ -878,11 +961,11 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
     }
     else if(mode == setup_EL)
     {
-        _Color = QColor(0, 0, 255);
+        _Color = QColor(125, 125, 125);
     }
     else if(mode == setup_SL)
     {
-        _Color = QColor(125, 125, 125);
+        _Color = QColor(0, 0, 255);
     }
     QPen _NewPen ;
 
@@ -891,6 +974,8 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
     painter->setPen(_NewPen);
     if(mode == setup_TCG)
     {
+        if(flag == 0)
+            return;
 	memset(_ptX, 0x00, sizeof(_ptX));
 	memset(_ptY, 0x00, sizeof(_ptY));
 	//------------------------------------------
@@ -921,7 +1006,7 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 	{
 		m_linCurves[0]<<QPointF(_ptX[i] , _ptY[i]) ;
 	}
-	painter->drawPolyline(m_linCurves[0]);
+    painter->drawPolyline(m_linCurves[0]);
 	//------------------------------------------
 	m_iPtCnt[0] = _nPointQty;
 	for(int i = 0; i < _nPointQty; i++)
@@ -958,7 +1043,8 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
         m_linCurves[mode]<<QPointF( midy * m_nWidth,0) ;
         m_linCurves[mode]<<QPointF( midy * m_nWidth , m_nHeight) ;
         RL_EL_SL[mode] = midy;
-        painter->drawPolyline(m_linCurves[mode]);
+        if(flag)
+            painter->drawPolyline(m_linCurves[mode]);
 
     }
 	//------------------------------------------

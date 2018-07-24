@@ -11,6 +11,7 @@
 #include <report/DopplerHtmlReport.h>
 #include <process/ParameterProcess.h> 
 extern int Cscan_range,Csrc_start,Bscan_range,Bsrc_start;
+extern double RL_EL_SL[5];
 static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 	"Default PA" ,
 	"Doppler Serial" ,
@@ -921,6 +922,10 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.bShowCurve = 0;
 		if(_curve.nPointQty > 0 && _curve.eType > setup_CURVE_TYPE_NULL && _curve.eType < setup_CURVE_TYPE_MAX)
 			_group.bShowCurve = 1;
+        CUR_RES.bShowRL = 0;
+        CUR_RES.bShowEL = 0;
+        CUR_RES.bShowSL = 0;
+        memset(RL_EL_SL,0,sizeof(RL_EL_SL));
 		//-----------------------------------------
 		LAW_CONFIG& _LawConfig = _group.law ;
 		LAW_INFO&     _LawInfo = _pGroupInfo->law_info ;
@@ -1342,6 +1347,9 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 				strcpy(_pDfInfo->m_strMeasure[i], "-");
                 strcpy(_pDfInfo->m_strSzField[i],"-");
                 strcpy(_pDfInfo->m_strSzFieldUnit[i],"-");
+                strcpy(_pDfInfo->SL,"NA");
+                QString SLstr = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, FEILD_SL );
+                strcpy(_pDfInfo->SL,(char*)(qPrintable(SLstr)));
 				if(_pMeasure[i]) {
 					QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i] );
 					strcpy(_pDfInfo->m_strMeasure[_nQty], (char*)(qPrintable(_str)));

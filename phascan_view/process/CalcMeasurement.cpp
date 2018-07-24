@@ -456,12 +456,18 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 		break;
     case FEILD_RL :
         *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/(RL_EL_SL[setup_RL]*100));
+        if(RL_EL_SL[setup_RL] < 0.0000001)
+            ret = 1;
         break;
     case FEILD_EL :
         *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/(RL_EL_SL[setup_EL]*100));
+        if(RL_EL_SL[setup_EL] < 0.0000001)
+            ret = 1;
         break;
     case FEILD_SL :
         *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/(RL_EL_SL[setup_SL]*100));
+        if(RL_EL_SL[setup_SL] < 0.0000001)
+            ret = 1;
         break;
 #if 0
 	case FEILD_AWSDA:
