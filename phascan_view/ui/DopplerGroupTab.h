@@ -59,6 +59,7 @@ protected:
     void UpdateProbeWedge();
 
     void UpdateMeasureBox();
+    void UpdateStandard(int selectID,int ifadd);
     void UpdateParameterLimit();
     void UpdateFocallawState();
     void UpdateGeometryState();
@@ -206,6 +207,10 @@ private slots:
     void on_ValueREFGain_valueChanged(double arg1);
 
     void on_ValueComGain_valueChanged(double arg1);
+
+    void on_ComStandard_currentIndexChanged(int index);
+
+    void on_ComThickness_currentIndexChanged(int index);
 
 private:
     Ui::DopplerGroupTab *ui;

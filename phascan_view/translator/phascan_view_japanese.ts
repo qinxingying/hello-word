@@ -384,23 +384,23 @@
 <context>
     <name>DopplerConfigure</name>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1168"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1203"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1174"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1209"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1233"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1239"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1420"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1429"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1420"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1429"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -461,32 +461,32 @@
         <location filename="../ui/DopplerGroupTab.ui" line="4268"/>
         <location filename="../ui/DopplerGroupTab.ui" line="4982"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5051"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6963"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7023"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7083"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7185"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7248"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7460"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7487"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7556"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7589"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7616"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7671"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8167"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8233"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8296"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8359"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8422"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8485"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8649"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8709"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8769"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8829"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8836"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8949"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9441"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9492"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="882"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7108"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7168"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7228"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7330"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7393"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7605"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7632"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7701"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7734"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7761"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7816"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8312"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8378"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8441"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8504"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8567"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8630"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8794"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8854"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8914"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8974"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8981"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9094"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9586"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9637"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="927"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -497,14 +497,14 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="467"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="176"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="208"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="175"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="207"/>
         <source>Wedge Delay:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="505"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7526"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7671"/>
         <source>us</source>
         <translation type="unfinished"></translation>
     </message>
@@ -544,7 +544,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="640"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6874"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7019"/>
         <source>Material:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -649,7 +649,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1008"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7387"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7532"/>
         <source>TOFD</source>
         <translation type="unfinished"></translation>
     </message>
@@ -705,19 +705,19 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1329"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="5796"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5941"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1334"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="5801"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5946"/>
         <source>2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1339"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="5811"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5956"/>
         <source>4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -748,8 +748,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1478"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="183"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="215"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="182"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="214"/>
         <source>PA</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1033,20 +1033,20 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="3929"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8608"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8753"/>
         <source>Position:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="4069"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8889"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9034"/>
         <source>Offset:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="4175"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7645"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8734"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7790"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8879"/>
         <source>Depth:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1102,18 +1102,18 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5360"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5416"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5507"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7090"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7365"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7630"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7794"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7985"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8536"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7235"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7510"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7775"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7939"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8130"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8681"/>
         <source>Show</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="4888"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="5735"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5880"/>
         <source>Select:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1139,15 +1139,15 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="5007"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7042"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8942"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="955"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7187"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9087"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1000"/>
         <source>Width:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="5076"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8794"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8939"/>
         <source>Height:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1192,7 +1192,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5256"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5488"/>
         <source>  SL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1207,7 +1207,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5488"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5256"/>
         <source>  EL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1222,678 +1222,723 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5743"/>
-        <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5748"/>
-        <source>DAC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5753"/>
-        <source>Linear DAC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5758"/>
-        <source>TCG</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5788"/>
-        <source>Point No.:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5806"/>
-        <source>3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5816"/>
-        <source>5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5824"/>
-        <source>ADD</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5831"/>
-        <source>DEL</source>
+        <location filename="../ui/DopplerGroupTab.ui" line="5735"/>
+        <source>standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="5888"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="5970"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6021"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6047"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6122"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6155"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6168"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6226"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6277"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6328"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6379"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6430"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6481"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6532"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6583"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6634"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="851"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="852"/>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5893"/>
+        <source>DAC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5898"/>
+        <source>Linear DAC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5903"/>
+        <source>TCG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5933"/>
+        <source>Point No.:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5951"/>
+        <source>3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5961"/>
+        <source>5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5969"/>
+        <source>ADD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5976"/>
+        <source>DEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="6033"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6115"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6166"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6192"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6267"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6300"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6313"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6371"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6422"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6473"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6524"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6575"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6626"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6677"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6728"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6779"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="896"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="897"/>
         <source>Ref Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5957"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="5977"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6034"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6135"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6142"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6175"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6213"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6264"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6315"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6366"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6417"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6468"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6519"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6570"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6621"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6672"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8038"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8101"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="867"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6102"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6122"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6179"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6280"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6287"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6320"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6358"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6409"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6460"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6511"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6562"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6613"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6664"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6715"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6766"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6817"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8183"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8246"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="912"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6726"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6871"/>
         <source>Geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6816"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6961"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6836"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6981"/>
         <source>Geometry:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6844"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6989"/>
         <source>PLATE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6849"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6994"/>
         <source>OD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6854"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6898"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6999"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7043"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6888"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7033"/>
         <source>Steel 5920 3230</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6893"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7038"/>
         <source>Alumi 6000 3300</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6922"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7067"/>
         <source>Thickness: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6982"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8674"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="954"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="959"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7127"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8819"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="999"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1004"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7099"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7244"/>
         <source>Unified Part setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7121"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7266"/>
         <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7141"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7286"/>
         <source>Scan Offset:  </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7204"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7349"/>
         <source>Index Offset: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7273"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7418"/>
         <source>Skew Angle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7281"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7426"/>
         <source>  0 degree</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7286"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7431"/>
         <source> 90 degree</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7291"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7436"/>
         <source>180 degree</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7296"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7441"/>
         <source>270 degree</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7339"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7484"/>
         <source>Load:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7352"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7497"/>
         <source>Weld</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7321"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7466"/>
         <source>CAD DXF File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7395"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5755"/>
+        <source>NB/T 47013.3 I型焊接接头 IIA试块</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5760"/>
+        <source>NB/T 47013.3 II型焊接接头 GS试块</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5765"/>
+        <source>NB/T 47013.15  I型焊接接头 PRB试块</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5770"/>
+        <source>NB/T 47013.15  II型焊接接头 PGS试块</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5808"/>
+        <source>thickness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5828"/>
+        <source>&gt;=6~40mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5833"/>
+        <source>&gt;40~100mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="5838"/>
+        <source>&gt;100~200mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="7540"/>
         <source>Scan Mode:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7406"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7551"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7411"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7556"/>
         <source>Parallel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7419"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7564"/>
         <source>Process Mode:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7427"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7572"/>
         <source>Whole</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7432"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7577"/>
         <source>Aera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7440"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7585"/>
         <source>Wedge Seperation:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7467"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7612"/>
         <source>PCS:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7500"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7645"/>
         <source>Wedge delay correction:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7533"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7678"/>
         <source>Depth start:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7563"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7708"/>
         <source>Depth end:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7596"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7741"/>
         <source>Cal PCS:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7623"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7768"/>
         <source>LW / BW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7639"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7784"/>
         <source>Depth Calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7678"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7823"/>
         <source>Calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7721"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7866"/>
         <source>Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7787"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7932"/>
         <source>Measure Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7801"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7946"/>
         <source>Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7823"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7968"/>
         <source>Field 7 :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7833"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7978"/>
         <source>Field 6 :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7852"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7997"/>
         <source>Field 1 :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7874"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8019"/>
         <source>Field 2 :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7896"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8041"/>
         <source>Field 3 :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7918"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8063"/>
         <source>Field 4 :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7940"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8085"/>
         <source>Field 5 :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7953"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8098"/>
         <source>Field 8 :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7971"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8116"/>
         <source>Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7992"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8137"/>
         <source>Cursor Sync</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8057"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8202"/>
         <source>%(m):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8120"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8265"/>
         <source>U(r):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8186"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8331"/>
         <source>U(m):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8252"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8397"/>
         <source>S(r):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8315"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8460"/>
         <source>S(m):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8378"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8523"/>
         <source>I(r):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8441"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8586"/>
         <source>I(m):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8504"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8649"/>
         <source>%(r):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8513"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8658"/>
         <source>Hide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8529"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8674"/>
         <source>Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8583"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8728"/>
         <source>Index :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8968"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9113"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8993"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9138"/>
         <source>Remark:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9062"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9207"/>
         <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9126"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9271"/>
         <source>ColorSetting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9138"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9283"/>
         <source>A SCAN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9143"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9288"/>
         <source>A SCAN MAX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9148"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9293"/>
         <source>A SCAN MIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9157"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9302"/>
         <source>Yellow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9162"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9307"/>
         <source>Green</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9167"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9312"/>
         <source>Red</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9172"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9317"/>
         <source>White</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9190"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9335"/>
         <source>Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9204"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9349"/>
         <source>RF:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9230"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="953"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9375"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="998"/>
         <source>Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9260"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9405"/>
         <source>C Scan 1 Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9268"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9331"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9413"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9476"/>
         <source>Gate A  Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9273"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9336"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9418"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9481"/>
         <source>Gate B  Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9278"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9341"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9423"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9486"/>
         <source>Gate  I  Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9283"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9346"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9428"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9491"/>
         <source>Gate A  Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9288"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9351"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9433"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9496"/>
         <source>Gate B  Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9293"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9356"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9438"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9501"/>
         <source>Gate A-I  Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9298"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9361"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9443"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9506"/>
         <source>Gate B-I  Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9303"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9366"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9448"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9511"/>
         <source>Gate B-A  Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9323"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9468"/>
         <source>C Scan 2 Source:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9386"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9531"/>
         <source>C Scan Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9397"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9542"/>
         <source>Min:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9448"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9593"/>
         <source>Max:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9504"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9649"/>
         <source>Combination Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9513"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9557"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9601"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9645"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9658"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9702"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9746"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9790"/>
         <source>Group1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9518"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9562"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9606"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9650"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9663"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9707"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9751"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9795"/>
         <source>Group2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9523"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9567"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9611"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9655"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9668"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9712"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9756"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9800"/>
         <source>Group3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9528"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9572"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9616"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9660"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9673"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9717"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9761"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9805"/>
         <source>Group4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9533"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9577"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9621"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9665"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9678"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9722"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9766"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9810"/>
         <source>Group5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9538"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9582"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9626"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9670"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9683"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9727"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9771"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9815"/>
         <source>Group6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9543"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9587"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9631"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9675"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9688"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9732"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9776"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9820"/>
         <source>Group7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9548"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9592"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9636"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9680"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9693"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9737"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9781"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9825"/>
         <source>Group8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9703"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9848"/>
         <source>Refurbish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="175"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="207"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="174"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="206"/>
         <source>Reference Point:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="190"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="222"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="189"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="221"/>
         <source>NORMAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="192"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="224"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="191"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="223"/>
         <source>INVERSE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="205"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="204"/>
         <source>UT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="496"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2048"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="538"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2093"/>
         <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="848"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="893"/>
         <source>Mat. Atten:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="849"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="894"/>
         <source>Delay:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="881"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="926"/>
         <source>dB/mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="893"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="938"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="957"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1002"/>
         <source>Inner Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="958"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1003"/>
         <source>Outer Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2480,7 +2525,7 @@
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="124"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="652"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="653"/>
         <source>Wedge Angle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2527,7 +2572,7 @@
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="168"/>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="171"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="468"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="469"/>
         <source>Defect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2538,7 +2583,7 @@
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="173"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="238"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="239"/>
         <source>Index</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2568,481 +2613,485 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="179"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="719"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="720"/>
         <source>Width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="239"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1007"/>
-        <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="240"/>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1008"/>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="179"/>
+        <source>SL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="241"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1009"/>
         <source>Law ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="270"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="271"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="272"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="275"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="273"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="276"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="398"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="399"/>
         <source>Phascan Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="399"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="400"/>
         <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="401"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="402"/>
         <source>Part Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="402"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="403"/>
         <source>Part No.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="403"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="404"/>
         <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="404"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="405"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="466"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="467"/>
         <source>Off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="467"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="468"/>
         <source>ON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="471"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="472"/>
         <source>RF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="472"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="473"/>
         <source>HW+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="473"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="474"/>
         <source>HW-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="474"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="475"/>
         <source>FW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="477"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="478"/>
         <source>Pitch Catch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="478"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="479"/>
         <source>Pitch Echo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="479"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="480"/>
         <source>Through Trans</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="480"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="481"/>
         <source>TOFD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="513"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="514"/>
         <source>Pulse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="514"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="515"/>
         <source>I/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="515"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="516"/>
         <source>A/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="545"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="546"/>
         <source>Azimuthal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="546"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="547"/>
         <source>Linear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="547"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="548"/>
         <source>Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="548"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="549"/>
         <source>Static</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="551"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="552"/>
         <source>Half Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="552"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="553"/>
         <source>True Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="553"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="554"/>
         <source>Projection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="554"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="555"/>
         <source>Focal Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="555"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="556"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="586"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="587"/>
         <source>Plate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="587"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="588"/>
         <source>OD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="588"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="589"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="634"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="635"/>
         <source>GROUP </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="636"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="637"/>
         <source>:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="647"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="648"/>
         <source>Probe Characterization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="648"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="649"/>
         <source>Probe Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="649"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="650"/>
         <source>Probe Serial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="650"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="651"/>
         <source>Probe Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="651"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="652"/>
         <source>Wedge Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="653"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="654"/>
         <source>Aperture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="695"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="696"/>
         <source>Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="697"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="698"/>
         <source>Beam Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="698"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="699"/>
         <source>Sample Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="699"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="700"/>
         <source>Sample Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="700"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="701"/>
         <source>PRF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="701"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="702"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="702"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="703"/>
         <source>Averaging Factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="704"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="705"/>
         <source>Scale Factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="705"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="706"/>
         <source>Video Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="706"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="707"/>
         <source>Rectification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="707"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="708"/>
         <source>Band-Pass Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="709"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="710"/>
         <source>Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="710"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="711"/>
         <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="711"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="712"/>
         <source>Sound Velocity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="712"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="713"/>
         <source>Pulse Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="714"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="715"/>
         <source>Scan Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="715"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="716"/>
         <source>Index Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="716"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="717"/>
         <source>Skew</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="717"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="718"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="718"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="719"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="720"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="721"/>
         <source>Threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="721"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="722"/>
         <source>Synchro</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="832"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="833"/>
         <source>Calculator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="834"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="835"/>
         <source>Element Qty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="835"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="836"/>
         <source>First TX Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="836"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="837"/>
         <source>Last TX Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="837"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="838"/>
         <source>First RX Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="838"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="839"/>
         <source>Last RX Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="839"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="840"/>
         <source>Resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="841"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="842"/>
         <source>Start Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="842"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="843"/>
         <source>Stop Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="843"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="844"/>
         <source>Angle Resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="844"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="845"/>
         <source>Law Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="846"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="847"/>
         <source>Focal Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="847"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="848"/>
         <source>Position Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="848"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="849"/>
         <source>Position End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="849"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="850"/>
         <source>Position Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="850"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="851"/>
         <source>Offset Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="851"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="852"/>
         <source>Offset Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="852"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="853"/>
         <source>Depth Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="853"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="854"/>
         <source>Depth Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="945"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="946"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="946"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="947"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="947"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="948"/>
         <source>Geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="948"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="949"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="984"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="985"/>
         <source>Table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1006"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1007"/>
         <source>Scan Pos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1046"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1047"/>
         <source>Technician Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1047"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1048"/>
         <source>Technician Signature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1048"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1049"/>
         <source>Contractor:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1049"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1050"/>
         <source>Date:</source>
         <translation type="unfinished"></translation>
     </message>

@@ -536,6 +536,7 @@ typedef struct _Group
 	PROBE_CONFIG			probe[2];
 	CURVES					curve;
 	GROUP_COLOR				color;
+    int						ThicknessType[8];
 }GROUP_CONFIG;
 //####################################################################################
 //#################				 COMMON DATA			 ######################

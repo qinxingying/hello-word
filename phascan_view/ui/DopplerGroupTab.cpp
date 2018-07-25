@@ -52,7 +52,6 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
     }
 
     SetWndName();
-
     UpdateMeasureBox();
     UpdateGroupConfig();
 	ui->toolBox->setCurrentIndex(0);
@@ -312,6 +311,49 @@ void DopplerGroupTab::UpdateMeasureBox()
 
 		connect(_field[i] , SIGNAL(highlighted(int)) , SLOT(slotMeasureBoxTipInfo(int))) ;
 	}
+}
+
+void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
+{
+    QComboBox* _field = ui->ComThickness;
+    int i;
+    if(ifadd)
+    {
+    if(selectID == 0)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[0]);
+        _field->addItem(g_strThicknessStandard[1]);
+        _field->addItem(g_strThicknessStandard[2]);
+    }
+    else if(selectID == 1)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[3]);
+        _field->addItem(g_strThicknessStandard[4]);
+        _field->addItem(g_strThicknessStandard[5]);
+    }
+    if(selectID == 2)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[6]);
+        _field->addItem(g_strThicknessStandard[7]);
+        _field->addItem(g_strThicknessStandard[8]);
+    }
+    if(selectID == 3)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[9]);
+        _field->addItem(g_strThicknessStandard[10]);
+    }
+    }
+    _field->setCurrentIndex(m_pGroup->ThicknessType[m_nGroupId]);
+    CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
+    CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
+    CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+    ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
+    ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
+    ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
 }
 
 /****************************************************************************
@@ -906,7 +948,7 @@ void DopplerGroupTab::UpdateSizeingCurves()
         ui->scrollAreaGateAndCurve->setMinimumHeight(800);
     }
 
-	ui->ComSizingCurve->setCurrentIndex((int)_curve.eType);
+    ui->ComSizingCurve->setCurrentIndex((int)_curve.eType);
 	ui->ComCurvePointId->clear();
 	char strBuf[256];
 	for(int i = 0; i < _curve.nPointQty; i++) {
@@ -2159,5 +2201,21 @@ void DopplerGroupTab::on_ValueREFGain_valueChanged(double arg1)
 void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
 {
     CUR_RES.Com_Gain[m_nGroupId] = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComStandard_currentIndexChanged(int index)
+{
+    if(!ui->ComStandard->hasFocus())  return ;
+    m_pGroup->ThicknessType[m_nGroupId] = 0;
+    UpdateStandard(index,1);
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComThickness_currentIndexChanged(int index)
+{
+    if(!ui->ComThickness->hasFocus())  return ;
+    m_pGroup->ThicknessType[m_nGroupId] = index;
+    UpdateStandard(ui->ComStandard->currentIndex(),0);
     g_pMainWnd->RunDrawThreadOnce(true);
 }

@@ -800,6 +800,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 	{
 		GROUP_INFO* _pGroupInfo = pConf_->GetGroupInfo(i) ;
         GROUP_CONFIG& _group  = group[i] ;
+        _group.ThicknessType[i] = 0;
         _group.bShowGateA     = 1;
         _group.bShowGateB =_group.bShowGateI = 0;
 		_group.eGroupMode	  = (setup_GROUP_MODE)_pGroupInfo->group_mode  ;
