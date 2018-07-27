@@ -702,7 +702,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="9094"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9586"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9637"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="927"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="928"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
@@ -947,8 +947,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1478"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="182"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="214"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="183"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="215"/>
         <source>PA</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1238,7 +1238,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5007"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7187"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9087"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1000"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1001"/>
         <source>Width:</source>
         <translation>宽        度：</translation>
     </message>
@@ -1349,8 +1349,8 @@
         <location filename="../ui/DopplerGroupTab.ui" line="6677"/>
         <location filename="../ui/DopplerGroupTab.ui" line="6728"/>
         <location filename="../ui/DopplerGroupTab.ui" line="6779"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="896"/>
         <location filename="../ui/DopplerGroupTab.cpp" line="897"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="898"/>
         <source>Ref Amplitude:</source>
         <translation>参考幅度：</translation>
     </message>
@@ -1373,7 +1373,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="6817"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8183"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8246"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="912"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="913"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1435,8 +1435,8 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="7127"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8819"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="999"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1004"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1000"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1005"/>
         <source>Length:</source>
         <translation>长        度：</translation>
     </message>
@@ -1599,8 +1599,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="467"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="175"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="207"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="176"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="208"/>
         <source>Wedge Delay:</source>
         <translation>楔块延迟：</translation>
     </message>
@@ -2058,7 +2058,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="9375"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="998"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="999"/>
         <source>Thickness:</source>
         <translation>厚        度：</translation>
     </message>
@@ -2147,61 +2147,61 @@
         <translation>计算中心间距：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="174"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="206"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="175"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="207"/>
         <source>Reference Point:</source>
         <translation>参考点：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="189"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="221"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="190"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="222"/>
         <source>NORMAL</source>
         <translation>正向</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="191"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="223"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="192"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="224"/>
         <source>INVERSE</source>
         <translation>反向</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="204"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="205"/>
         <source>UT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="538"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2093"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="539"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2094"/>
         <source>Display Mode</source>
         <translation>显示模式</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="893"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="894"/>
         <source>Mat. Atten:</source>
         <translation>衰减系数:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="894"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="895"/>
         <source>Delay:</source>
         <translation>延迟时间：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="926"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="927"/>
         <source>dB/mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="938"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="939"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1002"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1003"/>
         <source>Inner Diameter:</source>
         <translation>内部直径:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1003"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1004"/>
         <source>Outer Diameter:</source>
         <translation>外部直径:</translation>
     </message>
@@ -3177,17 +3177,17 @@
 <context>
     <name>ParameterProcess</name>
     <message>
-        <location filename="../process/ParameterProcess.cpp" line="40"/>
+        <location filename="../process/ParameterProcess.cpp" line="37"/>
         <source> Message : Max Group Quantity is %1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../process/ParameterProcess.cpp" line="42"/>
+        <location filename="../process/ParameterProcess.cpp" line="39"/>
         <source> Message : Template Group Configure does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../process/ParameterProcess.cpp" line="74"/>
+        <location filename="../process/ParameterProcess.cpp" line="71"/>
         <source>Group Configure does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
