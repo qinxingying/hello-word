@@ -233,6 +233,7 @@ void DopplerDataView::UpdateDrawing()
 {
 	UpdateMeasure() ;
 	m_pGraphicView->UpdateDrawing();
+    UpdateMeasure() ;
 }
 
 #include <process/ParameterProcess.h>

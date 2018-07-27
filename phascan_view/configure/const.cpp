@@ -55,6 +55,9 @@ const char* g_strMeasureFildName[][4] =
 	{"T-D(m-r)"	, "Tofd Ultrasonic Axis Cursor Measure to Reference"} ,
     {"A^-I^","Distance between peaks in gate A and gate I"},
     {"B^-I^","Distance between peaks in gate A and gate I"},
+    {"RL    " , "None"},
+    {"EL    " , "None"},
+    {"SL    " , "None"},
 };
 
 const char* g_strMeasureFildUnit[][4] =
@@ -107,8 +110,25 @@ const char* g_strMeasureFildUnit[][4] =
     {"T-D(m-r)" , "mm"},
     {"A^-I^", "mm"},
     {"B^-I^", "mm"},
+    {"RL    " , "db"},
+    {"EL    " , "db"},
+    {"SL    " , "db"},
 };
 
+const char* g_strThicknessStandard[] =
+{
+    ">=6~40mm",">40~100mm",">100~200mm",
+    ">=4~8mm",">8~15mm",">15mm",
+    ">=6~46mm",">46~120mm",">120~200mm",
+    ">=6~8mm",">=8mm",
+};
+const double g_ValuedbStandard[4][3][3] =
+{
+    {{-4,-12,-18},{2,-8,-14},{6,-4,-10}},
+    {{-12,-18,-24},{-8,-14,-20},{-4,-10,-16}},
+    {{-4,-12,-18},{2,-8,-14},{0,-10,-16}},
+    {{-4,-10,-16},{-2,-8,-14},{0,0,0}},
+};
 QString GetExePathName2(char* dir)
 {
 	char _strPathName[256];

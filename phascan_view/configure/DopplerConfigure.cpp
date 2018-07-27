@@ -11,6 +11,7 @@
 #include <report/DopplerHtmlReport.h>
 #include <process/ParameterProcess.h> 
 extern int Cscan_range,Csrc_start,Bscan_range,Bsrc_start;
+extern double RL_EL_SL[5];
 static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 	"Default PA" ,
 	"Doppler Serial" ,
@@ -799,6 +800,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 	{
 		GROUP_INFO* _pGroupInfo = pConf_->GetGroupInfo(i) ;
         GROUP_CONFIG& _group  = group[i] ;
+        _group.ThicknessType[i] = 0;
         _group.bShowGateA     = 1;
         _group.bShowGateB =_group.bShowGateI = 0;
 		_group.eGroupMode	  = (setup_GROUP_MODE)_pGroupInfo->group_mode  ;
@@ -824,6 +826,11 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.fRefGain	      = 0;
             _group.RefGain        = _pGroupInfo->gain / 100.0 - _pGroupInfo->gainr / 100.0;
         }
+        CUR_RES.REF_Gain[i]   = _group.fGain;
+        CUR_RES.Com_Gain[i]      = 4;
+        CUR_RES.CurRL[i]         = -4;
+        CUR_RES.CurEL[i]         = -18;
+        CUR_RES.CurSL[i]         = -12;
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;
@@ -916,6 +923,10 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.bShowCurve = 0;
 		if(_curve.nPointQty > 0 && _curve.eType > setup_CURVE_TYPE_NULL && _curve.eType < setup_CURVE_TYPE_MAX)
 			_group.bShowCurve = 1;
+        CUR_RES.bShowRL = 0;
+        CUR_RES.bShowEL = 0;
+        CUR_RES.bShowSL = 0;
+        memset(RL_EL_SL,0,sizeof(RL_EL_SL));
 		//-----------------------------------------
 		LAW_CONFIG& _LawConfig = _group.law ;
 		LAW_INFO&     _LawInfo = _pGroupInfo->law_info ;
@@ -1126,7 +1137,6 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_process->TofdCursorCalibration(i);
 
 	}
-    CUR_RES.bShowEL = CUR_RES.bShowRL = CUR_RES.bShowSL = CUR_RES.CurEL = CUR_RES.CurRL = CUR_RES.CurSL = 0;
 }
 
 void  DopplerConfigure::UpdateTofdConfig(int nGroupId_)
@@ -1338,6 +1348,9 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 				strcpy(_pDfInfo->m_strMeasure[i], "-");
                 strcpy(_pDfInfo->m_strSzField[i],"-");
                 strcpy(_pDfInfo->m_strSzFieldUnit[i],"-");
+                strcpy(_pDfInfo->SL,"NA");
+                QString SLstr = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, FEILD_SL );
+                strcpy(_pDfInfo->SL,(char*)(qPrintable(SLstr)));
 				if(_pMeasure[i]) {
 					QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i] );
 					strcpy(_pDfInfo->m_strMeasure[_nQty], (char*)(qPrintable(_str)));

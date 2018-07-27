@@ -66,7 +66,8 @@ typedef U8				WDATA;	//	定义波形数据位宽 8位
 
 extern const char* g_strMeasureFildName[][4];
 extern const char* g_strMeasureFildUnit[][4];
-
+extern const char* g_strThicknessStandard[];
+extern const double g_ValuedbStandard[4][3][3];
 extern QString GetExePathName2(char* dir);
 extern void GetExePathName1(char* dir, char* _strPathName);
 
@@ -123,6 +124,9 @@ enum FEILD_VALUE_INDEX
 	FEILD_TofdHeight ,
     FEILD_APos_DEC_IPos,
     FEILD_BPos_DEC_IPos,
+    FEILD_RL,
+    FEILD_EL,
+    FEILD_SL,
     FEILD_VALUE_INDEX_MAX,
 };
 #endif // CONST_H

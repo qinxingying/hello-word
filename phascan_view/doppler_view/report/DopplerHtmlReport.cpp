@@ -176,7 +176,7 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
         QString(QObject::tr("Depth start")),
         QString(QObject::tr("Height")),
         QString(QObject::tr("Index pos")),
-        QString(QObject::tr("Width"))
+        QString(QObject::tr("SL"))
     };
 
     fprintf(m_pFile , "<th align=left>%s(Gr%d)</th>\n", TOCHAR(strDefect), nGroupId_+1);
@@ -200,6 +200,7 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 
 	for(int i = 0; i < _pConfig->GetDefectCnt(nGroupId_); i++)
 	{
+        DEFECT_INFO*      _pDfInfo = _pConfig->GetDefectPointer(nGroupId_, i);
 		fprintf(m_pFile,"<td %s>%d</td>\n" ,tableTdStyle , i+1);
 
 		_fData = _pConfig->DefectLengthValue(nGroupId_, &_fStart, i);
@@ -218,7 +219,7 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 		{
 			_fData = _pConfig->DefectWidthValue(nGroupId_, &_fStart, i);
 			fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _fStart);
-			fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _fData);
+            fprintf(m_pFile,"<td %s>%sdb</td>\n" ,tableTdStyle , _pDfInfo->SL);
 		}
 		fprintf(m_pFile,"</tr>\n\n");
 	}

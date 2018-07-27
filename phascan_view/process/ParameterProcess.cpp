@@ -407,16 +407,16 @@ int  ParameterProcess::SetupScanPos(float fScanPos_)
 	SCANNER& _scaner = m_pConfig->common.scanner ;
 	float _fPos = fScanPos_;
 
-    if(SAxisDistToIndex(_fPos) < _scaner.fScanStart)
-        _fPos = SAxisIndexToDist(_scaner.fScanStart);
+    if(_fPos < _scaner.fScanStart)
+        _fPos = _scaner.fScanStart;
 
-    if(SAxisDistToIndex(_fPos) > _scaner.fScanStop)
-        _fPos = SAxisIndexToDist(_scaner.fScanStop);
+    if(_fPos > _scaner.fScanStop)
+        _fPos = _scaner.fScanStop;
 
 	_scaner.fScanPos = _fPos;
-    if((_scaner.fScanPos < _scaner.fScanStart2)&&(SAxisDistToIndex(_scaner.fScanPos) >= _scaner.fScanStart))
+    if((_scaner.fScanPos < _scaner.fScanStart2)&&(_scaner.fScanPos >= _scaner.fScanStart))
         _scaner.fScanStart2 = _scaner.fScanPos;
-    if((_scaner.fScanPos > _scaner.fScanend) && (SAxisDistToIndex(_scaner.fScanPos) <= _scaner.fScanStop))
+    if((_scaner.fScanPos > _scaner.fScanend) && (_scaner.fScanPos <= _scaner.fScanStop))
         _scaner.fScanend = _scaner.fScanPos;
 	return 0;
 	//return -1;

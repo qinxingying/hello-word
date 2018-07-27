@@ -2,6 +2,7 @@
 #include <process/ParameterProcess.h>
 #include <QPainter>
 #include <math.h>
+double RL_EL_SL[5]={0};
 DopplerDrawAScanH::DopplerDrawAScanH():DopplerDrawScan()
 {
 	bDrawLimit = 0 ;
@@ -128,7 +129,17 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_DAC);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG,0);
             break;
         default:
             break;
@@ -143,6 +154,19 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
         case setup_CURVE_TYPE_LINEAR_DAC:
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_RL);
             break;
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL,0);
+            break;
         default:
             break;
         }
@@ -156,6 +180,19 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
         case setup_CURVE_TYPE_LINEAR_DAC:
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_EL);
             break;
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL,0);
+            break;
         default:
             break;
         }
@@ -168,6 +205,19 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
             break;
         case setup_CURVE_TYPE_LINEAR_DAC:
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_SL);
+            break;
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL,0);
             break;
         default:
             break;
@@ -219,9 +269,9 @@ void DopplerDrawAScanH::DrawDacCurve(QPainter *painter, int nWidth_, int nHeight
 	float _nStepRate[5];
 
 	_nStepRate[0] = 1;
-    _nStepRate[1] = pow(10.0, CUR_RES.CurRL/20.0);
-    _nStepRate[2] = pow(10.0, CUR_RES.CurEL/20.0);
-    _nStepRate[3] = pow(10.0, CUR_RES.CurSL/20.0);
+    _nStepRate[1] = pow(10.0, CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[2] = pow(10.0, CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[3] = pow(10.0, CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
 	_nStepRate[4] = 1 / _nStepRate[2];
 
 	//------------------------------------------
@@ -241,28 +291,23 @@ void DopplerDrawAScanH::DrawDacCurve(QPainter *painter, int nWidth_, int nHeight
 		}
 
 	//------------------------------------------
-        QString _str ;
         //------------------------------------------
         QColor _Color ;
         if(mode == setup_DAC)
         {
             _Color = QColor(0, 100, 0);
-            _str.sprintf("%s", "DAC")  ;
         }
         else if(mode == setup_RL)
         {
             _Color = QColor(255, 0, 0);
-            _str.sprintf("%s", "RL")  ;
         }
         else if(mode == setup_EL)
         {
             _Color = QColor(0, 0, 255);
-            _str.sprintf("%s", "EL")  ;
         }
         else if(mode == setup_SL)
         {
             _Color = QColor(125, 125, 125);
-            _str.sprintf("%s", "SL")  ;
         }
 	QPen _NewPen ;
 
@@ -312,9 +357,9 @@ void DopplerDrawAScanH::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 
 	float _nStepRate[5];
 	_nStepRate[0] = 1;
-    _nStepRate[1] = pow(10.0, CUR_RES.CurRL/20.0);
-    _nStepRate[2] = pow(10.0, CUR_RES.CurEL/20.0);
-    _nStepRate[3] = pow(10.0, CUR_RES.CurSL/20.0);
+    _nStepRate[1] = pow(10.0, CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[2] = pow(10.0, CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[3] = pow(10.0, CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
 	_nStepRate[4] = 1 / _nStepRate[2];
 	//------------------------------------------
 	_ptX[0] = 0;
@@ -336,7 +381,23 @@ void DopplerDrawAScanH::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 		}
 
 	//------------------------------------------
-	QColor _Color = QColor(0, 100, 0);
+        QColor _Color ;
+        if(mode == setup_DAC)
+        {
+            _Color = QColor(0, 100, 0);
+        }
+        else if(mode == setup_RL)
+        {
+            _Color = QColor(255, 0, 0);
+        }
+        else if(mode == setup_EL)
+        {
+            _Color = QColor(0, 0, 255);
+        }
+        else if(mode == setup_SL)
+        {
+            _Color = QColor(125, 125, 125);
+        }
 	QPen _NewPen ;
 
 	_NewPen.setColor(_Color);
@@ -348,8 +409,8 @@ void DopplerDrawAScanH::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 
 	//------------------------------------------
 }
-
-void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_)
+#include <qdebug.h>
+void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_,int mode,int flag)
 {
 	CURVES& _curve = m_pGroup->curve;
 
@@ -366,7 +427,32 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 
 	float _ptX[18] ;
 	float _ptY[18] ;
+    QColor _Color ;
+    if(mode == setup_TCG)
+    {
+        _Color = QColor(0, 100, 0);
+    }
+    else if(mode == setup_RL)
+    {
+        _Color = QColor(255, 0, 0);
+    }
+    else if(mode == setup_EL)
+    {
+        _Color = QColor(125, 125, 125);
+    }
+    else if(mode == setup_SL)
+    {
+        _Color = QColor(0, 0, 255);
+    }
+    QPen _NewPen ;
 
+    _NewPen.setColor(_Color);
+    _NewPen.setDashPattern(m_dashes);
+    painter->setPen(_NewPen);
+    if(mode == setup_TCG)
+    {
+        if(flag == 0)
+            return;
 	memset(_ptX, 0x00, sizeof(_ptX));
 	memset(_ptY, 0x00, sizeof(_ptY));
 	//------------------------------------------
@@ -385,19 +471,15 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 		_ptY[i] = _nHeight - fabs(_ptY[i] - _ptY[0]);
 	}
 	//**************************************************************
-	QColor _Color = QColor(0, 100, 0);
-	QPen _NewPen ;
 
-	_NewPen.setColor(_Color);
-	_NewPen.setDashPattern(m_dashes);
-	painter->setPen(_NewPen);
+
 
 	//------------------------------------------
 	for(int i = 0; i <= _nPointQty+1 ; i++)
 	{
-		m_linCurves[0]<<QPointF(_ptX[i] , _ptY[i]) ;
+        m_linCurves[mode]<<QPointF(_ptX[i] , _ptY[i]) ;
 	}
-	painter->drawPolyline(m_linCurves[0]);
+    painter->drawPolyline(m_linCurves[mode]);
 	//------------------------------------------
 	m_iPtCnt[0] = _nPointQty;
 	for(int i = 0; i < _nPointQty; i++)
@@ -410,6 +492,34 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 			DrawPointRectangle(painter, m_ptPos[0][i].x() , m_ptPos[0][i].y(), QColor(200 , 200 , 200));
 		}
 	}
+    }
+    else
+    {
+        float midx,midy;
+        midx = pow(10.0,(m_pGroup->fGain+m_pGroup->RefGain+m_pGroup->fRefGain-CUR_RES.REF_Gain[m_cInfo.nGroupId]-CUR_RES.Com_Gain[m_cInfo.nGroupId])/20.0);
+        midx = midx * 0.8;
+        if(mode == setup_RL)
+        {
+            midy = pow(10.0,CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
+            midy = midx * midy;
+        }
+        else if(mode == setup_EL)
+        {
+            midy = pow(10.0,CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
+            midy = midx * midy;
+        }
+        else if(mode == setup_SL)
+        {
+            midy = pow(10.0,CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
+            midy = midx * midy;
+        }
+        m_linCurves[mode]<<QPointF(0 ,(1 - midy) * m_nHeight) ;
+        m_linCurves[mode]<<QPointF(m_nWidth , (1 -midy) * m_nHeight) ;
+        RL_EL_SL[mode] = midy;
+        if(flag)
+            painter->drawPolyline(m_linCurves[mode]);
+
+    }
 	//------------------------------------------
 }
 
@@ -559,7 +669,17 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_DAC);
             break;
         case setup_CURVE_TYPE_TCG:
-            DrawTcgCurve(&painter, _nWidth, _nHeight);
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_TCG,0);
             break;
         default:
             break;
@@ -574,6 +694,19 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
         case setup_CURVE_TYPE_LINEAR_DAC:
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_RL);
             break;
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_RL,0);
+            break;
         default:
             break;
         }
@@ -587,6 +720,19 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
         case setup_CURVE_TYPE_LINEAR_DAC:
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_EL);
             break;
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_EL,0);
+            break;
         default:
             break;
         }
@@ -599,6 +745,19 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
             break;
         case setup_CURVE_TYPE_LINEAR_DAC:
             DrawLinearDacCurve(&painter, _nWidth, _nHeight,setup_SL);
+            break;
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL,1);
+            break;
+        default:
+            break;
+        }
+    }
+    else    {
+        switch(m_pGroup->curve.eType)
+        {
+        case setup_CURVE_TYPE_TCG:
+            DrawTcgCurve(&painter, _nWidth, _nHeight,setup_SL,0);
             break;
         default:
             break;
@@ -631,9 +790,9 @@ void DopplerDrawAScanV::DrawDacCurve(QPainter *painter, int nWidth_, int nHeight
 	float _nStepRate[5];
 
 	_nStepRate[0] = 1;
-    _nStepRate[1] = pow(10.0, CUR_RES.CurRL/20.0);
-    _nStepRate[2] = pow(10.0, CUR_RES.CurEL/20.0);
-    _nStepRate[3] = pow(10.0, CUR_RES.CurSL/20.0);
+    _nStepRate[1] = pow(10.0, CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[2] = pow(10.0, CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[3] = pow(10.0, CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
 	_nStepRate[4] = 1 / _nStepRate[2];
 
 	//------------------------------------------
@@ -720,9 +879,9 @@ void DopplerDrawAScanV::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 
 	float _nStepRate[5];
 	_nStepRate[0] = 1;
-	_nStepRate[1] = pow(10.0f, _curve.fCurStep / 2.0f);
-	_nStepRate[2] = pow(10.0f, _curve.fCurStep);
-	_nStepRate[3] = 1 / _nStepRate[1];
+    _nStepRate[1] = pow(10.0, CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[2] = pow(10.0, CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[3] = pow(10.0, CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
 	_nStepRate[4] = 1 / _nStepRate[2];
 	//------------------------------------------
 	_ptX[0] = _nWidth * _curve.fAmpOffsetLinear * _fRefAmpOff;
@@ -743,7 +902,23 @@ void DopplerDrawAScanV::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 		}
 
 	//------------------------------------------
-	QColor _Color = QColor(0, 100, 0);
+        QColor _Color ;
+        if(mode == setup_DAC)
+        {
+            _Color = QColor(0, 100, 0);
+        }
+        else if(mode == setup_RL)
+        {
+            _Color = QColor(255, 0, 0);
+        }
+        else if(mode == setup_EL)
+        {
+            _Color = QColor(0, 0, 255);
+        }
+        else if(mode == setup_SL)
+        {
+            _Color = QColor(125, 125, 125);
+        }
 	QPen _NewPen ;
 
 	_NewPen.setColor(_Color);
@@ -756,7 +931,7 @@ void DopplerDrawAScanV::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 	//------------------------------------------
 }
 
-void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_)
+void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight_,int mode,int flag)
 {
 	CURVES& _curve = m_pGroup->curve;
 
@@ -773,7 +948,32 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 
 	float _ptX[18] ;
 	float _ptY[18] ;
+    QColor _Color ;
+    if(mode == setup_TCG)
+    {
+        _Color = QColor(0, 100, 0);
+    }
+    else if(mode == setup_RL)
+    {
+        _Color = QColor(255, 0, 0);
+    }
+    else if(mode == setup_EL)
+    {
+        _Color = QColor(125, 125, 125);
+    }
+    else if(mode == setup_SL)
+    {
+        _Color = QColor(0, 0, 255);
+    }
+    QPen _NewPen ;
 
+    _NewPen.setColor(_Color);
+    _NewPen.setDashPattern(m_dashes);
+    painter->setPen(_NewPen);
+    if(mode == setup_TCG)
+    {
+        if(flag == 0)
+            return;
 	memset(_ptX, 0x00, sizeof(_ptX));
 	memset(_ptY, 0x00, sizeof(_ptY));
 	//------------------------------------------
@@ -817,5 +1017,33 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 			DrawPointRectangle(painter, m_ptPos[0][i].x() , m_ptPos[0][i].y(), QColor(200 , 200 , 200));
 		}
 	}
+    }
+    else
+    {
+        float midx,midy;
+        midx = pow(10.0,(m_pGroup->fGain+m_pGroup->RefGain+m_pGroup->fRefGain-CUR_RES.REF_Gain[m_cInfo.nGroupId]-CUR_RES.Com_Gain[m_cInfo.nGroupId])/20.0);
+        midx = midx * 0.8;
+        if(mode == setup_RL)
+        {
+            midy = pow(10.0,CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
+            midy = midx * midy;
+        }
+        else if(mode == setup_EL)
+        {
+            midy = pow(10.0,CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
+            midy = midx * midy;
+        }
+        else if(mode == setup_SL)
+        {
+            midy = pow(10.0,CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
+            midy = midx * midy;
+        }
+        m_linCurves[mode]<<QPointF( midy * m_nWidth,0) ;
+        m_linCurves[mode]<<QPointF( midy * m_nWidth , m_nHeight) ;
+        RL_EL_SL[mode] = midy;
+        if(flag)
+            painter->drawPolyline(m_linCurves[mode]);
+
+    }
 	//------------------------------------------
 }

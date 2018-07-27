@@ -314,6 +314,49 @@ void DopplerGroupTab::UpdateMeasureBox()
 	}
 }
 
+void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
+{
+    QComboBox* _field = ui->ComThickness;
+    int i;
+    if(ifadd)
+    {
+    if(selectID == 0)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[0]);
+        _field->addItem(g_strThicknessStandard[1]);
+        _field->addItem(g_strThicknessStandard[2]);
+    }
+    else if(selectID == 1)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[3]);
+        _field->addItem(g_strThicknessStandard[4]);
+        _field->addItem(g_strThicknessStandard[5]);
+    }
+    if(selectID == 2)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[6]);
+        _field->addItem(g_strThicknessStandard[7]);
+        _field->addItem(g_strThicknessStandard[8]);
+    }
+    if(selectID == 3)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[9]);
+        _field->addItem(g_strThicknessStandard[10]);
+    }
+    }
+    _field->setCurrentIndex(m_pGroup->ThicknessType[m_nGroupId]);
+    CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
+    CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
+    CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+    ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
+    ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
+    ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
+}
+
 /****************************************************************************
   Description: 当前角度选择控件更新
 *****************************************************************************/
@@ -687,6 +730,11 @@ void DopplerGroupTab::UpdateGroupConfig()
 
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
     ui->ValueRefGain->setValue(m_pGroup->RefGain + m_pGroup->fRefGain);
+    ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
+    ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
+    ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
+    ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
+    ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
 	ui->ValueWedgeDelay->setValue(m_pGroup->nWedgeDelay / 1000.0);
@@ -822,6 +870,9 @@ void DopplerGroupTab::UpdateSizeingCurves()
 	ParameterProcess* _process = ParameterProcess::Instance();
 
     ui->CheckCurveShow->setCheckState(m_pGroup->bShowCurve ? Qt::Checked : Qt::Unchecked);
+    ui->CheckRLShow->setCheckState(CUR_RES.bShowRL ? Qt::Checked : Qt::Unchecked);
+    ui->CheckELShow->setCheckState(CUR_RES.bShowEL ? Qt::Checked : Qt::Unchecked);
+    ui->CheckSLShow->setCheckState(CUR_RES.bShowSL ? Qt::Checked : Qt::Unchecked);
 
     ui->ComSizingCurve->setEnabled(false);
 	ui->ComCurvePointId->setEnabled(false);
@@ -2114,7 +2165,7 @@ void DopplerGroupTab::on_CheckRLShow_clicked(bool checked)
 
 void DopplerGroupTab::on_ValueRL_valueChanged(double arg1)
 {
-    CUR_RES.CurRL = arg1;
+    CUR_RES.CurRL[m_nGroupId] = arg1;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -2126,7 +2177,7 @@ void DopplerGroupTab::on_CheckELShow_clicked(bool checked)
 
 void DopplerGroupTab::on_ValueEL_valueChanged(double arg1)
 {
-    CUR_RES.CurEL = arg1;
+    CUR_RES.CurEL[m_nGroupId] = arg1;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -2138,6 +2189,34 @@ void DopplerGroupTab::on_CheckSLShow_clicked(bool checked)
 
 void DopplerGroupTab::on_ValueSL_valueChanged(double arg1)
 {
-    CUR_RES.CurSL = arg1;
+    CUR_RES.CurSL[m_nGroupId] = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueREFGain_valueChanged(double arg1)
+{
+    CUR_RES.REF_Gain[m_nGroupId] = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
+{
+    CUR_RES.Com_Gain[m_nGroupId] = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComStandard_currentIndexChanged(int index)
+{
+    if(!ui->ComStandard->hasFocus())  return ;
+    m_pGroup->ThicknessType[m_nGroupId] = 0;
+    UpdateStandard(index,1);
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComThickness_currentIndexChanged(int index)
+{
+    if(!ui->ComThickness->hasFocus())  return ;
+    m_pGroup->ThicknessType[m_nGroupId] = index;
+    UpdateStandard(ui->ComStandard->currentIndex(),0);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
