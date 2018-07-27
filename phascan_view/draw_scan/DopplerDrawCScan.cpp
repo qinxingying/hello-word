@@ -281,7 +281,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 	}
     _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
-        TransformImage(m_PosStop - m_PosStart,lawstop-lawstart,src,_nWidth,_nHeight,pImage_);
+        TransformImage(m_PosStop - m_PosStart,lawstop-lawstart,src,pImage_->width(),pImage_->height(),pImage_);
 
     delete TImage;
 }
@@ -443,7 +443,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	}
     _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
-        TransformImage(m_PosStop - m_PosStart,lawstop-lawstart,src,_nWidth,_nHeight,pImage_);
+        TransformImage(m_PosStop - m_PosStart,lawstop-lawstart,src,pImage_->width(),pImage_->height(),pImage_);
     delete TImage;
 }
 
@@ -702,7 +702,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 	}
     _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
-    TransformImage(lawstop-lawstart,m_PosStop - m_PosStart,src,_nWidth,_nHeight,pImage_);
+    TransformImage(lawstop-lawstart,m_PosStop - m_PosStart,src,pImage_->width(),pImage_->height(),pImage_);
     delete TImage;
 }
 
@@ -861,6 +861,6 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	}
     _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
-    TransformImage(lawstop-lawstart,m_PosStop - m_PosStart,src,_nWidth,_nHeight,pImage_);
+    TransformImage(lawstop-lawstart,m_PosStop - m_PosStart,src,pImage_->width(),pImage_->height(),pImage_);
     delete TImage;
 }
