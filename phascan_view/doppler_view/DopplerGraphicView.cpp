@@ -299,6 +299,10 @@ void DopplerGraphicView::resizeEvent(QResizeEvent *event)
         m_pScene->setSceneRect(0, 0, _nWidth, _nHeight);
     }
 
+    if(m_pScene)
+    {
+        m_pScene->setSceneRect(0, 0, _nWidth, _nHeight);
+    }
 	m_nScaleBaseH =  _nWidth / m_pBackGround->size().width()  ;
 	m_nScaleBaseV =  _nHeight/ m_pBackGround->size().height() ;
 

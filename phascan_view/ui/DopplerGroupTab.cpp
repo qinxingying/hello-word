@@ -52,6 +52,7 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
     }
 
     SetWndName();
+
     UpdateMeasureBox();
     UpdateGroupConfig();
 	ui->toolBox->setCurrentIndex(0);
@@ -948,7 +949,7 @@ void DopplerGroupTab::UpdateSizeingCurves()
         ui->scrollAreaGateAndCurve->setMinimumHeight(800);
     }
 
-    ui->ComSizingCurve->setCurrentIndex((int)_curve.eType);
+	ui->ComSizingCurve->setCurrentIndex((int)_curve.eType);
 	ui->ComCurvePointId->clear();
 	char strBuf[256];
 	for(int i = 0; i < _curve.nPointQty; i++) {
@@ -2194,13 +2195,24 @@ void DopplerGroupTab::on_ValueSL_valueChanged(double arg1)
 
 void DopplerGroupTab::on_ValueREFGain_valueChanged(double arg1)
 {
+    if(!ui->ValueREFGain->hasFocus())  return ;
     CUR_RES.REF_Gain[m_nGroupId] = arg1;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
 void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
 {
-    CUR_RES.Com_Gain[m_nGroupId] = arg1;
+    if(!ui->ValueComGain->hasFocus())  return ;
+    float value_com = CUR_RES.Com_Gain[m_nGroupId];
+    float value_ref = ui->ValueRefGain->value();
+    float x = arg1 - value_com;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupRefGain(m_nGroupId , value_ref + x) ;
+    ui->ValueRefGain->setValue(value_ref + x);
+    CUR_RES.Com_Gain[m_nGroupId] = value_com + ui->ValueRefGain->value() - value_ref;
+    ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
+    ProcessDisplay _display ;
+    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
