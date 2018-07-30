@@ -352,7 +352,7 @@ struct CURVE_RL_EL_SL
     int bShowEL;
     int bShowSL;
     float REF_Gain[8];
-    int Com_Gain[8];
+    float Com_Gain[8];
 };
 
 extern CURVE_RL_EL_SL CUR_RES;
