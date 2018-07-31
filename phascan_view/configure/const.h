@@ -67,7 +67,7 @@ typedef U8				WDATA;	//	定义波形数据位宽 8位
 extern const char* g_strMeasureFildName[][4];
 extern const char* g_strMeasureFildUnit[][4];
 extern const char* g_strThicknessStandard[];
-extern const double g_ValuedbStandard[4][3][3];
+extern const double g_ValuedbStandard[][3][3];
 extern QString GetExePathName2(char* dir);
 extern void GetExePathName1(char* dir, char* _strPathName);
 

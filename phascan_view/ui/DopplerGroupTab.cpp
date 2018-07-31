@@ -251,6 +251,7 @@ void DopplerGroupTab::UpdateLawConfig()
 	ui->ValueFocusOffsetStop->setValue(_law.fOffsetStop);
 	ui->ValueFocusDepthStart->setValue(_law.fDepthStart);
 	ui->ValueFocusDepthStop->setValue(_law.fDepthStop);
+    ui->ValueFocalDepth->setValue(_law.fPositionStart);
 	//***********************************************
 	//************ element selection
 	ui->ValueElementQtyPri->setValue(_law.nElemQtyFir);
@@ -334,18 +335,29 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
         _field->addItem(g_strThicknessStandard[4]);
         _field->addItem(g_strThicknessStandard[5]);
     }
-    if(selectID == 2)
+    else if(selectID == 2)
     {
         _field->clear();
         _field->addItem(g_strThicknessStandard[6]);
         _field->addItem(g_strThicknessStandard[7]);
         _field->addItem(g_strThicknessStandard[8]);
     }
-    if(selectID == 3)
+    else if(selectID == 3)
     {
         _field->clear();
         _field->addItem(g_strThicknessStandard[9]);
         _field->addItem(g_strThicknessStandard[10]);
+    }
+    else if(selectID == 4)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[11]);
+    }
+    else if(selectID == 5)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[12]);
+        _field->addItem(g_strThicknessStandard[13]);
     }
     }
     _field->setCurrentIndex(m_pGroup->ThicknessType[m_nGroupId]);
@@ -468,6 +480,7 @@ void DopplerGroupTab::SetWndName()
 void DopplerGroupTab::SetWidgetInvalide()
 {
     ui->ValueGain->setDisabled(true);
+    ui->ValueRefGain->setDisabled(true);
     ui->ValueStart->setDisabled(true);
     ui->ValueRange->setDisabled(true);
     ui->ValueWedgeDelay->setDisabled(true);
@@ -729,7 +742,9 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ParameterProcess* _process = ParameterProcess::Instance();
 
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
-    ui->ValueRefGain->setValue(m_pGroup->RefGain + m_pGroup->fRefGain);
+    ui->ValueRefGain->setValue(m_pGroup->RefGain);
+    ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
+    ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
@@ -1017,15 +1032,6 @@ void DopplerGroupTab::on_ValueGain_editingFinished()
 	_process->SetupGain(m_nGroupId , _fValue) ;
 }
 
-void DopplerGroupTab::on_ValueRefGain_valueChanged(double value)
-{
-    if(!ui->ValueRefGain->hasFocus())  return ;
-	ParameterProcess* _process = ParameterProcess::Instance();
-    _process->SetupRefGain(m_nGroupId , value) ;
-	ProcessDisplay _display ;
-	_display.UpdateAllViewCursorOfGroup(m_nGroupId);
-	g_pMainWnd->RunDrawThreadOnce(true);
-}
 
 void DopplerGroupTab::on_ValueStart_editingFinished()
 {
@@ -2197,20 +2203,21 @@ void DopplerGroupTab::on_ValueREFGain_valueChanged(double arg1)
 {
     if(!ui->ValueREFGain->hasFocus())  return ;
     CUR_RES.REF_Gain[m_nGroupId] = arg1;
+    ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.Com_Gain[m_nGroupId]) ;
+    ProcessDisplay _display ;
+    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
 void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
 {
     if(!ui->ValueComGain->hasFocus())  return ;
-    float value_com = CUR_RES.Com_Gain[m_nGroupId];
-    float value_ref = ui->ValueRefGain->value();
-    float x = arg1 - value_com;
+    CUR_RES.Com_Gain[m_nGroupId] = arg1;
+    ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
     ParameterProcess* _process = ParameterProcess::Instance();
-    _process->SetupRefGain(m_nGroupId , value_ref + x) ;
-    ui->ValueRefGain->setValue(value_ref + x);
-    CUR_RES.Com_Gain[m_nGroupId] = value_com + ui->ValueRefGain->value() - value_ref;
-    ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
+    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.REF_Gain[m_nGroupId]) ;
     ProcessDisplay _display ;
     _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);

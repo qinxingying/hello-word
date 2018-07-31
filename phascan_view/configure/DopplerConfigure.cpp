@@ -826,8 +826,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.fRefGain	      = 0;
             _group.RefGain        = _pGroupInfo->gain / 100.0 - _pGroupInfo->gainr / 100.0;
         }
-        CUR_RES.REF_Gain[i]   = _group.fGain;
-        CUR_RES.Com_Gain[i]      = 4;
+        CUR_RES.REF_Gain[i]   = 0;
+        CUR_RES.Com_Gain[i]      = 0;
         CUR_RES.CurRL[i]         = -4;
         CUR_RES.CurEL[i]         = -18;
         CUR_RES.CurSL[i]         = -12;
@@ -858,6 +858,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         if(CScanSource2 < 0){
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }
+        if(common.scanner.eEncoderType)
+            common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution;
         _group.eCScanSource[0]= (setup_CSCAN_SOURCE_MODE)CScanSource1 ;
         _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */

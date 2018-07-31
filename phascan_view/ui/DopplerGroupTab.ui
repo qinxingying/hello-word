@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -154,7 +154,7 @@
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>0</height>
+               <height>261</height>
               </size>
              </property>
              <property name="maximumSize">
@@ -166,556 +166,721 @@
              <property name="title">
               <string>General</string>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout" stretch="2,5">
-              <property name="leftMargin">
-               <number>9</number>
+             <widget class="QWidget" name="layoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>110</y>
+                <width>218</width>
+                <height>138</height>
+               </rect>
               </property>
-              <item>
-               <layout class="QGridLayout" name="gridLayout_6">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="LabelGain">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>45</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>75</width>
-                    <height>20</height>
-                   </size>
-                  </property>
+              <layout class="QGridLayout" name="gridLayout_14">
+               <item row="0" column="0">
+                <widget class="QLabel" name="LabelWedgeDelay">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Wedge Delay:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QDoubleSpinBox" name="ValueWedgeDelay">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>140</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::NoButtons</enum>
+                 </property>
+                 <property name="decimals">
+                  <number>2</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLabel" name="LabelWedgeDelayUnit">
+                 <property name="text">
+                  <string>us</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="LabelVelocity">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Velocity:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="ValueVelocity">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>140</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::NoButtons</enum>
+                 </property>
+                 <property name="decimals">
+                  <number>0</number>
+                 </property>
+                 <property name="minimum">
+                  <double>0.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>50000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>100.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>5920.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QLabel" name="LabelVelocityUnit">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>m/s</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="LabelCurrentAngle">
+                 <property name="text">
+                  <string>Current Angle:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QComboBox" name="ComCurrentAngle">
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>140</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
+                 <item>
                   <property name="text">
-                   <string>Gain:</string>
+                   <string>20</string>
                   </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QDoubleSpinBox" name="ValueGain">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <double>80.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="2">
-                 <widget class="QLabel" name="LabelGainUnit">
+                 </item>
+                 <item>
                   <property name="text">
-                   <string>db</string>
+                   <string>21</string>
                   </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="3">
-                 <widget class="QLabel" name="label_RefGain">
-                  <property name="minimumSize">
-                   <size>
-                    <width>45</width>
-                    <height>25</height>
-                   </size>
-                  </property>
+                 </item>
+                 <item>
                   <property name="text">
-                   <string>Ref_Gain:</string>
+                   <string>22</string>
                   </property>
-                 </widget>
-                </item>
-                <item row="0" column="4">
-                 <widget class="QDoubleSpinBox" name="ValueRefGain">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="minimum">
-                   <double>-20.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>20.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="5">
-                 <widget class="QLabel" name="LabelGainUnit_2">
+                 </item>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Material:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QComboBox" name="ComVelocitySelection">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>140</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <item>
                   <property name="text">
-                   <string>db</string>
+                   <string>Steel common</string>
                   </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="LabelStart">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>45</width>
-                    <height>25</height>
-                   </size>
-                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QLabel" name="LabelTravelMode">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Travel Mode:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QComboBox" name="ComTravelMode">
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>140</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <item>
                   <property name="text">
-                   <string>Start:</string>
+                   <string>True Depth</string>
                   </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QDoubleSpinBox" name="ValueStart">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <double>5000.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QLabel" name="LabelStartUnit">
+                 </item>
+                 <item>
                   <property name="text">
-                   <string>mm</string>
+                   <string>Half Path</string>
                   </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="3">
-                 <widget class="QLabel" name="LabelRange">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>45</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Range:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="4">
-                 <widget class="QDoubleSpinBox" name="ValueRange">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="minimum">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>5000.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>100.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="5">
-                 <widget class="QLabel" name="LabelRangeUnit">
-                  <property name="text">
-                   <string>mm</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QGridLayout" name="gridLayout_14">
-                <item row="0" column="0">
-                 <widget class="QLabel" name="LabelWedgeDelay">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Wedge Delay:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QDoubleSpinBox" name="ValueWedgeDelay">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>140</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="decimals">
-                   <number>2</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="2">
-                 <widget class="QLabel" name="LabelWedgeDelayUnit">
-                  <property name="text">
-                   <string>us</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="LabelVelocity">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Velocity:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QDoubleSpinBox" name="ValueVelocity">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>140</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="decimals">
-                   <number>0</number>
-                  </property>
-                  <property name="minimum">
-                   <double>0.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>50000.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>100.000000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>5920.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QLabel" name="LabelVelocityUnit">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>m/s</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="LabelCurrentAngle">
-                  <property name="text">
-                   <string>Current Angle:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QComboBox" name="ComCurrentAngle">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>140</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::LeftToRight</enum>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string>20</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>21</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>22</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="label">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Material:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1">
-                 <widget class="QComboBox" name="ComVelocitySelection">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>140</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string>Steel common</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QLabel" name="LabelTravelMode">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Travel Mode:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="1">
-                 <widget class="QComboBox" name="ComTravelMode">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>140</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string>True Depth</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Half Path</string>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="layoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>11</x>
+                <y>20</y>
+                <width>226</width>
+                <height>27</height>
+               </rect>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_20">
+               <item>
+                <widget class="QLabel" name="LabelGain">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>55</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>55</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Gain:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="ValueGain">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::NoButtons</enum>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <double>80.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="LabelGain_2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>10</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>10</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>+</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="ValueREFGain">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::NoButtons</enum>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-40.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>40.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="LabelGainUnit">
+                 <property name="text">
+                  <string>dB</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="layoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>50</y>
+                <width>226</width>
+                <height>27</height>
+               </rect>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_21">
+               <item>
+                <widget class="QLabel" name="label_RefGain">
+                 <property name="minimumSize">
+                  <size>
+                   <width>55</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>55</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Ref_Gain:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="ValueRefGain">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::NoButtons</enum>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-80.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>80.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="LabelGain_3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>10</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>10</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>+</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="ValueComGain">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::NoButtons</enum>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-40.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>40.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="LabelGainUnit_2">
+                 <property name="text">
+                  <string>dB</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="layoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>11</x>
+                <y>80</y>
+                <width>286</width>
+                <height>27</height>
+               </rect>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_22">
+               <item>
+                <widget class="QLabel" name="LabelStart">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>45</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Start:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="ValueStart">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::NoButtons</enum>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <double>5000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>1.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="LabelStartUnit">
+                 <property name="text">
+                  <string>mm</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="LabelRange">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>45</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Range:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDoubleSpinBox" name="ValueRange">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::NoButtons</enum>
+                 </property>
+                 <property name="decimals">
+                  <number>1</number>
+                 </property>
+                 <property name="minimum">
+                  <double>1.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>5000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>1.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>100.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="LabelRangeUnit">
+                 <property name="text">
+                  <string>mm</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
             </widget>
            </item>
            <item>
@@ -3869,10 +4034,10 @@
               </item>
               <item>
                <layout class="QGridLayout" name="gridLayout_5">
-                <item row="0" column="1">
-                 <widget class="QLabel" name="LabelFocalStart">
+                <item row="3" column="1">
+                 <widget class="QDoubleSpinBox" name="ValueFocusDepthStart">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
@@ -3880,40 +4045,105 @@
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>25</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>60</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="frame">
+                   <bool>true</bool>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="keyboardTracking">
+                   <bool>true</bool>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-5000.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>5000.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="LabelFocalDepth">
+                  <property name="minimumSize">
+                   <size>
+                    <width>75</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="text">
-                   <string>   Start</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <string>Depth:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="2">
-                 <widget class="QLabel" name="LabelFocalStop">
-                  <property name="text">
-                   <string>   Stop</string>
+                <item row="3" column="2">
+                 <widget class="QDoubleSpinBox" name="ValueFocusDepthStop">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="frame">
+                   <bool>true</bool>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="keyboardTracking">
+                   <bool>true</bool>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-5000.000000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>5000.000000000000000</double>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="3">
-                 <widget class="QLabel" name="LabelFocalStep">
+                <item row="3" column="3">
+                 <widget class="QLabel" name="LabelFocusOffsetStopUnit">
                   <property name="text">
-                   <string>   Step</string>
+                   <string>mm</string>
                   </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                 </widget>
+                </item>
+                <item row="2" column="3">
+                 <widget class="QLabel" name="LabelFocusOffsetStartUnit">
+                  <property name="text">
+                   <string>mm</string>
                   </property>
                  </widget>
                 </item>
@@ -3927,6 +4157,56 @@
                   </property>
                   <property name="text">
                    <string>Position:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3">
+                 <widget class="QLabel" name="LabelFocalStep">
+                  <property name="text">
+                   <string>   Step</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QDoubleSpinBox" name="ValueFocusPositionStop">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="frame">
+                   <bool>true</bool>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="keyboardTracking">
+                   <bool>true</bool>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <double>5000.000000000000000</double>
                   </property>
                  </widget>
                 </item>
@@ -3970,10 +4250,20 @@
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="2">
-                 <widget class="QDoubleSpinBox" name="ValueFocusPositionStop">
+                <item row="0" column="2">
+                 <widget class="QLabel" name="LabelFocalStop">
+                  <property name="text">
+                   <string>   Stop</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="LabelFocalStart">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
@@ -3981,32 +4271,20 @@
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>20</height>
+                    <height>25</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>60</width>
-                    <height>20</height>
+                    <width>16777215</width>
+                    <height>25</height>
                    </size>
                   </property>
-                  <property name="frame">
-                   <bool>true</bool>
+                  <property name="text">
+                   <string>   Start</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="keyboardTracking">
-                   <bool>true</bool>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <double>5000.000000000000000</double>
                   </property>
                  </widget>
                 </item>
@@ -4070,49 +4348,6 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
-                 <widget class="QDoubleSpinBox" name="ValueFocusOffsetStart">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="frame">
-                   <bool>true</bool>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="keyboardTracking">
-                   <bool>true</bool>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="minimum">
-                   <double>-5000.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>5000.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
                 <item row="2" column="2">
                  <widget class="QDoubleSpinBox" name="ValueFocusOffsetStop">
                   <property name="sizePolicy">
@@ -4156,28 +4391,8 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="3">
-                 <widget class="QLabel" name="LabelFocusOffsetStartUnit">
-                  <property name="text">
-                   <string>mm</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="LabelFocalDepth">
-                  <property name="minimumSize">
-                   <size>
-                    <width>75</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>Depth:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1">
-                 <widget class="QDoubleSpinBox" name="ValueFocusDepthStart">
+                <item row="2" column="1">
+                 <widget class="QDoubleSpinBox" name="ValueFocusOffsetStart">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -4219,51 +4434,25 @@
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="2">
-                 <widget class="QDoubleSpinBox" name="ValueFocusDepthStop">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="label_FocalDepth">
+                  <property name="text">
+                   <string>Focal Depth</string>
                   </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="frame">
-                   <bool>true</bool>
-                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QDoubleSpinBox" name="ValueFocalDepth">
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
                   </property>
                   <property name="buttonSymbols">
                    <enum>QAbstractSpinBox::NoButtons</enum>
                   </property>
-                  <property name="keyboardTracking">
-                   <bool>true</bool>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="minimum">
-                   <double>-5000.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>5000.000000000000000</double>
-                  </property>
                  </widget>
                 </item>
-                <item row="3" column="3">
-                 <widget class="QLabel" name="LabelFocusOffsetStopUnit">
+                <item row="4" column="2">
+                 <widget class="QLabel" name="label_27">
                   <property name="text">
                    <string>mm</string>
                   </property>
@@ -5226,7 +5415,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>170</y>
+                   <y>150</y>
                    <width>254</width>
                    <height>27</height>
                   </rect>
@@ -5367,7 +5556,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>110</y>
+                   <y>90</y>
                    <width>252</width>
                    <height>27</height>
                   </rect>
@@ -5458,7 +5647,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>140</y>
+                   <y>120</y>
                    <width>254</width>
                    <height>27</height>
                   </rect>
@@ -5554,98 +5743,8 @@
                 <widget class="QWidget" name="layoutWidget">
                  <property name="geometry">
                   <rect>
-                   <x>0</x>
-                   <y>30</y>
-                   <width>126</width>
-                   <height>27</height>
-                  </rect>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_16">
-                  <item>
-                   <widget class="QLabel" name="Label_REF_Gain">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>57</width>
-                      <height>25</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>55</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>REF_Gain</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="ValueREFGain">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>35</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>35</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="buttonSymbols">
-                     <enum>QAbstractSpinBox::NoButtons</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_27">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>20</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>20</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>db</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-                <widget class="QWidget" name="layoutWidget">
-                 <property name="geometry">
-                  <rect>
                    <x>1</x>
-                   <y>61</y>
+                   <y>30</y>
                    <width>293</width>
                    <height>23</height>
                   </rect>
@@ -5710,6 +5809,16 @@
                       <string>NB/T 47013.15  II型焊接接头 PGS试块</string>
                      </property>
                     </item>
+                    <item>
+                     <property name="text">
+                      <string>SYT 4109-2013</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>SYT 6755-2016</string>
+                     </property>
+                    </item>
                    </widget>
                   </item>
                  </layout>
@@ -5718,7 +5827,7 @@
                  <property name="geometry">
                   <rect>
                    <x>0</x>
-                   <y>90</y>
+                   <y>60</y>
                    <width>173</width>
                    <height>23</height>
                   </rect>
@@ -5782,110 +5891,6 @@
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="">
-                 <property name="geometry">
-                  <rect>
-                   <x>140</x>
-                   <y>31</y>
-                   <width>139</width>
-                   <height>27</height>
-                  </rect>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_17">
-                  <item>
-                   <widget class="QLabel" name="Label_Com_Gain">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>70</width>
-                      <height>25</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>70</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>+ Com_Gain</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="ValueComGain">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>35</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>35</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::WheelFocus</enum>
-                    </property>
-                    <property name="buttonSymbols">
-                     <enum>QAbstractSpinBox::NoButtons</enum>
-                    </property>
-                    <property name="minimum">
-                     <double>-99.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_29">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>20</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>20</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>db</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-                <zorder>layoutWidget</zorder>
-                <zorder>layoutWidget</zorder>
-                <zorder>layoutWidget</zorder>
-                <zorder>layoutWidget</zorder>
-                <zorder>layoutWidget</zorder>
-                <zorder>layoutWidget</zorder>
-                <zorder>layoutWidget</zorder>
-                <zorder>layoutWidget_2</zorder>
                </widget>
               </item>
               <item>

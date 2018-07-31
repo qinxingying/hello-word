@@ -294,10 +294,6 @@ void DopplerGraphicView::resizeEvent(QResizeEvent *event)
         m_pBackGround->setGeometry(0, 0, _nWidth, _nHeight);
         setSceneRect(0, 0, _nWidth, _nHeight);
 	}
-    if(m_pScene)
-    {
-        m_pScene->setSceneRect(0, 0, _nWidth, _nHeight);
-    }
 
     if(m_pScene)
     {

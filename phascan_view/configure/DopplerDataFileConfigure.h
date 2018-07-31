@@ -56,7 +56,8 @@ typedef struct _cursors_info
 	short	angle;
 	unsigned short	amplitude;
 	unsigned short	UT;
-	char	tt[2];
+    //char	tt[2];
+    unsigned short resolution;
 	int	scan;
 	int	index;
 } CURSORS_INFO, *CURSORS_INFO_P;

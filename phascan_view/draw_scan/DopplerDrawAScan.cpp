@@ -497,7 +497,7 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
     else
     {
         float midx,midy;
-        midx = pow(10.0,(m_pGroup->fGain+m_pGroup->RefGain+m_pGroup->fRefGain-CUR_RES.REF_Gain[m_cInfo.nGroupId]-CUR_RES.Com_Gain[m_cInfo.nGroupId])/20.0);
+        midx = pow(10.0,(CUR_RES.REF_Gain[m_cInfo.nGroupId])/20.0);
         midx = midx * 0.8;
         if(mode == setup_RL)
         {
@@ -1023,7 +1023,7 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
     else
     {
         float midx,midy;
-        midx = pow(10.0,(m_pGroup->fGain+m_pGroup->RefGain+m_pGroup->fRefGain-CUR_RES.REF_Gain[m_cInfo.nGroupId]-CUR_RES.Com_Gain[m_cInfo.nGroupId])/20.0);
+        midx = pow(10.0,(CUR_RES.REF_Gain[m_cInfo.nGroupId])/20.0);
         midx = midx * 0.8;
         if(mode == setup_RL)
         {
