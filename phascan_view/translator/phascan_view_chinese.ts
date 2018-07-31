@@ -595,23 +595,23 @@
         <translation type="vanished">普通钢</translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1175"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1210"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1176"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1211"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1240"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1241"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1430"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1431"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1430"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1431"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3195,17 +3195,17 @@
 <context>
     <name>ParameterProcess</name>
     <message>
-        <location filename="../process/ParameterProcess.cpp" line="37"/>
+        <location filename="../process/ParameterProcess.cpp" line="40"/>
         <source> Message : Max Group Quantity is %1!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../process/ParameterProcess.cpp" line="39"/>
+        <location filename="../process/ParameterProcess.cpp" line="42"/>
         <source> Message : Template Group Configure does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../process/ParameterProcess.cpp" line="71"/>
+        <location filename="../process/ParameterProcess.cpp" line="74"/>
         <source>Group Configure does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
