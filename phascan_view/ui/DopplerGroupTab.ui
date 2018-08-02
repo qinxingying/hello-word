@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -5817,6 +5817,11 @@
                     <item>
                      <property name="text">
                       <string>SYT 6755-2016</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>other</string>
                      </property>
                     </item>
                    </widget>

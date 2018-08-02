@@ -123,6 +123,7 @@ const char* g_strThicknessStandard[] =
     ">=6~8mm",">=8mm",
     ">=5~50mm",
     ">=3.5~25mm",">25~50mm",
+    "other",
 };
 const double g_ValuedbStandard[][3][3] =
 {
@@ -132,6 +133,7 @@ const double g_ValuedbStandard[][3][3] =
     {{-4,-10,-16},{-2,-8,-14},{0,0,0}},
     {{-2,-8,-14},{0,0,0},{0,0,0}},
     {{-2,-8,-14},{0,-6,-12},{0,0,0}},
+    {{0,0,0}},
 };
 QString GetExePathName2(char* dir)
 {

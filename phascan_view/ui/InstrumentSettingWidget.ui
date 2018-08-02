@@ -29,7 +29,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-179</y>
+        <y>0</y>
         <width>320</width>
         <height>686</height>
        </rect>
@@ -682,7 +682,7 @@
              <enum>QAbstractSpinBox::NoButtons</enum>
             </property>
             <property name="decimals">
-             <number>1</number>
+             <number>2</number>
             </property>
             <property name="minimum">
              <double>1.000000000000000</double>
@@ -1175,7 +1175,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>14</x>
@@ -1238,7 +1238,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>14</x>
@@ -1301,7 +1301,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>13</x>
@@ -1364,7 +1364,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>14</x>

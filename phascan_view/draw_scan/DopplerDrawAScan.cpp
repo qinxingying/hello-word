@@ -45,6 +45,8 @@ void DopplerDrawAScanH::UpdateDrawInfo()
 void DopplerDrawAScanH::Draw(QImage* pImage_)
 {
 	if(!pImage_)  return ;
+    unsigned char* Image_pData = pImage_->bits() ;
+    memset(Image_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
 	ParameterProcess* _process = ParameterProcess::Instance();
 	WDATA*			  _pData = _process->GetLawDataPointer(m_cInfo.nGroupId , m_cInfo.nBeamId)  ;
 	if(!_pData)  return ;
@@ -429,21 +431,26 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 	float _ptX[18] ;
 	float _ptY[18] ;
     QColor _Color ;
+    QString str;
     if(mode == setup_TCG)
     {
         _Color = QColor(0, 100, 0);
+        str = "TCG";
     }
     else if(mode == setup_RL)
     {
         _Color = QColor(255, 0, 0);
+        str = "RL";
     }
     else if(mode == setup_EL)
     {
         _Color = QColor(125, 125, 125);
+        str = "EL";
     }
     else if(mode == setup_SL)
     {
         _Color = QColor(0, 0, 255);
+        str = "SL";
     }
     QPen _NewPen ;
 
@@ -481,6 +488,7 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
         m_linCurves[mode]<<QPointF(_ptX[i] , _ptY[i]) ;
 	}
     painter->drawPolyline(m_linCurves[mode]);
+    painter->drawText(nWidth_,_ptY[_nPointQty+1],str);
 	//------------------------------------------
 	m_iPtCnt[0] = _nPointQty;
 	for(int i = 0; i < _nPointQty; i++)
@@ -518,7 +526,10 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
         m_linCurves[mode]<<QPointF(m_nWidth , (1 -midy) * m_nHeight) ;
         RL_EL_SL[mode] = midy;
         if(flag)
+        {
             painter->drawPolyline(m_linCurves[mode]);
+            painter->drawText(nWidth_,(1 -midy) * m_nHeight,str);
+        }
 
     }
 	//------------------------------------------

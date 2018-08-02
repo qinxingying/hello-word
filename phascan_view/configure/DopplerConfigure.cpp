@@ -765,8 +765,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
         common.scanner.fLawStop     =   0;
         common.scanner.fLawQty      =   0;
 
-        common.scanner.fScanend     =   common.scanner.fScanStop;//_process->SAxisstoptoIndex(common.scanner.fScanStop);
-
+        common.scanner.fScanend     =   common.scanner.fScanStop;//_process->SAxisstoptoIndex(common.scanner.fScanStop);  
 	}
 	else
 	{
@@ -859,7 +858,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }
         if(common.scanner.eEncoderType)
-            common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution;
+            common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution/100.0;
         _group.eCScanSource[0]= (setup_CSCAN_SOURCE_MODE)CScanSource1 ;
         _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */

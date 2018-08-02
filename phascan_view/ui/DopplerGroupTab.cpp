@@ -359,6 +359,11 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
         _field->addItem(g_strThicknessStandard[12]);
         _field->addItem(g_strThicknessStandard[13]);
     }
+    else if(selectID == 6)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[14]);
+    }
     }
     _field->setCurrentIndex(m_pGroup->ThicknessType[m_nGroupId]);
     CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
