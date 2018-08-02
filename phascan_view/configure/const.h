@@ -125,8 +125,8 @@ enum FEILD_VALUE_INDEX
     FEILD_APos_DEC_IPos,
     FEILD_BPos_DEC_IPos,
     FEILD_RL,
-    FEILD_EL,
     FEILD_SL,
+    FEILD_EL,
     FEILD_VALUE_INDEX_MAX,
 };
 #endif // CONST_H

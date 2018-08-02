@@ -56,8 +56,8 @@ const char* g_strMeasureFildName[][4] =
     {"A^-I^","Distance between peaks in gate A and gate I"},
     {"B^-I^","Distance between peaks in gate A and gate I"},
     {"RL    " , "None"},
-    {"EL    " , "None"},
     {"SL    " , "None"},
+    {"EL    " , "None"},
 };
 
 const char* g_strMeasureFildUnit[][4] =
@@ -111,8 +111,8 @@ const char* g_strMeasureFildUnit[][4] =
     {"A^-I^", "mm"},
     {"B^-I^", "mm"},
     {"RL    " , "db"},
-    {"EL    " , "db"},
     {"SL    " , "db"},
+    {"EL    " , "db"},
 };
 
 const char* g_strThicknessStandard[] =
