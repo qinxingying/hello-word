@@ -24,7 +24,7 @@ void QWeldShowWidget::paintEvent (QPaintEvent*)
     NewPen.setWidth(2);
     NewPen.setColor(QColor(255, 0, 0));
     painter.setPen(NewPen);
-    painter.setRenderHint(QPainter::Antialiasing, true);
+    //painter.setRenderHint(QPainter::Antialiasing, true);
 
     if(m_pPart->weld.eType == setup_WELD_DXF) {
         QVector<qreal> dashes;

@@ -47,7 +47,7 @@ QSize ProcessDisplay::GetMinimumWidgetSize(int eType_)
 		_nWidth  = MINIMUM_WIDGET_WIDTH  ;
 		_nHeight = MINIMUM_WIDGET_HEIGHT ;
 		break;
-	case DISP_AH_BH:
+    case DISP_AH_BV:
 	case DISP_AV_BV:
 	case DISP_S_AV:
 		_nWidth  = MINIMUM_WIDGET_WIDTH  ;
@@ -117,7 +117,7 @@ int ProcessDisplay::CreateViews(QWidget* parent_, int eType_)
 	case DISP_3D_SONIC_BEAMS:
 		break;
 	case DISP_AH:				ret = CreateViews_AH(parent_);				break;
-	case DISP_AH_BH:			ret = CreateViews_AH_BH(parent_);			break;
+    case DISP_AH_BV:			ret = CreateViews_AH_BV(parent_);			break;
 	case DISP_AV_BV:			ret = CreateViews_AV_BV(parent_);			break;
 	case DISP_S:				ret = CreateViews_S(parent_);				break;
 	case DISP_S_AH:				ret = CreateViews_S_AH(parent_);			break;
@@ -206,7 +206,7 @@ int ProcessDisplay::CreateViews_AH(QWidget* pWidget_)
 }
 
 // A-B SCAN
-int ProcessDisplay::CreateViews_AH_BH(QWidget* pWidget_)
+int ProcessDisplay::CreateViews_AH_BV(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
@@ -238,7 +238,7 @@ int ProcessDisplay::CreateViews_AH_BH(QWidget* pWidget_)
 	_pView[0]->SetLawIdentify(0);
 	_pView[1]->SetLawIdentify(0);
 	SetViewPara(_pView[0] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_H) ;
-	SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_H) ;
+    SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_V) ;
 
 	QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
 	_pList->append(_pView[0]);

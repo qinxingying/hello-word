@@ -639,7 +639,7 @@ void MainWindow::UpdateTableDisplay()
             if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
                 _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
             } else {
-                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
+                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BV);
             }
 
             sleep(600);
@@ -658,7 +658,7 @@ void MainWindow::UpdateTableDisplay()
         if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
             _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
         } else {
-            _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BH);
+            _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BV);
         }
     }
     ui->TabWidget_parameter->setEnabled(true);

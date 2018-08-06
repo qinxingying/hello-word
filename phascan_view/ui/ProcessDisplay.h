@@ -32,7 +32,7 @@ public:
         DISP_3D_SONIC_BEAMS     = 6,
 
         DISP_AH                 = 7,
-        DISP_AH_BH              = 8,
+        DISP_AH_BV              = 8,
         DISP_AV_BV              = 9,
         DISP_S                  = 10,
         DISP_S_AH               = 11,
@@ -62,7 +62,7 @@ public:
     int CreateViews2(QWidget*);
 
     int CreateViews_AH(QWidget*);
-    int CreateViews_AH_BH(QWidget*);
+    int CreateViews_AH_BV(QWidget*);
     int CreateViews_AV_BV(QWidget* );
     int CreateViews_S(QWidget*);
     int CreateViews_S_AH(QWidget*);
