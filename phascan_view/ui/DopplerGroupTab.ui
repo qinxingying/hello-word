@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -5371,6 +5371,9 @@
                   </property>
                   <property name="decimals">
                    <number>0</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-100.000000000000000</double>
                   </property>
                   <property name="value">
                    <double>1.000000000000000</double>

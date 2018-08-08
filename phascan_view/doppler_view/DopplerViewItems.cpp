@@ -619,6 +619,9 @@ void DopplerViewItems::SetGatePos(int eGate_ , float fStart_ , float fWidth_ , f
 void DopplerViewItems::GateMove(int eGate_ , float fStart_ , float fWidth_ , float fHeight_)
 {
 	QRectF _rect(0 , 0 , 0 , 0);
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+    if(_pConfig->group[m_pDataView->GetGroupId()].eTxRxMode == setup_TX_RX_MODE_TOFD)
+        fHeight_ = (fHeight_+100)/2.0;
 	switch(m_eGateMode)
 	{
 	case GATE_MODE_GATE_HORIZENTAL:
