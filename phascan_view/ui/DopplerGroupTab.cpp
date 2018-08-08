@@ -745,7 +745,10 @@ void DopplerGroupTab::UpdateDefectValue()
 void DopplerGroupTab::UpdateGroupConfig()
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-
+    if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD)
+    {
+        ui->ValueComGain->setDisabled(true);
+    }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
     ui->ValueRefGain->setValue(m_pGroup->RefGain);
     ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
@@ -987,8 +990,8 @@ void DopplerGroupTab::UpdateParameterLimit()
 {
     Limitation _limit;
 
-	ui->ValueGain->setMaximum(_limit.GetGroupGainMax(m_nGroupId));
-	ui->ValueGain->setMinimum(_limit.GetGroupGainMin(m_nGroupId));
+    //ui->ValueGain->setMaximum(_limit.GetGroupGainMax(m_nGroupId));
+    //ui->ValueGain->setMinimum(_limit.GetGroupGainMin(m_nGroupId));
 	// Start & Range
 	ui->ValueStart->setMaximum(_limit.GetGroupSampleRangeMax(m_nGroupId));
 	ui->ValueRange->setMaximum(_limit.GetGroupSampleRangeMax(m_nGroupId) - ui->ValueStart->value());

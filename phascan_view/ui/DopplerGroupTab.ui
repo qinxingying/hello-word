@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -513,7 +513,7 @@
                   <number>1</number>
                  </property>
                  <property name="maximum">
-                  <double>80.000000000000000</double>
+                  <double>110.000000000000000</double>
                  </property>
                 </widget>
                </item>
