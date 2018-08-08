@@ -435,7 +435,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                         break;
                                     if(abs(rect.height()) > 50 && abs(rect.width()) > 50 )
                                     {
-                                        if(scanstart>=scanstop)
+                                        if((int)scanstart>=(int)scanstop)
                                             break;
                                         lawstart=(double)lawstart2;
                                         lawstop=(double)lawstop2;
@@ -476,7 +476,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                         break;
                                     if(abs(rect.height()) > 50 && abs(rect.width()) > 50 )
                                     {
-                                        if(scanstart>=scanstop)
+                                        if((int)scanstart>=(int)scanstop)
                                             break;
                                         _process->ChangeCscanruler(scanstart,scanstop);
                                         m_pDrawScan->curscanstart = scanstart;
@@ -519,7 +519,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                     _fRangeStop = _fScanStop + _nScaleX2 * (_fScanStart - _fScanStop);
                                     if(abs(rect.height()) > 50 && abs(rect.width()) > 50 )
                                     {
-                                        if(scanstart>=scanstop)
+                                        if((int)scanstart>=(int)scanstop)
                                             break;
                                         if(_fRangeStart>=_fRangeStop)
                                             break;
@@ -577,7 +577,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                     _fRangeStop = _fScanStart + _nScaleY2 * (_fScanStop - _fScanStart);
                                     if(abs(rect.height()) > 50 && abs(rect.width()) > 50 )
                                     {
-                                        if(scanstart>=scanstop)
+                                        if((int)scanstart>=(int)scanstop)
                                             break;
                                         if(_fRangeStart>=_fRangeStop)
                                             break;

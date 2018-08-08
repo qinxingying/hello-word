@@ -122,10 +122,10 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
         }
     }
 
-    QSize csize = QSize(_nWidth,_nScanend>0?_nScanend:1);
+    QSize csize = QSize(_nPointQty,_nScanend>0?_nScanend:1);
     if(zoomflag == 1)
     {
-        csize = QSize(currangestop - currangestart,_nScanend>0?_nScanend:1);
+        csize = QSize((currangestop - currangestart)*_nPointQty/_nWidth,_nScanend>0?_nScanend:1);
     }
     QImage *TImage = new QImage(csize , QImage::Format_RGB888);
     U8* _pImageBits = TImage->bits() ;
@@ -154,9 +154,9 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
             _pImg1  = _pImageBits + _nWidthStep * k ;//第K行
 			_pData1 = _pData + _nOffset + _index * _nFrameOffset;
 
-            for(j = 0 ; j <= _nWidth ; j++) {
+            for(j = 0 ; j <= _nPointQty ; j++) {
                 _pImg2  = _pImg1 + j * 3; //第j个像素
-				_pData2 = _pData1 + j * _nPointQty / _nWidth;
+                _pData2 = _pData1 + j ;
 				_iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
                 src[j+1][k+1] = _iData;
                 //memcpy(_pImg2, &m_pColor[_iData], 3);
@@ -168,7 +168,7 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
 //			}
 		}
 	}
-     TransformImage(_nWidth,m_PosStop-m_PosStart,src,_nWidth,_nHeight,pImage_);
+     TransformImage(_nPointQty,m_PosStop-m_PosStart,src,_nWidth,_nHeight,pImage_);
     }
     else if (zoomflag == 1)
     {
@@ -178,13 +178,13 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
                 _pImg1  = _pImageBits + _nWidthStep * k ;//第K行
                 _pData1 = _pData + _nOffset + _index * _nFrameOffset;
 
-                for(j = currangestart - 1; j <= currangestop+1 ; j++) {
+                for(j = currangestart*_nPointQty/_nWidth - 1; j <= currangestop*_nPointQty/_nWidth+1 ; j++) {
                     if(j<0)
                         continue;
                     _pImg2  = _pImg1 + j * 3; //第j个像素
-                    _pData2 = _pData1 + j * _nPointQty / _nWidth;
+                    _pData2 = _pData1 + j ;
                     _iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
-                    src[j-currangestart+1][k+1] = _iData;
+                    src[j-currangestart*_nPointQty/_nWidth+1][k+1] = _iData;
                     //memcpy(_pImg2, &m_pColor[_iData], 3);
                 }
             } else {
@@ -194,7 +194,7 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
 //                }
             }
         }
-         TransformImage(currangestop-currangestart,m_PosStop-m_PosStart,src,_nWidth,_nHeight,pImage_);
+         TransformImage((currangestop-currangestart)*_nPointQty/_nWidth,m_PosStop-m_PosStart,src,_nWidth,_nHeight,pImage_);
     }
     delete TImage;
 	m_hMutex.unlock();
@@ -292,10 +292,10 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
         }
     }
 
-    QSize csize = QSize(_nScanend>0?_nScanend:1,_nHeight);
+    QSize csize = QSize(_nScanend>0?_nScanend:1,_nPointQty);
     if(zoomflag == 1)
     {
-        csize = QSize(_nScanend>0?_nScanend:1,currangestop - currangestart);
+        csize = QSize(_nScanend>0?_nScanend:1,(currangestop - currangestart)* _nPointQty / _nHeight);
     }
     QImage *TImage = new QImage(csize , QImage::Format_RGB888);
     U8* _pImageBits = TImage->bits() ;
@@ -322,10 +322,10 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
 		_index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			_pData1 = _index * _nFrameOffset + _pData + _nOffset ;
-            for(j = 0 ; j <= _nHeight ; j++)	{
+            for(j = 0 ; j <= _nPointQty ; j++)	{
 				_pImg1  = _pImageBits + _nWidthStep * j ;
 				_pImg2  = _pImg1 + k * 3 ;
-				_pData2 = _pData1 + j * _nPointQty / _nHeight  ;
+                _pData2 = _pData1 + j   ;
 				_iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
                 src[k+1][j+1] = _iData;
 			}
@@ -339,7 +339,7 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
 //			}
 		}
 	}
-    TransformImage(m_PosStop-m_PosStart,_nHeight,src,_nWidth,_nHeight,pImage_);
+    TransformImage(m_PosStop-m_PosStart,_nPointQty,src,_nWidth,_nHeight,pImage_);
     }
     else if(zoomflag == 1)
     { 
@@ -347,14 +347,14 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
             _index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
             if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
                 _pData1 = _index * _nFrameOffset + _pData + _nOffset ;
-                for(j = currangestart-1 ; j <= currangestop+1 ; j++)	{
+                for(j = currangestart* _nPointQty / _nHeight-1 ; j <= currangestop* _nPointQty / _nHeight+1 ; j++)	{
                     if(j < 0)
                         continue;
                     _pImg1  = _pImageBits + _nWidthStep * j ;
                     _pImg2  = _pImg1 + k * 3 ;
-                    _pData2 = _pData1 + j * _nPointQty / _nHeight  ;
+                    _pData2 = _pData1 + j   ;
                     _iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
-                    src[k+1][j-currangestart+1] = _iData;
+                    src[k+1][j-currangestart* _nPointQty / _nHeight+1] = _iData;
                 }
             } else {
 //                _pImg1 = _pImageBits + 3 * k ;
@@ -366,7 +366,7 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
 //                }
             }
         }
-        TransformImage(m_PosStop-m_PosStart,currangestop-currangestart,src,_nWidth,_nHeight,pImage_);
+        TransformImage(m_PosStop-m_PosStart,(currangestop-currangestart)* _nPointQty / _nHeight,src,_nWidth,_nHeight,pImage_);
     }
     delete TImage;
 	m_hMutex.unlock();
