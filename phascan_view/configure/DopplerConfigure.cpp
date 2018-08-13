@@ -795,6 +795,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
+    int version = m_pDataFile->GetFileHeader()->version-m_pDataFile->GetFileHeader()->size-m_pDataFile->GetFileHeader()->reserved;
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{
 		GROUP_INFO* _pGroupInfo = pConf_->GetGroupInfo(i) ;
@@ -857,15 +858,23 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         if(CScanSource2 < 0){
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }
-        if(common.scanner.eEncoderType)
+        if(common.scanner.eEncoderType && version == 2)
             common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution/100.0;
         _group.eCScanSource[0]= (setup_CSCAN_SOURCE_MODE)CScanSource1 ;
         _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */
 		_group.fMaxThickness  = _pGroupInfo->max_thickness/1000.0 ;		/* Measurements->Thickness->max */
 		// wedge position
-        _group.fScanOffset	  = _pGroupInfo->scan_offset  / 1000.0 ;		/*mm*/
-        _group.fIndexOffset   = _pGroupInfo->index_offset  / 1000.0;			/*mm*/
+        if(version == 1)
+        {
+            _group.fScanOffset	  = _pGroupInfo->scan_offset  / 10.0 ;		/*mm*/
+            _group.fIndexOffset   = _pGroupInfo->index_offset  / 10.0;			/*mm*/
+        }
+        else
+        {
+            _group.fScanOffset	  = _pGroupInfo->scan_offset  / 1000.0 ;		/*mm*/
+            _group.fIndexOffset   = _pGroupInfo->index_offset  / 1000.0;			/*mm*/
+        }
 		_group.eSkew		  = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos;
 
 		/*  У׼״̬  */
@@ -1036,8 +1045,16 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_wedge.nWedgeDelay = _Wedge.Probe_delay  ;
 
 		_group.part.afSize[0]  = _pGroupInfo->part.Thickness / 1000.0 ;
-        _group.fScanOffset	   = _pGroupInfo->scan_offset / 1000.0 ;
-        _group.fIndexOffset	   = _pGroupInfo->index_offset / 1000.0 ;
+        if(version == 1)
+        {
+            _group.fScanOffset	  = _pGroupInfo->scan_offset  / 10.0 ;		/*mm*/
+            _group.fIndexOffset   = _pGroupInfo->index_offset  / 10.0;			/*mm*/
+        }
+        else
+        {
+            _group.fScanOffset	  = _pGroupInfo->scan_offset  / 1000.0 ;		/*mm*/
+            _group.fIndexOffset   = _pGroupInfo->index_offset  / 1000.0;			/*mm*/
+        }
 		_group.eSkew		   = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos	 ;
 
 		QList<MATERIAL*>* _list = m_pConfig->m_listMaterial ;
