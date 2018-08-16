@@ -87,6 +87,7 @@ struct DEFECT_INFO
     char  m_strSzField[8][20];
     char  m_strSzFieldUnit[8][20];
     char SL[20];
+    char Index_pos[20];
 };
 
 struct DEFECT_PARAM

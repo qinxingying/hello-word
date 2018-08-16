@@ -155,10 +155,10 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             flag = 1;
         if(flag == 1)
         {
-            if((_scanner.fScanPos < curscanstart)&&(_scanner.fScanPos >= _scanner.fScanStart))
-                curscanstart = _scanner.fScanPos;
-            if((_scanner.fScanPos > curscanstop)&&(_scanner.fScanPos <= _scanner.fScanStop))
-                curscanstop = _scanner.fScanPos;
+            if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                curscanstart = _scanner.fScanPos-1;
+            if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                curscanstop = _scanner.fScanPos+1;
         }
         _nStart     = _process->SAxisDistToIndex(curscanstart);
         _nScanend    = _process->SAxisDistToIndex(curscanstop)-_nStart;
@@ -315,10 +315,10 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
             flag = 1;
         if(flag == 1)
         {
-            if((_scanner.fScanPos < curscanstart)&&(_scanner.fScanPos >= _scanner.fScanStart))
-                curscanstart = _scanner.fScanPos;
-            if((_scanner.fScanPos > curscanstop)&&(_scanner.fScanPos <= _scanner.fScanStop))
-                curscanstop = _scanner.fScanPos;
+            if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                curscanstart = _scanner.fScanPos-1;
+            if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                curscanstop = _scanner.fScanPos+1;
         }
         _nStart     = _process->SAxisDistToIndex(curscanstart);
         _nScanend    = _process->SAxisDistToIndex(curscanstop)-_nStart;
@@ -579,10 +579,10 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             flag = 1;
         if(flag == 1)
         {
-            if((_scanner.fScanPos < curscanstart)&&(_scanner.fScanPos >= _scanner.fScanStart))
-                curscanstart = _scanner.fScanPos;
-            if((_scanner.fScanPos > curscanstop)&&(_scanner.fScanPos <= _scanner.fScanStop))
-                curscanstop = _scanner.fScanPos;
+            if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                curscanstart = _scanner.fScanPos-1;
+            if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                curscanstop = _scanner.fScanPos+1;
         }
         _nStart     = _process->SAxisDistToIndex(curscanstart);
         _nScanend    =  _process->SAxisDistToIndex(curscanstop)-_nStart;
@@ -735,10 +735,10 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
             flag = 1;
         if(flag == 1)
         {
-            if((_scanner.fScanPos < curscanstart)&&(_scanner.fScanPos >= _scanner.fScanStart))
-                curscanstart = _scanner.fScanPos;
-            if((_scanner.fScanPos > curscanstop)&&(_scanner.fScanPos <= _scanner.fScanStop))
-                curscanstop = _scanner.fScanPos;
+            if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                curscanstart = _scanner.fScanPos-1;
+            if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                curscanstop = _scanner.fScanPos+1;
         }
         _nStart     = _process->SAxisDistToIndex(curscanstart);
         _nScanend    =  _process->SAxisDistToIndex(curscanstop)-_nStart;

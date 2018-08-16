@@ -1369,6 +1369,14 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
                 strcpy(_pDfInfo->SL,"NA");
                 QString SLstr = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, FEILD_SL );
                 strcpy(_pDfInfo->SL,(char*)(qPrintable(SLstr)));
+                strcpy(_pDfInfo->Index_pos,"NA");
+                QString Pa_Value = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, FEILD_PA );
+                if(QString::compare(Pa_Value,"NA"))
+                {
+                    double Index_pos = Pa_Value.toDouble()-fabs(group[iGroupId_].fIndexOffset);
+                    Pa_Value = QString::number(Index_pos,10,2);
+                }
+                strcpy(_pDfInfo->Index_pos,(char*)(qPrintable(Pa_Value)));
 				if(_pMeasure[i]) {
 					QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i] );
 					strcpy(_pDfInfo->m_strMeasure[_nQty], (char*)(qPrintable(_str)));

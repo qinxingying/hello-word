@@ -218,7 +218,7 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 		if(_group.eTxRxMode != setup_TX_RX_MODE_TOFD)
 		{
 			_fData = _pConfig->DefectWidthValue(nGroupId_, &_fStart, i);
-			fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _fStart);
+            fprintf(m_pFile,"<td %s>%smm</td>\n" ,tableTdStyle , _pDfInfo->Index_pos);
             fprintf(m_pFile,"<td %s>%sdb</td>\n" ,tableTdStyle , _pDfInfo->SL);
 		}
 		fprintf(m_pFile,"</tr>\n\n");
