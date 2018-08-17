@@ -13,7 +13,8 @@ HEADERS += \
     $$PWD/DopplerGraphicView.h \
     $$PWD/DopplerRulerBar.h \
     $$PWD/DopplerTitleBar.h \
-    $$PWD/DopplerViewItems.h
+    $$PWD/DopplerViewItems.h \
+    $$PWD/dopplercscanlinemark.h
 
 SOURCES += \
     $$PWD/report/DopplerHtmlReport.cpp \
@@ -28,4 +29,5 @@ SOURCES += \
     $$PWD/DopplerParabolaItem.cpp \
     $$PWD/DopplerRulerBar.cpp \
     $$PWD/DopplerTitleBar.cpp \
-    $$PWD/DopplerViewItems.cpp
+    $$PWD/DopplerViewItems.cpp \
+    $$PWD/dopplercscanlinemark.cpp

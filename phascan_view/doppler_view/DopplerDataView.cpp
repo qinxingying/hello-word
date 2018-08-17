@@ -120,7 +120,12 @@ int DopplerDataView::GetSScanLawQty()
 
 int DopplerDataView::GetSScanLaw(int index_)
 {
-	return m_pItemsGroup->GetLawMarkerPos(index_);
+    return m_pItemsGroup->GetLawMarkerPos(index_);
+}
+
+void DopplerDataView::SetSScanLaw(int index_, int nMarkerLawPos)
+{
+    m_pItemsGroup->SetLawMarkerPos(index_, nMarkerLawPos);
 }
 
 void DopplerDataView::EnableComponent(DATA_VIEW_COMPONENT eComponent_)
@@ -594,6 +599,7 @@ void DopplerDataView::slotItemMoved(DopplerGraphicsItem* item_)
 	_rect = QRectF(_pos2.x() , _pos2.y() , _rect.width() , _rect.height())  ;
 	item_->SetItemGeometryReal(_rect)   ;
 	emit signalItemMoved(this , item_)  ;
+    qDebug("%s[%d], slot 1 parameter, %p", __FUNCTION__, __LINE__, item_);
 }
 /****************************************************************************
   Description: 换算  在场景中的像素位置 到  标尺刻度对应的位置

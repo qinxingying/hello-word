@@ -2271,6 +2271,7 @@ void ProcessDisplay::UpdateDataViewTitle(DopplerDataView* pWidget_)
 			sprintf(_str, "GROUP-%d/S SCAN/", _nGroupId + 1);
 
 			int _nQty = pWidget_->GetSScanLawQty();
+            qDebug("GetSScanLawQty, _nQty:%d", _nQty);
 			for(int i = 0; i < _nQty; i++) {
 				_nLawId = pWidget_->GetSScanLaw(i);
 				_fAngle = _process->GetLawAngle( _nGroupId ,  _nLawId) ;
@@ -2442,7 +2443,7 @@ void ProcessDisplay::UpdateAllViewCursorOfGroup(int)
 			//if(_nGroupId == nGroupId_)
 			{
 				 DopplerOverlays _overlay(_pView);
-				 _overlay.UpdateCursor();
+                 _overlay.UpdateCursor();
 				 UpdateDataViewTitle(_pView);
 			}
 		}

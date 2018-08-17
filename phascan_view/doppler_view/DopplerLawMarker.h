@@ -1,5 +1,6 @@
 #ifndef DOPPLERLAWMARKER_H
 #define DOPPLERLAWMARKER_H
+#include <QObject>
 #include <QColor>
 #include <QVector>
 #include <QLineF>
@@ -10,8 +11,10 @@
 
 #define MAX_MARKER_QTY   3
 
-class DopplerLawMarker : public DopplerGraphicsItem
+class DopplerLawMarker :public QObject, public DopplerGraphicsItem
 {
+    Q_OBJECT
+
 public:
     enum DIRECTION
     {
@@ -58,6 +61,8 @@ protected:
 
     bool   m_bShowWeld     ;
     QPainterPath weld      ;
+public slots:
+    void SlotChangeLinePos(int nNewLineIndex);
 
 };
 

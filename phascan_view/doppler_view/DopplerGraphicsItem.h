@@ -7,8 +7,10 @@
 #ifndef DOPPLERGRAPHICSITEM_H
 #define DOPPLERGRAPHICSITEM_H
 
+#include <QObject>
 #include "DopplerDataView.h"
 #include <QGraphicsItem>
+#include <QGraphicsObject>
 #include <QRectF>
 
 
@@ -27,6 +29,7 @@ enum DOPPLER_GRAPHICS_ITEM_TYPE
 } ;
 class DopplerGraphicsItem : public QGraphicsItem
 {
+
 public:
 
     explicit DopplerGraphicsItem();

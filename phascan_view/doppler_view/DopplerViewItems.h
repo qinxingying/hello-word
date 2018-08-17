@@ -7,6 +7,7 @@
 #include "DopplerDataView.h"
 #include "DopplerGraphicsItem.h"
 #include "DopplerLineItem.h"
+#include "dopplercscanlinemark.h"
 #include "DopplerGateItem.h"
 #include "DopplerLawMarker.h"
 #include "DopplerParabolaItem.h"
@@ -24,6 +25,7 @@ enum OVERLAYS
 	OVERLAYS_WELD        = 0x0040 ,
 	OVERLAYS_SCAN_MARKER = 0x0080 ,
 	OVERLAYS_PARABOLA    = 0x0100 ,
+    OVERLAYS_LAW_MARKER_C_SCAN    = 0x0200 ,
 	OVERLAYS_ALL         = 0xFFFF
 } ;
 
@@ -44,8 +46,10 @@ public:
 	void UpdateItemsLwBw();
 	void UpdateItemsCursor() ;
 	void UpdateItemsLawMarker() ;
+    void UpdateItemsLawMarkerCScan() ;
 	int GetLawMarkerQty();
-	int GetLawMarkerPos(int nId_);
+    int GetLawMarkerPos(int nId_);
+    void SetLawMarkerPos(int nId_, int nMarkerPos);
 	void UpdateItemsThickness() ;
 	void UpdateItemsWeld() ;
 	void UpdateScanMarker();
@@ -96,6 +100,7 @@ protected:
 	DopplerGateItem*     m_pGate[3]   ;
 	DopplerLineItem*     m_pCursor[4] ;
 	DopplerLawMarker*    m_pLawMarker ;
+    DopplerCScanLineMark*    m_pLawMarkerCScan ;
 	DopplerLineItem*     m_pThickness[10]  ;
 	DopplerScanMarker*   m_pScanMarker  ;
 	DopplerParabolaItem* m_pParabola[2]    ;
@@ -108,7 +113,7 @@ protected:
 	int    m_iDefectId[DEFECT_SIGN_MAX];
 	int    m_iDefectIndex;
 	float afGatePos[3][3]  ;
-	float afCursorPos[4]   ;
+    float afCursorPos[5]   ;
 	int   anCursorId[4]    ;
 	bool  m_bHorizental ;
 	bool  m_bScanMarkerHorizental ;

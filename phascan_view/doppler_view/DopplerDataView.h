@@ -62,6 +62,7 @@ public:
     int  GetLawIdentify() const;
 	int  GetSScanLawQty();
 	int  GetSScanLaw(int index_);
+    void  SetSScanLaw(int index_, int nMarkerLawPos);
 
     void EnableComponent(DATA_VIEW_COMPONENT eComponent_);
 	void SetRulerRange(double nStart_ , double nStop_ , double nSliderStart_ , double nSliderStop_ , DATA_VIEW_RULER eRuler_ ) ;

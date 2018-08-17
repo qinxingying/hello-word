@@ -400,6 +400,12 @@ QLineF DopplerLawMarker::GetCurrentPosLine( int nIndex_ , float fScale_)
     return _ret ;
 }
 
+void DopplerLawMarker::SlotChangeLinePos(int nNewLineIndex)
+{
+    qDebug("**--**-- %s[%d],", __FUNCTION__, __LINE__);
+    dotLine = m_cMarkers.at(nNewLineIndex) ;
+}
+
 
 int DopplerLawMarker::GetMarkerQty() const
 {

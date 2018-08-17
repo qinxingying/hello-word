@@ -58,6 +58,7 @@ DopplerViewItems::DopplerViewItems(QObject *parent) :
 	memset((void*)m_pThickness , 0 , 40 ) ;
 	//m_pWeld		= 0;
 	m_pLawMarker	= 0;
+    m_pLawMarkerCScan = 0;
 	m_pScanMarker	= 0;
 	m_pParabola[0]	= m_pParabola[1]  = 0;
 
@@ -98,10 +99,12 @@ DopplerViewItems::~DopplerViewItems()
 		m_pThickness[i] = NULL ;
 	}
 	if(m_pLawMarker)  delete m_pLawMarker ;
+    if(m_pLawMarkerCScan)  delete m_pLawMarkerCScan ;
 	//if(m_pWeld)	   delete m_pWeld	  ;
 	if(m_pParabola[0])   delete m_pParabola[0] ;
 	if(m_pParabola[1])   delete m_pParabola[1] ;
 	m_pLawMarker = NULL ;
+    m_pLawMarkerCScan = NULL ;
 	//m_pWeld	  = NULL ;
 	m_pScanMarker= NULL ;
 	m_pParabola[0] = m_pParabola[1]  = NULL ;
@@ -130,6 +133,7 @@ void DopplerViewItems::UpdateItems()
 	UpdateItemsGate();
 	UpdateItemsCursor() ;
 	UpdateItemsLawMarker() ;
+    UpdateItemsLawMarkerCScan();
 	UpdateItemsThickness() ;
 	UpdateItemsWeld() ;
 }
@@ -456,7 +460,52 @@ void DopplerViewItems::UpdateItemsLawMarker()
 
 	m_pLawMarker->SetupMarkers(&_lines);
 	m_pLawMarker->SetupStringMarker(&strMarker);
-	m_pLawMarker->show();
+    m_pLawMarker->show();
+}
+
+void DopplerViewItems::UpdateItemsLawMarkerCScan()
+{
+    if(!(m_eShow & OVERLAYS_LAW_MARKER_C_SCAN))
+    {
+        if(m_pLawMarkerCScan) m_pLawMarkerCScan->hide();
+        return ;
+    }
+
+    setup_DISPLAY_MODE _eDisplay = (setup_DISPLAY_MODE)m_pDataView->GetDataViewDrawType();
+    DopplerLineItem::LINE_TYPE	  _nLineType = DopplerLineItem::LINE_FREE;
+    DopplerLineItem::LINE_MOVE_TYPE _nMoveType = DopplerLineItem::LINE_MOVE_NO;
+    if(_eDisplay == setup_DISPLAY_MODE_C_H || _eDisplay == setup_DISPLAY_MODE_CC_H)
+    {
+        _nLineType = DopplerLineItem::LINE_HORIZENTAL;
+        _nMoveType = DopplerLineItem::LINE_MOVE_VERTICAL;
+    } else if(_eDisplay == setup_DISPLAY_MODE_C_V || _eDisplay == setup_DISPLAY_MODE_CC_V) {
+        _nLineType = DopplerLineItem::LINE_VERTICAL;
+        _nMoveType = DopplerLineItem::LINE_MOVE_HORIZENTAL;
+    }
+
+    if(!m_pLawMarkerCScan)
+    {
+        m_pLawMarkerCScan = new DopplerCScanLineMark(COLOR_CURSOR_AREF);
+        m_pLawMarkerCScan->SetItemType(DOPPLER_GRAPHICS_ITEM_CURSOR ) ;
+        m_pLawMarkerCScan->SetLineType(DopplerLineItem::LINE_HORIZENTAL);
+        m_pLawMarkerCScan->SetMoveType(DopplerLineItem::LINE_MOVE_VERTICAL);
+        m_pLawMarkerCScan->SetDataView(m_pDataView);
+        m_pDataView->AddOverlayItems(m_pLawMarkerCScan);
+
+    }
+//        if(m_pLawMarker){
+//            connect(m_pLawMarkerCScan, SIGNAL(SignalChangeSScanLawMarkIndex(int)), m_pLawMarker, SLOT(SlotChangeLinePos(int)));
+//        }
+
+//        QRectF _rect(0 , 0 , 0 , 0) ;
+//        m_pDataView->SetItemGeometry(m_pLawMarkerCScan, _rect );
+        m_pLawMarkerCScan->SetItemId(setup_CURSOR_C_ANGLE);
+        m_pLawMarkerCScan->SetWndRect(m_pDataView->GetZoomRect());
+        m_pLawMarkerCScan->SetScenceSize(m_pDataView->GetViewSize());
+        m_pLawMarkerCScan->SetLineType(_nLineType);
+        m_pLawMarkerCScan->SetMoveType(_nMoveType);
+
+        m_pLawMarkerCScan->show();
 }
 
 int DopplerViewItems::GetLawMarkerQty()
@@ -474,7 +523,14 @@ int DopplerViewItems::GetLawMarkerPos(int nId_)
 		return _nLaw;
 		//return m_pLawMarker->GetMarkerPos(nId_);
 	}
-	return 0;
+    return 0;
+}
+
+void DopplerViewItems::SetLawMarkerPos(int nId_, int nMarkerPos)
+{
+    if(m_pLawMarker) {
+        m_pLawMarker->SetMarkerPos(nId_, nMarkerPos);
+    }
 }
 
 void DopplerViewItems::UpdateItemsThickness()
