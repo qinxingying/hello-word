@@ -430,6 +430,7 @@ enum setup_CURSOR_TYPE
 	setup_CURSOR_VPA_MES ,
 	setup_CURSOR_TFOD_LW ,
 	setup_CURSOR_TFOD_BW ,
+    setup_CURSOR_C_ANGLE ,
 	setup_CURSOR_MAX
 } ;
 

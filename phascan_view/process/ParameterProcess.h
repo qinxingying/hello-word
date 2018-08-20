@@ -181,6 +181,8 @@ public:
     float DistMmToUs(int nGroupId_ , float fDist_);
     float DistNsToMm(int nGroupId_ , int nTime_);
     int   DistMmToNs(int nGroupId_ , float fDist_);
+    int SCanAngleToCScanLineAngle(int nGroupId_, float _fCursor);
+    float CScanLineAngleToScanLineAngle(int nGroupId_, int _nPos);
 
     QString GetSonicAxisUnit() ;
     QString GetScanAxisUnit()  ;

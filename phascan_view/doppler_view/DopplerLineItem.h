@@ -1,6 +1,7 @@
 #ifndef DOPPLERGRPHICSITEMLINE_H
 #define DOPPLERGRPHICSITEMLINE_H
 
+#include <QObject>
 #include <configure/Instrument.h>
 #include "DopplerGraphicsItem.h"
 #include <QColor>
@@ -8,6 +9,7 @@
 
 class DopplerLineItem : public DopplerGraphicsItem
 {
+
 public:
     enum LINE_MOVE_TYPE
     {
@@ -55,7 +57,7 @@ protected:
 
 };
 
-class DopplerScanMarker : public DopplerLineItem
+class DopplerScanMarker :public QObject, public DopplerLineItem
 {
 
 public:
