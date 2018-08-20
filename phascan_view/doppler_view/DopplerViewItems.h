@@ -50,6 +50,7 @@ public:
 	int GetLawMarkerQty();
     int GetLawMarkerPos(int nId_);
     void SetLawMarkerPos(int nId_, int nMarkerPos);
+    void SetLawMarkerCScanPos(int nMarkerPos);
 	void UpdateItemsThickness() ;
 	void UpdateItemsWeld() ;
 	void UpdateScanMarker();
@@ -114,7 +115,7 @@ protected:
 	int    m_iDefectIndex;
 	float afGatePos[3][3]  ;
     float afCursorPos[5]   ;
-	int   anCursorId[4]    ;
+    int   anCursorId[5]    ;
 	bool  m_bHorizental ;
 	bool  m_bScanMarkerHorizental ;
 	float m_fScanPos   ;

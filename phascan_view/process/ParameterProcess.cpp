@@ -1896,7 +1896,34 @@ int   ParameterProcess::DistMmToNs(int nGroupId_ , float fDist_)
 	_fTime *= 2;
 	//}
 	_fTime = _fTime / _fVelocity ;
-	return _fTime ;
+    return _fTime ;
+}
+
+int ParameterProcess::SCanAngleToCScanLineAngle(int nGroupId_, float _fCursor)
+{
+    int _nLawQty = GetGroupLawQty(nGroupId_) ;
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
+    LAW_CONFIG _law = _group.law ;
+    float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
+    float _fAngleStep = _law.nAngleStepRefract/10.0;
+    int tmpCScanLinePos = ((_fCursor - _fAngleStart)>0)?(int)((_fCursor - _fAngleStart)/_fAngleStep):0;
+    tmpCScanLinePos = (_fCursor>(_fAngleStart+(_nLawQty-1)*_fAngleStep))?(_fAngleStart+(_nLawQty-1)*_fAngleStep) :tmpCScanLinePos;
+    return tmpCScanLinePos;
+}
+
+float ParameterProcess::CScanLineAngleToScanLineAngle(int nGroupId_, int _nPos)
+{
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
+    LAW_CONFIG _law = _group.law ;
+    float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
+    float _fAngleStep = _law.nAngleStepRefract/10.0;
+
+    if(_nPos<2 || _nPos>65535){
+        return _fAngleStart;
+    }
+
+    int tmpCScanLinePos =  _fAngleStart + _nPos*_fAngleStep;
+    return tmpCScanLinePos;
 }
 /*
 float ParameterProcess::DistNsToMm(int nGroupId_ , int nTime_)
