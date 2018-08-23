@@ -119,7 +119,7 @@ signals:
 public slots:
 	void slotZoomAction(QRectF rect) ;
 protected slots:
-
+    QRectF slotItemSetAngleLineLimit(QRectF &_rect, DopplerGraphicsItem* pItem_);
     void slotItemMoved(DopplerGraphicsItem* item_);
     void slotViewMouseRelease(QMouseEvent*) ;
     void slotViewMousePressed(QMouseEvent*) ;

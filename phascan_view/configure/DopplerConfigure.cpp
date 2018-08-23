@@ -1143,6 +1143,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.afCursor[setup_CURSOR_TFOD_LW] = _group.fSampleStart + _group.fSampleRange  / 10;
 		_group.afCursor[setup_CURSOR_TFOD_BW] = _group.fSampleStart + 9 * _group.fSampleRange / 10;
 
+        LAW_CONFIG _law = _group.law ;
+        float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
+        float _fAngleStep = _law.nAngleStepRefract/10.0;
+        int tmpCScanLinePos =  _fAngleStart + 0*_fAngleStep;
+        _group.afCursor[setup_CURSOR_C_ANGLE]  = tmpCScanLinePos ;
+
 		ParameterProcess* _process = ParameterProcess::Instance() ;
 		unsigned char*	  _pData = _process->GetLawDataPointer(i , 0) ;
 		if(_pData)

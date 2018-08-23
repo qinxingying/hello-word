@@ -318,7 +318,7 @@ void DopplerGroupTab::UpdateMeasureBox()
 void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
 {
     QComboBox* _field = ui->ComThickness;
-    int i;
+    //int i;
     if(ifadd)
     {
     if(selectID == 0)

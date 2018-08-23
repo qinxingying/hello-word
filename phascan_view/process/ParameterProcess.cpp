@@ -367,6 +367,11 @@ int  ParameterProcess::SetupCurrentLawCursor(int nGroupId_ , int nValue_)
 {
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_]  ;
 	_group.afCursor[setup_CURSOR_LAW]  = nValue_ ;
+    LAW_CONFIG _law = _group.law ;
+    float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
+    float _fAngleStep = _law.nAngleStepRefract/10.0;
+    int tmpCScanLinePos =  _fAngleStart + nValue_*_fAngleStep;
+    _group.afCursor[setup_CURSOR_C_ANGLE]  = tmpCScanLinePos ;
 	qDebug("%d %d SetupWedgeLoad" , nGroupId_ , nValue_);
 	return 0 ;
 }
@@ -1901,13 +1906,22 @@ int   ParameterProcess::DistMmToNs(int nGroupId_ , float fDist_)
 
 int ParameterProcess::SCanAngleToCScanLineAngle(int nGroupId_, float _fCursor)
 {
+    int tmpCScanLinePos;
     int _nLawQty = GetGroupLawQty(nGroupId_) ;
     GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
     LAW_CONFIG _law = _group.law ;
     float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
     float _fAngleStep = _law.nAngleStepRefract/10.0;
-    int tmpCScanLinePos = ((_fCursor - _fAngleStart)>0)?(int)((_fCursor - _fAngleStart)/_fAngleStep):0;
-    tmpCScanLinePos = (_fCursor>(_fAngleStart+(_nLawQty-1)*_fAngleStep))?(_fAngleStart+(_nLawQty-1)*_fAngleStep) :tmpCScanLinePos;
+    float _fAngleStop  = _law.nAngleStopRefract / 10.0 ;
+    if(_fCursor  > _fAngleStart){
+        tmpCScanLinePos = (int)((_fCursor - _fAngleStart)/_fAngleStep);
+        if(tmpCScanLinePos > _fAngleStop){
+            tmpCScanLinePos = (_fAngleStop - _fAngleStart)/_fAngleStep;
+        }
+    }else{
+        tmpCScanLinePos = 0;
+    }
+    qDebug("_fAngleStop:%.2f, _nLawQty:%d", _fAngleStop, _nLawQty);
     return tmpCScanLinePos;
 }
 

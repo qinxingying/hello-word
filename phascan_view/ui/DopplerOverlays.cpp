@@ -257,9 +257,9 @@ void DopplerOverlays::CreateOverlaysBH()
 			_pItemGroup->EnableItems(OVERLAYS_PARABOLA);
 			_pItemGroup->SetParabolaDirection(false);
 		}
-        qDebug("%s[%d]: REF:%.2f, MES:%.2f, S_REF:%.2f, S_MES:%.2f", __FUNCTION__,
-               __LINE__, _group.afCursor[setup_CURSOR_U_REF], _group.afCursor[setup_CURSOR_U_MES],
-               _group.afCursor[setup_CURSOR_S_REF],_group.afCursor[setup_CURSOR_S_MES]);
+//        qDebug("%s[%d]: REF:%.2f, MES:%.2f, S_REF:%.2f, S_MES:%.2f", __FUNCTION__,
+//               __LINE__, _group.afCursor[setup_CURSOR_U_REF], _group.afCursor[setup_CURSOR_U_MES],
+//               _group.afCursor[setup_CURSOR_S_REF],_group.afCursor[setup_CURSOR_S_MES]);
         if(bHideCursor)
         {
             HideMode = -1;
@@ -350,9 +350,9 @@ void DopplerOverlays::CreateOverlaysBV()
 			_pItemGroup->EnableItems(OVERLAYS_PARABOLA);
 			_pItemGroup->SetParabolaDirection(true);
 		}
-        qDebug("%s[%d]: REF:%.2f, MES:%.2f, S_REF:%.2f, S_MES:%.2f", __FUNCTION__,
-               __LINE__, _group.afCursor[setup_CURSOR_U_REF], _group.afCursor[setup_CURSOR_U_MES],
-               _group.afCursor[setup_CURSOR_S_REF],_group.afCursor[setup_CURSOR_S_MES]);
+//        qDebug("%s[%d]: REF:%.2f, MES:%.2f, S_REF:%.2f, S_MES:%.2f", __FUNCTION__,
+//               __LINE__, _group.afCursor[setup_CURSOR_U_REF], _group.afCursor[setup_CURSOR_U_MES],
+//               _group.afCursor[setup_CURSOR_S_REF],_group.afCursor[setup_CURSOR_S_MES]);
         if(bHideCursor)
         {
             HideMode = -1;
@@ -396,10 +396,10 @@ void DopplerOverlays::CreateOverlaysCH()
 		_pItemGroup->SetCursorId(2 , setup_CURSOR_S_REF);
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_S_MES);
         _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
-        qDebug("%s[%d]: REF:%.2f, MES:%.2f, VPA_REF:%.2f, VPA_MES:%.2f, ANG:%.2f", __FUNCTION__,
-               __LINE__, group.afCursor[setup_CURSOR_S_REF], group.afCursor[setup_CURSOR_S_MES],
-               group.afCursor[setup_CURSOR_VPA_REF],group.afCursor[setup_CURSOR_VPA_MES],
-               group.afCursor[setup_CURSOR_C_ANGLE]);
+//        qDebug("%s[%d]: REF:%.2f, MES:%.2f, VPA_REF:%.2f, VPA_MES:%.2f, ANG:%.2f", __FUNCTION__,
+//               __LINE__, group.afCursor[setup_CURSOR_S_REF], group.afCursor[setup_CURSOR_S_MES],
+//               group.afCursor[setup_CURSOR_VPA_REF],group.afCursor[setup_CURSOR_VPA_MES],
+//               group.afCursor[setup_CURSOR_C_ANGLE]);
         if(bHideCursor)
         {
             HideMode = 0;
@@ -437,10 +437,10 @@ void DopplerOverlays::CreateOverlaysCV()
 		_pItemGroup->SetCursorId(0 , setup_CURSOR_S_REF);
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_S_MES);
         _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
-        qDebug("%s[%d]: REF:%.2f, MES:%.2f, VPA_REF:%.2f, VPA_MES:%.2f, ANG:%.2f", __FUNCTION__,
-               __LINE__, group.afCursor[setup_CURSOR_S_REF], group.afCursor[setup_CURSOR_S_MES],
-               group.afCursor[setup_CURSOR_VPA_REF],group.afCursor[setup_CURSOR_VPA_MES],
-               group.afCursor[setup_CURSOR_C_ANGLE]);
+//        qDebug("%s[%d]: REF:%.2f, MES:%.2f, VPA_REF:%.2f, VPA_MES:%.2f, ANG:%.2f", __FUNCTION__,
+//               __LINE__, group.afCursor[setup_CURSOR_S_REF], group.afCursor[setup_CURSOR_S_MES],
+//               group.afCursor[setup_CURSOR_VPA_REF],group.afCursor[setup_CURSOR_VPA_MES],
+//               group.afCursor[setup_CURSOR_C_ANGLE]);
         if(bHideCursor)
         {
             HideMode = 2;

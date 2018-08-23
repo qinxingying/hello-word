@@ -591,15 +591,48 @@ void DopplerDataView::slotZoomAction(QRectF rect)
 
 }
 
+QRectF DopplerDataView::slotItemSetAngleLineLimit(QRectF &_rect, DopplerGraphicsItem* pItem_)
+{
+    int _nGroupId , _nLawId , _nDisplay;
+    GetDataViewConfigure(&_nGroupId,  &_nLawId,  &_nDisplay);
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
+    LAW_CONFIG _law = _group.law ;
+    float _fAngleStop = _law.nAngleStopRefract / 10.0 ;
+    float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
+    QRectF rect(_rect);
+    if(DopplerLineItem::LINE_HORIZENTAL == ((DopplerCScanLineMark*)pItem_)->GetLineType()){
+        if(rect.top() > _fAngleStop){
+            rect.setTop(_fAngleStop);
+        }else if(rect.top() < _fAngleStart){
+            rect.setTop(_fAngleStart);
+        }
+    }else{
+        if(rect.left() > _fAngleStop){
+            rect.setLeft(_fAngleStop);
+        }else if(rect.left() < _fAngleStart){
+            rect.setLeft(_fAngleStart);
+        }
+    }
+    return rect;
+}
+
 void DopplerDataView::slotItemMoved(DopplerGraphicsItem* item_)
 {
 	QPointF _pos1 = item_->GetItemScenePos()  ;
 	QPointF _pos2 = PixTransferToReal(_pos1)  ;
 	QRectF _rect = item_->GetItemGeometryReal();
 	_rect = QRectF(_pos2.x() , _pos2.y() , _rect.width() , _rect.height())  ;
+    int _nItemType = item_->GetItemType();
+    int _nItemId = item_->GetItemId();
+    if(_nItemType == DOPPLER_GRAPHICS_ITEM_CURSOR && _nItemId == setup_CURSOR_C_ANGLE){
+        _rect = slotItemSetAngleLineLimit(_rect, item_);
+    }
+
 	item_->SetItemGeometryReal(_rect)   ;
 	emit signalItemMoved(this , item_)  ;
-    qDebug("%s[%d], slot 1 parameter, %p", __FUNCTION__, __LINE__, item_);
+    qDebug("%s[%d],_pos1.x:%.2f, pos1.y:%.2f, pos2.x:%.2f, pos2.y:%.2f",
+           __FUNCTION__, __LINE__, _pos1.x(), _pos1.y(), _pos2.x(), _pos2.y());
 }
 /****************************************************************************
   Description: 换算  在场景中的像素位置 到  标尺刻度对应的位置
