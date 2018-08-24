@@ -26,6 +26,7 @@ Date     : 2016-12-06
 #include <QLabel>
 #include <QFileDialog>
 #include <QPixmap>
+#include "dialog/DialogAbouVersion.h"
 
 int lastgroup = 0;
 int currentgroup = 0;
@@ -1495,4 +1496,10 @@ void MainWindow::slotDataViewResized(DopplerDataView* pView_)
     _process.UpdateDataViewFrame(pView_);
     _process.UpdateDataViewOverlay(pView_);
     pView_->UpdateDrawing();
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    DialogAboutVersion dialog(this);
+    dialog.exec();
 }

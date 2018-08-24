@@ -160,6 +160,7 @@ protected slots:
   void slot_actionEnglish_triggered();
   void slot_actionChinese_triggered();
   void on_actionJapanese_triggered();
+  void on_actionAbout_triggered();
 };
 
 extern MainWindow* g_pMainWnd;

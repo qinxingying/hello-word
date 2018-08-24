@@ -187,7 +187,7 @@
      <x>0</x>
      <y>0</y>
      <width>754</width>
-     <height>17</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="autoFillBackground">
@@ -364,7 +364,7 @@
   </action>
   <action name="actionAbout">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>About</string>
