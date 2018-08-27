@@ -258,8 +258,9 @@ void DopplerDataView::UpdateMeasure()
 				_nLaw = m_pItemsGroup->GetLawMarkerPos(i);
                 for(int k = 0; k < 8; k++) {
 					if(_pMeasure[k]) {
-						QString _str = CalcMeasurement::GetMeasureValueString(m_nGroupId , _nLaw , (FEILD_VALUE_INDEX)_pMeasure[k] );
-						m_pGraphicView->SetMeasureString(_nQty , &_str);
+                        QString _str = CalcMeasurement::GetMeasureValueString(m_nGroupId , _nLaw , (FEILD_VALUE_INDEX)_pMeasure[k] );
+                        m_pGraphicView->SetMeasureString(_nQty , &_str);
+                        qDebug("%s[%d]: nLaw:%d", __FUNCTION__, __LINE__, _nLaw);
 						_nQty++;
 					}
 				}
@@ -269,8 +270,9 @@ void DopplerDataView::UpdateMeasure()
 		} else {
             for(int i = 0 ; i < 8 ; i++) {
 				if(_pMeasure[i]) {
-					QString _str = CalcMeasurement::GetMeasureValueString(m_nGroupId , m_nLaw , (FEILD_VALUE_INDEX)_pMeasure[i] );
-					m_pGraphicView->SetMeasureString(_nQty , &_str);
+                    QString _str = CalcMeasurement::GetMeasureValueString(m_nGroupId , m_nLaw , (FEILD_VALUE_INDEX)_pMeasure[i] );
+                    m_pGraphicView->SetMeasureString(_nQty , &_str);
+                    qDebug("%s[%d]: nLaw:%d", __FUNCTION__, __LINE__, m_nLaw);
 					_nQty++  ;
 				}
 			}

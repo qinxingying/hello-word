@@ -528,6 +528,27 @@ void MainWindow::SetSelectedDataView(QWidget* pWidget_)
     m_pCurrentDataView = pWidget_;
 }
 
+void MainWindow::updateAllTabwidgetSscanPos(int _nGroupId, int pos)
+{
+    if(m_nAlloff){
+        for(int i = 0; i < ui->TabWidget_display->count(); i++){
+            for(int j = 0; j < m_pViewList[i]->count(); j++){
+                int tmpGroupID, tmpLawId, tmpDisplay;
+                DopplerDataView* _pView = (DopplerDataView*)m_pViewList[i]->at(j);
+                _pView->GetDataViewConfigure(&tmpGroupID ,  &tmpLawId ,  &tmpDisplay);
+                if(_nGroupId == tmpGroupID){
+                    for(int nQty = 0; nQty<_pView->GetSScanLawQty(); nQty++){
+                        _pView->SetSScanLaw(nQty, pos);
+                        _pView->SetDataViewConfigure(_nGroupId,  pos,  tmpDisplay);
+                    }
+                }
+                //slotDataViewResized(_pView);
+            }
+        }
+
+    }
+}
+
 /****************************************************************************
   Description: 参数和数据加载时  更新参数窗口
 *****************************************************************************/
@@ -963,6 +984,8 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         _pGroupTab->UpdateCurrentAngleCom();
         _pGroupTab->UpdateSizeingCurves();
 
+        updateAllTabwidgetSscanPos(_nGroupId, _nPos);
+
         for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
         {
             int _nCurGroup;
@@ -1068,6 +1091,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
             }
 
+            updateAllTabwidgetSscanPos(_nGroupId, tmp);
             //((DopplerCScanLineMark*)pItem_)->SendSignalIndex(tmp);
 
             for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
