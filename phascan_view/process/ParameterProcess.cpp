@@ -9,7 +9,7 @@ extern int lastgroup;
 
 double FreScale = 400/511.0;
 double NFreScale = 200/511.0;
-
+extern int Phascan_Version;
 ParameterProcess* g_pParameterProcess = NULL ;
 
 ParameterProcess* ParameterProcess::Instance()
@@ -578,8 +578,18 @@ float  ParameterProcess::GetRefGainScale(int nGroupId_)
 
 WDATA ParameterProcess::GetRefGainScaleData(WDATA wData_, float fScale_, bool bRectify_)
 {
-    int _iData = wData_ * 2 | 1;
-
+    int _iData = wData_;
+    int WAVE_HALF;
+    if(Phascan_Version == 1 || Phascan_Version == 3)
+    {
+        WAVE_HALF = 128;
+        _iData = wData_;
+    }
+    else if(Phascan_Version == 2)
+    {
+        WAVE_HALF = 256;
+        _iData = wData_ * 2 | 1;
+    }
 	if(bRectify_)
 	{
 	_iData  = _iData - WAVE_HALF ;
@@ -842,7 +852,7 @@ void ParameterProcess::GroupDataMove(int nGroupId_, WDATA* pSource_, WDATA* pDes
 	}
 }
 
-float CalPeakAmp(float nPeak_, int nRectify_)
+float CalPeakAmp2(float nPeak_, int nRectify_)
 {
     float amp;
     if(!nRectify_)
@@ -879,21 +889,32 @@ float ParameterProcess::GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLa
 	F32	_fScale    = GetRefGainScale(nGroupId_) ;
     bool _bRectify = (GetRectifierMode(nGroupId_) == setup_RECTIFIER_RF );
     //F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
-    F32 _iData = _pData[_index] * 2 + 1;
 
-    if(_bRectify)
+    if(Phascan_Version == 1 || Phascan_Version == 3)
     {
-    _iData  = _iData - WAVE_HALF ;
-    _iData = _iData * _fScale + WAVE_HALF;
-    if(_iData < 0 )		_iData = 0   ;
-    }
-    else
-    {
-    _iData = _iData * _fScale ;
-    }
-    int bRectify_  = GetRectifierMode(nGroupId_);
+        F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
+        int bRectify_  = GetRectifierMode(nGroupId_);
 
-    return CalPeakAmp(_iData, bRectify_);
+        return CalPeakAmp(_fData, bRectify_);
+    }
+    else if(Phascan_Version == 2)
+    {
+        F32 _iData = _pData[_index] * 2 + 1;
+        if(_bRectify)
+        {
+        _iData  = _iData - 256 ;
+        _iData = _iData * _fScale + 256;
+        if(_iData < 0 )		_iData = 0   ;
+        }
+        else
+        {
+        _iData = _iData * _fScale ;
+        }
+        int bRectify_  = GetRectifierMode(nGroupId_);
+
+        return CalPeakAmp2(_iData, bRectify_);
+    }
+
 }
 
 int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeight_, bool bRectify_, int nPointQty_)
@@ -931,7 +952,14 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 
 		if(!mode) {
 			for(int i = _iS; i < _iE; i++) {
-                _iTmp = pData_[i] * 2 | 1;
+                if(Phascan_Version == 1 || Phascan_Version == 3)
+                {
+                    _iTmp = pData_[i];
+                }
+                else if(Phascan_Version == 2)
+                {
+                    _iTmp = pData_[i] * 2 | 1;
+                }
 				if(_iTmp <= _iH) {
 					_iFro = _iTmp;
 					_iPos = i;
@@ -940,7 +968,14 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 			}
 		} else {
 			for(int i = _iS; i < _iE; i++) {
-                _iTmp = pData_[i] * 2 | 1;
+                if(Phascan_Version == 1 || Phascan_Version == 3)
+                {
+                    _iTmp = pData_[i];
+                }
+                else if(Phascan_Version == 2)
+                {
+                    _iTmp = pData_[i] * 2 | 1;
+                }
 				if(_iTmp >= _iH) {
 					_iFro = _iTmp;
 					_iPos = i;
@@ -950,7 +985,14 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 		}
 	} else {
 		for(int i = _iS; i < _iE; i++) {
-            _iTmp = pData_[i] * 2 | 1;
+            if(Phascan_Version == 1 || Phascan_Version == 3)
+            {
+                _iTmp = pData_[i];
+            }
+            else if(Phascan_Version == 2)
+            {
+                _iTmp = pData_[i] * 2 | 1;
+            }
 			if(_iTmp >= _iH) {
 				_iFro = _iTmp;
 				_iPos = i;
@@ -990,12 +1032,27 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
 	int _iAmp = 0;
 	int _iTmp = 0;
 	int _iPos = 0;
-
+    int WAVE_HALF;
+    if(Phascan_Version == 1 || Phascan_Version == 3)
+    {
+        WAVE_HALF = 128;
+    }
+    else if(Phascan_Version == 2)
+    {
+        WAVE_HALF = 256;
+    }
 	if(!bRectify_) {// …‰∆µ
 		int _iMax = 0;
 		int _iData = 0;
 		for(int i = _iS; i < _iE; i++) {
-            _iTmp = pData_[i] * 2 | 1;
+            if(Phascan_Version == 1 || Phascan_Version == 3)
+            {
+                _iTmp = pData_[i];
+            }
+            else if(Phascan_Version == 2)
+            {
+                _iTmp = pData_[i] * 2 | 1;
+            }
 			_iData = abs(_iTmp - WAVE_HALF);
 
 			if(_iData > _iMax) {
@@ -1006,7 +1063,14 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
 		}
 	} else {
 		for(int i = _iS; i < _iE; i++) {
-            _iTmp = pData_[i] * 2 | 1;
+            if(Phascan_Version == 1 || Phascan_Version == 3)
+            {
+                _iTmp = pData_[i];
+            }
+            else if(Phascan_Version == 2)
+            {
+                _iTmp = pData_[i] * 2 | 1;
+            }
 
 			if(_iTmp > _iAmp) {
 				_iAmp = _iTmp;
@@ -1082,8 +1146,14 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_I].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_I].fL     = _fDist * _fSin;
 	pInfo_[setup_GATE_I].fD     = GetDepth(pInfo_[setup_GATE_I].fH, _fThick);
-
-	pInfo_[setup_GATE_I].fAmp   = CalPeakAmp(pInfo_[setup_GATE_I].iY, _nRectify);
+    if(Phascan_Version == 1 || Phascan_Version == 3)
+    {
+        pInfo_[setup_GATE_I].fAmp   = CalPeakAmp(pInfo_[setup_GATE_I].iY, _nRectify);
+    }
+    else if(Phascan_Version == 2)
+    {
+        pInfo_[setup_GATE_I].fAmp   = CalPeakAmp2(pInfo_[setup_GATE_I].iY, _nRectify);
+    }
     pInfo_[setup_GATE_I].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_I].fAmp, pInfo_[setup_GATE_I].fGh);
 	//-----------------------------------
 	// A
@@ -1119,8 +1189,14 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
 	pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
-
-    pInfo_[setup_GATE_A].fAmp   = CalPeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
+    if(Phascan_Version == 1 || Phascan_Version == 3)
+    {
+        pInfo_[setup_GATE_A].fAmp   = CalPeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
+    }
+    else if(Phascan_Version == 2)
+    {
+        pInfo_[setup_GATE_A].fAmp   = CalPeakAmp2(pInfo_[setup_GATE_A].iY, _nRectify);
+    }
     pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
 	//-----------------------------------
 	// B
@@ -1159,8 +1235,14 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_B].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_B].fL     = _fDist * _fSin;
 	pInfo_[setup_GATE_B].fD     = GetDepth(pInfo_[setup_GATE_B].fH, _fThick);
-
-	pInfo_[setup_GATE_B].fAmp   = CalPeakAmp(pInfo_[setup_GATE_B].iY, _nRectify);
+    if(Phascan_Version == 1 || Phascan_Version == 3)
+    {
+        pInfo_[setup_GATE_B].fAmp   = CalPeakAmp(pInfo_[setup_GATE_B].iY, _nRectify);
+    }
+    else if(Phascan_Version == 2)
+    {
+        pInfo_[setup_GATE_B].fAmp   = CalPeakAmp2(pInfo_[setup_GATE_B].iY, _nRectify);
+    }
     pInfo_[setup_GATE_B].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_B].fAmp, pInfo_[setup_GATE_B].fGh);
 	return true;
 }

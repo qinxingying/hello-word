@@ -7,7 +7,7 @@
 #include <QtOpenGL>
 #include <math.h>
 
-
+extern int Phascan_Version;
 const int CURCLE_STEP = 3600;//360;
 const F32 DEST_HEIGHT = 6.0;//360;
 const int PEAK_CLIP = 204;
@@ -348,8 +348,16 @@ int Doppler3DAll::DrawPixbuff(GLdouble y0_)
                     if(m_pDraw[_idx1] != 0)
                     {
                         _idx2 = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
-                        _iData = (int)((_pData[_idx2] * 2 | 1) * (COLOR_STEP - m_pDrawRate[_idx1]) +
+	if(Phascan_Version == 1 || Phascan_Version == 3)
+	{
+		_iData = (int)(_pData[_idx2] * (COLOR_STEP - m_pDrawRate[_idx1]) +
+                                          _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] ) ;
+	}
+	else if(Phascan_Version == 2)
+	{
+ 		 _iData = (int)((_pData[_idx2] * 2 | 1) * (COLOR_STEP - m_pDrawRate[_idx1]) +
                                          (_pData[_idx2 + _nLawSize] * 2 | 1) * m_pDrawRate[_idx1] ) ;
+	}                     
 
                         _iData = _iData>>COLOR_SHIFT ;
                         _iData = m_process->GetRefGainScaleData(_iData, _fScale, _bRectify);
@@ -944,9 +952,16 @@ void Doppler3DAll::drawDefectAzimuthal(GLdouble y0_)
             {
                 for(i = 0; i < _nPointQty; i++)
                 {
-                    _iData = _pData1[i] * 2 | 1;
+	if(Phascan_Version == 1 || Phascan_Version == 3)
+	{
+		 _iData = _pData1[i];
+	}
+	else if(Phascan_Version == 2)
+	{
+ 		  _iData = _pData1[i] * 2 | 1;
                     if(_iData > 255)
                         _iData = 255;
+	}                
                     //if(_iData > PEAK_CLIP)
                     {
                         _fS = _fSamStart + i * _fSamRange / _nPointQty;
@@ -1044,9 +1059,16 @@ void Doppler3DAll::drawDefectLiner(GLdouble y0_)
             {
                 for(i = 0; i < _nPointQty; i++)
                 {
-                    _iData = _pData1[i] * 2 | 1;
+	if(Phascan_Version == 1 || Phascan_Version == 3)
+	{
+		 _iData = _pData1[i];
+	}
+	else if(Phascan_Version == 2)
+	{
+ 		  _iData = _pData1[i] * 2 | 1;
                     if(_iData > 255)
                         _iData = 255;
+	}  
                     //if(_iData > PEAK_CLIP)
                     {
                         _fS = _fSamStart + i * _fSamRange / _nPointQty;

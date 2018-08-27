@@ -67,7 +67,7 @@ struct TOFD_PARA
 extern "C" DOPPLER_EXPORT void sleep(unsigned int msec);
 extern "C" DOPPLER_EXPORT float GetDepth(float h_, float ply_);
 extern "C" DOPPLER_EXPORT float GateHeight(int nThreshold_, int nRectify_);
-//extern "C" DOPPLER_EXPORT float CalPeakAmp(float nPeak_, int nRectify_);
+extern "C" DOPPLER_EXPORT float CalPeakAmp(float nPeak_, int nRectify_);
 extern "C" DOPPLER_EXPORT void CharFilter(char* source, char* rule);
 extern "C" DOPPLER_EXPORT void CheckLockFlag(const char *FormatStr);
 extern "C" DOPPLER_EXPORT void LockRegStr(char *input,char *output,int len);

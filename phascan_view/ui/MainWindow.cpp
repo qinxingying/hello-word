@@ -940,8 +940,6 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
     ProcessDisplay _proDispy;
     int _nTabIndex = ui->TabWidget_display->currentIndex();
 
-    qDebug("++++%s[%d], slot 1 parameter, _nItemType:%d, _nGroupQty:%d, _nLawId:%d, _nGroupId:%d, _nTabIndex:%d",
-           __FUNCTION__, __LINE__, _nItemType, _nGroupQty, _nLawId, _nGroupId, _nTabIndex);
     switch (_nItemType){
     case DOPPLER_GRAPHICS_ITEM_LAW_MARKER:
     {
@@ -949,17 +947,10 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         int _nPos = ((DopplerLawMarker*)pItem_)->GetMarkerPos(_nId);
         int _nQty = ((DopplerLawMarker*)pItem_)->GetMarkerQty();
 
-
-        qDebug("--- %s[%d], _nQty:%d, _nId:%d, _nPos:%d", __FUNCTION__, __LINE__,
-               _nQty, _nId, _nPos);
-
         m_nLawIdSel = _nId;
         _group.afCursor[setup_CURSOR_LAW] = _nPos;
-
         float tmp = _process->CScanLineAngleToScanLineAngle(_nGroupId, _nPos);
         _group.afCursor[setup_CURSOR_C_ANGLE] = tmp;
-
-        qDebug("xxx222 ==>> _nPos:%d, tmp:%.2f", _nPos, tmp);
         DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
         _pGroupTab->UpdateCurrentAngleCom();
         _pGroupTab->UpdateSizeingCurves();
@@ -973,12 +964,10 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
             if(_nDisplay < 4 && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
                 if(_nId == _pView->GetLawIdentify()) {
-                    qDebug("%s[%d]:", __FUNCTION__, __LINE__);
                     _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
                     _proDispy.UpdateAll(_pView);
                 }
             } else if(_nDisplay < 8  && _nGroupId == _nCurGroup) {
-                qDebug("%s[%d]:", __FUNCTION__, __LINE__);
                 _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
                 _proDispy.UpdateDataViewTitle(_pView);
                 _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
@@ -986,7 +975,6 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                 _proDispy.UpdateDataViewTitle(_pView);
             }
         }
-
         RunDrawThreadOnce(true);
     }
     break;
@@ -997,9 +985,6 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
         QRectF _rect = pItem_->GetItemGeometryReal();
         int _nItemId = pItem_->GetItemId();
-
-//        qDebug("--- %s[%d], _rect.x:%.2f, _rect.y:%.2f, w:%.2f, h:%.2f, _nItemId:%d", __FUNCTION__, __LINE__,
-//               _rect.x(), _rect.y(), _rect.width(), _rect.height(), _nItemId);
 
         if(_nItemId < 0 || _nItemId > setup_CURSOR_MAX)   break;
 

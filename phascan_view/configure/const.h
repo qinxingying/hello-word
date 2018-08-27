@@ -27,7 +27,7 @@ typedef double			F64;
 typedef U8				WDATA;	//	定义波形数据位宽 8位
 
 #define WAVE_MAX		255
-#define WAVE_HALF		256
+
 
 #define DEFECT_SIGN_MAX	40
 ////////////////////////////////////////////////////////////////

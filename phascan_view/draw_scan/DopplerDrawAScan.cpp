@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <math.h>
 double RL_EL_SL[5]={0};
+extern int Phascan_Version;
 DopplerDrawAScanH::DopplerDrawAScanH():DopplerDrawScan()
 {
 	bDrawLimit = 0 ;
@@ -103,9 +104,17 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 	{
 		for(i = 0 ; i < _nPointQty ; i++)
 		{
-            if((_pData[i] * 2 | 1 )> 255)  aLimitHigh[i] = 255;
-            else if((_pData[i] * 2 | 1 )> aLimitHigh[i])  aLimitHigh[i] = _pData[i] * 2 | 1;
-            if((_pData[i] * 2 | 1 )< aLimitLow [i])  aLimitLow [i] = _pData[i] * 2 | 1;
+			if(Phascan_Version == 1 || Phascan_Version == 3)
+		{
+			 if(_pData[i] > aLimitHigh[i])  aLimitHigh[i] = _pData[i];
+            		if(_pData[i] < aLimitLow [i])  aLimitLow [i] = _pData[i];
+		}
+			else if(Phascan_Version == 2)
+		{
+           		if((_pData[i] * 2 | 1 )> 255)  aLimitHigh[i] = 255;
+           		 else if((_pData[i] * 2 | 1 )> aLimitHigh[i])  aLimitHigh[i] = _pData[i] * 2 | 1;
+           	 if((_pData[i] * 2 | 1 )< aLimitLow [i])  aLimitLow [i] = _pData[i] * 2 | 1;
+		}
 		}
 
 		double _fY1;
@@ -656,9 +665,17 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
 	{
 		for(i = 0 ; i < _nPointQty ; i++)
 		{
-            if((_pData[i] * 2 | 1 )> 255)  aLimitHigh[i] = 255;
-            else if((_pData[i] * 2 | 1 )> aLimitHigh[i])  aLimitHigh[i] = _pData[i] * 2 | 1;
-            if((_pData[i] * 2 | 1) < aLimitLow [i])  aLimitLow [i] = _pData[i] * 2 | 1 ;
+			if(Phascan_Version == 1 || Phascan_Version == 3)
+			{
+				if(_pData[i] > aLimitHigh[i])  aLimitHigh[i] = _pData[i]  ;
+			if(_pData[i] < aLimitLow [i])  aLimitLow [i] = _pData[i]  ;
+			}
+			else if(Phascan_Version == 2)
+		{
+           		 if((_pData[i] * 2 | 1 )> 255)  aLimitHigh[i] = 255;
+           		 else if((_pData[i] * 2 | 1 )> aLimitHigh[i])  aLimitHigh[i] = _pData[i] * 2 | 1;
+           		 if((_pData[i] * 2 | 1) < aLimitLow [i])  aLimitLow [i] = _pData[i] * 2 | 1 ;
+		}
 		}
 		double _fX1;
 		for(i = 0 ; i < _nPointQty  ; i++)
