@@ -272,7 +272,7 @@ void DopplerDataView::UpdateMeasure()
 				if(_pMeasure[i]) {
                     QString _str = CalcMeasurement::GetMeasureValueString(m_nGroupId , m_nLaw , (FEILD_VALUE_INDEX)_pMeasure[i] );
                     m_pGraphicView->SetMeasureString(_nQty , &_str);
-                    qDebug("%s[%d]: nLaw:%d", __FUNCTION__, __LINE__, m_nLaw);
+                    //qDebug("%s[%d]: nLaw:%d", __FUNCTION__, __LINE__, m_nLaw);
 					_nQty++  ;
 				}
 			}
