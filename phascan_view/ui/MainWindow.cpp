@@ -529,6 +529,28 @@ void MainWindow::SetSelectedDataView(QWidget* pWidget_)
     m_pCurrentDataView = pWidget_;
 }
 
+void MainWindow::updateAllTabwidgetSscanPos(int _nGroupId, int pos)
+{
+    if(m_nAlloff){
+        for(int i = 0; i < ui->TabWidget_display->count(); i++){
+            for(int j = 0; j < m_pViewList[i]->count(); j++){
+                int tmpGroupID, tmpLawId, tmpDisplay;
+                DopplerDataView* _pView = (DopplerDataView*)m_pViewList[i]->at(j);
+                _pView->GetDataViewConfigure(&tmpGroupID ,  &tmpLawId ,  &tmpDisplay);
+                if(_nGroupId == tmpGroupID){
+                    for(int nQty = 0; nQty<_pView->GetSScanLawQty(); nQty++){
+                        _pView->SetSScanLaw(nQty, pos);
+                        //_pView->SetDataViewConfigure(_nGroupId,  pos,  tmpDisplay);
+                    }
+                }
+                //slotDataViewResized(_pView);
+            }
+        }
+
+    }
+}
+
+
 /****************************************************************************
   Description: 参数和数据加载时  更新参数窗口
 *****************************************************************************/
@@ -951,10 +973,14 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         _group.afCursor[setup_CURSOR_LAW] = _nPos;
         float tmp = _process->CScanLineAngleToScanLineAngle(_nGroupId, _nPos);
         _group.afCursor[setup_CURSOR_C_ANGLE] = tmp;
+
         DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
         _pGroupTab->UpdateCurrentAngleCom();
         _pGroupTab->UpdateSizeingCurves();
 
+        updateAllTabwidgetSscanPos(_nGroupId, _nPos);
+
+        for(_nTabIndex=0; _nTabIndex < ui->TabWidget_display->count(); _nTabIndex++)
         for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
         {
             int _nCurGroup;
@@ -1003,29 +1029,16 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         qDebug("xxx== _nItemId:%d, _fCursor:%.2f", _nItemId, _fCursor);
         if(_nItemId == setup_CURSOR_C_ANGLE){
             int tmp ;
-            LAW_CONFIG _law = _group.law ;
-            float _fAngleStop = _law.nAngleStopRefract / 10.0 ;
-            float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
 
             if(DopplerLineItem::LINE_HORIZENTAL == ((DopplerCScanLineMark*)pItem_)->GetLineType()){
                 _fCursor = _rect.top();
 
-//                if(_fCursor > _fAngleStop){
-//                    _fCursor = _fAngleStop;
-//                }else if(_fCursor < _fAngleStart){
-//                    _fCursor = _fAngleStart;
-//                }
                 tmp = _process->SCanAngleToCScanLineAngle(_nGroupId, _fCursor);
                 _group.afCursor[setup_CURSOR_LAW] = tmp;
 
             }else{
                 _fCursor = _rect.left();
 
-//                if(_fCursor > _fAngleStop){
-//                    _fCursor = _fAngleStop;
-//                }else if(_fCursor < _fAngleStart){
-//                    _fCursor = _fAngleStart;
-//                }
                 tmp = _process->SCanAngleToCScanLineAngle(_nGroupId, _fCursor);
                 _group.afCursor[setup_CURSOR_LAW] = tmp;
 
@@ -1054,8 +1067,9 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
             }
 
-            //((DopplerCScanLineMark*)pItem_)->SendSignalIndex(tmp);
+            updateAllTabwidgetSscanPos(_nGroupId, tmp);
 
+            for(_nTabIndex=0; _nTabIndex < ui->TabWidget_display->count(); _nTabIndex++)
             for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
             {
                 int _nCurGroup;

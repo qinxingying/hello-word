@@ -9,4 +9,5 @@
 *.o
 *.orig
 *.dxf
+*.data
 build-*
