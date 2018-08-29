@@ -53,6 +53,15 @@ MainWindow::MainWindow(QWidget *parent) :
     }else if(m_currentLang == setup_LANG_CHINESE){
         slot_actionChinese_triggered();
     }
+    SliderWidget = new QWidget(this);
+    SliderWidget->setFixedWidth(350);
+    SliderWidget->setFixedHeight(30);
+    sliderh = new QSlider(Qt::Horizontal);
+    sliderh->setBaseSize(QSize(50,50));
+    sliderh->setGeometry(30,0,300,30);
+    sliderh->setParent(SliderWidget);
+    ui->toolBar->addWidget(SliderWidget);
+    qDebug()<<"it is "<<sliderh->geometry().x()<<" "<<sliderh->geometry().y()<<endl;
 
     connect(ui->TabWidget_parameter, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsLeftTabButton(Qt::MouseButton)));
     connect(ui->TabWidget_parameter, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotLeftTabRightButtonDoubleClicked(int)));
@@ -64,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->actionEnglish, SIGNAL(triggered()), this, SLOT(slot_actionEnglish_triggered()));
     connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(slot_actionChinese_triggered()));
+    connect(sliderh,SIGNAL(valueChanged(int)),this,SLOT(slotSliderhChanged(int)));
 }
 
 MainWindow::~MainWindow()
@@ -505,6 +515,7 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
                     }
                     InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
                     _pScanner->UpdateScanPos();
+                    UpdateSlider();
 
                 }
             }
@@ -522,6 +533,24 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
     //------------------------------------------------------
     RunDrawThreadOnce(true);
 
+}
+
+void MainWindow::slotSliderhChanged(int value)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    SCANNER& _scanner = _pConfig->common.scanner ;
+    if(_scanner.eEncoderType) {
+            _scanner.fScanPos = _scanner.fScanStep * value + _scanner.fScanStart ;
+    } else {
+            _scanner.fScanPos =  value / _scanner.fPrf  + _scanner.fScanStart ;
+    }
+    ProcessDisplay _proDisplay ;
+    for(int i = 0; i < _pConfig->common.nGroupQty; i ++) {
+         _proDisplay.UpdateAllViewCursorOfGroup(i);
+    }
+    InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+    _pScanner->UpdateScanPos();
+    RunDrawThreadOnce(true);
 }
 
 void MainWindow::SetSelectedDataView(QWidget* pWidget_)
@@ -624,6 +653,25 @@ int MainWindow::SaveCurScreenshot(QString strPath_)
         return 1;
 }
 
+void MainWindow::initSlider()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    SCANNER& _scanner = _pConfig->common.scanner ;
+    sliderh->setMinimum(0);
+    sliderh->setSingleStep(_scanner.fScanStep);
+    sliderh->setMaximum((_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep );
+    sliderh->setValue(0);
+}
+
+void MainWindow::UpdateSlider()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    SCANNER& _scanner = _pConfig->common.scanner ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    int _nPos = _process->SAxisDistToIndex(_scanner.fScanPos);
+    sliderh->setValue(_nPos);
+}
+
 void MainWindow::UpdateTableDisplay()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -688,6 +736,7 @@ void MainWindow::UpdateTableDisplay()
     ui->TabWidget_parameter->setEnabled(true);
     ui->TabWidget_display->setEnabled(true);
     ui->toolBar->setEnabled(true);
+    SetDispTabText();
     SetDispTabText();
 }
 
@@ -757,6 +806,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
         UpdateTableParameter();
         UpdateStatusBarInfo();
         UpdateTableDisplay();
+        initSlider();
         m_iCurGroup = 0;
     }
     lastgroup = 0;
@@ -1142,7 +1192,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         }
         InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
         _pScanner->UpdateScanPos();
-
+        UpdateSlider();
         if(_pConfig->AppEvn.bSAxisCursorSync) {
             pView_->GetDataViewConfigure(&_nGroupId,  &_nLawId,  &_nDisplay);
 

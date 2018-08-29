@@ -340,6 +340,7 @@ void InstrumentSettingWidget::on_SliderCurrentScanPos_valueChanged(int value)
      for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
           _proDisplay.UpdateAllViewCursorOfGroup(i);
      }
+     g_pMainWnd->UpdateSlider();
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
 

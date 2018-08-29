@@ -9,7 +9,7 @@
 #include "DopplerLineItem.h"
 #include "DopplerGateItem.h"
 #include "DopplerLawMarker.h"
-
+#include <qslider.h>
 #include <QMainWindow>
 #include <QTranslator>
 
@@ -64,6 +64,8 @@ public:
     void SetParamBackMode(bool mode_) {m_bParamBackMode = mode_;}
     void UpdateCombinationDisplay();
     int SaveCurScreenshot(QString strPath_);
+    void initSlider();
+    void UpdateSlider();
 
 protected:
     void CreateStatusBar();
@@ -97,6 +99,8 @@ private:
     Ui::MainWindow *ui;
     DataRefreshThread* m_pThreadDraw;
     QTranslator *translator;
+    QSlider* sliderh;
+    QWidget* SliderWidget;
     QWidget* m_pCurrentDataView;
     QLabel* m_pStatusCell[3];
     STATUS_BAR_INFO m_BarInfo;
@@ -127,6 +131,7 @@ private slots:
     void slotViewFrameButtonClicked(QWidget* );
     void slotCurrentGroupChanged(int);
     void slotCurrentDispChanged(int);
+    void slotSliderhChanged(int);
     void slotItemMoved(DopplerDataView* , DopplerGraphicsItem*);
     void slotDataViewResized(DopplerDataView*) ;
     void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_);
