@@ -55,14 +55,12 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     SliderWidget = new QWidget(this);
     SliderWidget->setFixedWidth(350);
-    SliderWidget->setFixedHeight(30);
+    SliderWidget->setFixedHeight(ui->toolBar->height()-4);
     sliderh = new QSlider(Qt::Horizontal);
     sliderh->setBaseSize(QSize(50,50));
-    sliderh->setGeometry(30,0,300,30);
+    sliderh->setGeometry(30,0,300,ui->toolBar->height()-4);
     sliderh->setParent(SliderWidget);
     ui->toolBar->addWidget(SliderWidget);
-    qDebug()<<"it is "<<sliderh->geometry().x()<<" "<<sliderh->geometry().y()<<endl;
-
     connect(ui->TabWidget_parameter, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsLeftTabButton(Qt::MouseButton)));
     connect(ui->TabWidget_parameter, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotLeftTabRightButtonDoubleClicked(int)));
     connect(ui->TabWidget_display, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsRightTabButton(Qt::MouseButton)));
@@ -139,6 +137,7 @@ void MainWindow::resizeEvent(QResizeEvent* )
     int _nWidth  = ui->centralwidget->width();
     int _nHeight = ui->centralwidget->height();
     ui->splitter->setGeometry(0, 0, _nWidth, _nHeight);
+
 }
 
 void MainWindow::CreateStatusBar()

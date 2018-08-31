@@ -211,6 +211,8 @@ private slots:
 
     void on_ComThickness_currentIndexChanged(int index);
 
+    void on_pushButton_clicked();
+
 private:
     Ui::DopplerGroupTab *ui;
 };

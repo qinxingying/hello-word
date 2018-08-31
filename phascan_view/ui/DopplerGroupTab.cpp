@@ -2246,3 +2246,39 @@ void DopplerGroupTab::on_ComThickness_currentIndexChanged(int index)
     UpdateStandard(ui->ComStandard->currentIndex(),0);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
+
+void DopplerGroupTab::on_pushButton_clicked()
+{
+    if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD) {
+        ui->ComField1->setCurrentIndex(FEILD_TofdLength);
+        ui->ComField2->setCurrentIndex(FEILD_TofdDepth1);
+        ui->ComField3->setCurrentIndex(FEILD_TofdHeight);
+        ui->ComField4->setCurrentIndex(FEILD_TofdDepth2);
+        ui->ComField5->setCurrentIndex(FEILD_NONE);
+        ui->ComField6->setCurrentIndex(FEILD_NONE);
+        ui->ComField7->setCurrentIndex(FEILD_NONE);
+        ui->ComField8->setCurrentIndex(FEILD_A100);
+    } else {
+        ui->ComField1->setCurrentIndex(FEILD_A100);
+        ui->ComField2->setCurrentIndex(FEILD_DA);
+        ui->ComField3->setCurrentIndex(FEILD_Sr);
+        ui->ComField4->setCurrentIndex(FEILD_Smr);
+        ui->ComField5->setCurrentIndex(FEILD_Umr);
+        ui->ComField6->setCurrentIndex(FEILD_SL);
+        ui->ComField7->setCurrentIndex(FEILD_NONE);
+        ui->ComField8->setCurrentIndex(FEILD_NONE);
+    }
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupMeasureData(m_nGroupId , 0 , ui->ComField1->currentIndex())  ;
+    _process->SetupMeasureData(m_nGroupId , 1 , ui->ComField2->currentIndex())  ;
+    _process->SetupMeasureData(m_nGroupId , 2 , ui->ComField3->currentIndex())  ;
+    _process->SetupMeasureData(m_nGroupId , 3 , ui->ComField4->currentIndex())  ;
+    _process->SetupMeasureData(m_nGroupId , 4 , ui->ComField5->currentIndex())  ;
+    _process->SetupMeasureData(m_nGroupId , 5 , ui->ComField6->currentIndex())  ;
+    _process->SetupMeasureData(m_nGroupId , 6 , ui->ComField7->currentIndex())  ;
+    _process->SetupMeasureData(m_nGroupId , 7 , ui->ComField8->currentIndex())  ;
+    if(ui->CheckMeasureShow->checkState())
+    {
+         g_pMainWnd->RunDrawThreadOnce(true);
+    }
+}
