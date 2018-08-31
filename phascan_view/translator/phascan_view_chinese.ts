@@ -1283,7 +1283,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5265"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9003"/>
         <source>Height:</source>
-        <translation>阈        值：</translation>
+        <translation>高        度：</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="5284"/>
