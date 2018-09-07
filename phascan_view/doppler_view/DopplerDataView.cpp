@@ -604,12 +604,31 @@ QRectF DopplerDataView::slotItemSetAngleLineLimit(QRectF &_rect, DopplerGraphics
     float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
     QRectF rect(_rect);
     if(DopplerLineItem::LINE_HORIZENTAL == ((DopplerCScanLineMark*)pItem_)->GetLineType()){
+        qDebug("%s[%d]: MarkQty:%d \n", __FUNCTION__, __LINE__, m_pItemsGroup->GetLawMarkerLinesCount());
+        if(_fAngleStop == 0 && _fAngleStart == 0 && _law.eLawType == 1){
+            if(rect.top()<0)
+            {
+                rect.setTop(0);
+            }/*else if(rect.top() > m_pItemsGroup->GetLawMarkerLinesCount()){
+                rect.setTop(m_pItemsGroup->GetLawMarkerLinesCount());
+            }*/
+            return rect;
+        }
         if(rect.top() > _fAngleStop){
             rect.setTop(_fAngleStop);
         }else if(rect.top() < _fAngleStart){
             rect.setTop(_fAngleStart);
         }
     }else{
+        if(_fAngleStop == 0 && _fAngleStart == 0 && _law.eLawType == 1){
+            if(rect.left()<0)
+            {
+                rect.setLeft(0);
+            }/*else if(rect.left() > m_pItemsGroup->GetLawMarkerLinesCount()){
+                rect.setLeft(m_pItemsGroup->GetLawMarkerLinesCount());
+            }*/
+            return rect;
+        }
         if(rect.left() > _fAngleStop){
             rect.setLeft(_fAngleStop);
         }else if(rect.left() < _fAngleStart){

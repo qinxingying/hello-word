@@ -35,6 +35,7 @@ public:
     int GetMarkerQty() const ;
     int GetMarkerPos(int nId) const;
     int GetMarkerId() const ;
+    int GetMarkerLinesCount();
     void SetWeldInfo(bool bShow_ , QPainterPath* path );
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);

@@ -369,6 +369,11 @@ void DopplerLawMarker::GetCurrentLineIndex(QPointF pos_ , int* nIndex_ , int* nZ
     }
 }
 
+int DopplerLawMarker::GetMarkerLinesCount()
+{
+    return m_cMarkers.count();
+}
+
 QLineF DopplerLawMarker::GetCurrentPosLine( int nIndex_ , float fScale_)
 {
     int _nCount = m_cMarkers.count() ;

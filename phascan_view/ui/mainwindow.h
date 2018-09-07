@@ -90,6 +90,8 @@ protected:
     void DefectSign(DEFECT_SIGN_TYPE signType_);
     void SetSelectedDataView(QWidget* pWidget_);
     void updateAllTabwidgetSscanPos(int _nGroupId, int pos);
+    void updateCscanLawPos(int _nPos, int _nGroupId);
+    float GetCurrentTabLinearScanMaxLineCount(int _nGroupId);
     QList<QWidget*>* m_pViewList[MAX_LIST_QTY];
 
     virtual void closeEvent(QCloseEvent *event);

@@ -523,7 +523,15 @@ int DopplerViewItems::GetLawMarkerQty()
 	if(m_pLawMarker) {
 		return m_pLawMarker->GetMarkerQty();
 	}
-	return 0;
+    return 0;
+}
+
+int DopplerViewItems::GetLawMarkerLinesCount()
+{
+    if(m_pLawMarker) {
+        return m_pLawMarker->GetMarkerLinesCount();
+    }
+    return 0;
 }
 
 int DopplerViewItems::GetLawMarkerPos(int nId_)

@@ -1995,6 +1995,15 @@ int ParameterProcess::SCanAngleToCScanLineAngle(int nGroupId_, float _fCursor)
     float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
     float _fAngleStep = _law.nAngleStepRefract/10.0;
     float _fAngleStop  = _law.nAngleStopRefract / 10.0 ;
+    qDebug("****** %s[%d]: lawType:%d, focalType:%d, angleType:%d, _fcursor:%.2f, depthStart:%.2f, depthStop:%.2f, angleStart:%d"
+           "angleStep:%d, angleStop:%d, offsetStart:%.2f, offsetStop:%.2f, posStart:%.2f, posStop:%.2f, posStep:%.2f", __FUNCTION__, __LINE__,
+           _law.eLawType, _law.eFocalType, _law.eAngleType, _fCursor, _law.fDepthStart, _law.fDepthStop,
+           _law.nAngleStartRefract, _law.nAngleStepRefract, _law.nAngleStopRefract, _law.fOffsetStart, _law.fOffsetStop,
+           _law.fPositionStart, _law.fPositionStop, _law.fPositionStep);
+    if(_law.eLawType == 1 && _law.eFocalType == 1){
+        return (int)(_fCursor);
+    }
+
     if(_fCursor  > _fAngleStart){
         tmpCScanLinePos = (int)((_fCursor - _fAngleStart)/_fAngleStep);
         if(tmpCScanLinePos > _fAngleStop){

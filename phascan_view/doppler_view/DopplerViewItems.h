@@ -47,7 +47,8 @@ public:
 	void UpdateItemsCursor() ;
 	void UpdateItemsLawMarker() ;
     void UpdateItemsLawMarkerCScan() ;
-	int GetLawMarkerQty();
+    int GetLawMarkerQty();
+    int GetLawMarkerLinesCount();
     int GetLawMarkerPos(int nId_);
     void SetLawMarkerPos(int nId_, int nMarkerPos);
     void SetLawMarkerCScanPos(int nMarkerPos);

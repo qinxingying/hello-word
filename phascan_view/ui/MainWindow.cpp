@@ -13,6 +13,7 @@ Date     : 2016-12-06
 #include "DopplerDataFileOperateor.h"
 #include "gHeader.h"
 #include "DopplerDataView.h"
+#include "doppler_view/DopplerViewItems.h"
 #include "ParameterProcess.h"
 #include "ProcessDisplay.h"
 #include "report/DopplerHtmlReport.h"
@@ -123,7 +124,7 @@ void MainWindow::init_ui()
     SetDispTabText();
 
     m_fileName  = "";
-    m_titleName = tr("Doppler V1.1.7-beta1 : ");
+    m_titleName = tr("Doppler V1.1.7-beta2 : ");
     this->setWindowTitle(m_titleName + m_fileName);
 }
 
@@ -578,6 +579,39 @@ void MainWindow::updateAllTabwidgetSscanPos(int _nGroupId, int pos)
     }
 }
 
+void MainWindow::updateCscanLawPos(int _nPos, int _nGroupId)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
+    LAW_CONFIG _law = _group.law ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    float tmp = _process->CScanLineAngleToScanLineAngle(_nGroupId, _nPos);
+    if(_law.eLawType == setup_LAW_TYPE_LINEAR)
+        _group.afCursor[setup_CURSOR_C_ANGLE] = tmp+1;
+    else
+        _group.afCursor[setup_CURSOR_C_ANGLE] = tmp;
+}
+
+float MainWindow::GetCurrentTabLinearScanMaxLineCount(int _nGroupId)
+{
+    float maxTmp = 0;
+    for(int i = 0; i < m_pViewList[ui->TabWidget_display->currentIndex()]->count(); i++){
+        int _nCurGroup, _nLawId, _nDisplay;
+        DopplerDataView* _pView = (DopplerDataView*)m_pViewList[ui->TabWidget_display->currentIndex()]->at(i);
+        _pView->GetDataViewConfigure( &_nCurGroup,  &_nLawId,  &_nDisplay);
+            if(_nGroupId == _nCurGroup){
+                    setup_DISPLAY_MODE _eDisplay = (setup_DISPLAY_MODE)_pView->GetDataViewDrawType();
+                    if(_eDisplay >= setup_DISPLAY_MODE_S){
+                        qDebug("$$$$ %s[%d]: ScanQty %d, _eDisplay:%d, qty2:%d", __FUNCTION__, __LINE__, _pView->GetSScanLaw(0),
+                               _eDisplay,  _pView->GetItemGroup()->GetLawMarkerLinesCount());
+                        maxTmp = _pView->GetItemGroup()->GetLawMarkerLinesCount();
+                        return maxTmp;
+                    }
+            }
+    }
+    return maxTmp;
+}
+
 
 /****************************************************************************
   Description: 参数和数据加载时  更新参数窗口
@@ -1016,12 +1050,11 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
     {
         int _nId = ((DopplerLawMarker*)pItem_)->GetMarkerId();
         int _nPos = ((DopplerLawMarker*)pItem_)->GetMarkerPos(_nId);
-        int _nQty = ((DopplerLawMarker*)pItem_)->GetMarkerQty();
+        //int _nQty = ((DopplerLawMarker*)pItem_)->GetMarkerQty();
 
         m_nLawIdSel = _nId;
         _group.afCursor[setup_CURSOR_LAW] = _nPos;
-        float tmp = _process->CScanLineAngleToScanLineAngle(_nGroupId, _nPos);
-        _group.afCursor[setup_CURSOR_C_ANGLE] = tmp;
+        updateCscanLawPos(_nPos, _nGroupId);
 
         DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
         _pGroupTab->UpdateCurrentAngleCom();
@@ -1055,6 +1088,8 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
     break;
     case DOPPLER_GRAPHICS_ITEM_CURSOR:
     {
+        int tmp;
+        float maxTmp;
         setup_DISPLAY_MODE _eMode = (setup_DISPLAY_MODE)_nDisplay;
         Q_UNUSED(_eMode);
 
@@ -1075,26 +1110,38 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
             return;
         }
         _group.afCursor[_nItemId] = _fCursor;
-        qDebug("xxx== _nItemId:%d, _fCursor:%.2f", _nItemId, _fCursor);
+        qDebug("xxx== _nItemId:%d, _fCursor:%.2f, line_direction type:%d, _nLawId:%d", _nItemId, _fCursor,
+               ((DopplerLineItem*)pItem_)->GetLineType(), _nLawId);
         if(_nItemId == setup_CURSOR_C_ANGLE){
-            int tmp ;
-
             if(DopplerLineItem::LINE_HORIZENTAL == ((DopplerCScanLineMark*)pItem_)->GetLineType()){
                 _fCursor = _rect.top();
-
-                tmp = _process->SCanAngleToCScanLineAngle(_nGroupId, _fCursor);
-                _group.afCursor[setup_CURSOR_LAW] = tmp;
-
             }else{
                 _fCursor = _rect.left();
-
-                tmp = _process->SCanAngleToCScanLineAngle(_nGroupId, _fCursor);
-                _group.afCursor[setup_CURSOR_LAW] = tmp;
-
             }
 
-//            qDebug("(tmp)afCursor:%.2f,_fCursor:%.2f, rect.x:%.2f, rect.y:%.2f",
-//                   _group.afCursor[setup_CURSOR_LAW], _fCursor, _rect.x(), _rect.y());
+            maxTmp = GetCurrentTabLinearScanMaxLineCount(_nGroupId);
+
+            if(_isnan(_fCursor))
+            {
+                return;
+            }
+
+            LAW_CONFIG _law = _group.law ;
+            if(_law.eLawType == 1 && _law.eFocalType == 1){
+                if(_fCursor > maxTmp){
+                    _fCursor = maxTmp;
+                    _group.afCursor[_nItemId] = _fCursor;
+                }else if(_fCursor < 0){
+                    _fCursor = 0;
+                    _group.afCursor[_nItemId] = _fCursor;
+                }
+            }
+
+            tmp = _process->SCanAngleToCScanLineAngle(_nGroupId, _fCursor);
+            _group.afCursor[setup_CURSOR_LAW] = tmp;
+
+            qDebug("(tmp):%.2f,_fCursor:%.2f, rect.x:%.2f, rect.y:%.2f",
+                   _group.afCursor[setup_CURSOR_LAW], _fCursor, _rect.x(), _rect.y());
 
 
             DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
@@ -1109,6 +1156,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                 DopplerDataView* _pView = (DopplerDataView*)m_pViewList[_nTabIndex]->at(i);
                 _pView->GetDataViewConfigure(&tmpGroupID ,  &tmpLawId ,  &tmpDisplay);
                 if(_nGroupId == tmpGroupID){
+                    qDebug("%s[%d]: LawQty:%d, tmp:%d", __FUNCTION__, __LINE__, _pView->GetSScanLawQty(), tmp);
                     for(int nQty = 0; nQty<_pView->GetSScanLawQty(); nQty++){
                         _pView->SetSScanLaw(nQty, tmp);
                     }

@@ -40,3 +40,5 @@ DISTFILES += \
     translator/phascan_view_chinese.ts \
     translator/phascan_view_english.ts \
     translator/phascan_view_japanese.ts
+
+DEFINES += QT_NO_DEBUG_OUTPUT

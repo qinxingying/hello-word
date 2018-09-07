@@ -7,7 +7,7 @@ DialogAboutVersion::DialogAboutVersion(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle(tr("About"));
-    ui->label_Version->setText("1.1.7");
+    ui->label_Version->setText("1.1.7b2");
 }
 
 DialogAboutVersion::~DialogAboutVersion()
