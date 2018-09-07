@@ -105,7 +105,7 @@ int ProcessDisplay::CreateViews(QWidget* parent_, int eType_)
 	int ret = 0 ;
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->InitScanOff(m_nGroupId);
-
+    _process->SetupCurrentLawCursor(m_nGroupId , 0) ;
 	switch(eType_)
 	{
 	case DISP_3D_ALL:
@@ -548,7 +548,6 @@ int ProcessDisplay::CreateViews_S_AH_AH_AH_CH(QWidget* pWidget_)
 	_pView[2]->SetLawIdentify(0);
 	_pView[3]->SetLawIdentify(1);
 	_pView[4]->SetLawIdentify(2);
-
 	SetViewPara(_pView[0] , m_nGroupId , 0 , setup_DISPLAY_MODE_S) ;
 	SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_H) ;
 	SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_H) ;

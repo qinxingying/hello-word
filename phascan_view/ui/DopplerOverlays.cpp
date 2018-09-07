@@ -384,17 +384,19 @@ void DopplerOverlays::CreateOverlaysCH()
 		_pItemGroup->SetCursorPos(1 , group.afCursor[setup_CURSOR_VPA_MES]);
 		_pItemGroup->SetCursorPos(2 , group.afCursor[setup_CURSOR_S_REF]);
 		_pItemGroup->SetCursorPos(3 , group.afCursor[setup_CURSOR_S_MES]);
-        _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+
 		_pItemGroup->SetCursorId(0 , setup_CURSOR_VPA_REF);
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_VPA_MES);
 		_pItemGroup->SetCursorId(2 , setup_CURSOR_S_REF);
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_S_MES);
-        _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
+
         if(bHideCursor)
         {
             HideMode = 0;
         }
 	}
+    _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+    _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(false);
 
@@ -420,18 +422,19 @@ void DopplerOverlays::CreateOverlaysCV()
         _pItemGroup->SetCursorPos(1 , group.afCursor[setup_CURSOR_S_MES]);
 		_pItemGroup->SetCursorPos(2 , group.afCursor[setup_CURSOR_VPA_REF]);
 		_pItemGroup->SetCursorPos(3 , group.afCursor[setup_CURSOR_VPA_MES]);
-        _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+
 		_pItemGroup->SetCursorId(2 , setup_CURSOR_VPA_REF);
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_VPA_MES);
 		_pItemGroup->SetCursorId(0 , setup_CURSOR_S_REF);
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_S_MES);
-        _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
+
         if(bHideCursor)
         {
             HideMode = 2;
         }
 	}
-
+    _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+    _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(true);
 
