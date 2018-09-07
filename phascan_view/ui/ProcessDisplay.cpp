@@ -65,8 +65,8 @@ QSize ProcessDisplay::GetMinimumWidgetSize(int eType_)
 		_nWidth  = MINIMUM_WIDGET_WIDTH  * 2 + g_nSpliterWidth;
 		_nHeight = MINIMUM_WIDGET_HEIGHT * 2 + g_nSpliterWidth;
 		break;
-	case DISP_S_AH_AH_AH:
-	case DISP_S_AH_AH_AH_CH:
+    //case DISP_S_AH_AH_AH:
+    //case DISP_S_AH_AH_AH_CH:
 	case DISP_S_AV_BH_CH:
 	case DISP_S_AH_BH_CH:
 	case DISP_S_AH_BH_CV:
@@ -122,8 +122,8 @@ int ProcessDisplay::CreateViews(QWidget* parent_, int eType_)
 	case DISP_S:				ret = CreateViews_S(parent_);				break;
 	case DISP_S_AH:				ret = CreateViews_S_AH(parent_);			break;
 	case DISP_S_AV:				ret = CreateViews_S_AV(parent_);			break;
-	case DISP_S_AH_AH_AH:		ret = CreateViews_S_AH_AH_AH(parent_);		break;
-	case DISP_S_AH_AH_AH_CH:	ret = CreateViews_S_AH_AH_AH_CH(parent_);	break;
+    //case DISP_S_AH_AH_AH:		ret = CreateViews_S_AH_AH_AH(parent_);		break;
+    //case DISP_S_AH_AH_AH_CH:	ret = CreateViews_S_AH_AH_AH_CH(parent_);	break;
 	case DISP_S_AV_BV:			ret = CreateViews_S_AV_BV(parent_);			break;
 	case DISP_S_AV_BH:			ret = CreateViews_S_AV_BH(parent_);			break;
 	case DISP_S_AH_BV:			ret = CreateViews_S_AH_BV(parent_);			break;

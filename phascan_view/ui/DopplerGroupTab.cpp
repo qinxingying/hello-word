@@ -559,10 +559,13 @@ void DopplerGroupTab::CreateSettingView()
 	int i;
 	int _nQty = sizeof(g_strDisplayMode) / sizeof(int) ;
 	for( i = 0 ; i < _nQty; i++)
-	{
-		_pItems[i] = new QStandardItem(tr(g_strDisplayMode[i]));
+	{        
+        int t = i;
+        if(i >= 13)
+            t=i+2;
+        _pItems[i] = new QStandardItem(tr(g_strDisplayMode[t]));
         QString str = QString(":/file/resource/display/0-");
-		QString tmp; tmp.sprintf("%02d.png", i+1) ;
+        QString tmp; tmp.sprintf("%02d.png", t+1) ;
 		str += tmp ;
 		QByteArray array = str.toLatin1() ;
 		_pItems[i]->setIcon(QIcon(array.data()));
