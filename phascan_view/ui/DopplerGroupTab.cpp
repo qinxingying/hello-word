@@ -558,7 +558,7 @@ void DopplerGroupTab::CreateSettingView()
 	QStandardItem* _pItems[MAX_ITEM_QTY]  ;
 	int i;
 	int _nQty = sizeof(g_strDisplayMode) / sizeof(int) ;
-	for( i = 0 ; i < _nQty; i++)
+    for( i = 0 ; i < _nQty-2; i++)
 	{        
         int t = i;
         if(i >= 13)
@@ -580,7 +580,7 @@ void DopplerGroupTab::CreateSettingView()
 		_pItems[0]->appendRow(_pItems[i]);
 	}
 	//----------------------------------------
-	for(i = 7 ; i< _nQty ; i++)
+    for(i = 7 ; i< _nQty-2 ; i++)
 	{
 		_pItems[1]->appendRow(_pItems[i]);
 	}
