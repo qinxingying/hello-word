@@ -68,7 +68,7 @@ void DopplerDefectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 	QPen _NewPen ;
 	QVector<qreal> dashes;
 
-	dashes << 2 << 6 << 2 << 6 ;
+    dashes << 15 << 10 << 15 << 10 ;
 
 	_NewPen.setWidth(0);
 	_NewPen.setColor(fillColor);
@@ -81,13 +81,23 @@ void DopplerDefectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 	int _nBmpNo = _pConfig->m_nCutBmpNo[_nGroup];
 
-	if(_nBmpNo == 0 || (_nBmpNo > 0 && _nBmpNo == m_nId+1)) {
-		painter->drawLine(0, 0 , 0 , m_nHeight );
-		painter->drawLine(0, m_nHeight , m_nWidth , m_nHeight );
-		painter->drawLine(m_nWidth, m_nHeight , m_nWidth , 0 );
-		painter->drawLine(m_nWidth, 0 , 0, 0 );
-	}
-
+    if(_nBmpNo == 0 || (_nBmpNo > 0 && _nBmpNo == m_nId+1)) {
+        painter->drawLine(0, 0 , 0 , m_nHeight );
+        painter->drawLine(0, m_nHeight , m_nWidth , m_nHeight );
+        painter->drawLine(m_nWidth, m_nHeight , m_nWidth , 0 );
+        painter->drawLine(m_nWidth, 0 , 0, 0 );
+    }
+    dashes.clear();
+    dashes << 10 << 15 << 10 << 15 ;
+    _NewPen.setColor(QColor(255,0,0));
+    _NewPen.setDashPattern(dashes);
+    painter->setPen(_NewPen);
+    if(_nBmpNo == 0 || (_nBmpNo > 0 && _nBmpNo == m_nId+1)) {
+        painter->drawLine(0, 15 , 0 , m_nHeight );
+        painter->drawLine(15, m_nHeight , m_nWidth , m_nHeight );
+        painter->drawLine(m_nWidth, m_nHeight-15 , m_nWidth , 0 );
+        painter->drawLine(m_nWidth-15, 0 , 0, 0 );
+    }
 	if(_nBmpNo == 0)
 		DrawLabel(painter, fillColor, _bSel);
 	painter->restore();

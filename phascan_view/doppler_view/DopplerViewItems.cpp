@@ -12,7 +12,7 @@ static const QColor COLOR_GATE_A  =  QColor(255 , 0 , 0)   ;
 static const QColor COLOR_GATE_B  =  QColor(0 , 255 , 0)   ;
 static const QColor COLOR_GATE_I  =  QColor(255 , 255 , 0) ;
 
-static const QColor COLOR_DEFECT  =  QColor(255 , 0 , 0) ;
+static const QColor COLOR_DEFECT  =  QColor(0 , 125 , 0) ;
 static const QColor COLOR_LW  =  QColor(0 , 0 , 255) ;
 static const QColor COLOR_BW  =  QColor(0 , 0 , 255) ;
 

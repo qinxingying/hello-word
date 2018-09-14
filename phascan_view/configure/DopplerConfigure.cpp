@@ -1351,6 +1351,11 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 			m_dfParam[iGroupId_].dfInfo.fIStart = _fRef < _fMes ? _fRef : _fMes;
 			m_dfParam[iGroupId_].dfInfo.fIStop  = _fRef > _fMes ? _fRef : _fMes;
 
+            _fRef = _group.afCursor[setup_CURSOR_VPA_REF];
+            _fMes = _group.afCursor[setup_CURSOR_VPA_MES];
+            m_dfParam[iGroupId_].dfInfo.fVPAStart = _fRef < _fMes ? _fRef : _fMes;
+            m_dfParam[iGroupId_].dfInfo.fVPAStop  = _fRef > _fMes ? _fRef : _fMes;
+
 			m_dfParam[iGroupId_].dfInfo.fUDepth = m_dfParam[iGroupId_].dfInfo.fUStart;
 			m_dfParam[iGroupId_].dfInfo.bValid = true;
 		} else {
@@ -1561,6 +1566,23 @@ float DopplerConfigure::DefectLengthPos(int iGroupId_, float* pStart_, int index
 	}
 	*pStart_ += _fScanOff;
 	return _fLength;
+ }
+
+float DopplerConfigure::DefectVPAPos(int iGroupId_, float* pStart_, int index_)
+{
+    DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
+    GROUP_CONFIG& _group  = group[iGroupId_] ;
+    float       _fScanOff = _group.fScanOffset;
+
+
+    float _fLength = -1;
+    if(_pDfInfo->bValid) {
+        if(_pDfInfo->fVPAStart > -10000) {
+            _fLength = _pDfInfo->fVPAStop - _pDfInfo->fVPAStart;
+            *pStart_ =_pDfInfo->fVPAStart;
+        }
+    }
+    return _fLength;
  }
 
 float DopplerConfigure::DefectHeightValue(int iGroupId_, float* pStart_, int index_)

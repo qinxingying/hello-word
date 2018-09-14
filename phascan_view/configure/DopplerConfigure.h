@@ -82,6 +82,9 @@ struct DEFECT_INFO
 	float fIStart;
 	float fIStop;
 
+    float fVPAStart;
+    float fVPAStop;
+
 	int   nLawNo;
     char  m_strMeasure[8][50]  ;
     char  m_strSzField[8][20];
@@ -143,7 +146,7 @@ public:
 	void ReleaseDefect(int iGroupId_);
 	float DefectLengthValue(int iGroupId_, float* pStart_, int index_ = -1);
 	float DefectLengthPos(int iGroupId_, float* pStart_, int index_ = -1);
-
+    float DefectVPAPos(int iGroupId_, float* pStart_, int index_ = -1);
 	float DefectHeightValue(int iGroupId_, float* pStart_, int index_ = -1);
 	float DefectHeightPos(int iGroupId_, float* pStart_, int index_ = -1);
 

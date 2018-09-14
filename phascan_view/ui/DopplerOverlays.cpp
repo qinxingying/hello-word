@@ -377,6 +377,29 @@ void DopplerOverlays::CreateOverlaysCH()
 	GROUP_CONFIG&            group = m_pConfigure->group[m_nGroup];
 	DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup() ;
 
+    if(group.bShowDefect)
+    {
+        _pItemGroup->EnableItems(OVERLAYS_DEFECT);
+
+        QRectF _rect;
+        int _iNO = m_pConfigure->GetDefectCnt(m_nGroup);
+        float _fStart, _fData;
+        _pItemGroup->SetDefectIndex(m_pConfigure->m_dfParam[m_nGroup].index);
+        _pItemGroup->ClearDefect();
+        for(int i = 0; i < _iNO; i++)
+        {
+            _fData = m_pConfigure->DefectLengthPos(m_nGroup, &_fStart, i);
+            _rect.setLeft(_fStart);
+            _rect.setRight(_fStart + _fData);
+
+            _fData = m_pConfigure->DefectVPAPos(m_nGroup, &_fStart, i);
+            _rect.setTop(_fStart);
+            _rect.setBottom(_fStart + _fData);
+
+            _pItemGroup->SetDefect(i, _rect);
+        }
+    }
+
 	if(group.bShowCursor)
 	{
 		_pItemGroup->EnableItems(OVERLAYS_CURSOR);
@@ -414,7 +437,28 @@ void DopplerOverlays::CreateOverlaysCV()
 {
 	GROUP_CONFIG&            group = m_pConfigure->group[m_nGroup];
 	DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup() ;
+    if(group.bShowDefect)
+    {
+        _pItemGroup->EnableItems(OVERLAYS_DEFECT);
 
+        QRectF _rect;
+        int _iNO = m_pConfigure->GetDefectCnt(m_nGroup);
+        float _fStart, _fData;
+        _pItemGroup->SetDefectIndex(m_pConfigure->m_dfParam[m_nGroup].index);
+        _pItemGroup->ClearDefect();
+        for(int i = 0; i < _iNO; i++)
+        {
+            _fData = m_pConfigure->DefectLengthPos(m_nGroup, &_fStart, i);
+            _rect.setTop(_fStart);
+            _rect.setBottom(_fStart + _fData);
+
+            _fData = m_pConfigure->DefectVPAPos(m_nGroup, &_fStart, i);
+            _rect.setLeft(_fStart);
+            _rect.setRight(_fStart + _fData);
+
+            _pItemGroup->SetDefect(i, _rect);
+        }
+    }
 	if(group.bShowCursor)
 	{
 		_pItemGroup->EnableItems(OVERLAYS_CURSOR);
