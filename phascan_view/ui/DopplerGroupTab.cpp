@@ -2137,7 +2137,7 @@ void DopplerGroupTab::on_ValueScanOffset_valueChanged(double)
 
     DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
     _pConfig->ResetShadowData();
-
+    g_pMainWnd->initSlider();
     g_pMainWnd->RunDrawThreadOnce(true);
     ProcessDisplay _display ;
     //_display.UpdateAllViewOfGroup(m_nGroupId);

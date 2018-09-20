@@ -693,7 +693,6 @@ void MainWindow::initSlider()
     sliderh->setMinimum(0);
     sliderh->setSingleStep(_scanner.fScanStep);
     sliderh->setMaximum((_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep );
-    sliderh->setValue(0);
 }
 
 void MainWindow::UpdateSlider()
@@ -840,6 +839,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
         UpdateStatusBarInfo();
         UpdateTableDisplay();
         initSlider();
+        sliderh->setValue(0);
         m_iCurGroup = 0;
     }
     lastgroup = 0;

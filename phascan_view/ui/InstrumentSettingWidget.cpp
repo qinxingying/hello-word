@@ -27,6 +27,7 @@ InstrumentSettingWidget::~InstrumentSettingWidget()
 void InstrumentSettingWidget::showEvent (QShowEvent *event)
 {
 	InitCommonConfig();
+    g_pMainWnd->initSlider();
 	QWidget::showEvent(event) ;
 }
 
@@ -472,6 +473,7 @@ void InstrumentSettingWidget::on_BtnReset_clicked()
     _process->ChangeCscanIndexstart(&fstart2);
     _process->ChangeCscanIndexstop(&fstop2);
     InitCommonConfig();
+    g_pMainWnd->initSlider();
     ProcessDisplay _proDisplay ;
     for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
         _proDisplay.UpdateAllViewOfGroup(i);
