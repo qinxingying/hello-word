@@ -70,8 +70,37 @@ void DopplerDefectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
 	QVector<qreal> dashes;
 
     dashes << 15 << 10 << 15 << 10 ;
-
+    static int id = 0;
 	_NewPen.setWidth(0);
+    if(id<400)
+    {
+        fillColor.setHsv(0,255,191);
+        id++;
+    }
+    else if(id<800)
+    {
+        fillColor.setHsv(60,255,191);
+        id++;
+    }
+    else if(id < 1200)
+    {
+        fillColor.setHsv(120,255,191);
+        id++;
+    }
+    else if(id < 1600)
+    {
+        fillColor.setHsv(180,255,191);
+        id++;
+    }
+    else if(id < 2000)
+    {
+        fillColor.setHsv(240,255,191);
+        id++;
+    }
+    else
+    {
+        id = 0;
+    }
 	_NewPen.setColor(fillColor);
 	_NewPen.setStyle(m_eStype);
 	_NewPen.setDashPattern(dashes);
