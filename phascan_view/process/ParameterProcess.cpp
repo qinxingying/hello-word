@@ -426,6 +426,7 @@ int  ParameterProcess::SetupScanPos(float fScanPos_)
         _scaner.fScanStart2 = _scaner.fScanPos;
     if((_scaner.fScanPos > _scaner.fScanend) && (_scaner.fScanPos <= _scaner.fScanStop))
         _scaner.fScanend = _scaner.fScanPos;
+    g_pMainWnd->UpdateSlider();
 	return 0;
 	//return -1;
 }
