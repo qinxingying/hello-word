@@ -62,6 +62,8 @@ public:
     void ScreenShot();
     bool ParamBackMode(void) {return m_bParamBackMode;}
     void SetParamBackMode(bool mode_) {m_bParamBackMode = mode_;}
+    bool DefectBackMode(void) {return m_bDefectBackMode;}
+    void SetDefectBackMode(bool mode_) {m_bDefectBackMode = mode_;}
     void UpdateCombinationDisplay();
     int SaveCurScreenshot(QString strPath_);
     void initSlider();
@@ -119,6 +121,7 @@ private:
     int  m_nAlloff;
     bool m_bCursorSel;
     bool m_bParamBackMode;
+    bool m_bDefectBackMode;
     setup_LANG m_currentLang;
 
 signals:

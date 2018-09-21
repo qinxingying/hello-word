@@ -7957,7 +7957,7 @@
             <height>800</height>
            </size>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_19" stretch="6,9,10">
+          <layout class="QVBoxLayout" name="verticalLayout_19" stretch="6,9,0">
            <property name="leftMargin">
             <number>6</number>
            </property>
@@ -8731,7 +8731,7 @@
              <property name="title">
               <string/>
              </property>
-             <layout class="QGridLayout" name="gridLayout_34">
+             <layout class="QGridLayout" name="gridLayout_8">
               <item row="0" column="0">
                <widget class="QLabel" name="LabelDefect">
                 <property name="text">
@@ -8746,14 +8746,21 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="0" colspan="2">
+              <item row="0" column="2">
+               <widget class="QCheckBox" name="checkDefectBg">
+                <property name="text">
+                 <string>Background</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="3">
                <widget class="Line" name="line_9">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
-              <item row="2" column="0" colspan="2">
+              <item row="2" column="0" colspan="3">
                <layout class="QGridLayout" name="gridLayout_10">
                 <item row="0" column="1">
                  <widget class="QComboBox" name="ComDefectIndex">

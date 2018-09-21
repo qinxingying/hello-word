@@ -121,6 +121,7 @@ void MainWindow::init_ui()
     m_nAlloff	 = 0;
     m_bCursorSel = true;
     m_bParamBackMode = false;
+    m_bDefectBackMode = false;
     SetDispTabText();
 
     m_fileName  = "";

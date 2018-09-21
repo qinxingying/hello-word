@@ -4,7 +4,7 @@
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include "configure/DopplerConfigure.h"
-
+#include "mainwindow.h"
 const int g_nRectSize = 0 ;
 static int g_nDfZValue = 50 ;
 DopplerDefectItem::DopplerDefectItem(const QColor& cColor_)
@@ -116,7 +116,15 @@ void DopplerDefectItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_
 	QPen _pen = painter->pen();
 	_pen.setColor(cColor_) ;
 	painter->setPen(_pen);
-
+    QBrush _brush(QColor(0,0,0));
+    painter->setBackground(_brush);
+    if(g_pMainWnd->DefectBackMode()) {
+        painter->setPen(QPen(Qt::white));
+        painter->setBackgroundMode(Qt::OpaqueMode);
+    } else {
+        painter->setPen(_pen);
+        painter->setBackgroundMode(Qt::TransparentMode);
+    }
 	QString _str ;
 /*	if(bSel_ && m_pDataView)
 	{

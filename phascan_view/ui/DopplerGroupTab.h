@@ -213,6 +213,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_checkDefectBg_clicked(bool checked);
+
 private:
     Ui::DopplerGroupTab *ui;
 };

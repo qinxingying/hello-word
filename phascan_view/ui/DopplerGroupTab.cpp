@@ -2285,3 +2285,10 @@ void DopplerGroupTab::on_pushButton_clicked()
          g_pMainWnd->RunDrawThreadOnce(true);
     }
 }
+
+void DopplerGroupTab::on_checkDefectBg_clicked(bool checked)
+{
+    if(!ui->checkDefectBg->hasFocus()) return ;
+    g_pMainWnd->SetDefectBackMode(checked) ;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
