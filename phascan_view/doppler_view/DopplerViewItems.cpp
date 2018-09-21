@@ -804,6 +804,14 @@ void DopplerViewItems::SetParabolaDirection(bool bVertical_)
 	m_bParabolaVertical = bVertical_ ;
 }
 
+void DopplerViewItems::ResetDefect()
+{
+    for(int i = 0; i < DEFECT_SIGN_MAX; i++)
+    {
+        m_pDefect[i]->IsSelected = -1;
+    }
+}
+
 void  DopplerViewItems::DrawWeld(QPainterPath& path)
 {
 	switch (m_cPart.weld.eType)

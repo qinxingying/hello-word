@@ -338,6 +338,12 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
 		m_bItemSelected = 0  ;
 	else
 		m_bItemSelected = 1  ;
+    QList<QGraphicsItem*> list = m_pScene->selectedItems();
+    if(!list.empty() && m_bItemSelected)
+    {
+        DopplerGraphicsItem* _item = (DopplerGraphicsItem*)list.at(0) ;
+        emit signalItemPressed(_item) ;
+    }
 
 	emit signalButtonPressed(event) ;
 }

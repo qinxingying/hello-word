@@ -399,6 +399,7 @@ void DopplerDataView::CreateComponent()
 	m_pLayout->addWidget(m_pGraphicView , 1 , 1)  ;
 	connect(m_pGraphicView , SIGNAL(signalViewChanged(QRectF)) , SLOT(slotZoomAction(QRectF)));
 	connect(m_pGraphicView , SIGNAL(signalItemMoved(DopplerGraphicsItem*)) , SLOT(slotItemMoved(DopplerGraphicsItem*)));
+    connect(m_pGraphicView , SIGNAL(signalItemPressed(DopplerGraphicsItem*)) , SLOT(slotItemPressed(DopplerGraphicsItem*)));
 	connect(m_pGraphicView , SIGNAL(signalButtonRelease(QMouseEvent*)) , SLOT(slotViewMouseRelease(QMouseEvent*)));
 	connect(m_pGraphicView , SIGNAL(signalButtonPressed(QMouseEvent*)) , SLOT(slotViewMousePressed(QMouseEvent*)));
 	connect(m_pGraphicView , SIGNAL(signalButtonDoubleClicked(QPointF)) , SLOT(slotMouseDoubleClicked(QPointF))) ;
@@ -652,8 +653,34 @@ void DopplerDataView::slotItemMoved(DopplerGraphicsItem* item_)
 
 	item_->SetItemGeometryReal(_rect)   ;
 	emit signalItemMoved(this , item_)  ;
-    qDebug("%s[%d],_pos1.x:%.2f, pos1.y:%.2f, pos2.x:%.2f, pos2.y:%.2f",
-           __FUNCTION__, __LINE__, _pos1.x(), _pos1.y(), _pos2.x(), _pos2.y());
+
+}
+
+void DopplerDataView::slotItemPressed(DopplerGraphicsItem* item_)
+{
+    int _nItemType =item_->GetItemType();
+    static int id = -1;
+    if(_nItemType == DOPPLER_GRAPHICS_ITEM_DEFECT)
+    {
+        if(id == item_->GetItemId())
+        {
+            if(((DopplerDefectItem*)item_)->IsSelected == id)
+            {
+                m_pItemsGroup->ResetDefect();
+            }
+            else
+            {
+                m_pItemsGroup->ResetDefect();
+                ((DopplerDefectItem*)item_)->IsSelected = item_->GetItemId();
+            }
+        }
+        else
+        {
+            m_pItemsGroup->ResetDefect();
+            ((DopplerDefectItem*)item_)->IsSelected = item_->GetItemId();
+        }
+        id = item_->GetItemId();
+    }
 }
 /****************************************************************************
   Description: 换算  在场景中的像素位置 到  标尺刻度对应的位置

@@ -12,6 +12,7 @@ public:
     void SetLineStyle(Qt::PenStyle eStype_) ;
     void SetScenceSize(QSize);
     virtual void SetItemGeometry (QRectF& rect_);
+    int IsSelected;
 
 protected:
     //void DrawLabel(QPainter* painter);

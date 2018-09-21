@@ -24,7 +24,8 @@ DopplerDefectItem::DopplerDefectItem(const QColor& cColor_)
 	setZValue(g_nDfZValue);
 //	SetMoveType(LINE_MOVE_NO) ;
 	m_eStype = Qt::SolidLine  ;
-//	setFlags(ItemIsSelectable);
+    setFlags(ItemIsSelectable);
+    IsSelected = -1;
 }
 
 void DopplerDefectItem::SetLineStyle(Qt::PenStyle eStype_)
@@ -132,14 +133,29 @@ void DopplerDefectItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_
 		_str.sprintf("%d: %.2f(%.2f) , %.2f(%.2f)", m_nId+1, _fSStart, _fSData, _fUStart, _fUData);
 	}
 	else*/
-	{
+
 		int _nGroup , _nLaw , _nDisp ;
 		m_pDataView->GetDataViewConfigure(&_nGroup , &_nLaw , &_nDisp);
 		DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
 		char *_pInfo = _pConfig->GetDefectInfo(_nGroup, m_nId);
 		_str.sprintf("%d:%s", m_nId+1, _pInfo)  ;
-	}
+
 	painter->drawText(0 , -4 , _str );
+    if(IsSelected == GetItemId())
+    {
+        float start = 0;
+        float length = 0;
+        float depth = 0;
+        float height = 0;
+        length = _pConfig->DefectLengthValue(m_pDataView->GetGroupId(),&start,IsSelected);
+        height = _pConfig->DefectHeightValue(m_pDataView->GetGroupId(),&depth,IsSelected);
+        float _fDepth = _pConfig->DefectDepthValue(m_pDataView->GetGroupId(), IsSelected);
+        if(_fDepth >= 0){
+            length = _fDepth;
+        }
+        _str.sprintf("%.1f(%.1f) %.1f(%.1f)",start,length,depth,height);
+        painter->drawText(0,-15,_str);
+    }
 }
 
 //void DopplerDefectItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)

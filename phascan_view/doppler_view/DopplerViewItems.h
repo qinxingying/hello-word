@@ -78,6 +78,7 @@ public:
 	void SetScanMarkerPos(float fInterval_);
 	void SetPartInfo(PART_CONFIG* pPart_) ;
 	void SetParabolaDirection(bool bVertical_) ;
+    void ResetDefect();
 
 protected:
 	void GateMove(int eGate_ , float fStart_ , float fWidth_ , float fHeight_);

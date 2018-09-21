@@ -77,6 +77,7 @@ signals:
     void signalViewChanged(QRectF rect)  ;
     void signalUpdateDrawing();
     void signalItemMoved(DopplerGraphicsItem* item_) ;
+    void signalItemPressed(DopplerGraphicsItem* item_) ;
     void signalButtonRelease(QMouseEvent *event);
     void signalButtonPressed(QMouseEvent* event);
     void signalButtonDoubleClicked(QPointF pos_);
