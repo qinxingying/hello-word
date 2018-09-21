@@ -2423,6 +2423,44 @@ void ProcessDisplay::UpdateAllViewGateOfGroup(int nGroupId_)
 	}
 }
 
+void ProcessDisplay::ShowDefectInfo(int nGroupId_,int id)
+{
+    int _nGroupId , _nLawId , _nDisplay  ;
+    DopplerDataView* _pView  ;
+    for(int j = 0 ; j < g_pMainWnd->GetDisplayTableQty() ; j++)
+    {
+        QList<QWidget*>* pList = g_pMainWnd->GetDisplayTableWidgetList(j);
+        for(int i = 0 ; i < pList->count() ; i++)
+        {
+            _pView =  (DopplerDataView*)pList->at(i)  ;
+            _pView->GetDataViewConfigure(&_nGroupId , &_nLawId , &_nDisplay );
+            if(_nGroupId == nGroupId_)
+            {
+                 _pView->SetDefect(id);
+            }
+        }
+    }
+}
+
+void ProcessDisplay::ResetDefectInfo(int nGroupId_)
+{
+    int _nGroupId , _nLawId , _nDisplay  ;
+    DopplerDataView* _pView  ;
+    for(int j = 0 ; j < g_pMainWnd->GetDisplayTableQty() ; j++)
+    {
+        QList<QWidget*>* pList = g_pMainWnd->GetDisplayTableWidgetList(j);
+        for(int i = 0 ; i < pList->count() ; i++)
+        {
+            _pView =  (DopplerDataView*)pList->at(i)  ;
+            _pView->GetDataViewConfigure(&_nGroupId , &_nLawId , &_nDisplay );
+            if(_nGroupId == nGroupId_)
+            {
+                 _pView->ResetDefect();
+            }
+        }
+    }
+}
+
 /****************************************************************************
   Description: 更新所有指定组窗口的光标显示
   Input:   【nGroupId_ ： 组ID】

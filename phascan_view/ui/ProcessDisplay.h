@@ -122,7 +122,8 @@ public:
     void UpdateAllViewOfGroup(int nGroupId_);
     void UpdateAllViewGateOfGroup(int);
     void UpdateAllViewCursorOfGroup(int) ;
-
+    void ShowDefectInfo(int nGroupId_, int id);
+    void ResetDefectInfo(int nGroupId_);
 
 protected:
     DopplerConfigure* m_pConfig ;

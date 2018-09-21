@@ -175,6 +175,13 @@ void DopplerViewItems::UpdateItemsDefect()
 	}
 }
 
+void DopplerViewItems::SetItemDefect(int id)
+{
+    ResetDefect();
+    if(m_iDefectId[id] >= 0)
+    m_pDefect[id]->IsSelected = id;
+}
+
 void DopplerViewItems::UpdateItemsLwBw()
 {
 	if(!(m_eShow & OVERLAYS_LW_BW))
@@ -808,6 +815,7 @@ void DopplerViewItems::ResetDefect()
 {
     for(int i = 0; i < DEFECT_SIGN_MAX; i++)
     {
+        if(m_iDefectId[i] >= 0)
         m_pDefect[i]->IsSelected = -1;
     }
 }

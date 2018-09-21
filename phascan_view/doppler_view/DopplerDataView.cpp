@@ -682,6 +682,19 @@ void DopplerDataView::slotItemPressed(DopplerGraphicsItem* item_)
         id = item_->GetItemId();
     }
 }
+
+void DopplerDataView::SetDefect(int id)
+{
+    m_pItemsGroup->SetItemDefect(id);
+
+}
+
+void DopplerDataView::ResetDefect()
+{
+    m_pItemsGroup->ResetDefect();
+
+}
+
 /****************************************************************************
   Description: 换算  在场景中的像素位置 到  标尺刻度对应的位置
   Input:	 场景位置

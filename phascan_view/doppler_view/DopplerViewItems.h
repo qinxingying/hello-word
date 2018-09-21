@@ -43,6 +43,7 @@ public:
 	void UpdateItems();
 	void UpdateItemsGate();
 	void UpdateItemsDefect();
+    void SetItemDefect(int id);
 	void UpdateItemsLwBw();
 	void UpdateItemsCursor() ;
 	void UpdateItemsLawMarker() ;

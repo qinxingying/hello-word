@@ -79,6 +79,9 @@ public:
     DopplerDrawScan* GetDrawScan() const;
     void UpdateDrawing();
     void UpdateMeasure() ;
+    void SetDefect(int id);
+    void ResetDefect();
+
 
 
     void SetItemGeometry(DopplerGraphicsItem* item , QRectF& rect) ;

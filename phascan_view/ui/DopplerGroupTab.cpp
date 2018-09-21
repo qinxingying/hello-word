@@ -2072,7 +2072,9 @@ void DopplerGroupTab::on_ComDefectIndex_currentIndexChanged(int index)
 	DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
 	_pConfig->m_dfParam[m_nGroupId].index = index;
     UpdateDefectValue();
-	g_pMainWnd->RunDrawThreadOnce();
+    ProcessDisplay _display ;
+    _display.ShowDefectInfo(m_nGroupId,index);
+    g_pMainWnd->RunDrawThreadOnce(true);
 }
 
 void DopplerGroupTab::on_lineEditReMark_textChanged(QString str)
@@ -2102,6 +2104,7 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 	UpdateDefectValue() ;
 //  g_pMainWnd->RunDrawThreadOnce();
 	ProcessDisplay _display ;
+    _display.ResetDefectInfo(m_nGroupId);
 	_display.UpdateAllViewOverlay();
 }
 
