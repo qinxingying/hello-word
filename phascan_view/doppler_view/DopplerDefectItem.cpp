@@ -94,10 +94,16 @@ void DopplerDefectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     _NewPen.setDashPattern(dashes);
     painter->setPen(_NewPen);
     if(_nBmpNo == 0 || (_nBmpNo > 0 && _nBmpNo == m_nId+1)) {
-        painter->drawLine(0, 15 , 0 , m_nHeight );
-        painter->drawLine(15, m_nHeight , m_nWidth , m_nHeight );
-        painter->drawLine(m_nWidth, m_nHeight-15 , m_nWidth , 0 );
-        painter->drawLine(m_nWidth-15, 0 , 0, 0 );
+        if(m_nHeight > 15)
+        {
+            painter->drawLine(0, 15 , 0 , m_nHeight );
+            painter->drawLine(m_nWidth, m_nHeight-15 , m_nWidth , 0 );
+        }
+        if(m_nWidth > 15)
+        {
+            painter->drawLine(15, m_nHeight , m_nWidth , m_nHeight );
+            painter->drawLine(m_nWidth-15, 0 , 0, 0 );
+        }
     }
 	if(_nBmpNo == 0)
 		DrawLabel(painter, fillColor, _bSel);
@@ -138,9 +144,14 @@ void DopplerDefectItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_
 		m_pDataView->GetDataViewConfigure(&_nGroup , &_nLaw , &_nDisp);
 		DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
 		char *_pInfo = _pConfig->GetDefectInfo(_nGroup, m_nId);
-		_str.sprintf("%d:%s", m_nId+1, _pInfo)  ;
 
-	painter->drawText(0 , -4 , _str );
+		_str.sprintf("%d:%s", m_nId+1, _pInfo)  ;
+    if(this->y()>30)
+        painter->drawText(0 , -4 , _str );
+    else if(this->y()+ m_nHeight <scene()->height() - 30)
+        painter->drawText(0 , this->y() + m_nHeight + 4 , _str );
+    else if(this->x() + m_nWidth < scene()->width() - 30)
+        painter->drawText(this->x() + m_nWidth + 4 , 0 , _str );
     if(IsSelected == GetItemId())
     {
         float start = 0;
@@ -154,7 +165,12 @@ void DopplerDefectItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_
             length = _fDepth;
         }
         _str.sprintf("%.1f(%.1f) %.1f(%.1f)",start,length,depth,height);
-        painter->drawText(0,-15,_str);
+        if(this->y()>30)
+            painter->drawText(0 , -15 , _str );
+        else if(this->y()+ m_nHeight <scene()->height() - 30)
+            painter->drawText(0 , this->y() + m_nHeight + 15 , _str );
+        else if(this->x() + m_nWidth < scene()->width() - 30)
+            painter->drawText(this->x() + m_nWidth + 15 , 0 , _str );
     }
 }
 
