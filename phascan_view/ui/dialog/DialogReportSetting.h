@@ -25,6 +25,8 @@ protected:
 private slots:
     void on_pushButton_clicked();
 
+    void on_logoToolButton_clicked();
+
 private:
     Ui::DialogReportSetting *ui;
 };

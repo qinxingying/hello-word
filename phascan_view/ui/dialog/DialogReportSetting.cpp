@@ -1,6 +1,7 @@
 #include "DialogReportSetting.h"
 #include "ui_DialogReportSetting.h"
 
+#include <QFileDialog>
 
 DialogReportSetting::DialogReportSetting(QWidget *parent) :
     QDialog(parent),
@@ -27,6 +28,7 @@ void DialogReportSetting::on_pushButton_clicked()
     strcpy(m_cInfo.strPartNo  , ui->StrPartNo->text().toLocal8Bit().data()) ;
     strcpy(m_cInfo.strPartPos , ui->StrPartPostion->text().toLocal8Bit().data()) ;
     strcpy(m_cInfo.strReportName, t3) ;
+    strcpy(m_cInfo.logoName, ui->logoLineEdit->text().toUtf8().data());
     m_cInfo.eMode = ui->ComModeSelection->currentIndex() ;
     accept ();
 }
@@ -55,6 +57,14 @@ void DialogReportSetting::UpdateItems()
     ui->StrPartName->setText(QString::fromLocal8Bit(m_cInfo.strPartName));
     ui->StrPartNo->setText(QString::fromLocal8Bit(m_cInfo.strPartNo));
     ui->StrPartPostion->setText(QString::fromLocal8Bit(m_cInfo.strPartPos));
-    ui->StrReportName->setText((m_cInfo.strReportName));
+    ui->StrReportName->setText(QString(m_cInfo.strReportName));
+    ui->logoLineEdit->setText(m_cInfo.logoName);
     ui->ComModeSelection->setCurrentIndex(m_cInfo.eMode ? 1 : 0);
+}
+
+void DialogReportSetting::on_logoToolButton_clicked()
+{
+    QString name = QFileDialog::getOpenFileName(this, tr("Logo Image"),
+                                                "~", tr("Image Files (*.png *.jpg *.bmp)"));
+    ui->logoLineEdit->setText(name);
 }

@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QProcess>
 #include <QStringList>
+#include <QDebug>
 
 #define TABLE_WIDTH	 800
 char tableWidth[256];
@@ -40,7 +41,7 @@ DopplerHtmlReport::DopplerHtmlReport()
     QString g_strReportLogo = "data/logo/logo.png";
 
 #ifdef QT_NO_DEBUG
-    GetExePathName1(g_strReportLogo.toLatin1().data(), m_strReportLogo);
+    GetExePathName1(g_strReportLogo.toUtf8().data(), m_cInfo.logoName);
 #else
     strcpy(m_strReportLogo, g_strReportLogo.toLatin1().data());
 #endif
@@ -82,7 +83,7 @@ void DopplerHtmlReport::InitReportInfo()
         strcpy(m_cInfo.strPartNo, "No. 1");
         strcpy(m_cInfo.strPartPos, "Part Position");
         strcpy(m_cInfo.strReportName, "Report");
-	}
+    }
 
 	QDate _date= QDate::currentDate();
     m_cInfo.nYear  = _date.year();
@@ -146,7 +147,7 @@ void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , string_groupMode[_pGroup->eGroupMode]);
 	fprintf(m_pFile,"<td %s>%.1fMHz</td>\n" ,tableTdStyle , _pGroup->probe[0].fFrequency);
 	fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pGroup->probe[0].fSizePri);
-	fprintf(m_pFile,"<td %s>%2.1f¡ã</td>\n" ,tableTdStyle , _pGroup->law.nAngleStartRefract / 10.0f);
+	fprintf(m_pFile,"<td %s>%2.1fÂ°</td>\n" ,tableTdStyle , _pGroup->law.nAngleStartRefract / 10.0f);
 	fprintf(m_pFile,"<td %s>%.2fus</td>\n" ,tableTdStyle , _pTofd->fZero);
 	fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pTofd->fPCS);
 	fprintf(m_pFile,"<td %s>%.2fus</td>\n" ,tableTdStyle , _process->DistMmToUs(nGroupId_ , _pGroup->fSampleRange));
@@ -345,7 +346,7 @@ void DopplerHtmlReport::BuildReport()
     //## logo and header
     CreateHeader();
     // group info
-    //Ã¶¾Ùgroup£¬Ã¿Ò»¸ögroup£¬¶¼ÊÇÒ»¸ö¶ÀÁ¢µÄÐÅÏ¢
+    //æžšä¸¾groupï¼Œæ¯ä¸€ä¸ªgroupï¼Œéƒ½æ˜¯ä¸€ä¸ªç‹¬ç«‹çš„ä¿¡æ¯
     int _nGroupQty = _pConfig->common.nGroupQty;
     for (int i = 0; i < _nGroupQty; ++i)
     {
@@ -396,7 +397,7 @@ void DopplerHtmlReport::BuildEnder()
 
 void DopplerHtmlReport::CreateHeader()
 {
-    QString strReportName = QString(QObject::tr("Phascan Report"));
+    QString strReportName = QString(m_cInfo.strReportName);
     QString strReportPath = QString(QObject::tr("Path"));
     QString g_strReportHead[] = {
         QString(QObject::tr("Part Name")),
@@ -528,7 +529,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 	m_lastRXelement = QString("-");
 
     m_startAngle.sprintf("%.1f deg" ,_pGroup->law.nAngleStartRefract * 0.1);
-	if(setup_LAW_TYPE_LINEAR == _pGroup->law.eLawType )//ÏßÉ¨
+	if(setup_LAW_TYPE_LINEAR == _pGroup->law.eLawType )//çº¿æ‰«
 	{
 		m_resolution.sprintf("%d" , _pGroup->law.nElemStepFir ) ;
 		m_stopAngle = QString("-");
@@ -669,7 +670,7 @@ void DopplerHtmlReport::fprintfReportGroupProbe()
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_probeModel));//"Probe Model"
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_probeSerial));//"Probe Serial #"
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_probeFrequency));//"Probe Frequency"
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
 	fprintf(m_pFile , "</tr>\n\n");
 
 	fprintf(m_pFile , "<tr>\n");
@@ -682,10 +683,10 @@ void DopplerHtmlReport::fprintfReportGroupProbe()
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_wedgeModel));//"Wedge Model"
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_wedgeAngle));//"Wedge Angle"
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_probeAperture));//"Probe Aperture"
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
 	fprintf(m_pFile , "</tr>\n\n");
 	fprintf(m_pFile , "<tr>\n");
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ1ÐÐ
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º1è¡Œ
 	fprintf(m_pFile , "</tr>\n\n");
 	fprintf(m_pFile , "</table></td></tr>\n</table>\n\n");//table
 }
@@ -755,7 +756,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_videoFilter));//"Video Filter"
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_rectification));//"Rectification"
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_bandPassFilter));//"Band-Pass Filter"
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
 	fprintf(m_pFile , "</tr>\n\n");
 
 	fprintf(m_pFile , "<tr>\n");
@@ -785,7 +786,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_scanOffset));//Scan Offset
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_indexOffset));//Index Offset
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_skew));//Skew
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
 	fprintf(m_pFile , "</tr>\n\n");
 
 	fprintf(m_pFile , "<tr><td colspan=6><hr /></td></tr>\n\n");
@@ -803,7 +804,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_gateIwidth));//Width
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_gateIthreshold));//Threshold
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_gateIsynchro));//"Synchro"
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
 	fprintf(m_pFile , "</tr>\n\n");
 
 	fprintf(m_pFile , "<tr>\n");
@@ -812,7 +813,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_gateAwidth));//Width
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_gateAthreshold));//Threshold
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_gateAsynchro));//"Synchro"
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
 	fprintf(m_pFile , "</tr>\n\n");
 
 	fprintf(m_pFile , "<tr>\n");
@@ -821,7 +822,7 @@ void DopplerHtmlReport::fprintfReportGroupSetup()
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_gateBwidth));//Width
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_gateBthreshold));//Threshold
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_gateBsynchro));//"Synchro"
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
 	fprintf(m_pFile , "</tr>\n\n");
 
 	fprintf(m_pFile , "</table></td></tr>\n</table>\n\n");//table
@@ -964,9 +965,9 @@ void DopplerHtmlReport::fprintfReportGroupPart()
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_material));//"Material"
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_geometry));//"Geometry"
 	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(m_thickness));//Thickness
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
-	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//¿Õ
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
+	fprintf(m_pFile , "<td %s>%s</td>\n" ,tableTdStyle ,tdSpace);//ç©º
 	fprintf(m_pFile , "</tr>\n\n");
 
 	fprintf(m_pFile , "</table></td></tr>\n</table>\n\n");//table
@@ -1092,19 +1093,22 @@ bool DopplerHtmlReport::CopyFileToPath(QString toDir ,QString sourceDir)
 }
 
 void DopplerHtmlReport::CreateFolder()
-{
+{    
     QString _str;
-	QDir foder;
+    QDir foder;
     _str.sprintf("%s", m_strReportDir);
-	if(!foder.exists(_str))
+    if(!foder.exists(_str))
         foder.mkdir(_str);
 
-	_str.clear();
+    _str.clear();
     _str.sprintf("%s%s" , m_strReportDir, TOCHAR(m_strFolder));
     if(!foder.exists(_str))  foder.mkdir(_str);
 
     _str.sprintf("%s%s%s", m_strReportDir, TOCHAR(m_strFolder), "/logo.png");
-    CopyFileToPath(_str, QString(m_strReportLogo));
+
+
+    CopyFileToPath(_str, QString(m_cInfo.logoName));
+
 }
 
 void DopplerHtmlReport::set_data_path(QString &str)

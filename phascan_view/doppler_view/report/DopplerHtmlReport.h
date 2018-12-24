@@ -18,6 +18,7 @@ struct ReportInfo
     char  strPartName[1024]    ;
     char  strPartNo  [1024]    ;
     char  strPartPos [1024]    ;
+    char  logoName   [1024];
     int   nYear  ;
     int   nMonth ;
     int   nDate  ;
@@ -186,7 +187,6 @@ protected:
     QString m_dataFilePath;
 
 	char m_strReportDir[1024];
-	char m_strReportLogo[1024];
 };
 
 #endif // DOPPLERHTMLREPORT_H
