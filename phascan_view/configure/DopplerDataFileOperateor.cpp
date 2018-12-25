@@ -30,6 +30,8 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     {
         m_file->unmap(m_pBeamData);
         m_file->close ();
+        delete m_file;
+        m_file = NULL;
         DopplerConfigure::Instance()->SaveEvn();
     }
     m_file = new QFile(strPath_);

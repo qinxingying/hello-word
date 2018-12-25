@@ -165,10 +165,10 @@ typedef struct _Part st_PART;
 struct _Part
 {
 	unsigned char	Geometry;		// 几何形状 FLAT/ID/OD/BALL //
-        unsigned char	Material_pos;   	// 材料 //
+    unsigned char	Material_pos;   // 材料 //
 	unsigned char	Weld;			// 焊缝 //
 	unsigned char   symmetry;		// 对称 //
-        unsigned int	Thickness;		// 厚度 //
+    unsigned int	Thickness;		// 厚度 //
 	unsigned int	Diameter;		// 直径 //
 
 	unsigned int    weland_height;

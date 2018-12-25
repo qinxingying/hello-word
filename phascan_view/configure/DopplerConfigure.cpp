@@ -9,7 +9,9 @@
 #include "gHeader.h"
 
 #include <report/DopplerHtmlReport.h>
-#include <process/ParameterProcess.h> 
+#include <process/ParameterProcess.h>
+#include "config_phascan_ii/config.h"
+
 extern int Cscan_range,Csrc_start,Bscan_range,Bsrc_start;
 extern double RL_EL_SL[5];
 int Phascan_Version;
@@ -342,8 +344,14 @@ int DopplerConfigure::OpenData(QString& path_)
 {
 	FilePathPro(path_);
 
-	int ret = m_pDataFile->LoadDataFile(m_szFileInUse) ;
-	if(ret)  return -1;
+    if(!Config::load(path_, m_pDataFile)) {
+        qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]"
+                 << " not Phascan II data format!!!!";
+        int ret = m_pDataFile->LoadDataFile(m_szFileInUse) ;
+        Config::set_is_phascan_ii(false);
+        if(ret)  return -1;
+    }
+
 	OldConfigureToConfigure(m_pDataFile);
 	OldGroupToGroup(m_pDataFile) ;
 	m_pData = m_pDataFile->GetData();

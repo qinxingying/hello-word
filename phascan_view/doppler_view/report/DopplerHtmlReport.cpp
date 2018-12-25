@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QStringList>
 #include <QDebug>
+#include "../configure/config_phascan_ii/config.h"
 
 #define TABLE_WIDTH	 800
 char tableWidth[256];
@@ -398,6 +399,10 @@ void DopplerHtmlReport::BuildEnder()
 void DopplerHtmlReport::CreateHeader()
 {
     QString strReportName = QString(m_cInfo.strReportName);
+    if(Config::is_phascan_ii()) {
+        strReportName = QString(QObject::tr("Phascan II Report"));
+    }
+
     QString strReportPath = QString(QObject::tr("Path"));
     QString g_strReportHead[] = {
         QString(QObject::tr("Part Name")),
