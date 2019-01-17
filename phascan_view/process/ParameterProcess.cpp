@@ -527,7 +527,7 @@ int ParameterProcess::GetTotalDataSize() const
 {
 	int _nGroupQty = m_pConfig->common.nGroupQty  ;
 	int _nRet = setup_DATA_OFFSET ;
-    if(Config::is_phascan_ii()) {
+    if(Config::instance()->is_phascan_ii()) {
         _nRet = 0;
     }
 	for(int i = 0 ; i < _nGroupQty ; i++)
@@ -652,7 +652,7 @@ float ParameterProcess::GetCScanThicknessStop(int nGroupId_)
 int  ParameterProcess::GetGroupDataOffset(int nGroupId_) const
 {
 	int _nGroupOffset = setup_DATA_OFFSET  ;
-    if(Config::is_phascan_ii()) {
+    if(Config::instance()->is_phascan_ii()) {
         _nGroupOffset = 0;
     }
 	for(int i = 0 ; i < nGroupId_; i++)

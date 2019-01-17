@@ -344,11 +344,11 @@ int DopplerConfigure::OpenData(QString& path_)
 {
 	FilePathPro(path_);
 
-    if(!Config::load(path_, m_pDataFile)) {
+    if(!Config::instance()->load(path_, m_pDataFile)) {
         qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]"
                  << " not Phascan II data format!!!!";
         int ret = m_pDataFile->LoadDataFile(m_szFileInUse) ;
-        Config::set_is_phascan_ii(false);
+        Config::instance()->set_is_phascan_ii(false);
         if(ret)  return -1;
     }
 
@@ -804,7 +804,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-    if(Config::is_phascan_ii()) {
+    if(Config::instance()->is_phascan_ii()) {
         /* Phascan II support 200% */
         Phascan_Version = 2;
     } else {

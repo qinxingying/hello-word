@@ -2,10 +2,13 @@
 include($$PWD/msgpack/msgpack.pri)
 
 HEADERS += \
-    $$PWD/config.h
+    $$PWD/config.h \
+    $$PWD/settings.h \
+    $$PWD/default_settings.h
 
 SOURCES += \
-    $$PWD/config.cpp
+    $$PWD/config.cpp \
+    $$PWD/settings.cpp
 
 LIBQMSGPACK=qmsgpack
 CONFIG(debug, debug|release) {
