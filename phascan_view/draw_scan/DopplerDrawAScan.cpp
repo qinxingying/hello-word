@@ -97,7 +97,9 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 		_fY = _nHeight -_fY * _fYRatio ;
 		Lines<<QPointF(_fX , _fY) ;
 	}
-	painter.setPen(QPen(color[0]));
+    QPen NewPen(color[0]);
+    NewPen.setWidth( 0);
+    painter.setPen(NewPen);
 	painter.drawPolyline(Lines);
 
 	if(bDrawLimit)
@@ -126,7 +128,9 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 			LimitHigh<<QPointF(_fX , _fY);
 			LimitLow<<QPointF(_fX , _fY1);
 		}
-		painter.setPen(QPen(color[1]));
+        QPen _NewPen(color[0]);
+        _NewPen.setWidth( 0);
+        painter.setPen( _NewPen);
 		painter.drawPolyline(LimitHigh);
 		painter.drawPolyline(LimitLow);
 	}

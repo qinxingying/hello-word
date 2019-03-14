@@ -28,6 +28,11 @@ include(dxflib/dxflib.pri)
 
 SOURCES += main.cpp
 
+HEADERS += stable.h
+
+QMAKE_CXXFLAGS += /MP
+PRECOMPILED_HEADER = stable.h
+
 LIBS += -L$$PWD/./ -lDopplerFocalLaw
 
 LIBS += -L$$PWD/lib/opengl/ -lglut
@@ -41,4 +46,4 @@ DISTFILES += \
     translator/phascan_view_english.ts \
     translator/phascan_view_japanese.ts
 
-DEFINES += QT_NO_DEBUG_OUTPUT
+#DEFINES += QT_NO_DEBUG_OUTPUT

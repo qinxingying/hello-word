@@ -159,7 +159,13 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 	QPen _pen = painter->pen();
 	_pen.setColor(m_cColor) ;
 	painter->setPen(_pen);
+//    double scaleFactor = 1.0 / painter->matrix().m11();
+//    painter->scale(scaleFactor, scaleFactor);
 	QString _str ;
+//    QFont resetFont = painter->font();
+//    int fontSize = 100.0/painter->matrix().m11();
+//    resetFont.setStretch(fontSize);
+//    painter->setFont(resetFont);
 
 	QPointF _ptScene = GetItemScenePos();
 /*
@@ -184,8 +190,10 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 	case LINE_VERTICAL:
 		_str.sprintf("%.1f", m_Geometry.left())  ;
 		_rcFont = _fm.boundingRect(_str);
-		_W = _rcFont.width();
-		_H = _rcFont.height();
+        _W = _rcFont.width();
+        _H = _rcFont.height();
+//        _W = 20;
+//        _H = 10;
 
 		if(m_nId % 2 == 0)	_y = _y0 + 2;
 		else				_y = _y0 + _iHeight - (_H - 4);
@@ -196,8 +204,10 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 	case LINE_HORIZENTAL:
 		_str.sprintf("%.1f", m_Geometry.top())  ;
 		_rcFont = _fm.boundingRect(_str);
-		_W = _rcFont.width();
-		_H = _rcFont.height();
+        _W = _rcFont.width();
+        _H = _rcFont.height();
+//        _W = 20;
+//        _H = 10;
 
 		if(m_nId % 2 == 0)	_x = _x0;
 		else				_x = _x0 + _iWidth - _W - 2;

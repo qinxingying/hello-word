@@ -43,7 +43,7 @@ DopplerHtmlReport::DopplerHtmlReport()
 #ifdef QT_NO_DEBUG
     GetExePathName1(g_strReportLogo.toUtf8().data(), m_cInfo.logoName);
 #else
-    strcpy(m_strReportLogo, g_strReportLogo.toLatin1().data());
+    strcpy(m_cInfo.logoName, g_strReportLogo.toLatin1().data());
 #endif
 }
 

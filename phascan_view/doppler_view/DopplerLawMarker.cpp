@@ -191,6 +191,8 @@ void DopplerLawMarker::DrawLabel(QPainter *painter , int nIndex_)
     double _fPos2 = 1 - _fPos1 ;
     float _fPosX = _line.p1().x() * _fPos1 + _line.p2().x() * _fPos2 ;
     float _fPosY = _line.p1().y() * _fPos1 + _line.p2().y() * _fPos2 ;
+//    double scaleFactor = 1.0 / painter->matrix().m11();
+//    painter->scale(scaleFactor, scaleFactor);
     painter->drawText(_fPosX , _fPosY , m_strMarker.at(m_anMarkerId[nIndex_]) );
 }
 

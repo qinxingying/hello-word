@@ -6,6 +6,7 @@
 #include "DopplerGraphicsItem.h"
 #include <QColor>
 #include <QRectF>
+#include <QDebug>
 
 class DopplerLineItem : public DopplerGraphicsItem
 {
@@ -35,7 +36,7 @@ public:
 //  wuhan cursor 2015-05-19
     Qt::CursorShape GetCursorShape(QPointF posCursor_);
     QRectF GetCursorValidArea();
-	void SetWndRect(QRect rect_) {m_rcWnd = rect_;}
+    void SetWndRect(QRect rect_) {m_rcWnd = rect_;}
 //----------------------------------------------------------
 
 protected:
