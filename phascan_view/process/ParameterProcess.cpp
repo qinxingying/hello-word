@@ -528,7 +528,16 @@ int ParameterProcess::GetTotalDataSize() const
 	int _nGroupQty = m_pConfig->common.nGroupQty  ;
 	int _nRet = setup_DATA_OFFSET ;
     if(Config::instance()->is_phascan_ii()) {
+        /* not align 1024 for mercury data file!! */
         _nRet = 0;
+        for(int i = 0 ; i < _nGroupQty ; i++)
+        {
+            _nRet += GetGroupDataSize(i) ;
+        }
+        /* 4 byte align */
+        _nRet  = (_nRet + 4 - 1) / 4  ;
+        _nRet  = 4 * _nRet ;
+        return _nRet;
     }
 	for(int i = 0 ; i < _nGroupQty ; i++)
 	{

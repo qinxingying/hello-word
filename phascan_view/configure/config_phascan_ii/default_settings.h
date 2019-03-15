@@ -2,6 +2,19 @@
 #define DEFAULT_SETTINGS_H
 
 #include "const.h"
+#include <QVariantList>
+
+struct S_Display {
+    QString ampPalette;
+    uint bright;
+    bool cursor;
+    QString depthPalette;
+    QVariantList groups;
+    uint language;
+    uint layout;
+    uint opacity;
+    QString tofdPalette;
+};
 
 enum FocalPointMode {
     HALF_PATH,  /* 半声程 */
@@ -29,6 +42,7 @@ struct S_Sample {
     bool refGainStatus;
     double refGain;
     double start;
+    double range;
     double maxGain;
     int pointQty;
     bool autoCalcPointQty;
@@ -57,6 +71,7 @@ enum Averaging {
 };
 
 struct S_Transceiver {
+    bool autoCalPW;
     Averaging average;
     uint filter;
     TxRxMode txRxMode;
@@ -92,19 +107,25 @@ enum ScanMode {
     Sectorial   /* 扇性扫查 */
 };
 
+enum ScanType {
+    OneLine,
+    RasterScan,
+    HelicoidalScan
+};
+
 struct S_Probe {
     ArrayMode arrayMode;
     double freq;
     QString model;
     QString serial;
-    int priElemQty;
-    int secElemQty;
-    float priPitch;
-    float secPitch;
-    float refPoint;
+    uint priElemQty;
+    uint secElemQty;
+    double priPitch;
+    double secPitch;
+    double refPoint;
     double scanOffset;
     double indexOffset;
-    int skew;
+    uint skew;
     ProbeType type;
 };
 
@@ -121,20 +142,21 @@ enum WaveType {
 struct S_Wedge {
     QString serial;
     QString model;
-    float angle;
-    float fstElemHeight;
-    float length;
-    float width;
-    float height;
-    unsigned int velocity;
-    WaveType waveType;
-    float priOffset;
-    float secOffset;
+    double angle;
+    double fstElemHeight;
+    double length;
+    double width;
+    double height;
+    double velocity;
+    double priOffset;
+    double secOffset;
     Orientation orientation;
-    uint refPoint;
+    double rootAngle;
+    uint delay;
+    double clampOffset;
 
-    float rootAngle;
-    int delay;
+    WaveType waveType;
+    uint refPoint;
 };
 
 enum Shape {
@@ -197,22 +219,70 @@ enum MaxGain {
     UT_MAX_GAIN = 110
 };
 
+struct S_WeldI {
+    uint orientation;
+    bool symmetry;
+    double width;
+};
+
+struct S_WeldV {
+    uint orientation;
+    bool symmetry;
+    double width;
+    double height;
+};
+
+struct S_WeldU {
+    uint orientation;
+    bool symmetry;
+    double width;
+    double height;
+    double radius;
+};
+
 struct S_Weld {
     bool enable;
     WeldType type;
     bool isSymmetry;
     WeldOrientation orientation;
-    double w0;
-    double h0;
-    double r0;
+    S_WeldI I;
+    S_WeldV V;
+    S_WeldU U;
+    S_WeldI MidI;
+    S_WeldI BtmI;
+    S_WeldU BtmU;
+    S_WeldU TopU;
+    S_WeldV BtmV;
+    S_WeldV MidV;
+    S_WeldV TopV;
+};
 
-    double w1;
-    double h1;
-    double r1;
+struct S_Plane {
+    double width;
+    double height;
+    double length;
+};
 
-    double w2;
-    double h2;
-    double r2;
+struct S_Cylinder {
+    double length;
+    double angle;
+    double inside;
+    double outside;
+    double probePos;
+};
+
+struct S_Nozzle {
+    double angle;
+    double inside;
+    double outside;
+    S_Cylinder cylinder1;
+    S_Cylinder cylinder2;
+};
+
+struct S_Geometry {
+    S_Plane plane;
+    S_Cylinder cylinder;
+    S_Nozzle nozzle;
 };
 
 struct S_Specimen {
@@ -222,24 +292,7 @@ struct S_Specimen {
     Material material;
     double density;
     WeldType weldType;
-    /* PLANE & CYLINDER */
-    double width0;
-    double height0;
-    double length0;
-    double angle0;
-    double inside0;
-    double outside0;
-    double clampOffset0;
-    /* CYLINDER特有 */
-    ProbePosition probePosition;
-    /* Nozzle */
-    double length1;
-    double inside1;
-    double outside1;
-    double length2;
-    double inside2;
-    double outside2;
-    double angle2;
+    S_Geometry geometry;
     S_Weld weld;
 };
 
@@ -254,16 +307,16 @@ enum FocusMode {
 struct S_Focus {
     FocusMode focusMode;
     /* FOCUS_HALF_PATH */
-    float radius;
+    double radius;
     /* FOCUS_TRUE_DEPTH */
-    float depth;
+    double depth;
     /* FOCUS_PROJECTION */
-    float offset;
+    double offset;
     /* FOCUS_FOCAL_PLANE */
-    float beginOffset;
-    float endOffset;
-    float beginDepth;
-    float endDepth;
+    double beginOffset;
+    double endOffset;
+    double beginDepth;
+    double endDepth;
 };
 
 struct S_BeamsInfo {
@@ -272,14 +325,26 @@ struct S_BeamsInfo {
 };
 
 struct S_Scan {
+    double refractAngle;
+    double screwAngle;
+
     double refractStartAngle;
-    double refractStepAngle;
     double refractStopAngle;
+    double refractStepAngle;
+
+    double screwStartAngle;
+    double screwStopAngle;
+    double screwStepAngle;
+
+    uint secApe;
+    uint secStartElem;
+    uint secElemStep;
+    uint secStopElem;
+
     uint priApe;
     uint priStartElem;
     uint priElemStep;
     uint priStopElem;
-    double refractAngle;
 };
 
 struct S_Focallawer {
@@ -326,7 +391,7 @@ struct S_Gate {
     bool visible;
     float start;
     float width;
-    int height;
+    uint height;
     unsigned color;
 };
 
@@ -389,21 +454,54 @@ struct S_Curves {
     S_TCG tcg;
 };
 
+enum CScanMode {
+    ANGLE,
+    TOPC
+};
 
+enum SourceType {
+    GATE_A,
+    GATE_B,
+    GATE_I,
+    THICKNESS
+};
+
+struct S_CScan {
+    CScanMode mode;
+    SourceType sourceType;
+    double topCWidth;
+};
+
+struct S_Cursor {
+    double ampMeas;
+    double ampRef;
+    double depthMeas;
+    double depthRef;
+    double indexMeas;
+    double indexRef;
+    double scanMeas;
+    double scanRef;
+    double ultraMeas;
+    double ultraRef;
+};
 
 struct S_Groups{
     GroupMode mode;
     UtUnit utUnit;
+    bool highestTrack;
     S_Sample sample;
     S_Transceiver transceiver;
     S_Focallawer focallawer;
+    S_Gate gateA;
+    S_Gate gateB;
+    S_Gate gateI;
+    S_CScan cScan;
+    S_Cursor cursor;
+
     S_Probe probe;
     S_Wedge wedge;
     S_Specimen specimen;
     S_Thickness thickness;
-    S_Gate gateA;
-    S_Gate gateB;
-    S_Gate gateI;
     S_Curves curves;
 };
 
@@ -446,8 +544,8 @@ struct S_Encoder {
 };
 
 struct S_Scanner {
-    ScanMode scanMode;
-    int speed;
+    ScanType scanType;
+    uint rate;
     S_Axis scanAxis;
     S_Axis indexAxis;
     S_Encoder encoderX;
@@ -468,11 +566,18 @@ enum PrfMode {
     USER_DEF
 };
 
+enum Damping {
+    R50  = 0b00,
+    R100 = 0b01,
+    R200 = 0b10,
+    R500 = 0b11
+};
+
 struct S_GlobalTransceiver {
     Voltage paVoltage;
     Voltage utVoltage;
-    PrfMode prfMode;
-    int acquisitionRate;
+    Damping ut1TxDamping;
+    Damping ut2TxDamping;
 };
 
 /**
@@ -521,9 +626,13 @@ struct  S_Alarm {
 };
 
 struct S_Global {
+    S_Display display;
     S_GlobalTransceiver transceiver;
+    S_Scanner scanner;
     S_Alarm alarm[3];
     SoundMode sound;
+    uint groupQty;
+    PrfMode prfMode;
 };
 
 enum GateType {
@@ -607,59 +716,13 @@ enum GateType {
 /* outside - inside = thickness; UI显示thickness
  * 配置保存Inside信息
  */
-#define DEFAULT_NOZZLE_0_OUTSIDE      0
-#define DEFAULT_NOZZLE_0_INSIDE       0
-#define DEFAULT_NOZZLE_0_ANGLE        90
-#define DEFAULT_NOZZLE_0_CLAMP_OFFSET 0
-#define DEFAULT_NOZZLE_1_OUTSIDE      84
-#define DEFAULT_NOZZLE_1_INSIDE       74
-#define DEFAULT_NOZZLE_1_LENGTH       2000
-#define DEFAULT_NOZZLE_2_OUTSIDE      610
-#define DEFAULT_NOZZLE_2_INSIDE       584
-#define DEFAULT_NOZZLE_2_LENGTH       600
-#define DEFAULT_NOZZLE_2_ANGLE        180
+#define DEFAULT_NOZZLE_OUTSIDE      0
+#define DEFAULT_NOZZLE_INSIDE       0
+#define DEFAULT_NOZZLE_ANGLE        90
 
 /* Weld */
 #define DEFAULT_WELD_ORIENTATION  AXIAL
 #define DEFAULT_WELD_SYMMETRY     true
-
-#define DEFAULT_I_W_0   5
-
-#define DEFAULT_V_W_0   10
-#define DEFAULT_V_W_1   5
-#define DEFAULT_V_H_0   10
-
-#define DEFAULT_U_W_0   10
-#define DEFAULT_U_W_1   5
-#define DEFAULT_U_R_0   6
-#define DEFAULT_U_H_0   20
-
-#define DEFAULT_VY_W_0   10
-#define DEFAULT_VY_W_1   10
-#define DEFAULT_VY_W_2   5
-#define DEFAULT_VY_H_0   10
-#define DEFAULT_VY_H_1   10
-
-#define DEFAULT_VV_W_0   10
-#define DEFAULT_VV_W_1   5
-#define DEFAULT_VV_W_2   10
-#define DEFAULT_VV_H_0   10
-#define DEFAULT_VV_H_1   10
-
-#define DEFAULT_UU_W_0   10
-#define DEFAULT_UU_W_1   5
-#define DEFAULT_UU_W_2   10
-#define DEFAULT_UU_R_0   6
-#define DEFAULT_UU_R_1   6
-#define DEFAULT_UU_H_0   20
-#define DEFAULT_UU_H_1   20
-
-#define DEFAULT_UV_W_0   10
-#define DEFAULT_UV_W_1   5
-#define DEFAULT_UV_W_2   10
-#define DEFAULT_UV_R_0   6
-#define DEFAULT_UV_H_0   20
-#define DEFAULT_UV_H_1   10
 
 /* Wedge */
 #define DEFAULT_WEDGE_SERIAL            ""
@@ -677,6 +740,7 @@ enum GateType {
 #define DEFAULT_WEDGE_REF_POINT         0
 #define DEFAULT_WEDGE_ROOT_ANGLE        0
 #define DEFAULT_WEDGE_DELAY             0
+#define DEFAULT_WEDGE_CLAMP_OFFSET      0
 
 /* Transceiver */
 #define DEFAULT_TRANSCEIVER_AVERAGE      0
@@ -687,6 +751,25 @@ enum GateType {
 #define DEFAULT_TRANSCEIVER_RECEIVER     0
 #define DEFAULT_TRANSCEIVER_RECTIFIER    FULL_WAVE
 #define DEFAULT_TRANSCEIVER_VIDEO_FILTER true
+
+/* Axis */
+#define DEFAULT_AXIS_DRIVING    TIMER
+#define DEFAULT_AXIS_START      0
+#define DEFAULT_AXIS_END        800
+#define DEFAULT_AXIS_RESOLUTION 1
+
+/* Encoder */
+#define DEFAULT_ENCODER_STATUS      OFF
+#define DEFAULT_ENCODER_POLARITY    NORMAL
+#define DEFAULT_ENCODER_MODE        QUAD
+#define DEFAULT_ENCODER_RESOLUTION  48
+#define DEFAULT_ENCODER_ORIGIN      0
+
+/* global */
+#define DEFAULT_PRF_MODE OPTIMUM
+
+#define DEFAULT_REF  10
+#define DEFAULT_MEAS 20
 
 
 #define ALARM_COUNT 3

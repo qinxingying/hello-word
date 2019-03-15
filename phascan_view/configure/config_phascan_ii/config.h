@@ -26,31 +26,47 @@ protected:
 
     void unpack_display();
 
-    void unpack_sample();
+    void unpack_sample(const QVariantMap &map);
 
-    void unpack_transceiver();
+    void unpack_c_scan(const QVariantMap &map);
 
-    void unpack_focallawer();
+    void unpack_transceiver(const QVariantMap &map);
 
-    void unpack_scan();
+    void unpack_focallawer(const QVariantMap &map);
 
-    void unpack_probe();
+    void unpack_scan(const QVariantMap &map);
 
-    void unpack_wedge();
+    void unpack_probe(const QVariantMap &map);
 
-    void unpack_specimen();
+    void unpack_wedge(const QVariantMap &map);
 
-    void unpack_weld();
+    void unpack_specimen(const QVariantMap &map);
 
-    void unpack_focus();
+    void unpack_geometry(const QVariantMap &map);
+
+    void unpack_geometry_plane(const QVariantMap &map);
+
+    void unpack_geometry_cylinder(const QVariantMap &map, S_Cylinder &cylinder);
+
+    void unpack_geometry_nozzle(const QVariantMap &map);
+
+    void unpack_weld(const QVariantMap &map);
+
+    void unpack_I_weld(const QVariantMap &map, S_WeldI &I);
+
+    void unpack_V_weld(const QVariantMap &map, S_WeldV &V);
+
+    void unpack_U_weld(const QVariantMap &map, S_WeldU &U);
+
+    void unpack_focus(const QVariantMap &map);
 
     void unpack_beams_info();
 
     void unpack_thickness();
 
-    void unpack_cursor();
+    void unpack_cursor(const QVariantMap &map);
 
-    void unpack_gate(GateType gateType);
+    void unpack_gate(const QVariantMap &map, S_Gate &gate);
 
     void unpack_curves();
 
@@ -64,9 +80,9 @@ protected:
 
     void unpack_scanner();
 
-    void unpack_axis(int index);
+    void unpack_axis(const QVariantMap &map, S_Axis &axis);
 
-    void unpack_encoder(int index);
+    void unpack_encoder(const QVariantMap &map, S_Encoder &encoder);
 
     void unpack_global();
 
@@ -84,13 +100,15 @@ protected:
 
     bool is_phascan_ii_file(QFile &file);
 
+    void print_all_key(int depth, const QVariantMap &map);
+
     static Config *m_instance;
     DopplerDataFileOperateor *m_pDataFile;
     QByteArray m_dataMark;
     QByteArray m_dataSource;
+
     S_Groups m_groups[setup_MAX_GROUP_QTY];
     S_Groups &m_currentGroup;
-    S_Scanner m_scanner;
     S_Global m_global;
     int s_alarmCount;
     bool m_isPhascanII;

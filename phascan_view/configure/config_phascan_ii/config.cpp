@@ -1,6 +1,7 @@
 #include "config.h"
 #include "msgpack/msgpack.h"
 #include <QDebug>
+#include <QList>
 #include "../DopplerDataFileOperateor.h"
 
 Config *Config::m_instance = NULL;
@@ -16,8 +17,6 @@ Config *Config::instance()
 bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
 {   
     m_pDataFile = dataFile;
-
-    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << "";
 
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -43,6 +42,7 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
         set_is_phascan_ii(false);
         return false;
     }
+    QByteArray data = file.read(len);
 
     QFile tmp("mercury.cfg");
     if (!tmp.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
@@ -50,37 +50,37 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
         set_is_phascan_ii(false);
         return false;
     }
-
-    tmp.write(file.read(len));
+    tmp.write(data);
     tmp.close();
     QSettings src("mercury.cfg", QSettings::defaultFormat());
     QSettings dst;
     dst.clear();
     QStringList keys = src.allKeys();
-    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << "";
+    QVariantMap childMap;
     foreach (QString key, keys) {
         dst.setValue(key, src.value(key));
+
+        childMap.clear();
+        childMap = src.value(key).toMap();
         qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-                 << " key " << key
-                 << " value " << src.value(key);
+                 << " ******** key " << key << " *****************"
+                 << " value " << src.value(key)
+                 << " \n ";
+        print_all_key(0, childMap);
     }
     QFile::remove("mercury.cfg");
 
-    m_pDataFile->m_cDrawInfoPack.nGroupNum = dst.value("GroupQty").toUInt();
-    for(int i = 0; i < m_pDataFile->m_cDrawInfoPack.nGroupNum; ++i) {
+    m_global.groupQty = dst.value("GroupQty").toUInt();
+    m_global.prfMode = static_cast<PrfMode> (dst.value("PrfMode").toUInt());
+
+    unpack_display();
+    unpack_scanner();
+    unpack_global_transceiver();
+
+    for(int i = 0; i < m_global.groupQty; ++i) {
         unpack_group(i);
         convert_to_phascan_config(i);
     }
-
-    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-             << " start angle " << m_currentGroup.focallawer.scan.refractStartAngle
-             << " step angle " << m_currentGroup.focallawer.scan.refractStepAngle
-             << " stop angle " << m_currentGroup.focallawer.scan.refractStopAngle
-             << " refractAngle " << m_currentGroup.focallawer.scan.refractAngle
-             << " priApe " << m_currentGroup.focallawer.scan.priApe
-             << " priStartElem " << m_currentGroup.focallawer.scan.priStartElem
-             << " priElemStep " << m_currentGroup.focallawer.scan.priElemStep
-             << " priStopElem " << m_currentGroup.focallawer.scan.priStopElem;
 
     convert_other_to_phascan_config();
 
@@ -96,6 +96,9 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
         set_is_phascan_ii(false);
         return false;
     }
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " len " << len
+             << " mark len " << m_dataMark.length();
 
     memset(m_pDataFile->m_cDrawInfoPack.bScanMark, 0, sizeof(unsigned char) * 1024 * 256);
     memcpy(m_pDataFile->m_cDrawInfoPack.bScanMark, m_dataMark.data(), len);
@@ -128,87 +131,108 @@ void Config::unpack_group(int groupId)
 {
     m_currentGroup = m_groups[groupId];
 
-    QSettings::beginGroup(QString("Group%1").arg(groupId));
+    QVariantMap map = value(QString("Group%1").arg(groupId)).toMap();
 
-    m_currentGroup.mode   = static_cast<GroupMode> (value("Mode", DEFAULT_GROUP_MODE).toInt());
-    m_currentGroup.utUnit = static_cast<UtUnit> (value("UtUnit", DEFAULT_UT_UNIT).toInt());
+    m_currentGroup.mode         = static_cast<GroupMode> (map["Mode"].toUInt());
+    m_currentGroup.utUnit       = static_cast<UtUnit> (map["UtUnit"].toUInt());
+    m_currentGroup.highestTrack = map["HighestTrack"].toBool();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " mode " << m_currentGroup.mode
-             << " ut unit " << m_currentGroup.utUnit;
+             << " ut unit " << m_currentGroup.utUnit
+             << " highestTrack " << m_currentGroup.highestTrack;
 
-    unpack_display();
-    unpack_focallawer();
+    unpack_focallawer(map["Focallawer"].toMap());
+    unpack_gate(map["GateA"].toMap(), m_currentGroup.gateA);
+    unpack_gate(map["GateB"].toMap(), m_currentGroup.gateB);
+    unpack_gate(map["GateI"].toMap(), m_currentGroup.gateI);
+    unpack_transceiver(map["Transceiver"].toMap());
+    unpack_cursor(map["Cursor"].toMap());
+    unpack_sample(map["Sample"].toMap());
+    unpack_c_scan(map["CScan"].toMap());
 
-    unpack_gate(GateA);
-    unpack_gate(GateB);
-    unpack_gate(GateI);
-
-    unpack_probe();
-    unpack_sample();
-    unpack_specimen();
-    unpack_wedge();
-    unpack_transceiver();
+    /* has not added.*/
     unpack_curves();
     unpack_thickness();
-    unpack_cursor();
-
-    /* 以下为全局，非组内配置 */
-    unpack_scanner();
-    unpack_global_transceiver();
-
-    endGroup();
 }
 
 void Config::unpack_display()
 {
-    beginGroup("Display");
-    int language = value("Language", 0).toInt();
-    endGroup();
+    S_Display &display = m_global.display;
+
+    QVariantMap displayMap= value("Display").toMap();
+
+    display.ampPalette   = displayMap["AmpPalette"].toString();
+    display.bright       = displayMap["Bright"].toUInt();
+    display.cursor       = displayMap["Cursor"].toBool();
+    display.depthPalette = displayMap["DepthPalette"].toString();
+    display.groups       = displayMap["Groups"].toList();
+    display.language     = displayMap["Language"].toUInt();
+    display.layout       = displayMap["Layout"].toUInt();
+    display.opacity      = displayMap["Opacity"].toUInt();
+    display.tofdPalette  = displayMap["TofdPalette"].toString();
+
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " ampPalette " << display.ampPalette
+             << " bright " << display.bright
+             << " cursor " << display.cursor
+             << " depthPalette " << display.depthPalette
+             << " groups " << display.groups
+             << " language " << display.language
+             << " layout " << display.layout
+             << " opacity " << display.opacity
+             << " tofdPalette " << display.tofdPalette;
 }
 
-void Config::unpack_sample()
+void Config::unpack_sample(const QVariantMap &map)
 {
-    beginGroup("Sample");
-    m_currentGroup.sample.gain          = value("Gain", DEFAULT_SAMPLE_GAIN).toDouble();
-    m_currentGroup.sample.start         = value("Start", DEFAULT_SAMPLE_START).toDouble();
-    m_currentGroup.sample.maxGain       = value("MaxGain", DEFAULT_MAX_GAIN).toFloat();
-    m_currentGroup.sample.refGainStatus = value("RefGainStatus", DEFAULT_REF_GAIN_STATUS).toUInt();
-    if(m_currentGroup.sample.refGainStatus) {
-        m_currentGroup.sample.refGain = value("RefGain", DEFAULT_REF_GAIN).toUInt();
-    }
-    m_currentGroup.sample.pointQty      = value("PointQty", DEFAULT_POINT_QTY).toInt();
-    m_currentGroup.sample.autoCalcPointQty= value("AutoCalcPointQty", DEFAULT_AUTO_CAL_POINT_QTY).toBool();
-
-    endGroup();
+    m_currentGroup.sample.gain          = map["Gain"].toDouble();
+    m_currentGroup.sample.start         = map["Start"].toDouble();
+    m_currentGroup.sample.range         = map["Range"].toDouble();
+    m_currentGroup.sample.maxGain       = map["MaxGain"].toUInt();
+    m_currentGroup.sample.refGainStatus = map["RefGainStatus"].toUInt();
+    m_currentGroup.sample.refGain       = map["RefGain"].toDouble();
+    m_currentGroup.sample.pointQty      = map["PointQty"].toInt();
+    m_currentGroup.sample.autoCalcPointQty= map["AutoCalcPointQty"].toBool();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " gain " << m_currentGroup.sample.gain
              << " refGainStatus " << m_currentGroup.sample.refGainStatus
              << " ref gain " << m_currentGroup.sample.refGain
              << " start " << m_currentGroup.sample.start
+             << " range " << m_currentGroup.sample.range
              << " maxGain " << m_currentGroup.sample.maxGain
              << " point_qty " << m_currentGroup.sample.pointQty
              << " autoCalcPointQty " << m_currentGroup.sample.autoCalcPointQty;
-
 }
 
-void Config::unpack_transceiver()
+void Config::unpack_c_scan(const QVariantMap &map)
 {
-    beginGroup("Transceiver");
-
-    m_currentGroup.transceiver.average  = static_cast<Averaging> (value("Average", DEFAULT_TRANSCEIVER_AVERAGE).toUInt());
-    m_currentGroup.transceiver.filter     = value("Filter", DEFAULT_TRANSCEIVER_FILTER).toUInt();
-    m_currentGroup.transceiver.txRxMode   = static_cast<TxRxMode> (value("Mode", DEFAULT_TRANSCEIVER_TXRXMODE).toUInt());
-    m_currentGroup.transceiver.pw         = value("PW", DEFAULT_TRANSCEIVER_PW).toFloat();
-    m_currentGroup.transceiver.pulser     = value("Pulser", DEFAULT_TRANSCEIVER_PULSER).toUInt();
-    m_currentGroup.transceiver.receiver   = value("Receiver", DEFAULT_TRANSCEIVER_RECEIVER).toUInt();
-    m_currentGroup.transceiver.rectifier  = static_cast<Rectifier> (value("Rectifier", DEFAULT_TRANSCEIVER_RECTIFIER).toUInt());
-    m_currentGroup.transceiver.videoFilter= value("VideoFilter", DEFAULT_TRANSCEIVER_VIDEO_FILTER).toBool();
-
-    endGroup();
+    S_CScan &cScan = m_currentGroup.cScan;
+    cScan.mode = static_cast<CScanMode> (map["Mode"].toUInt());
+    cScan.sourceType = static_cast<SourceType> (map["SourceType"].toUInt());
+    cScan.topCWidth = map["TopCWidth"].toDouble();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " mode " << cScan.mode
+             << " sourceType " << cScan.sourceType
+             << " topCWidth " << cScan.topCWidth;
+}
+
+void Config::unpack_transceiver(const QVariantMap &map)
+{
+    m_currentGroup.transceiver.autoCalPW  = map["AutoCalPW"].toBool();
+    m_currentGroup.transceiver.average    = static_cast<Averaging> (map["Average"].toUInt());
+    m_currentGroup.transceiver.filter     = map["Filter"].toUInt();
+    m_currentGroup.transceiver.txRxMode   = static_cast<TxRxMode> (map["Mode"].toUInt());
+    m_currentGroup.transceiver.pw         = map["PW"].toFloat();
+    m_currentGroup.transceiver.pulser     = map["Pulser"].toUInt();
+    m_currentGroup.transceiver.receiver   = map["Receiver"].toUInt();
+    m_currentGroup.transceiver.rectifier  = static_cast<Rectifier> (map["Rectifier"].toUInt());
+    m_currentGroup.transceiver.videoFilter= map["VideoFilter"].toBool();
+
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " autoCalPW " << m_currentGroup.transceiver.autoCalPW
              << " tx_rx mode " << m_currentGroup.transceiver.txRxMode
              << " pulser width " << m_currentGroup.transceiver.pw
              << " filter " << m_currentGroup.transceiver.filter
@@ -219,76 +243,105 @@ void Config::unpack_transceiver()
              << " receiver " << m_currentGroup.transceiver.receiver;
 }
 
-void Config::unpack_focallawer()
+void Config::unpack_focallawer(const QVariantMap &map)
 {
-    beginGroup("Focallawer");
-    m_currentGroup.focallawer.focusMode = static_cast<FocusMode> (value("FocusMode", DEFAULT_FOCUS_MODE).toUInt());
-    m_currentGroup.focallawer.scanMode  = static_cast<ScanMode> (value("ScanMode", DEFAULT_SCAN_MODE).toUInt());
-    m_currentGroup.focallawer.waveType = static_cast<WaveType> (value("WaveType", DEFAULT_WAVE_TYPE).toInt());
-
-        qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-                 << " wave type " << m_currentGroup.focallawer.waveType
-                 << " focus mode " << m_currentGroup.focallawer.focusMode
-                 << " scan mode " << m_currentGroup.focallawer.scanMode;
-
-    unpack_scan();
-
-    unpack_focus();
-
-    unpack_beams_info();
-
-    endGroup();
-}
-
-void Config::unpack_scan()
-{
-    beginGroup("Scan");
-    S_Scan &scan = m_currentGroup.focallawer.scan;
-
-    scan.refractStartAngle = value("RefractStartAngle", DEFAULT_REFRACT_START_ANGLE).toDouble();
-    scan.refractStepAngle  = value("RefractStepAngle", DEFAULT_REFRACT_STEP_ANGLE).toDouble();
-    scan.refractStopAngle  = value("RefractStopAngle", DEFAULT_REFRACT_STOP_ANGLE).toDouble();
-    scan.refractAngle      = value("RefractAngle", REFRACT_ANGLE).toDouble();
-
-    scan.priApe            = value("PriApe", DEFAULT_PRIAPE).toUInt();
-    scan.priStartElem      = value("PriStartElem", DEFAULT_PRI_START_ELEM).toUInt();
-    scan.priElemStep      = value("PriElemStep", DEFAULT_PRI_ELEM_STEP).toUInt();
-    scan.priStopElem      = value("PriStopElem", DEFAULT_PRI_STOP_ELEM).toUInt();
-
-    endGroup();
+    m_currentGroup.focallawer.focusMode = static_cast<FocusMode> (map["FocusMode"].toUInt());
+    m_currentGroup.focallawer.scanMode  = static_cast<ScanMode> (map["ScanMode"].toUInt());
+    m_currentGroup.focallawer.waveType = static_cast<WaveType> (map["WaveType"].toInt());
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-             << " start angle " << scan.refractStartAngle
-             << " step angle " << scan.refractStepAngle
-             << " stop angle " << scan.refractStopAngle
-             << " refractAngle " << scan.refractAngle
-             << " priApe " << scan.priApe
-             << " priStartElem " << scan.priStartElem
-             << " priElemStep " << scan.priElemStep
-             << " priStopElem " << scan.priStopElem;
+             << " wave type " << m_currentGroup.focallawer.waveType
+             << " focus mode " << m_currentGroup.focallawer.focusMode
+             << " scan mode " << m_currentGroup.focallawer.scanMode;
+
+    unpack_scan(map["Scan"].toMap());
+
+    unpack_focus(map["Focus"].toMap());
+
+    unpack_wedge(map["Wedge"].toMap());
+
+    unpack_probe(map["Probe"].toMap());
+
+    unpack_specimen(map["Specimen"].toMap());
+
+    unpack_beams_info();
 }
 
-void Config::unpack_probe()
+void Config::unpack_scan(const QVariantMap &map)
 {
-    beginGroup("Probe");
+    S_Scan &scan = m_currentGroup.focallawer.scan;
 
+    if(Linear == m_currentGroup.focallawer.scanMode) {
+        scan.refractAngle   = map["RefractAngle"].toDouble();
+        scan.screwAngle     = map["ScrewAngle"].toDouble();
+
+        scan.secApe         = map["SecApe"].toUInt();
+        scan.secElemStep    = map["SecElemStep"].toUInt();
+        scan.secStartElem   = map["SecStartElem"].toUInt();
+        scan.secStopElem    = map["SecStopElem"].toUInt();
+
+        scan.priApe         = map["PriApe"].toUInt();
+        scan.priElemStep    = map["PriElemStep"].toUInt();
+        scan.priStartElem   = map["PriStartElem"].toUInt();
+        scan.priStopElem    = map["PriStopElem"].toUInt();
+
+        qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+                 << " refractAngle " << scan.refractAngle
+                 << " screwAngle " << scan.screwAngle
+                 << " priApe " << scan.priApe
+                 << " priStartElem " << scan.priStartElem
+                 << " priElemStep " << scan.priElemStep
+                 << " priStopElem " << scan.priStopElem
+                 << " secApe " << scan.secApe
+                 << " secStartElem " << scan.secStartElem
+                 << " secElemStep " << scan.secElemStep
+                 << " secStopElem " << scan.secStopElem;
+    } else {
+
+        scan.refractStartAngle = map["RefractStartAngle"].toDouble();
+        scan.refractStopAngle  = map["RefractStopAngle"].toDouble();
+        scan.refractStepAngle  = map["RefractStepAngle"].toDouble();
+
+        scan.screwStartAngle   = map["ScrewStartAngle"].toDouble();
+        scan.screwStopAngle    = map["ScrewStopAngle"].toDouble();
+        scan.screwStepAngle    = map["ScrewStepAngle"].toDouble();
+
+        scan.priApe         = map["PriApe"].toUInt();
+        scan.priStartElem   = map["PriStartElem"].toUInt();
+        scan.secApe         = map["SecApe"].toUInt();
+        scan.secStartElem   = map["SecStartElem"].toUInt();
+
+        qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+                 << " refractStartAngle " << scan.refractStartAngle
+                 << " refractStopAngle " << scan.refractStopAngle
+                 << " refractStepAngle " << scan.refractStepAngle
+                 << " screwStartAngle " << scan.screwStartAngle
+                 << " screwStopAngle " << scan.screwStopAngle
+                 << " screwStepAngle " << scan.screwStepAngle
+                 << " priApe " << scan.priApe
+                 << " priStartElem " << scan.priStartElem
+                 << " secApe " << scan.secApe
+                 << " secStartElem " << scan.secStartElem;
+    }
+}
+
+void Config::unpack_probe(const QVariantMap &map)
+{
     S_Probe &probe = m_currentGroup.probe;
 
-    probe.arrayMode     = static_cast<ArrayMode> (value("ArrayMode", DEFAULT_ARRAY_MODE).toInt());
-    probe.freq          = value("Freq", DEFAULT_PROBE_FREQ).toDouble();
-    probe.model         = value("Model", DEFAULT_PROBE_MODEL).toString();
-    probe.serial        = value("Serial", DEFAULT_PROBE_SERIAL).toString();
-    probe.priElemQty    = value("PriElemQty", DEFAULT_ELEMQTY).toInt();
-    probe.secElemQty    = value("SecElemQty", DEFAULT_ELEMQTY).toInt();
-    probe.priPitch      = value("PriPitch", DEFAULT_PRI_PITCH).toFloat();
-    probe.secPitch      = value("SecPitch", DEFAULT_SEC_PITCH).toFloat();
-    probe.refPoint      = value("RefPoint", DEFAULT_REFPOINT).toFloat();
-    probe.scanOffset    = value("ScanOffset", DEFAULT_OFFSET).toDouble();
-    probe.indexOffset   = value("IndexOffset", DEFAULT_OFFSET).toDouble();
-    probe.type          = static_cast<ProbeType> (value("Type", DEFAULT_PROBE_TYPE).toInt());
-    probe.skew          = value("Skew", DEFAULT_SKEW).toInt();
-
-    endGroup();
+    probe.arrayMode     = static_cast<ArrayMode> (map.value("ArrayMode", DEFAULT_ARRAY_MODE).toUInt());
+    probe.freq          = map.value("Freq", DEFAULT_PROBE_FREQ).toDouble();
+    probe.model         = map.value("Model", DEFAULT_PROBE_MODEL).toString();
+    probe.serial        = map.value("Serial", DEFAULT_PROBE_SERIAL).toString();
+    probe.priElemQty    = map.value("PriElemQty", DEFAULT_ELEMQTY).toUInt();
+    probe.secElemQty    = map.value("SecElemQty", DEFAULT_ELEMQTY).toUInt();
+    probe.priPitch      = map.value("PriPitch", DEFAULT_PRI_PITCH).toFloat();
+    probe.secPitch      = map.value("SecPitch", DEFAULT_SEC_PITCH).toFloat();
+    probe.refPoint      = map.value("RefPoint", DEFAULT_REFPOINT).toFloat();
+    probe.scanOffset    = map.value("ScanOffset", DEFAULT_OFFSET).toDouble();
+    probe.indexOffset   = map.value("IndexOffset", DEFAULT_OFFSET).toDouble();
+    probe.type          = static_cast<ProbeType> (map.value("Type", DEFAULT_PROBE_TYPE).toUInt());
+    probe.skew          = map.value("Skew", DEFAULT_SKEW).toUInt();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " Serial " << probe.serial
@@ -307,28 +360,27 @@ void Config::unpack_probe()
              << " refPoint " << probe.refPoint;
 }
 
-void Config::unpack_wedge()
+void Config::unpack_wedge(const QVariantMap &map)
 {
     S_Wedge &wedge = m_currentGroup.wedge;
-    beginGroup("Wedge");
-    wedge.serial             = value("Serial", DEFAULT_WEDGE_SERIAL).toString();
-    wedge.model              = value("Model", DEFAULT_WEDGE_MODEL).toString();
-    wedge.angle              = value("Angle", DEFAULT_WEDGE_ANGLE).toFloat();
-    wedge.fstElemHeight      = value("FstElemHeight", DEFAULT_WEDGE_FIRST_ELEM_HEIGHT).toFloat();
-    wedge.length             = value("Length", DEFAULT_WEDGE_LENGTH).toFloat();
-    wedge.width              = value("Width", DEFAULT_WEDGE_WIDTH).toFloat();
-    wedge.height             = value("Height", DEFAULT_WEDGE_HEIGHT).toFloat();
-    wedge.velocity           = value("Velocity", DEFAULT_WEDGE_VELOCITY).toUInt();
-    wedge.waveType           = static_cast<WaveType> (value("WaveType", DEFAULT_WEDGE_WAVE_TYPE).toUInt());
-    wedge.priOffset          = value("PriOffset").toFloat();
-    wedge.secOffset          = value("SecOffset").toFloat();
-    wedge.orientation        = static_cast<Orientation> (value("Orientation", DEFAULT_WEDGE_ORIENTATION).toUInt());
-    wedge.refPoint           = value("RefPoint", DEFAULT_WEDGE_REF_POINT).toUInt();
-    /* 待定？？暂在配置信息未发现此key */
-    wedge.rootAngle          = value("RootAngle", DEFAULT_WEDGE_ROOT_ANGLE).toFloat();
-    wedge.delay              = value("Delay", DEFAULT_WEDGE_DELAY).toInt();
 
-    endGroup();
+    wedge.serial        = map.value("Serial", DEFAULT_WEDGE_SERIAL).toString();
+    wedge.model         = map.value("Model", DEFAULT_WEDGE_MODEL).toString();
+    wedge.angle         = map.value("Angle", DEFAULT_WEDGE_ANGLE).toDouble();
+    wedge.fstElemHeight = map.value("FstElemHeight", DEFAULT_WEDGE_FIRST_ELEM_HEIGHT).toDouble();
+    wedge.length        = map.value("Length", DEFAULT_WEDGE_LENGTH).toDouble();
+    wedge.width         = map.value("Width", DEFAULT_WEDGE_WIDTH).toDouble();
+    wedge.height        = map.value("Height", DEFAULT_WEDGE_HEIGHT).toDouble();
+    wedge.velocity      = map.value("Velocity", DEFAULT_WEDGE_VELOCITY).toDouble();
+    wedge.priOffset     = map.value("PriOffset").toDouble();
+    wedge.secOffset     = map.value("SecOffset").toDouble();
+    wedge.orientation   = static_cast<Orientation> (map.value("Orientation", DEFAULT_WEDGE_ORIENTATION).toUInt());
+    wedge.rootAngle     = map.value("RootAngle", DEFAULT_WEDGE_ROOT_ANGLE).toDouble();
+    wedge.delay         = map.value("Delay", DEFAULT_WEDGE_DELAY).toUInt();
+    wedge.clampOffset   = map.value("Delay", DEFAULT_WEDGE_CLAMP_OFFSET).toDouble();
+    /* 以下键值暂不清楚是否存在 */
+    wedge.waveType      = static_cast<WaveType> (map.value("WaveType", DEFAULT_WEDGE_WAVE_TYPE).toUInt());
+    wedge.refPoint      = map.value("RefPoint", DEFAULT_WEDGE_REF_POINT).toUInt();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " serial " << wedge.serial
@@ -344,52 +396,22 @@ void Config::unpack_wedge()
              << " height " << wedge.height
              << " orientation " << wedge.orientation
              << " delay " << wedge.delay
-             << " wave type " << wedge.waveType;
+             << " clampOffset " << wedge.clampOffset
+             << " wave type " << wedge.waveType
+             << " ref pint " << wedge.refPoint;
 }
 
-void Config::unpack_specimen()
+void Config::unpack_specimen(const QVariantMap &map)
 {
     S_Specimen &specimen = m_currentGroup.specimen;
-    beginGroup("Specimen");
-    specimen.shape      = static_cast<Shape> (value("Shape", DEFAULT_SHAPE).toUInt());
-    specimen.LV         = value("LV", DEFAULT_LV).toDouble();
-    specimen.SV         = value("SV", DEFAULT_SV).toDouble();
-    specimen.material   = static_cast<Material> (value("Material", DEFAULT_MATERIAL).toUInt());
-    specimen.density    = value("Density", DEFAULT_DENSITY).toDouble();
-    specimen.weldType   = static_cast<WeldType> (value("WeldType", DEFAULT_WELD_TYPE).toUInt());
-    specimen.weld.type = specimen.weldType;
 
-    if(PLANE == specimen.shape) {
-        specimen.height0  = value("0/Height", DEFAULT_PLANE_HEIGHT).toDouble();
-        specimen.width0   = value("0/Width", DEFAULT_PLANE_WIDTH).toDouble();
-        specimen.length0  = value("0/Length", DEFAULT_PLANE_LENGTH).toDouble();
-    } else if(CYLINDER == specimen.shape) {
-        specimen.probePosition = static_cast<ProbePosition> (value("0/ProbePosition",
-                                                                   DEFAULT_CYLINDER_PROBE_POS).toUInt());
-        specimen.inside0  = value("0/Inside", DEFAULT_CYLINDER_INSIDE).toDouble();
-        specimen.outside0 = value("0/Outside", DEFAULT_CYLINDER_OUTSIDE).toDouble();
-        specimen.angle0   = value("0/Angle", DEFAULT_CYLINDER_ANGLE).toDouble();
-        specimen.length0  = value("0/Length", DEFAULT_CYLINDER_LENGHT).toDouble();
-    } else if(NOZZLE == specimen.shape) {
-        specimen.angle0     = value("0/Angle", DEFAULT_NOZZLE_0_ANGLE).toDouble();
-        specimen.inside0    = value("0/Inside", DEFAULT_NOZZLE_0_INSIDE).toDouble();
-        specimen.outside0   = value("0/Outside", DEFAULT_NOZZLE_0_OUTSIDE).toDouble();
-
-        specimen.length1    = value("1/Length", DEFAULT_NOZZLE_1_LENGTH).toDouble();
-        specimen.inside1    = value("1/Inside", DEFAULT_NOZZLE_1_INSIDE).toDouble();
-        specimen.outside1   = value("1/Outside", DEFAULT_NOZZLE_1_OUTSIDE).toDouble();
-
-        specimen.length2    = value("2/Length", DEFAULT_NOZZLE_2_LENGTH).toDouble();
-        specimen.inside2    = value("2/Inside", DEFAULT_NOZZLE_2_INSIDE).toDouble();
-        specimen.outside2   = value("2/Outside", DEFAULT_NOZZLE_2_OUTSIDE).toDouble();
-        specimen.angle2     = value("2/Angle", DEFAULT_NOZZLE_2_LENGTH).toDouble();
-    } else {
-        qWarning("%s(%s[%d]): unimplement", __FILE__, __func__, __LINE__);
-    }
-
-    unpack_weld();
-
-    endGroup();
+    specimen.shape      = static_cast<Shape> (map.value("Shape", DEFAULT_SHAPE).toUInt());
+    specimen.LV         = map.value("LV", DEFAULT_LV).toDouble();
+    specimen.SV         = map.value("SV", DEFAULT_SV).toDouble();
+    specimen.material   = static_cast<Material> (map.value("Material", DEFAULT_MATERIAL).toUInt());
+    specimen.density    = map.value("Density", DEFAULT_DENSITY).toDouble();
+    specimen.weldType   = static_cast<WeldType> (map.value("WeldType", DEFAULT_WELD_TYPE).toUInt());
+    specimen.weld.type  = specimen.weldType;
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " shape " << specimen.shape
@@ -398,9 +420,66 @@ void Config::unpack_specimen()
              << " material " << specimen.material
              << " density " << specimen.density
              << " weldType " << specimen.weldType;
+
+    unpack_geometry(map.value("Geometry").toMap());
+
+    unpack_weld(map.value("Weld").toMap());
 }
 
-void Config::unpack_weld()
+void Config::unpack_geometry(const QVariantMap &map)
+{
+    if(PLANE == m_currentGroup.specimen.shape) {
+        unpack_geometry_plane(map);
+    } else if(CYLINDER == m_currentGroup.specimen.shape) {
+        unpack_geometry_cylinder(map, m_currentGroup.specimen.geometry.cylinder);
+    } else if(NOZZLE == m_currentGroup.specimen.shape) {
+        unpack_geometry_nozzle(map);
+    } else {
+        qWarning("%s(%s[%d]): unimplement", __FILE__, __func__, __LINE__);
+    }
+}
+
+void Config::unpack_geometry_plane(const QVariantMap &map)
+{
+    S_Plane &plane = m_currentGroup.specimen.geometry.plane;
+    plane.height = map.value("Height", DEFAULT_PLANE_HEIGHT).toDouble();
+    plane.length = map.value("Height", DEFAULT_PLANE_LENGTH).toDouble();
+    plane.width  = map.value("Height", DEFAULT_PLANE_WIDTH).toDouble();
+
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " height " << plane.height
+             << " length " << plane.length
+             << " width " << plane.width;
+}
+
+void Config::unpack_geometry_cylinder(const QVariantMap &map, S_Cylinder &cylinder)
+{
+    cylinder.probePos = static_cast<ProbePosition> (map.value("ProbePos",
+                                                               DEFAULT_CYLINDER_PROBE_POS).toUInt());
+    cylinder.inside  = map.value("Inside", DEFAULT_CYLINDER_INSIDE).toDouble();
+    cylinder.outside = map.value("Outside", DEFAULT_CYLINDER_OUTSIDE).toDouble();
+    cylinder.angle   = map.value("Angle", DEFAULT_CYLINDER_ANGLE).toDouble();
+    cylinder.length  = map.value("Length", DEFAULT_CYLINDER_LENGHT).toDouble();
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " probePos " << cylinder.probePos
+             << " inside " << cylinder.inside
+             << " outside " << cylinder.outside
+             << " angle " << cylinder.angle
+             << " length " << cylinder.length;
+}
+
+void Config::unpack_geometry_nozzle(const QVariantMap &map)
+{
+    S_Nozzle &nozzle = m_currentGroup.specimen.geometry.nozzle;
+    nozzle.inside  = map.value("Inside", DEFAULT_NOZZLE_INSIDE).toDouble();
+    nozzle.outside = map.value("Outside", DEFAULT_NOZZLE_OUTSIDE).toDouble();
+    nozzle.angle   = map.value("Angle", DEFAULT_NOZZLE_ANGLE).toDouble();
+
+    unpack_geometry_cylinder(map.value("Cylinder1").toMap(), nozzle.cylinder1);
+    unpack_geometry_cylinder(map.value("Cylinder2").toMap(), nozzle.cylinder2);
+}
+
+void Config::unpack_weld(const QVariantMap &map)
 {
     S_Weld &weld = m_currentGroup.specimen.weld;
 
@@ -408,63 +487,97 @@ void Config::unpack_weld()
         return;
     }
 
-    beginGroup("Weld");
-
     weld.orientation = static_cast<WeldOrientation> (value("Orientation", DEFAULT_WELD_ORIENTATION).toUInt());
     weld.isSymmetry  = value("Symmetry", DEFAULT_WELD_SYMMETRY).toBool();
 
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " orientation " << weld.orientation
+             << " symmetry " << weld.isSymmetry;
+
     if(I == weld.type) {
-        weld.w0 = value("0/W", DEFAULT_I_W_0).toDouble();
+        unpack_I_weld(map.value("I").toMap(), weld.I);
     } else if(V == weld.type) {
-        weld.w0 = value("0/W", DEFAULT_V_W_0).toDouble();
-        weld.w1 = value("1/W", DEFAULT_V_W_1).toDouble();
-        weld.h0  = value("0/H", DEFAULT_V_H_0).toDouble();
+        unpack_I_weld(map.value("I").toMap(), weld.I);
+        unpack_V_weld(map.value("V").toMap(), weld.V);
     } else if(U == weld.type) {
-        weld.w0 = value("0/W", DEFAULT_U_W_0).toDouble();
-        weld.w1 = value("1/W", DEFAULT_U_W_1).toDouble();
-        weld.h0  = value("0/H", DEFAULT_U_H_0).toDouble();
-        weld.r0  = value("0/R", DEFAULT_U_R_0).toDouble();
-    }else if(VY == weld.type || VV == weld.type) {
-        weld.w0 = value("0/W", DEFAULT_VY_W_0).toDouble();
-        weld.w1 = value("1/W", DEFAULT_VY_W_1).toDouble();
-        weld.w2 = value("2/W", DEFAULT_VY_W_2).toDouble();
-        weld.h0 = value("0/H", DEFAULT_VY_H_0).toDouble();
-        weld.h1 = value("1/H", DEFAULT_VY_W_1).toDouble();
+        unpack_I_weld(map.value("I").toMap(), weld.I);
+        unpack_U_weld(map.value("U").toMap(), weld.U);
+    }else if(VY == weld.type) {
+        unpack_I_weld(map.value("BtmI").toMap(), weld.BtmI);
+        unpack_V_weld(map.value("MidV").toMap(), weld.MidV);
+        unpack_V_weld(map.value("TopV").toMap(), weld.TopV);
+    } else if(VV == weld.type) {
+        unpack_V_weld(map.value("BtmV").toMap(), weld.BtmV);
+        unpack_I_weld(map.value("MidI").toMap(), weld.MidI);
+        unpack_V_weld(map.value("TopV").toMap(), weld.TopV);
     } else if(UU == weld.type) {
-        weld.w0 = value("0/W", DEFAULT_UU_W_0).toDouble();
-        weld.w1 = value("1/W", DEFAULT_UU_W_1).toDouble();
-        weld.w2 = value("2/W", DEFAULT_UU_W_2).toDouble();
-        weld.h0 = value("0/H", DEFAULT_UU_H_0).toDouble();
-        weld.h1 = value("1/H", DEFAULT_UU_H_1).toDouble();
-        weld.r0 = value("0/R", DEFAULT_UU_R_0).toDouble();
-        weld.r1 = value("1/R", DEFAULT_UU_R_1).toDouble();
+        unpack_U_weld(map.value("BtmU").toMap(), weld.BtmU);
+        unpack_I_weld(map.value("MidI").toMap(), weld.MidI);
+        unpack_U_weld(map.value("TopU").toMap(), weld.TopU);
     } else if(UV == weld.type) {
-        weld.w0 = value("0/W", DEFAULT_UV_W_0).toDouble();
-        weld.w1 = value("1/W", DEFAULT_UV_W_1).toDouble();
-        weld.w2 = value("2/W", DEFAULT_UV_W_2).toDouble();
-        weld.h0 = value("0/H", DEFAULT_UV_H_0).toDouble();
-        weld.h1 = value("1/H", DEFAULT_UV_H_1).toDouble();
-        weld.r0 = value("0/R", DEFAULT_UV_R_0).toDouble();
+        unpack_U_weld(map.value("U").toMap(), weld.U);
+        unpack_I_weld(map.value("I").toMap(), weld.I);
+        unpack_V_weld(map.value("V").toMap(), weld.V);
     } else {
         qWarning("%s(%s[%d]): unimplement", __FILE__, __func__, __LINE__);
     }
-
-    endGroup();
 }
 
-void Config::unpack_focus()
+void Config::unpack_I_weld(const QVariantMap &map, S_WeldI &I)
+{
+    I.width       = map.value("W").toDouble();
+    I.orientation = static_cast<WeldOrientation> (map.value("Orientation").toUInt());
+    I.symmetry    = map.value("Symmetry").toBool();
+
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " width " << I.width
+             << " orientation " << I.orientation
+             << " symmetry " << I.symmetry;
+}
+
+void Config::unpack_V_weld(const QVariantMap &map, S_WeldV &V)
+{
+    V.width       = map.value("W").toDouble();
+    V.orientation = static_cast<WeldOrientation> (map.value("Orientation").toUInt());
+    V.symmetry    = map.value("Symmetry").toBool();
+    V.height      = map.value("H").toDouble();
+
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " width " << V.width
+             << " orientation " << V.orientation
+             << " symmetry " << V.symmetry
+             << " height " << V.height;
+}
+
+void Config::unpack_U_weld(const QVariantMap &map, S_WeldU &U)
+{
+    U.width       = map.value("W").toDouble();
+    U.orientation = static_cast<WeldOrientation> (map.value("Orientation").toUInt());
+    U.symmetry    = map.value("Symmetry").toBool();
+    U.height      = map.value("H").toDouble();
+    U.radius      = map.value("R").toDouble();
+
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " width " << U.width
+             << " orientation " << U.orientation
+             << " symmetry " << U.symmetry
+             << " height " << U.height
+             << " radius " << U.radius;
+}
+
+void Config::unpack_focus(const QVariantMap &map)
 {
     S_Focus &focus = m_currentGroup.focallawer.focus;
-    beginGroup("Focus");
-    focus.radius      = value("Radius", DEFAULT_END_OFFSET).toFloat();
-    focus.depth       = value("Depth", DEFAULT_END_OFFSET).toFloat();
-    focus.offset      = value("Offset", DEFAULT_END_OFFSET).toFloat();
-    focus.beginOffset = value("BeginOffset", DEFAULT_BEGIN_OFFSET).toFloat();
-    focus.endOffset   = value("EndOffset", DEFAULT_END_OFFSET).toFloat();
-    focus.beginDepth  = value("BeginDepth", DEFAULT_BEGIN_OFFSET).toFloat();
-    focus.endDepth    = value("EndDepth", DEFAULT_END_OFFSET).toFloat();
+
+    focus.radius      = map.value("Radius", DEFAULT_END_OFFSET).toDouble();
+    focus.depth       = map.value("Depth", DEFAULT_END_OFFSET).toDouble();
+    focus.offset      = map.value("Offset", DEFAULT_END_OFFSET).toDouble();
+    focus.beginOffset = map.value("BeginOffset", DEFAULT_BEGIN_OFFSET).toDouble();
+    focus.endOffset   = map.value("EndOffset", DEFAULT_END_OFFSET).toDouble();
+    focus.beginDepth  = map.value("BeginDepth", DEFAULT_BEGIN_OFFSET).toDouble();
+    focus.endDepth    = map.value("EndDepth", DEFAULT_END_OFFSET).toDouble();
     focus.focusMode   = m_currentGroup.focallawer.focusMode;
-    endGroup();
+
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " radius " << focus.radius
              << " depth " << focus.depth
@@ -509,28 +622,42 @@ void Config::unpack_thickness()
     //             << " thickness max " << m_currentGroup.thickness.max;
 }
 
-void Config::unpack_cursor()
+void Config::unpack_cursor(const QVariantMap &map)
 {
+    S_Cursor &cursor = m_currentGroup.cursor;
 
+    cursor.ampMeas  = map.value("AmpMeas", DEFAULT_MEAS).toDouble();
+    cursor.ampRef   = map.value("AmpRef", DEFAULT_REF).toDouble();
+    cursor.depthMeas= map.value("DepthMeas", DEFAULT_MEAS).toDouble();
+    cursor.depthRef = map.value("DepthRef", DEFAULT_REF).toDouble();
+    cursor.indexMeas= map.value("IndexMeas", DEFAULT_MEAS).toDouble();
+    cursor.indexRef = map.value("IndexRef", DEFAULT_REF).toDouble();
+    cursor.scanMeas = map.value("ScanMeas", DEFAULT_MEAS).toDouble();
+    cursor.scanRef  = map.value("ScanRef", DEFAULT_REF).toDouble();
+    cursor.ultraMeas= map.value("UltraMeas", DEFAULT_MEAS).toDouble();
+    cursor.ultraRef = map.value("UltraRef", DEFAULT_REF).toDouble();
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " ampMeas " << cursor.ampMeas
+             << " ampRef " << cursor.ampRef
+             << " depthMeas " << cursor.depthMeas
+             << " depthRef " << cursor.depthRef
+             << " indexMeas " << cursor.indexMeas
+             << " indexRef " << cursor.indexRef
+             << " scanMeas " << cursor.scanMeas
+             << " scanRef " << cursor.scanRef
+             << " ultraMeas " << cursor.ultraMeas
+             << " ultraRef " << cursor.ultraRef;
 }
 
-void Config::unpack_gate(GateType gateType)
+void Config::unpack_gate(const QVariantMap &map, S_Gate &gate)
 {
-    beginGroup(QString("Gate%1").arg(gateType));
-    S_Gate &gate = m_currentGroup.gateA;
-    if(GateB == gateType) {
-        gate = m_currentGroup.gateB;
-    } else if(GateI == gateType) {
-        gate = m_currentGroup.gateI;
-    }
-
-    gate.measureMode = static_cast<MeasureMode> (value("MeasureMode", DEFAULT_MEASURE_MODE).toInt());
-    gate.gateMode    = static_cast<GateMode> (value("Mode", DEFAULT_GATE_MODE).toInt());
-    gate.synchroMode = static_cast<SynchroMode> (value("SynchroMode", DEFAULT_SYNCHRO_MODE).toInt());
-    gate.visible     = value("Visible", DEFAULT_GATE_VISIBLE).toBool();
-    gate.start       = value("Start", DEFAULT_GATE_START).toFloat();
-    gate.width       = value("Width", DEFAULT_GATE_WIDTH).toFloat();;
-    gate.height      = value("Height", DEFAULT_GATE_HEIGHT).toInt();
+    gate.measureMode = static_cast<MeasureMode> (map["MeasureMode"].toUInt());
+    gate.gateMode    = static_cast<GateMode> (map["Mode"].toUInt());
+    gate.synchroMode = static_cast<SynchroMode> (map["SynchroMode"].toUInt());
+    gate.visible     = map["Visible"].toBool();
+    gate.start       = map["Start"].toDouble();
+    gate.width       = map["Width"].toDouble();;
+    gate.height      = map["Height"].toUInt();
 //    gate.color       = map["Color"].toUInt();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
@@ -542,7 +669,6 @@ void Config::unpack_gate(GateType gateType)
              << " width " << gate.width
              << " height " << gate.height
              << " color " << gate.color;
-    endGroup();
 }
 
 void Config::unpack_curves()
@@ -672,68 +798,52 @@ void Config::unpack_curve_offset()
 
 void Config::unpack_scanner()
 {
-    unpack_axis(0);
-    unpack_axis(1);
+    QVariantMap map = value("Scanner").toMap();
 
-    unpack_encoder(0);
-    unpack_encoder(1);
+    unpack_axis(map["IndexAxis"].toMap(), m_global.scanner.indexAxis);
 
-//    m_scanner.scanMode = static_cast<ScanMode> (map["Mode"].toInt());
-//    m_scanner.speed    = map["Speed"].toInt();
+    unpack_axis(map["ScanAxis"].toMap(), m_global.scanner.scanAxis);
 
-//    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-//             << " scanMode " << m_scanner.scanMode
-//             << " speed " << m_scanner.speed;
+    unpack_encoder(map["Encoder0"].toMap(), m_global.scanner.encoderX);
 
-//    unpack_axis(map["ScanAxis"].toMap(), m_scanner.scanAxis);
-//    unpack_axis(map["IndexAxis"].toMap(), m_scanner.indexAxis);
-//    unpack_encoder(map["EncoderX"].toMap(), m_scanner.encoderX);
-//    unpack_encoder(map["EncoderY"].toMap(), m_scanner.encoderY);
+    unpack_encoder(map["Encoder1"].toMap(), m_global.scanner.encoderY);
+
+    m_global.scanner.scanType = static_cast<ScanType> (map["Mode"].toUInt());
+    m_global.scanner.rate     = map["Rate"].toUInt();
+
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " scanType " << m_global.scanner.scanType
+             << " rate " << m_global.scanner.rate;
 }
 
-void Config::unpack_axis(int index)
+void Config::unpack_axis(const QVariantMap &map, S_Axis &axis)
 {
-    S_Axis &axis = m_scanner.scanAxis;
+    axis.driving    = static_cast<Driving>(map["Driving"].toUInt());
+    axis.start      = map["Start"].toDouble();
+    axis.end        = map["End"].toDouble();
+    axis.resolution = map["Resolution"].toDouble();
 
-    axis.driving    = TIMER;
-    axis.start      = 0;
-    axis.end        = 800;
-    axis.resolution = 1;
-
-//    axis.driving    = static_cast<Driving> (map["Driving"].toInt());
-//    axis.start      = map["Start"].toDouble();
-//    axis.end        = map["End"].toDouble();
-//    axis.resolution = map["Resolution"].toDouble();
-
-//    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-//             << " driving " << axis.driving
-//             << " start " << axis.start
-//             << " end " << axis.end
-//             << " resolution " << axis.resolution;
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " driving " << axis.driving
+             << " start " << axis.start
+             << " end " << axis.end
+             << " resolution " << axis.resolution;
 }
 
-void Config::unpack_encoder(int index)
+void Config::unpack_encoder(const QVariantMap &map,S_Encoder &encoder)
 {
-    S_Encoder &encoder = m_scanner.encoderX;
+    encoder.status      = static_cast<EncoderStatus> (map["Status"].toUInt());
+    encoder.polarity    = static_cast<Polarity> (map["Polarity"].toUInt());
+    encoder.mode        = static_cast<EncoderMode> (map["Mode"].toUInt());
+    encoder.resolution  = map["Resolution"].toDouble();
+    encoder.origin      = map["Origin"].toDouble();;
 
-    encoder.status      = ON;
-    encoder.polarity    = NORMAL;
-    encoder.mode        = QUAD;
-    encoder.resolution  = 48;
-    encoder.origin      = 0;
-
-//    encoder.status      = static_cast<Status> (map["Status"].toInt());
-//    encoder.polarity    = static_cast<Polarity> (map["Polarity"].toInt());
-//    encoder.mode        = static_cast<EncoderMode> (map["Mode"].toInt());
-//    encoder.resolution  = map["Resolution"].toDouble();
-//    encoder.origin      = map["Origin"].toDouble();
-
-//    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-//             << " status " << encoder.status
-//             << " polarity " << encoder.polarity
-//             << " mode " << encoder.mode
-//             << " resolution " << encoder.resolution
-//             << " origin " << encoder.origin;
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " status " << encoder.status
+             << " polarity " << encoder.polarity
+             << " mode " << encoder.mode
+             << " resolution " << encoder.resolution
+             << " origin " << encoder.origin;
 }
 
 void Config::unpack_global()
@@ -745,23 +855,18 @@ void Config::unpack_global()
 void Config::unpack_global_transceiver()
 {
     S_GlobalTransceiver &transceiver = m_global.transceiver;
-    transceiver.paVoltage      = V50;
-    transceiver.utVoltage      = V50;
-    transceiver.prfMode        = USER_DEF;
-    transceiver.acquisitionRate= 2;
+    QVariantMap map = value("GlobalTransceiver").toMap();
 
+    transceiver.paVoltage      = static_cast<Voltage> (map["PaVoltage"].toUInt());
+    transceiver.ut1TxDamping   = static_cast<Damping> (map["Ut1TxDamping"].toUInt());
+    transceiver.ut2TxDamping   = static_cast<Damping> (map["Ut2TxDamping"].toUInt());
+    transceiver.utVoltage      = static_cast<Voltage> (map["UtVoltage"].toUInt());
 
-//    S_GlobalTransceiver &transceiver = m_global.transceiver;
-//    transceiver.paVoltage      = static_cast<Voltage> (map["PAVoltage"].toInt());
-//    transceiver.utVoltage      = static_cast<Voltage> (map["UTVoltage"].toInt());
-//    transceiver.prfMode        = static_cast<PrfMode> (map["PRFMode"].toInt());
-//    transceiver.acquisitionRate= map["AcquisitionRate"].toInt();
-
-//    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-//             << " PA Voltage " << transceiver.paVoltage
-//             << " UT Voltage " << transceiver.utVoltage
-//             << " PRF Mode " << transceiver.prfMode
-//             << " rate " << transceiver.acquisitionRate;
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " PA Voltage " << transceiver.paVoltage
+             << " UT Voltage " << transceiver.utVoltage
+             << " ut1TxDamping " << transceiver.ut1TxDamping
+             << " ut2TxDamping " << transceiver.ut2TxDamping;
 }
 
 void Config::unpack_alarm()
@@ -828,7 +933,7 @@ void Config::convert_to_phascan_config(int groupId)
     /* Sample */
     targetGroup.gain          = currentGroup.sample.gain * 100.0;
     targetGroup.start         = currentGroup.sample.start;
-    targetGroup.range         = currentGroup.sample.maxGain;
+    targetGroup.range         = currentGroup.sample.range;
     targetGroup.on_off_status = set_bit_value(targetGroup.on_off_status, 0, currentGroup.sample.refGainStatus);
     if(get_bit_value(targetGroup.on_off_status, 0)) {
         targetGroup.gainr = currentGroup.sample.refGain;
@@ -928,21 +1033,21 @@ void Config::convert_to_phascan_config(int groupId)
     targetWedge.Height            = currentWedge.fstElemHeight * 1000.0;
     targetWedge.Orientation       = currentWedge.orientation;
     targetWedge.Wave_type         = currentWedge.waveType;
-    //    targetWedge.Ref_point         = ?;
+    targetWedge.Ref_point         = currentWedge.refPoint;
     targetWedge.Probe_delay       = currentWedge.delay;
 
     /* Specimen */
     targetGroup.part.Geometry     = currentSpecimen.shape;
     targetGroup.part.Material_pos = currentSpecimen.material;
-    targetGroup.part.Thickness    = currentSpecimen.height0 * 1000.0;
 
     if(currentSpecimen.weldType != NONE_TYPE) {
         targetGroup.part.symmetry = currentSpecimen.weld.isSymmetry;
         /* TODO: fill weld info */
     }
+
     /* TODO */
     if(PLANE == currentSpecimen.shape) {
-
+        targetGroup.part.Thickness    = currentSpecimen.geometry.plane.height * 1000.0;
     } else if(CYLINDER == currentSpecimen.shape) {
 
     }
@@ -1059,20 +1164,21 @@ void Config::convert_to_phascan_config(int groupId)
 
 void Config::convert_other_to_phascan_config()
 {
-    /* Scanner */
     DRAW_INFO_PACK &drawInfoPack = m_pDataFile->m_cDrawInfoPack;
+    drawInfoPack.nGroupNum = m_global.groupQty;
 
-    drawInfoPack.nScanStart = m_scanner.scanAxis.start * 1000.0;
-    drawInfoPack.nScanEnd = m_scanner.scanAxis.end * 1000.0;
-    drawInfoPack.nScanResolution = m_scanner.scanAxis.resolution * 1000.0;
+    /* Scanner */
+    drawInfoPack.nScanStart = m_global.scanner.scanAxis.start * 1000.0;
+    drawInfoPack.nScanEnd = m_global.scanner.scanAxis.end * 1000.0;
+    drawInfoPack.nScanResolution = m_global.scanner.scanAxis.resolution * 1000.0;
 
-    if(ENCODER_X == m_scanner.scanAxis.driving) {
-        drawInfoPack.nInspecResolution = m_scanner.encoderX.origin;
+    if(ENCODER_X == m_global.scanner.scanAxis.driving) {
+        drawInfoPack.nInspecResolution = m_global.scanner.encoderX.origin;
         drawInfoPack.nEncodeType = 1;
-    } else if(ENCODER_Y == m_scanner.scanAxis.driving) {
-        drawInfoPack.nInspecResolution = m_scanner.encoderY.origin;
+    } else if(ENCODER_Y == m_global.scanner.scanAxis.driving) {
+        drawInfoPack.nInspecResolution = m_global.scanner.encoderY.origin;
         drawInfoPack.nEncodeType = 1;
-    } else if(TIMER == m_scanner.scanAxis.driving){
+    } else if(TIMER == m_global.scanner.scanAxis.driving){
         drawInfoPack.nEncodeType = 0;
     } else {
         qWarning("%s(%s[%d]): unimplement other driving.", __FILE__, __func__, __LINE__);
@@ -1080,8 +1186,8 @@ void Config::convert_other_to_phascan_config()
 
     /* Global */
     for(int i = 0; i < m_pDataFile->m_cDrawInfoPack.nGroupNum; ++i) {
-        m_pDataFile->m_cGroupInfo[i].prf1 = m_global.transceiver.acquisitionRate * 10;
-    }
+        m_pDataFile->m_cGroupInfo[i].prf1 = m_global.scanner.rate * 10;
+    }  
 }
 
 bool Config::is_phascan_ii_file(QFile &file)
@@ -1109,6 +1215,8 @@ bool Config::is_phascan_ii_file(QFile &file)
     }
 
     file.read((char *)&dataMarkLen, sizeof(dataMarkLen));
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " dataMakeLen " << dataMarkLen;
     if (dataMarkLen <= 0 || dataMarkLen > totalSize) {
         qWarning("%s(%s[%d]): dataMarkLen is ERROR.", __FILE__, __func__, __LINE__);
         return false;
@@ -1127,6 +1235,14 @@ bool Config::is_phascan_ii_file(QFile &file)
 
     qint64 totalLen = configLen + dataMarkLen + beamDataLen + sizeof(quint64) * 3;
 
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " configlen " << configLen
+             << " sizof() * 3 " << (sizeof(quint64) * 3)
+             << " dataMakeLen " << dataMarkLen
+             << " beamDataLen " << beamDataLen
+             << " totalLen " << totalLen
+             << " framesize " << beamDataLen / dataMarkLen;
+
     if(totalLen != totalSize) {
         qWarning("%s(%s[%d]): cal Len is not equal totalSzie.", __FILE__, __func__, __LINE__);
         return false;
@@ -1134,6 +1250,26 @@ bool Config::is_phascan_ii_file(QFile &file)
 
     file.seek(0);
     return true;
+}
+
+void Config::print_all_key(int depth, const QVariantMap &map)
+{
+    int count = depth + 1;
+    QString tag;
+    for(int i = 0; i < count; ++i) {
+        tag += QString(" =");
+    }
+
+    if(map.count()) {
+        QList<QString> keys = map.keys();
+        for(int i = 0; i < keys.count(); ++i) {
+            qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+                     << tag
+                     << " key " << keys.at(i)
+                     << " value " << map.value(keys.at(i));
+            print_all_key(count, map.value(keys.at(i)).toMap());
+        }
+    }
 }
 
 void Config::set_is_phascan_ii(bool flag)
