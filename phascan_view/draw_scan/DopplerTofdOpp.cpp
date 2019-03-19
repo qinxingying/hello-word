@@ -204,7 +204,7 @@ int DopplerTofdOpp::TofdDataProStart(int nGroupId_, TOFD_PRO_STATUS proSt_, GYRE
    //	m_pTofd->proInfo[i].fY = 10;
 		break;
 	case TOFD_PRO_SAFT:
-		m_pTofd->proInfo[i].iDots = 10;
+        m_pTofd->proInfo[i].iDots = 5;
 		TofdSAFTInit(m_nGroupId, &m_pTofd->proInfo[i], m_pTofd->iSaftBuf);
 		break;
 	default:
@@ -539,80 +539,95 @@ int DopplerTofdOpp::TofdDifference(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* 
 
 int DopplerTofdOpp::TofdSaft(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSource_, WDATA* pDest_)
 {
-	SetGroupId(nGroupId_);
+    SetGroupId(nGroupId_);
 
-	int _nScanOff = m_process->GetScanOff(nGroupId_) ;
-	int _nScanMax = m_process->GetScanMax();
+    int _nScanOff = m_process->GetScanOff(nGroupId_) ;
+    int _nScanMax = m_process->GetScanMax();
 
-	GYRECT    _rect = pInfo_->rcArea;
-	_rect.top    += _nScanOff;
-	_rect.bottom += _nScanOff;
+    GYRECT    _rect = pInfo_->rcArea;
+    _rect.top    += _nScanOff;
+    _rect.bottom += _nScanOff;
 
-	int	 _iDots = (int)pInfo_->iDots;
-	int _iCurveLen = 2*_iDots+1;
+    int	 _iDots = (int)pInfo_->iDots;
+    int _iCurveLen = 2*_iDots+1;
 
-	WDATA*  _pScr[40];
-	WDATA*  _pDst =  NULL;
+    WDATA*  _pScr[40];
+    WDATA*  _pDst =  NULL;
 
-	int _nStart = _rect.top;
-	int _nStop  = _rect.bottom;
+    int _nStart = _rect.top;
+    int _nStop  = _rect.bottom;
 
-	if(_nStart < _nScanOff)	_nStart = _nScanOff;
-	if(_nStop > _nScanMax)	_nStop  = _nScanMax;
+    if(_nStart < _nScanOff)	_nStart = _nScanOff;
+    if(_nStop > _nScanMax)	_nStop  = _nScanMax;
 
     int x, y, i, n, _iData, _iAv;
-	for(y = _nStart; y < _nStop; y++)
-	{
-		for(i = 0; i < _iCurveLen; i++)
-		{
-			n = y - _iDots + i;
-			if(n < _nScanOff || n > _nScanMax)
-				_pScr[i] = NULL;
-			else
-				_pScr[i] = m_process->GetDataAbsolutePosPointer(m_nGroupId, n, 0, pSource_);
-		}
-		_pDst = m_process->GetDataAbsolutePosPointer(m_nGroupId, y, 0, pDest_);
+    float weight, _av, _data;
+    float step = 1.0/(_iDots+1);
+    for(y = _nStart; y < _nStop; y++)
+    {
+        for(i = 0; i < _iCurveLen; i++)
+        {
+            n = y - _iDots + i;
+            if(n < _nScanOff || n > _nScanMax)
+                _pScr[i] = NULL;
+            else
+                _pScr[i] = m_process->GetDataAbsolutePosPointer(m_nGroupId, n, 0, pSource_);
+        }
+        _pDst = m_process->GetDataAbsolutePosPointer(m_nGroupId, y, 0, pDest_);
 
-		for(x = _rect.left; x < _rect.right; x++)
-		{
-			_iData = _iAv = 0;
-			for(i = 0; i < _iCurveLen; i++)
-			{
-				if(_pScr[i])
-				{
-					n = x + m_pTofd->iSaftBuf[_iCurveLen * x + i];
-					if(n >= 0 && n < m_pGroup->nPointQty)
-					{
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		_iData += _pScr[i][n];
-	}
-	else if(Phascan_Version == 2)
-	{
- 		 _iData += _pScr[i][n] * 2 | 1;
-	}             
-						_iAv++;
-					}
-				}
-			}
+        for(x = _rect.left; x < _rect.right; x++)
+        {
+            _iData = _iAv = 0;
+            _av = _data = 0;
+            for(i = 0; i < _iCurveLen; i++)
+            {
+                weight = 1.0- abs(i - _iDots)*step;
+                if(_pScr[i])
+                {
+                    n = x + m_pTofd->iSaftBuf[_iCurveLen * x + i];
+                    if(n >= 0 && n < m_pGroup->nPointQty)
+                    {
+                        if(Phascan_Version == 1 || Phascan_Version == 3)
+                        {
+                            //_iData += _pScr[i][n];
+                            _data += _pScr[i][n]*weight;
+                        }
+                        else if(Phascan_Version == 2)
+                        {
+                             //_iData += _pScr[i][n] * 2 | 1;
+                            _data += (_pScr[i][n] * 2 | 1)*weight;
+                        }
+                        //_iAv++;
+                        _av += weight;
+                    }
+                }
+            }
 
-			if(_iAv < 1)		_iAv = 1;
-			_iData /= _iAv;
-			if(_iData < 0)		_iData = 0;
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		if(_iData > WAVE_MAX)   _iData = WAVE_MAX;
-	}
-	else if(Phascan_Version == 2)
-	{
- 		 if(_iData > 511)   _iData = 511;
-           	_iData = _iData / 2;
-	} 
+            //if(_iAv < 1)		_iAv = 1;
+            //_iData /= _iAv;
+            //if(_iData < 0)		_iData = 0;
+            if(_av < 1)		_av = 1;
+            _data /= _av;
+            if(_data < 0)		_data = 0;
 
-			_pDst[x] = _iData;
-		}
-	}
-	return 0;
+            if(Phascan_Version == 1 || Phascan_Version == 3)
+            {
+                //if(_iData > WAVE_MAX)   _iData = WAVE_MAX;
+                if(_data > WAVE_MAX)   _data = WAVE_MAX;
+            }
+            else if(Phascan_Version == 2)
+            {
+                 //if(_iData > 511)   _iData = 511;
+                    //_iData = _iData / 2;
+                if(_data > 511)   _data = 511;
+                _data = _data / 2;
+            }
+
+            //_pDst[x] = _iData;
+            _pDst[x] = (WDATA)_data;
+        }
+    }
+    return 0;
 }
 
 int DopplerTofdOpp::TofdSAFTInit(int nGroupId_, TOFD_PRO_INFO* pInfo_, int* pCurveBuf_)
