@@ -366,7 +366,7 @@ struct DRAW_INFO_PACK
     int nInspecEnd      ;
     int nInspecResolution ;
     int nEncodeType ;
-    unsigned char bScanMark[7 * 1024 * 1024] ;
+    unsigned char bScanMark[1024 * 256] ;
 };
 
 struct INSPEC_DATA_FILE

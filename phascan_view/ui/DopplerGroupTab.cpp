@@ -38,6 +38,8 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
     m_pConfig = DopplerConfigure::Instance();
     m_pGroup  = &m_pConfig->group[m_nGroupId];
 	ui->toolBox->setMinimumHeight(400);
+    ui->ValueCScanThicknessMax->setMinimum(0.1);
+    ui->ValueCScanThicknessMin->setMinimum(0);
 
     for(int i = 0; i < setup_DAC_POINT_QTY; i++){
         m_pSizingCurveName[i] = findChild<QLabel*>("LabelSizingCure" + QString::number(i + 1));
@@ -1971,6 +1973,10 @@ void DopplerGroupTab::on_ComColorLineColor_currentIndexChanged(int index)
 void DopplerGroupTab::on_ValueCScanThicknessMin_valueChanged(double)
 {
     if(!ui->ValueCScanThicknessMin->hasFocus()) return ;
+    if(ui->ValueCScanThicknessMin->value() > ui->ValueCScanThicknessMax->value()) {
+        ui->ValueCScanThicknessMin->setValue(ui->ValueCScanThicknessMax->value()
+                                             - ui->ValueCScanThicknessMin->singleStep());
+    }
 	m_pGroup->fMinThickness = ui->ValueCScanThicknessMin->value() ;
 
 	ProcessDisplay _display ;
@@ -1981,6 +1987,10 @@ void DopplerGroupTab::on_ValueCScanThicknessMin_valueChanged(double)
 void DopplerGroupTab::on_ValueCScanThicknessMax_valueChanged(double)
 {
     if(!ui->ValueCScanThicknessMax->hasFocus()) return ;
+    if(ui->ValueCScanThicknessMax->value() < ui->ValueCScanThicknessMin->value()) {
+        ui->ValueCScanThicknessMax->setValue(ui->ValueCScanThicknessMin->value()
+                                             + ui->ValueCScanThicknessMax->singleStep());
+    }
 	m_pGroup->fMaxThickness = ui->ValueCScanThicknessMax->value() ;
 
 	ProcessDisplay _display ;

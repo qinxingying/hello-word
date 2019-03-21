@@ -5,6 +5,8 @@
 #include "../DopplerConfigure.h"
 #include <QSettings>
 #include "default_settings.h"
+#include "mercury_paramters/group_paramters.h"
+#include "mercury_paramters/global_paramters.h"
 
 class DopplerDataFileOperateor;
 
@@ -20,6 +22,10 @@ public:
 
     void set_is_phascan_ii(bool flag);
     bool is_phascan_ii();
+
+    char *data_mark();
+
+    uint data_mark_length();
 
 protected:
     void unpack_group(int groupId);
@@ -46,17 +52,17 @@ protected:
 
     void unpack_geometry_plane(const QVariantMap &map);
 
-    void unpack_geometry_cylinder(const QVariantMap &map, S_Cylinder &cylinder);
+    void unpack_geometry_cylinder(const QVariantMap &map, Paramters::Cylinder &cylinder);
 
     void unpack_geometry_nozzle(const QVariantMap &map);
 
     void unpack_weld(const QVariantMap &map);
 
-    void unpack_I_weld(const QVariantMap &map, S_WeldI &I);
+    void unpack_I_weld(const QVariantMap &map, Paramters::WeldI &I);
 
-    void unpack_V_weld(const QVariantMap &map, S_WeldV &V);
+    void unpack_V_weld(const QVariantMap &map, Paramters::WeldV &V);
 
-    void unpack_U_weld(const QVariantMap &map, S_WeldU &U);
+    void unpack_U_weld(const QVariantMap &map, Paramters::WeldU &U);
 
     void unpack_focus(const QVariantMap &map);
 
@@ -66,25 +72,17 @@ protected:
 
     void unpack_cursor(const QVariantMap &map);
 
-    void unpack_gate(const QVariantMap &map, S_Gate &gate);
+    void unpack_gate(const QVariantMap &map, Paramters::Gate &gate);
 
-    void unpack_curves();
+    void unpack_sizing(const QVariantMap &map);
 
-    void unpack_dac();
-
-    void unpack_linear_dac();
-
-    void unpack_tcg();
-
-    void unpack_curve_offset();
+    void unpack_curves(const QVariantMap &map);
 
     void unpack_scanner();
 
-    void unpack_axis(const QVariantMap &map, S_Axis &axis);
+    void unpack_axis(const QVariantMap &map, Paramters::Axis &axis);
 
-    void unpack_encoder(const QVariantMap &map, S_Encoder &encoder);
-
-    void unpack_global();
+    void unpack_encoder(const QVariantMap &map, Paramters::Encoder &encoder);
 
     void unpack_global_transceiver();
 
@@ -107,9 +105,9 @@ protected:
     QByteArray m_dataMark;
     QByteArray m_dataSource;
 
-    S_Groups m_groups[setup_MAX_GROUP_QTY];
-    S_Groups &m_currentGroup;
-    S_Global m_global;
+    Paramters::Group  m_groups[setup_MAX_GROUP_QTY];
+    Paramters::Global m_global;
+    int m_currentGroupID;
     int s_alarmCount;
     bool m_isPhascanII;
 };

@@ -1,4 +1,4 @@
-#include "DopplerConfigure.h"
+ï»¿#include "DopplerConfigure.h"
 #include "DopplerXMLReader.h"
 #include "DopplerColorIndex.h"
 #include <string.h>
@@ -18,11 +18,11 @@ int Phascan_Version;
 static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 	"Default PA" ,
 	"Doppler Serial" ,
-	64 ,			//Ö÷ÖáÕóÔªÊı
-	1,				//¸±ÖáÕóÔªÊı
+	64 ,			//ä¸»è½´é˜µå…ƒæ•°
+	1,				//å‰¯è½´é˜µå…ƒæ•°
 	0,				//location
 	5,				//Frequency
-	0.75,			//Ö÷Öá¼ä¾à
+	0.75,			//ä¸»è½´é—´è·
 	0,
 	1,
 	5,
@@ -33,11 +33,11 @@ static const PROBE_CONFIG DEFAULT_PROBE_PA  = {
 static const PROBE_CONFIG DEFAULT_PROBE_UT  = {
 	"Default UT" ,
 	"Doppler Serial" ,
-	1,					//Ö÷ÖáÕóÔªÊı
-	1,					//¸±ÖáÕóÔªÊı
+	1,					//ä¸»è½´é˜µå…ƒæ•°
+	1,					//å‰¯è½´é˜µå…ƒæ•°
 	0,					//location
 	5,					//Frequency
-	0,					//Ö÷Öá¼ä¾à
+	0,					//ä¸»è½´é—´è·
 	0,
 	5,
 	5,
@@ -356,6 +356,44 @@ int DopplerConfigure::OpenData(QString& path_)
 	OldGroupToGroup(m_pDataFile) ;
 	m_pData = m_pDataFile->GetData();
 
+    GROUP_INFO *targetGroup;
+    if(Config::instance()->is_phascan_ii()) {
+        targetGroup = m_pDataFile->GetGroupInfo(0);
+    } else {
+        targetGroup = m_pDataFile->GetGroupInfo(0);
+    }
+
+    SIZING_CURVES &targetCurves = targetGroup->SizingCurves;
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " mode " << targetCurves.mode_pos
+             << " curves pos " << targetCurves.curve_pos
+             << " dac_point_qty " << targetCurves.dac_point_qty;
+    for(int k = 0; k < 33; ++k) {
+        for(int i = 0; i < targetCurves.dac_point_qty; ++i) {
+            qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+                     << " i " << i
+                     << " amp " << targetCurves.amplitude[k][i]
+                        << " pos " << targetCurves.position[k][i];
+        }
+        qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+                 << " k " << k
+                 << " dac_ref_ampl " << targetCurves.dac_ref_ampl[k];
+    }
+
+    for(int i = 0; i < 16; ++i) {
+        qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+                 << " linearAmplitude " << targetCurves.linearamplitude[i]
+                 << " linearposition " << targetCurves.linearposition[i];
+    }
+
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " dac_point_qty " << targetCurves.dac_point_qty
+             << " delay " << targetCurves.delay
+             << " bApplyToAllLaws " << targetCurves.bApplyToAllLaws
+             << " bTcgCalibrated " << targetCurves.bTcgCalibrated
+             << " ref_ampl_offset " << targetCurves.ref_ampl_offset
+             << " linear_ref_ampl " << targetCurves.linear_ref_ampl;
+
 	int _iMax = RectifyScanLength();
 	CreateShadowData(_iMax);
 	memcpy(&comTmp, &common, sizeof(COMMON_CONFIG));
@@ -560,7 +598,7 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
     _pConfig->fSumGain	   =  (float)24.8  ;
 	_pConfig->bPointQtyAuto  = -1;
 	_pConfig->bSumGainAuto   = -1;
-	/* ·¢Éä½ÓÊÕ */
+	/* å‘å°„æ¥æ”¶ */
     _pConfig->nTrigeStart	 = 1;
 	_pConfig->nReceiveStart  = 1;
 
@@ -569,12 +607,12 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_pConfig->eAveraging	 = setup_AVERAGE_1	;
 	_pConfig->bVedioFilter   = 1 ;
 
-	// ÉèÖÃµÄÌ½Í·ÆµÂÊ£¬ºÍ¶ÔÓ¦µÄÂö¿í
+	// è®¾ç½®çš„æ¢å¤´é¢‘ç‡ï¼Œå’Œå¯¹åº”çš„è„‰å®½
 	_pConfig->fTriFrequency  = 5; 		/* Mhz*/
 	_pConfig->nPulserWidth   = 100;			/* ns */
 
 	_pConfig->afCursor[setup_CURSOR_LAW] = 0;
-	/* ²Î¿¼¹â±ê */
+	/* å‚è€ƒå…‰æ ‡ */
 
 	_pConfig->afCursor[setup_CURSOR_A_REF] =
 		_pConfig->afCursor[setup_CURSOR_U_REF] =
@@ -600,7 +638,7 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_pConfig->fIndexOffset		= 0.0;	  /*mm*/
 	_pConfig->eSkew				= setup_PROBE_PART_SKEW_90 ;
 
-	/*  Ğ£×¼×´Ì¬  */
+	/*  æ ¡å‡†çŠ¶æ€  */
 	_pConfig->bVelocityCalib	= 0 ;
 	_pConfig->bWedgeDelayCalib	= 0 ;
 	_pConfig->bSensationCalib	= 0 ;
@@ -621,7 +659,7 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_part.afSize[1] = _part.afSize[2] = 100 ;
 
     MATERIAL& _material  = _part.material ;
-    QString _name = QString::fromLocal8Bit("ÆÕÍ¨¸Ö");
+    QString _name = QString::fromLocal8Bit("æ™®é€šé’¢");
     strcpy(_material.strName[0] , "Steel common") ;
     strcpy(_material.strName[1] , _name.toUtf8().data()) ;
     strcpy(_material.strName[2] , " ") ;
@@ -759,7 +797,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	if(_pack->nEncodeType)
 	{
         common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;
-        common.scanner.eEncoderType = setup_ENCODER_TYPE_ENCODER_1;
+        common.scanner.eEncoderType = static_cast<setup_ENCODER_TYPE> (_pack->nEncodeType);
 		common.scanner.eScanMode	= setup_SCAN_NORMAL;
 		common.scanner.fScanPos		=  0 ;
 		common.scanner.fIndexPos	=  0 ;
@@ -797,16 +835,20 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	}
 	//common.scanner.eEncoderType = setup_ENCODER_TYPE_ENCODER_1 ;
 	int _nScanIndex = (common.scanner.fScanStop - common.scanner.fScanStart) / common.scanner.fScanStep + 1.5 ;
-	memset(common.nRecMark , 0 , 1024 * 256 );
-	memcpy(common.nRecMark , _pack->bScanMark , _nScanIndex) ;
+    memset(common.nRecMark , 0 , setup_MAX_REC_LEN );
+    if(Config::instance()->is_phascan_ii()) {
+        memcpy(common.nRecMark , Config::instance()->data_mark(), Config::instance()->data_mark_length()) ;
+    } else {
+        memcpy(common.nRecMark , _pack->bScanMark , _nScanIndex) ;
+    }
 }
 
 void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
     if(Config::instance()->is_phascan_ii()) {
-        /* Phascan II support 200% */
-        Phascan_Version = 2;
+        /* Phascan II æš‚ä¸æ”¯æŒ 200% */
+        Phascan_Version = 3;
     } else {
         Phascan_Version = m_pDataFile->GetFileHeader()->version-m_pDataFile->GetFileHeader()->size-m_pDataFile->GetFileHeader()->reserved;
     }
@@ -822,21 +864,21 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.eTxRxMode	  = (setup_TX_RX_MODE)_pGroupInfo->tx_rxmode1 ;
 		_group.nWedgeDelay	  = _pGroupInfo->wedge_delay ;
 		_group.fVelocity	  = _pGroupInfo->velocity   / 100.0 ;
-		_group.nTimeStart     = _pGroupInfo->start;									/* Ê±¼äÆğµã µ¥Î» ns */
-		_group.nTimeRange     = _pGroupInfo->range;									/* Ê±¼ä·¶Î§ µ¥Î» ns */
-		_group.fSampleStart   = _process->DistNsToMm(i , _pGroupInfo->start) ;		/* ÏÔÊ¾·¶Î§ µ¥Î» mm		*/
-		_group.fSampleRange   = _process->DistNsToMm(i , _pGroupInfo->range) ;		/* É¨ÃèÑÓÊ± µ¥Î» mm		*/
-		_group.nPointQty	  = _pGroupInfo->point_qty ;		/* µã¸öÊı */
+		_group.nTimeStart     = _pGroupInfo->start;									/* æ—¶é—´èµ·ç‚¹ å•ä½ ns */
+		_group.nTimeRange     = _pGroupInfo->range;									/* æ—¶é—´èŒƒå›´ å•ä½ ns */
+		_group.fSampleStart   = _process->DistNsToMm(i , _pGroupInfo->start) ;		/* æ˜¾ç¤ºèŒƒå›´ å•ä½ mm		*/
+		_group.fSampleRange   = _process->DistNsToMm(i , _pGroupInfo->range) ;		/* æ‰«æå»¶æ—¶ å•ä½ mm		*/
+		_group.nPointQty	  = _pGroupInfo->point_qty ;		/* ç‚¹ä¸ªæ•° */
         _group.on_off_status  = _pGroupInfo->on_off_status;
         if(!((_group.on_off_status & (0x01 << 0)) != 0))
         {
-            _group.fGain		  = _pGroupInfo->gain / 100.0;			/* ÔöÒæ 0 - 80 db  _STEP 0.01dB */
+            _group.fGain		  = _pGroupInfo->gain / 100.0;			/* å¢ç›Š 0 - 80 db  _STEP 0.01dB */
             _group.fRefGain	      = 0;
             _group.RefGain        = 0;
         }
         else if((_group.on_off_status & (0x01 << 0)) != 0)
         {
-            _group.fGain		  = _pGroupInfo->gainr / 100.0;			/* ÔöÒæ 0 - 80 db  _STEP 0.01dB */
+            _group.fGain		  = _pGroupInfo->gainr / 100.0;			/* å¢ç›Š 0 - 80 db  _STEP 0.01dB */
             _group.fRefGain	      = 0;
             _group.RefGain        = _pGroupInfo->gain / 100.0 - _pGroupInfo->gainr / 100.0;
         }
@@ -848,20 +890,20 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;
-		/* ·¢Éä½ÓÊÕ */
-		_group.nTrigeStart	  = _pGroupInfo->pulser1;		/* 1~128 - elem_qty(¾Û½¹ÕóÔªÊı×î´óÎª32) + 1 Ö¸¶¨·¢ÉäÕóÔªÓë»úÆ÷ÅäÖÃÏà¹ØÎÒÃÇÊÇ128ÕóÔª×î´ó,ÖµÓëconnect P Ò»Ñù */
-		_group.nReceiveStart  = _pGroupInfo->receiver1;		/* ½ÓÊÕÕóÔª ±ØĞëÊÇ PR Ä£Ê½²ÅÄÜµ÷½Ú */
+		/* å‘å°„æ¥æ”¶ */
+		_group.nTrigeStart	  = _pGroupInfo->pulser1;		/* 1~128 - elem_qty(èšç„¦é˜µå…ƒæ•°æœ€å¤§ä¸º32) + 1 æŒ‡å®šå‘å°„é˜µå…ƒä¸æœºå™¨é…ç½®ç›¸å…³æˆ‘ä»¬æ˜¯128é˜µå…ƒæœ€å¤§,å€¼ä¸connect P ä¸€æ · */
+		_group.nReceiveStart  = _pGroupInfo->receiver1;		/* æ¥æ”¶é˜µå…ƒ å¿…é¡»æ˜¯ PR æ¨¡å¼æ‰èƒ½è°ƒèŠ‚ */
 
-		_group.eFileter	      = (setup_FILTER_MODE)_pGroupInfo->filter_pos1 ;		/* ÂË²¨ */
-		_group.eRectifier	  = (setup_RECTIFIER_MODE)_pGroupInfo->rectifier1;		/* ¼ì²¨ */
-		_group.eAveraging	  = (setup_AVERAGE_MODE)_pGroupInfo->averaging1;		/* Æ½¾ù */
+		_group.eFileter	      = (setup_FILTER_MODE)_pGroupInfo->filter_pos1 ;		/* æ»¤æ³¢ */
+		_group.eRectifier	  = (setup_RECTIFIER_MODE)_pGroupInfo->rectifier1;		/* æ£€æ³¢ */
+		_group.eAveraging	  = (setup_AVERAGE_MODE)_pGroupInfo->averaging1;		/* å¹³å‡ */
 		_group.bVedioFilter   = _pGroupInfo->on_off_status  & 0x02;
 
-		// ÉèÖÃµÄÌ½Í·ÆµÂÊ£¬ºÍ¶ÔÓ¦µÄÂö¿í
+		// è®¾ç½®çš„æ¢å¤´é¢‘ç‡ï¼Œå’Œå¯¹åº”çš„è„‰å®½
 		_group.fTriFrequency  = _pGroupInfo->frequency1 / 1000.0;	/* Mhz*/
 		_group.nPulserWidth   = _pGroupInfo->pulser_width1 / 100;			/* ns */
 
-		/* ²Î¿¼¹â±ê */
+		/* å‚è€ƒå…‰æ ‡ */
 		//_group.afCursor[setup_CURSOR_MAX]  ;
 		// thickness range for c scan display
         int CScanSource1 = getSetting(i,"CScansource1");
@@ -872,8 +914,14 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         if(CScanSource2 < 0){
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }
-        if(common.scanner.eEncoderType && Phascan_Version == 2)
-            common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution/100.0;
+        if(!Config::instance()->is_phascan_ii()) {
+            if(common.scanner.eEncoderType && Phascan_Version == 2) {
+                common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution/100.0;
+            }
+        } else {
+            common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution;
+        }
+
         _group.eCScanSource[0]= (setup_CSCAN_SOURCE_MODE)CScanSource1 ;
         _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */
@@ -891,7 +939,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         }
 		_group.eSkew		  = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos;
 
-		/*  Ğ£×¼×´Ì¬  */
+		/*  æ ¡å‡†çŠ¶æ€  */
 		_group.bVelocityCalib	 = _pGroupInfo->VelocityCalibrated  ;
 		_group.bWedgeDelayCalib  = _pGroupInfo->WedgeDelayCalibrated;
 		_group.bSensationCalib   = _pGroupInfo->SensationCalibrated ;
@@ -924,10 +972,10 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_curve.nPointPos		= _Curve.point_pos;
 		_curve.nPointQty        = _Curve.dac_point_qty;
 		_curve.fCurStep         = _Curve.curve_step / 1000.0f;
-		_curve.fMatAtten        = _Curve.mat_atten / 1000.0f;			// Ôİ²»ÖªµÀ
+		_curve.fMatAtten        = _Curve.mat_atten / 1000.0f;			// æš‚ä¸çŸ¥é“
 		_curve.fAmpOffsetAmp    = _Curve.ref_ampl_offset / 1000.0f;
 		_curve.fAmpOffsetLinear = _Curve.linear_ref_ampl / 1000.0f ;
-		_curve.nLinearDelay     = _Curve.delay ;			// Ôİ²»ÖªµÀ
+		_curve.nLinearDelay     = _Curve.delay ;			// æš‚ä¸çŸ¥é“
 
 		for(int k = 0; k < setup_DAC_POINT_QTY; k++)
 		{
@@ -997,12 +1045,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			memcpy(_probe.strName , _Probe.Model , 20) ;
 			memcpy(_probe.strSerial , _Probe.Serial , 20) ;
 
-			_probe.nElementPri     =  _Probe.Elem_qty;			//Ö÷ÖáÕóÔªÊı
-			_probe.nElementSec     =  1;						//¸±ÖáÕóÔªÊı
-			_probe.nLocationPolicy =  0;						// ¶şÎ¬Ì½Í·£¬ÅÅÁĞË³Ğò
+			_probe.nElementPri     =  _Probe.Elem_qty;			//ä¸»è½´é˜µå…ƒæ•°
+			_probe.nElementSec     =  1;						//å‰¯è½´é˜µå…ƒæ•°
+			_probe.nLocationPolicy =  0;						// äºŒç»´æ¢å¤´ï¼Œæ’åˆ—é¡ºåº
 
 			_probe.fFrequency =  _Probe.Frequency/1000.0;		//MHz
-			_probe.fPitchPri  =  _Probe.Pitch    /1000.0;		//Ö÷Öá¼ä¾à
+			_probe.fPitchPri  =  _Probe.Pitch    /1000.0;		//ä¸»è½´é—´è·
 			_probe.fPitchSec  =  _Probe.Pitch    /1000.0;
 			_probe.fSizePri   =  1 ;
 			_probe.fSizeSec   =  1 ;
@@ -1015,13 +1063,13 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			memcpy(_probe.strName , _Probe.Model , 20) ;
 			memcpy(_probe.strSerial , _Probe.Serial , 20) ;
 
-			_probe.nElementPri     =  1 ;		 //Ö÷ÖáÕóÔªÊı
-			_probe.nElementSec     =  1 ;		 //¸±ÖáÕóÔªÊı
-			_probe.nLocationPolicy =  0;		 //¶şÎ¬Ì½Í·£¬ÅÅÁĞË³Ğò
+			_probe.nElementPri     =  1 ;		 //ä¸»è½´é˜µå…ƒæ•°
+			_probe.nElementSec     =  1 ;		 //å‰¯è½´é˜µå…ƒæ•°
+			_probe.nLocationPolicy =  0;		 //äºŒç»´æ¢å¤´ï¼Œæ’åˆ—é¡ºåº
 
 			_probe.fFrequency =  _Probe.Frequency/1000.0;			 //MHz
 			float _fSize	  =  _Probe.Pitch    /1000.0 ;
-			_probe.fPitchPri  =  _fSize	 ;			 //Ö÷Öá¼ä¾à
+			_probe.fPitchPri  =  _fSize	 ;			 //ä¸»è½´é—´è·
 			_probe.fPitchSec  =  _fSize	 ;
 			_probe.fSizePri   =  _fSize	 ;
 			_probe.fSizeSec   =  _fSize	 ;
@@ -1038,23 +1086,23 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_wedge.eType		 = ( _group.eGroupMode <= setup_GROUP_MODE_PA ) ? setup_WEDGE_TYPE_PA : setup_WEDGE_TYPE_UT ;
 		_wedge.eDirection	 = ( setup_WEDGE_ORIENTATION ) _Wedge.Orientation ;
 
-		_wedge.fWedgeAngle   = _Wedge.Angle / 10.0; /* Ğ¨¿é½Ç */
-		_wedge.fRoofAngle	 = 0 ;  /* ¶¥½Ç */
+		_wedge.fWedgeAngle   = _Wedge.Angle / 10.0; /* æ¥”å—è§’ */
+		_wedge.fRoofAngle	 = 0 ;  /* é¡¶è§’ */
 
-		_wedge.fVelocityLon  = _Wedge.Velocity_PA / 1000.0 ;/*×İ²¨ÉùËÙ*/
-		_wedge.fVelocityTra  = _Wedge.Velocity_UT / 1000.0 ;/*ºá²¨ÉùËÙ*/
+		_wedge.fVelocityLon  = _Wedge.Velocity_PA / 1000.0 ;/*çºµæ³¢å£°é€Ÿ*/
+		_wedge.fVelocityTra  = _Wedge.Velocity_UT / 1000.0 ;/*æ¨ªæ³¢å£°é€Ÿ*/
 
-		_wedge.fHeigtFirst   = _Wedge.Height            / 1000.0 ;  /*µÚÒ»ÕóÔª¸ß¶È*/
-		_wedge.fOffsetFir	 = _Wedge.Primary_offset    / 1000.0 ;	/*Ö÷ÖáÕóÔªÆ«ÒÆ*/
-		_wedge.fOffsetSec	 = _Wedge.Secondary_offset  / 1000.0 ;	/*´ÎÖáÕóÔªÆ«ÒÆ*/
-		_wedge.fPriAxisRef   = 0;   /*Ö÷ÖáĞ¨¿é²Î¿¼Î»ÖÃ*/
-		_wedge.fSecAxisRef   = 0;   /*´ÎÖáĞ¨¿é²Î¿¼Î»ÖÃ*/
+		_wedge.fHeigtFirst   = _Wedge.Height            / 1000.0 ;  /*ç¬¬ä¸€é˜µå…ƒé«˜åº¦*/
+		_wedge.fOffsetFir	 = _Wedge.Primary_offset    / 1000.0 ;	/*ä¸»è½´é˜µå…ƒåç§»*/
+		_wedge.fOffsetSec	 = _Wedge.Secondary_offset  / 1000.0 ;	/*æ¬¡è½´é˜µå…ƒåç§»*/
+		_wedge.fPriAxisRef   = 0;   /*ä¸»è½´æ¥”å—å‚è€ƒä½ç½®*/
+		_wedge.fSecAxisRef   = 0;   /*æ¬¡è½´æ¥”å—å‚è€ƒä½ç½®*/
 
-		_wedge.fLength	= 50; /*Ğ¨¿é³¤¶È*/
-		_wedge.fWidth	= 40; /*Ğ¨¿é¿í¶È*/
-		_wedge.fHeight	= 30 ;/*Ğ¨¿é¸ß¶È*/
+		_wedge.fLength	= 50; /*æ¥”å—é•¿åº¦*/
+		_wedge.fWidth	= 40; /*æ¥”å—å®½åº¦*/
+		_wedge.fHeight	= 30 ;/*æ¥”å—é«˜åº¦*/
 
-		//ut Ì½Í·²ÎÊı
+		//ut æ¢å¤´å‚æ•°
 		_wedge.fRefPoint   = _Wedge.Ref_point / 1000.0;
 		_wedge.nWedgeDelay = _Wedge.Probe_delay  ;
 

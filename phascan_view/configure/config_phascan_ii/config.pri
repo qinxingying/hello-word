@@ -16,3 +16,5 @@ CONFIG(debug, debug|release) {
 }
 
 LIBS += -L$$PWD/lib -l$$LIBQMSGPACK
+
+include(mercury_paramters/mercury_paramters.pri)
