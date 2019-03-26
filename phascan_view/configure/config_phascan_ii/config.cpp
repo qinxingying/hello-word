@@ -685,9 +685,6 @@ void Config::unpack_curves(const QVariantMap &map)
         return;
     }
 
-//    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-//             << " map " << map;
-
     Paramters::Curves &curves = m_groups[m_currentGroupID].m_sizing.m_curves;
     curves.m_compliance = static_cast<Paramters::Curves::Compliance> (map.value("Compliance").toUInt());
     curves.m_curveQty   = map.value("CurveQty").toUInt();
@@ -739,9 +736,7 @@ void Config::unpack_curves(const QVariantMap &map)
 
             curves.m_beams.append(list);
         }
-
-    } else if(Paramters::Sizing::DAC == m_groups[m_currentGroupID].m_sizing.m_type
-              || Paramters::Sizing::LINEAR_DAC == m_groups[m_currentGroupID].m_sizing.m_type) {
+    } else if(Paramters::Sizing::DAC == m_groups[m_currentGroupID].m_sizing.m_type) {
         QVariantList beamsList = map.value("Beams").toList();
         QVariantMap beamsMap;
         for(int i = 0; i < beamsList.count(); ++i) {
@@ -770,6 +765,12 @@ void Config::unpack_curves(const QVariantMap &map)
 
             curves.m_beams.append(list);
         }
+    } else if(Paramters::Sizing::LINEAR_DAC == m_groups[m_currentGroupID].m_sizing.m_type) {
+        curves.m_attenuation = map.value("Attenuation").toDouble();
+        curves.m_delay       = map.value("Delay").toDouble();
+        qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+                 << " attenuation " << curves.m_attenuation
+                 << " delay " << curves.m_delay;
     }
 }
 
@@ -1111,17 +1112,16 @@ void Config::convert_to_phascan_config(int groupId)
             targetCurves.dac_ref_ampl[i] = currentCurves.m_refAmp * 10.0;
             beamInfo = currentCurves.m_beams.at(i);
             for(int j = 0; j < beamInfo.count(); ++j) {
-                targetCurves.amplitude[i][j] = currentCurves.m_refAmp * 1000.0
-                                                / pow(10.0 , beamInfo.at(j).first * 100.0 / 2000.0);
+                targetCurves.amplitude[i][j] = currentCurves.m_refAmp * pow(10.0, beamInfo.at(j).first / 20.0) * 1000.0;
                 targetCurves.position[i][j]  = beamInfo.at(j).second;
                 qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << " TCG "
                          << " i " << i
                          << " j " << j
+                         << " refAmp " << currentCurves.m_refAmp
                          << " first " << beamInfo.at(j).first
                          << " second " << beamInfo.at(j).second
                          << " amplitude " << targetCurves.amplitude[i][j]
-                         << " position " << targetCurves.position[i][j]
-                            << " ";
+                         << " position " << targetCurves.position[i][j];
             }
         }
     } else if(Paramters::Sizing::DAC == currentGroup.m_sizing.m_type) {
@@ -1132,12 +1132,12 @@ void Config::convert_to_phascan_config(int groupId)
             targetCurves.dac_ref_ampl[i] = currentCurves.m_refAmp * 10.0;
             beamInfo = currentCurves.m_beams.at(i);
             for(int j = 0; j < beamInfo.count(); ++j) {
-                targetCurves.position[i][j]  = currentCurves.m_refAmp * 1000.0
-                                                                / pow(10.0 , beamInfo.at(j).first * 1000.0 / 2000.0);
+                targetCurves.amplitude[i][j]  = currentCurves.m_refAmp * pow(10.0 , beamInfo.at(j).first / 20.0) * 1000.0;
                 targetCurves.position[i][j]  = beamInfo.at(j).second;
                 qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << " DAC "
                          << " i " << i
                          << " j " << j
+                         << " refAmp " << currentCurves.m_refAmp
                          << " first " << beamInfo.at(j).first
                          << " second " << beamInfo.at(j).second
                          << " amplitude " << targetCurves.amplitude[i][j]
@@ -1145,19 +1145,9 @@ void Config::convert_to_phascan_config(int groupId)
             }
         }
     } else if(Paramters::Sizing::LINEAR_DAC == currentGroup.m_sizing.m_type) {
-        //    targetCurves.mat_atten = currentCurves.m_matAttenuation * 1000.0;
-        //    targetCurves.delay     = currentCurves.m_delay;
+        targetCurves.mat_atten = currentCurves.m_attenuation * 1000.0;
+        targetCurves.delay     = currentCurves.m_delay;
         qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << " LINEAR_DAC  LINEAR_DAC  LINEAR_DAC ";
-        if(currentCurves.m_beams.count() != 0) {
-            for(int i = 0; i < currentCurves.m_beams.at(0).count(); ++i) {
-                targetCurves.linearamplitude[i] = currentCurves.m_beams.at(0).at(i).first;
-                targetCurves.linearposition[i] = currentCurves.m_beams.at(0).at(i).second;
-                qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << " LINEAR DAC "
-                         << " i " << i
-                         << " amplitude " << currentCurves.m_beams.at(0).at(i).first
-                         << " position " << currentCurves.m_beams.at(0).at(i).second;
-            }
-        }
     }
 }
 

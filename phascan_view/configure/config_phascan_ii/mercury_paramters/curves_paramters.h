@@ -32,7 +32,10 @@ public:
     explicit Curves(QObject *parent = 0);
 
 private:
-
+	/* Linear DAC */
+    double m_delay;
+    double m_attenuation;
+	
     Compliance m_compliance;
     int m_curveQty;
     double m_gain;

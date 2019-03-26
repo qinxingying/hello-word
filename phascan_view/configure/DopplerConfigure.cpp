@@ -389,6 +389,7 @@ int DopplerConfigure::OpenData(QString& path_)
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " dac_point_qty " << targetCurves.dac_point_qty
              << " delay " << targetCurves.delay
+             << " mat_atten " << targetCurves.mat_atten
              << " bApplyToAllLaws " << targetCurves.bApplyToAllLaws
              << " bTcgCalibrated " << targetCurves.bTcgCalibrated
              << " ref_ampl_offset " << targetCurves.ref_ampl_offset
