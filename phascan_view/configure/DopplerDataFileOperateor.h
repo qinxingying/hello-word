@@ -5,6 +5,7 @@
 #include <QFile>
 #include "DopplerDataFileConfigure.h"
 
+class Config;
 
 class DopplerDataFileOperateor : public QObject
 {
@@ -29,7 +30,7 @@ protected:
 signals:
 
 public slots:
-
+    friend class Config;
 };
 
 #endif // DOPPLERDATAFILEOPERATEOR_H

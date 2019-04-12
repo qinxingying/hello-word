@@ -34,7 +34,11 @@ void InstrumentSettingWidget::showEvent (QShowEvent *event)
 void InstrumentSettingWidget::UpdateEncoderInfo()
 {
 	SCANNER& _scanner = m_pConfig->common.scanner ;
-	int _nEncoder = ui->ComEncoderTypeSetting->currentIndex() + 1;
+    int _nEncoder = ui->ComEncoderTypeSetting->currentIndex();
+    COMMON_CONFIG& config = m_pConfig->common ;
+    if(setup_ENCODER_TYPE_TIMER != config.scanner.eEncoderType) {
+        _nEncoder = config.scanner.eEncoderType - 1;
+    }
 	ENCODER_CONFIG& _encoder = _scanner.encoder[_nEncoder] ;
 	ui->ValueEncoderResolution->setValue(_encoder.fResulotion);
 	ui->ComEncoderPolarity->setCurrentIndex(_encoder.ePolarity);
@@ -61,7 +65,11 @@ void InstrumentSettingWidget::InitCommonConfig()
 	COMMON_CONFIG& config = m_pConfig->common ;
 	ui->ComScanType->setCurrentIndex(config.scanner.eScanType);
 	ui->ComEncoderType->setCurrentIndex(config.scanner.eEncoderType);
-	ui->ComEncoderTypeSetting->setCurrentIndex(0);
+    if(config.scanner.eEncoderType != setup_ENCODER_TYPE_TIMER) {
+        ui->ComEncoderTypeSetting->setCurrentIndex(config.scanner.eEncoderType - 1);
+    } else {
+        ui->ComEncoderTypeSetting->setCurrentIndex(0);
+    }
 	ui->ValuePrf->setValue(config.scanner.fPrf);
 
 	ui->ComVoltagePa->setCurrentIndex(config.instrument.eVoltagePA);
@@ -183,7 +191,7 @@ void InstrumentSettingWidget::ResetEncoderSetting()
 	_encoder.fOrigin	  = ui->ValueEncoderOrg->value() ;
 	_encoder.fResulotion  = ui->ValueEncoderResolution->value() ;
 	ParameterProcess* _process = ParameterProcess::Instance();
-	int nEncoder = ui->ComEncoderTypeSetting->currentIndex() + 1 ;
+    int nEncoder = ui->ComEncoderTypeSetting->currentIndex();
 	_process->SetupEncoderConfigure((setup_ENCODER_TYPE)nEncoder , &_encoder);
 }
 

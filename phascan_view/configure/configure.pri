@@ -18,3 +18,5 @@ SOURCES += \
     $$PWD/DopplerConfigure.cpp \
     $$PWD/DopplerDataFileOperateor.cpp \
     $$PWD/DopplerXMLReader.cpp
+
+include(config_phascan_ii/config.pri)

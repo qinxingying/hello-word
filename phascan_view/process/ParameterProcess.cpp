@@ -3,6 +3,7 @@
 #include "Limitation.h"
 #include <QString>
 #include <gHeader.h>
+#include "../configure/config_phascan_ii/config.h"
 
 extern int currentgroup;
 extern int lastgroup;
@@ -541,6 +542,18 @@ int ParameterProcess::GetTotalDataSize() const
 {
 	int _nGroupQty = m_pConfig->common.nGroupQty  ;
 	int _nRet = setup_DATA_OFFSET ;
+    if(Config::instance()->is_phascan_ii()) {
+        /* not align 1024 for mercury data file!! */
+        _nRet = 0;
+        for(int i = 0 ; i < _nGroupQty ; i++)
+        {
+            _nRet += GetGroupDataSize(i) ;
+        }
+        /* 4 byte align */
+        _nRet  = (_nRet + 4 - 1) / 4  ;
+        _nRet  = 4 * _nRet ;
+        return _nRet;
+    }
 	for(int i = 0 ; i < _nGroupQty ; i++)
 	{
 		_nRet += GetGroupDataSize(i) ;
@@ -705,6 +718,9 @@ float ParameterProcess::GetCScanThicknessStop(int nGroupId_)
 int  ParameterProcess::GetGroupDataOffset(int nGroupId_) const
 {
 	int _nGroupOffset = setup_DATA_OFFSET  ;
+    if(Config::instance()->is_phascan_ii()) {
+        _nGroupOffset = 0;
+    }
 	for(int i = 0 ; i < nGroupId_; i++)
 		_nGroupOffset += GetGroupDataSize(i)  ;
 

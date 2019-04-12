@@ -10,7 +10,9 @@
 #include "gHeader.h"
 
 #include <report/DopplerHtmlReport.h>
-#include <process/ParameterProcess.h> 
+#include <process/ParameterProcess.h>
+#include "config_phascan_ii/config.h"
+
 extern int Cscan_range,Csrc_start,Bscan_range,Bsrc_start;
 extern double RL_EL_SL[5];
 int Phascan_Version;
@@ -361,11 +363,26 @@ int DopplerConfigure::OpenData(QString& path_)
 {
 	FilePathPro(path_);
 
-	int ret = m_pDataFile->LoadDataFile(m_szFileInUse) ;
-	if(ret)  return -1;
+    if(!Config::instance()->load(path_, m_pDataFile)) {
+        qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]"
+                 << " not Phascan II data format!!!!";
+        int ret = m_pDataFile->LoadDataFile(m_szFileInUse) ;
+        Config::instance()->set_is_phascan_ii(false);
+        if(ret)  return -1;
+    }
+
 	OldConfigureToConfigure(m_pDataFile);
 	OldGroupToGroup(m_pDataFile) ;
 	m_pData = m_pDataFile->GetData();
+
+    GROUP_INFO *targetGroup;
+    if(Config::instance()->is_phascan_ii()) {
+        targetGroup = m_pDataFile->GetGroupInfo(0);
+    } else {
+        targetGroup = m_pDataFile->GetGroupInfo(0);
+    }
+
+    SIZING_CURVES &targetCurves = targetGroup->SizingCurves;
 
 	int _iMax = RectifyScanLength();
 	CreateShadowData(_iMax);
@@ -775,7 +792,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	if(_pack->nEncodeType)
 	{
         common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;
-        common.scanner.eEncoderType = setup_ENCODER_TYPE_ENCODER_1;
+        common.scanner.eEncoderType = static_cast<setup_ENCODER_TYPE> (_pack->nEncodeType);
 		common.scanner.eScanMode	= setup_SCAN_NORMAL;
 		common.scanner.fScanPos		=  0 ;
 		common.scanner.fIndexPos	=  0 ;
@@ -813,8 +830,12 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	}
 	//common.scanner.eEncoderType = setup_ENCODER_TYPE_ENCODER_1 ;
 	int _nScanIndex = (common.scanner.fScanStop - common.scanner.fScanStart) / common.scanner.fScanStep + 1.5 ;
-	memset(common.nRecMark , 0 , 1024 * 256 );
-	memcpy(common.nRecMark , _pack->bScanMark , _nScanIndex) ;
+    memset(common.nRecMark , 0 , setup_MAX_REC_LEN );
+    if(Config::instance()->is_phascan_ii()) {
+        memcpy(common.nRecMark , Config::instance()->data_mark(), Config::instance()->data_mark_length()) ;
+    } else {
+        memcpy(common.nRecMark , _pack->bScanMark , _nScanIndex) ;
+    }
 
     //清除旧的耦合监控c扫数据，每个文件载入只计算一次
     for( int i = 0; i < setup_MAX_GROUP_QTY; i++)
@@ -833,7 +854,12 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-    Phascan_Version = m_pDataFile->GetFileHeader()->version-m_pDataFile->GetFileHeader()->size-m_pDataFile->GetFileHeader()->reserved;
+    if(Config::instance()->is_phascan_ii()) {
+        /* Phascan II not support 200% */
+        Phascan_Version = 3;
+    } else {
+        Phascan_Version = m_pDataFile->GetFileHeader()->version-m_pDataFile->GetFileHeader()->size-m_pDataFile->GetFileHeader()->reserved;
+    }
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{
 		GROUP_INFO* _pGroupInfo = pConf_->GetGroupInfo(i) ;
@@ -907,8 +933,14 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         if(CScanSource2 < 0){
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }
-        if(common.scanner.eEncoderType && Phascan_Version == 2)
-            common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution/100.0;
+        if(!Config::instance()->is_phascan_ii()) {
+            if(common.scanner.eEncoderType && Phascan_Version == 2) {
+                common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution/100.0;
+            }
+        } else {
+            common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution;
+        }
+
         _group.eCScanSource[0]= (setup_CSCAN_SOURCE_MODE)CScanSource1 ;
         _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */

@@ -1,8 +1,8 @@
-/***************************
+ï»¿/***************************
   Name:  DopplerConfigure
   Date : 2013-08-26
-  Description:   ÓÃÓÚ²Ù×÷ÅäÖÃÎÄ¼ş£¬¸ºÔğÅäÖÃÎÄ¼şµÄ¼ÓÔØ
-				 ³õÊ¼»¯£¬ºÍ±£´æ
+  Description:   ç”¨äºæ“ä½œé…ç½®æ–‡ä»¶ï¼Œè´Ÿè´£é…ç½®æ–‡ä»¶çš„åŠ è½½
+				 åˆå§‹åŒ–ï¼Œå’Œä¿å­˜
 ************************************/
 
 
@@ -35,20 +35,20 @@ struct FOCALLAW_RESULT
 	int anElementDelay[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT_ACTIVE];
 
 
-	float   afBeamExitPointX[setup_MAX_GROUP_LAW_QTY];  /*ÈëÉäµãµÄ×ø±ê*/
+	float   afBeamExitPointX[setup_MAX_GROUP_LAW_QTY];  /*å…¥å°„ç‚¹çš„åæ ‡*/
 	float   afBeamExitPointY[setup_MAX_GROUP_LAW_QTY];
 	float   afBeamExitPointZ[setup_MAX_GROUP_LAW_QTY];
 
-	//·¢ÉäÌ½Í·
-	float afFocusPosX[setup_MAX_GROUP_LAW_QTY];/*¾Û½¹µã×ø±ê*/
-	float afFocusPosY[setup_MAX_GROUP_LAW_QTY];/*¾Û½¹µã×ø±ê*/
-	float afFocusPosZ[setup_MAX_GROUP_LAW_QTY];/*¾Û½¹µã×ø±ê*/
-	float afElementPosX[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*ÕóÔª×ø±ê*/
-	float afElementPosY[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*ÕóÔª×ø±ê*/
-	float afElementPosZ[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*ÕóÔª×ø±ê*/
-	float afRefractPosX[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*ÈëÉäµã×ø±ê */
-	float afRefractPosY[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*ÈëÉäµã×ø±ê */
-	float afRefractPosZ[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*ÈëÉäµã×ø±ê */
+	//å‘å°„æ¢å¤´
+	float afFocusPosX[setup_MAX_GROUP_LAW_QTY];/*èšç„¦ç‚¹åæ ‡*/
+	float afFocusPosY[setup_MAX_GROUP_LAW_QTY];/*èšç„¦ç‚¹åæ ‡*/
+	float afFocusPosZ[setup_MAX_GROUP_LAW_QTY];/*èšç„¦ç‚¹åæ ‡*/
+	float afElementPosX[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*é˜µå…ƒåæ ‡*/
+	float afElementPosY[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*é˜µå…ƒåæ ‡*/
+	float afElementPosZ[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*é˜µå…ƒåæ ‡*/
+	float afRefractPosX[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*å…¥å°„ç‚¹åæ ‡ */
+	float afRefractPosY[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*å…¥å°„ç‚¹åæ ‡ */
+	float afRefractPosZ[setup_MAX_GROUP_LAW_QTY][setup_MAX_PROBE_ELEMENT];/*å…¥å°„ç‚¹åæ ‡ */
 };
 
 enum DEFECT_SIGN_TYPE
