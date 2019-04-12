@@ -24,19 +24,29 @@ class QGraphicsItem        ;
 class QGridLayout          ;
 class DopplerGraphicsItem  ;
 class DopplerViewItems     ;
+class DopplerCoupleSScanBar;
+class DopplerCoupleCScanBar;
 class DopplerDataView : public QWidget
 {
     Q_OBJECT
 public:
     enum DATA_VIEW_COMPONENT
     {
+
        DATA_VIEW_COMPONENT_NONE       =  0 ,
        DATA_VIEW_COMPONENT_TITLE      =  1 ,
        DATA_VIEW_COMPONENT_LEFTRULER  =  2 ,
        DATA_VIEW_COMPONENT_RIGHTRULER =  4 ,
        DATA_VIEW_COMPONENT_BOTTOMRULER=  8 ,
        DATA_VIEW_COMPONENT_COLORBAR   =  16,
-       DATA_VIEW_COMPONENT_ALL        =  0xFFFF
+       DATA_VIEW_COMPONENT_ALL_WITHOUTCOUPLE  =  31,
+       DATA_VIEW_COMPONENT_COUPLESBAR   =  32,            //B扫耦合bar
+       DATA_VIEW_COMPONENT_ALL_WITHCOUPLES  =  63,
+       DATA_VIEW_COMPONENT_COUPLECHBAR  =  64,            //c扫水平耦合bar
+       DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH  =  95,
+       DATA_VIEW_COMPONENT_COUPLECVBAR  =  128,          //c扫垂直耦合bar
+       DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV  =  158
+       //DATA_VIEW_COMPONENT_ALL        =  0xFFFF
     } ;
 
     enum DATA_VIEW_RULER
@@ -47,7 +57,7 @@ public:
         DATA_VIEW_RULER_MAX
     };
 
-    explicit DopplerDataView(QWidget *parent = 0 , DATA_VIEW_COMPONENT eComponent_ = DATA_VIEW_COMPONENT_ALL);
+    explicit DopplerDataView(QWidget *parent = 0 , DATA_VIEW_COMPONENT eComponent_ = DATA_VIEW_COMPONENT_ALL_WITHOUTCOUPLE);
     ~DopplerDataView();
     void DeleteAllWidget();
     QSize GetViewSize();
@@ -74,6 +84,10 @@ public:
     void SetTitleBarString(QString& str_)  ;
 	void SetTitleBarStringColor(QColor color_) ;
     void SetColorBarColorIndex (void* index) ;
+    void SetCoupleSScanBarColorIndex(void* index);
+    void SetCoupleCScanBarColorIndex(void* index);
+    void SetCoupleCScanRange( double nStart_, double nStop_);
+    void SetCopleCScanDisplayRange( double nStart_, double nStop_);
     void AddOverlayItems(QGraphicsItem* item_);
     void SetDrawScan(DopplerDrawScan* pDraw_)  ;
     DopplerDrawScan* GetDrawScan() const;
@@ -103,7 +117,9 @@ private:
     DopplerRulerBar*    m_pRulers[DATA_VIEW_RULER_MAX]  ;
     DopplerTitleBar*    m_pTitleBar     ;
     DopplerColorBar*    m_pColorBar     ;
-    DopplerGraphicView* m_pGraphicView ;
+    DopplerCoupleSScanBar* m_pCoupleSBar;
+    DopplerCoupleCScanBar* m_pCoupleCBar;
+    DopplerGraphicView*   m_pGraphicView;
     DATA_VIEW_COMPONENT m_eComponent ;
     DopplerViewItems*   m_pItemsGroup ;
     int m_nGroupId , m_nLaw , m_eDisplayMode , m_nIdentify;

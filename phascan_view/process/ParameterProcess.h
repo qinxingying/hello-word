@@ -99,7 +99,11 @@ public:
     int  GetGroupDataSize(int nGroupId_) const;
     int  GetTotalDataSize() const;
     int  GetGroupLawQty(int nGroupId_) const ;
+    int  GetGroupLawQtyForPosition(int nGroupId_) const ;
     int  GetTotalLawQty() const ;
+
+    static int getWaveHalfValue();
+    static int correctionPdata( WDATA value);
 
     unsigned int* GetGroupBeamDelay(int nGroupId_) const;
     float         GetRefGainScale(int nGroupId_) ;
@@ -134,6 +138,7 @@ public:
 	bool GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId_, PEAK_CONFIG* pInfo_);
     WDATA* GetGroupDataPointer(int nGroupId_);
     WDATA* GetLawDataPointer(int nGroupId_ , int nLawId_)  ;
+    WDATA* GetCoupleDataPointer( int nGroupId_);
 
     unsigned int   GetLawGateDWORD(int nGroupId_ , int nLawId_ , setup_GATE_NAME eGate_);
 	U8* GetScanMarker(int nGroupId_) const;
@@ -216,7 +221,9 @@ public:
     float GetGateValueAmp(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_)  ;
     float GetGateValuePos(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ , GATE_POS_VALUE_TYPE eType_ = NS_WITH_DELAY)  ;
 
-	void InitScanOff(int nGroupId_);
+    void InitScanOff(int nGroupId_);
+
+    QVector<WDATA> GetCoupleCScanData( int nGroupId_);
 protected:
     explicit ParameterProcess(QObject *parent = 0);
     DopplerConfigure* m_pConfig;

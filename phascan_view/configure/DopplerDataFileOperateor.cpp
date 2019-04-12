@@ -22,8 +22,15 @@ DopplerDataFileOperateor::~DopplerDataFileOperateor()
     m_pBeamData  = NULL ;
 }
 
+/*!
+  \brief 读取数据文件的数据，顺序将文件数据拷贝到m_cFileHead，m_cDrawInfoPack，m_cGroupInfo中，
+         然后把A扫数据映射到内存
 
+  \param strPath_ 数据文件路径
 
+  \return 成功返回 0；失败返回 -1
+
+*/
 int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
 {
     if(m_file)

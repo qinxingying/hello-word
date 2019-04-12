@@ -812,7 +812,15 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ui->CheckShowThickness->setCheckState(m_pGroup->bShowThickness ? Qt::Checked : Qt::Unchecked );
 	ui->CheckUnifiedPartSetting->setCheckState(m_pConfig->common.bUnifiedPart ? Qt::Checked : Qt::Unchecked);
 	//if(m_nGroupId && m_pConfig->common.bUnifiedPart)   ui->BoxPart->setEnabled(false);
-
+    SCANNER& _scan = m_pConfig->common.scanner;
+    if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
+    {
+        ui->ValueScanOffset->setEnabled(false);
+    }
+    else
+    {
+        ui->ValueScanOffset->setEnabled(true);
+    }
     ui->ValueScanOffset->setValue(m_pGroup->fScanOffset);
     ui->ValueIndexOffset->setValue(m_pGroup->fIndexOffset);
 	ui->ComSkewAngle->setCurrentIndex(m_pGroup->eSkew);

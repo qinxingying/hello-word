@@ -12,6 +12,21 @@ double NFreScale = 200/511.0;
 extern int Phascan_Version;
 ParameterProcess* g_pParameterProcess = NULL ;
 
+float CalPeakAmp2( float, int);
+
+float CalculatePeakAmp(float nPeak_, int nRectify_)
+{
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    {
+        return CalPeakAmp( nPeak_, nRectify_);
+    }
+    else
+    {
+        return CalPeakAmp2( nPeak_, nRectify_);
+    }
+}
+
+
 ParameterProcess* ParameterProcess::Instance()
 {
 	if(!g_pParameterProcess)
@@ -25,7 +40,7 @@ ParameterProcess* ParameterProcess::Instance()
 ParameterProcess::ParameterProcess(QObject *parent) :
 	QObject(parent)
 {
-	m_pConfig = DopplerConfigure::Instance() ;
+    m_pConfig = DopplerConfigure::Instance();
 }
 
 /****************************************************************************
@@ -516,7 +531,7 @@ int ParameterProcess::GetGroupDataSize(int nGroupId_) const
 {
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 	int _nPointQty = _group.nPointQty ;
-	int _nBeamQty  = GetGroupLawQty(nGroupId_) ;
+    int _nBeamQty  = GetGroupLawQtyForPosition(nGroupId_) ;
 	int _nRet = (setup_DATA_PENDIX_LENGTH + _nPointQty) * _nBeamQty  ;
 	return _nRet;
 }
@@ -554,6 +569,30 @@ int ParameterProcess::GetGroupLawQty(int nGroupId_) const
 	return _ret;
 }
 
+int  ParameterProcess::GetGroupLawQtyForPosition(int nGroupId_) const
+{
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
+    int _ret = 1 ;
+    if(_group.eGroupMode == setup_GROUP_MODE_PA)
+    {
+        LAW_CONFIG& _law = _group.law ;
+        if(_law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+        {
+            _ret = (_law.nAngleStopRefract - _law.nAngleStartRefract) / _law.nAngleStepRefract + 1;
+        }
+        else
+        {
+            _ret = (_law.nLastElemFir - _law.nFirstElemFir - _law.nElemQtyFir + 1) / _law.nElemStepFir + 1 ;
+        }
+
+        if(_group.coupleMonitoringState)
+        {
+            _ret++;
+        }
+    }
+    return _ret;
+}
+
 int ParameterProcess::GetTotalLawQty() const
 {
 	int _nGroupQty = m_pConfig->common.nGroupQty  ;
@@ -577,20 +616,38 @@ float  ParameterProcess::GetRefGainScale(int nGroupId_)
 	return ret ;
 }
 
+int ParameterProcess::getWaveHalfValue()
+{
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    {
+        return 128;
+    }
+    else
+    {
+        return 256;
+    }
+}
+
+int ParameterProcess::correctionPdata( WDATA value)
+{
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    {
+        return value;
+    }
+    else
+    {
+        return (int)value * 2 | 1;
+    }
+}
+
 WDATA ParameterProcess::GetRefGainScaleData(WDATA wData_, float fScale_, bool bRectify_)
 {
     int _iData = wData_;
     int WAVE_HALF;
-    if(Phascan_Version == 1 || Phascan_Version == 3)
-    {
-        WAVE_HALF = 128;
-        _iData = wData_;
-    }
-    else if(Phascan_Version == 2)
-    {
-        WAVE_HALF = 256;
-        _iData = wData_ * 2 | 1;
-    }
+
+    WAVE_HALF = getWaveHalfValue();
+    _iData = correctionPdata(wData_);
+
 	if(bRectify_)
 	{
 	_iData  = _iData - WAVE_HALF ;
@@ -891,14 +948,14 @@ float ParameterProcess::GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLa
     bool _bRectify = (GetRectifierMode(nGroupId_) == setup_RECTIFIER_RF );
     //F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
 
-    if(Phascan_Version == 1 || Phascan_Version == 3)
+    if(Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 5)
     {
         F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
         int bRectify_  = GetRectifierMode(nGroupId_);
 
         return CalPeakAmp(_fData, bRectify_);
     }
-    else if(Phascan_Version == 2)
+    else if(Phascan_Version == 2 || Phascan_Version == 4)
     {
         F32 _iData = _pData[_index] * 2 + 1;
         if(_bRectify)
@@ -953,14 +1010,8 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 
 		if(!mode) {
 			for(int i = _iS; i < _iE; i++) {
-                if(Phascan_Version == 1 || Phascan_Version == 3)
-                {
-                    _iTmp = pData_[i];
-                }
-                else if(Phascan_Version == 2)
-                {
-                    _iTmp = pData_[i] * 2 | 1;
-                }
+
+                _iTmp = ParameterProcess::correctionPdata( pData_[i]);
 				if(_iTmp <= _iH) {
 					_iFro = _iTmp;
 					_iPos = i;
@@ -969,14 +1020,8 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 			}
 		} else {
 			for(int i = _iS; i < _iE; i++) {
-                if(Phascan_Version == 1 || Phascan_Version == 3)
-                {
-                    _iTmp = pData_[i];
-                }
-                else if(Phascan_Version == 2)
-                {
-                    _iTmp = pData_[i] * 2 | 1;
-                }
+
+                _iTmp = ParameterProcess::correctionPdata(pData_[i]);
 				if(_iTmp >= _iH) {
 					_iFro = _iTmp;
 					_iPos = i;
@@ -986,14 +1031,8 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 		}
 	} else {
 		for(int i = _iS; i < _iE; i++) {
-            if(Phascan_Version == 1 || Phascan_Version == 3)
-            {
-                _iTmp = pData_[i];
-            }
-            else if(Phascan_Version == 2)
-            {
-                _iTmp = pData_[i] * 2 | 1;
-            }
+
+            _iTmp = ParameterProcess::correctionPdata(pData_[i]);
 			if(_iTmp >= _iH) {
 				_iFro = _iTmp;
 				_iPos = i;
@@ -1034,26 +1073,13 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
 	int _iTmp = 0;
 	int _iPos = 0;
     int WAVE_HALF;
-    if(Phascan_Version == 1 || Phascan_Version == 3)
-    {
-        WAVE_HALF = 128;
-    }
-    else if(Phascan_Version == 2)
-    {
-        WAVE_HALF = 256;
-    }
+
+    WAVE_HALF = ParameterProcess::getWaveHalfValue();
 	if(!bRectify_) {// 射频
 		int _iMax = 0;
 		int _iData = 0;
 		for(int i = _iS; i < _iE; i++) {
-            if(Phascan_Version == 1 || Phascan_Version == 3)
-            {
-                _iTmp = pData_[i];
-            }
-            else if(Phascan_Version == 2)
-            {
-                _iTmp = pData_[i] * 2 | 1;
-            }
+            _iTmp = ParameterProcess::correctionPdata( pData_[i]);
 			_iData = abs(_iTmp - WAVE_HALF);
 
 			if(_iData > _iMax) {
@@ -1064,14 +1090,7 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
 		}
 	} else {
 		for(int i = _iS; i < _iE; i++) {
-            if(Phascan_Version == 1 || Phascan_Version == 3)
-            {
-                _iTmp = pData_[i];
-            }
-            else if(Phascan_Version == 2)
-            {
-                _iTmp = pData_[i] * 2 | 1;
-            }
+            _iTmp = ParameterProcess::correctionPdata( pData_[i]);
 
 			if(_iTmp > _iAmp) {
 				_iAmp = _iTmp;
@@ -1092,7 +1111,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, int nScanPos_, int nLawId
 	int    _nPointQty = GetGroupPointQty(nGroupId_);
 	int _nFrameOffset = GetTotalDataSize() ;
 	int _nGroupOffset = GetGroupDataOffset(nGroupId_);
-	int     _nLawSize = _nPointQty + 32;
+    int     _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
 	int        _index = GetRealScanIndex(nGroupId_, nScanPos_);
 
 	if(_pData) {
@@ -1147,14 +1166,8 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_I].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_I].fL     = _fDist * _fSin;
 	pInfo_[setup_GATE_I].fD     = GetDepth(pInfo_[setup_GATE_I].fH, _fThick);
-    if(Phascan_Version == 1 || Phascan_Version == 3)
-    {
-        pInfo_[setup_GATE_I].fAmp   = CalPeakAmp(pInfo_[setup_GATE_I].iY, _nRectify);
-    }
-    else if(Phascan_Version == 2)
-    {
-        pInfo_[setup_GATE_I].fAmp   = CalPeakAmp2(pInfo_[setup_GATE_I].iY, _nRectify);
-    }
+
+    pInfo_[setup_GATE_I].fAmp = CalculatePeakAmp(pInfo_[setup_GATE_I].iY, _nRectify);
     pInfo_[setup_GATE_I].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_I].fAmp, pInfo_[setup_GATE_I].fGh);
 	//-----------------------------------
 	// A
@@ -1190,14 +1203,8 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
 	pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
-    if(Phascan_Version == 1 || Phascan_Version == 3)
-    {
-        pInfo_[setup_GATE_A].fAmp   = CalPeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
-    }
-    else if(Phascan_Version == 2)
-    {
-        pInfo_[setup_GATE_A].fAmp   = CalPeakAmp2(pInfo_[setup_GATE_A].iY, _nRectify);
-    }
+
+    pInfo_[setup_GATE_A].fAmp = CalculatePeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
     pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
 	//-----------------------------------
 	// B
@@ -1236,14 +1243,8 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_B].fH     = _fDist * _fCos;
 	pInfo_[setup_GATE_B].fL     = _fDist * _fSin;
 	pInfo_[setup_GATE_B].fD     = GetDepth(pInfo_[setup_GATE_B].fH, _fThick);
-    if(Phascan_Version == 1 || Phascan_Version == 3)
-    {
-        pInfo_[setup_GATE_B].fAmp   = CalPeakAmp(pInfo_[setup_GATE_B].iY, _nRectify);
-    }
-    else if(Phascan_Version == 2)
-    {
-        pInfo_[setup_GATE_B].fAmp   = CalPeakAmp2(pInfo_[setup_GATE_B].iY, _nRectify);
-    }
+
+    pInfo_[setup_GATE_B].fAmp = CalculatePeakAmp(pInfo_[setup_GATE_B].iY, _nRectify);
     pInfo_[setup_GATE_B].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_B].fAmp, pInfo_[setup_GATE_B].fGh);
 	return true;
 }
@@ -1267,6 +1268,15 @@ WDATA* ParameterProcess::GetLawDataPointer(int nGroupId_ , int nLawId_)
 	int _nLawOffset  = GetGroupLawDataOffset(nGroupId_ , nLawId_)  ;
 	//*** total offset
 	return (_pData + _nLawOffset)  ;
+}
+
+WDATA* ParameterProcess::GetCoupleDataPointer( int nGroupId_)
+{
+    WDATA* _pData = GetGroupDataPointer( nGroupId_);
+    if( !_pData)  return 0;
+    int nLawId_ = GetGroupLawQty(nGroupId_);
+    int _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH); //偏移到耦合监控beam
+    return (_pData + _nLawOffset);
 }
 
 unsigned int   ParameterProcess::GetLawGateDWORD(int nGroupId_ , int nLawId_ , setup_GATE_NAME eGate_)
@@ -1849,6 +1859,16 @@ void ParameterProcess::GetSImageHorizentalRange(int nGroupId_ , float* fStart_ ,
 	if(FLOAT_EQ(*fStart_ , *fStop_)) *fStop_ = *fStart_ + 1 ;
 }
 
+/*!
+  \brief 用于画S扫垂直的标尺范围
+
+  \param nGroupId_  组Id
+  \param fStart_    计算得出的开始位置的深度
+  \param fStop_     计算得出的结束位置的深度
+
+  \return 不是PA组返回1，PA组返回0
+
+*/
 int  ParameterProcess::GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_)
 {
 	*fStart_ = 0 ;
@@ -2369,4 +2389,110 @@ void ParameterProcess::InitScanOff(int nGroupId_)
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
 	m_fBScanOff[nGroupId_] = _group.fScanOffset;
 	m_fCScanOff[nGroupId_] = _group.fScanOffset;
+}
+
+QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
+{
+    coupleCScanGroupInfo &CScanInfo = m_pConfig->coupleCScanData[nGroupId_];
+    float partThickness = GetPartThickness(nGroupId_);
+
+    if( CScanInfo.calculateState && abs(partThickness - CScanInfo.oldPartThickness) < 0.1)
+    {
+        return CScanInfo.data;
+    }
+
+    if( !m_pConfig->group[nGroupId_].coupleMonitoringState)
+    {
+        CScanInfo.calculateState = true;
+        return CScanInfo.data;
+    }
+
+    CScanInfo.calculateState = true;
+
+    int recMax = m_pConfig->common.nRecMax;
+    CScanInfo.data.resize( recMax);
+
+    CScanInfo.oldPartThickness = partThickness;
+
+    float partStart = 0.75 * partThickness;
+    float partRange = 0.5 * partThickness;
+
+    int dataQty = m_pConfig->group[nGroupId_].nPointQty;
+    float coupleStart = m_pConfig->group[nGroupId_].coupleMonitoringVelocity * m_pConfig->group[nGroupId_].nTimeStart/2000000.0;
+    float coupleDepth = m_pConfig->group[nGroupId_].coupleMonitoringVelocity * m_pConfig->group[nGroupId_].nTimeRange/2000000.0;
+
+    float overlapStart;
+    float overlapEnd;
+    if( partStart > coupleStart)
+    {
+        overlapStart = partStart;
+    }
+    else
+    {
+        overlapStart = coupleStart;
+    }
+
+    if( partStart + partRange > coupleStart + coupleDepth)
+    {
+        overlapEnd = coupleStart + coupleDepth;
+    }
+    else
+    {
+        overlapEnd = partStart + partRange;
+    }
+
+    int startData;
+    int endData;
+    if( overlapEnd > overlapStart)
+    {
+        startData = (overlapStart - coupleStart) / coupleDepth * (dataQty - 1);
+        endData = (overlapEnd - coupleStart) / coupleDepth * (dataQty - 1);
+    }
+    else
+    {
+        startData = 0;
+        endData = 0;
+    }
+
+    if( startData == endData)
+    {
+        memset( CScanInfo.data.data(), 0x00, recMax);
+        return CScanInfo.data;
+    }
+
+    WDATA* _pData = GetShadowDataPointer();
+    //if(!_pData)  return 0 ;
+    int _nFrameSize = GetTotalDataSize();
+    int _nGroupOffset = GetGroupDataOffset(nGroupId_);
+    int nLawId_ = GetGroupLawQty(nGroupId_);
+    int _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH);
+    _pData = _pData + _nGroupOffset + _nLawOffset;
+
+    for(int i = 0; i < recMax; i++)
+    {
+        if(m_pConfig->common.nRecMark[i])
+        {
+            WDATA buff = 0;
+            for( int j = startData; j <= endData; j++)
+            {
+                if( _pData[j] > buff)
+                {
+                    buff = _pData[j];
+                }
+            }
+            int cbuff = correctionPdata(buff);
+            if( cbuff > 255)
+            {
+                cbuff = 255;
+            }
+
+            CScanInfo.data[i] = (WDATA)buff;
+        }
+        else
+        {
+            CScanInfo.data[i] = 0;
+        }
+        _pData += _nFrameSize;
+    }
+    return CScanInfo.data;
 }

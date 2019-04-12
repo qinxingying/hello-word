@@ -483,6 +483,8 @@ typedef struct _Group
 	float					fSumGain ;
 	int						bPointQtyAuto;
 	int						bSumGainAuto;
+    bool                    coupleMonitoringState;     /* 耦合监控状态 true 开启  false 关闭 */
+    int                     coupleMonitoringVelocity;  /* 耦合监控声速 单位 m/s*/
 	/* 发射接收 */
 	unsigned int			nTrigeStart;			/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元与机器配置相关我们是128阵元最大,值与connect P 一样 */
 	unsigned int			nReceiveStart;			/* 接收阵元 必须是 PR 模式才能调节 */
@@ -664,7 +666,7 @@ enum SONIC_AXIS_UNIT
 
 struct COMMON_CONFIG
 {
-	int					nGroupQty	;
+    int					nGroupQty	;         //总的组数量
 	int					bUnifiedPart ;
 	SONIC_AXIS_UNIT		eUAxisUnit   ;
 	INSTRUMENT_CONFIG	instrument   ;

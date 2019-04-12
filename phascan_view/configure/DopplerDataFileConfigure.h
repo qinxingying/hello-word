@@ -355,7 +355,7 @@ struct GROUP_INFO
 
 struct DRAW_INFO_PACK
 {
-    int nGroupNum;
+    int nGroupNum;           //总的组数量
     int nBeamNum[8];
     int nJunction[8];
 
@@ -365,7 +365,7 @@ struct DRAW_INFO_PACK
     int nInspecStart    ;
     int nInspecEnd      ;
     int nInspecResolution ;
-    int nEncodeType ;
+    int nEncodeType ;                     //编码类型，非0位编码器编码，0位时间编码
     unsigned char bScanMark[1024 * 256] ;
 };
 

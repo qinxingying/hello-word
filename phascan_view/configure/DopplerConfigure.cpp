@@ -6,6 +6,7 @@
 #include <QFileinfo.h>
 #include <QDataStream>
 #include <math.h>
+#include <QDebug>
 #include "gHeader.h"
 
 #include <report/DopplerHtmlReport.h>
@@ -113,6 +114,16 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
 
     InitCommonConfig();
 	m_szFileInUse.clear();
+
+    coupleCScanGroupInfo buff;
+    buff.calculateState = false;
+    buff.oldPartThickness = 0;
+    buff.data.clear();
+    coupleCScanData.clear();
+    for(int i = 0; i < setup_MAX_GROUP_QTY; i++)
+    {
+        coupleCScanData.append(buff);
+    }
 
 	header.eType = FILE_TYPE_CONFIG ;
 	const char* _strVersion = "DOPPLER CONFIGURE FILE VERSION 1.0"  ;
@@ -338,6 +349,14 @@ void DopplerConfigure::SaveConfig(QString& path_)
 	file.close();
 }
 
+/*!
+  \brief 解析后缀为.data的文件
+
+  \param path_ 文件的完整路径
+
+  \return 成功返回0；失败返回 -1
+
+*/
 int DopplerConfigure::OpenData(QString& path_)
 {
 	FilePathPro(path_);
@@ -739,6 +758,11 @@ void DopplerConfigure::InitLawComfing(int nGroupId_)
     _law.nElemStepSec	 = 1;
 }
 
+/*!
+  \brief 根据数据文件DrawInfo信息更新common的参数，需要在数据文件读取成功后进行
+
+  \param pConf_ 读取数据文件的入口
+*/
 void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 {
 	DRAW_INFO_PACK* _pack = pConf_->GetDrawInfo();
@@ -791,8 +815,21 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	int _nScanIndex = (common.scanner.fScanStop - common.scanner.fScanStart) / common.scanner.fScanStep + 1.5 ;
 	memset(common.nRecMark , 0 , 1024 * 256 );
 	memcpy(common.nRecMark , _pack->bScanMark , _nScanIndex) ;
+
+    //清除旧的耦合监控c扫数据，每个文件载入只计算一次
+    for( int i = 0; i < setup_MAX_GROUP_QTY; i++)
+    {
+        coupleCScanData[i].calculateState = false;
+        coupleCScanData[i].oldPartThickness = 0;
+        coupleCScanData[i].data.clear();
+    }
 }
 
+/*!
+  \brief 根据数据文件GroupInfo信息更新group的参数，需要在数据文件读取成功后进行
+
+  \param pConf_ 读取数据文件的入口
+*/
 void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
@@ -835,6 +872,17 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;
+        /* 耦合监控 版本4和5才有此功能，on_off_status 第2位表示开启关闭，0关闭；1开启 3位到21表示声速的10倍值*/
+        if( Phascan_Version == 4 || Phascan_Version == 5)
+        {
+            _group.coupleMonitoringState = (( _group.on_off_status>>2) & 0x01);
+            _group.coupleMonitoringVelocity = ((_group.on_off_status>>3) & 0x3FFFF)/10;
+        }
+        else
+        {
+            _group.coupleMonitoringState = false;
+            _group.coupleMonitoringVelocity = _pGroupInfo->velocity /100;
+        }
 		/* 发射接收 */
 		_group.nTrigeStart	  = _pGroupInfo->pulser1;		/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元与机器配置相关我们是128阵元最大,值与connect P 一样 */
 		_group.nReceiveStart  = _pGroupInfo->receiver1;		/* 接收阵元 必须是 PR 模式才能调节 */
@@ -890,7 +938,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			_group.afBeamPos[k]    = _pGroupInfo->field_distance[k];
 		}
 
-		for(int k = 0 ; k < 3 ; k++)
+        for(int k = 0 ; k < setup_GATE_MAX; k++)
 		{
 			GATE_CONFIG& _gate = _group.gate[k] ;
 			GATE_INFO&   _Gate = _pGroupInfo->gate[k] ;
@@ -1056,7 +1104,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.fScanOffset	  = _pGroupInfo->scan_offset  / 1000.0 ;		/*mm*/
             _group.fIndexOffset   = _pGroupInfo->index_offset  / 1000.0;			/*mm*/
         }
-		_group.eSkew		   = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos	 ;
+        _group.eSkew		   = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos;
 
 		QList<MATERIAL*>* _list = m_pConfig->m_listMaterial ;
 

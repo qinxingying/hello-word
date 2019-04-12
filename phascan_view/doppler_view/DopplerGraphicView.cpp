@@ -8,7 +8,7 @@
 #include "DopplerTofdOpp.h"
 #include "DopplerGateItem.h"
 #include "DopplerDataView.h"
-
+#include <QDebug>
 #include <QPrintDialog>
 #include <QPrinter>
 #include <qmath.h>
@@ -190,6 +190,7 @@ void DopplerGraphicView::slotResetView()
     m_bZoom  = false;
     SetupMatrixScale(1.0, 1.0 );
     ensureVisible(QRectF(0, 0, 0, 0));
+    //qDebug()<<"imagechange"<<"slotResetView";
 }
 
 void DopplerGraphicView::mouseCursorPro(QMouseEvent *event)
@@ -426,7 +427,34 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 
                 if(_rect.contains(m_cPosStop) )
                 {
-                    QRect rect(m_cPosStart , m_cPosStop) ;
+                    QPoint leftTop, rightBottom;
+                    if( m_cPosStart.x() < m_cPosStop.x())
+                    {
+                        leftTop.setX( m_cPosStart.x());
+                        rightBottom.setX( m_cPosStop.x());
+                    }
+                    else
+                    {
+                        leftTop.setX( m_cPosStop.x());
+                        rightBottom.setX( m_cPosStart.x());
+                    }
+
+                    if( m_cPosStart.y() < m_cPosStop.y())
+                    {
+                        leftTop.setY( m_cPosStart.y());
+                        rightBottom.setY( m_cPosStop.y());
+                    }
+                    else
+                    {
+                        leftTop.setY( m_cPosStop.y());
+                        rightBottom.setY( m_cPosStart.y());
+                    }
+
+                    //QRect rect(m_cPosStart , m_cPosStop) ;
+                    QRect rect( leftTop, rightBottom);
+                    m_cPosStart = leftTop;
+                    m_cPosStop = rightBottom;
+                    //qDebug()<<"rect"<<rect<<"m_cPosStart"<<m_cPosStart<<m_cPosStop;
                     if(tofdProAction() < 0)
                     {
                         DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
@@ -486,8 +514,9 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                     m_pDrawScan->curlawstart = lawstart;
                                     m_pDrawScan->curlawstop = lawstop;
                                     _pParent->SetRulerRange( lawstart , lawstop ,  lawstart , lawstop , DopplerDataView::DATA_VIEW_RULER_LEFT);
+                                    _pParent->SetCopleCScanDisplayRange( scanstart, scanstop);
                                     m_pDrawScan->zoomflag = 1;
-                                    UpdateDrawing();
+                                    UpdateDrawing();                                    
                                 }
                                 break;
 
@@ -526,6 +555,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                     m_pDrawScan->curlawstart = lawstart;
                                     m_pDrawScan->curlawstop = lawstop;
                                     _pParent->SetRulerRange( lawstart , lawstop ,  lawstart , lawstop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+                                    _pParent->SetCopleCScanDisplayRange( scanstart, scanstop);
                                     m_pDrawScan->zoomflag = 1;
                                     UpdateDrawing();
                                 }

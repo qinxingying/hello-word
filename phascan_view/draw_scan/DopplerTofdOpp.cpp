@@ -5,6 +5,37 @@
 extern int Phascan_Version;
 WDATA g_TofdAlignBuff[8192] ;
 
+int getWaveMaxData()
+{
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    {
+        return 255;
+    }
+    else
+    {
+        return 511;
+    }
+}
+
+WDATA conversionToPdata( float data)
+{
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    {
+        if(data > 255)
+        {
+            data = 255;
+        }
+        return (WDATA)data;
+    }
+    else
+    {
+        if(data > 511)
+        {
+            data = 511;
+        }
+        return (WDATA)(data/2);
+    }
+}
 
 DopplerTofdOpp::DopplerTofdOpp(QObject *parent) :
 	QObject(parent)
@@ -58,14 +89,7 @@ int DopplerTofdOpp::TofdSearchPos(WDATA* pSource_, int iStart_, int iMax_, int i
 	if(iEdge_ == 1) {
 		int _iMax = 0;
 		for(int i = _iStart; i < _iEnd; i++) {
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		 _iData = pSource_[i];
-	}
-	else if(Phascan_Version == 2)
-	{
-        		_iData = pSource_[i] * 2 | 1;
-	}  			
+            _iData = m_process->correctionPdata(pSource_[i]);
 			if(!_bSearchStart) {
 				if(_iData < iMin_)
 					_bSearchStart = true;
@@ -77,25 +101,10 @@ int DopplerTofdOpp::TofdSearchPos(WDATA* pSource_, int iStart_, int iMax_, int i
 			}
 		}
 	} else {
-	int _iMin = 255;
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		 _iMin = 255;
-	}
-	else if(Phascan_Version == 2)
-	{
-        		  _iMin = 511;
-	} 
+        int _iMin = getWaveMaxData();
 
 		for(int i = _iStart; i < _iEnd; i++) {
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		_iData = pSource_[i];
-	}
-	else if(Phascan_Version == 2)
-	{
-        		  _iData = pSource_[i] * 2 | 1;
-	}            
+            _iData = m_process->correctionPdata(pSource_[i]);
 			if(!_bSearchStart) {
 				if(_iData > iMax_)
 					_bSearchStart = true;
@@ -393,18 +402,8 @@ int DopplerTofdOpp::TofdLwStraitening(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDAT
 	int _nY       = (int)(pInfo_->fY + _nScanOff);
 	WDATA*  _pScr =  m_process->GetDataAbsolutePosPointer(m_nGroupId, _nY, 0, pSource_);
 	WDATA*  _pDst =  NULL;
-	int	 _iMax = 128 + 128 * 0.1;
-	int	 _iMin = 128 - 128 * 0.1;
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		_iMax = 128 + 128 * 0.1;
-		_iMin = 128 - 128 * 0.1;
-	}
-	else if(Phascan_Version == 2)
-	{
-        		 _iMax = 256 + 256 * 0.1;
-		 _iMin = 256 - 256 * 0.1;
-	}
+    int	 _iMax = m_process->getWaveHalfValue() + ( m_process->getWaveHalfValue() * 0.1);
+    int	 _iMin = m_process->getWaveHalfValue() - ( m_process->getWaveHalfValue() * 0.1);
 	int	_iEdge = 0;
 	int   _iStart = (int)pInfo_->fX;
 	int	_iBase = TofdSearchPos(_pScr, _iStart, _iMax, _iMin, _iEdge);
@@ -432,18 +431,8 @@ int DopplerTofdOpp::TofdBwStraitening(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDAT
 	int _nY       = (int)(pInfo_->fY + _nScanOff);
 	WDATA*  _pScr =  m_process->GetDataAbsolutePosPointer(m_nGroupId, _nY, 0, pSource_);
 	WDATA*  _pDst =  NULL;
-	int	 _iMax = 128 + 128 * 0.2;
-	int	 _iMin = 128 - 128 * 0.5;
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		_iMax = 128 + 128 * 0.2;
-		_iMin = 128 - 128 * 0.5;
-	}
-	else if(Phascan_Version == 2)
-	{
- 		_iMax = 256 + 256 * 0.2;
-		_iMin = 256 - 256 * 0.5;
-	}
+    int	 _iMax = m_process->getWaveHalfValue() + ( m_process->getWaveHalfValue() * 0.2);
+    int	 _iMin = m_process->getWaveHalfValue() - ( m_process->getWaveHalfValue() * 0.5);
 	int	_iEdge = 0;
 	int   _iStart = (int)pInfo_->fX;
 	int	_iBase = TofdSearchPos(_pScr, _iStart, _iMax, _iMin, _iEdge);
@@ -485,17 +474,9 @@ int DopplerTofdOpp::TofdDifference(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* 
 		_nStop = _nScanMax;
 
 	int x, y;
-	float _fHalf = WAVE_MAX/2.0f;
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		 _fHalf = WAVE_MAX/2.0f;
-	}
-	else if(Phascan_Version == 2)
-	{
- 		   _fHalf = 511/2.0f;
-	}
+    float _fHalf = getWaveMaxData()/2.0f;
 	float _fData, _fPeak0, _fPeak1;
-    int fdata;
+    //int fdata;
 	for(y = _nStart; y < _nStop; y++)
 	{
 		_pScr = m_process->GetDataAbsolutePosPointer(m_nGroupId, y, 0, pSource_);
@@ -503,16 +484,8 @@ int DopplerTofdOpp::TofdDifference(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* 
 
 		for(x = _rect.left; x < _rect.right; x++)
 		{
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		 _fPeak0 = (float)_pBase[x] - _fHalf;
-			_fPeak1 = (float)_pScr[x] - _fHalf;
-	}
-	else if(Phascan_Version == 2)
-	{
- 		  _fPeak0 = (float)(_pBase[x] * 2 | 1) - _fHalf;
-            _fPeak1 = (float)(_pScr[x] * 2 | 1) - _fHalf;
-	}     
+            _fPeak0 = (float)m_process->correctionPdata(_pBase[x]) - _fHalf;
+            _fPeak1 = (float)m_process->correctionPdata(_pScr[x]) - _fHalf;
 
 			_fData =  _fPeak1 - _fPeak0;
 
@@ -520,17 +493,7 @@ int DopplerTofdOpp::TofdDifference(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* 
 			if(_fData >= _fHalf )	_fData = _fHalf;
 
 			_fData += _fHalf;
-	if(Phascan_Version == 1 || Phascan_Version == 3)
-	{
-		 if(_fData > WAVE_MAX)	_fData = WAVE_MAX;
-		_pDst[x] = _fData;
-	}
-	else if(Phascan_Version == 2)
-	{
- 		if(_fData > 511)	_fData = WAVE_MAX;
-           	fdata = _fData / 2;
-           	_pDst[x] = fdata;
-	}    
+            _pDst[x] = conversionToPdata( _fData);
 
 		}
 	}
@@ -587,16 +550,7 @@ int DopplerTofdOpp::TofdSaft(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSourc
                     n = x + m_pTofd->iSaftBuf[_iCurveLen * x + i];
                     if(n >= 0 && n < m_pGroup->nPointQty)
                     {
-                        if(Phascan_Version == 1 || Phascan_Version == 3)
-                        {
-                            //_iData += _pScr[i][n];
-                            _data += _pScr[i][n]*weight;
-                        }
-                        else if(Phascan_Version == 2)
-                        {
-                             //_iData += _pScr[i][n] * 2 | 1;
-                            _data += (_pScr[i][n] * 2 | 1)*weight;
-                        }
+                        _data += m_process->correctionPdata(_pScr[i][n]) * weight;
                         //_iAv++;
                         _av += weight;
                     }
@@ -609,22 +563,9 @@ int DopplerTofdOpp::TofdSaft(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSourc
             if(_av < 1)		_av = 1;
             _data /= _av;
             if(_data < 0)		_data = 0;
-
-            if(Phascan_Version == 1 || Phascan_Version == 3)
-            {
-                //if(_iData > WAVE_MAX)   _iData = WAVE_MAX;
-                if(_data > WAVE_MAX)   _data = WAVE_MAX;
-            }
-            else if(Phascan_Version == 2)
-            {
-                 //if(_iData > 511)   _iData = 511;
-                    //_iData = _iData / 2;
-                if(_data > 511)   _data = 511;
-                _data = _data / 2;
-            }
-
             //_pDst[x] = _iData;
-            _pDst[x] = (WDATA)_data;
+            //_pDst[x] = (WDATA)_data;
+            _pDst[x] = conversionToPdata(_data);
         }
     }
     return 0;

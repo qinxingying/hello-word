@@ -2,6 +2,7 @@
 #include "DopplerRulerBar.h"
 #include "DopplerTitleBar.h"
 #include "DopplerColorBar.h"
+#include "DopplerCoupleBar.h"
 #include "DopplerGraphicView.h"
 #include "DopplerGraphicsItem.h"
 #include "DopplerViewItems.h"
@@ -25,6 +26,8 @@ DopplerDataView::DopplerDataView(QWidget *parent , DATA_VIEW_COMPONENT eComponen
 	m_pLayout	   = NULL  ;
 	m_pTitleBar	 = NULL  ;
 	m_pColorBar	 = NULL  ;
+    m_pCoupleSBar = NULL;
+    m_pCoupleCBar = NULL;
 	m_pGraphicView  = NULL  ;
 	m_eComponent	= eComponent_  ;
 	m_bSelected	 = false ;
@@ -69,6 +72,8 @@ void DopplerDataView::DeleteAllWidget()
 
 	if(m_pTitleBar	 != NULL)  {delete m_pTitleBar	 ;   m_pTitleBar  =  NULL ;}
 	if(m_pColorBar	 != NULL)  {delete m_pColorBar	 ;   m_pColorBar  =  NULL ;}
+    if(m_pCoupleSBar	 != NULL)  {delete m_pCoupleSBar	 ;   m_pCoupleSBar  =  NULL ;}
+    if(m_pCoupleCBar	 != NULL)  {delete m_pCoupleCBar	 ;   m_pCoupleCBar  =  NULL ;}
 	if(m_pGraphicView  != NULL)  {delete m_pGraphicView  ;   m_pGraphicView  =  NULL ;}
 	if(m_pLayout	   != NULL)  {delete m_pLayout	   ;   m_pLayout  =  NULL ;}
 }
@@ -78,7 +83,14 @@ void DopplerDataView::SetDataViewConfigure(int nGroupId_ , int nLaw_ , int eDisp
 	m_nGroupId = nGroupId_  ;
 	m_nLaw	 = nLaw_	  ;
 	m_eDisplayMode  = eDisplayMode_  ;
-
+    if(m_pCoupleSBar)
+    {
+        m_pCoupleSBar->setGroupId(nGroupId_);
+    }
+    if(m_pCoupleCBar)
+    {
+        m_pCoupleCBar->setGroupId(nGroupId_);
+    }
 }
 
 void DopplerDataView::GetDataViewConfigure(int* nGroupId_ , int* nLaw_ , int* eDisplayMode_) const
@@ -210,6 +222,38 @@ void DopplerDataView::SetColorBarColorIndex(void* index)
 		m_pColorBar->setColorIndex(index);
 }
 
+void DopplerDataView::SetCoupleSScanBarColorIndex(void* index)
+{
+    if( m_pCoupleSBar)
+        m_pCoupleSBar->setColorIndex(index);
+
+//    if( m_pCoupleCBar)
+//        m_pCoupleCBar->setColorIndex(index);
+}
+
+void DopplerDataView::SetCoupleCScanBarColorIndex(void* index)
+{
+    if( m_pCoupleCBar)
+        m_pCoupleCBar->setColorIndex(index);
+}
+
+void DopplerDataView::SetCoupleCScanRange( double nStart_, double nStop_)
+{
+    if( m_pCoupleCBar)
+    {
+        m_pCoupleCBar->setCoupleRange( nStart_, nStop_);
+        m_pCoupleCBar->setDisplayRange( nStart_, nStop_);
+    }
+}
+
+void DopplerDataView::SetCopleCScanDisplayRange( double nStart_, double nStop_)
+{
+    if( m_pCoupleCBar)
+    {
+        m_pCoupleCBar->setDisplayRange( nStart_, nStop_);
+    }
+}
+
 void DopplerDataView::AddOverlayItems(QGraphicsItem* item_)
 {
 	if(m_pGraphicView)
@@ -238,6 +282,14 @@ void DopplerDataView::UpdateDrawing()
 {
 	UpdateMeasure() ;
 	m_pGraphicView->UpdateDrawing();
+    if( m_pCoupleSBar)
+    {
+        m_pCoupleSBar->update();
+    }
+//    if( m_pCoupleCBar)
+//    {
+//        m_pCoupleCBar->update();
+//    }
     UpdateMeasure() ;
 }
 
@@ -342,10 +394,25 @@ void DopplerDataView::CreateComponent()
 	//***************************
 	//*   create widget of each cell
 	//***************************
-	if(m_eComponent & DATA_VIEW_COMPONENT_TITLE)
+    int columnFix = 0;
+    int rowFix = 0;
+    if( m_eComponent & DATA_VIEW_COMPONENT_COUPLESBAR)
+    {
+        columnFix = 1;   //有耦合监控插入一个widget
+    }
+    if( m_eComponent & DATA_VIEW_COMPONENT_COUPLECVBAR)
+    {
+        columnFix = 1;
+    }
+    if( m_eComponent & DATA_VIEW_COMPONENT_COUPLECHBAR)
+    {
+        rowFix = 1;
+    }
+
+    if(m_eComponent & DATA_VIEW_COMPONENT_TITLE)
 	{
 		m_pTitleBar  = new DopplerTitleBar(this) ;
-		m_pLayout->addWidget(m_pTitleBar , 0 , 0 , 1 , 4);
+        m_pLayout->addWidget(m_pTitleBar , 0 , 0 , 1 , 4 + columnFix);
 		_nHeight -=  m_pTitleBar->height() ;
 	}
 
@@ -364,7 +431,7 @@ void DopplerDataView::CreateComponent()
 	if(m_eComponent & DATA_VIEW_COMPONENT_RIGHTRULER)
 	{
 		m_pRulers[DATA_VIEW_RULER_RIGHT] = new DopplerRulerBar(this , DopplerRulerBar::RULER_BAR_RIGHT) ;
-		m_pLayout->addWidget(m_pRulers[DATA_VIEW_RULER_RIGHT] , 1 , 3);
+        m_pLayout->addWidget(m_pRulers[DATA_VIEW_RULER_RIGHT] , 1 , 3 + columnFix);
 		m_pRulers[DATA_VIEW_RULER_RIGHT]->SetMarkerRange(
 					RulerRange[DATA_VIEW_RULER_RIGHT].first,
 					RulerRange[DATA_VIEW_RULER_RIGHT].second,
@@ -376,7 +443,7 @@ void DopplerDataView::CreateComponent()
 	if(m_eComponent & DATA_VIEW_COMPONENT_BOTTOMRULER)
 	{
 		m_pRulers[DATA_VIEW_RULER_BOTTOM] = new DopplerRulerBar(this , DopplerRulerBar::RULER_BAR_BOTTOM) ;
-		m_pLayout->addWidget(m_pRulers[DATA_VIEW_RULER_BOTTOM] , 2 , 1);
+        m_pLayout->addWidget(m_pRulers[DATA_VIEW_RULER_BOTTOM] , 2 + rowFix, 1 + columnFix);
 		m_pRulers[DATA_VIEW_RULER_BOTTOM]->SetMarkerRange(
 					RulerRange[DATA_VIEW_RULER_BOTTOM].first,
 					RulerRange[DATA_VIEW_RULER_BOTTOM].second,
@@ -388,15 +455,36 @@ void DopplerDataView::CreateComponent()
 	if(m_eComponent & DATA_VIEW_COMPONENT_COLORBAR)
 	{
 		m_pColorBar = new DopplerColorBar(this) ;
-		m_pLayout->addWidget(m_pColorBar , 1, 2);
+        m_pLayout->addWidget(m_pColorBar , 1, 2 + columnFix);
 		_nWidth -= m_pColorBar->width() ;
 	}
+
+    if(m_eComponent & DATA_VIEW_COMPONENT_COUPLESBAR)
+    {
+        m_pCoupleSBar = new DopplerCoupleSScanBar(this);
+        m_pLayout->addWidget( m_pCoupleSBar, 1, 1);
+        _nWidth -= m_pCoupleSBar->width();
+    }
+
+    if(m_eComponent & DATA_VIEW_COMPONENT_COUPLECVBAR)
+    {
+        m_pCoupleCBar = new DopplerCoupleCScanBar( Vertical, this);
+        m_pLayout->addWidget( m_pCoupleCBar, 1, 1);
+        _nWidth -= m_pCoupleCBar->width();
+    }
+
+    if(m_eComponent & DATA_VIEW_COMPONENT_COUPLECHBAR)
+    {
+        m_pCoupleCBar = new DopplerCoupleCScanBar( Horizontal, this);
+        m_pLayout->addWidget( m_pCoupleCBar, 2, 1);
+        _nHeight -= m_pCoupleCBar->height();
+    }
 
 	//***************************************
 	//** center widget for data displaying
 	//***************************************
 	m_pGraphicView = new DopplerGraphicView(this , QSize(_nWidth , _nHeight)) ;
-	m_pLayout->addWidget(m_pGraphicView , 1 , 1)  ;
+    m_pLayout->addWidget(m_pGraphicView , 1 , 1 + columnFix)  ;
 	connect(m_pGraphicView , SIGNAL(signalViewChanged(QRectF)) , SLOT(slotZoomAction(QRectF)));
 	connect(m_pGraphicView , SIGNAL(signalItemMoved(DopplerGraphicsItem*)) , SLOT(slotItemMoved(DopplerGraphicsItem*)));
     connect(m_pGraphicView , SIGNAL(signalItemPressed(DopplerGraphicsItem*)) , SLOT(slotItemPressed(DopplerGraphicsItem*)));
@@ -434,6 +522,23 @@ void DopplerDataView::resizeEvent(QResizeEvent *event)
 
 	if(m_pColorBar)
 		_nWidth -= m_pColorBar->width() ;
+    if( m_pCoupleSBar)
+        _nWidth -= m_pCoupleSBar->width();
+
+    if( m_pCoupleCBar)
+    {
+        BarOrientation dirction = m_pCoupleCBar->getOrientation();
+        switch (dirction) {
+        case Horizontal:
+            _nHeight -= m_pCoupleCBar->height();
+            break;
+        case Vertical:
+            _nWidth -= m_pCoupleCBar->width();
+            break;
+        default:
+            break;
+        }
+    }
 
 	m_pGraphicView->resize(_nWidth , _nHeight);
 
@@ -562,31 +667,46 @@ void DopplerDataView::slotZoomAction(QRectF rect)
 {
 	double _nStart , _nStop, _nSliderStart , _nSliderStop;
 
+    //qDebug()<<"rect"<<rect;
+    QPair<double , double> _marker1, _marker2;
 	if(m_eComponent & DATA_VIEW_COMPONENT_LEFTRULER)
-	{
-		QPair<double , double> _marker ;
-		_marker.first = rect.top() ;
-		_marker.second= rect.bottom() ;
-		RangeTransfer(RulerRange[DATA_VIEW_RULER_LEFT] , &_marker) ;
+	{		
+        _marker1.first = rect.top() ;
+        _marker1.second= rect.bottom() ;
+        RangeTransfer(RulerRange[DATA_VIEW_RULER_LEFT] , &_marker1) ;
 
 		//ZoomRange[DATA_VIEW_RULER_LEFT].first = _marker.first;
 		//ZoomRange[DATA_VIEW_RULER_LEFT].second = _marker.second;
 		m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
-		m_pRulers[DATA_VIEW_RULER_LEFT]->SetMarkerRange(_marker.first , _marker.second, _nSliderStart , _nSliderStop);
+        m_pRulers[DATA_VIEW_RULER_LEFT]->SetMarkerRange(_marker1.first , _marker1.second, _nSliderStart , _nSliderStop);
 	}
 
 	if(m_eComponent & DATA_VIEW_COMPONENT_BOTTOMRULER)
 	{
-		QPair<double , double> _marker ;
-		_marker.first = rect.left() ;
-		_marker.second= rect.right() ;
-		RangeTransfer(RulerRange[DATA_VIEW_RULER_BOTTOM] , &_marker) ;
+        //QPair<double , double> _marker ;
+        _marker2.first = rect.left() ;
+        _marker2.second= rect.right() ;
+        RangeTransfer(RulerRange[DATA_VIEW_RULER_BOTTOM] , &_marker2) ;
+        //qDebug()<<"marker"<<_marker.first<<_marker.second;
 
 		//ZoomRange[DATA_VIEW_RULER_BOTTOM].first = _marker.first;
 		//ZoomRange[DATA_VIEW_RULER_BOTTOM].second = _marker.second;
 		m_pRulers[DATA_VIEW_RULER_BOTTOM]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
-		m_pRulers[DATA_VIEW_RULER_BOTTOM]->SetMarkerRange(_marker.first , _marker.second, _nSliderStart , _nSliderStop);
+        m_pRulers[DATA_VIEW_RULER_BOTTOM]->SetMarkerRange(_marker2.first , _marker2.second, _nSliderStart , _nSliderStop);
 	}
+
+    if( m_pCoupleCBar)
+    {
+        BarOrientation postion = m_pCoupleCBar->getOrientation();
+        if(postion)
+        {
+            m_pCoupleCBar->setDisplayRange( _marker1.second, _marker1.first);
+        }
+        else
+        {
+            m_pCoupleCBar->setDisplayRange( _marker2.first, _marker2.second);
+        }
+    }
 
 	if(m_pItemsGroup) {
 		m_pItemsGroup->UpdateItems();

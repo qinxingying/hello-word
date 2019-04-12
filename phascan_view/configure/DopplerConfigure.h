@@ -101,7 +101,11 @@ struct DEFECT_PARAM
 	DEFECT_INFO* pDFEnd;
 };
 
-
+struct coupleCScanGroupInfo{
+    bool calculateState;      //本组C扫状态，false为还未计算，true为已经计算
+    float oldPartThickness;   //旧的工件厚度值，用于判断工件厚度改变重新计算耦合闸门内的值
+    QVector<WDATA> data;      //储存耦合C扫数据
+};
 
 class DopplerConfigure : public QObject
 {
@@ -181,6 +185,8 @@ public:
 	COMMON_CONFIG		comTmp ;   //
 	GROUP_CONFIG		group[setup_MAX_GROUP_QTY+1] ;
 	FOCALLAW_RESULT		focallaw[setup_MAX_GROUP_QTY] ;
+
+    QList<coupleCScanGroupInfo> coupleCScanData;
 
 private:
 	WDATA*				m_pData ;

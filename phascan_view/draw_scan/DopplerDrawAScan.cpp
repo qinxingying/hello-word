@@ -4,6 +4,27 @@
 #include <math.h>
 double RL_EL_SL[5]={0};
 extern int Phascan_Version;
+
+WDATA setPdata( WDATA data)
+{
+    if(Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    {
+        return data;
+    }
+    else
+    {
+        int _data = (int)data * 2 | 1;
+        if( _data > 255)
+        {
+            return 255;
+        }
+        else
+        {
+            return (WDATA)_data;
+        }
+    }
+}
+
 DopplerDrawAScanH::DopplerDrawAScanH():DopplerDrawScan()
 {
 	bDrawLimit = 0 ;
@@ -106,17 +127,9 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 	{
 		for(i = 0 ; i < _nPointQty ; i++)
 		{
-			if(Phascan_Version == 1 || Phascan_Version == 3)
-		{
-			 if(_pData[i] > aLimitHigh[i])  aLimitHigh[i] = _pData[i];
-            		if(_pData[i] < aLimitLow [i])  aLimitLow [i] = _pData[i];
-		}
-			else if(Phascan_Version == 2)
-		{
-           		if((_pData[i] * 2 | 1 )> 255)  aLimitHigh[i] = 255;
-           		 else if((_pData[i] * 2 | 1 )> aLimitHigh[i])  aLimitHigh[i] = _pData[i] * 2 | 1;
-           	 if((_pData[i] * 2 | 1 )< aLimitLow [i])  aLimitLow [i] = _pData[i] * 2 | 1;
-		}
+            WDATA buff = setPdata(_pData[i]);
+            if( buff > aLimitHigh[i]) aLimitHigh[i] = buff;
+            if( buff < aLimitLow [i]) aLimitLow [i] = buff;
 		}
 
 		double _fY1;
@@ -664,22 +677,15 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
 	}
 	painter.setPen(QPen(color[0]));
 	painter.drawPolyline(Lines);
+    //qDebug()<<"Adata"<<_nPointQty<<_nHeight<<_nWidth;
 
 	if(bDrawLimit)
 	{
 		for(i = 0 ; i < _nPointQty ; i++)
 		{
-			if(Phascan_Version == 1 || Phascan_Version == 3)
-			{
-				if(_pData[i] > aLimitHigh[i])  aLimitHigh[i] = _pData[i]  ;
-			if(_pData[i] < aLimitLow [i])  aLimitLow [i] = _pData[i]  ;
-			}
-			else if(Phascan_Version == 2)
-		{
-           		 if((_pData[i] * 2 | 1 )> 255)  aLimitHigh[i] = 255;
-           		 else if((_pData[i] * 2 | 1 )> aLimitHigh[i])  aLimitHigh[i] = _pData[i] * 2 | 1;
-           		 if((_pData[i] * 2 | 1) < aLimitLow [i])  aLimitLow [i] = _pData[i] * 2 | 1 ;
-		}
+            WDATA buff = setPdata(_pData[i]);
+            if( buff > aLimitHigh[i]) aLimitHigh[i] = buff;
+            if( buff < aLimitLow [i]) aLimitLow [i] = buff;
 		}
 		double _fX1;
 		for(i = 0 ; i < _nPointQty  ; i++)

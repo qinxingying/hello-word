@@ -297,10 +297,20 @@ int ProcessDisplay::CreateViews_AV_BV(QWidget* pWidget_)
 // PA SCAN
 int ProcessDisplay::CreateViews_S(QWidget* pWidget_)
 {
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
 	GYSplitter* split = new GYSplitter(0);
-	DopplerDataView* _pView = new DopplerDataView(pWidget_);
+    DopplerDataView* _pView;
+    if( _group.coupleMonitoringState)
+    {
+        _pView = new DopplerDataView(pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+    }
+    else
+    {
+        _pView = new DopplerDataView(pWidget_);
+    }
+
 
 	split->addWidget(_pView);
 	_layout->addWidget(split);
@@ -320,6 +330,7 @@ int ProcessDisplay::CreateViews_S(QWidget* pWidget_)
 // PA-A SCAN
 int ProcessDisplay::CreateViews_S_AH(QWidget* pWidget_)
 {
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
 	GYSplitter* split = new GYSplitter(0);
@@ -328,7 +339,15 @@ int ProcessDisplay::CreateViews_S_AH(QWidget* pWidget_)
 	split->setOpaqueResize(false) ;
 
 	DopplerDataView* _pView[2] ;
-	_pView[0] = new DopplerDataView(pWidget_);
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView( pWidget_);
+    }
+
 	_pView[1] = new DopplerDataView(pWidget_);
 
 	split->addWidget(_pView[0]);
@@ -372,6 +391,7 @@ int ProcessDisplay::CreateViews_S_AH(QWidget* pWidget_)
 // PA-A SCAN
 int ProcessDisplay::CreateViews_S_AV(QWidget* pWidget_)
 {
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
 	GYSplitter* split = new GYSplitter(0);
@@ -380,7 +400,15 @@ int ProcessDisplay::CreateViews_S_AV(QWidget* pWidget_)
 	split->setOpaqueResize(false) ;
 
 	DopplerDataView* _pView[2] ;
-	_pView[0] = new DopplerDataView(pWidget_);
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+    }
+
 	_pView[1] = new DopplerDataView(pWidget_);
 	split->addWidget(_pView[0]);
 	split->addWidget(_pView[1]);
@@ -413,7 +441,7 @@ int ProcessDisplay::CreateViews_S_AV(QWidget* pWidget_)
 }
 //PA-A-A-A SCAN
 int ProcessDisplay::CreateViews_S_AH_AH_AH(QWidget* pWidget_)
-{
+{    
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
 	GYSplitter* split[2]  ;
@@ -427,7 +455,17 @@ int ProcessDisplay::CreateViews_S_AH_AH_AH(QWidget* pWidget_)
 
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
-	for(int i= 0 ; i< 4 ; i++)
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+    }
+    for(int i= 1 ; i< 4 ; i++)
 	{
 		_pView[i] = new DopplerDataView(pWidget_) ;
 	}
@@ -499,7 +537,17 @@ int ProcessDisplay::CreateViews_S_AH_AH_AH_CH(QWidget* pWidget_)
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
 	split[2]->setOrientation(Qt::Vertical);
-	for(int i= 0 ; i< 5 ; i++)
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+    }
+    for( int i= 1; i< 5; i++)
 	{
 		_pView[i] = new DopplerDataView(pWidget_) ;
 	}
@@ -580,9 +628,23 @@ int ProcessDisplay::CreateViews_S_AV_BV(QWidget* pWidget_)
 	split->setHandleWidth(g_nSpliterWidth);
 	split->setOpaqueResize(false) ;
 	DopplerDataView* _pView[3] ;
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+    }
+
+    for(int i = 1 ; i< 3 ; i++)
+    {
+        _pView[i] = new DopplerDataView(pWidget_);
+    }
 	for(int i = 0 ; i< 3 ; i++)
 	{
-		_pView[i] = new DopplerDataView(pWidget_);
 		split->addWidget(_pView[i]);
 	}
 
@@ -649,7 +711,17 @@ int ProcessDisplay::CreateViews_S_AV_BH(QWidget* pWidget_)
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
 
-	for(int i= 0 ; i< 3 ; i++)
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+    }
+
+    for(int i= 1 ; i< 3 ; i++)
 	{
 		_pView[i] = new DopplerDataView(pWidget_) ;
 	}
@@ -714,7 +786,17 @@ int ProcessDisplay::CreateViews_S_AH_BV(QWidget* pWidget_)
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
 
-	for(int i= 0 ; i< 3 ; i++)
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+    }
+
+    for(int i= 1 ; i< 3 ; i++)
 	{
 		_pView[i] = new DopplerDataView(pWidget_) ;
 	}
@@ -777,10 +859,21 @@ int ProcessDisplay::CreateViews_S_AV_BH_CH(QWidget* pWidget_)
 
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
-	for(int i= 0 ; i< 4 ; i++)
-	{
-		_pView[i] = new DopplerDataView(pWidget_) ;
-	}
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[2] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[2] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[1] = new DopplerDataView(pWidget_);
+    _pView[3] = new DopplerDataView(pWidget_);
 
 	split[1]->addWidget(_pView[0]);
 	split[1]->addWidget(_pView[1]);
@@ -845,10 +938,21 @@ int ProcessDisplay::CreateViews_S_AH_BH_CH(QWidget* pWidget_)
 	split[0]->setOrientation(Qt::Vertical);
 	split[1]->setOrientation(Qt::Horizontal);
 	split[2]->setOrientation(Qt::Vertical);
-	for(int i= 0 ; i< 4 ; i++)
-	{
-		_pView[i] = new DopplerDataView(pWidget_) ;
-	}
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[3] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[3] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[1] = new DopplerDataView(pWidget_);
+    _pView[2] = new DopplerDataView(pWidget_);
 
 	split[1]->addWidget(_pView[0]);
 	split[2]->addWidget(_pView[1]);
@@ -918,10 +1022,21 @@ int ProcessDisplay::CreateViews_S_AH_BH_CV(QWidget* pWidget_)
 
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
-	for(int i= 0 ; i< 4 ; i++)
-	{
-		_pView[i] = new DopplerDataView(pWidget_) ;
-	}
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[3] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[3] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[1] = new DopplerDataView(pWidget_);
+    _pView[2] = new DopplerDataView(pWidget_) ;
 
 	split[1]->addWidget(_pView[0]);
 	split[1]->addWidget(_pView[1]);
@@ -985,10 +1100,20 @@ int ProcessDisplay::CreateViews_S_AV_CH(QWidget* pWidget_)
 
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
-	for(int i= 0 ; i< 3 ; i++)
-	{
-		_pView[i] = new DopplerDataView(pWidget_) ;
-	}
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[1] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[1] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[2] = new DopplerDataView(pWidget_);
 
 	split[1]->addWidget(_pView[0]);
 	split[1]->addWidget(_pView[1]);
@@ -1048,10 +1173,20 @@ int ProcessDisplay::CreateViews_S_AH_CV(QWidget* pWidget_)
 
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
-	for(int i= 0 ; i< 3 ; i++)
-	{
-		_pView[i] = new DopplerDataView(pWidget_) ;
-	}
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[2] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[2] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[1] = new DopplerDataView(pWidget_);
 
 	split[1]->addWidget(_pView[0]);
 	split[1]->addWidget(_pView[1]);
@@ -1111,10 +1246,22 @@ int ProcessDisplay::CreateViews_S_AV_CH_CH(QWidget* pWidget_)
 
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
-	for(int i= 0 ; i< 4 ; i++)
-	{
-		_pView[i] = new DopplerDataView(pWidget_) ;
-	}
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[1] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
+        _pView[2] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[1] = new DopplerDataView(pWidget_);
+        _pView[2] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[3] = new DopplerDataView(pWidget_);
 
 	split[1]->addWidget(_pView[0]);
 	split[1]->addWidget(_pView[1]);
@@ -1179,10 +1326,22 @@ int ProcessDisplay::CreateViews_S_AH_CV_CV(QWidget* pWidget_)
 
 	split[0]->setOrientation(Qt::Horizontal);
 	split[1]->setOrientation(Qt::Vertical);
-	for(int i= 0 ; i< 4 ; i++)
-	{
-		_pView[i] = new DopplerDataView(pWidget_) ;
-	}
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[2] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV);
+        _pView[3] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[2] = new DopplerDataView(pWidget_);
+        _pView[3] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[1] = new DopplerDataView(pWidget_);
 
 	split[1]->addWidget(_pView[0]);
 	split[1]->addWidget(_pView[1]);
@@ -1246,10 +1405,21 @@ int ProcessDisplay::CreateViews_S_AV_CH_BH(QWidget* pWidget_)
 
     split[0]->setOrientation(Qt::Horizontal);
     split[1]->setOrientation(Qt::Vertical);
-    for(int i= 0 ; i< 4 ; i++)
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
     {
-        _pView[i] = new DopplerDataView(pWidget_) ;
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[2] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
     }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[2] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[1] = new DopplerDataView(pWidget_);
+    _pView[3] = new DopplerDataView(pWidget_);
 
     split[0]->addWidget(_pView[0]);
     split[0]->addWidget(_pView[1]);
@@ -1314,10 +1484,20 @@ int ProcessDisplay::CreateViews_S_AV_CH_N(QWidget* pWidget_)
 
     split[0]->setOrientation(Qt::Horizontal);
     split[1]->setOrientation(Qt::Vertical);
-    for(int i= 0 ; i< 3 ; i++)
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
     {
-        _pView[i] = new DopplerDataView(pWidget_) ;
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[2] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
     }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[2] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[1] = new DopplerDataView(pWidget_);
 
     split[0]->addWidget(_pView[0]);
     split[0]->addWidget(_pView[1]);
@@ -1392,11 +1572,28 @@ int ProcessDisplay::CreateViews_AllGroups(QWidget* pWidget_)
 		int _nGroup = _pComDisp[i];
 		if(m_pConfig->group[_nGroup].eGroupMode == setup_GROUP_MODE_PA) {
 			DopplerDataView* _pView[3] ;
-			for(int k = 0; k < 3; k++) {
-				_pView[k] = new DopplerDataView(pWidget_) ;
-				_pView[k]->SetLawIdentify(0);
-				_pList->append(_pView[k]);
-			}
+
+            if( m_pConfig->group[_nGroup].coupleMonitoringState)
+            {
+                _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV);
+                _pView[1] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+            }
+            else
+            {
+                _pView[0] = new DopplerDataView(pWidget_);
+                _pView[1] = new DopplerDataView(pWidget_);
+            }
+
+            _pView[2] = new DopplerDataView(pWidget_);
+
+            _pView[0]->SetLawIdentify(0);
+            _pList->append(_pView[0]);
+            _pView[1]->SetLawIdentify(0);
+            _pList->append(_pView[1]);
+            _pView[2]->SetLawIdentify(0);
+            _pList->append(_pView[2]);
+
+
 			ConnectSingals(_pView , 3) ;
 
 			_split_S_A[i] = new GYSplitter(0);
@@ -1755,6 +1952,7 @@ void ProcessDisplay::UpdateDataViewFrameCH(DopplerDataView* pWidget_ , int nGrou
     }
     pWidget_->SetRulerRange( _fScanStart , _fScanStop ,  _fSliderStart, _fSliderStop,DopplerDataView::DATA_VIEW_RULER_BOTTOM);
 	pWidget_->SetRulerUnit(&_strBottomUnit , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
+    pWidget_->SetCoupleCScanRange( _fScanStart, _fScanStop);
 
 	if(_eSource == setup_CSCAN_AMP_A || _eSource == setup_CSCAN_AMP_B )
 	{
@@ -1765,6 +1963,7 @@ void ProcessDisplay::UpdateDataViewFrameCH(DopplerDataView* pWidget_ , int nGrou
 		else
 			_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
 		pWidget_->SetColorBarColorIndex(_pColor);
+        pWidget_->SetCoupleCScanBarColorIndex(_pColor);
 	}
 	else
 	{
@@ -1773,6 +1972,7 @@ void ProcessDisplay::UpdateDataViewFrameCH(DopplerDataView* pWidget_ , int nGrou
 		pWidget_->SetRulerRange( _fStop , _fStart ,  _fStop , _fStart , DopplerDataView::DATA_VIEW_RULER_RIGHT);
 		void* _pColor = _process->GetPalete(nGroupId_ , PALETTE_THICKNESS);
 		pWidget_->SetColorBarColorIndex(_pColor);
+        pWidget_->SetCoupleCScanBarColorIndex(_pColor);
 	}
 }
 
@@ -1807,6 +2007,7 @@ void ProcessDisplay::UpdateDataViewFrameCV(DopplerDataView* pWidget_ , int nGrou
     }
 	pWidget_->SetRulerRange(_fScanStop , _fScanStart ,  _fSliderStart, _fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
+    pWidget_->SetCoupleCScanRange( _fScanStart, _fScanStop);
 
 	QString _strBottomUnit = _process->GetCscanIndexUnit(nGroupId_) ;
 	_process->GetCScanIndexAxisRange(nGroupId_ , &_fScanStart, &_fScanStop) ;
@@ -1822,6 +2023,7 @@ void ProcessDisplay::UpdateDataViewFrameCV(DopplerDataView* pWidget_ , int nGrou
 		else
 			_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
 		pWidget_->SetColorBarColorIndex(_pColor);
+        pWidget_->SetCoupleCScanBarColorIndex(_pColor);
 	}
 	else
 	{
@@ -1830,6 +2032,7 @@ void ProcessDisplay::UpdateDataViewFrameCV(DopplerDataView* pWidget_ , int nGrou
 		pWidget_->SetRulerRange( _fStop , _fStart , _fStop , _fStart , DopplerDataView::DATA_VIEW_RULER_RIGHT);
 		void* _pColor = _process->GetPalete(nGroupId_ , PALETTE_THICKNESS);
 		pWidget_->SetColorBarColorIndex(_pColor);
+        pWidget_->SetCoupleCScanBarColorIndex(_pColor);
 	}
 }
 
@@ -1856,6 +2059,7 @@ void ProcessDisplay::UpdateDataViewFrameSS(DopplerDataView* pWidget_ , int nGrou
 	else
 		_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
 	pWidget_->SetColorBarColorIndex(_pColor);
+    pWidget_->SetCoupleSScanBarColorIndex(_pColor);
 }
 
 void ProcessDisplay::UpdateDataViewFrameSA(DopplerDataView* pWidget_ , int nGroupId_ , int /*nLawId_*/)
@@ -1880,6 +2084,7 @@ void ProcessDisplay::UpdateDataViewFrameSA(DopplerDataView* pWidget_ , int nGrou
 	else
 		_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
 	pWidget_->SetColorBarColorIndex(_pColor);
+    pWidget_->SetCoupleSScanBarColorIndex(_pColor);
 }
 
 void ProcessDisplay::UpdateDataViewFrameSL(DopplerDataView* pWidget_ , int nGroupId_ , int /*nLawId_*/)
@@ -1904,6 +2109,7 @@ void ProcessDisplay::UpdateDataViewFrameSL(DopplerDataView* pWidget_ , int nGrou
 	else
 		_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
 	pWidget_->SetColorBarColorIndex(_pColor);
+    pWidget_->SetCoupleSScanBarColorIndex(_pColor);
 }
 
 
