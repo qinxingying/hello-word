@@ -248,6 +248,7 @@ void Config::unpack_focallawer(const QVariantMap &map)
     m_groups[m_currentGroupID].m_focallawer.m_focusMode = static_cast<Paramters::Focallawer::FocusMode> (map["FocusMode"].toUInt());
     m_groups[m_currentGroupID].m_focallawer.m_scanMode  = static_cast<Paramters::Focallawer::ScanMode> (map["ScanMode"].toUInt());
     m_groups[m_currentGroupID].m_focallawer.m_waveType = static_cast<Paramters::Focallawer::WaveType> (map["WaveType"].toInt());
+    m_groups[m_currentGroupID].m_focallawer.m_coupling = map["Coupling"].toBool();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " wave type " << m_groups[m_currentGroupID].m_focallawer.m_waveType
@@ -264,7 +265,11 @@ void Config::unpack_focallawer(const QVariantMap &map)
 
     unpack_specimen(map["Specimen"].toMap());
 
-    unpack_beams_info();
+    unpack_delays(map["Delays"].toList());
+
+    unpack_fields(map["Fields"].toList());
+
+    unpack_gains(map["Gains"].toList());
 }
 
 void Config::unpack_scan(const QVariantMap &map)
@@ -424,6 +429,33 @@ void Config::unpack_specimen(const QVariantMap &map)
     unpack_geometry(map.value("Geometry").toMap());
 
     unpack_weld(map.value("Weld").toMap());
+}
+
+void Config::unpack_delays(const QVariantList &list)
+{
+    QList<float> &delays = m_groups[m_currentGroupID].m_focallawer.m_delays;
+    delays.clear();
+    foreach (QVariant value, list) {
+        delays.append(value.toFloat());
+    }
+}
+
+void Config::unpack_fields(const QVariantList &list)
+{
+    QList<float> &fields = m_groups[m_currentGroupID].m_focallawer.m_fieldDistance;
+    fields.clear();
+    foreach (QVariant value, list) {
+        fields.append(value.toFloat());
+    }
+}
+
+void Config::unpack_gains(const QVariantList &list)
+{
+    QList<float> &gains = m_groups[m_currentGroupID].m_focallawer.m_gains;
+    gains.clear();
+    foreach (QVariant value, list) {
+        gains.append(value.toFloat());
+    }
 }
 
 void Config::unpack_geometry(const QVariantMap &map)
@@ -1064,9 +1096,14 @@ void Config::convert_to_phascan_config(int groupId)
     }
 
     /* BeamsInfo */
-    for(int i = 0; i < setup_MAX_GROUP_LAW_QTY; i++) {
-        targetGroup.beam_delay[i]     = currentGroup.m_focallawer.m_beamsInfo.m_delay[i];
-        targetGroup.field_distance[i] = currentGroup.m_focallawer.m_beamsInfo.m_fieldDistance[i];
+    memset(targetGroup.beam_delay, 0, sizeof(unsigned int) * setup_MAX_GROUP_LAW_QTY);
+    memset(targetGroup.field_distance, 0, sizeof(float) * setup_MAX_GROUP_LAW_QTY);
+    memset(targetGroup.field_distance, 0, sizeof(float) * setup_MAX_GROUP_LAW_QTY);
+
+    for(int i = 0; i < currentGroup.m_focallawer.m_delays.count(); ++i) {
+        targetGroup.gain_offset[i] = currentGroup.m_focallawer.m_gains[i];
+        targetGroup.beam_delay[i] = currentGroup.m_focallawer.m_delays[i];
+        targetGroup.field_distance[i] = currentGroup.m_focallawer.m_fieldDistance[i];
     }
 
     /* Thickness */

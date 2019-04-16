@@ -18,6 +18,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QVector>
 
 class DopplerHtmlReport ;
 enum PALETTE_NAME
@@ -102,9 +103,9 @@ struct DEFECT_PARAM
 };
 
 struct coupleCScanGroupInfo{
-    bool calculateState;      //±¾×éCÉ¨×´Ì¬£¬falseÎª»¹Î´¼ÆËã£¬trueÎªÒÑ¾­¼ÆËã
-    float oldPartThickness;   //¾ÉµÄ¹¤¼şºñ¶ÈÖµ£¬ÓÃÓÚÅĞ¶Ï¹¤¼şºñ¶È¸Ä±äÖØĞÂ¼ÆËãñîºÏÕ¢ÃÅÄÚµÄÖµ
-    QVector<WDATA> data;      //´¢´æñîºÏCÉ¨Êı¾İ
+    bool calculateState;      //æœ¬ç»„Cæ‰«çŠ¶æ€ï¼Œfalseä¸ºè¿˜æœªè®¡ç®—ï¼Œtrueä¸ºå·²ç»è®¡ç®—
+    float oldPartThickness;   //æ—§çš„å·¥ä»¶åšåº¦å€¼ï¼Œç”¨äºåˆ¤æ–­å·¥ä»¶åšåº¦æ”¹å˜é‡æ–°è®¡ç®—è€¦åˆé—¸é—¨å†…çš„å€¼
+    QVector<WDATA> data;      //å‚¨å­˜è€¦åˆCæ‰«æ•°æ®
 };
 
 class DopplerConfigure : public QObject

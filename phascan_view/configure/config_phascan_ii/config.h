@@ -48,6 +48,12 @@ protected:
 
     void unpack_specimen(const QVariantMap &map);
 
+    void unpack_delays(const QVariantList &list);
+
+    void unpack_fields(const QVariantList &list);
+
+    void unpack_gains(const QVariantList &list);
+
     void unpack_geometry(const QVariantMap &map);
 
     void unpack_geometry_plane(const QVariantMap &map);

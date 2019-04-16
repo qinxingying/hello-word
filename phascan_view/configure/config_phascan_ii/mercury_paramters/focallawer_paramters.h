@@ -2,6 +2,7 @@
 #define FOCALLAWER_H
 
 #include <QObject>
+#include <QList>
 #include "scan_paramters.h"
 #include "focus_paramters.h"
 #include "beamsinfo_paramters.h"
@@ -37,9 +38,13 @@ private:
     ScanMode m_scanMode;
     FocusMode m_focusMode;
     WaveType m_waveType;
+    bool m_coupling;
     Scan m_scan;
     Focus m_focus;
-    BeamsInfo m_beamsInfo;
+
+    QList<float> m_delays;
+    QList<float> m_fieldDistance;
+    QList<float> m_gains;
 
     friend class Config;
 };

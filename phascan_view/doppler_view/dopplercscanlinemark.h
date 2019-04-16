@@ -1,4 +1,4 @@
-#ifndef DOPPLERCSCANLINEMARK_H
+﻿#ifndef DOPPLERCSCANLINEMARK_H
 #define DOPPLERCSCANLINEMARK_H
 
 #include "DopplerLineItem.h"

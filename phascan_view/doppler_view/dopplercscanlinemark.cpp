@@ -1,4 +1,4 @@
-#include "dopplercscanlinemark.h"
+﻿#include "dopplercscanlinemark.h"
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsScene>

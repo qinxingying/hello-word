@@ -1,4 +1,4 @@
-#ifndef DOPPLERCOUPLEBAR_H
+﻿#ifndef DOPPLERCOUPLEBAR_H
 #define DOPPLERCOUPLEBAR_H
 
 #include <QWidget>
