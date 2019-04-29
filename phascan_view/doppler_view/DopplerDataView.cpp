@@ -1,4 +1,4 @@
-#include "DopplerDataView.h"
+ï»¿#include "DopplerDataView.h"
 #include "DopplerRulerBar.h"
 #include "DopplerTitleBar.h"
 #include "DopplerColorBar.h"
@@ -337,7 +337,7 @@ void DopplerDataView::UpdateMeasure()
 
 
 /****************************************************************************
-  Description: »»ËãITEMÎ»ÖÃ
+  Description: æ¢ç®—ITEMä½ç½®
 *****************************************************************************/
 void DopplerDataView::SetItemGeometry(DopplerGraphicsItem* item , QRectF& rect_)
 {
@@ -351,9 +351,9 @@ void DopplerDataView::SetItemGeometry(DopplerGraphicsItem* item , QRectF& rect_)
 }
 
 /****************************************************************************
-  Description: »»ËãÊµ¼Ê×ø±êµ½³¡¾°×ø±ê
-  Input:  µÄÊµ¼Ê×ø±ê
-  Output: ×ø±ê£¬ÒÔÏñËØ×÷µ¥Î»
+  Description: æ¢ç®—å®é™…åæ ‡åˆ°åœºæ™¯åæ ‡
+  Input:  çš„å®é™…åæ ‡
+  Output: åæ ‡ï¼Œä»¥åƒç´ ä½œå•ä½
 *****************************************************************************/
 QPointF DopplerDataView::TranslateToScenePlan(QPointF* pPos_)
 {
@@ -377,7 +377,7 @@ QPointF DopplerDataView::TranslateToScenePlan(QPointF* pPos_)
 }
 
 /****************************************************************************
-  Description: ´´½¨ËùÓĞµÄDATAVIEW²¿¼ş £¬ TITLE , RULERS , COLORBAR , CENTER VIEW
+  Description: åˆ›å»ºæ‰€æœ‰çš„DATAVIEWéƒ¨ä»¶ ï¼Œ TITLE , RULERS , COLORBAR , CENTER VIEW
 *****************************************************************************/
 void DopplerDataView::CreateComponent()
 {
@@ -398,7 +398,7 @@ void DopplerDataView::CreateComponent()
     int rowFix = 0;
     if( m_eComponent & DATA_VIEW_COMPONENT_COUPLESBAR)
     {
-        columnFix = 1;   //ÓĞñîºÏ¼à¿Ø²åÈëÒ»¸öwidget
+        columnFix = 1;   //æœ‰è€¦åˆç›‘æ§æ’å…¥ä¸€ä¸ªwidget
     }
     if( m_eComponent & DATA_VIEW_COMPONENT_COUPLECVBAR)
     {
@@ -816,9 +816,9 @@ void DopplerDataView::ResetDefect()
 }
 
 /****************************************************************************
-  Description: »»Ëã  ÔÚ³¡¾°ÖĞµÄÏñËØÎ»ÖÃ µ½  ±ê³ß¿Ì¶È¶ÔÓ¦µÄÎ»ÖÃ
-  Input:	 ³¡¾°Î»ÖÃ
-  Output:	±ê³ß¶ÔÓ¦Î»ÖÃ
+  Description: æ¢ç®—  åœ¨åœºæ™¯ä¸­çš„åƒç´ ä½ç½® åˆ°  æ ‡å°ºåˆ»åº¦å¯¹åº”çš„ä½ç½®
+  Input:	 åœºæ™¯ä½ç½®
+  Output:	æ ‡å°ºå¯¹åº”ä½ç½®
 *****************************************************************************/
 QPointF DopplerDataView::PixTransferToReal(QPointF& pos_)
 {

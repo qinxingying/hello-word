@@ -1,4 +1,4 @@
-#include "ParameterProcess.h"
+ï»¿#include "ParameterProcess.h"
 #include "configure/const.h"
 #include "Limitation.h"
 #include <QString>
@@ -45,9 +45,9 @@ ParameterProcess::ParameterProcess(QObject *parent) :
 }
 
 /****************************************************************************
-  Description:   Ïò²ÎÊıÖĞÌí¼ÓÒ»¸ö×é²ÎÊı
-  Input:  nGroupId_: Ê¹ÓÃ¸Ã×é²ÎÊı³õÊ¼»¯Ìí¼Ó×é£¬ Èç¹ûÎª¡°-1¡±ÔòÓÃÄ¬ÈÏ²ÎÊı³õÊ¼»¯
-  Output: Èç¹û³É¹¦·µ»Ø¿Õ£¬·ñÔò·µ»Ø´íÎóËµÃ÷
+  Description:   å‘å‚æ•°ä¸­æ·»åŠ ä¸€ä¸ªç»„å‚æ•°
+  Input:  nGroupId_: ä½¿ç”¨è¯¥ç»„å‚æ•°åˆå§‹åŒ–æ·»åŠ ç»„ï¼Œ å¦‚æœä¸ºâ€œ-1â€åˆ™ç”¨é»˜è®¤å‚æ•°åˆå§‹åŒ–
+  Output: å¦‚æœæˆåŠŸè¿”å›ç©ºï¼Œå¦åˆ™è¿”å›é”™è¯¯è¯´æ˜
 *****************************************************************************/
 QString ParameterProcess::AddOneGroup(int nGroupId_)
 {
@@ -79,9 +79,9 @@ QString ParameterProcess::AddOneGroup(int nGroupId_)
 	return _str ;
 }
 /****************************************************************************
-  Description:   É¾³ıÒ»¸ö×é²ÎÊı
-  Input:  nGroupId_: É¾³ıµÄ×é²ÎÊıID
-  Output: Èç¹û³É¹¦·µ»Ø¿Õ£¬·ñÔò·µ»Ø´íÎóËµÃ÷
+  Description:   åˆ é™¤ä¸€ä¸ªç»„å‚æ•°
+  Input:  nGroupId_: åˆ é™¤çš„ç»„å‚æ•°ID
+  Output: å¦‚æœæˆåŠŸè¿”å›ç©ºï¼Œå¦åˆ™è¿”å›é”™è¯¯è¯´æ˜
 *****************************************************************************/
 QString ParameterProcess::DeleteOneGroup(int nGroupId_)
 {
@@ -263,7 +263,7 @@ int  ParameterProcess::SetupFocalLaw(int nGroupId_ , LAW_CONFIG* pLaw_)
 {
 	LAW_CONFIG* _pLaw = &m_pConfig->group[nGroupId_].law ;
 	memcpy((void*)_pLaw , (void*) pLaw_ , sizeof(LAW_CONFIG)) ;
-	// ¼ÆËã¾Û½¹·¨Ôò
+	// è®¡ç®—èšç„¦æ³•åˆ™
 	return 0 ;
 }
 
@@ -746,8 +746,16 @@ int ParameterProcess::SAxisDistToIndex(float fDist_) const
 	SCANNER& _scaner = m_pConfig->common.scanner ;
 	int _index;
 	if(_scaner.eEncoderType) {
+        if(fDist_ < _scaner.fScanStart)
+        {
+            fDist_ = _scaner.fScanStart;
+        }
         _index = (fDist_ - _scaner.fScanStart) / _scaner.fScanStep ;
 	} else {
+        if(fDist_ * _scaner.fPrf < _scaner.fScanStart)
+        {
+            fDist_ = _scaner.fScanStart/_scaner.fPrf;
+        }
         _index =  (fDist_ * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep;
 	}
 	return _index;
@@ -1019,7 +1027,7 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 	int _iFro = 0;//pData_[iStart_];
 	int _iTmp = 0;
     int _iPos = iEnd_;
-	if(!bRectify_) {// ÉäÆµ
+	if(!bRectify_) {// å°„é¢‘
 		int mode = 0;
         if(iHeight_ > 127.5)
 			mode = 1;
@@ -1091,7 +1099,7 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
     int WAVE_HALF;
 
     WAVE_HALF = ParameterProcess::getWaveHalfValue();
-	if(!bRectify_) {// ÉäÆµ
+	if(!bRectify_) {// å°„é¢‘
 		int _iMax = 0;
 		int _iData = 0;
 		for(int i = _iS; i < _iE; i++) {
@@ -1291,7 +1299,7 @@ WDATA* ParameterProcess::GetCoupleDataPointer( int nGroupId_)
     WDATA* _pData = GetGroupDataPointer( nGroupId_);
     if( !_pData)  return 0;
     int nLawId_ = GetGroupLawQty(nGroupId_);
-    int _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH); //Æ«ÒÆµ½ñîºÏ¼à¿Øbeam
+    int _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH); //åç§»åˆ°è€¦åˆç›‘æ§beam
     return (_pData + _nLawOffset);
 }
 
@@ -1876,13 +1884,13 @@ void ParameterProcess::GetSImageHorizentalRange(int nGroupId_ , float* fStart_ ,
 }
 
 /*!
-  \brief ÓÃÓÚ»­SÉ¨´¹Ö±µÄ±ê³ß·¶Î§
+  \brief ç”¨äºç”»Sæ‰«å‚ç›´çš„æ ‡å°ºèŒƒå›´
 
-  \param nGroupId_  ×éId
-  \param fStart_    ¼ÆËãµÃ³öµÄ¿ªÊ¼Î»ÖÃµÄÉî¶È
-  \param fStop_     ¼ÆËãµÃ³öµÄ½áÊøÎ»ÖÃµÄÉî¶È
+  \param nGroupId_  ç»„Id
+  \param fStart_    è®¡ç®—å¾—å‡ºçš„å¼€å§‹ä½ç½®çš„æ·±åº¦
+  \param fStop_     è®¡ç®—å¾—å‡ºçš„ç»“æŸä½ç½®çš„æ·±åº¦
 
-  \return ²»ÊÇPA×é·µ»Ø1£¬PA×é·µ»Ø0
+  \return ä¸æ˜¯PAç»„è¿”å›1ï¼ŒPAç»„è¿”å›0
 
 */
 int  ParameterProcess::GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_)
@@ -2329,8 +2337,8 @@ void* ParameterProcess::GetPalete(int nGroupId_ , PALETTE_NAME eName_)
 	return 0 ;
 }
 /****************************************************************************
-  Description:   ¼ÆËãÕ¢ÃÅ¶ÁÊı ·ù¶È
-  Input:  32bit µÄÕ¢ÃÅ²ÉÑùÊı¾İ Ç°31-22Î»Îª·ù¶È  0-21Î»ÎªÎ»ÖÃ
+  Description:   è®¡ç®—é—¸é—¨è¯»æ•° å¹…åº¦
+  Input:  32bit çš„é—¸é—¨é‡‡æ ·æ•°æ® å‰31-22ä½ä¸ºå¹…åº¦  0-21ä½ä¸ºä½ç½®
 *****************************************************************************/
 float ParameterProcess::GetGateValueAmp(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_)
 {
@@ -2352,8 +2360,8 @@ float ParameterProcess::GetGateValueAmp(int nGroupId_ , int nLaw_ , setup_GATE_N
 	return _fRet * 100.0f;
 }
 /******************************************************
-  Description:   ¼ÆËãÕ¢ÃÅ¶ÁÊı Î»ÖÃ
-  Input:  32bit µÄÕ¢ÃÅ²ÉÑùÊı¾İ Ç°31-22Î»Îª·ù¶È  0-21Î»ÎªÎ»ÖÃ
+  Description:   è®¡ç®—é—¸é—¨è¯»æ•° ä½ç½®
+  Input:  32bit çš„é—¸é—¨é‡‡æ ·æ•°æ® å‰31-22ä½ä¸ºå¹…åº¦  0-21ä½ä¸ºä½ç½®
 ******************************************************/
 float ParameterProcess::GetGateValuePos(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ , GATE_POS_VALUE_TYPE eType_ )
 {

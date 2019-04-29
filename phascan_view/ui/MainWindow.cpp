@@ -770,7 +770,7 @@ void MainWindow::UpdateTableDisplay()
     ui->TabWidget_display->setEnabled(true);
     ui->toolBar->setEnabled(true);
     SetDispTabText();
-    SetDispTabText();
+    //SetDispTabText();
 }
 
 void MainWindow::InsertRightTab()

@@ -1,6 +1,6 @@
-/*********************************
+﻿/*********************************
   Name:  const.h
-  Description:   ������ֳ���
+  Description:   定义各种常量
 *********************************/
 
 #include <QString>
@@ -24,7 +24,7 @@ typedef unsigned int	U32;
 typedef float			F32;
 typedef double			F64;
 
-typedef U8				WDATA;	//	���岨������λ�� 8λ
+typedef U8				WDATA;	//	定义波形数据位宽 8位
 
 #define WAVE_MAX		255
 
@@ -46,7 +46,7 @@ typedef U8				WDATA;	//	���岨������λ�� 8λ
 #define setup_MAX_REC_LEN					7 * 1024 * 1024
 
 #define setup_MAX_FRAME_SIZE				192*1024
-//��������β�ĳ���
+//波形数据尾的长度
 #define setup_DATA_PENDIX_LENGTH			32
 
 #define setup_MAX_TOFD_PRO_N				8
@@ -54,7 +54,7 @@ typedef U8				WDATA;	//	���岨������λ�� 8λ
 
 #define setup_DATA_ALIAN					1024
 #define setup_DATA_OFFSET					2
-// ��ɨͼ
+// 扇扫图
 #define FLOAT_ZERO_GATE						0.00001
 #define COLOR_STEP							32		/*	4	8	16	32	64*/
 #define COLOR_SHIFT							5		/*	2	3	4	5	6*/
@@ -77,47 +77,47 @@ extern void GetExePathName1(char* dir, char* _strPathName);
 enum FEILD_VALUE_INDEX
 {
 	FEILD_NONE  = 0 ,
-	FEILD_A100,				// "A%			բ��A�ڷ�ֵ����",
-	FEILD_AdBA,				// "AdBA		բ��A�ڷ�ֵ������բ����ֵ����֮�dB��",
-	FEILD_AdBr,				// "AdBr		բ��A�ڷ�ֵ������ο��źŷ���֮�dB��",
-	FEILD_B100,				// "B%			բ��B�ڷ�ֵ����",
-	FEILD_BdBB,				// "BdBB		բ��B�ڷ�ֵ������բ����ֵ����֮�dB��",
-	FEILD_BdBr,				// "BdBr		բ��B�ڷ�ֵ������ο��źŷ���֮�dB��",
-	FEILD_APos,				// "A^			բ��A�ڷ�ֵλ��",
-	FEILD_BPos,				// "B^			բ��B�ڷ�ֵλ��",
-	FEILD_IEdge,			// "I/			բ��I��ǰ��λ��",
+	FEILD_A100,				// "A%			闸门A内峰值幅度",
+	FEILD_AdBA,				// "AdBA		闸门A内峰值幅度与闸门阈值幅度之差（dB）",
+	FEILD_AdBr,				// "AdBr		闸门A内峰值幅度与参考信号幅度之差（dB）",
+	FEILD_B100,				// "B%			闸门B内峰值幅度",
+	FEILD_BdBB,				// "BdBB		闸门B内峰值幅度与闸门阈值幅度之差（dB）",
+	FEILD_BdBr,				// "BdBr		闸门B内峰值幅度与参考信号幅度之差（dB）",
+	FEILD_APos,				// "A^			闸门A内峰值位置",
+	FEILD_BPos,				// "B^			闸门B内峰值位置",
+	FEILD_IEdge,			// "I/			闸门I的前沿位置",
 	FEILD_IEdgeInWater,		// "I(w)/		Position in gate I in water",
-	FEILD_ThicknessAPos,	// "T(A^)		���",
-	FEILD_ML,				// "ML			������ʧ�ٷֱ�",
-	FEILD_r100,				// "%(r)		�ο����λ�õķ���ֵ",
-	FEILD_m100,				// "%(m)		�������λ�õķ���ֵ",
-	FEILD_mr100,			// "%(m-r)		�������ķ���ֵ��ȥ�ο��źŵķ���ֵ)",
-	FEILD_Ur,				// "U(r)		�ο�����ڳ������ϵ�λ��",
-	FEILD_Um,				// "U(m)		��������ڳ������ϵ�λ��",
-	FEILD_Umr,				// "U(m-r)		�������ϲ������λ����ο����λ��֮��",
-	FEILD_Pr,				// "P(r)		����ڲο�����̽ͷλ��",
-	FEILD_Pm,				// "P(m)		����ڲ�������̽ͷλ��",
-	FEILD_Pmr,				// "P(m-r)		̽ͷ����ڲ��������ο�����ֵ��λ��",
-	FEILD_Sr,				// "S(r)		ɨ�����ϲο�����λ��",
-	FEILD_Sm,				// "S(m)		ɨ�����ϲ�������λ��",
-	FEILD_Smr,				// "S(m-r)		ɨ�����ϲ��������ο����ľ���",
-	FEILD_Ir,				// "I(r)		�������ϲο�����λ��",
-	FEILD_Im,				// "I(m)		�������ϲ�������λ��",
-	FEILD_Imr,				// "I(m-r)		�������ϲ��������ο����ľ���",
-	FEILD_RA,				// "RA^			�����������բ��A�ڼ�⵽��ȱ��֮��ľ���",
-	FEILD_RB,				// "RB^			�����������բ��B�ڼ�⵽��ȱ��֮��ľ���",
-	FEILD_PA,				// "PA^			̽ͷǰ������բ��A�ڼ�⵽��ȱ�ݵľ���",
-	FEILD_PB,				// "PB^			̽ͷǰ������բ��B�ڼ�⵽��ȱ�ݵľ���",
-	FEILD_DA,				// "DA^			բ��A�ڼ�⵽��ȱ���ڹ����е����",
-	FEILD_DB,				// "DB^			բ��B�ڼ�⵽��ȱ���ڹ����е����",
-	FEILD_SA,				// "SA^			��������㵽բ��A�ڼ�⵽��ȱ��֮�������",
-	FEILD_SB,				// "SB^			��������㵽բ��B�ڼ�⵽��ȱ��֮�������",
-	FEILD_ViA,				// "ViA^		բ��A�ڼ�⵽��ȱ������ڲ�����������λ",
-	FEILD_ViB,				// "ViB^		բ��B�ڼ�⵽��ȱ������ڲ�����������λ",
-	FEILD_VsA,				// "VsA^		բ��A�ڼ�⵽��ȱ�������ɨ����������λ",
-	FEILD_VsB,				// "VsB^		բ��B�ڼ�⵽��ȱ�������ɨ����������λ",
-	FEILD_LA,				// "LA^			������̽ͷ��բ��A̽�⵽��ȱ���ڲ����е�·���ı����",
-	FEILD_LB,				// "LB^			������̽ͷ��բ��B̽�⵽��ȱ���ڲ����е�·���ı����",
+	FEILD_ThicknessAPos,	// "T(A^)		厚度",
+	FEILD_ML,				// "ML			材料损失百分比",
+	FEILD_r100,				// "%(r)		参考光标位置的幅度值",
+	FEILD_m100,				// "%(m)		测量光标位置的幅度值",
+	FEILD_mr100,			// "%(m-r)		测量光标的幅度值减去参考信号的幅度值)",
+	FEILD_Ur,				// "U(r)		参考光标在超声轴上的位置",
+	FEILD_Um,				// "U(m)		测量光标在超声轴上的位置",
+	FEILD_Umr,				// "U(m-r)		超声轴上测量光标位置与参考光标位置之差",
+	FEILD_Pr,				// "P(r)		相对于参考光标的探头位置",
+	FEILD_Pm,				// "P(m)		相对于测量光标的探头位置",
+	FEILD_Pmr,				// "P(m-r)		探头相对于测量光标与参考光标差值的位置",
+	FEILD_Sr,				// "S(r)		扫查轴上参考光标的位置",
+	FEILD_Sm,				// "S(m)		扫查轴上测量光标的位置",
+	FEILD_Smr,				// "S(m-r)		扫查轴上测量光标与参考光标的距离",
+	FEILD_Ir,				// "I(r)		步进轴上参考光标的位置",
+	FEILD_Im,				// "I(m)		步进轴上测量光标的位置",
+	FEILD_Imr,				// "I(m-r)		步进轴上测量光标与参考光标的距离",
+	FEILD_RA,				// "RA^			声束出射点与闸门A内检测到的缺陷之间的距离",
+	FEILD_RB,				// "RB^			声束出射点与闸门B内检测到的缺陷之间的距离",
+	FEILD_PA,				// "PA^			探头前表面与闸门A内检测到的缺陷的距离",
+	FEILD_PB,				// "PB^			探头前表面与闸门B内检测到的缺陷的距离",
+	FEILD_DA,				// "DA^			闸门A内检测到的缺陷在工件中的深度",
+	FEILD_DB,				// "DB^			闸门B内检测到的缺陷在工件中的深度",
+	FEILD_SA,				// "SA^			声束出射点到闸门A内检测到的缺陷之间的声程",
+	FEILD_SB,				// "SB^			声束出射点到闸门B内检测到的缺陷之间的声程",
+	FEILD_ViA,				// "ViA^		闸门A内检测到的缺陷相对于步进轴的体积定位",
+	FEILD_ViB,				// "ViB^		闸门B内检测到的缺陷相对于步进轴的体积定位",
+	FEILD_VsA,				// "VsA^		闸门A内检测到的缺陷相对于扫查轴的体积定位",
+	FEILD_VsB,				// "VsB^		闸门B内检测到的缺陷相对于扫查轴的体积定位",
+	FEILD_LA,				// "LA^			声波从探头到闸门A探测到的缺陷在材料中的路径改变次数",
+	FEILD_LB,				// "LB^			声波从探头到闸门B探测到的缺陷在材料中的路径改变次数",
 	FEILD_TofdDepth1 ,
 	FEILD_TofdDepth2 ,
 	FEILD_TofdLength ,

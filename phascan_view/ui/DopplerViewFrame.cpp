@@ -1,4 +1,4 @@
-#include "DopplerViewFrame.h"
+ï»¿#include "DopplerViewFrame.h"
 #include "gHeader.h"
 #include "ProcessDisplay.h"
 #include "MainWindow.h"
@@ -19,7 +19,7 @@ DopplerViewFrame::DopplerViewFrame(QWidget *parent) :
 
 	setAcceptDrops(true);
 
-	// ÒÔÒì²½µÄ·½Ê½µ÷ÓÃĞÂ´°¿ÚµÄ´´½¨
+	// ä»¥å¼‚æ­¥çš„æ–¹å¼è°ƒç”¨æ–°çª—å£çš„åˆ›å»º
     connect(this,  SIGNAL(signalCreateDrawWindow(QWidget*, int , int)),
             SLOT(slotCreateDrawWindow(QWidget* , int , int)));  //Qt::QueuedConnection
 }

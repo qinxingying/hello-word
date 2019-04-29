@@ -1,4 +1,4 @@
-#include "DopplerGraphicsItem.h"
+ï»¿#include "DopplerGraphicsItem.h"
 #include <QGraphicsScene>
 
 DopplerGraphicsItem::DopplerGraphicsItem()
@@ -46,7 +46,7 @@ QPointF DopplerGraphicsItem::GetItemScenePos()
 void DopplerGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent* /*event*/)
 {
     //*************************************************
-    //############  È·±£Ö»ÓĞÒ»¸ö item ±»Ñ¡ÖĞ
+    //############  ç¡®ä¿åªæœ‰ä¸€ä¸ª item è¢«é€‰ä¸­
     QList<QGraphicsItem*> ItemList =scene()->selectedItems();
     DopplerGraphicsItem* item ;
     int _iCnt = ItemList.count();

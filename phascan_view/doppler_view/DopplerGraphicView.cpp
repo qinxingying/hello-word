@@ -1,4 +1,4 @@
-#ifndef QT_NO_OPENGL
+ï»¿#ifndef QT_NO_OPENGL
 #include <QtOpenGL>
 #endif
 
@@ -22,7 +22,7 @@
 static const QSize FIXED_SCENE_SIZE( 480 , 360);
 
 
-#define DPL_BASE_IMAGE_FORMATE	 (QImage::Format_RGB888)  //´æÈë¸ñÊ½ÎªR, G, B ¶ÔÓ¦ 0,1,2
+#define DPL_BASE_IMAGE_FORMATE	 (QImage::Format_RGB888)  //å­˜å…¥æ ¼å¼ä¸ºR, G, B å¯¹åº” 0,1,2
 
 class GraphicsViewBase:public QGraphicsWidget
 {
@@ -91,7 +91,7 @@ public:
         ClearImage();
     }
 
-    //ÖØ»æÊ±ÓÉÓÚÊÇ·Å´óÁËimage£¬item¾Í²»ÒªËõ·Å
+    //é‡ç»˜æ—¶ç”±äºæ˜¯æ”¾å¤§äº†imageï¼Œitemå°±ä¸è¦ç¼©æ”¾
 	void paint (QPainter *painter, const QStyleOptionGraphicsItem *, QWidget * = 0)
 	{
         if(m_pImage)
@@ -112,8 +112,8 @@ public:
 private:
     QImage* m_pImage;
     QSize   m_cSize;
-    double m_scaleH;  //±£´æË®Æ½Ëõ·Å±ÈÀı£¬ÓÃÓÚ¼ÆËãimage³ß´ç
-    double m_scaleV;  //±£´æ´¹Ö±Ëõ·Å±ÈÀı£¬ÓÃÓÚ¼ÆËãimage³ß´ç
+    double m_scaleH;  //ä¿å­˜æ°´å¹³ç¼©æ”¾æ¯”ä¾‹ï¼Œç”¨äºè®¡ç®—imageå°ºå¯¸
+    double m_scaleV;  //ä¿å­˜å‚ç›´ç¼©æ”¾æ¯”ä¾‹ï¼Œç”¨äºè®¡ç®—imageå°ºå¯¸
 };
 
 DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
@@ -168,11 +168,11 @@ void DopplerGraphicView::InitGraphicView(const QSize& cSize_)
 
 	QRect cRect(0 , 0 , cSize_.width() , cSize_.height()) ;
 	mRect = cRect ;
-	// ´´½¨±³¾°
+	// åˆ›å»ºèƒŒæ™¯
 	if(!m_pBackGround) //delete m_pBackGround ;
 		m_pBackGround = new GraphicsViewBase(0);
 	m_pBackGround->setGeometry (cRect);
-	// ´´½¨³¡¾°
+	// åˆ›å»ºåœºæ™¯
 	if(!m_pScene)
 	{
 		m_pScene = new QGraphicsScene();
@@ -219,11 +219,11 @@ void DopplerGraphicView::mouseCursorPro(QMouseEvent *event)
 }
 
 /*!
-  \brief ¶Ôview½øĞĞËõ·Å
+  \brief å¯¹viewè¿›è¡Œç¼©æ”¾
 
-  \param nScaleH_ Ë®Æ½Ëõ·ÅÒò×Ó
+  \param nScaleH_ æ°´å¹³ç¼©æ”¾å› å­
 
-  \param nScaleV_ ´¹Ö±Ëõ·ÅÒò×Ó
+  \param nScaleV_ å‚ç›´ç¼©æ”¾å› å­
 
 */
 void DopplerGraphicView::SetupMatrixScale(double nScaleH_ , double nScaleV_)
@@ -250,7 +250,7 @@ void DopplerGraphicView::slotPrint()
 }
 
 /*!
-  \brief ÏìÓ¦Êó±ê¹öÂÖÊÂ¼ş
+  \brief å“åº”é¼ æ ‡æ»šè½®äº‹ä»¶
 */
 void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 {
@@ -262,7 +262,7 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 		m_nScaleH += numSteps / 10.0 ;
 		m_nScaleV += numSteps / 10.0 ;
 
-        //Ëõ·Å±ÈÀı¿ØÖÆÔÚ1-10
+        //ç¼©æ”¾æ¯”ä¾‹æ§åˆ¶åœ¨1-10
         if(m_nScaleH < 1) {m_nScaleH = 1 ;}
         if(m_nScaleH > 10) {m_nScaleH = 10 ;}
         if(m_nScaleV < 1) {m_nScaleV = 1 ;}
@@ -271,7 +271,7 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 		//****************************************
 		QPointF _nCenter = mapToScene((event->pos()));
 
-        //¼ÆËãÔÚsceneÀïÃæËõ·Åºó¶ÔÓ¦µÄ¾ØĞÎ¿ò£¬¸³Öµ¸øm_cZoomRect
+        //è®¡ç®—åœ¨sceneé‡Œé¢ç¼©æ”¾åå¯¹åº”çš„çŸ©å½¢æ¡†ï¼Œèµ‹å€¼ç»™m_cZoomRect
         if(m_nScaleH > 1 && m_nScaleV > 1) {
 			QSize _size = size();
 			//float _fWidth   = ((double)_size.width()) / m_nScaleH;
@@ -353,7 +353,7 @@ void DopplerGraphicView::resizeEvent(QResizeEvent *event)
 		}
 	}
 	_pParent->GetItemGroup()->UpdateItemsLawMarker();
-	//***ÖØ»æ»­Í¼Çø*********
+	//***é‡ç»˜ç”»å›¾åŒº*********
 	//UpdateDrawing();
 }
 
@@ -399,7 +399,7 @@ void DopplerGraphicView::mouseMoveEvent(QMouseEvent *event)
 	QGraphicsView::mouseMoveEvent(event) ;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //  wuhan cursor 2015-05-19
-//	mouseCursorPro(event);	»¹ÓĞÎÊÌâ
+//	mouseCursorPro(event);	è¿˜æœ‰é—®é¢˜
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	QList<QGraphicsItem*> list = m_pScene->selectedItems();
@@ -1130,7 +1130,7 @@ DopplerDrawScan* DopplerGraphicView::GetDrawScan() const
 }
 
 /****************************************************************************
-  Description:   µ÷ÓÃDrawScanµÄDrawº¯Êı»æÖÆÊı¾İ ²¢·¢ËÍË¢ĞÂĞÅºÅµ½Ö÷Ïß³Ì
+  Description:   è°ƒç”¨DrawScançš„Drawå‡½æ•°ç»˜åˆ¶æ•°æ® å¹¶å‘é€åˆ·æ–°ä¿¡å·åˆ°ä¸»çº¿ç¨‹
 *****************************************************************************/
 void DopplerGraphicView::UpdateDrawing()
 {
@@ -1144,7 +1144,7 @@ void DopplerGraphicView::UpdateDrawing()
 	emit signalUpdateDrawing();
 }
 /****************************************************************************
-  Description:   Ë¢ĞÂ³¡¾°
+  Description:   åˆ·æ–°åœºæ™¯
 *****************************************************************************/
 void DopplerGraphicView::UpdateSceneRegion()
 {
@@ -1153,7 +1153,7 @@ void DopplerGraphicView::UpdateSceneRegion()
 }
 
 /****************************************************************************
-  Description:   Ë¢ĞÂ»­²¼
+  Description:   åˆ·æ–°ç”»å¸ƒ
 *****************************************************************************/
 void DopplerGraphicView::slotUpdateDrawing()
 {

@@ -1,4 +1,4 @@
-#ifndef _DATE_FILE_CONFIGURE_
+ï»¿#ifndef _DATE_FILE_CONFIGURE_
 #define _DATE_FILE_CONFIGURE_
 
 
@@ -26,13 +26,13 @@ typedef struct _sizing_curve_
 
 typedef struct _gate_info
 {
-	unsigned char	parameters;		// µ÷½ÚÄ£Ê½ 0 Positions 1 Mode //
-	unsigned char	synchro;        // Í¬²½ //
+	unsigned char	parameters;		// è°ƒèŠ‚æ¨¡å¼ 0 Positions 1 Mode //
+	unsigned char	synchro;        // åŒæ­¥ //
 	unsigned char	measure;        //  //
-	unsigned char	rectifier_freq; //ÉäÆµ //
+	unsigned char	rectifier_freq; //å°„é¢‘ //
 	char	height;
 	char	tt[3];
-	int	start;			//µ¥Î»ns
+	int	start;			//å•ä½ns
 	unsigned int	width;
 } GATE_INFO, *GATE_INFO_P;
 
@@ -40,17 +40,17 @@ typedef struct _gate_info
 struct _output_info;
 typedef struct _output_info OUTPUT_INFO1;
 
-/// Êä³öĞÅÏ¢ //
+/// è¾“å‡ºä¿¡æ¯ //
 struct _output_info 
 {
-	unsigned short	alarm_info;		// ×´Ì¬ ±íÊ¾16¸öalarmĞÅºÅµÄ×´Ì¬ /
+	unsigned short	alarm_info;		// çŠ¶æ€ è¡¨ç¤º16ä¸ªalarmä¿¡å·çš„çŠ¶æ€ /
 	unsigned char	count;    	    ////
 	unsigned char	sound;          ///
-	unsigned int	delay;			// µ¥Î»ns /
-	unsigned int	holdtime;       // µ¥Î»ns //
+	unsigned int	delay;			// å•ä½ns /
+	unsigned int	holdtime;       // å•ä½ns //
 };
 
-// ¹â±êĞÅÏ¢ 
+// å…‰æ ‡ä¿¡æ¯ 
 typedef struct _cursors_info 
 {
 	short	angle;
@@ -69,11 +69,11 @@ struct _simple_Probe
 {
         char	Model[20];
         char	Serial[20];
-	unsigned char	PA_probe_type;		// Ì½Í·ÀàĞÍ 1 ÊÇCustom 3 ÊÇangle beam 5 ÊÇ Contact 6ÊÇImmersion /
-	unsigned char	Elem_qty;			// ÕóÔªÊı /
-	unsigned short	Frequency;			// ÆµÂÊ /
+	unsigned char	PA_probe_type;		// æ¢å¤´ç±»å‹ 1 æ˜¯Custom 3 æ˜¯angle beam 5 æ˜¯ Contact 6æ˜¯Immersion /
+	unsigned char	Elem_qty;			// é˜µå…ƒæ•° /
+	unsigned short	Frequency;			// é¢‘ç‡ /
 	unsigned short	Reference_Point;	//  /
-	unsigned int	Pitch;				// ÕóÔªÖĞĞÄ¼ä¾à 0.001mm Îªµ¥Î» ·¶Î§ÊÇ0.01~65.00mm UT ÊÇElemet_size 
+	unsigned int	Pitch;				// é˜µå…ƒä¸­å¿ƒé—´è· 0.001mm ä¸ºå•ä½ èŒƒå›´æ˜¯0.01~65.00mm UT æ˜¯Elemet_size 
 };
 
 struct _simple_Wedge;
@@ -81,37 +81,37 @@ typedef struct _simple_Wedge st_simple_Wedge;
 
 struct _simple_Wedge
 {
-	char	Wave_type;		// 1 ÊÇL 2 ÊÇ S //
-	char	Model[20];		// ¹²ÓÃ Ğ¨¿éÃû×Ö //
-	char	Serial[20];		// ¹²ÓÃ Ğ¨¿éÃû×Ö //
+	char	Wave_type;		// 1 æ˜¯L 2 æ˜¯ S //
+	char	Model[20];		// å…±ç”¨ æ¥”å—åå­— //
+	char	Serial[20];		// å…±ç”¨ æ¥”å—åå­— //
 	char	Orientation;	// 1 Normal 0 reversal//
-	unsigned short	Angle;			// ¹²ÓÃ ½Ç¶Èµ¥Î»0.1¶È //
-	unsigned short	Probe_delay; 	// UT nsÎªµ¥Î» //
-	int	Ref_point;		// UT Ê¹ÓÃ //
-	unsigned int	Height;			// µ¥Î»Î¢Ã× //
+	unsigned short	Angle;			// å…±ç”¨ è§’åº¦å•ä½0.1åº¦ //
+	unsigned short	Probe_delay; 	// UT nsä¸ºå•ä½ //
+	int	Ref_point;		// UT ä½¿ç”¨ //
+	unsigned int	Height;			// å•ä½å¾®ç±³ //
 	unsigned int	Velocity_UT;
-	unsigned int	Velocity_PA;	// ËÙ¶È mm/s //
-	int	Primary_offset;	// Î¢Ã× //
-	unsigned int	Secondary_offset;	// Î¢Ã× //
+	unsigned int	Velocity_PA;	// é€Ÿåº¦ mm/s //
+	int	Primary_offset;	// å¾®ç±³ //
+	unsigned int	Secondary_offset;	// å¾®ç±³ //
 };
 
-/// Ì½Í·(Probe)  516 byte Èç¹ûÌ½Í·ÊÇunknown ±ØĞë¸øÒ»¸ö²ÎÊı //
+/// æ¢å¤´(Probe)  516 byte å¦‚æœæ¢å¤´æ˜¯unknown å¿…é¡»ç»™ä¸€ä¸ªå‚æ•° //
 typedef struct _Probe
 {
-	//PA Ê±ºòÏÈ¶Á×ß4¸ö×Ö½Ú//
+	//PA æ—¶å€™å…ˆè¯»èµ°4ä¸ªå­—èŠ‚//
 	char	A1[2];
-	unsigned char	PA_probe_type;	// Ì½Í·ÀàĞÍ 1 ÊÇCustom 3 ÊÇangle beam 5 ÊÇ Contact 6ÊÇImmersion //
+	unsigned char	PA_probe_type;	// æ¢å¤´ç±»å‹ 1 æ˜¯Custom 3 æ˜¯angle beam 5 æ˜¯ Contact 6æ˜¯Immersion //
 	char	A10;
-	unsigned char	UT_probe_type;	// Ì½Í·ÀàĞÍ 1 n/a 0 converntional //
+	unsigned char	UT_probe_type;	// æ¢å¤´ç±»å‹ 1 n/a 0 converntional //
 	char	A11;
-	char	Model[20];		// Ì½Í·Ãû×Ö //
-	char	Serial[20];		// Ì½Í·Ãû×Ö //
-	unsigned char	Elem_qty;		// ÕóÔªÊı //
-	unsigned char	Freq2;			// UT Ê±ºò ÆµÂÊÊÇ (freq2 << 8) + elem_qty //
-	unsigned int	Pitch;			// ÕóÔªÖĞĞÄ¼ä¾à 0.001mm Îªµ¥Î» ·¶Î§ÊÇ0.01~65.00mm UT ÊÇElemet_size //
+	char	Model[20];		// æ¢å¤´åå­— //
+	char	Serial[20];		// æ¢å¤´åå­— //
+	unsigned char	Elem_qty;		// é˜µå…ƒæ•° //
+	unsigned char	Freq2;			// UT æ—¶å€™ é¢‘ç‡æ˜¯ (freq2 << 8) + elem_qty //
+	unsigned int	Pitch;			// é˜µå…ƒä¸­å¿ƒé—´è· 0.001mm ä¸ºå•ä½ èŒƒå›´æ˜¯0.01~65.00mm UT æ˜¯Elemet_size //
 	unsigned int	A3;
 	unsigned short A4;
-	unsigned short	Frequency;		// ÆµÂÊ //
+	unsigned short	Frequency;		// é¢‘ç‡ //
 	unsigned int	A5[75];
 	unsigned short A6;
 	unsigned short A7;
@@ -120,29 +120,29 @@ typedef struct _Probe
 	unsigned int	A9[36];
 } PROBE, *PROBE_P;
 
-///Ğ¨¿é (Wedge)//
+///æ¥”å— (Wedge)//
 typedef struct _Wedge
 {
 	unsigned char	A1[2];			// 0x03000300 PA 0x01000100 UT//
-	char	Wave_type;		// 1 ÊÇL 2 ÊÇ S //
+	char	Wave_type;		// 1 æ˜¯L 2 æ˜¯ S //
 	char	A11;
-	char	Model[20];		// ¹²ÓÃ Ğ¨¿éÃû×Ö //
-	char	Serial[20];		// ¹²ÓÃ Ğ¨¿éÃû×Ö //
-	unsigned short	Angle;			// ¹²ÓÃ ½Ç¶Èµ¥Î»0.1¶È //
+	char	Model[20];		// å…±ç”¨ æ¥”å—åå­— //
+	char	Serial[20];		// å…±ç”¨ æ¥”å—åå­— //
+	unsigned short	Angle;			// å…±ç”¨ è§’åº¦å•ä½0.1åº¦ //
 	unsigned short	A7;
-	unsigned short	Probe_delay; 	// UT nsÎªµ¥Î» //
+	unsigned short	Probe_delay; 	// UT nsä¸ºå•ä½ //
 	char	A2;
 	char	A10;			// UT 1 SW 0 LW//
-	int	Ref_point;		// UT Ê¹ÓÃ //
-	//Õâ¸öµØ·½ µÃ ¶à¶ÁÒ»¸ö×Ö½Ú //
-	unsigned int	Height;			// µ¥Î»Î¢Ã× //
+	int	Ref_point;		// UT ä½¿ç”¨ //
+	//è¿™ä¸ªåœ°æ–¹ å¾— å¤šè¯»ä¸€ä¸ªå­—èŠ‚ //
+	unsigned int	Height;			// å•ä½å¾®ç±³ //
 	unsigned int	Velocity_UT;
 	unsigned int	A8;
-	unsigned int	Velocity_PA;	// ËÙ¶È mm/s //
+	unsigned int	Velocity_PA;	// é€Ÿåº¦ mm/s //
 	char	Orientation;	// 1 Normal 0 reversal//
 	char	A4[3];
-	int	Primary_offset;	// Î¢Ã× //
-	unsigned int	Secondary_offset;	// Î¢Ã× //
+	int	Primary_offset;	// å¾®ç±³ //
+	unsigned int	Secondary_offset;	// å¾®ç±³ //
 	int	A6[107];
 } WEDGE, *WEDGE_P;
 
@@ -161,15 +161,15 @@ struct _Encoder {
 struct _Part;
 typedef struct _Part st_PART;
 
-/// ¹¤¼ş (Part) 12×Ö½Ú ÒÑ¾­È«²¿ÒÆ×ßÖ»ÓĞCONFIG½á¹¹ÌåÓÃµ½ÁËËü µÈ´ıÒş²Ø //
+/// å·¥ä»¶ (Part) 12å­—èŠ‚ å·²ç»å…¨éƒ¨ç§»èµ°åªæœ‰CONFIGç»“æ„ä½“ç”¨åˆ°äº†å®ƒ ç­‰å¾…éšè— //
 struct _Part
 {
-	unsigned char	Geometry;		// ¼¸ºÎĞÎ×´ FLAT/ID/OD/BALL //
-    unsigned char	Material_pos;   // ²ÄÁÏ //
-	unsigned char	Weld;			// º¸·ì //
-	unsigned char   symmetry;		// ¶Ô³Æ //
-    unsigned int	Thickness;		// ºñ¶È //
-	unsigned int	Diameter;		// Ö±¾¶ //
+	unsigned char	Geometry;		// å‡ ä½•å½¢çŠ¶ FLAT/ID/OD/BALL //
+    unsigned char	Material_pos;   // ææ–™ //
+	unsigned char	Weld;			// ç„Šç¼ //
+	unsigned char   symmetry;		// å¯¹ç§° //
+    unsigned int	Thickness;		// åšåº¦ //
+	unsigned int	Diameter;		// ç›´å¾„ //
 
 	unsigned int    weland_height;
 	unsigned int    weland_offset;
@@ -179,76 +179,76 @@ struct _Part
 	unsigned int    weldtype_pos ;
 };
 
-/// Ò»¸öÕóÔªµÄ¾Û½¹ĞÅÏ¢//
+/// ä¸€ä¸ªé˜µå…ƒçš„èšç„¦ä¿¡æ¯//
 typedef struct _law_elem
 {
 	unsigned char	E_number;
-	unsigned char	Amplitude;		// µçÑ¹ µ¥Î»V //
-	unsigned short	FL_gain;		// Focal Gain 0.1dbµ¥Î» //
+	unsigned char	Amplitude;		// ç”µå‹ å•ä½V //
+	unsigned short	FL_gain;		// Focal Gain 0.1dbå•ä½ //
 	unsigned short	R_delay;		//  //
-	unsigned short	T_delay;		// 0-25560 µ¥Î» ns 65535²»»î¶¯×´Ì¬ //
-	unsigned short	P_width;		// 50-500 µ¥Î»ns//
+	unsigned short	T_delay;		// 0-25560 å•ä½ ns 65535ä¸æ´»åŠ¨çŠ¶æ€ //
+	unsigned short	P_width;		// 50-500 å•ä½ns//
 	unsigned char	tt[2];
 }LAW_ELEM, *LAW_ELEM_P;
 
-/// Ò»ÌõbeamµÄ¾Û½¹ĞÅÏ¢ //
+/// ä¸€æ¡beamçš„èšç„¦ä¿¡æ¯ //
 typedef struct _law_beam
 {
 	//    char Version[32];	//
 	//    int  N_laws;			//
 
-	unsigned char	N_ActiveElements;	// Í¬Ê±¼¤·¢µÄÕóÔªÊı //
+	unsigned char	N_ActiveElements;	// åŒæ—¶æ¿€å‘çš„é˜µå…ƒæ•° //
 	unsigned char	cycle;
 	//unsigned char	sumgain;			//  //
 	unsigned char	mode;				// 0 T/R 1 Pulse-echo//
 	unsigned char	filter;				// 0 no filter 1 0.5-5 2 2-10 3 5-15 //
 	unsigned char	T_first;
 	unsigned char	R_first;
-	char	tt;					// Õ¼Î»ÖÃ //
-	unsigned short	frequency;			// ÆµÂÊ0.001Mhz Îªµ¥Î» //
+	char	tt;					// å ä½ç½® //
+	unsigned short	frequency;			// é¢‘ç‡0.001Mhz ä¸ºå•ä½ //
 	short	R_angle;
 	unsigned short	S_angle;
-	char	tt1[2];				// Õ¼Î»ÖÃ //
-	unsigned int	Scan_offset;		// µ¥Î» 0.001 mm//
-	unsigned int	Index_offset;		// µ¥Î» 0.001 mm//
-	int	G_delay;			// µ¥Î»ns Wedge Delay + Law Delay //
-	int	beam_delay;			// µ¥Î»ns Law Delay //
-	int	F_depth;			// µ¥Î» Î¢Á£ //
-	unsigned int	M_velocity;			// µ¥Î» m/s //
+	char	tt1[2];				// å ä½ç½® //
+	unsigned int	Scan_offset;		// å•ä½ 0.001 mm//
+	unsigned int	Index_offset;		// å•ä½ 0.001 mm//
+	int	G_delay;			// å•ä½ns Wedge Delay + Law Delay //
+	int	beam_delay;			// å•ä½ns Law Delay //
+	int	F_depth;			// å•ä½ å¾®ç²’ //
+	unsigned int	M_velocity;			// å•ä½ m/s //
 }LAW_BEAM, *LAW_BEAM_P;
 
 typedef struct _law_focal
 {
 	char		version[16];
-	short		beam_qty;		// Õâ¸öfocalÓĞ¼¸¸öbeam //
+	short		beam_qty;		// è¿™ä¸ªfocalæœ‰å‡ ä¸ªbeam //
 	LAW_BEAM_P	*law_beam_p;
 	LAW_ELEM_P	*law_elem_p;
 } LAW_FOCAL, *LAW_FOCAL_P;
 
-/// ¾Û½¹·¨ÔòĞÅÏ¢(law_info) //
+/// èšç„¦æ³•åˆ™ä¿¡æ¯(law_info) //
 typedef struct _law_info
 {
-	unsigned char	Focal_type;			// ¾Û½¹ÀàĞÍ //
-	unsigned char	Focal_point_type;	// ¾Û½¹ÀàĞÍ //
-	unsigned char	Tx_connect;			// pulser¸Ã·¨ÔòµÄÌ½Í··¢ÉäµÚÒ»¸öÕóÔªÆäÁ¬½Ó¿ÚµÄ±àºÅ //
+	unsigned char	Focal_type;			// èšç„¦ç±»å‹ //
+	unsigned char	Focal_point_type;	// èšç„¦ç±»å‹ //
+	unsigned char	Tx_connect;			// pulserè¯¥æ³•åˆ™çš„æ¢å¤´å‘å°„ç¬¬ä¸€ä¸ªé˜µå…ƒå…¶è¿æ¥å£çš„ç¼–å· //
 	unsigned char	Rx_connect;			// receiver //
-	unsigned char	Elem_qty;			// ¾Û½¹ÕóÔªÊı //
-	short	        First_tx_elem;		// ·¨ÔòÊ¹ÓÃµÄµÚÒ»¸ö·¢ÉäÕóÔª ÊÕ·¢·ÖÀëÊ±ºò tx rx ²»Ò»Ñù //
-	short	        First_rx_elem;		// ·¨ÔòÊ¹ÓÃµÄµÚÒ»¸ö½ÓÊÕÕóÔª //
-	unsigned char	Last_tx_elem;		// ·¨ÔòÊ¹ÓÃµÄ×îºóÒ»¸ö·¢ÉäÕóÔª //
-	unsigned char	Last_rx_elem;		// ·¨ÔòÊ¹ÓÃµÄ×îºóÒ»¸ö½ÓÊÕÕóÔª //
-	unsigned char	Elem_step;			// ÏßÉ¨Ê±ºò¿ÉÒÔÉèÖÃÕóÔª¼ä¸ô //
-	unsigned char	Wave_type;			// ×İ²¨ »òÕß ºá²¨ //
+	unsigned char	Elem_qty;			// èšç„¦é˜µå…ƒæ•° //
+	short	        First_tx_elem;		// æ³•åˆ™ä½¿ç”¨çš„ç¬¬ä¸€ä¸ªå‘å°„é˜µå…ƒ æ”¶å‘åˆ†ç¦»æ—¶å€™ tx rx ä¸ä¸€æ · //
+	short	        First_rx_elem;		// æ³•åˆ™ä½¿ç”¨çš„ç¬¬ä¸€ä¸ªæ¥æ”¶é˜µå…ƒ //
+	unsigned char	Last_tx_elem;		// æ³•åˆ™ä½¿ç”¨çš„æœ€åä¸€ä¸ªå‘å°„é˜µå…ƒ //
+	unsigned char	Last_rx_elem;		// æ³•åˆ™ä½¿ç”¨çš„æœ€åä¸€ä¸ªæ¥æ”¶é˜µå…ƒ //
+	unsigned char	Elem_step;			// çº¿æ‰«æ—¶å€™å¯ä»¥è®¾ç½®é˜µå…ƒé—´éš” //
+	unsigned char	Wave_type;			// çºµæ³¢ æˆ–è€… æ¨ªæ³¢ //
 	unsigned char	res1;
-	short	        Angle_min;			// PA Ê±ºòÊÇ¿ªÊ¼½Ç¶È UTÊ±ºò¼ÇÂ¼Ì½Í·½Ç¶È //
-	short	        Angle_max;			// ÉÈÉ¨Ê±ºò¿ÉÒÔÉèÖÃµÄ½Ç¶È 0.01¶ÈÎªµ¥Î» //
-	unsigned short	Angle_step;			// ÉÈÉ¨Ê±ºò¿ÉÒÔÉèÖÃµÄ½Ç¶È²½½ø //
+	short	        Angle_min;			// PA æ—¶å€™æ˜¯å¼€å§‹è§’åº¦ UTæ—¶å€™è®°å½•æ¢å¤´è§’åº¦ //
+	short	        Angle_max;			// æ‰‡æ‰«æ—¶å€™å¯ä»¥è®¾ç½®çš„è§’åº¦ 0.01åº¦ä¸ºå•ä½ //
+	unsigned short	Angle_step;			// æ‰‡æ‰«æ—¶å€™å¯ä»¥è®¾ç½®çš„è§’åº¦æ­¥è¿› //
 	short	        Angle_beam_skew_min;		
 	short	        Angle_beam_skew_max;		
-	unsigned short	Angle_beam_skew_step;	// 2DµÄÊ±ºòbeam skew angle //
-	unsigned short	law_index_start;		// ¾Û½¹·¨ÔòË÷Òı ¼ÆËã³öÀ´µÄ //
+	unsigned short	Angle_beam_skew_step;	// 2Dçš„æ—¶å€™beam skew angle //
+	unsigned short	law_index_start;		// èšç„¦æ³•åˆ™ç´¢å¼• è®¡ç®—å‡ºæ¥çš„ //
 	unsigned short  law_index_end;			//  //
-	unsigned int	Focus_depth;			// ÉÈÉ¨Ê±ºòÎªÉù³Ì ÏßÉ¨ÊÇÉî¶È 0.001mmÎªµ¥Î» //
+	unsigned int	Focus_depth;			// æ‰‡æ‰«æ—¶å€™ä¸ºå£°ç¨‹ çº¿æ‰«æ˜¯æ·±åº¦ 0.001mmä¸ºå•ä½ //
 	unsigned int	Position_start;
 	int				Position_end;
 	int				Position_step;
@@ -266,7 +266,7 @@ struct AWS_D_15
 	int b;
 	double c ;
 };
-/// ×éĞÅÏ¢ //
+/// ç»„ä¿¡æ¯ //
 
 struct GROUP_INFO 
 {
@@ -307,7 +307,7 @@ struct GROUP_INFO
 	unsigned short	cursors_angle;
 	unsigned short	skew;				/**/
 	unsigned short	skew_pos;
-	unsigned short	point_qty;		/* µã¸öÊı */
+	unsigned short	point_qty;		/* ç‚¹ä¸ªæ•° */
 	unsigned short	sum_gain;
     short	        per_reference;
     short           per_measure;
@@ -355,7 +355,7 @@ struct GROUP_INFO
 
 struct DRAW_INFO_PACK
 {
-    int nGroupNum;           //×ÜµÄ×éÊıÁ¿
+    int nGroupNum;           //æ€»çš„ç»„æ•°é‡
     int nBeamNum[8];
     int nJunction[8];
 
@@ -365,16 +365,16 @@ struct DRAW_INFO_PACK
     int nInspecStart    ;
     int nInspecEnd      ;
     int nInspecResolution ;
-    int nEncodeType ;                     //±àÂëÀàĞÍ£¬·Ç0Î»±àÂëÆ÷±àÂë£¬0Î»Ê±¼ä±àÂë
+    int nEncodeType ;                     //ç¼–ç ç±»å‹ï¼Œé0ä½ç¼–ç å™¨ç¼–ç ï¼Œ0ä½æ—¶é—´ç¼–ç 
     unsigned char bScanMark[1024 * 256] ;
 };
 
 struct INSPEC_DATA_FILE
 {
-    int type;       // ÀàĞÍ
-    int version;    // ÎÄ¼ş×Ü´óĞ¡  £¨×Ö½Ú£© version = size + reserved
-    int size;       // ÎÄ¼şÍ·£¬ĞÅÏ¢Í·  ×Ü´óĞ¡
-    int reserved;   // ²ÉÑùÊı¾İ´óĞ¡
+    int type;       // ç±»å‹
+    int version;    // æ–‡ä»¶æ€»å¤§å°  ï¼ˆå­—èŠ‚ï¼‰ version = size + reserved
+    int size;       // æ–‡ä»¶å¤´ï¼Œä¿¡æ¯å¤´  æ€»å¤§å°
+    int reserved;   // é‡‡æ ·æ•°æ®å¤§å°
 };
 
 #endif  //_DATE_FILE_CONFIGURE_

@@ -1,4 +1,4 @@
-#include "DopplerGroupTab.h"
+ï»¿#include "DopplerGroupTab.h"
 #include "ui_DopplerGroupTab.h"
 
 #include "const.h"
@@ -7,12 +7,13 @@
 #include "dialog/DialogColorSelect.h"
 //#include "dialog/DialogWeldPartLoad.h"
 #include "dialog/DialogDxfFileLoad.h"
+#include "dialog/dialogweldfixdataii.h"
 
 #include <QPushButton>
 
 const int MAX_ITEM_QTY = 50;
 extern int bHideCursor;
-//  Description: ËùÓĞÏÔÊ¾´°¿ÚÀàĞÍ
+//  Description: æ‰€æœ‰æ˜¾ç¤ºçª—å£ç±»å‹
 static const char* g_strDisplayMode[] =
 {
 	//**************************	HEADER
@@ -60,7 +61,7 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 	ui->toolBox->setCurrentIndex(0);
     CreateSettingView();
 
-    SetWidgetInvalide(); // Ê¹´°¿Ú²»Ê¹ÄÜ  Ö»×÷Êı¾İÏÔÊ¾ÓÃ
+    SetWidgetInvalide(); // ä½¿çª—å£ä¸ä½¿èƒ½  åªä½œæ•°æ®æ˜¾ç¤ºç”¨
 }
 
 DopplerGroupTab::~DopplerGroupTab()
@@ -83,7 +84,7 @@ QToolBox* DopplerGroupTab::GetToolBox() const
 }
 
 /****************************************************************************
-  Description: ÉùËÙÀàĞÍÑ¡Ôñ
+  Description: å£°é€Ÿç±»å‹é€‰æ‹©
 *****************************************************************************/
 void DopplerGroupTab::UpdateVelocitySelection()
 {
@@ -127,7 +128,7 @@ void DopplerGroupTab::InitComBoxMaterialSelection()
 	ui->ComMaterial->setCurrentIndex(_nIndex);
 }
 /****************************************************************************
-  Description: Ì½Í·²ÎÊı
+  Description: æ¢å¤´å‚æ•°
 *****************************************************************************/
 void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 {
@@ -158,7 +159,7 @@ void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 }
 
 /****************************************************************************
-  Description: Ğ¨¿é²ÎÊı
+  Description: æ¥”å—å‚æ•°
 *****************************************************************************/
 void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 {
@@ -233,7 +234,7 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 
 }
 /****************************************************************************
-  Description: ¾Û½¹·¨Ôò²ÎÊı
+  Description: èšç„¦æ³•åˆ™å‚æ•°
 *****************************************************************************/
 void DopplerGroupTab::UpdateLawConfig()
 {
@@ -269,7 +270,7 @@ void DopplerGroupTab::UpdateLawConfig()
 }
 
 /****************************************************************************
-  Description:  Ì½Í·Ïà¹ØÉèÖÃ
+  Description:  æ¢å¤´ç›¸å…³è®¾ç½®
 *****************************************************************************/
 void DopplerGroupTab::UpdateProbeWedge()
 {
@@ -289,7 +290,7 @@ void DopplerGroupTab::slotMeasureBoxTipInfo(int nIndex_)
 
 
 /****************************************************************************
-  Description: ²âÁ¿ÀàĞÍÑ¡Ôñ
+  Description: æµ‹é‡ç±»å‹é€‰æ‹©
 *****************************************************************************/
 void DopplerGroupTab::UpdateMeasureBox()
 {
@@ -377,7 +378,7 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
 }
 
 /****************************************************************************
-  Description: µ±Ç°½Ç¶ÈÑ¡Ôñ¿Ø¼ş¸üĞÂ
+  Description: å½“å‰è§’åº¦é€‰æ‹©æ§ä»¶æ›´æ–°
 *****************************************************************************/
 void DopplerGroupTab::UpdateCurrentAngleCom()
 {
@@ -412,7 +413,7 @@ void DopplerGroupTab::UpdateCurrentAngleCom()
     }
 }
 /****************************************************************************
-  Description: ²ÉÑù·¶Î§
+  Description: é‡‡æ ·èŒƒå›´
 *****************************************************************************/
 void DopplerGroupTab::UpdateSampleRange()
 {
@@ -482,7 +483,7 @@ void DopplerGroupTab::SetWndName()
 }
 
 /****************************************************************************
-  Description: ´°¿Ú²»¿É±à¼­
+  Description: çª—å£ä¸å¯ç¼–è¾‘
 *****************************************************************************/
 void DopplerGroupTab::SetWidgetInvalide()
 {
@@ -551,7 +552,7 @@ void DopplerGroupTab::SetWidgetInvalide()
 #include <QDrag>
 
 /****************************************************************************
-  Description: ÏÔÊ¾ÀàĞÍ´°¿Ú´´½¨
+  Description: æ˜¾ç¤ºç±»å‹çª—å£åˆ›å»º
 *****************************************************************************/
 void DopplerGroupTab::CreateSettingView()
 {
@@ -595,7 +596,7 @@ void DopplerGroupTab::CreateSettingView()
 	connect(tree , SIGNAL(pressed(QModelIndex)) , SLOT(StartDrags(QModelIndex)))  ;
 }
 /****************************************************************************
-  Description: ÏÔÊ¾ÀàĞÍ´°¿Ú  ÍÏ×§ÏìÓ¦º¯Êı
+  Description: æ˜¾ç¤ºç±»å‹çª—å£  æ‹–æ‹½å“åº”å‡½æ•°
 *****************************************************************************/
 void DopplerGroupTab::StartDrags(QModelIndex index)
 {
@@ -636,7 +637,7 @@ void DopplerGroupTab::UpdateColorSetting()
 }
 
 /****************************************************************************
-  Description: ¹â±ê²ÎÊıÍ¬²½
+  Description: å…‰æ ‡å‚æ•°åŒæ­¥
 *****************************************************************************/
 void DopplerGroupTab::UpdateCursorValue()
 {
@@ -745,7 +746,7 @@ void DopplerGroupTab::UpdateDefectValue()
 }
 
 /****************************************************************************
-  Description: ×é²ÎÊıÍ¬²½
+  Description: ç»„å‚æ•°åŒæ­¥
 *****************************************************************************/
 void DopplerGroupTab::UpdateGroupConfig()
 {
@@ -841,7 +842,7 @@ void DopplerGroupTab::UpdateGroupConfig()
 	//*********** measure
 	ui->CheckMeasureShow->setCheckState(m_pGroup->bShowMeasure ? Qt::Checked : Qt::Unchecked );
 	//ui->CheckBackShow->setCheckState(g_pMainWnd->ParamBackMode() ? Qt::Checked : Qt::Unchecked );
-	//ui->CheckBackShow->setChecked(g_pMainWnd->ParamBackMode()); //·Å¿ª³ÌĞò±ÀÀ£
+	//ui->CheckBackShow->setChecked(g_pMainWnd->ParamBackMode()); //æ”¾å¼€ç¨‹åºå´©æºƒ
 	ui->ComField1->setCurrentIndex(m_pGroup->aeMeasureType[0]);
 	ui->ComField2->setCurrentIndex(m_pGroup->aeMeasureType[1]);
 	ui->ComField3->setCurrentIndex(m_pGroup->aeMeasureType[2]);
@@ -996,7 +997,7 @@ void DopplerGroupTab::UpdateSizeingCurves()
 }
 
 /****************************************************************************
-  Description: ²ÎÊı¼«ÏŞ¸üĞÂ
+  Description: å‚æ•°æé™æ›´æ–°
 *****************************************************************************/
 #include <process/Limitation.h>
 void DopplerGroupTab::UpdateParameterLimit()
@@ -1012,7 +1013,7 @@ void DopplerGroupTab::UpdateParameterLimit()
 
 
 /****************************************************************************
-  Description: ¾Û½¹·¨ÔòÀàĞÍ
+  Description: èšç„¦æ³•åˆ™ç±»å‹
 *****************************************************************************/
 void DopplerGroupTab::UpdateFocallawState()
 {
@@ -1025,7 +1026,7 @@ void DopplerGroupTab::UpdateFocallawState()
 }
 
 /****************************************************************************
-  Description: ¹¤¼şÀàĞÍ ²ÎÊı
+  Description: å·¥ä»¶ç±»å‹ å‚æ•°
 *****************************************************************************/
 void DopplerGroupTab::UpdateGeometryState()
 {
@@ -1566,12 +1567,25 @@ void DopplerGroupTab::on_ComSkewAngle_currentIndexChanged(int index)
 
 void DopplerGroupTab::on_BtnLoadDxfFile_clicked()
 {
-    DialogDxfFileLoad dialog(this);
-
-    if(dialog.exec())
+    DopplerConfigure* Configure = DopplerConfigure::Instance();
+    GROUP_CONFIG& group = Configure->group[m_nGroupId];
+    if( group.part.weldFormat)
     {
-        ParameterProcess* _process = ParameterProcess::Instance();
-        _process->SetupPart(m_nGroupId, dialog.GetPart());
+        DialogWeldFixDataII dataIIDialog(this, m_nGroupId);
+        if(dataIIDialog.exec())
+        {
+
+        }
+    }
+    else
+    {
+        DialogDxfFileLoad dialog(this);
+
+        if(dialog.exec())
+        {
+            ParameterProcess* _process = ParameterProcess::Instance();
+            _process->SetupPart(m_nGroupId, dialog.GetPart());
+        }
     }
 
     ProcessDisplay _display;

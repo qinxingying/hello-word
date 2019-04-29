@@ -1,4 +1,4 @@
-#include "Instrument.h"
+ï»¿#include "Instrument.h"
 #include "Doppler3DAll.h"
 #include "gHeader.h"
 
@@ -42,7 +42,7 @@ Doppler3DAll::Doppler3DAll(QWidget *parent)
     m_pConfig = DopplerConfigure::Instance();
     m_process = ParameterProcess::Instance();
 
-    // ÉÈÉ¨
+    // æ‰‡æ‰«
     m_pDraw      = NULL;
     m_pAngleZoom = NULL;
     m_pDrawRate  = NULL;
@@ -134,8 +134,8 @@ void Doppler3DAll::CalcMatrixAzimuthal(void)
 
     // get real step of each pixel
     //***************S
-    int  _width = m_nWidth  ;    //  Í¼Ïñ ¿í    µ¥Î» ÏñËØ
-    int _height = m_nHeight ;    //  Í¼Ïñ ¸ß    µ¥Î» ÏñËØ
+    int  _width = m_nWidth  ;    //  å›¾åƒ å®½    å•ä½ åƒç´ 
+    int _height = m_nHeight ;    //  å›¾åƒ é«˜    å•ä½ åƒç´ 
 
     // get juction of each two beam
     float _nTopLocation[256]  ;
@@ -150,7 +150,7 @@ void Doppler3DAll::CalcMatrixAzimuthal(void)
         _nAngles[i] = _nAngleStart + i * _nAngleStep ;
     }
 
-    float _nPosJunction[256]; // Ã¿¸öYÖá×ø±êÉÏÉùÏßµÄÎ»ÖÃ
+    float _nPosJunction[256]; // æ¯ä¸ªYè½´åæ ‡ä¸Šå£°çº¿çš„ä½ç½®
     int i, j, k, t, _index;
     float _fX, _fY, _nTmp;
     for(j = 0 ; j < _height ; j++)
@@ -238,18 +238,18 @@ void Doppler3DAll::CalcMatrixLinear(void)
     float  _fStopPos = _pExitPoint [_nBeamMaxId] ;
     double    _angle = fabs(_fAngle);
 
-    double _real_height = _fRange * cos(_angle);				    // Êµ¼Ê¿í¶È
-    double  _real_width = fabs(_fStopPos - _fStartPos) + _fRange * sin(_angle) ;    // Êµ¼Ê¸ß¶È
-    double      _xScale = _width / _real_width ;		    // XÖá±ÈÀı(ÏñËØ/Êµ¼Ê)
-    double       _xVacc = tan(_angle) * _real_height * _xScale ;    // ½Ç¶ÈºáÏòÆ«ÒÆÁ¿(ÏñËØ)
-    double      _fScale = _xVacc / _height ;			    // [½Ç¶ÈºáÏòÆ«ÒÆÁ¿(ÏñËØ)]/[½Ç¶È×İÏòÆ«ÒÆÁ¿(ÏñËØ)]
-    double  _beam_width = _width - _xVacc ;			    // ²¨Êø¿í¶È(ÏñËØ)
+    double _real_height = _fRange * cos(_angle);				    // å®é™…å®½åº¦
+    double  _real_width = fabs(_fStopPos - _fStartPos) + _fRange * sin(_angle) ;    // å®é™…é«˜åº¦
+    double      _xScale = _width / _real_width ;		    // Xè½´æ¯”ä¾‹(åƒç´ /å®é™…)
+    double       _xVacc = tan(_angle) * _real_height * _xScale ;    // è§’åº¦æ¨ªå‘åç§»é‡(åƒç´ )
+    double      _fScale = _xVacc / _height ;			    // [è§’åº¦æ¨ªå‘åç§»é‡(åƒç´ )]/[è§’åº¦çºµå‘åç§»é‡(åƒç´ )]
+    double  _beam_width = _width - _xVacc ;			    // æ³¢æŸå®½åº¦(åƒç´ )
 
     bool _bWedgeRev = (_fStopPos - _fStartPos) > 0 ? false : true ;
 
-    double tmpX , xxx;	    // ²¨ÊøË÷Òı ÖĞ¼ä±äÁ¿
-    double tmpDrawRate ;    // ²¨ÊøË÷Òı
-    double tmpDataNo   ;    // Êı¾İÎ»ÖÃË÷Òı
+    double tmpX , xxx;	    // æ³¢æŸç´¢å¼• ä¸­é—´å˜é‡
+    double tmpDrawRate ;    // æ³¢æŸç´¢å¼•
+    double tmpDataNo   ;    // æ•°æ®ä½ç½®ç´¢å¼•
 
     int i ,  j  , index ;
     for( i = 0 ; i < _height ; i++)
@@ -457,7 +457,7 @@ void Doppler3DAll::BeginDraw()
 
     GLfloat x = (GLfloat)m_fWndWidth / (GLfloat)m_fWndHeight;
 	//----------------------------------------------------
-	// gluPerspective º¯ÊıµÄ´úÌæ·½°¸
+	// gluPerspective å‡½æ•°çš„ä»£æ›¿æ–¹æ¡ˆ
 //	gluPerspective(45.0f, x, 0.1f, m_fLength);
 	GLfloat zNear  = 0.1;
 	GLfloat zFar   = m_fLength;
@@ -484,8 +484,8 @@ void Doppler3DAll::BeginDraw()
 
         m_nWidth  = 300;
         m_nHeight = 500;
-        int  _width = m_nWidth  ;    //  Í¼Ïñ ¿í    µ¥Î» ÏñËØ
-        int _height = m_nHeight ;    //  Í¼Ïñ ¸ß    µ¥Î» ÏñËØ
+        int  _width = m_nWidth  ;    //  å›¾åƒ å®½    å•ä½ åƒç´ 
+        int _height = m_nHeight ;    //  å›¾åƒ é«˜    å•ä½ åƒç´ 
 
         _nStepX  = (_nStopX - _nStartX) / (_width - 1) ;
         _nStepY  = _nStepX;
@@ -528,7 +528,7 @@ void Doppler3DAll::drawFrame(bool bPositive_, GLdouble y0_, GLdouble x1_, GLdoub
 
     GLPOINT _pt[4];
 
-    // ÉÏ
+    // ä¸Š
     InitGLPoint(_pt, 4);
     _pt[0].x += x1_;           _pt[0].y += _YU;   _pt[0].z += _fLength;
     _pt[1].x += _fWidth / 2;   _pt[1].y += _YU;   _pt[1].z += _fLength;
@@ -536,7 +536,7 @@ void Doppler3DAll::drawFrame(bool bPositive_, GLdouble y0_, GLdouble x1_, GLdoub
     _pt[3].x += x1_;           _pt[3].y += _YU;   _pt[3].z += 0;
     glColor3f(0.0f, 0.8f, 0.8f);
     GLDraw1(_pt, GL_LINE_STRIP, 4);
-    // ÖĞ
+    // ä¸­
     InitGLPoint(_pt, 4);
     _pt[0].x += _fWidth / 2;  _pt[0].y += _YU;   _pt[0].z += 0;
     _pt[1].x += _fWidth / 2;  _pt[1].y += _YD;    _pt[1].z += 0;
@@ -548,7 +548,7 @@ void Doppler3DAll::drawFrame(bool bPositive_, GLdouble y0_, GLdouble x1_, GLdoub
     _pt[1].x += _fWidth / 2;  _pt[1].y += _YD;    _pt[1].z += _fLength;
     glColor3f(1.0f, 0.8f, 0.0f);
     GLDraw1(_pt, GL_LINES, 2);
-    // ÏÂ
+    // ä¸‹
     InitGLPoint(_pt, 4);
     _pt[0].x += x2_;           _pt[0].y += _YD;   _pt[0].z += _fLength;
     _pt[1].x += _fWidth / 2;   _pt[1].y += _YD;   _pt[1].z += _fLength;

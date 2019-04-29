@@ -66,8 +66,12 @@ void DopplerDrawScan::TransformImage(int x1,int y1,U8 src[2048][2048],int x2,int
         srcx = qFloor(transx);
         diffx = transx - srcx;
         srcx += 1;
+        if(srcx >= 2046)
+        {
+            srcx = 2046;
+        }
        for(j=0;j<y2;j++)
-       {
+       {           
            _pImageTmp = _pImageBits + j * _nWidthStep + i * 3 ;
            transy = (j+0.5)*hightscale-0.5;
            srcy = qFloor(transy);

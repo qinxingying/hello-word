@@ -1,4 +1,4 @@
-#include "DataRefreshThread.h"
+ï»¿#include "DataRefreshThread.h"
 #include "DopplerDataView.h"
 #include "gHeader.h"
 #include <process/ParameterProcess.h>
@@ -63,7 +63,7 @@ void DataRefreshThread::run()
 
 #include <configure/DopplerConfigure.h>
 /****************************************************************************
-  Description: Ë¢ĞÂËùÓĞÏÔÊ¾´°¿ÚÊı¾İ
+  Description: åˆ·æ–°æ‰€æœ‰æ˜¾ç¤ºçª—å£æ•°æ®
 *****************************************************************************/
 void DataRefreshThread::UpdateAllWidgetDrawing()
 {
@@ -80,7 +80,7 @@ void DataRefreshThread::UpdateAllWidgetDrawing()
 }
 
 /*********************************************************
-  Description:   Ë¢ĞÂÏÔÊ¾´°¿Ú²¨ĞÎ 1 ´Î
+  Description:   åˆ·æ–°æ˜¾ç¤ºçª—å£æ³¢å½¢ 1 æ¬¡
 **********************************************************/
 void DataRefreshThread::RunOnce(THREAD_RUN_MODE eMode_)
 {

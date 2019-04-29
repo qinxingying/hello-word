@@ -555,6 +555,63 @@ void Config::unpack_weld(const QVariantMap &map)
     }
 }
 
+void Config::getWeldData( int groupId, WELD_II & weld_ii)
+{
+    Paramters::Weld &weld = m_groups[groupId].m_specimen.m_weld;
+    weld_ii.eType = (setup_WELD_TYPE_II)weld.m_type;
+    //if(Paramters::Weld::I == weld.m_type)
+    switch (weld.m_type) {
+    case Paramters::Weld::I:
+        weld_ii.I.w = weld.m_I.m_width;
+        break;
+    case Paramters::Weld::V:
+        weld_ii.V.w1 = weld.m_V.m_width;
+        weld_ii.V.h  = weld.m_V.m_height;
+        weld_ii.V.w2 = weld.m_I.m_width;
+        break;
+    case Paramters::Weld::U:
+        weld_ii.U.w1 = weld.m_U.m_width;
+        weld_ii.U.h  = weld.m_U.m_height;
+        weld_ii.U.r  = weld.m_U.m_radius;
+        weld_ii.U.w2 = weld.m_I.m_width;
+        break;
+    case Paramters::Weld::VY:
+        weld_ii.VY.w1 = weld.m_TopV.m_width;
+        weld_ii.VY.h1 = weld.m_TopV.m_height;
+        weld_ii.VY.w2 = weld.m_MidV.m_width;
+        weld_ii.VY.h2 = weld.m_MidV.m_height;
+        weld_ii.VY.w3 = weld.m_BtmI.m_width;
+        break;
+    case Paramters::Weld::VV:
+        weld_ii.VV.w1 = weld.m_TopV.m_width;
+        weld_ii.VV.h1 = weld.m_TopV.m_height;
+        weld_ii.VV.w2 = weld.m_MidI.m_width;
+        weld_ii.VV.w3 = weld.m_BtmV.m_width;
+        weld_ii.VV.h2 = weld.m_BtmV.m_height;
+        break;
+    case Paramters::Weld::UU:
+        weld_ii.UU.w1 = weld.m_TopU.m_width;
+        weld_ii.UU.h1 = weld.m_TopU.m_height;
+        weld_ii.UU.r1 = weld.m_TopU.m_radius;
+        weld_ii.UU.w2 = weld.m_MidI.m_width;
+        weld_ii.UU.w3 = weld.m_BtmU.m_width;
+        weld_ii.UU.h2 = weld.m_BtmU.m_height;
+        weld_ii.UU.r2 = weld.m_BtmU.m_radius;
+        break;
+    case Paramters::Weld::UV:
+        weld_ii.UV.w1 = weld.m_U.m_width;
+        weld_ii.UV.h1 = weld.m_U.m_height;
+        weld_ii.UV.r  = weld.m_U.m_radius;
+        weld_ii.UV.w2 = weld.m_I.m_width;
+        weld_ii.UV.w3 = weld.m_V.m_width;
+        weld_ii.UV.h2 = weld.m_V.m_height;
+        break;
+    default:
+        break;
+    }
+
+}
+
 void Config::unpack_I_weld(const QVariantMap &map, Paramters::WeldI &I)
 {
     I.m_width       = map.value("W").toDouble();

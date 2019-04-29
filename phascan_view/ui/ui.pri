@@ -20,7 +20,9 @@ HEADERS += \
     $$PWD/PoppingTabWidget.h \
     $$PWD/ProcessDisplay.h \
     $$PWD/dialog/DialogDxfFileLoad.h \
-    $$PWD/dialog/DialogAbouVersion.h
+    $$PWD/dialog/DialogAbouVersion.h \
+    $$PWD/dialog/dialogweldfixdataii.h \
+    $$PWD/painter/weldshowdataiiwidget.h
 
 
 SOURCES += \
@@ -43,7 +45,9 @@ SOURCES += \
     $$PWD/ProcessDisplay.cpp \
     $$PWD/dialog/DialogDxfFileLoad.cpp \
     $$PWD/painter/drawdxf.cpp \
-    $$PWD/dialog/DialogAboutVersion.cpp
+    $$PWD/dialog/DialogAboutVersion.cpp \
+    $$PWD/dialog/dialogweldfixdataii.cpp \
+    $$PWD/painter/weldshowdataiiwidget.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
@@ -54,4 +58,5 @@ FORMS += \
     $$PWD/InstrumentSettingWidget.ui \
     $$PWD/mainwindow.ui \
     $$PWD/dialog/DialogDxfFileLoad.ui \
-    $$PWD/dialog/DialogAboutVersion.ui
+    $$PWD/dialog/DialogAboutVersion.ui \
+    $$PWD/dialog/dialogweldfixdataii.ui

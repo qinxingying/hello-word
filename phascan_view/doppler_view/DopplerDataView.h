@@ -1,9 +1,9 @@
-/***************************
-  Description:   ��ʾ���ݴ���
-                 1�� ������ �� ��3�����  ��1����ɫ��
-                 ���м��������ʾ������ɡ�
-                 ���εĻ��ƣ��ṩ��DopplerDrawScan �ӿڣ�
-                 ��ʵ�� A B S C����ʾ
+﻿/***************************
+  Description:   显示数据窗口
+                 1个 标题栏 ， 由3个标尺  ，1个颜色条
+                 和中间的数据显示窗口组成。
+                 波形的绘制，提供了DopplerDrawScan 接口，
+                 以实现 A B S C型显示
 ************************************/
 #ifndef DOPPLERDataView_H
 #define DOPPLERDataView_H
@@ -40,11 +40,11 @@ public:
        DATA_VIEW_COMPONENT_BOTTOMRULER=  8 ,
        DATA_VIEW_COMPONENT_COLORBAR   =  16,
        DATA_VIEW_COMPONENT_ALL_WITHOUTCOUPLE  =  31,
-       DATA_VIEW_COMPONENT_COUPLESBAR   =  32,            //Bɨ���bar
+       DATA_VIEW_COMPONENT_COUPLESBAR   =  32,            //B扫耦合bar
        DATA_VIEW_COMPONENT_ALL_WITHCOUPLES  =  63,
-       DATA_VIEW_COMPONENT_COUPLECHBAR  =  64,            //cɨˮƽ���bar
+       DATA_VIEW_COMPONENT_COUPLECHBAR  =  64,            //c扫水平耦合bar
        DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH  =  95,
-       DATA_VIEW_COMPONENT_COUPLECVBAR  =  128,          //cɨ��ֱ���bar
+       DATA_VIEW_COMPONENT_COUPLECVBAR  =  128,          //c扫垂直耦合bar
        DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV  =  158
        //DATA_VIEW_COMPONENT_ALL        =  0xFFFF
     } ;

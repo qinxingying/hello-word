@@ -1,4 +1,4 @@
-#include "DopplerLawMarker.h"
+ï»¿#include "DopplerLawMarker.h"
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QStyleOptionGraphicsItem>
@@ -264,7 +264,7 @@ void DopplerLawMarker::mouseReleaseEvent(QGraphicsSceneMouseEvent*)
 void DopplerLawMarker::GetCurrentLineIndex(QPointF pos_ , int* nIndex_ , int* nZoom_ ,float* fScale_ )
 {
     int _nCount = m_cMarkers.count() ;
-    // Èç¹û  LAW ±êÊ¶ ÊÇË®Æ½µÄ
+    // å¦‚æœ  LAW æ ‡è¯† æ˜¯æ°´å¹³çš„
     if(m_eDirection == HORIZENTAL)
     {
         float _fYPos = pos_.y();
@@ -295,7 +295,7 @@ void DopplerLawMarker::GetCurrentLineIndex(QPointF pos_ , int* nIndex_ , int* nZ
     }
     else
     {
-        // Èç¹û  LAW ±êÊ¶ ²»ÊÇË®Æ½µÄ
+        // å¦‚æœ  LAW æ ‡è¯† ä¸æ˜¯æ°´å¹³çš„
         if(_nCount <= 1)
         {
             *nIndex_ = *nZoom_ = 0;

@@ -1,13 +1,12 @@
-/************************************
+ï»¿/************************************
   Name:  INSTRUMENT_H
-  Description:   ÅäÖÆ²ÎÊıµÄ¶¨Òå
+  Description:   é…åˆ¶å‚æ•°çš„å®šä¹‰
 *************************************/
 
 #ifndef INSTRUMENT_H
 #define INSTRUMENT_H
 
 #include "const.h"
-
 
 enum setup_UNIT_TYPE
 {
@@ -33,7 +32,7 @@ enum setup_DISPLAY_MODE
 	setup_DISPLAY_MODE_S_LINEAR
 }  ;
 
-enum setup_DISPLAY_CSCAN_SOURCE	 //CÉ¨µÄÊı¾İÏÔÊ¾ÀàĞÍ
+enum setup_DISPLAY_CSCAN_SOURCE	 //Cæ‰«çš„æ•°æ®æ˜¾ç¤ºç±»å‹
 {
 	setup_DISPLAY_CSCAN_A  = 0	,
 	setup_DISPLAY_CSCAN_B		 ,
@@ -42,7 +41,7 @@ enum setup_DISPLAY_CSCAN_SOURCE	 //CÉ¨µÄÊı¾İÏÔÊ¾ÀàĞÍ
 }  ;
 
 //######################################################################
-enum setup_GATE_NAME   //Õ¢ÃÅÀàĞÍ
+enum setup_GATE_NAME   //é—¸é—¨ç±»å‹
 {
 	setup_GATE_A = 0 ,
 	setup_GATE_B	 ,
@@ -50,7 +49,7 @@ enum setup_GATE_NAME   //Õ¢ÃÅÀàĞÍ
 	setup_GATE_MAX
 }  ;
 
-enum setup_GATE_AYNC_TYPE   //Õ¢ÃÅ¸ú×Ù·½Ê½
+enum setup_GATE_AYNC_TYPE   //é—¸é—¨è·Ÿè¸ªæ–¹å¼
 {
 	setup_GATE_AYNC_PUL = 0 ,
 	setup_GATE_AYNC_I,
@@ -92,19 +91,19 @@ typedef struct
 } PEAK_CONFIG;
 
 //######################################################################
-/*Ì½Í·(PROBE)*/
+/*æ¢å¤´(PROBE)*/
 
 struct PROBE_CONFIG
 {
 	char	 strName[64];
 	char	 strSerial[64];
 
-	int	  nElementPri;		//Ö÷ÖáÕóÔªÊı
-	int	  nElementSec;		//¸±ÖáÕóÔªÊı
-	int	  nLocationPolicy ;   // ¶şÎ¬Ì½Í·£¬ÅÅÁĞË³Ğò
+	int	  nElementPri;		//ä¸»è½´é˜µå…ƒæ•°
+	int	  nElementSec;		//å‰¯è½´é˜µå…ƒæ•°
+	int	  nLocationPolicy ;   // äºŒç»´æ¢å¤´ï¼Œæ’åˆ—é¡ºåº
 
 	float	fFrequency ;		//MHz
-	float	fPitchPri  ;		//Ö÷Öá¼ä¾à
+	float	fPitchPri  ;		//ä¸»è½´é—´è·
 	float	fPitchSec  ;
 	float	fSizePri   ;
 	float	fSizeSec   ;
@@ -127,7 +126,7 @@ enum setup_WEDGE_ORIENTATION
 } ;
 
 
-/*Ğ¨¿é(Wedge)*/
+/*æ¥”å—(Wedge)*/
 struct WEDGE_CONFIG
 {
 	char	 strName[64];
@@ -136,23 +135,23 @@ struct WEDGE_CONFIG
 	setup_WEDGE_TYPE eType ;
 	setup_WEDGE_ORIENTATION eDirection ;
 
-	float	fWedgeAngle; /* Ğ¨¿é½Ç */
-	float	fRoofAngle ; /* ¶¥½Ç */
+	float	fWedgeAngle; /* æ¥”å—è§’ */
+	float	fRoofAngle ; /* é¡¶è§’ */
 
-	float	fVelocityLon;/*×İ²¨ÉùËÙ*/
-	float	fVelocityTra;/*ºá²¨ÉùËÙ*/
+	float	fVelocityLon;/*çºµæ³¢å£°é€Ÿ*/
+	float	fVelocityTra;/*æ¨ªæ³¢å£°é€Ÿ*/
 
-	float	fHeigtFirst ;  /*µÚÒ»ÕóÔª¸ß¶È*/
-	float	fOffsetFir;	/*Ö÷ÖáÕóÔªÆ«ÒÆ*/
-	float	fOffsetSec;	/*´ÎÖáÕóÔªÆ«ÒÆ*/
-	float	fPriAxisRef;   /*Ö÷ÖáĞ¨¿é²Î¿¼Î»ÖÃ*/
-	float	fSecAxisRef;   /*´ÎÖáĞ¨¿é²Î¿¼Î»ÖÃ*/
+	float	fHeigtFirst ;  /*ç¬¬ä¸€é˜µå…ƒé«˜åº¦*/
+	float	fOffsetFir;	/*ä¸»è½´é˜µå…ƒåç§»*/
+	float	fOffsetSec;	/*æ¬¡è½´é˜µå…ƒåç§»*/
+	float	fPriAxisRef;   /*ä¸»è½´æ¥”å—å‚è€ƒä½ç½®*/
+	float	fSecAxisRef;   /*æ¬¡è½´æ¥”å—å‚è€ƒä½ç½®*/
 
-	float	fLength;/*Ğ¨¿é³¤¶È*/
-	float	fWidth ;/*Ğ¨¿é¿í¶È*/
-	float	fHeight;/*Ğ¨¿é¸ß¶È*/
+	float	fLength;/*æ¥”å—é•¿åº¦*/
+	float	fWidth ;/*æ¥”å—å®½åº¦*/
+	float	fHeight;/*æ¥”å—é«˜åº¦*/
 
-	//ut Ì½Í·²ÎÊı
+	//ut æ¢å¤´å‚æ•°
     float		fRefPoint;
     unsigned int nWedgeDelay;
 };
@@ -180,6 +179,18 @@ enum setup_WELD_TYPE
 	setup_WELD_MAX
 };
 
+enum setup_WELD_TYPE_II
+{
+    NONE_TYPE = 0,
+    I,
+    V,
+    U,
+    VY,
+    VV,
+    UU,
+    UV
+};
+
 enum setup_WELD_SYMMETRY_TYPE
 {
 	setup_WELD_SYMMETRY = 0 ,
@@ -189,8 +200,8 @@ enum setup_WELD_SYMMETRY_TYPE
 
 struct WELD
 {
-	setup_WELD_TYPE   				 eType	;		/* º¸·ì */
-	setup_WELD_SYMMETRY_TYPE		 eSymmetry;		/* ¶Ô³Æ */
+	setup_WELD_TYPE   				 eType	;		/* ç„Šç¼ */
+	setup_WELD_SYMMETRY_TYPE		 eSymmetry;		/* å¯¹ç§° */
 
     float	weland_height;
     float	weland_offset;
@@ -202,6 +213,79 @@ struct WELD
     float	fizone_down_angle ;
     float   Diameter;
 } ;
+
+struct WELD_FORMAT_I
+{
+    double w;
+};
+
+struct WELD_FORMAT_V
+{
+    double w1;
+    double h;
+    double w2;
+};
+
+struct WELD_FORMAT_U
+{
+    double w1;
+    double h;
+    double w2;
+    double r;
+};
+
+struct WELD_FORMAT_VY
+{
+    double w1;
+    double h1;
+    double w2;
+    double h2;
+    double w3;
+};
+
+struct WELD_FORMAT_VV
+{
+    double w1;
+    double h1;
+    double w2;
+    double h2;
+    double w3;
+};
+
+struct WELD_FORMAT_UU
+{
+    double w1;
+    double h1;    
+    double w2;
+    double h2;    
+    double w3;
+    double r1;
+    double r2;
+};
+
+struct WELD_FORMAT_UV
+{
+    double w1;
+    double h1;    
+    double w2;
+    double h2;
+    double w3;
+    double r;
+};
+
+struct WELD_II
+{
+    setup_WELD_TYPE_II eType;		/* ç„Šç¼ */
+    union{
+        WELD_FORMAT_I  I;
+        WELD_FORMAT_V  V;
+        WELD_FORMAT_U  U;
+        WELD_FORMAT_VY VY;
+        WELD_FORMAT_VV VV;
+        WELD_FORMAT_UU UU;
+        WELD_FORMAT_UV UV;
+    };
+};
 
 enum setup_PART_GEOMETRY
 {
@@ -226,14 +310,22 @@ enum CYLINDRICAL_PART_SIZE
 	CYLINDRICAL_PART_SIZE_LENGTH
 } ;
 
+enum WELD_FORMAT
+{
+    PHASCAN_I_FORMAT = 0,   //ä¸€ä»£ç„Šç¼æ ¼å¼ï¼Œè§£æweld
+    PHASCAN_II_FORMAT       //äºŒä»£ç„Šç¼æ ¼å¼ï¼Œè§£æweld_ii
+};
+
 struct PART_CONFIG
 {
-	setup_PART_GEOMETRY	eGeometry;				/* ¼¸ºÎĞÎ×´ FLAT/ID/OD/BALL */
+	setup_PART_GEOMETRY	eGeometry;				/* å‡ ä½•å½¢çŠ¶ FLAT/ID/OD/BALL */
 
 	//geometry parameter
 	float				afSize[4];				// sizes if necceray , part height , width , diameter
-	MATERIAL			material;				/* ²ÄÁÏ */
+	MATERIAL			material;				/* ææ–™ */
+    WELD_FORMAT         weldFormat;
 	WELD				weld;					// weld
+    WELD_II             weld_ii;
 	char				strPartFile[256];		// Name of part file , *.ncc
 };
 
@@ -317,7 +409,7 @@ enum setup_CURVE_TYPE
 	setup_CURVE_TYPE_TCG,
 	setup_CURVE_TYPE_MAX
 };
-/* ¹â±êĞÅÏ¢ */
+/* å…‰æ ‡ä¿¡æ¯ */
 #define setup_DAC_POINT_QTY   16
 struct CURVES
 {
@@ -379,7 +471,7 @@ enum setup_GROUP_MODE
 	setup_GROUP_MODE_UT2
 };
 
-enum setup_FILTER_MODE	 //ÂË²¨Ä£Ê½
+enum setup_FILTER_MODE	 //æ»¤æ³¢æ¨¡å¼
 {
 	setup_FILTER_NONE = 0 ,
 	setup_FILTER_AUTO	 ,
@@ -390,7 +482,7 @@ enum setup_FILTER_MODE	 //ÂË²¨Ä£Ê½
 	setup_FILTER_10_MHZ
 } ;
 
-enum setup_RECTIFIER_MODE  //¼ì²¨Ä£Ê½
+enum setup_RECTIFIER_MODE  //æ£€æ³¢æ¨¡å¼
 {
 	setup_RECTIFIER_RF = 0		  ,
 	setup_RECTIFIER_HW_POSITIVE	 ,
@@ -398,7 +490,7 @@ enum setup_RECTIFIER_MODE  //¼ì²¨Ä£Ê½
 	setup_RECTIFIER_FW
 };
 
-enum setup_AVERAGE_MODE   //Æ½¾ù
+enum setup_AVERAGE_MODE   //å¹³å‡
 {
 	setup_AVERAGE_1 = 0  ,
 	setup_AVERAGE_2	  ,
@@ -417,15 +509,15 @@ enum setup_PROBE_ANGLE
 
 enum setup_CURSOR_TYPE
 {
-	setup_CURSOR_LAW = 0 , /* ²Î¿¼¹â±êµ±Ç°¾Û½¹·¨Ôò*/
-	setup_CURSOR_A_REF   , /* ²Î¿¼¹â±êµÄ¸ß¶È */
-	setup_CURSOR_A_MES   , /* ²âÁ¿¹â±êµÄ¸ß¶È */
-	setup_CURSOR_U_REF   , /* ²Î¿¼¹â±êÔÚ³¬ÉùÖáµÄÎ»ÖÃ */
-	setup_CURSOR_U_MES   , /* ²âÁ¿¹â±êÔÚ³¬ÉùÖáµÄÎ»ÖÃ */
-	setup_CURSOR_S_REF   , /* ²Î¿¼¹â±êÔÚÉ¨ÃèÖáµÄÎ»ÖÃ */
-	setup_CURSOR_S_MES   , /* ²âÁ¿¹â±êÔÚÉ¨ÃèÖáµÄÎ»ÖÃ */
-	setup_CURSOR_I_REF   , /* ²Î¿¼¹â±êÔÚÖ¸ÊıÖáµÄÎ»ÖÃ */
-	setup_CURSOR_I_MES   , /* ²âÁ¿¹â±êÔÚÖ¸ÊıÖáµÄÎ»ÖÃ */
+	setup_CURSOR_LAW = 0 , /* å‚è€ƒå…‰æ ‡å½“å‰èšç„¦æ³•åˆ™*/
+	setup_CURSOR_A_REF   , /* å‚è€ƒå…‰æ ‡çš„é«˜åº¦ */
+	setup_CURSOR_A_MES   , /* æµ‹é‡å…‰æ ‡çš„é«˜åº¦ */
+	setup_CURSOR_U_REF   , /* å‚è€ƒå…‰æ ‡åœ¨è¶…å£°è½´çš„ä½ç½® */
+	setup_CURSOR_U_MES   , /* æµ‹é‡å…‰æ ‡åœ¨è¶…å£°è½´çš„ä½ç½® */
+	setup_CURSOR_S_REF   , /* å‚è€ƒå…‰æ ‡åœ¨æ‰«æè½´çš„ä½ç½® */
+	setup_CURSOR_S_MES   , /* æµ‹é‡å…‰æ ‡åœ¨æ‰«æè½´çš„ä½ç½® */
+	setup_CURSOR_I_REF   , /* å‚è€ƒå…‰æ ‡åœ¨æŒ‡æ•°è½´çš„ä½ç½® */
+	setup_CURSOR_I_MES   , /* æµ‹é‡å…‰æ ‡åœ¨æŒ‡æ•°è½´çš„ä½ç½® */
 	setup_CURSOR_VPA_REF ,
 	setup_CURSOR_VPA_MES ,
 	setup_CURSOR_TFOD_LW ,
@@ -465,40 +557,40 @@ enum setup_TX_RX_MODE
 
 typedef struct _Group
 {
-	setup_GROUP_MODE		eGroupMode;				/* ×é¹¤×÷Ä£Ê½  0 UT or 1 PA*/
+	setup_GROUP_MODE		eGroupMode;				/* ç»„å·¥ä½œæ¨¡å¼  0 UT or 1 PA*/
 	setup_TRAVEL_MODE		eTravelMode;
 	setup_TX_RX_MODE		eTxRxMode;
-	/* »ù±¾ÉèÖÃ */
-	int						nWedgeDelay;			/* Ğ¨¿îÑÓÊ± µ¥Î» ns */
-	int 					nTimeStart;				/* Ê±¼äÆğµã µ¥Î» ns */
-	int						nTimeRange;				/* Ê±¼ä·¶Î§ µ¥Î» ns */
-	float					fSampleStart;			/* ÏÔÊ¾·¶Î§ µ¥Î» mm */
-	float					fSampleRange;			/* É¨ÃèÑÓÊ± µ¥Î» mm */
-	int						nPointQty;				/* µã¸öÊı(²ÉÑùÉî¶È) */
-	float					fVelocity;				/* ÉùËÙ µ¥Î» m/s*/
-	float					fGain;					/* ÔöÒæ 0 - 80 db  _STEP 0.01dB */
+	/* åŸºæœ¬è®¾ç½® */
+	int						nWedgeDelay;			/* æ¥”æ¬¾å»¶æ—¶ å•ä½ ns */
+	int 					nTimeStart;				/* æ—¶é—´èµ·ç‚¹ å•ä½ ns */
+	int						nTimeRange;				/* æ—¶é—´èŒƒå›´ å•ä½ ns */
+	float					fSampleStart;			/* æ˜¾ç¤ºèŒƒå›´ å•ä½ mm */
+	float					fSampleRange;			/* æ‰«æå»¶æ—¶ å•ä½ mm */
+	int						nPointQty;				/* ç‚¹ä¸ªæ•°(é‡‡æ ·æ·±åº¦) */
+	float					fVelocity;				/* å£°é€Ÿ å•ä½ m/s*/
+	float					fGain;					/* å¢ç›Š 0 - 80 db  _STEP 0.01dB */
 	float					fRefGain;
     float                   RefGain;
     int                     on_off_status;
 	float					fSumGain ;
 	int						bPointQtyAuto;
 	int						bSumGainAuto;
-    bool                    coupleMonitoringState;     /* ñîºÏ¼à¿Ø×´Ì¬ true ¿ªÆô  false ¹Ø±Õ */
-    int                     coupleMonitoringVelocity;  /* ñîºÏ¼à¿ØÉùËÙ µ¥Î» m/s*/
-	/* ·¢Éä½ÓÊÕ */
-	unsigned int			nTrigeStart;			/* 1~128 - elem_qty(¾Û½¹ÕóÔªÊı×î´óÎª32) + 1 Ö¸¶¨·¢ÉäÕóÔªÓë»úÆ÷ÅäÖÃÏà¹ØÎÒÃÇÊÇ128ÕóÔª×î´ó,ÖµÓëconnect P Ò»Ñù */
-	unsigned int			nReceiveStart;			/* ½ÓÊÕÕóÔª ±ØĞëÊÇ PR Ä£Ê½²ÅÄÜµ÷½Ú */
+    bool                    coupleMonitoringState;     /* è€¦åˆç›‘æ§çŠ¶æ€ true å¼€å¯  false å…³é—­ */
+    int                     coupleMonitoringVelocity;  /* è€¦åˆç›‘æ§å£°é€Ÿ å•ä½ m/s*/
+	/* å‘å°„æ¥æ”¶ */
+	unsigned int			nTrigeStart;			/* 1~128 - elem_qty(èšç„¦é˜µå…ƒæ•°æœ€å¤§ä¸º32) + 1 æŒ‡å®šå‘å°„é˜µå…ƒä¸æœºå™¨é…ç½®ç›¸å…³æˆ‘ä»¬æ˜¯128é˜µå…ƒæœ€å¤§,å€¼ä¸connect P ä¸€æ · */
+	unsigned int			nReceiveStart;			/* æ¥æ”¶é˜µå…ƒ å¿…é¡»æ˜¯ PR æ¨¡å¼æ‰èƒ½è°ƒèŠ‚ */
 
-	setup_FILTER_MODE		eFileter;		/* ÂË²¨ */
-	setup_RECTIFIER_MODE	eRectifier;		/* ¼ì²¨ */
-	setup_AVERAGE_MODE		eAveraging;		/* Æ½¾ù */
+	setup_FILTER_MODE		eFileter;		/* æ»¤æ³¢ */
+	setup_RECTIFIER_MODE	eRectifier;		/* æ£€æ³¢ */
+	setup_AVERAGE_MODE		eAveraging;		/* å¹³å‡ */
 	int						bVedioFilter;
 
-	// ÉèÖÃµÄÌ½Í·ÆµÂÊ£¬ºÍ¶ÔÓ¦µÄÂö¿í
+	// è®¾ç½®çš„æ¢å¤´é¢‘ç‡ï¼Œå’Œå¯¹åº”çš„è„‰å®½
 	float					fTriFrequency;		/* Mhz*/
 	unsigned int			nPulserWidth;		/* ns */
 
-	/* ²Î¿¼¹â±ê */
+	/* å‚è€ƒå…‰æ ‡ */
 	float					afCursor[setup_CURSOR_MAX] ;
 
 	// thickness range for c scan display
@@ -510,7 +602,7 @@ typedef struct _Group
 	float					fIndexOffset;		/*mm*/
 	setup_PROBE_ANGLE		eSkew;
 
-	/*  Ğ£×¼×´Ì¬  */
+	/*  æ ¡å‡†çŠ¶æ€  */
 	int						bVelocityCalib;
 	int						bWedgeDelayCalib;
 	int						bSensationCalib;
@@ -545,7 +637,7 @@ typedef struct _Group
 //#################				 COMMON DATA			 ######################
 //####################################################################################
 /*encoder definition.*/
-enum setup_ENCODER_TYPE   //É¨²éÊı¾İÔ´
+enum setup_ENCODER_TYPE   //æ‰«æŸ¥æ•°æ®æº
 {
 	setup_ENCODER_TYPE_TIMER = 0,
 	setup_ENCODER_TYPE_ENCODER_1,
@@ -554,17 +646,17 @@ enum setup_ENCODER_TYPE   //É¨²éÊı¾İÔ´
 };
 
 /*Different counter types for encoder input*/
-enum setup_ENCODER_MODE   //ÀàĞÍ
+enum setup_ENCODER_MODE   //ç±»å‹
 {
-	setup_ENC_MODE_QUADRATURE = 0 ,	//  Õı½»
-	setup_ENC_MODE_UP		,		 //  ÕıÏò
-	setup_ENC_MODE_DOWN				//  ·´Ïò
+	setup_ENC_MODE_QUADRATURE = 0 ,	//  æ­£äº¤
+	setup_ENC_MODE_UP		,		 //  æ­£å‘
+	setup_ENC_MODE_DOWN				//  åå‘
 } ;
 
-enum setup_ENCODER_POLARITY  //¼«ĞÔ
+enum setup_ENCODER_POLARITY  //ææ€§
 {
-	setup_ENC_POLARITY_NORNAL = 0,	//ÕıÏò
-	setup_ENC_POLARITY_REVERSE		//·´Ïò
+	setup_ENC_POLARITY_NORNAL = 0,	//æ­£å‘
+	setup_ENC_POLARITY_REVERSE		//åå‘
 };
 
 typedef struct
@@ -666,7 +758,7 @@ enum SONIC_AXIS_UNIT
 
 struct COMMON_CONFIG
 {
-    int					nGroupQty	;         //×ÜµÄ×éÊıÁ¿
+    int					nGroupQty	;         //æ€»çš„ç»„æ•°é‡
 	int					bUnifiedPart ;
 	SONIC_AXIS_UNIT		eUAxisUnit   ;
 	INSTRUMENT_CONFIG	instrument   ;

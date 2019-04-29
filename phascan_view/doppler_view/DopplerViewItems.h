@@ -86,7 +86,7 @@ protected:
 	void CursorMove(int eCursor , float fPos_) ;
 
 	void  DrawWeld(QPainterPath& path)   ;
-	void  DrawWeldI (QPainterPath& path) ;
+	void  DrawWeldI (QPainterPath& path) ;    
 	void  DrawWeldV (QPainterPath& path) ;
 	void  DrawWeldDV(QPainterPath& path) ;
 	void  DrawWeldU (QPainterPath& path) ;
@@ -96,6 +96,14 @@ protected:
     void  DrawWeldTKY(QPainterPath& path);
 //	void  DrawWeldNcc (QPainterPath& path);
     void  DrawWeldDxf(QPainterPath &path);
+    void  DrawWeldNoneDataII(QPainterPath& path);
+    void  DrawWeldIDataII(QPainterPath& path);
+    void  DrawWeldVDataII(QPainterPath& path);
+    void  DrawWeldUDataII(QPainterPath& path);
+    void  DrawWeldVYDataII(QPainterPath& path);
+    void  DrawWeldVVDataII(QPainterPath& path);
+    void  DrawWeldUUDataII(QPainterPath& path);
+    void  DrawWeldUVDataII(QPainterPath& path);
 
 	DopplerDataView*     m_pDataView  ;
 	DopplerDefectItem*   m_pDefect[DEFECT_SIGN_MAX];

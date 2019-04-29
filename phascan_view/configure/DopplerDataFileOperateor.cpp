@@ -1,4 +1,4 @@
-#include "DopplerDataFileOperateor.h"
+ï»¿#include "DopplerDataFileOperateor.h"
 #include "DopplerConfigure.h"
 
 #include <QDataStream>
@@ -23,12 +23,12 @@ DopplerDataFileOperateor::~DopplerDataFileOperateor()
 }
 
 /*!
-  \brief ¶ÁÈ¡Êý¾ÝÎÄ¼þµÄÊý¾Ý£¬Ë³Ðò½«ÎÄ¼þÊý¾Ý¿½±´µ½m_cFileHead£¬m_cDrawInfoPack£¬m_cGroupInfoÖÐ£¬
-         È»ºó°ÑAÉ¨Êý¾ÝÓ³Éäµ½ÄÚ´æ
+  \brief è¯»å–æ•°æ®æ–‡ä»¶çš„æ•°æ®ï¼Œé¡ºåºå°†æ–‡ä»¶æ•°æ®æ‹·è´åˆ°m_cFileHeadï¼Œm_cDrawInfoPackï¼Œm_cGroupInfoä¸­ï¼Œ
+         ç„¶åŽæŠŠAæ‰«æ•°æ®æ˜ å°„åˆ°å†…å­˜
 
-  \param strPath_ Êý¾ÝÎÄ¼þÂ·¾¶
+  \param strPath_ æ•°æ®æ–‡ä»¶è·¯å¾„
 
-  \return ³É¹¦·µ»Ø 0£»Ê§°Ü·µ»Ø -1
+  \return æˆåŠŸè¿”å›ž 0ï¼›å¤±è´¥è¿”å›ž -1
 
 */
 int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
@@ -57,7 +57,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     ret = reader.readRawData((char*)&m_cGroupInfo , _nTmp) ;
     if(ret != _nTmp)
         return -1 ;
-    //µÃµ½²ÉÑùÊý¾Ý
+    //å¾—åˆ°é‡‡æ ·æ•°æ®
     m_pBeamData = m_file->map(m_cFileHead.size , m_cFileHead.reserved) ;
 
     return 0 ;

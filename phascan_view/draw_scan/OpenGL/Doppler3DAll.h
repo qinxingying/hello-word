@@ -1,4 +1,4 @@
-#include <QGLWidget>
+ï»¿#include <QGLWidget>
 
 #include "ParameterProcess.h"
 
@@ -72,10 +72,10 @@ private:
     QTimer *timer;
 
 private:
-    // ÉÈÉ¨
-    U8*  m_pAngleZoom;	//[BUFF_MAX_SIZE] ;// ´¦ÓÚÄÄ¸ö½Ç¶ÈÇø¼ä
-    U8*  m_pDraw;	//[BUFF_MAX_SIZE] ;// ÊÇ·ñÉÈĞÎÇøÓò
-    U8*  m_pDrawRate;	//[BUFF_MAX_SIZE] ;// Ìî³ä±ÈÀı
+    // æ‰‡æ‰«
+    U8*  m_pAngleZoom;	//[BUFF_MAX_SIZE] ;// å¤„äºå“ªä¸ªè§’åº¦åŒºé—´
+    U8*  m_pDraw;	//[BUFF_MAX_SIZE] ;// æ˜¯å¦æ‰‡å½¢åŒºåŸŸ
+    U8*  m_pDrawRate;	//[BUFF_MAX_SIZE] ;// å¡«å……æ¯”ä¾‹
     int* m_pDataNo;	//[BUFF_MAX_SIZE] ;
 
     int  m_nWidth;

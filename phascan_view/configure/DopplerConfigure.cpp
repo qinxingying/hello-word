@@ -794,7 +794,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
         common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;
         common.scanner.eEncoderType = static_cast<setup_ENCODER_TYPE> (_pack->nEncodeType);
 		common.scanner.eScanMode	= setup_SCAN_NORMAL;
-		common.scanner.fScanPos		=  0 ;
+        common.scanner.fScanPos		=  _pack->nScanStart		/ 1000.0 ;
 		common.scanner.fIndexPos	=  0 ;
         common.scanner.fScanStart   =  _pack->nScanStart		/ 1000.0;
         common.scanner.fScanStop	=  _pack->nScanEnd		    / 1000.0;
@@ -1138,6 +1138,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         }
         _group.eSkew		   = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos;
 
+        qDebug()<<"fScanOffset"<<_group.fScanOffset<<"Phascan_Version"<<Phascan_Version<<"srcDataOffset"<<_pGroupInfo->scan_offset;
+
 		QList<MATERIAL*>* _list = m_pConfig->m_listMaterial ;
 
 		if ( _list->size() > _pGroupInfo->part.Material_pos ) {
@@ -1147,6 +1149,16 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
 	//	MATERIAL* _material = _list->at(_pGroupInfo->part.Material_pos) ;
 	//	memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;
+        if( Config::instance()->is_phascan_ii())
+        {
+            _group.part.weldFormat = PHASCAN_II_FORMAT;
+            Config::instance()->getWeldData(i, _group.part.weld_ii);
+        }
+        else
+        {
+            _group.part.weldFormat = PHASCAN_I_FORMAT;
+        }
+
 		_group.part.weld.eSymmetry       = (setup_WELD_SYMMETRY_TYPE) _pGroupInfo->part.symmetry ;
         _group.part.weld.eType	         = (setup_WELD_TYPE) ((_pGroupInfo->part.Weld == 4)?_pGroupInfo->part.Weld+2:_pGroupInfo->part.Weld) ;
 		_group.part.weld.weland_height   = _pGroupInfo->part.weland_height / 1000.0 ;

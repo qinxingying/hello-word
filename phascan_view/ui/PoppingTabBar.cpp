@@ -1,4 +1,4 @@
-#include "PoppingTabBar.h"
+ï»¿#include "PoppingTabBar.h"
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPushButton>
@@ -47,7 +47,7 @@ void PoppingTabBar::mousePressEvent(QMouseEvent* event)
 void PoppingTabBar::wheelEvent(QWheelEvent* event)
 {
     //return ;
-    //È¡ÏûµôÊó±êÖÐ¼ü¹ö¶¯
+    //å–æ¶ˆæŽ‰é¼ æ ‡ä¸­é”®æ»šåŠ¨
     int _nDegrees = event->delta() / 8;
     int _nSteps = _nDegrees / 15;
     int _nId  = currentIndex()  ;

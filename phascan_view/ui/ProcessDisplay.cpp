@@ -1,4 +1,4 @@
-#include "ProcessDisplay.h"
+ï»¿#include "ProcessDisplay.h"
 #include "DopplerOverlays.h"
 #include "gHeader.h"
 #include "DopplerDataView.h"
@@ -1685,8 +1685,8 @@ int ProcessDisplay::CreateViews_AllGroups(QWidget* pWidget_)
 }
 
 /****************************************************************************
-  Description: Á¬½ÓĞÅºÅµ½Ö÷´°¿Ú
-  Input: ¡¾pWidget_£º´°¿ÚÖ¸Õë¡¿
+  Description: è¿æ¥ä¿¡å·åˆ°ä¸»çª—å£
+  Input: ã€pWidget_ï¼šçª—å£æŒ‡é’ˆã€‘
 *****************************************************************************/
 void ProcessDisplay::ConnectSingals(DopplerDataView** pViews_, int nQty_)
 {
@@ -1709,8 +1709,8 @@ void ProcessDisplay::ConnectSlots(DopplerDataView* pViews_)
 }
 
 /****************************************************************************
-  Description: ¸üĞÂÖ¸¶¨´°¿Ú
-  Input: ¡¾pWidget_£º´°¿ÚÖ¸Õë¡¿
+  Description: æ›´æ–°æŒ‡å®šçª—å£
+  Input: ã€pWidget_ï¼šçª—å£æŒ‡é’ˆã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateAll(DopplerDataView* pWidget_)
 {
@@ -1720,7 +1720,7 @@ void ProcessDisplay::UpdateAll(DopplerDataView* pWidget_)
 	//	_nDisplay == setup_DISPLAY_MODE_S_SOUNDPATH ||
 	//	_nDisplay == setup_DISPLAY_MODE_S_ATHUMIZ ||
 	//	_nDisplay == setup_DISPLAY_MODE_S_LINEAR )
-	if(_nDisplay >= setup_DISPLAY_MODE_S ) //µ±ÅäÖÃÎÄ¼ş±ä»¯Ê±£¬µ÷ÓÃ´Ëº¯Êı¸üĞÂË¢Í¼´°¿Ú£¬ĞèÒª¸ù¾İ²ÎÊıÖØĞÂÉèÖÃSÉ¨´°¿ÚÀàĞÍ
+	if(_nDisplay >= setup_DISPLAY_MODE_S ) //å½“é…ç½®æ–‡ä»¶å˜åŒ–æ—¶ï¼Œè°ƒç”¨æ­¤å‡½æ•°æ›´æ–°åˆ·å›¾çª—å£ï¼Œéœ€è¦æ ¹æ®å‚æ•°é‡æ–°è®¾ç½®Sæ‰«çª—å£ç±»å‹
 	{
 		setup_DISPLAY_MODE _eType ;
 		GROUP_CONFIG& _group = m_pConfig->group[_nGroupId] ;
@@ -1739,11 +1739,11 @@ void ProcessDisplay::UpdateAll(DopplerDataView* pWidget_)
 	{
 		pWidget_->SetDataViewConfigure(_nGroupId ,  _nLawId ,  _nDisplay);
 	}
-	// Ë¢ĞÂ´°¿Ú±ê³ß£¬É«ÌõºÍ±êÌâÀ¸
+	// åˆ·æ–°çª—å£æ ‡å°ºï¼Œè‰²æ¡å’Œæ ‡é¢˜æ 
 	UpdateDataViewFrame(pWidget_);
-	// Ë¢ĞÂ´°¿Ú»æÍ¼ÇøÉèÖÃ
+	// åˆ·æ–°çª—å£ç»˜å›¾åŒºè®¾ç½®
 	UpdateDataViewDraw(pWidget_) ;
-	// Ë¢ĞÂ¹â±ê
+	// åˆ·æ–°å…‰æ ‡
 	DopplerOverlays _overlay(pWidget_);
 	_overlay.CreateOverlays();
 	UpdateDataViewTitle(pWidget_);
@@ -2345,8 +2345,8 @@ void ProcessDisplay::UpdateDataViewDrawSL(DopplerDataView* pWidget_ , int nGroup
 }
 
 /****************************************************************************
-  Description: ¸üĞÂÖ¸¶¨´°¿ÚµÄ»­Í¼²Ù×÷
-  Input: ¡¾pWidget_£º´°¿ÚÖ¸Õë¡¿
+  Description: æ›´æ–°æŒ‡å®šçª—å£çš„ç”»å›¾æ“ä½œ
+  Input: ã€pWidget_ï¼šçª—å£æŒ‡é’ˆã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateDataViewDraw(DopplerDataView* pWidget_ )
 {
@@ -2391,8 +2391,8 @@ void ProcessDisplay::UpdateDataViewDraw(DopplerDataView* pWidget_ )
 }
 
 /****************************************************************************
-  Description: ¸üĞÂÖ¸¶¨´°¿ÚµÄ±ê³ß
-  Input: ¡¾pWidget_£º´°¿ÚÖ¸Õë¡¿
+  Description: æ›´æ–°æŒ‡å®šçª—å£çš„æ ‡å°º
+  Input: ã€pWidget_ï¼šçª—å£æŒ‡é’ˆã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateDataViewFrame(DopplerDataView* pWidget_)
 {
@@ -2436,8 +2436,8 @@ void ProcessDisplay::UpdateDataViewFrame(DopplerDataView* pWidget_)
 	};
 }
 /****************************************************************************
-  Description: ¸üĞÂÖ¸¶¨´°¿ÚµÄ±êÌâ
-  Input: ¡¾pWidget_£º´°¿ÚÖ¸Õë¡¿
+  Description: æ›´æ–°æŒ‡å®šçª—å£çš„æ ‡é¢˜
+  Input: ã€pWidget_ï¼šçª—å£æŒ‡é’ˆã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateDataViewTitle(DopplerDataView* pWidget_)
 {
@@ -2494,8 +2494,8 @@ void ProcessDisplay::UpdateDataViewTitle(DopplerDataView* pWidget_)
 }
 
 /****************************************************************************
-  Description: ¸üĞÂ´°¿ÚµÄÈ«²¿ÉèÖÃ
-  Input: ¡¾pWidget_£º´°¿ÚÖ¸Õë¡¿
+  Description: æ›´æ–°çª—å£çš„å…¨éƒ¨è®¾ç½®
+  Input: ã€pWidget_ï¼šçª—å£æŒ‡é’ˆã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateAllView()
 {
@@ -2511,8 +2511,8 @@ void ProcessDisplay::UpdateAllView()
 }
 
 /****************************************************************************
-  Description: ¸üĞÂÖ¸¶¨´°¿ÚµÄ¹â±ê¡¢Õ¢ÃÅ
-  Input: ¡¾pWidget_£º´°¿ÚÖ¸Õë¡¿
+  Description: æ›´æ–°æŒ‡å®šçª—å£çš„å…‰æ ‡ã€é—¸é—¨
+  Input: ã€pWidget_ï¼šçª—å£æŒ‡é’ˆã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateDataViewOverlay(DopplerDataView* pWidget_)
 {
@@ -2522,7 +2522,7 @@ void ProcessDisplay::UpdateDataViewOverlay(DopplerDataView* pWidget_)
 }
 
 /****************************************************************************
-  Description: ¸üĞÂËùÓĞ´°¿ÚµÄ¹â±ê¡¢Õ¢ÃÅ
+  Description: æ›´æ–°æ‰€æœ‰çª—å£çš„å…‰æ ‡ã€é—¸é—¨
 *****************************************************************************/
 void ProcessDisplay::UpdateAllViewOverlay()
 {
@@ -2537,7 +2537,7 @@ void ProcessDisplay::UpdateAllViewOverlay()
 }
 
 /****************************************************************************
-  Description: ¸üĞÂËùÓĞ´°¿ÚµÄ±ê³ßºÍ±êÌâ
+  Description: æ›´æ–°æ‰€æœ‰çª—å£çš„æ ‡å°ºå’Œæ ‡é¢˜
 *****************************************************************************/
 
 void ProcessDisplay::UpdateAllViewFrame()
@@ -2553,8 +2553,8 @@ void ProcessDisplay::UpdateAllViewFrame()
 }
 
 /****************************************************************************
-  Description: ¸üĞÂËùÓĞÖ¸¶¨×é´°¿ÚµÄ±ê³ßºÍ±êÌâ
-  Input:   ¡¾nGroupId_ £º ×éID¡¿
+  Description: æ›´æ–°æ‰€æœ‰æŒ‡å®šç»„çª—å£çš„æ ‡å°ºå’Œæ ‡é¢˜
+  Input:   ã€nGroupId_ ï¼š ç»„IDã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateAllViewFrameOfGroup(int nGroupId_)
 {
@@ -2574,8 +2574,8 @@ void ProcessDisplay::UpdateAllViewFrameOfGroup(int nGroupId_)
 }
 
 /****************************************************************************
-  Description: ¸üĞÂËùÓĞÖ¸¶¨×é´°¿ÚµÄ¹â±ê
-  Input:   ¡¾nGroupId_ £º ×éID¡¿
+  Description: æ›´æ–°æ‰€æœ‰æŒ‡å®šç»„çª—å£çš„å…‰æ ‡
+  Input:   ã€nGroupId_ ï¼š ç»„IDã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateAllViewOverlayOfGroup(int nGroupId_)
 {
@@ -2595,8 +2595,8 @@ void ProcessDisplay::UpdateAllViewOverlayOfGroup(int nGroupId_)
 }
 
 /****************************************************************************
-  Description: ¸üĞÂËùÓĞÖ¸¶¨×é´°¿Ú£¬°üÀ¨±ê³ß¡¢±êÌâ¡¢¹â±ê
-  Input:   ¡¾nGroupId_ £º ×éID¡¿
+  Description: æ›´æ–°æ‰€æœ‰æŒ‡å®šç»„çª—å£ï¼ŒåŒ…æ‹¬æ ‡å°ºã€æ ‡é¢˜ã€å…‰æ ‡
+  Input:   ã€nGroupId_ ï¼š ç»„IDã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateAllViewOfGroup(int nGroupId_)
 {
@@ -2605,8 +2605,8 @@ void ProcessDisplay::UpdateAllViewOfGroup(int nGroupId_)
 }
 
 /****************************************************************************
-  Description: ¸üĞÂËùÓĞÖ¸¶¨×é´°¿ÚµÄÕ¢ÃÅÎ»ÖÃ
-  Input:   ¡¾nGroupId_ £º ×éID¡¿
+  Description: æ›´æ–°æ‰€æœ‰æŒ‡å®šç»„çª—å£çš„é—¸é—¨ä½ç½®
+  Input:   ã€nGroupId_ ï¼š ç»„IDã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateAllViewGateOfGroup(int nGroupId_)
 {
@@ -2668,8 +2668,8 @@ void ProcessDisplay::ResetDefectInfo(int nGroupId_)
 }
 
 /****************************************************************************
-  Description: ¸üĞÂËùÓĞÖ¸¶¨×é´°¿ÚµÄ¹â±êÏÔÊ¾
-  Input:   ¡¾nGroupId_ £º ×éID¡¿
+  Description: æ›´æ–°æ‰€æœ‰æŒ‡å®šç»„çª—å£çš„å…‰æ ‡æ˜¾ç¤º
+  Input:   ã€nGroupId_ ï¼š ç»„IDã€‘
 *****************************************************************************/
 void ProcessDisplay::UpdateAllViewCursorOfGroup(int)
 {

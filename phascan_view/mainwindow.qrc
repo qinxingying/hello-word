@@ -64,5 +64,13 @@
         <file>translator/phascan_view_japanese.qm</file>
         <file>resource/display/0-26.png</file>
         <file>resource/display/0-27.png</file>
+        <file>resource/weld/i.jpg</file>
+        <file>resource/weld/u.jpg</file>
+        <file>resource/weld/uu.jpg</file>
+        <file>resource/weld/uv.jpg</file>
+        <file>resource/weld/v.jpg</file>
+        <file>resource/weld/vv.jpg</file>
+        <file>resource/weld/vy.jpg</file>
+        <file>resource/weld/none.jpg</file>
     </qresource>
 </RCC>

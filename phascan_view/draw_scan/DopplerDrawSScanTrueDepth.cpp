@@ -1,4 +1,4 @@
-#include "DopplerDrawSScanTrueDepth.h"
+ï»¿#include "DopplerDrawSScanTrueDepth.h"
 #include <process/ParameterProcess.h>
 #include <QImage>
 #include <math.h>
@@ -143,8 +143,8 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
 	_process->GetSImageVerticalRange(m_cInfo.nGroupId , &_nStartY , &_nStopY);
 
 	// get real step of each pixel
-	int  _width = pInfo_->width  ;	//  Í¼Ïñ ¿í	µ¥Î» ÏñËØ
-	int _height = pInfo_->height ;	//  Í¼Ïñ ¸ß	µ¥Î» ÏñËØ
+	int  _width = pInfo_->width  ;	//  å›¾åƒ å®½	å•ä½ åƒç´ 
+	int _height = pInfo_->height ;	//  å›¾åƒ é«˜	å•ä½ åƒç´ 
 	_nStepX  = (_nStopX - _nStartX) / (_width - 1) ;
 	_nStepY  = (_nStopY - _nStartY) / (_height - 1) ;
 	//-----------------------------------------------------------------------------
@@ -161,7 +161,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
 		_nAngles[i] = _nAngleStart + i * _nAngleStep ;
 	}
 
-	float _nPosJunction[256]; // Ã¿¸öYÖá×ø±êÉÏÉùÏßµÄÎ»ÖÃ
+	float _nPosJunction[256]; // æ¯ä¸ªYè½´åæ ‡ä¸Šå£°çº¿çš„ä½ç½®
 	int i, j, k, t, _index;
 	float _fX, _fY, _nTmp;
 
@@ -239,18 +239,18 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 	float  _fStopPos = _pExitPoint [_nBeamMaxId] ;
 	double	  _angle = fabs(_fAngle);
 
-    double _real_height = _fRange * cos(_angle); // Êµ¼Ê¸ß¶È
+    double _real_height = _fRange * cos(_angle); // å®é™…é«˜åº¦
     double  _real_width = fabs(_fStopPos - _fStartPos) + _fRange * sin(_angle) ;
-    double	    _xScale = _width / _real_width ;// XÖá±ÈÀı(ÏñËØ/Êµ¼Ê)
-    double	     _xVacc = tan(_angle) * _real_height * _xScale;// ½Ç¶ÈºáÏòÆ«ÒÆÁ¿(ÏñËØ)
-    double	    _fScale = _xVacc / _height ;	// [½Ç¶ÈºáÏòÆ«ÒÆÁ¿(ÏñËØ)]/[½Ç¶È×İÏòÆ«ÒÆÁ¿(ÏñËØ)]
-    double  _beam_width = _width - _xVacc ;		// ²¨Êø¿í¶È(ÏñËØ)
+    double	    _xScale = _width / _real_width ;// Xè½´æ¯”ä¾‹(åƒç´ /å®é™…)
+    double	     _xVacc = tan(_angle) * _real_height * _xScale;// è§’åº¦æ¨ªå‘åç§»é‡(åƒç´ )
+    double	    _fScale = _xVacc / _height ;	// [è§’åº¦æ¨ªå‘åç§»é‡(åƒç´ )]/[è§’åº¦çºµå‘åç§»é‡(åƒç´ )]
+    double  _beam_width = _width - _xVacc ;		// æ³¢æŸå®½åº¦(åƒç´ )
 
 	bool _bWedgeRev = (_fStopPos - _fStartPos) > 0 ? false : true ;
 
-    double tmpX , xxx;  // ²¨ÊøË÷Òı ÖĞ¼ä±äÁ¿
-    double tmpDrawRate;	// ²¨ÊøË÷Òı
-    double tmpDataNo;	// Êı¾İÎ»ÖÃË÷Òı
+    double tmpX , xxx;  // æ³¢æŸç´¢å¼• ä¸­é—´å˜é‡
+    double tmpDrawRate;	// æ³¢æŸç´¢å¼•
+    double tmpDataNo;	// æ•°æ®ä½ç½®ç´¢å¼•
 
 	int i ,  j  , index ;
 	for( i = 0 ; i < _height ; i++)
@@ -337,7 +337,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                     _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
                     _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) +
                              (_pData[_idx2 + _nLawSize] ) * m_pDrawRate[_idx1] ) ;
-                    _iData = _iData>>COLOR_SHIFT ;  //ÓÒÒÆ
+                    _iData = _iData>>COLOR_SHIFT ;  //å³ç§»
 					_pImg2 = _pImg1 + j * 3 ;
 					_iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
 
