@@ -59,7 +59,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 
 int main(int argc, char *argv[])
 {
-    qInstallMessageHandler(myMessageOutput);
+    //qInstallMessageHandler(myMessageOutput);
     QApplication app(argc, argv);
 
     QSettings::Format format = QSettings::registerFormat("cfg", &settings_read_msgpack, &settings_write_msgpack);

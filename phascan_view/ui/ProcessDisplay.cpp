@@ -1859,7 +1859,7 @@ void ProcessDisplay::UpdateDataViewFrameBH(DopplerDataView* pWidget_ , int nGrou
 	ParameterProcess* _process = ParameterProcess::Instance();
 	QString _strLeftUnit = _process->GetScanAxisUnit()  ;
 	double _fStart , _fStop , _fSliderStart , _fSliderStop;
-    SCANNER& _scan = m_pConfig->common.scanner ;
+    //SCANNER& _scan = m_pConfig->common.scanner ;
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     int _nHeight = pWidget_->height() - 35;
 
@@ -1940,7 +1940,7 @@ void ProcessDisplay::UpdateDataViewFrameCH(DopplerDataView* pWidget_ , int nGrou
     int _nWidth	   = pWidget_->width() - 50 ;
 	QString _strBottomUnit = _process->GetScanAxisUnit() ;
 	pWidget_->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
-    SCANNER& _scan = m_pConfig->common.scanner ;
+    //SCANNER& _scan = m_pConfig->common.scanner ;
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     if(_nWidth < _nScanend)
     {
@@ -1995,7 +1995,7 @@ void ProcessDisplay::UpdateDataViewFrameCV(DopplerDataView* pWidget_ , int nGrou
 //	_process->GetCScanScanAxisRange(nGroupId_ ,  pWidget_->height() - 35 , &_fScanStart , &_fScanStop, &_fSliderStart, &_fSliderStop) ;
 //	pWidget_->SetRulerRange( _fScanStart , _fScanStop ,  _fSliderStart, _fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->GetRulerRange(&_fScanStop , &_fScanStart , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT ) ;
-    SCANNER& _scan = m_pConfig->common.scanner ;
+    //SCANNER& _scan = m_pConfig->common.scanner ;
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
     if(_nHeight < _nScanend)
     {

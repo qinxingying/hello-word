@@ -1,4 +1,4 @@
-#ifndef FOCALLAWER_H
+﻿#ifndef FOCALLAWER_H
 #define FOCALLAWER_H
 
 #include <QObject>

@@ -71,6 +71,9 @@
         </item>
         <item row="5" column="1">
          <widget class="QDoubleSpinBox" name="h2DoubleSpinBox">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="decimals">
            <number>1</number>
           </property>
@@ -78,6 +81,9 @@
         </item>
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="r1DoubleSpinBox">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="decimals">
            <number>1</number>
           </property>
@@ -120,6 +126,9 @@
         </item>
         <item row="7" column="1">
          <widget class="QDoubleSpinBox" name="w3DoubleSpinBox">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="decimals">
            <number>1</number>
           </property>
@@ -134,6 +143,9 @@
         </item>
         <item row="1" column="1">
          <widget class="QDoubleSpinBox" name="w1DoubleSpinBox">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="decimals">
            <number>1</number>
           </property>
@@ -192,6 +204,9 @@
         </item>
         <item row="2" column="1">
          <widget class="QDoubleSpinBox" name="h1DoubleSpinBox">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="decimals">
            <number>1</number>
           </property>
@@ -206,6 +221,9 @@
         </item>
         <item row="6" column="1">
          <widget class="QDoubleSpinBox" name="r2DoubleSpinBox">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="decimals">
            <number>1</number>
           </property>
@@ -220,6 +238,9 @@
         </item>
         <item row="4" column="1">
          <widget class="QDoubleSpinBox" name="w2DoubleSpinBox">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
           <property name="decimals">
            <number>1</number>
           </property>

@@ -255,7 +255,7 @@ int  ParameterProcess::SetupWedgeLoad(int nGroupId_ , WEDGE_CONFIG* wedge_ , int
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_]   ;
 	WEDGE_CONFIG* _wedge = &group.wedge[TxRx_?1 :0]  ;
 	memcpy(_wedge , wedge_ , sizeof(WEDGE_CONFIG)) ;
-	qDebug("%d %d SetupWedgeLoad" , nGroupId_ , TxRx_);
+    //qDebug("%d %d SetupWedgeLoad" , nGroupId_ , TxRx_);
 	return 0 ;
 }
 
@@ -388,7 +388,7 @@ int  ParameterProcess::SetupCurrentLawCursor(int nGroupId_ , int nValue_)
     float _fAngleStep = _law.nAngleStepRefract/10.0;
     int tmpCScanLinePos =  _fAngleStart + nValue_*_fAngleStep;
     _group.afCursor[setup_CURSOR_C_ANGLE]  = tmpCScanLinePos ;
-	qDebug("%d %d SetupWedgeLoad" , nGroupId_ , nValue_);
+    //qDebug("%d %d SetupWedgeLoad" , nGroupId_ , nValue_);
 	return 0 ;
 }
 
@@ -434,8 +434,10 @@ int  ParameterProcess::SetupScanPos(float fScanPos_)
     if(_fPos < _scaner.fScanStart)
         _fPos = _scaner.fScanStart;
 
-    if(_fPos > _scaner.fScanStop)
-        _fPos = _scaner.fScanStop;
+//    if(_fPos > _scaner.fScanStop)
+//        _fPos = _scaner.fScanStop;
+    if(_fPos > _scaner.fScanend)
+        _fPos = _scaner.fScanend;
 
 	_scaner.fScanPos = _fPos;
     if((_scaner.fScanPos < _scaner.fScanStart2)&&(_scaner.fScanPos >= _scaner.fScanStart))
@@ -750,6 +752,10 @@ int ParameterProcess::SAxisDistToIndex(float fDist_) const
         {
             fDist_ = _scaner.fScanStart;
         }
+        if(fDist_ > _scaner.fScanend)
+        {
+            fDist_ = _scaner.fScanend;
+        }
         _index = (fDist_ - _scaner.fScanStart) / _scaner.fScanStep ;
 	} else {
         if(fDist_ * _scaner.fPrf < _scaner.fScanStart)
@@ -782,6 +788,10 @@ float ParameterProcess::SAxisIndexToDist(int index_) const
 	} else {
 		_fPos = (index_ * _scaner.fScanStep + _scaner.fScanStart) / _scaner.fPrf;
 	}
+    if(_fPos > _scaner.fScanend){
+        _fPos = _scaner.fScanend;
+    }
+
 	return _fPos;
 }
 
@@ -972,14 +982,14 @@ float ParameterProcess::GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLa
     bool _bRectify = (GetRectifierMode(nGroupId_) == setup_RECTIFIER_RF );
     //F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
 
-    if(Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 5)
+    if(Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
     {
         F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
         int bRectify_  = GetRectifierMode(nGroupId_);
 
         return CalPeakAmp(_fData, bRectify_);
     }
-    else if(Phascan_Version == 2 || Phascan_Version == 4)
+    else
     {
         F32 _iData = _pData[_index] * 2 + 1;
         if(_bRectify)
@@ -996,7 +1006,6 @@ float ParameterProcess::GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLa
 
         return CalPeakAmp2(_iData, bRectify_);
     }
-
 }
 
 int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeight_, bool bRectify_, int nPointQty_)
@@ -1606,11 +1615,19 @@ void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , doubl
 	if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
 	{
         _fRange = (nDist_ ) / _scan.fPrf  ;
-		_fStart = 0;// + _fScanOff;
+        float scanRange = ( _scan.fScanend - _scan.fScanStart);
+        if( _fRange > scanRange){
+            _fRange = scanRange;
+        }
+        _fStart = 0;// + _fScanOff;
 	}
 	else
 	{
         _fRange = (nDist_) * _scan.fScanStep  ;
+        float scanRange = ( _scan.fScanend - _scan.fScanStart)/_scan.fScanStep;
+        if( _fRange > scanRange){
+            _fRange = scanRange;
+        }
         _fStart = _scan.fScanStart2;// + _fScanOff;
 	}
     *fSliderStart_ = _scan.fScanStart;
@@ -1663,7 +1680,7 @@ void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , doubl
         *fStart_ = _scan.fScanStart2;
         *fStop_  = _scan.fScanend;
     }
-
+    //qDebug()<<"fStart_"<<*fStart_<<"fStop_"<<*fStop_;
 }
 
 void  ParameterProcess::GetBScanScanAxisRange(int nGroupId_ ,  int nDist_ , double* fStart_ , double* fStop_, double* fSliderStart_ , double* fSliderStop_)

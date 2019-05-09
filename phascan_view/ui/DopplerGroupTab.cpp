@@ -1574,7 +1574,8 @@ void DopplerGroupTab::on_BtnLoadDxfFile_clicked()
         DialogWeldFixDataII dataIIDialog(this, m_nGroupId);
         if(dataIIDialog.exec())
         {
-
+            ParameterProcess* _process = ParameterProcess::Instance();
+            _process->SetupPart(m_nGroupId, dataIIDialog.GetPart());
         }
     }
     else

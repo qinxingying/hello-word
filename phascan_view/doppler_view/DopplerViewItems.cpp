@@ -558,10 +558,10 @@ void DopplerViewItems::SetLawMarkerPos(int nId_, int nMarkerPos)
     }
 }
 
-void DopplerViewItems::SetLawMarkerCScanPos(int fPos_)
-{
+//void DopplerViewItems::SetLawMarkerCScanPos(int fPos_)
+//{
 
-}
+//}
 
 void DopplerViewItems::UpdateItemsThickness()
 {
@@ -1534,8 +1534,8 @@ void DopplerViewItems::DrawWeldUDataII(QPainterPath& path)
         return;
     }
 
-    QPointF _pos[4] ;
-    double _fStartV , _fStopV , _fSliderStartV, _fSliderStopV;
+    QPointF _pos[4];
+    double _fStartV, _fStopV, _fSliderStartV, _fSliderStopV;
     m_pDataView->GetRulerRange(&_fStartV , &_fStopV , &_fSliderStartV, &_fSliderStopV, DopplerDataView::DATA_VIEW_RULER_LEFT ) ;
     _pos[0].setX(0);
     _pos[0].setY(_fStartV);
@@ -2915,7 +2915,7 @@ void  DopplerViewItems::DrawWeldTKY(QPainterPath& path)
     path.lineTo(_pos[1]);
     
     double thickness = m_cPart.afSize[0];
-    double fx0,fx1,fx2,fx3,fx4,fx5,fy0,fy1,fy2,fy3,fy4,fy5,fx6,fx7;
+    double fx0,fx1,fx2,fx3,fx4,fx5,fy0,fy1,fy2,fy3,fx6;
     double width1 = m_cPart.weld.weland_height + 0.5 * m_cPart.weld.Diameter/sin(DEGREE_TO_ARCH(m_cPart.weld.fizone_angle));
     double width2 = m_cPart.weld.fizone_height + 0.5 * m_cPart.weld.Diameter/sin(DEGREE_TO_ARCH(m_cPart.weld.fizone_angle));
     double R = 4 * m_cPart.weld.weland_offset + thickness + 20;

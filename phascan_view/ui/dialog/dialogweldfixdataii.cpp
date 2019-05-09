@@ -18,7 +18,13 @@ DialogWeldFixDataII::DialogWeldFixDataII(QWidget *parent, int nGroupId) :
     weldTypeChanged(weldType);
 
     connect( ui->weldTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(weldTypeChanged(int)));
-
+    connect( ui->w1DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(w1ValueChanged(double)));
+    connect( ui->w2DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(w2ValueChanged(double)));
+    connect( ui->w3DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(w3ValueChanged(double)));
+    connect( ui->h1DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(h1ValueChanged(double)));
+    connect( ui->h2DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(h2ValueChanged(double)));
+    connect( ui->r1DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(r1ValueChanged(double)));
+    connect( ui->r2DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(r2ValueChanged(double)));
 }
 
 DialogWeldFixDataII::~DialogWeldFixDataII()
@@ -26,6 +32,10 @@ DialogWeldFixDataII::~DialogWeldFixDataII()
     delete ui;
 }
 
+PART_CONFIG* DialogWeldFixDataII::GetPart()
+{
+    return &m_cPart;
+}
 
 void DialogWeldFixDataII::weldTypeChanged(int index)
 {
@@ -259,5 +269,156 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         break;
     }
     blockSignals(false);
+    ui->showWidget->update();
+}
+
+void DialogWeldFixDataII::w1ValueChanged( double value)
+{
+    if(m_cPart.weld_ii.eType == U){
+        if(m_cPart.weld_ii.U.r > value){
+            ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.U.r);
+            return;
+        }
+    }
+    else if( m_cPart.weld_ii.eType == UU || m_cPart.weld_ii.eType == UV){
+        if(m_cPart.weld_ii.UU.r1 > value){
+            ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.UU.r1);
+        }
+    }
+    m_cPart.weld_ii.I.w = value;
+    ui->showWidget->update();
+}
+
+void DialogWeldFixDataII::w2ValueChanged( double value)
+{
+    if(m_cPart.weld_ii.V.w1 < value){
+        ui->w2DoubleSpinBox->setValue(m_cPart.weld_ii.V.w1);
+        return;
+    }
+    m_cPart.weld_ii.V.w2 = value;
+    ui->showWidget->update();
+}
+
+void DialogWeldFixDataII::w3ValueChanged( double value)
+{
+    switch (m_cPart.weld_ii.eType) {
+    case VY:
+        if( value > m_cPart.weld_ii.VY.w2){
+            ui->w3DoubleSpinBox->setValue(m_cPart.weld_ii.VY.w3);
+            return;
+        }
+    case VV:
+    case UU:
+    case UV:
+        if( value < m_cPart.weld_ii.VV.w2)
+        {
+            ui->w3DoubleSpinBox->setValue(m_cPart.weld_ii.VV.w3);
+            return;
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+void DialogWeldFixDataII::h1ValueChanged( double value)
+{
+    switch (m_cPart.weld_ii.eType) {
+    case V:
+        if( m_cPart.afSize[0] < value)
+        {
+            ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.V.h);
+            return;
+        }
+        break;
+    case U:
+        if( m_cPart.afSize[0] < value || m_cPart.weld_ii.U.r*2 > value)
+        {
+            ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.U.h);
+            return;
+        }
+        break;
+    case VY:
+    case VV:
+        if( value + m_cPart.weld_ii.VY.h2 > m_cPart.afSize[0])
+        {
+            ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.VV.h1);
+            return;
+        }
+        break;
+    case UU:
+    case UV:
+        if( value + m_cPart.weld_ii.VY.h2 > m_cPart.afSize[0] || m_cPart.weld_ii.UV.r > value){
+            ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.UV.h1);
+        }
+        break;
+    default:
+        break;
+    }
+    m_cPart.weld_ii.V.h = value;
+    ui->showWidget->update();
+}
+
+void DialogWeldFixDataII::h2ValueChanged( double value)
+{
+    switch (m_cPart.weld_ii.eType) {
+    case VY:
+    case VV:
+        if(value + m_cPart.weld_ii.VY.h1 > m_cPart.afSize[0])
+        {
+            ui->h2DoubleSpinBox->setValue(m_cPart.weld_ii.VY.h2);
+            return;
+        }
+        break;
+    case UU:
+        if(value + m_cPart.weld_ii.VY.h1 > m_cPart.afSize[0] || m_cPart.weld_ii.UU.r2 > value)
+        {
+            ui->h2DoubleSpinBox->setValue(m_cPart.weld_ii.UU.h2);
+            return;
+        }
+        break;
+    case UV:
+        if( value + m_cPart.weld_ii.UV.h1 > m_cPart.afSize[0]){
+            ui->h2DoubleSpinBox->setValue(m_cPart.weld_ii.UV.h2);
+        }
+        break;
+    default:
+        break;
+    }
+    m_cPart.weld_ii.VY.h2 = value;
+    ui->showWidget->update();
+}
+
+void DialogWeldFixDataII::r1ValueChanged( double value)
+{
+    switch (m_cPart.weld_ii.eType) {
+    case U:
+        if(value > m_cPart.weld_ii.U.w1){
+            ui->r1DoubleSpinBox->setValue(m_cPart.weld_ii.U.r);
+            return;
+        }
+        m_cPart.weld_ii.U.r = value;
+        break;
+    case UU:
+    case UV:
+        if(value > m_cPart.weld_ii.UV.w1){
+            ui->r1DoubleSpinBox->setValue(m_cPart.weld_ii.UV.r);
+            return;
+        }
+        m_cPart.weld_ii.UV.r = value;
+        break;
+    default:
+        break;
+    }
+    ui->showWidget->update();
+}
+
+void DialogWeldFixDataII::r2ValueChanged( double value)
+{
+    if(value >m_cPart.weld_ii.UU.w3){
+        ui->r2DoubleSpinBox->setValue(m_cPart.weld_ii.UU.r2);
+        return;
+    }
+    m_cPart.weld_ii.UU.r2 = value;
     ui->showWidget->update();
 }

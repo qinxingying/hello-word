@@ -1,4 +1,4 @@
-#include "DopplerHtmlReport.h"
+﻿#include "DopplerHtmlReport.h"
 #include "ParameterProcess.h"
 
 #include <QFile>

@@ -124,6 +124,7 @@ public:
 	void CreateShadowData(int iLen_);
 	void ReleaseShadowData();
 	void ResetShadowData();
+    void initScanPos();
 	WDATA* GetShadowDataPoint();
 	U8* GetComDisplayPoint();
 

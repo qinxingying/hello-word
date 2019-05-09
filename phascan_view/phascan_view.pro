@@ -46,4 +46,19 @@ DISTFILES += \
     translator/phascan_view_english.ts \
     translator/phascan_view_japanese.ts
 
+versionBuild.target=version
+win32 {
+versionBuild.commands=$$PWD/update_version.sh $$PWD/
+} else {
+versionBuild.commands=$$PWD/update_version.sh $$PWD/
+}
+
+win32 {
+    versionBuild.commands ~= s,/,\\\\,g
+
+}
+
+QMAKE_EXTRA_TARGETS += versionBuild
+PRE_TARGETDEPS += version
+
 #DEFINES += QT_NO_DEBUG_OUTPUT

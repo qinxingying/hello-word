@@ -171,7 +171,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 {
 	U32 _aGateValue[256] ;
     memset(_aGateValue, 0x00, sizeof(_aGateValue));
-	int _nHeight   = pImage_->height();
+    //int _nHeight   = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
     static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;
@@ -256,7 +256,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             m_PosStop = _process->SAxisDistToIndex(srcCend) ;
 
             _nScanend = m_PosStop - m_PosStart;
-            emit signalScanRangeMove(2, m_PosStart, m_PosStop) ;
+            emit signalScanRangeMove(2, m_PosStart, m_PosStop) ;            
         }
         else
         {
@@ -321,7 +321,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
         TransformImage(m_PosStop - m_PosStart,lawstop-lawstart,src,pImage_->width(),pImage_->height(),pImage_);
-
+    //qDebug()<<"m_PosStop"<<m_PosStop<<"m_PosStart"<<m_PosStart;
     delete TImage;
 }
 
@@ -331,7 +331,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	U32 _aGateValue2[256] ;
 	memset(_aGateValue1, 0x00, sizeof(_aGateValue1));
 	memset(_aGateValue2, 0x00, sizeof(_aGateValue2));
-	int _nHeight	  = pImage_->height();
+    //int _nHeight	  = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
     static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;

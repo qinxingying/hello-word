@@ -979,6 +979,7 @@ int DopplerGraphicView::tofdProAction()
 			_ret = 0;
 		}
 	}
+    //qDebug()<<"ret"<<_ret<<opp.TofdDragProStatus(_iGroupId);
 
 	return _ret;
 }

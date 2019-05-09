@@ -1,4 +1,4 @@
-#include "config.h"
+﻿#include "config.h"
 #include "msgpack/msgpack.h"
 #include <QDebug>
 #include <QList>
@@ -80,7 +80,7 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
 
     convert_other_to_phascan_config();
 
-    for(int i = 0; i < m_global.m_groupQty; ++i) {
+    for(uint i = 0; i < m_global.m_groupQty; ++i) {
         unpack_group(i);
         convert_to_phascan_config(i);
     }
@@ -941,6 +941,7 @@ void Config::unpack_alarm()
 
 void Config::unpack_one_alarm_setting(int index)
 {
+    Q_UNUSED(index);
 //    Paramters::Alarm &alarm = m_global.alarm[index];
 //    alarm.enable = map["Enable"].toBool();
 //    if(!alarm.enable){

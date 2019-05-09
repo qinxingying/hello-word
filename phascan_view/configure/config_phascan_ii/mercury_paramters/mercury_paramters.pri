@@ -1,7 +1,6 @@
 
 HEADERS += \
     $$PWD/group_paramters.h \
-    $$PWD/group_paramters.h \
     $$PWD/sample_paramters.h \
     $$PWD/transceiver_paramters.h \
     $$PWD/focallawer_paramters.h \
@@ -36,7 +35,6 @@ HEADERS += \
     $$PWD/linear_dac_paramters.h
 
 SOURCES += \
-    $$PWD/group_paramters.cpp \
     $$PWD/group_paramters.cpp \
     $$PWD/sample_paramters.cpp \
     $$PWD/transceiver_paramters.cpp \

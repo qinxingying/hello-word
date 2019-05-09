@@ -836,6 +836,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
     if(!_ret)
     {
         _pConfig->ResetShadowData();
+        _pConfig->initScanPos();
         UpdateTableParameter();
         UpdateStatusBarInfo();
         UpdateTableDisplay();
@@ -1076,7 +1077,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                     _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
                     _proDispy.UpdateAll(_pView);
                 }
-            } else if(_nDisplay < 8  && _nGroupId == _nCurGroup) {
+            } else if( (_nDisplay >= 4 && _nDisplay < 8) && _nGroupId == _nCurGroup) {
                 _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
                 _proDispy.UpdateDataViewTitle(_pView);
                 _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);

@@ -1,7 +1,7 @@
-
+ï»¿
 /************************
   Name:  DopplerViewFrame
-  Description:   ÏÔÊ¾´°¿ÚµÄ¸¸´°¿Ú  Ìá¹©ÍÏ×§¹¦ÄÜ
+  Description:   æ˜¾ç¤ºçª—å£çš„çˆ¶çª—å£  æä¾›æ‹–æ‹½åŠŸèƒ½
 ************************/
 
 #ifndef DopplerViewFrame_H

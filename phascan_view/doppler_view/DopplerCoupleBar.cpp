@@ -155,7 +155,15 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
 
     DopplerConfigure* pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = pConfig->group[nGroupId];
-    float scanOffset = _group.fScanOffset;
+    float groupOffset = _group.fScanOffset;
+    float globalOffset = pConfig->common.scanner.fScanStart;
+    float scanOffset = groupOffset - globalOffset;
+    if( scanOffset == 0 && groupOffset < 0)
+    {
+        scanOffset = groupOffset;
+    }
+    //qDebug()<<"groupoffset"<<groupOffset<<"globaloffset"<<globalOffset;
+
 
     if( start < startRange) start = startRange;
     if( end > endRange) end = endRange;

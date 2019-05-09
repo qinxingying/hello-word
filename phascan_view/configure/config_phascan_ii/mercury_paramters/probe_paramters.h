@@ -1,4 +1,4 @@
-#ifndef PROBE_H
+﻿#ifndef PROBE_H
 #define PROBE_H
 
 #include <QObject>

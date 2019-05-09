@@ -1,4 +1,4 @@
-#include "DopplerLineItem.h"
+﻿#include "DopplerLineItem.h"
 #include <QGraphicsScene>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -430,7 +430,7 @@ Qt::CursorShape DopplerLineItem::GetCursorShape(QPointF posCursor_)
 }
 //----------------------------------------------------------
 
-
+//黑色虚线，在B，C视图中显示当前的扫查帧，和滑块联动
 DopplerScanMarker::DopplerScanMarker(const QColor& cColor_) : DopplerLineItem(cColor_){}
 
 

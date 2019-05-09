@@ -382,7 +382,7 @@ int DopplerConfigure::OpenData(QString& path_)
         targetGroup = m_pDataFile->GetGroupInfo(0);
     }
 
-    SIZING_CURVES &targetCurves = targetGroup->SizingCurves;
+    //SIZING_CURVES &targetCurves = targetGroup->SizingCurves;
 
 	int _iMax = RectifyScanLength();
 	CreateShadowData(_iMax);
@@ -445,6 +445,10 @@ void DopplerConfigure::ReleaseShadowData()
 	}
 }
 
+/*!
+  \brief 组的扫查偏置改变后，重新计算
+
+*/
 void DopplerConfigure::ResetShadowData()
 {
 	int _nQty = comTmp.nGroupQty;
@@ -464,12 +468,12 @@ void DopplerConfigure::ResetShadowData()
 			}
 		}
 		common.scanner.fScanStart = comTmp.scanner.fScanStart + _fMinOff;	/**/
-		common.scanner.fScanStop  = comTmp.scanner.fScanStop  + _fMaxOff;	/**/
+        common.scanner.fScanStart2 = common.scanner.fScanStart;
+        common.scanner.fScanStop  = comTmp.scanner.fScanStop  + _fMaxOff;	/**/
         if(common.scanner.eEncoderType)
             common.scanner.fScanend     =   common.scanner.fScanStop;
         else
             common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf + common.scanner.fScanStart;
-
     }
 
 //    int _nChanOffTmp[setup_MAX_GROUP_QTY];
@@ -503,6 +507,15 @@ void DopplerConfigure::ResetShadowData()
 
 	memset(common.nRecMark, 0x00, setup_MAX_REC_LEN);
 	memcpy(&common.nRecMark[common.nScanOffMax], &comTmp.nRecMark[comTmp.nScanOffMax], comTmp.nRecMax);
+}
+
+/*!
+  \brief 初始化位置,读取新的文件后将pos置为开始位置
+
+*/
+void DopplerConfigure::initScanPos()
+{
+    common.scanner.fScanPos = common.scanner.fScanStart;
 }
 
 U8* DopplerConfigure::GetComDisplayPoint()
@@ -857,9 +870,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
     if(Config::instance()->is_phascan_ii()) {
         /* Phascan II not support 200% */
         Phascan_Version = 3;
+        //qDebug()<<"dataII";
     } else {
         Phascan_Version = m_pDataFile->GetFileHeader()->version-m_pDataFile->GetFileHeader()->size-m_pDataFile->GetFileHeader()->reserved;
+        //qDebug()<<"dataI";
     }
+
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{
 		GROUP_INFO* _pGroupInfo = pConf_->GetGroupInfo(i) ;
@@ -945,18 +961,6 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */
 		_group.fMaxThickness  = _pGroupInfo->max_thickness/1000.0 ;		/* Measurements->Thickness->max */
-		// wedge position
-        if(Phascan_Version == 1)
-        {
-            _group.fScanOffset	  = _pGroupInfo->scan_offset  / 10.0 ;		/*mm*/
-            _group.fIndexOffset   = _pGroupInfo->index_offset  / 10.0;			/*mm*/
-        }
-        else
-        {
-            _group.fScanOffset	  = _pGroupInfo->scan_offset  / 1000.0 ;		/*mm*/
-            _group.fIndexOffset   = _pGroupInfo->index_offset  / 1000.0;			/*mm*/
-        }
-		_group.eSkew		  = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos;
 
 		/*  校准状态  */
 		_group.bVelocityCalib	 = _pGroupInfo->VelocityCalibrated  ;
@@ -1126,19 +1130,26 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_wedge.nWedgeDelay = _Wedge.Probe_delay  ;
 
 		_group.part.afSize[0]  = _pGroupInfo->part.Thickness / 1000.0 ;
-        if(Phascan_Version == 1)
+        if(common.scanner.eEncoderType)
         {
-            _group.fScanOffset	  = _pGroupInfo->scan_offset  / 10.0 ;		/*mm*/
-            _group.fIndexOffset   = _pGroupInfo->index_offset  / 10.0;			/*mm*/
+            if(Phascan_Version == 1)
+            {
+                _group.fScanOffset	  = _pGroupInfo->scan_offset  / 10.0 ;		/*mm*/
+                _group.fIndexOffset   = _pGroupInfo->index_offset  / 10.0;			/*mm*/
+            }
+            else
+            {
+                _group.fScanOffset	  = _pGroupInfo->scan_offset  / 1000.0 ;		/*mm*/
+                _group.fIndexOffset   = _pGroupInfo->index_offset  / 1000.0;			/*mm*/
+            }
         }
         else
         {
-            _group.fScanOffset	  = _pGroupInfo->scan_offset  / 1000.0 ;		/*mm*/
-            _group.fIndexOffset   = _pGroupInfo->index_offset  / 1000.0;			/*mm*/
+            _group.fScanOffset = 0;
+            _group.fIndexOffset = 0;
         }
-        _group.eSkew		   = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos;
 
-        qDebug()<<"fScanOffset"<<_group.fScanOffset<<"Phascan_Version"<<Phascan_Version<<"srcDataOffset"<<_pGroupInfo->scan_offset;
+        _group.eSkew		   = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos;
 
 		QList<MATERIAL*>* _list = m_pConfig->m_listMaterial ;
 
@@ -1663,8 +1674,8 @@ float DopplerConfigure::DefectLengthPos(int iGroupId_, float* pStart_, int index
 float DopplerConfigure::DefectVPAPos(int iGroupId_, float* pStart_, int index_)
 {
     DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
-    GROUP_CONFIG& _group  = group[iGroupId_] ;
-    float       _fScanOff = _group.fScanOffset;
+    //GROUP_CONFIG& _group  = group[iGroupId_] ;
+    //float       _fScanOff = _group.fScanOffset;
 
 
     float _fLength = -1;
