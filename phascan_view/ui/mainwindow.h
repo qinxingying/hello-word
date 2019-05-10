@@ -20,6 +20,7 @@ class QTabWidget;
 class QLabel;
 class DopplerViewFrame;
 class InstrumentSettingWidget;
+class RemoteMonitoring;
 
 struct STATUS_BAR_INFO
 {
@@ -112,6 +113,7 @@ private:
     QString m_fileName;
 
     QList<DopplerGroupTab*> m_pGroupList;
+    RemoteMonitoring *m_remoteMonitoring;
 
     void init_ui();
 

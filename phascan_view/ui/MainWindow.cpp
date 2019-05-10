@@ -28,6 +28,7 @@ Date     : 2016-12-06
 #include <QFileDialog>
 #include <QPixmap>
 #include "dialog/DialogAbouVersion.h"
+#include "remote_monitoring/RemoteMonitoring.h"
 #include "version.h"
 
 int lastgroup = 0;
@@ -74,6 +75,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionEnglish, SIGNAL(triggered()), this, SLOT(slot_actionEnglish_triggered()));
     connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(slot_actionChinese_triggered()));
     connect(sliderh,SIGNAL(valueChanged(int)),this,SLOT(slotSliderhChanged(int)));
+
+    m_remoteMonitoring = new RemoteMonitoring(this);
+    connect(ui->actionConnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(connect_remote_monitor()));
+    connect(ui->actionDisconnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(disconnect_remote_monitor()));
 }
 
 MainWindow::~MainWindow()

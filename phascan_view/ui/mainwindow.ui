@@ -187,7 +187,7 @@
      <x>0</x>
      <y>0</y>
      <width>754</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="autoFillBackground">
@@ -225,9 +225,17 @@
     <addaction name="actionReport_PreView"/>
     <addaction name="actionSaveReport"/>
    </widget>
+   <widget class="QMenu" name="menuConnect">
+    <property name="title">
+     <string>Remote Monitor</string>
+    </property>
+    <addaction name="actionConnect"/>
+    <addaction name="actionDisconnect"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuLanguage"/>
    <addaction name="menuReport"/>
+   <addaction name="menuConnect"/>
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
@@ -620,6 +628,16 @@
    </property>
    <property name="toolTip">
     <string>ScreenShot</string>
+   </property>
+  </action>
+  <action name="actionConnect">
+   <property name="text">
+    <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="text">
+    <string>Disconnect</string>
    </property>
   </action>
  </widget>

@@ -5,7 +5,7 @@
 #define VER_MAJOR (v1)
 #define VER_MINOR (1)
 #define VER_MICRO (7-beata3)
-#define GIT_COMMIT "108999e"
+#define GIT_COMMIT "0532bc9"
 
 #endif
 
