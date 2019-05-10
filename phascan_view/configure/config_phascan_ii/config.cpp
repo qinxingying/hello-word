@@ -781,6 +781,7 @@ void Config::unpack_curves(const QVariantMap &map)
     curves.m_pointQty   = map.value("PointQty").toUInt();
     curves.m_refAmp     = map.value("RefAmp").toDouble();
     QVariantList offsets = map.value("Offsets").toList();
+    //QVariantList offsets = map.value("Gains").toList();
     for(int i = 0; i < offsets.count(); ++i) {
         curves.m_offsets.append(offsets.at(i).toDouble());
         qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]"
@@ -830,7 +831,8 @@ void Config::unpack_curves(const QVariantMap &map)
         QVariantMap beamsMap;
         for(int i = 0; i < beamsList.count(); ++i) {
             beamsMap = beamsList.at(i).toMap();
-            QVariantList gainList = beamsMap.value("Offsets").toList();
+            //QVariantList gainList = beamsMap.value("Offsets").toList();
+            QVariantList gainList = beamsMap.value("Gains").toList();
             QVariantList positionList = beamsMap.value("Positions").toList();
 
             if(gainList.size() != positionList.size()) {

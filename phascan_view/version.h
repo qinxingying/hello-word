@@ -1,11 +1,11 @@
 #ifndef __VERSION_H__
 #define __VERSION_H__
 
-#define VERSION "0.0.0"
-#define VER_MAJOR (0)
-#define VER_MINOR (0)
-#define VER_MICRO (0)
-#define GIT_COMMIT "42725b1"
+#define VERSION "v1.1.7-beata3"
+#define VER_MAJOR (v1)
+#define VER_MINOR (1)
+#define VER_MICRO (7-beata3)
+#define GIT_COMMIT "108999e"
 
 #endif
 

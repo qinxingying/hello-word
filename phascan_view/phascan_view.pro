@@ -28,7 +28,9 @@ include(dxflib/dxflib.pri)
 
 SOURCES += main.cpp
 
-HEADERS += stable.h
+HEADERS += stable.h\
+    version.h
+
 
 QMAKE_CXXFLAGS += /MP
 PRECOMPILED_HEADER = stable.h
@@ -48,14 +50,9 @@ DISTFILES += \
 
 versionBuild.target=version
 win32 {
-versionBuild.commands=$$PWD/update_version.sh $$PWD/
+versionBuild.commands = $$PWD/update_version.sh $$PWD/
 } else {
-versionBuild.commands=$$PWD/update_version.sh $$PWD/
-}
-
-win32 {
-    versionBuild.commands ~= s,/,\\\\,g
-
+versionBuild.commands = $$PWD/update_version.sh $$PWD/
 }
 
 QMAKE_EXTRA_TARGETS += versionBuild

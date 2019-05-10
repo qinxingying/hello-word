@@ -28,6 +28,7 @@ Date     : 2016-12-06
 #include <QFileDialog>
 #include <QPixmap>
 #include "dialog/DialogAbouVersion.h"
+#include "version.h"
 
 int lastgroup = 0;
 int currentgroup = 0;
@@ -125,7 +126,8 @@ void MainWindow::init_ui()
     SetDispTabText();
 
     m_fileName  = "";
-    m_titleName = tr("Doppler V1.1.7-beta2 : ");
+    m_titleName = tr(VERSION);
+    m_titleName.append(" : ");
     this->setWindowTitle(m_titleName + m_fileName);
 }
 
