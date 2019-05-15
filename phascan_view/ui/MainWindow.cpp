@@ -70,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->TabWidget_display, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotRightTabRightButtonDoubleClicked(int)));
     connect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentGroupChanged(int)));
     connect(ui->TabWidget_display, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentDispChanged(int)));
-    //connect(ui->TabWidget_display,SIGNAL(currentChanged(int)),ui->
 
     connect(ui->actionEnglish, SIGNAL(triggered()), this, SLOT(slot_actionEnglish_triggered()));
     connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(slot_actionChinese_triggered()));
@@ -777,7 +776,6 @@ void MainWindow::UpdateTableDisplay()
     ui->TabWidget_display->setEnabled(true);
     ui->toolBar->setEnabled(true);
     SetDispTabText();
-    //SetDispTabText();
 }
 
 void MainWindow::InsertRightTab()
@@ -855,6 +853,8 @@ void MainWindow::OpenFilePro(QString strFileName_)
     currentgroup = 0;
     m_fileName = strFileName_;
     this->setWindowTitle(m_titleName + m_fileName);
+
+    //char *pBuf = new char[200];
 }
 
 void MainWindow::SaveFile()

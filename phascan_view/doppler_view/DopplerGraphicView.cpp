@@ -187,6 +187,10 @@ void DopplerGraphicView::InitGraphicView(const QSize& cSize_)
 
 void DopplerGraphicView::slotResetView()
 {
+    //qDebug()<<"m_bZoom"<<m_bZoom;
+    if( m_bZoom == false){
+        return;
+    }
     m_bZoom  = false;
     SetupMatrixScale(1.0, 1.0 );
     ensureVisible(QRectF(0, 0, 0, 0));
@@ -422,8 +426,8 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                 m_cPosStop = event->pos() ;
                 QRectF _rect = this->geometry();
 
-                qDebug("%s[%d]: m_nScaleH:%.2f, m_nScaleV:%.2f, m_cPosStop.x:%d, m_cPosStop.y:%d, m_cPosStart.x:%d, m_cPosStart.y:%d", __FUNCTION__, __LINE__,
-                       m_nScaleH, m_nScaleV, m_cPosStop.x(), m_cPosStop.y(), m_cPosStart.x(),m_cPosStart.y());
+//                qDebug("%s[%d]: m_nScaleH:%.2f, m_nScaleV:%.2f, m_cPosStop.x:%d, m_cPosStop.y:%d, m_cPosStart.x:%d, m_cPosStart.y:%d", __FUNCTION__, __LINE__,
+//                       m_nScaleH, m_nScaleV, m_cPosStop.x(), m_cPosStop.y(), m_cPosStart.x(),m_cPosStart.y());
 
                 if(_rect.contains(m_cPosStop) )
                 {

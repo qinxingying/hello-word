@@ -11,3 +11,5 @@
 *.dxf
 *.data
 build-*
+
+/phascan_view/version.h

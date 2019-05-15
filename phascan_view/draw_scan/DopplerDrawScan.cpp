@@ -109,5 +109,9 @@ void DopplerDrawScan::UpdateDisplayRange(int nType_, int nRangle_, int nPos_)
             m_PosStop  = nRangle_ - 1  ;
         }
     }
+    else
+    {
+        m_PosStop = m_PosStart + nRangle_ - 1 ;
+    }
     emit signalScanRangeMove(nType_, m_PosStart, m_PosStop) ;
 }
