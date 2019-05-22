@@ -428,11 +428,12 @@ int  ParameterProcess::SetupAScanColor(int nGroupId_ , int nLineId_ , int eColor
 //######################################################################
 int  ParameterProcess::SetupScanPos(float fScanPos_)
 {
+
 	SCANNER& _scaner = m_pConfig->common.scanner ;
 	float _fPos = fScanPos_;
 
-    if(_fPos < _scaner.fScanStart)
-        _fPos = _scaner.fScanStart;
+    if(_fPos < _scaner.fScanStart2)
+        _fPos = _scaner.fScanStart2;
 
 //    if(_fPos > _scaner.fScanStop)
 //        _fPos = _scaner.fScanStop;
@@ -440,10 +441,10 @@ int  ParameterProcess::SetupScanPos(float fScanPos_)
         _fPos = _scaner.fScanend;
 
 	_scaner.fScanPos = _fPos;
-    if((_scaner.fScanPos < _scaner.fScanStart2)&&(_scaner.fScanPos >= _scaner.fScanStart))
-        _scaner.fScanStart2 = _scaner.fScanPos;
-    if((_scaner.fScanPos > _scaner.fScanend) && (_scaner.fScanPos <= _scaner.fScanStop))
-        _scaner.fScanend = _scaner.fScanPos;
+//    if((_scaner.fScanPos < _scaner.fScanStart2)&&(_scaner.fScanPos >= _scaner.fScanStart))
+//        _scaner.fScanStart2 = _scaner.fScanPos;
+//    if((_scaner.fScanPos > _scaner.fScanend) && (_scaner.fScanPos <= _scaner.fScanStop))
+//        _scaner.fScanend = _scaner.fScanPos;
     g_pMainWnd->UpdateSlider();
 	return 0;
 	//return -1;
@@ -743,6 +744,7 @@ int  ParameterProcess::GetScanIndexStart2() const
     return _nScanStart2 ;
 }
 
+//fDist_ 编码器时单位为mm,时间编码时为s
 int ParameterProcess::SAxisDistToIndex(float fDist_) const
 {
 	SCANNER& _scaner = m_pConfig->common.scanner ;
@@ -752,21 +754,25 @@ int ParameterProcess::SAxisDistToIndex(float fDist_) const
         {
             fDist_ = _scaner.fScanStart;
         }
-        if(fDist_ > _scaner.fScanend)
+        if(fDist_ > _scaner.fScanStop)
         {
-            fDist_ = _scaner.fScanend;
+            fDist_ = _scaner.fScanStop;
         }
         _index = (fDist_ - _scaner.fScanStart) / _scaner.fScanStep ;
 	} else {
-        if(fDist_ * _scaner.fPrf < _scaner.fScanStart)
+        if( fDist_ < _scaner.fScanStart2)
         {
-            fDist_ = _scaner.fScanStart/_scaner.fPrf;
+            fDist_ = _scaner.fScanStart2;
+        }
+        if( fDist_ > _scaner.fScanend){
+            fDist_ = _scaner.fScanend;
         }
         _index =  (fDist_ * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep;
 	}
 	return _index;
 }
 
+//fStop 编码器时单位为mm,时间编码时为s
 int ParameterProcess::SAxisstoptoIndex(float fStop) const
 {
     SCANNER& _scaner = m_pConfig->common.scanner ;
@@ -786,7 +792,7 @@ float ParameterProcess::SAxisIndexToDist(int index_) const
 	if(_scaner.eEncoderType) {
 		_fPos = index_ * _scaner.fScanStep + _scaner.fScanStart;
 	} else {
-		_fPos = (index_ * _scaner.fScanStep + _scaner.fScanStart) / _scaner.fPrf;
+        _fPos = (index_ * _scaner.fScanStep + _scaner.fScanStart) / _scaner.fPrf;
 	}
     if(_fPos > _scaner.fScanend){
         _fPos = _scaner.fScanend;
@@ -1532,7 +1538,7 @@ float ParameterProcess::GetScanStop() const
 
 float ParameterProcess::GetScanStart2() const
 {
-    return m_pConfig->common.scanner.fScanStart;
+    return m_pConfig->common.scanner.fScanStart2;
 }
 
 float ParameterProcess::GetScanend() const
@@ -1601,6 +1607,19 @@ float ParameterProcess::GetScanSpeed()
 	return _ret ;
 }
 
+double ParameterProcess::GetRealScanRange()
+{
+    SCANNER _scan = m_pConfig->comTmp.scanner;
+    double scanRange;
+    if(_scan.eEncoderType){
+        scanRange = _scan.fScanStop - _scan.fScanStart;
+    }
+    else{
+        scanRange = ( _scan.fScanStop - _scan.fScanStart)/_scan.fPrf;
+    }
+    return scanRange;
+}
+
 void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , double* fStart_ , double* fStop_, double* fSliderStart_ , double* fSliderStop_)
 {
     Q_UNUSED(nGroupId_);
@@ -1615,7 +1634,7 @@ void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , doubl
 	if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
 	{
         _fRange = (nDist_ ) / _scan.fPrf  ;
-        float scanRange = ( _scan.fScanend - _scan.fScanStart);
+        float scanRange = ( _scan.fScanend - _scan.fScanStart2);
         if( _fRange > scanRange){
             _fRange = scanRange;
         }
@@ -2527,7 +2546,7 @@ QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
                 cbuff = 255;
             }
 
-            CScanInfo.data[i] = (WDATA)buff;
+            CScanInfo.data[i] = (WDATA)cbuff;
         }
         else
         {

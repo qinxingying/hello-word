@@ -724,7 +724,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
             case setup_DISPLAY_MODE_CC_H:
                 m_pDrawScan->zoomflag = 2;
                 _process->GetCScanIndexAxisRange(_iGroupId ,  &_fScanStart , &_fScanStop) ;
-                _pParent->SetRulerRange( _fScanStart , _fScanStop ,  _fScanStart , _fScanStop , DopplerDataView::DATA_VIEW_RULER_LEFT);
+                _pParent->SetRulerRange( _fScanStart , _fScanStop ,  _fScanStart , _fScanStop , DopplerDataView::DATA_VIEW_RULER_LEFT);                
                 break;
             case setup_DISPLAY_MODE_C_V:
             case setup_DISPLAY_MODE_CC_V:
@@ -742,7 +742,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                 break;
             default:
                 break;
-        }
+            }
         }
 		UpdateDrawing();
 

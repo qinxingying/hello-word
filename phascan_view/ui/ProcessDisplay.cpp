@@ -698,10 +698,10 @@ int ProcessDisplay::CreateViews_S_AV_BH(QWidget* pWidget_)
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
 
-    GYSplitter* split[3] = {NULL};
+    GYSplitter* split[2] = {NULL};
     DopplerDataView* _pView[3];
 
-    for(int i = 0 ; i < 3 ; ++i)
+    for(int i = 0 ; i < 2 ; ++i)
     {
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -773,10 +773,10 @@ int ProcessDisplay::CreateViews_S_AH_BV(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-    GYSplitter* split[3];
+    GYSplitter* split[2];
     DopplerDataView* _pView[3];
 
-	for(int i = 0 ; i< 3 ; i++)
+    for(int i = 0 ; i< 2 ; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -847,10 +847,10 @@ int ProcessDisplay::CreateViews_S_AV_BH_CH(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-    GYSplitter* split[3];
+    GYSplitter* split[2];
     DopplerDataView* _pView[4];
 
-	for(int i = 0 ; i< 3 ; i++)
+    for(int i = 0 ; i< 2 ; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1011,9 +1011,9 @@ int ProcessDisplay::CreateViews_S_AH_BH_CV(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-    GYSplitter* split[3];
+    GYSplitter* split[2];
     DopplerDataView* _pView[4];
-	for(int i = 0 ; i< 3 ; i++)
+    for(int i = 0 ; i< 2 ; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1089,9 +1089,9 @@ int ProcessDisplay::CreateViews_S_AV_CH(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-    GYSplitter* split[3];
+    GYSplitter* split[2];
     DopplerDataView* _pView[3];
-	for(int i = 0 ; i< 3 ; i++)
+    for(int i = 0 ; i< 2 ; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1161,10 +1161,10 @@ int ProcessDisplay::CreateViews_S_AH_CV(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-    GYSplitter* split[3];
+    GYSplitter* split[2];
     DopplerDataView* _pView[3];
 
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < 2; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1234,10 +1234,10 @@ int ProcessDisplay::CreateViews_S_AV_CH_CH(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-    GYSplitter* split[3];
+    GYSplitter* split[2];
     DopplerDataView* _pView[4];
 
-    for(int i = 0 ; i< 3; i++)
+    for(int i = 0 ; i< 2; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1314,10 +1314,10 @@ int ProcessDisplay::CreateViews_S_AH_CV_CV(QWidget* pWidget_)
 {
 	QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
 	_layout->setMargin(0);
-    GYSplitter* split[3];
+    GYSplitter* split[2];
     DopplerDataView* _pView[4];
 
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < 2; i++)
 	{
 		split[i] = new GYSplitter(0);
 		split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1393,10 +1393,10 @@ int ProcessDisplay::CreateViews_S_AV_CH_BH(QWidget* pWidget_)
 {
     QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
     _layout->setMargin(0);
-    GYSplitter* split[3];
+    GYSplitter* split[2];
     DopplerDataView* _pView[4];
 
-    for(int i = 0 ; i< 3; i++)
+    for(int i = 0 ; i< 2; i++)
     {
         split[i] = new GYSplitter(0);
         split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1473,9 +1473,9 @@ int ProcessDisplay::CreateViews_S_AV_CH_N(QWidget* pWidget_)
 {
     QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
     _layout->setMargin(0);
-    GYSplitter* split[3];
+    GYSplitter* split[2];
     DopplerDataView* _pView[3];
-    for(int i = 0 ; i< 3 ; i++)
+    for(int i = 0 ; i< 2 ; i++)
     {
         split[i] = new GYSplitter(0);
         split[i]->setHandleWidth(g_nSpliterWidth);
@@ -1952,7 +1952,7 @@ void ProcessDisplay::UpdateDataViewFrameCH(DopplerDataView* pWidget_ , int nGrou
     }
     pWidget_->SetRulerRange( _fScanStart , _fScanStop ,  _fSliderStart, _fSliderStop,DopplerDataView::DATA_VIEW_RULER_BOTTOM);
 	pWidget_->SetRulerUnit(&_strBottomUnit , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
-    pWidget_->SetCoupleCScanRange( _fScanStart, _fScanStop);
+    pWidget_->SetCopleCScanDisplayRange( _fScanStart, _fScanStop);
 
 	if(_eSource == setup_CSCAN_AMP_A || _eSource == setup_CSCAN_AMP_B )
 	{
@@ -2007,7 +2007,7 @@ void ProcessDisplay::UpdateDataViewFrameCV(DopplerDataView* pWidget_ , int nGrou
     }
 	pWidget_->SetRulerRange(_fScanStop , _fScanStart ,  _fSliderStart, _fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
-    pWidget_->SetCoupleCScanRange( _fScanStart, _fScanStop);
+    pWidget_->SetCopleCScanDisplayRange( _fScanStart, _fScanStop);
 
 	QString _strBottomUnit = _process->GetCscanIndexUnit(nGroupId_) ;
 	_process->GetCScanIndexAxisRange(nGroupId_ , &_fScanStart, &_fScanStop) ;

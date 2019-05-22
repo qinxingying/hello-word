@@ -5,7 +5,8 @@
 #include <QtGlobal>
 #include <QList>
 extern int lastgroup,currentgroup;
-DataRefreshThread* DataRefreshThread::m_pThread =  new DataRefreshThread ;
+//DataRefreshThread* DataRefreshThread::m_pThread =  new DataRefreshThread ;
+DataRefreshThread* DataRefreshThread::m_pThread =  NULL;
 
 DataRefreshThread* DataRefreshThread::Instance()
 {

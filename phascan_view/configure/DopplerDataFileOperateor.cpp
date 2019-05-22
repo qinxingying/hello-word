@@ -18,6 +18,7 @@ DopplerDataFileOperateor::~DopplerDataFileOperateor()
         m_file->close ();
         DopplerConfigure::Instance()->SaveEvn();
     }
+    delete m_file;
     m_file = NULL ;
     m_pBeamData  = NULL ;
 }

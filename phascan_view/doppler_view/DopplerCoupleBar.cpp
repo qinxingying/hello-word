@@ -115,8 +115,9 @@ DopplerCoupleCScanBar::DopplerCoupleCScanBar( BarOrientation direction, QWidget 
     nGroupId = 0;
     start = 0;
     end = 0;
-    startRange = 0;
-    endRange = 0;
+
+    ParameterProcess* _process = ParameterProcess::Instance();
+    scanRange = _process->GetRealScanRange();
 
     setAutoFillBackground(true);
     QPalette pal = this->palette();
@@ -143,10 +144,10 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
     QVector<WDATA> buff = _process->GetCoupleCScanData(nGroupId);
     if(!color)
     {
-       //qDebug()<<"color return";
        return;
     }
-    if(( start == 0 && end == 0) || ( startRange == 0 && endRange == 0)) return;
+
+    if(start == 0 && end == 0) return;
 
     if(buff.size() == 0)
     {
@@ -155,70 +156,48 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
 
     DopplerConfigure* pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = pConfig->group[nGroupId];
-    float groupOffset = _group.fScanOffset;
-    float globalOffset = pConfig->common.scanner.fScanStart;
-    float scanOffset = groupOffset - globalOffset;
-    if( scanOffset == 0 && groupOffset < 0)
-    {
-        scanOffset = groupOffset;
+
+    double scanStart;
+    if(pConfig->common.scanner.eEncoderType){
+        scanStart = _group.fScanOffset;
     }
-    //qDebug()<<"groupoffset"<<groupOffset<<"globaloffset"<<globalOffset;
+    else{
+        scanStart = _group.fScanOffset/pConfig->common.scanner.fPrf;
+    }
+    double scanEnd = scanStart + scanRange;
 
-
-    if( start < startRange) start = startRange;
-    if( end > endRange) end = endRange;
     int _nWidth = width() - 1;
     int _nHeight = height() - 1;
     int buffsize = buff.size() - 1;
     QPainter _painter( this);
     float step;
     int _nColor;
-    if( scanOffset == 0)
-    {
-        int startPos;
-        startPos = (start - startRange)/(endRange - startRange) * buffsize;
-        if(m_dirction)
-        {
-
-            step = (float)buffsize / _nHeight *(end - start) / (endRange - startRange);
-            for( int i = 0; i <= _nHeight; i++)
-            {
-                _nColor = buff[(int)(i*step + startPos + 0.5)];
-                _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
-                _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
-            }
-
-        }
-        else
-        {
-            step = (float)buffsize / _nWidth  *(end - start) / (endRange - startRange);
-            for( int i = 0; i <= _nWidth; i++)
-            {
-                _nColor = buff[(int)(i*step + startPos + 0.5)];
-                _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
-                _painter.drawLine(QPointF(i, 1) , QPointF( i, _nHeight));
-            }
-        }
-    }
-    else if( scanOffset > 0)
-    {
-        if(m_dirction)
-        {
-            if( start - startRange <= scanOffset && end - startRange <= scanOffset)//全白
-            {
+    if( start < scanStart){
+        //全白
+        if(end <= scanStart){
+            if(m_dirction){
                 _painter.setPen(QPen(QColor(255,255,255)));
                 for( int i = 0; i <= _nHeight; i++)
-                {                    
+                {
                     _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
                 }
             }
-            else if( start - startRange <= scanOffset)//前部白色
-            {
-                int startIndex = (scanOffset + startRange - start)/( end - start)*_nHeight;
-                step = (float)buffsize / (_nHeight - startIndex) *(end - startRange - scanOffset) / (endRange - startRange - scanOffset);
+            else{
+                _painter.setPen(QPen(QColor(255,255,255)));
+                for( int i = 0; i <= _nWidth; i++)
+                {
+                    _painter.drawLine(QPointF(i, 1) , QPointF( i, _nHeight));
+                }
+            }
+
+        }//前面部分白色
+        else if( end <= scanEnd){
+            if(m_dirction){
+                int startIndex = ( scanStart - start)/( end - start)*_nHeight;
+                step = (float)buffsize / (_nHeight - startIndex) *(end - scanStart) / scanRange;
                 _painter.setPen(QPen(QColor(255,255,255)));
                 for( int i = 0; i < startIndex; i++)
-                {                   
+                {
                     _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
                 }
                 for(int i = startIndex; i <= _nHeight; i++)
@@ -227,34 +206,10 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
                     _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
                     _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
                 }
-
             }
-            else//没有白色
-            {
-                int startIndex = (start - startRange - scanOffset)/(endRange - startRange - scanOffset) * buffsize;
-                step = (float)buffsize / _nHeight *(end - start) / (endRange - startRange - scanOffset);
-                for(int i = 0; i <= _nHeight; i++)
-                {
-                    _nColor = buff[(int)(i*step + startIndex + 0.5)];
-                    _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
-                    _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
-                }
-            }
-        }
-        else
-        {
-            if( start - startRange <= scanOffset && end - startRange <= scanOffset)//全白
-            {
-                _painter.setPen(QPen(QColor(255,255,255)));
-                for( int i = 0; i <= _nWidth; i++)
-                {
-                    _painter.drawLine(QPointF(i, 1) , QPointF( i, _nHeight));
-                }
-            }
-            else if( start - startRange <= scanOffset)//前部白色
-            {
-                int startIndex = (scanOffset + startRange - start)/( end - start)*_nWidth;
-                step = (float)buffsize / (_nWidth - startIndex) *(end - startRange - scanOffset) / (endRange - startRange - scanOffset);
+            else{
+                int startIndex = ( scanStart - start)/( end - start)*_nWidth;
+                step = (float)buffsize / (_nWidth - startIndex) *(end - scanStart) / scanRange;
                 _painter.setPen(QPen(QColor(255,255,255)));
                 for( int i = 0; i < startIndex; i++)
                 {
@@ -266,40 +221,83 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
                     _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
                     _painter.drawLine(QPointF( i, 1) , QPointF( i, _nHeight));
                 }
-
             }
-            else//没有白色
-            {
-                int startIndex = (start - startRange - scanOffset)/(endRange - startRange - scanOffset) * buffsize;
-                step = (float)buffsize / _nWidth *(end - start) / (endRange - startRange - scanOffset);
+
+        }//前后都有白色
+        else{
+            if(m_dirction){
+                int startIndex = ( scanStart - start)/( end - start)*_nHeight;
+                int endIndex = ( scanEnd - start)/( end - start)*_nHeight;
+                step = (float)buffsize / ( endIndex - startIndex);
+                _painter.setPen(QPen(QColor(255,255,255)));
+                for( int i = 0; i < startIndex; i++)
+                {
+                    _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
+                }
+                for(int i = startIndex; i < endIndex; i++)
+                {
+                    _nColor = buff[(int)((i - startIndex)*step + 0.5)];
+                    _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
+                    _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
+                }
+                _painter.setPen(QPen(QColor(255,255,255)));
+                for(int i = endIndex; i <= _nHeight; i++)
+                {
+                    _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
+                }
+            }
+            else{
+                int startIndex = ( scanStart - start)/( end - start)*_nWidth;
+                int endIndex = ( scanEnd - start)/( end - start)*_nWidth;
+                step = (float)buffsize / ( endIndex - startIndex);
+                _painter.setPen(QPen(QColor(255,255,255)));
+                for( int i = 0; i < startIndex; i++)
+                {
+                    _painter.drawLine(QPointF( i, 1) , QPointF( i, _nHeight));
+                }
+                for(int i = startIndex; i < endIndex; i++)
+                {
+                    _nColor = buff[(int)((i - startIndex)*step + 0.5)];
+                    _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
+                    _painter.drawLine(QPointF( i, 1) , QPointF( i, _nHeight));
+                }
+                _painter.setPen(QPen(QColor(255,255,255)));
+                for(int i = endIndex; i <= _nWidth; i++)
+                {
+                    _painter.drawLine(QPointF( i, 1) , QPointF( i, _nHeight));
+                }
+            }
+        }
+    }
+    else if( start < scanEnd){
+        //没有白色
+        if( end < scanEnd){
+            if(m_dirction){
+                int startIndex = (start - scanStart)/scanRange * buffsize;
+                step = (float)buffsize / _nHeight *(end - start) / scanRange;
+                for(int i = 0; i <= _nHeight; i++)
+                {
+                    _nColor = buff[(int)(i*step + startIndex + 0.5)];
+                    _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
+                    _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
+                }
+            }
+            else{
+                int startIndex = (start - scanStart)/scanRange * buffsize;
+                step = (float)buffsize / _nWidth *(end - start) / scanRange;
                 for(int i = 0; i <= _nWidth; i++)
                 {
                     _nColor = buff[(int)(i*step + startIndex + 0.5)];
                     _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
                     _painter.drawLine(QPointF(i, 1) , QPointF(  i, _nHeight));
                 }
-
             }
-        }
-
-    }
-    else
-    {
-        if(m_dirction)
-        {
-            if( start >= endRange + scanOffset) //全白
-            {
-                _painter.setPen(QPen(QColor(255,255,255)));
-                for( int i = 0; i <= _nHeight; i++)
-                {
-                    _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
-                }
-            }
-            else if( end >= endRange + scanOffset)//后部白色
-            {
-                int startIndex = (start - startRange - scanOffset)/( endRange - startRange)*buffsize;
-                int endIndex = ( endRange + scanOffset - start)/(end - start)*_nHeight;
-                step = (float)buffsize / _nHeight *(end - start) / (endRange - startRange);
+        }//后面白色
+        else{
+            if(m_dirction){
+                int startIndex = (start - scanStart)/scanRange*buffsize;
+                int endIndex = ( scanEnd - start)/(end - start)*_nHeight;
+                step = (float)buffsize / _nHeight *(end - start) / scanRange;
                 for( int i = 0; i < endIndex; i++)
                 {
                     _nColor = buff[(int)(i*step + startIndex + 0.5)];
@@ -312,34 +310,10 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
                     _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
                 }
             }
-            else//没有白色
-            {
-                int startIndex = (start - startRange - scanOffset)/( endRange - startRange)*buffsize;
-                step = (float)buffsize / _nHeight *(end - start) / (endRange - startRange);
-                for( int i = 0; i <= _nHeight; i++)
-                {
-                    _nColor = buff[(int)(i*step + startIndex + 0.5)];
-                    _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
-                    _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
-                }
-            }
-        }
-        else
-        {
-            if( start >= endRange + scanOffset) //全白
-            {
-                _painter.setPen(QPen(QColor(255,255,255)));
-                for( int i = 0; i <= _nWidth; i++)
-                {
-                    _painter.drawLine(QPointF(i, 1) , QPointF( i, _nHeight));
-                }
-            }
-            else if( end >= endRange + scanOffset)//后部白色
-            {
-                //qDebug()<<"start"<<start<<"end"<<end<<"sacnoffset"<<scanOffset<<"startrange"<<startRange<<"endrange"<<endRange;
-                int startIndex = (start - startRange - scanOffset)/( endRange - startRange)*buffsize;
-                int endIndex = ( endRange + scanOffset - start)/(end - start)*_nWidth;
-                step = (float)buffsize / _nWidth *(end - start) / (endRange - startRange);
+            else{
+                int startIndex = (start - scanStart)/scanRange*buffsize;
+                int endIndex = ( scanEnd - start)/(end - start)*_nWidth;
+                step = (float)buffsize / _nWidth *(end - start) / scanRange;
                 for( int i = 0; i < endIndex; i++)
                 {
                     int buffIndex = (int)(i*step + startIndex + 0.5);
@@ -357,16 +331,21 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
                     _painter.drawLine(QPointF(i, 1) , QPointF( i, _nHeight));
                 }
             }
-            else//没有白色
+        }
+    }//全白
+    else{
+        if(m_dirction){
+            _painter.setPen(QPen(QColor(255,255,255)));
+            for( int i = 0; i <= _nHeight; i++)
             {
-                int startIndex = (start - startRange - scanOffset)/( endRange - startRange)*buffsize;
-                step = (float)buffsize / _nWidth *(end - start) / (endRange - startRange);
-                for( int i = 0; i <= _nWidth; i++)
-                {
-                    _nColor = buff[(int)(i*step + startIndex + 0.5)];
-                    _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));
-                    _painter.drawLine(QPointF(i, 1) , QPointF( i, _nHeight));
-                }
+                _painter.drawLine(QPointF(0, _nHeight-i) , QPointF( _nWidth-1, _nHeight-i));
+            }
+        }
+        else{
+            _painter.setPen(QPen(QColor(255,255,255)));
+            for( int i = 0; i <= _nWidth; i++)
+            {
+                _painter.drawLine(QPointF(i, 1) , QPointF( i, _nHeight));
             }
         }
     }

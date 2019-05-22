@@ -1004,12 +1004,15 @@ void Config::convert_to_phascan_config(int groupId)
              << " ut_unit " << targetGroup.ut_unit;
 
     /* Sample */
+    //二代数据在补偿增益开启的情况下 m_refGain 为基础增益对应离线分析的增益栏，m_gain 对应离线分析的补偿增益栏；
+    //在补偿增益关闭的情况离线分析软件的增益栏为m_gain,补偿增益为0
     targetGroup.gain          = currentGroup.m_sample.m_gain * 100.0;
     targetGroup.start         = currentGroup.m_sample.m_start;
     targetGroup.range         = currentGroup.m_sample.m_range;
     targetGroup.on_off_status = set_bit_value(targetGroup.on_off_status, 0, currentGroup.m_sample.m_refGainStatus);
     if(get_bit_value(targetGroup.on_off_status, 0)) {
-        targetGroup.gainr = currentGroup.m_sample.m_refGain;
+        targetGroup.gainr = currentGroup.m_sample.m_refGain * 100.0;
+        targetGroup.gain = (currentGroup.m_sample.m_refGain + currentGroup.m_sample.m_gain)*100;
     }
     targetGroup.point_qty     = currentGroup.m_sample.m_pointQty;
 

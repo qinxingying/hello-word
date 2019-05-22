@@ -414,7 +414,8 @@ int DopplerConfigure::RectifyScanLength()
     if(common.scanner.eEncoderType)
         common.scanner.fScanend     =   common.scanner.fScanStop;
     else
-        common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf + common.scanner.fScanStart;
+        //common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf + common.scanner.fScanStart;
+        common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf;
 
 	return _iMax+1;
 }
@@ -456,7 +457,7 @@ void DopplerConfigure::ResetShadowData()
 	float _fScanOff[setup_MAX_GROUP_QTY];
     {
 		float _fMinOff = 200000;
-		float _fMaxOff = 0;
+        float _fMaxOff = -200000;
 		for(int i = 0; i < _nQty; i++) {
 			_fScanOff[i] = group[i].fScanOffset;
 			if(_fScanOff[i] < _fMinOff) {
@@ -467,13 +468,16 @@ void DopplerConfigure::ResetShadowData()
 				_fMaxOff = _fScanOff[i];
 			}
 		}
-		common.scanner.fScanStart = comTmp.scanner.fScanStart + _fMinOff;	/**/
-        common.scanner.fScanStart2 = common.scanner.fScanStart;
+		common.scanner.fScanStart = comTmp.scanner.fScanStart + _fMinOff;	/**/        
         common.scanner.fScanStop  = comTmp.scanner.fScanStop  + _fMaxOff;	/**/
-        if(common.scanner.eEncoderType)
+        if(common.scanner.eEncoderType){
+            common.scanner.fScanStart2  = common.scanner.fScanStart;
             common.scanner.fScanend     =   common.scanner.fScanStop;
-        else
-            common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf + common.scanner.fScanStart;
+        }
+        else{
+            common.scanner.fScanStart2  = common.scanner.fScanStart/common.scanner.fPrf;
+            common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf;
+        }
     }
 
 //    int _nChanOffTmp[setup_MAX_GROUP_QTY];
@@ -894,13 +898,16 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.fSampleRange   = _process->DistNsToMm(i , _pGroupInfo->range) ;		/* 扫描延时 单位 mm		*/
 		_group.nPointQty	  = _pGroupInfo->point_qty ;		/* 点个数 */
         _group.on_off_status  = _pGroupInfo->on_off_status;
-        if(!((_group.on_off_status & (0x01 << 0)) != 0))
+        //on_off_status第一个比特位是0
+        //if(!((_group.on_off_status & (0x01 << 0)) != 0))
+        if((_group.on_off_status & 0x01) == 0)
         {
             _group.fGain		  = _pGroupInfo->gain / 100.0;			/* 增益 0 - 80 db  _STEP 0.01dB */
             _group.fRefGain	      = 0;
             _group.RefGain        = 0;
         }
-        else if((_group.on_off_status & (0x01 << 0)) != 0)
+        //else if((_group.on_off_status & (0x01 << 0)) != 0)
+        else
         {
             _group.fGain		  = _pGroupInfo->gainr / 100.0;			/* 增益 0 - 80 db  _STEP 0.01dB */
             _group.fRefGain	      = 0;
@@ -1145,8 +1152,16 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         }
         else
         {
-            _group.fScanOffset = 0;
-            _group.fIndexOffset = 0;
+            if(Phascan_Version == 1)
+            {
+                _group.fScanOffset	  = 0;
+                _group.fIndexOffset   = _pGroupInfo->index_offset  / 10.0;			/*mm*/
+            }
+            else
+            {
+                _group.fScanOffset	  = 0;
+                _group.fIndexOffset   = _pGroupInfo->index_offset  / 1000.0;			/*mm*/
+            }
         }
 
         _group.eSkew		   = (setup_PROBE_ANGLE)_pGroupInfo->skew_pos;

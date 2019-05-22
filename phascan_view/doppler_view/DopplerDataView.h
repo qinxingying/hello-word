@@ -86,7 +86,6 @@ public:
     void SetColorBarColorIndex (void* index) ;
     void SetCoupleSScanBarColorIndex(void* index);
     void SetCoupleCScanBarColorIndex(void* index);
-    void SetCoupleCScanRange( double nStart_, double nStop_);
     void SetCopleCScanDisplayRange( double nStart_, double nStop_);
     void AddOverlayItems(QGraphicsItem* item_);
     void SetDrawScan(DopplerDrawScan* pDraw_)  ;

@@ -50,10 +50,11 @@ void InstrumentSettingWidget::UpdateScanRange()
 {
 	SCANNER& _scanner = m_pConfig->common.scanner ;
 	ui->ValueScanStart->setValue(_scanner.fScanStart);
-    if(_scanner.eEncoderType)
-        ui->ValueScanEnd->setValue(_scanner.fScanStop);
-    else
-        ui->ValueScanEnd->setValue(_scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart);
+//    if(_scanner.eEncoderType)
+//        ui->ValueScanEnd->setValue(_scanner.fScanStop);
+//    else
+//        ui->ValueScanEnd->setValue(_scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart);
+    ui->ValueScanEnd->setValue(_scanner.fScanend);
 	ui->ValueScanResolution->setValue(_scanner.fScanStep);
 	ui->ValueIndexStart->setValue(_scanner.fIndexStart);
 	ui->ValueIndexStop->setValue(_scanner.fIndexStop);
@@ -98,7 +99,7 @@ void InstrumentSettingWidget::InitCommonConfig()
     _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
 
 
-    ui->SpinBoxCurrentScanPos->setMinimum(_scanner.fScanStart);
+    ui->SpinBoxCurrentScanPos->setMinimum(_scanner.fScanStart2);
 
     ui->SpinBoxCurrentScanend->setMinimum(_scanner.fScanStart2+1);
     if(_scanner.eEncoderType)
@@ -118,9 +119,9 @@ void InstrumentSettingWidget::InitCommonConfig()
         ui->SpinBoxCurrentScanPos->setSingleStep(1/_scanner.fPrf);
         ui->SpinBoxCurrentScanstart->setSingleStep(1/_scanner.fPrf);
         ui->SpinBoxCurrentScanend->setSingleStep(1/_scanner.fPrf);
-        _scanner.fScanend = _scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart;
+        //_scanner.fScanend = _scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart;
     }
-    ui->SpinBoxCurrentScanstart->setMinimum(_scanner.fScanStart);
+    ui->SpinBoxCurrentScanstart->setMinimum(_scanner.fScanStart2);
 
 //    ui->SpinBoxCurrentIndexend->setMinimum(fstart2 + 1);
 //    if(_scanner.fLawQty > 0)
@@ -470,7 +471,7 @@ void InstrumentSettingWidget::on_BtnReset_clicked()
     }
     else
     {
-        ui->SpinBoxCurrentScanstart->setValue(_scanner.fScanStart);
+        ui->SpinBoxCurrentScanstart->setValue(_scanner.fScanStart2);
         ui->SpinBoxCurrentScanend->setValue(_scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart) ;
         _scanner.fScanStart2 = _scanner.fScanStart;
         _scanner.fScanend = _scanner.fScanStop/_scanner.fPrf + _scanner.fScanStart;

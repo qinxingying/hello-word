@@ -66,12 +66,12 @@ void Doppler3DAll::SetGroupId(int nGroupId_)
         //m_pTofd    = m_pConfig->GetTofdConfig(m_nGroupId) ;
         m_pGroup   = &m_pConfig->group[m_nGroupId]  ;
         m_pScanner = &m_pConfig->common.scanner;
-        m_iPosMax  = m_process->SAxisDistToIndex(m_pScanner->fScanStop);
+        m_iPosMax  = m_process->SAxisDistToIndex(m_pScanner->fScanend);
         m_pWeld    = m_process->GetWeld(m_nGroupId);
 
         m_fHeight = m_process->GetPartThickness(m_nGroupId);
         m_fWidth  = m_fHeight * 6.0;
-        m_fLength = m_pScanner->fScanStop - m_pScanner->fScanStart;
+        m_fLength = m_pScanner->fScanend - m_pScanner->fScanStart2;
 
         if(m_fLength < m_fHeight)
             m_fLength = m_fHeight;

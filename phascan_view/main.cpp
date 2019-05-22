@@ -64,7 +64,6 @@ int main(int argc, char *argv[])
 
     QSettings::Format format = QSettings::registerFormat("cfg", &settings_read_msgpack, &settings_write_msgpack);
     QSettings::setDefaultFormat(format);
-    char *pBuf = new char[200];
 
     MainWindow _mainWindow;
     g_pMainWnd  = &_mainWindow;

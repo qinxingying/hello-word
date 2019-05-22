@@ -165,7 +165,8 @@ public:
 
     float GetVelocity(int nGroupId_);
     float GetPrf()  ;
-    float GetScanSpeed()  ;
+    float GetScanSpeed();
+    double GetRealScanRange();
 
 	void  GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , double* fStart_ , double* fStop_, double* fSliderStart_ , double* fSliderStop_);
 	void  GetBScanScanAxisRange(int nGroupId_ ,  int nDist_ , double* fStart_ , double* fStop_, double* fSliderStart_ , double* fSliderStop_);

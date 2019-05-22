@@ -35,7 +35,6 @@ public:
     void setColorIndex( void* color_);
     void setGroupId( int groupId);
     void setDisplayRange( double _start, double _end){start = _start; end = _end;update();}
-    void setCoupleRange( double _start, double _end){ startRange = _start; endRange = _end;update();}
     BarOrientation getOrientation(){return m_dirction;}
 
 private:
@@ -44,8 +43,7 @@ private:
     int       nGroupId;
     double start;
     double end;
-    double startRange;
-    double endRange;
+    double scanRange;
     BarOrientation m_dirction;
 };
 

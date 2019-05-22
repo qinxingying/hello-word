@@ -67,6 +67,7 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 DopplerGroupTab::~DopplerGroupTab()
 {
 	delete ui;
+    delete model;
 }
 
 void DopplerGroupTab::SetGroupId(int nGroupId_)
@@ -818,13 +819,16 @@ void DopplerGroupTab::UpdateGroupConfig()
     SCANNER& _scan = m_pConfig->common.scanner;
     if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
     {
-        ui->ValueScanOffset->setEnabled(false);
+        //ui->ValueScanOffset->setEnabled(false);
+        double buff = m_pGroup->fScanOffset/_scan.fPrf;
+        ui->ValueScanOffset->setValue(buff);
     }
     else
     {
-        ui->ValueScanOffset->setEnabled(true);
+        //ui->ValueScanOffset->setEnabled(true);
+        ui->ValueScanOffset->setValue(m_pGroup->fScanOffset);
     }
-    ui->ValueScanOffset->setValue(m_pGroup->fScanOffset);
+
     ui->ValueIndexOffset->setValue(m_pGroup->fIndexOffset);
 	ui->ComSkewAngle->setCurrentIndex(m_pGroup->eSkew);
 //	ui->CheckPartFileShow->setChecked(_process->GetShowWeldPart(m_nGroupId));
@@ -2169,6 +2173,11 @@ void DopplerGroupTab::on_ValueScanOffset_valueChanged(double)
     ParameterProcess* _process = ParameterProcess::Instance();
     double _fValue1 = ui->ValueScanOffset->value()  ;
     double _fValue2 = ui->ValueIndexOffset->value() ;
+    SCANNER& _scan = m_pConfig->common.scanner;
+    if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
+    {
+        _fValue1 = _fValue1 * _scan.fPrf;
+    }
     _process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
 
     DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
@@ -2190,6 +2199,11 @@ void DopplerGroupTab::on_ValueIndexOffset_valueChanged(double)
     ParameterProcess* _process = ParameterProcess::Instance();
     double _fValue1 = ui->ValueScanOffset->value()  ;
     double _fValue2 = ui->ValueIndexOffset->value() ;
+    SCANNER& _scan = m_pConfig->common.scanner;
+    if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
+    {
+        _fValue1 = _fValue1 * _scan.fPrf;
+    }
     _process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
 
     ProcessDisplay _display ;

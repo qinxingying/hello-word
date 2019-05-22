@@ -682,8 +682,25 @@ enum setup_SCAN_MODE
 }  ;
 
 /*scanner*/
+/*
+由于文档缺失，根据个人理解，scanner有时间编码和编码器编码，两种编码有几个变量的意义是不一样的：
+在编码器编码情况下：
+fScanPos     单位mm 表示扫查线当前位置
+fScanStart   单位mm 表示扫查的起点
+fScanStop    单位mm 表示扫查的终点
+fScanStart2  单位mm 值和fScanStart一样
+fScanend     单位mm 值和fScanStop一样
+在时间编码情况下：
+fScanPos     单位秒 表示扫查线当前位置
+fScanStart   表示扫查起始对应的index 值为 fScanStart2 * fPrf 取数据的索引值 工具栏的slider范围与此数据关联
+fScanStop    表示扫查终点对应的index 值为 fScanend * fPrf    取数据的索引值 工具栏的slider范围与此数据关联
+fScanStart2  单位秒 表示时间扫查的起点 和显示的坐标轴对应
+fScanend     单位秒 表示时间扫查的终点 和显示的坐标轴对应
+代码都是按此逻辑进行的debug，里面可能还有没有修改的逻辑，都需按照此逻辑进行修复。
+*/
 struct SCANNER
 {
+
 	setup_ENCODER_TYPE eEncoderType  ;
 	setup_SCAN_TYPE	eScanType	 ;
 	setup_SCAN_MODE	eScanMode	 ;
@@ -694,9 +711,9 @@ struct SCANNER
 	float fPrf		 ;
 	// scan range
 	float fScanStart   ;
-	float fIndexStart  ;
+    float fIndexStart  ; //步进轴起点
 	float fScanStop	;
-	float fIndexStop   ;
+    float fIndexStop   ; //步进轴终点
 	float fScanStep	;
 	float fIndexStep   ;
     float fScanStart2;

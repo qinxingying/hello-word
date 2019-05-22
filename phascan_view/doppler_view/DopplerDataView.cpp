@@ -237,15 +237,6 @@ void DopplerDataView::SetCoupleCScanBarColorIndex(void* index)
         m_pCoupleCBar->setColorIndex(index);
 }
 
-void DopplerDataView::SetCoupleCScanRange( double nStart_, double nStop_)
-{
-    if( m_pCoupleCBar)
-    {
-        m_pCoupleCBar->setCoupleRange( nStart_, nStop_);
-        m_pCoupleCBar->setDisplayRange( nStart_, nStop_);
-    }
-}
-
 void DopplerDataView::SetCopleCScanDisplayRange( double nStart_, double nStop_)
 {
     if( m_pCoupleCBar)
@@ -634,6 +625,18 @@ void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
 						_nSliderStart , _nSliderStop);
 		}
 		break;
+    }
+    if( m_pCoupleCBar)
+    {
+        BarOrientation postion = m_pCoupleCBar->getOrientation();
+        if(postion)
+        {
+            m_pCoupleCBar->setDisplayRange( RulerRange[DATA_VIEW_RULER_LEFT].second, RulerRange[DATA_VIEW_RULER_LEFT].first);
+        }
+        else
+        {
+            m_pCoupleCBar->setDisplayRange( RulerRange[DATA_VIEW_RULER_BOTTOM].first, RulerRange[DATA_VIEW_RULER_BOTTOM].second);
+        }
     }
     this->update();
     if(m_pItemsGroup){

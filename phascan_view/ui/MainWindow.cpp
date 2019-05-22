@@ -547,9 +547,9 @@ void MainWindow::slotSliderhChanged(int value)
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     SCANNER& _scanner = _pConfig->common.scanner ;
     if(_scanner.eEncoderType) {
-            _scanner.fScanPos = _scanner.fScanStep * value + _scanner.fScanStart ;
+            _scanner.fScanPos = _scanner.fScanStep * value + _scanner.fScanStart2;
     } else {
-            _scanner.fScanPos =  value / _scanner.fPrf  + _scanner.fScanStart ;
+            _scanner.fScanPos =  value / _scanner.fPrf  + _scanner.fScanStart2;
     }
     ProcessDisplay _proDisplay ;
     for(int i = 0; i < _pConfig->common.nGroupQty; i ++) {
@@ -638,7 +638,7 @@ void MainWindow::UpdateTableParameter()
     //    delete _pWidget;
         _nTabQty = ui->TabWidget_parameter->count();
     }
-
+    qDeleteAll( m_pGroupList);
     m_pGroupList.clear();
     for(int i = 0; i < _nGroupQty; i++)
     {
@@ -1119,8 +1119,8 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
             return;
         }
         _group.afCursor[_nItemId] = _fCursor;
-        qDebug("xxx== _nItemId:%d, _fCursor:%.2f, line_direction type:%d, _nLawId:%d", _nItemId, _fCursor,
-               ((DopplerLineItem*)pItem_)->GetLineType(), _nLawId);
+//        qDebug("xxx== _nItemId:%d, _fCursor:%.2f, line_direction type:%d, _nLawId:%d", _nItemId, _fCursor,
+//               ((DopplerLineItem*)pItem_)->GetLineType(), _nLawId);
         if(_nItemId == setup_CURSOR_C_ANGLE){
             if(DopplerLineItem::LINE_HORIZENTAL == ((DopplerCScanLineMark*)pItem_)->GetLineType()){
                 _fCursor = _rect.top();
