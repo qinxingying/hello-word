@@ -751,6 +751,7 @@ void DopplerGroupTab::UpdateDefectValue()
 *****************************************************************************/
 void DopplerGroupTab::UpdateGroupConfig()
 {
+    //blockSignals(true);
 	ParameterProcess* _process = ParameterProcess::Instance();
     if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD)
     {
@@ -873,7 +874,7 @@ void DopplerGroupTab::UpdateGroupConfig()
 	UpdateMeasureBox();
 	UpdateDefectBox();
 	UpdateParameterLimit();
-
+    //blockSignals(false);
 }
 void DopplerGroupTab::UpdateTofdParam()
 {

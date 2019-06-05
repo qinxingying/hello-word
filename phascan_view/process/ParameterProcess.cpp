@@ -2541,9 +2541,9 @@ QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
                 }
             }
             int cbuff = correctionPdata(buff);
-            if( cbuff > 255)
+            if( cbuff > WAVE_MAX)
             {
-                cbuff = 255;
+                cbuff = WAVE_MAX;
             }
 
             CScanInfo.data[i] = (WDATA)cbuff;

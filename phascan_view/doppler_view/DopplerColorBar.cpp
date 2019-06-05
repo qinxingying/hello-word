@@ -13,7 +13,7 @@ DopplerColorBar::DopplerColorBar(QWidget *parent) :
     //************ set back ground color
     setAutoFillBackground(true);
     QPalette pal = this->palette() ;
-    pal.setColor(QPalette::Background , QColor(0 , 0 , 255));
+    pal.setColor(QPalette::Background , Qt::blue);
     setPalette(pal);
     setAcceptDrops(true);
 }

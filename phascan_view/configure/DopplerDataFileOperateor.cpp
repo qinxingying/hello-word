@@ -2,6 +2,7 @@
 #include "DopplerConfigure.h"
 
 #include <QDataStream>
+#include <QFileInfo>
 
 DopplerDataFileOperateor::DopplerDataFileOperateor(QObject *parent) :
     QObject(parent)
@@ -58,8 +59,18 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     ret = reader.readRawData((char*)&m_cGroupInfo , _nTmp) ;
     if(ret != _nTmp)
         return -1 ;
-    //得到采样数据
-    m_pBeamData = m_file->map(m_cFileHead.size , m_cFileHead.reserved) ;
+    //得到采样数据,存在数据实际大小比m_cFileHead.version小的情况
+    QFileInfo info1( *m_file);
+    qint64 fileSize = info1.size();
+    qint64 reservedSize;
+    if( m_cFileHead.version > fileSize){
+        reservedSize = fileSize - m_cFileHead.size -1;
+    }
+    else{
+        reservedSize = m_cFileHead.reserved;
+    }
+
+    m_pBeamData = m_file->map(m_cFileHead.size , reservedSize) ;
 
     return 0 ;
 }

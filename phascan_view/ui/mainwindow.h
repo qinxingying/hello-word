@@ -120,7 +120,7 @@ private:
     int  m_iCurGroup;
     int  m_nLawIdSel;
     int  m_nTBCnt;
-    int  m_nAlloff;
+    int  m_nAlloff;  //0值时表示只有一个组
     bool m_bCursorSel;
     bool m_bParamBackMode;
     bool m_bDefectBackMode;

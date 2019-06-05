@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     _mainWindow.setMinimumSize(_mainWindow.width(), _mainWindow.height());
 
     if(argc > 1) {
-        sleep(200);
+        //sleep(200);
 
         if(argv[1]) {
             _mainWindow.OpenFilePro(QString::fromLocal8Bit(argv[1]));

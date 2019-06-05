@@ -32,7 +32,7 @@ Date     : 2016-12-06
 #include "version.h"
 
 int lastgroup = 0;
-int currentgroup = 0;
+int currentgroup = 0; //-1表示全部组的那个tab
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -66,9 +66,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolBar->addWidget(SliderWidget);
     connect(ui->TabWidget_parameter, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsLeftTabButton(Qt::MouseButton)));
     connect(ui->TabWidget_parameter, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotLeftTabRightButtonDoubleClicked(int)));
-    connect(ui->TabWidget_display, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsRightTabButton(Qt::MouseButton)));
-    connect(ui->TabWidget_display, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotRightTabRightButtonDoubleClicked(int)));
     connect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentGroupChanged(int)));
+    connect(ui->TabWidget_display, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsRightTabButton(Qt::MouseButton)));
+    connect(ui->TabWidget_display, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotRightTabRightButtonDoubleClicked(int)));    
     connect(ui->TabWidget_display, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentDispChanged(int)));
 
     connect(ui->actionEnglish, SIGNAL(triggered()), this, SLOT(slot_actionEnglish_triggered()));
@@ -153,7 +153,7 @@ void MainWindow::CreateStatusBar()
     QStatusBar* _status = ui->statusbar;
     QPalette pal = this->palette();
 
-    pal.setColor(QPalette::Background, QColor(0 , 0 , 0));
+    pal.setColor(QPalette::Background, Qt::black);
     _status->setPalette(pal);
     _status->setAutoFillBackground(true);
 
@@ -171,7 +171,7 @@ void MainWindow::CreateStatusBar()
 void MainWindow::UpdateStatusBarInfo()
 {
     QPalette pal = this->palette();
-    pal.setColor(QPalette::Foreground, QColor(0, 255, 0));
+    pal.setColor(QPalette::Foreground, Qt::green);
 
     ParameterProcess* _pOpp = ParameterProcess::Instance();
 
@@ -693,13 +693,19 @@ int MainWindow::SaveCurScreenshot(QString strPath_)
         return 1;
 }
 
+/*!
+  \brief 初始化工具栏上的slider滑动条
+
+*/
 void MainWindow::initSlider()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     SCANNER& _scanner = _pConfig->common.scanner ;
+    sliderh->blockSignals(true);
     sliderh->setMinimum(0);
     sliderh->setSingleStep(_scanner.fScanStep);
     sliderh->setMaximum((_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep );
+    sliderh->blockSignals(false);
 }
 
 void MainWindow::UpdateSlider()
@@ -811,6 +817,10 @@ void MainWindow::NewConfigure()
     UpdateStatusBarInfo();
 }
 
+/*!
+  \brief 界面点击"打开文件"的响应函数
+
+*/
 void MainWindow::OpenFile()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -849,12 +859,18 @@ void MainWindow::OpenFilePro(QString strFileName_)
         sliderh->setValue(0);
         m_iCurGroup = 0;
     }
-    lastgroup = 0;
-    currentgroup = 0;
+    if(m_nAlloff)
+    {
+        lastgroup = -1;
+        currentgroup = -1;
+    }
+    else
+    {
+        lastgroup = 0;
+        currentgroup = 0;
+    }
     m_fileName = strFileName_;
     this->setWindowTitle(m_titleName + m_fileName);
-
-    //char *pBuf = new char[200];
 }
 
 void MainWindow::SaveFile()

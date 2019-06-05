@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -172,7 +172,7 @@
                 <x>10</x>
                 <y>110</y>
                 <width>218</width>
-                <height>138</height>
+                <height>142</height>
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_14">
@@ -4925,7 +4925,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>333</width>
+        <width>336</width>
         <height>848</height>
        </rect>
       </property>
@@ -4977,8 +4977,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>307</width>
-            <height>998</height>
+            <width>313</width>
+            <height>1014</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -5419,7 +5419,7 @@
                   <rect>
                    <x>0</x>
                    <y>150</y>
-                   <width>254</width>
+                   <width>261</width>
                    <height>27</height>
                   </rect>
                  </property>
@@ -5516,7 +5516,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>132</width>
+                   <width>134</width>
                    <height>27</height>
                   </rect>
                  </property>
@@ -5651,7 +5651,7 @@
                   <rect>
                    <x>0</x>
                    <y>120</y>
-                   <width>254</width>
+                   <width>261</width>
                    <height>27</height>
                   </rect>
                  </property>
@@ -5749,7 +5749,7 @@
                    <x>1</x>
                    <y>30</y>
                    <width>293</width>
-                   <height>23</height>
+                   <height>25</height>
                   </rect>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_18">
@@ -5837,7 +5837,7 @@
                    <x>0</x>
                    <y>60</y>
                    <width>173</width>
-                   <height>23</height>
+                   <height>25</height>
                   </rect>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_19">
@@ -6964,8 +6964,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>320</width>
-            <height>813</height>
+            <width>312</width>
+            <height>821</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -7904,7 +7904,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>333</width>
+        <width>336</width>
         <height>850</height>
        </rect>
       </property>
@@ -7950,7 +7950,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>333</width>
+            <width>336</width>
             <height>850</height>
            </rect>
           </property>

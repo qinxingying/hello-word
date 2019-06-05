@@ -1,4 +1,12 @@
-﻿#ifndef DOPPLERCOUPLEBAR_H
+﻿/***************************
+  Name:  DopplerCoupleSScanBar
+  Description:   耦合监控S扫显示条
+
+  Name:  DopplerCoupleCScanBar
+  Description:   耦合监控C扫显示条
+*********************************/
+
+#ifndef DOPPLERCOUPLEBAR_H
 #define DOPPLERCOUPLEBAR_H
 
 #include <QWidget>
