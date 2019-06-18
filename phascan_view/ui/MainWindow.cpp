@@ -606,15 +606,15 @@ float MainWindow::GetCurrentTabLinearScanMaxLineCount(int _nGroupId)
         int _nCurGroup, _nLawId, _nDisplay;
         DopplerDataView* _pView = (DopplerDataView*)m_pViewList[ui->TabWidget_display->currentIndex()]->at(i);
         _pView->GetDataViewConfigure( &_nCurGroup,  &_nLawId,  &_nDisplay);
-            if(_nGroupId == _nCurGroup){
-                    setup_DISPLAY_MODE _eDisplay = (setup_DISPLAY_MODE)_pView->GetDataViewDrawType();
-                    if(_eDisplay >= setup_DISPLAY_MODE_S){
-                        qDebug("$$$$ %s[%d]: ScanQty %d, _eDisplay:%d, qty2:%d", __FUNCTION__, __LINE__, _pView->GetSScanLaw(0),
-                               _eDisplay,  _pView->GetItemGroup()->GetLawMarkerLinesCount());
-                        maxTmp = _pView->GetItemGroup()->GetLawMarkerLinesCount();
-                        return maxTmp;
-                    }
+        if(_nGroupId == _nCurGroup){
+            setup_DISPLAY_MODE _eDisplay = (setup_DISPLAY_MODE)_pView->GetDataViewDrawType();
+            if(_eDisplay >= setup_DISPLAY_MODE_S){
+                qDebug("$$$$ %s[%d]: ScanQty %d, _eDisplay:%d, qty2:%d", __FUNCTION__, __LINE__, _pView->GetSScanLaw(0),
+                       _eDisplay,  _pView->GetItemGroup()->GetLawMarkerLinesCount());
+                maxTmp = _pView->GetItemGroup()->GetLawMarkerLinesCount();
+                return maxTmp;
             }
+        }
     }
     return maxTmp;
 }
