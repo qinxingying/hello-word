@@ -652,7 +652,7 @@ void DopplerGroupTab::UpdateCursorValue()
 	ui->ValueIMes->setValue(m_pGroup->afCursor[setup_CURSOR_I_MES]);
 
     SCANNER& _scanner = m_pConfig->common.scanner;
-	if(_scanner.eEncoderType == setup_ENCODER_TYPE_TIMER) {
+    if(_scanner.eScanEncoderType == setup_ENCODER_TYPE_TIMER) {
 		ui->LabelCursorUnit5->setText("sec");
 		ui->LabelCursorUnit6->setText("sec");
 	} else {
@@ -818,7 +818,7 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ui->CheckUnifiedPartSetting->setCheckState(m_pConfig->common.bUnifiedPart ? Qt::Checked : Qt::Unchecked);
 	//if(m_nGroupId && m_pConfig->common.bUnifiedPart)   ui->BoxPart->setEnabled(false);
     SCANNER& _scan = m_pConfig->common.scanner;
-    if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
+    if(_scan.eScanEncoderType == setup_ENCODER_TYPE_TIMER)
     {
         //ui->ValueScanOffset->setEnabled(false);
         double buff = m_pGroup->fScanOffset/_scan.fPrf;
@@ -836,7 +836,7 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->CheckDxfFileShow->setChecked(_process->GetShowWeldPart(m_nGroupId));
 
 	SCANNER& _scanner = m_pConfig->common.scanner ;
-	if(_scanner.eEncoderType == setup_ENCODER_TYPE_TIMER) {
+    if(_scanner.eScanEncoderType == setup_ENCODER_TYPE_TIMER) {
 		ui->LabelScanOffsetUnit->setText("sec");
 	} else {
 		ui->LabelScanOffsetUnit->setText("mm");
@@ -2175,7 +2175,7 @@ void DopplerGroupTab::on_ValueScanOffset_valueChanged(double)
     double _fValue1 = ui->ValueScanOffset->value()  ;
     double _fValue2 = ui->ValueIndexOffset->value() ;
     SCANNER& _scan = m_pConfig->common.scanner;
-    if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
+    if(_scan.eScanEncoderType == setup_ENCODER_TYPE_TIMER)
     {
         _fValue1 = _fValue1 * _scan.fPrf;
     }
@@ -2201,7 +2201,7 @@ void DopplerGroupTab::on_ValueIndexOffset_valueChanged(double)
     double _fValue1 = ui->ValueScanOffset->value()  ;
     double _fValue2 = ui->ValueIndexOffset->value() ;
     SCANNER& _scan = m_pConfig->common.scanner;
-    if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
+    if(_scan.eScanEncoderType == setup_ENCODER_TYPE_TIMER)
     {
         _fValue1 = _fValue1 * _scan.fPrf;
     }

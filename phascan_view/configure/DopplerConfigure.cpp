@@ -192,7 +192,7 @@ void DopplerConfigure::OpenEvn()
         AppEvn.anMeasureSelection[1][6] = 0  ;
         AppEvn.anMeasureSelection[1][7] = 0  ;
 
-		for(int i = 0 ; i < 8 ; i++)
+        for(int i = 0 ; i < ENV_MAX_GROUP_QTY; i++)
 		{
             AppEvn.bShowCursor[i]	= true ;
             AppEvn.bShowGate  [i]	= true ;
@@ -201,6 +201,21 @@ void DopplerConfigure::OpenEvn()
             AppEvn.bShowThickness[i]= false;
             AppEvn.bShowLwBw[i]	    = true;
 			AppEvn.bShowDefect[i]	= true;
+            AppEvn.bCursor[i][setup_CURSOR_LAW] = 0;
+
+            AppEvn.bCursor[i][setup_CURSOR_A_REF] =
+                AppEvn.bCursor[i][setup_CURSOR_U_REF] =
+                AppEvn.bCursor[i][setup_CURSOR_S_REF] =
+                AppEvn.bCursor[i][setup_CURSOR_I_REF] =
+                AppEvn.bCursor[i][setup_CURSOR_VPA_REF] =
+                AppEvn.bCursor[i][setup_CURSOR_TFOD_LW] = 10 ;
+
+            AppEvn.bCursor[i][setup_CURSOR_A_MES] =
+                AppEvn.bCursor[i][setup_CURSOR_U_MES] =
+                AppEvn.bCursor[i][setup_CURSOR_S_MES] =
+                AppEvn.bCursor[i][setup_CURSOR_I_MES] =
+                AppEvn.bCursor[i][setup_CURSOR_VPA_MES] =
+                AppEvn.bCursor[i][setup_CURSOR_TFOD_BW]= 20 ;
 		}
 		SetLastDate();
 	}
@@ -223,6 +238,9 @@ void DopplerConfigure::OpenEvn()
 		group[i].bShowMeasure   = AppEvn.bShowMeasure[i] ;
 		group[i].bShowLwBw	    = AppEvn.bShowLwBw[i] ;
         group[i].bShowDefect	= true;
+        for(int j = 0; j < setup_CURSOR_MAX; j++){
+            group[i].afCursor[j] = AppEvn.bCursor[i][j];
+        }
 	}
 	AppEvn.bSAxisCursorSync		= false;
 	AppEvn.bRegStatus = false;
@@ -263,6 +281,10 @@ void DopplerConfigure::SaveEvn()
         AppEvn.bShowMeasure[i]		= group[i].bShowMeasure;
         AppEvn.bShowLwBw[i]			= group[i].bShowLwBw;
         AppEvn.bShowDefect[i]		= group[i].bShowDefect;
+        for(int j = 0; j < setup_CURSOR_MAX; j++){
+            AppEvn.bCursor[i][j] = group[i].afCursor[j];
+        }
+
 	}
 
 	if(AppEvn.bRegStatus) {
@@ -411,7 +433,7 @@ int DopplerConfigure::RectifyScanLength()
 	}
 	common.scanner.fScanStop = _iMax * common.scanner.fScanStep + common.scanner.fScanStart;
 	common.nRecMax = _iMax+1;
-    if(common.scanner.eEncoderType)
+    if(common.scanner.eScanEncoderType)
         common.scanner.fScanend     =   common.scanner.fScanStop;
     else
         //common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf + common.scanner.fScanStart;
@@ -470,7 +492,7 @@ void DopplerConfigure::ResetShadowData()
 		}
 		common.scanner.fScanStart = comTmp.scanner.fScanStart + _fMinOff;	/**/        
         common.scanner.fScanStop  = comTmp.scanner.fScanStop  + _fMaxOff;	/**/
-        if(common.scanner.eEncoderType){
+        if(common.scanner.eScanEncoderType){
             common.scanner.fScanStart2  = common.scanner.fScanStart;
             common.scanner.fScanend     =   common.scanner.fScanStop;
         }
@@ -552,7 +574,7 @@ void DopplerConfigure::InitCommonConfig()
 
 	memset((char*)(&common.alarm) , 0 , sizeof(ALARM_CONFIG) * 3) ;
 
-	common.scanner.eEncoderType = setup_ENCODER_TYPE_TIMER  ;
+    common.scanner.eScanEncoderType = setup_ENCODER_TYPE_TIMER  ;
 	common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE  ;
 	common.scanner.eScanMode	= setup_SCAN_NORMAL;
 	common.scanner.fScanPos	 = 5.0  ;
@@ -577,10 +599,9 @@ void DopplerConfigure::InitCommonConfig()
 		 0
 	};
 
-	memcpy((char*)(&common.scanner.encoder[setup_ENCODER_TYPE_TIMER]) , (void*)&_encoder , sizeof(ENCODER_CONFIG)) ;
-	memcpy((char*)(&common.scanner.encoder[setup_ENCODER_TYPE_ENCODER_1]) , (void*)&_encoder , sizeof(ENCODER_CONFIG)) ;
-	memcpy((char*)(&common.scanner.encoder[setup_ENCODER_TYPE_ENCODER_2]) , (void*)&_encoder , sizeof(ENCODER_CONFIG)) ;
-
+    for( int i = 0; i < setup_MAX_ENCODER_QTY; i++){
+        memcpy((char*)(&common.scanner.encoder[i]) , (void*)&_encoder , sizeof(ENCODER_CONFIG)) ;
+    }
 	InitGroupConfig(0);
 }
 
@@ -621,19 +642,19 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_pConfig->afCursor[setup_CURSOR_LAW] = 0;
 	/* 参考光标 */
 
-	_pConfig->afCursor[setup_CURSOR_A_REF] =
-		_pConfig->afCursor[setup_CURSOR_U_REF] =
-		_pConfig->afCursor[setup_CURSOR_S_REF] =
-		_pConfig->afCursor[setup_CURSOR_I_REF] =
-		_pConfig->afCursor[setup_CURSOR_VPA_REF] =
-		_pConfig->afCursor[setup_CURSOR_TFOD_LW] = 10 ;
+//	_pConfig->afCursor[setup_CURSOR_A_REF] =
+//		_pConfig->afCursor[setup_CURSOR_U_REF] =
+//		_pConfig->afCursor[setup_CURSOR_S_REF] =
+//		_pConfig->afCursor[setup_CURSOR_I_REF] =
+//		_pConfig->afCursor[setup_CURSOR_VPA_REF] =
+//		_pConfig->afCursor[setup_CURSOR_TFOD_LW] = 10 ;
 
-	_pConfig->afCursor[setup_CURSOR_A_MES] =
-		_pConfig->afCursor[setup_CURSOR_U_MES] =
-		_pConfig->afCursor[setup_CURSOR_S_MES] =
-		_pConfig->afCursor[setup_CURSOR_I_MES] =
-		_pConfig->afCursor[setup_CURSOR_VPA_MES] =
-		_pConfig->afCursor[setup_CURSOR_TFOD_BW]= 20 ;
+//	_pConfig->afCursor[setup_CURSOR_A_MES] =
+//		_pConfig->afCursor[setup_CURSOR_U_MES] =
+//		_pConfig->afCursor[setup_CURSOR_S_MES] =
+//		_pConfig->afCursor[setup_CURSOR_I_MES] =
+//		_pConfig->afCursor[setup_CURSOR_VPA_MES] =
+//		_pConfig->afCursor[setup_CURSOR_TFOD_BW]= 20 ;
 	//-----------------------------------------------------------------
 	// thickness range for c scan display
 	_pConfig->eCScanSource[0]	= setup_CSCAN_AMP_A ;
@@ -809,7 +830,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	if(_pack->nEncodeType)
 	{
         common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;
-        common.scanner.eEncoderType = static_cast<setup_ENCODER_TYPE> (_pack->nEncodeType);
+        common.scanner.eScanEncoderType = static_cast<setup_ENCODER_TYPE> (_pack->nEncodeType);
 		common.scanner.eScanMode	= setup_SCAN_NORMAL;
         common.scanner.fScanPos		=  _pack->nScanStart		/ 1000.0 ;
 		common.scanner.fIndexPos	=  0 ;
@@ -829,7 +850,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	else
 	{
         common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;
-        common.scanner.eEncoderType = setup_ENCODER_TYPE_TIMER;
+        common.scanner.eScanEncoderType = setup_ENCODER_TYPE_TIMER;
 		common.scanner.eScanMode	= setup_SCAN_NORMAL;
 		common.scanner.fScanPos		=  0 ;
 		common.scanner.fIndexPos	=  0 ;
@@ -849,6 +870,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	int _nScanIndex = (common.scanner.fScanStop - common.scanner.fScanStart) / common.scanner.fScanStep + 1.5 ;
     memset(common.nRecMark , 0 , setup_MAX_REC_LEN );
     if(Config::instance()->is_phascan_ii()) {
+        Config::instance()->getScannerData( common.scanner);
         memcpy(common.nRecMark , Config::instance()->data_mark(), Config::instance()->data_mark_length()) ;
     } else {
         memcpy(common.nRecMark , _pack->bScanMark , _nScanIndex) ;
@@ -957,11 +979,9 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }
         if(!Config::instance()->is_phascan_ii()) {
-            if(common.scanner.eEncoderType && Phascan_Version == 2) {
-                common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution/100.0;
+            if(common.scanner.eScanEncoderType && Phascan_Version == 2) {
+                common.scanner.encoder[common.scanner.eScanEncoderType - 1].fResulotion = _pGroupInfo->cursors_info[0].resolution/100.0;
             }
-        } else {
-            common.scanner.encoder[common.scanner.eEncoderType].fResulotion = _pGroupInfo->cursors_info[0].resolution;
         }
 
         _group.eCScanSource[0]= (setup_CSCAN_SOURCE_MODE)CScanSource1 ;
@@ -1137,7 +1157,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_wedge.nWedgeDelay = _Wedge.Probe_delay  ;
 
 		_group.part.afSize[0]  = _pGroupInfo->part.Thickness / 1000.0 ;
-        if(common.scanner.eEncoderType)
+        if(common.scanner.eScanEncoderType)
         {
             if(Phascan_Version == 1)
             {

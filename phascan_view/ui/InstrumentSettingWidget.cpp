@@ -35,10 +35,6 @@ void InstrumentSettingWidget::UpdateEncoderInfo()
 {
 	SCANNER& _scanner = m_pConfig->common.scanner ;
     int _nEncoder = ui->ComEncoderTypeSetting->currentIndex();
-    COMMON_CONFIG& config = m_pConfig->common ;
-    if(setup_ENCODER_TYPE_TIMER != config.scanner.eEncoderType) {
-        _nEncoder = config.scanner.eEncoderType - 1;
-    }
 	ENCODER_CONFIG& _encoder = _scanner.encoder[_nEncoder] ;
 	ui->ValueEncoderResolution->setValue(_encoder.fResulotion);
 	ui->ComEncoderPolarity->setCurrentIndex(_encoder.ePolarity);
@@ -65,11 +61,19 @@ void InstrumentSettingWidget::InitCommonConfig()
 {
 	COMMON_CONFIG& config = m_pConfig->common ;
 	ui->ComScanType->setCurrentIndex(config.scanner.eScanType);
-	ui->ComEncoderType->setCurrentIndex(config.scanner.eEncoderType);
-    if(config.scanner.eEncoderType != setup_ENCODER_TYPE_TIMER) {
-        ui->ComEncoderTypeSetting->setCurrentIndex(config.scanner.eEncoderType - 1);
-    } else {
+    ui->ComEncoderType->setCurrentIndex(config.scanner.eScanEncoderType);
+    if(config.scanner.eScanEncoderType == setup_ENCODER_TYPE_TIMER){
+        ui->BoxEncoderMode->hide();
+        ui->LabelScanStartUnit->setText("sec");
+        ui->LabelScanEndUnit->setText("sec");
+        ui->LabelScanResolutionUnit->setText("sec");
         ui->ComEncoderTypeSetting->setCurrentIndex(0);
+    }else{
+        ui->BoxEncoderMode->show();
+        ui->LabelScanStartUnit->setText("mm");
+        ui->LabelScanEndUnit->setText("mm");
+        ui->LabelScanResolutionUnit->setText("mm");
+        ui->ComEncoderTypeSetting->setCurrentIndex(config.scanner.eScanEncoderType - 1);
     }
 	ui->ValuePrf->setValue(config.scanner.fPrf);
 
@@ -80,7 +84,7 @@ void InstrumentSettingWidget::InitCommonConfig()
     UpdateEncoderInfo();
 
 	SCANNER& _scanner = m_pConfig->common.scanner ;
-	if(_scanner.eEncoderType == setup_ENCODER_TYPE_TIMER) {
+    if(_scanner.eScanEncoderType == setup_ENCODER_TYPE_TIMER) {
 		ui->LabelScanPosUnit->setText("sec");
         ui->LabelScanStartUnit_2->setText("sec");
         ui->LabelScanStopUnit->setText("sec");
@@ -102,7 +106,7 @@ void InstrumentSettingWidget::InitCommonConfig()
     ui->SpinBoxCurrentScanPos->setMinimum(_scanner.fScanStart2);
 
     ui->SpinBoxCurrentScanend->setMinimum(_scanner.fScanStart2+1);
-    if(_scanner.eEncoderType)
+    if(_scanner.eScanEncoderType)
     {
         ui->SpinBoxCurrentScanPos->setMaximum(_scanner.fScanStop);
         ui->SpinBoxCurrentScanstart->setMaximum(_scanner.fScanStop - _scanner.fScanStep);
@@ -160,7 +164,7 @@ void InstrumentSettingWidget::UpdateScanPos()
     ui->SpinBoxCurrentScanend->setValue(_scanner.fScanend) ;
     double fstart,fstop,fstart2,fstop2,fstep;
     _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
-    if(_scanner.eEncoderType == setup_ENCODER_TYPE_TIMER) {
+    if(_scanner.eScanEncoderType == setup_ENCODER_TYPE_TIMER) {
         ui->LabelScanPosUnit->setText("sec");
         ui->LabelScanStartUnit_2->setText("sec");
         ui->LabelScanStopUnit->setText("sec");
@@ -193,7 +197,7 @@ void InstrumentSettingWidget::ResetEncoderSetting()
 	_encoder.fResulotion  = ui->ValueEncoderResolution->value() ;
 	ParameterProcess* _process = ParameterProcess::Instance();
     int nEncoder = ui->ComEncoderTypeSetting->currentIndex();
-	_process->SetupEncoderConfigure((setup_ENCODER_TYPE)nEncoder , &_encoder);
+    _process->SetupEncoderConfigure( nEncoder, &_encoder);
 }
 
 void InstrumentSettingWidget::on_ComScanType_currentIndexChanged(int index)
@@ -319,7 +323,7 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanPos_valueChanged(double arg1)
 	 SCANNER& _scanner = m_pConfig->common.scanner ;
 
 	 _scanner.fScanPos = arg1 ;
-     if(_scanner.eEncoderType) {
+     if(_scanner.eScanEncoderType) {
         ui->SliderCurrentScanPos->setValue((arg1 - _scanner.fScanStart)/_scanner.fScanStep);
      }
      else
@@ -339,7 +343,7 @@ void InstrumentSettingWidget::on_SliderCurrentScanPos_valueChanged(int value)
 	if(!ui->SliderCurrentScanPos->hasFocus()) return ;
 	SCANNER& _scanner = m_pConfig->common.scanner	;
 
-	if(_scanner.eEncoderType) {
+    if(_scanner.eScanEncoderType) {
 		_scanner.fScanPos = _scanner.fScanStep * value + _scanner.fScanStart ;
 	} else {
 		_scanner.fScanPos =  value / _scanner.fPrf  + _scanner.fScanStart ;
@@ -366,7 +370,7 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanend_valueChanged(double arg1)
     if(arg1 <= ui->SpinBoxCurrentScanstart->value())
         return;
     SCANNER& _scanner = m_pConfig->common.scanner ;
-    if(_scanner.eEncoderType)
+    if(_scanner.eScanEncoderType)
     {
         ui->SpinBoxCurrentScanstart->setMaximum(arg1-_scanner.fScanStep);
     }
@@ -414,7 +418,7 @@ void InstrumentSettingWidget::on_SpinBoxCurrentScanstart_valueChanged(double arg
      SCANNER& _scanner = m_pConfig->common.scanner ;
      if(arg1 >= ui->SpinBoxCurrentScanend->value())
          return;
-     if(_scanner.eEncoderType)
+     if(_scanner.eScanEncoderType)
      {
          ui->SpinBoxCurrentScanend->setMinimum(arg1+_scanner.fScanStep);
      }
@@ -461,7 +465,7 @@ void InstrumentSettingWidget::on_BtnReset_clicked()
     _process->ChangeCscanIndexRange(&fstart,&fstop,&fstart2,&fstop2,&fstep);
     ui->SpinBoxCurrentIndexstart->setValue(fstart2);
     ui->SpinBoxCurrentIndexend->setValue(fstop2) ;
-    if(_scanner.eEncoderType)
+    if(_scanner.eScanEncoderType)
     {
         ui->SpinBoxCurrentScanstart->setValue(_scanner.fScanStart);
         ui->SpinBoxCurrentScanend->setValue(_scanner.fScanStop) ;

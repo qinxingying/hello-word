@@ -642,6 +642,7 @@ enum setup_ENCODER_TYPE   //扫查数据源
 	setup_ENCODER_TYPE_TIMER = 0,
 	setup_ENCODER_TYPE_ENCODER_1,
 	setup_ENCODER_TYPE_ENCODER_2,
+    setup_ENCODER_TYPE_NONE,
 	setup_ENCODER_TYPE_MAX
 };
 
@@ -672,7 +673,8 @@ enum setup_SCAN_TYPE
 {
 	//setup_SCAN_TYPE_TIMMER ,
 	setup_SCAN_TYPE_ONE_LINE = 0 ,
-	setup_SCAN_TYPE_TWO_LINE
+    setup_SCAN_TYPE_RASTER,
+    setup_SCAN_TYPE_HELICOIDAL
 } ;
 
 enum setup_SCAN_MODE
@@ -701,7 +703,8 @@ fScanend     单位秒 表示时间扫查的终点 和显示的坐标轴对应
 struct SCANNER
 {
 
-	setup_ENCODER_TYPE eEncoderType  ;
+    setup_ENCODER_TYPE eScanEncoderType;
+    setup_ENCODER_TYPE eIndexEncoderType;
 	setup_SCAN_TYPE	eScanType	 ;
 	setup_SCAN_MODE	eScanMode	 ;
 	// scan pos
@@ -722,7 +725,7 @@ struct SCANNER
     int fLawStop;
     int fLawQty;
 	// encoder
-	ENCODER_CONFIG  encoder[setup_ENCODER_TYPE_MAX]  ;
+    ENCODER_CONFIG  encoder[setup_MAX_ENCODER_QTY];
 } ;
 
 

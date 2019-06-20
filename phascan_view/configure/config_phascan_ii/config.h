@@ -29,6 +29,8 @@ public:
 
     void getWeldData( int groupId, WELD_II & weld);
 
+    void getScannerData( SCANNER &scanner);
+
 protected:
     void unpack_group(int groupId);
 

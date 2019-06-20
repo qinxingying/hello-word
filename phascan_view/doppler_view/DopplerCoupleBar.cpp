@@ -158,7 +158,7 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
     GROUP_CONFIG& _group = pConfig->group[nGroupId];
 
     double scanStart;
-    if(pConfig->common.scanner.eEncoderType){
+    if(pConfig->common.scanner.eScanEncoderType){
         scanStart = _group.fScanOffset;
     }
     else{

@@ -546,7 +546,7 @@ void MainWindow::slotSliderhChanged(int value)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     SCANNER& _scanner = _pConfig->common.scanner ;
-    if(_scanner.eEncoderType) {
+    if(_scanner.eScanEncoderType) {
             _scanner.fScanPos = _scanner.fScanStep * value + _scanner.fScanStart2;
     } else {
             _scanner.fScanPos =  value / _scanner.fPrf  + _scanner.fScanStart2;

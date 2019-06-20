@@ -612,6 +612,23 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
 
 }
 
+void Config::getScannerData( SCANNER &scanner)
+{
+    scanner.eScanEncoderType = (setup_ENCODER_TYPE)m_global.m_scanner.m_scanAxis.m_driving;
+    scanner.eIndexEncoderType = (setup_ENCODER_TYPE)m_global.m_scanner.m_indexAxis.m_driving;
+    scanner.eScanType = (setup_SCAN_TYPE)m_global.m_scanner.m_scanType;
+
+    scanner.encoder[0].eEncoderMode = (setup_ENCODER_MODE)m_global.m_scanner.m_encoderX.m_mode;
+    scanner.encoder[0].ePolarity    = (setup_ENCODER_POLARITY)m_global.m_scanner.m_encoderX.m_polarity;
+    scanner.encoder[0].fResulotion  = m_global.m_scanner.m_encoderX.m_resolution;
+    scanner.encoder[0].fOrigin      = m_global.m_scanner.m_encoderX.m_origin;
+
+    scanner.encoder[1].eEncoderMode = (setup_ENCODER_MODE)m_global.m_scanner.m_encoderY.m_mode;
+    scanner.encoder[1].ePolarity    = (setup_ENCODER_POLARITY)m_global.m_scanner.m_encoderY.m_polarity;
+    scanner.encoder[1].fResulotion  = m_global.m_scanner.m_encoderY.m_resolution;
+    scanner.encoder[1].fOrigin      = m_global.m_scanner.m_encoderY.m_origin;
+}
+
 void Config::unpack_I_weld(const QVariantMap &map, Paramters::WeldI &I)
 {
     I.m_width       = map.value("W").toDouble();

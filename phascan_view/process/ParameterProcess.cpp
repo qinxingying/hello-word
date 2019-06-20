@@ -467,7 +467,7 @@ int  ParameterProcess::SetupScanMode(setup_SCAN_MODE eMode_)
 int  ParameterProcess::SetupEncoderType(setup_ENCODER_TYPE eType_)
 {
 	SCANNER& _scan = m_pConfig->common.scanner  ;
-	_scan.eEncoderType = eType_ ;
+    _scan.eScanEncoderType = eType_ ;
 	return 0;
 }
 
@@ -490,7 +490,7 @@ int  ParameterProcess::SetupScanArea(float afValue_[6])
 	return 0;
 }
 
-int  ParameterProcess::SetupEncoderConfigure(setup_ENCODER_TYPE eEncoder_, ENCODER_CONFIG* pEncoder_)
+int  ParameterProcess::SetupEncoderConfigure(int eEncoder_, ENCODER_CONFIG* pEncoder_)
 {
 	SCANNER& _scan = m_pConfig->common.scanner  ;
 	memcpy((void*)&_scan.encoder[eEncoder_] , (void*)pEncoder_ , sizeof(ENCODER_CONFIG))  ;
@@ -601,6 +601,7 @@ int  ParameterProcess::GetGroupLawQtyForPosition(int nGroupId_) const
             _ret = (_law.nLastElemFir - _law.nFirstElemFir - _law.nElemQtyFir + 1) / _law.nElemStepFir + 1 ;
         }
 
+        //耦合监控有一条beam用于耦合监控
         if(_group.coupleMonitoringState)
         {
             _ret++;
@@ -749,7 +750,7 @@ int ParameterProcess::SAxisDistToIndex(float fDist_) const
 {
 	SCANNER& _scaner = m_pConfig->common.scanner ;
 	int _index;
-	if(_scaner.eEncoderType) {
+    if(_scaner.eScanEncoderType) {
         if(fDist_ < _scaner.fScanStart)
         {
             fDist_ = _scaner.fScanStart;
@@ -777,7 +778,7 @@ int ParameterProcess::SAxisstoptoIndex(float fStop) const
 {
     SCANNER& _scaner = m_pConfig->common.scanner ;
     int _index;
-    if(_scaner.eEncoderType) {
+    if(_scaner.eScanEncoderType) {
         _index = (fStop - _scaner.fScanStart2) / _scaner.fScanStep ;
     } else {
         _index =  (fStop * _scaner.fPrf - _scaner.fScanStart2 *_scaner.fPrf ) / _scaner.fScanStep;
@@ -789,7 +790,7 @@ float ParameterProcess::SAxisIndexToDist(int index_) const
 {
 	SCANNER& _scaner = m_pConfig->common.scanner ;
 	float _fPos;
-	if(_scaner.eEncoderType) {
+    if(_scaner.eScanEncoderType) {
 		_fPos = index_ * _scaner.fScanStep + _scaner.fScanStart;
 	} else {
         _fPos = (index_ * _scaner.fScanStep + _scaner.fScanStart) / _scaner.fPrf;
@@ -1611,7 +1612,7 @@ double ParameterProcess::GetRealScanRange()
 {
     SCANNER _scan = m_pConfig->comTmp.scanner;
     double scanRange;
-    if(_scan.eEncoderType){
+    if(_scan.eScanEncoderType){
         scanRange = _scan.fScanStop - _scan.fScanStart;
     }
     else{
@@ -1631,7 +1632,7 @@ void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , doubl
 	float _fRange ;
 	float _fStart ;
     int scanend = _process->SAxisstoptoIndex(_process->GetScanend());
-	if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
+    if(_scan.eScanEncoderType == setup_ENCODER_TYPE_TIMER)
 	{
         _fRange = (nDist_ ) / _scan.fPrf  ;
         float scanRange = ( _scan.fScanend - _scan.fScanStart2);
@@ -1674,7 +1675,7 @@ void  ParameterProcess::GetScanScanAxisRange(int nGroupId_ ,  int nDist_ , doubl
         }
     if(_scan.fScanStart2 == _scan.fScanStart && _scan.fScanPos == _scan.fScanStart2)
     {
-        if((_scan.eEncoderType && _scan.fScanStop == _scan.fScanend)||(!_scan.eEncoderType && _scan.fScanend == _scan.fScanStop/_scan.fPrf + _scan.fScanStart))
+        if((_scan.eScanEncoderType && _scan.fScanStop == _scan.fScanend)||(!_scan.eScanEncoderType && _scan.fScanend == _scan.fScanStop/_scan.fPrf + _scan.fScanStart))
         {
             if(_scan.fScanPos == 0)
             {
@@ -2136,7 +2137,7 @@ QString ParameterProcess::GetSonicAxisUnit()
 QString ParameterProcess::GetScanAxisUnit()
 {
 	SCANNER _scan = m_pConfig->common.scanner  ;
-	if(_scan.eEncoderType == setup_ENCODER_TYPE_TIMER)
+    if(_scan.eScanEncoderType == setup_ENCODER_TYPE_TIMER)
 		return QString("s");
 	else
 		return QString("mm");

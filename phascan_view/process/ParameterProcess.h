@@ -87,7 +87,7 @@ public:
     int  SetupEncoderType(setup_ENCODER_TYPE eType_) ;
     int  SetupPrf(float fValue_);
     int  SetupScanArea(float afValue_[6]);
-    int  SetupEncoderConfigure(setup_ENCODER_TYPE eEncoder_ , ENCODER_CONFIG* pEncoder_) ;
+    int  SetupEncoderConfigure(int eEncoder_ , ENCODER_CONFIG* pEncoder_) ;
     int  SetupPAVoltage(setup_VOLTAGE_MODE eVoltage_) ;
     int  SetupUTVoltage(setup_VOLTAGE_MODE eVoltage_) ;
     //int  SetupPATxRxMode(setup_TX_RX_MODE eMode_);
