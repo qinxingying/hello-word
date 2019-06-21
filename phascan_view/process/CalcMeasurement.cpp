@@ -317,7 +317,8 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 
         if(A_pGate->eMeasure)
             {
-            *pResult_ = g_PeakInfo[setup_GATE_A].fDEdge;
+            //*pResult_ = g_PeakInfo[setup_GATE_A].fDEdge;
+            *pResult_ = g_PeakInfo[setup_GATE_A].fHEdge;
             if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh) {
                 ret = -1;
         }
@@ -327,7 +328,7 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 		*pResult_ = g_PeakInfo[setup_GATE_B].fH;
         if(B_pGate->eMeasure)
             {
-            *pResult_ = g_PeakInfo[setup_GATE_B].fDEdge;
+            *pResult_ = g_PeakInfo[setup_GATE_B].fHEdge;
             if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh) {
                 ret = -1;
         }
@@ -337,7 +338,7 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
         *pResult_ = g_PeakInfo[setup_GATE_I].fH;
         if(I_pGate->eMeasure)
             {
-            *pResult_ = g_PeakInfo[setup_GATE_I].fDEdge;
+            *pResult_ = g_PeakInfo[setup_GATE_I].fHEdge;
             if(g_PeakInfo[setup_GATE_I].fAmp < g_PeakInfo[setup_GATE_I].fGh) {
                 ret = -1;
         }

@@ -57,7 +57,7 @@ struct SYSTEM_ENVIRMENT
     bool bShowLwBw[ENV_MAX_GROUP_QTY];
     bool bShowDefect[ENV_MAX_GROUP_QTY];
     unsigned int  anMeasureSelection[2][8];
-    float	bCursor[ENV_MAX_GROUP_QTY][setup_CURSOR_MAX];
+    float	bCursor[ENV_MAX_GROUP_QTY][setup_CURSOR_MAX]; //保存参考线信息
 };
 
 #endif // FILESTRUCT_H

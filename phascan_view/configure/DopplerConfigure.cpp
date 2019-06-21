@@ -238,7 +238,7 @@ void DopplerConfigure::OpenEvn()
 		group[i].bShowMeasure   = AppEvn.bShowMeasure[i] ;
 		group[i].bShowLwBw	    = AppEvn.bShowLwBw[i] ;
         group[i].bShowDefect	= true;
-        for(int j = 0; j < setup_CURSOR_MAX; j++){
+        for(int j = 1; j < setup_CURSOR_MAX; j++){
             group[i].afCursor[j] = AppEvn.bCursor[i][j];
         }
 	}
@@ -281,7 +281,7 @@ void DopplerConfigure::SaveEvn()
         AppEvn.bShowMeasure[i]		= group[i].bShowMeasure;
         AppEvn.bShowLwBw[i]			= group[i].bShowLwBw;
         AppEvn.bShowDefect[i]		= group[i].bShowDefect;
-        for(int j = 0; j < setup_CURSOR_MAX; j++){
+        for(int j = 1; j < setup_CURSOR_MAX; j++){
             AppEvn.bCursor[i][j] = group[i].afCursor[j];
         }
 
