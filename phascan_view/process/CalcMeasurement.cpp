@@ -170,8 +170,12 @@ int CalPDist(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResul
 
 	if(_nHeight > _fAmp)
 		ret  =  -1 ;
-	else
-        *pResult_ = g_PeakInfo[eGate_].fL + _process->GetBeamInsertPos(nGroupId_  , nLaw_) ;
+
+    if(_process->GetGateInfo(nGroupId_ , eGate_)->eMeasure){
+        *pResult_ = g_PeakInfo[eGate_].fLEdge + _process->GetBeamInsertPos(nGroupId_  , nLaw_);
+    }else{
+        *pResult_ = g_PeakInfo[eGate_].fL + _process->GetBeamInsertPos(nGroupId_  , nLaw_);
+    }
 	return ret ;
 }
 
@@ -230,12 +234,11 @@ int CalVsDist(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResu
 int CalLTimes(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResult_ )
 {
     Q_UNUSED(nLaw_);
-    Q_UNUSED(eGate_);
 	int ret = 0;
 
 	ParameterProcess* _process = ParameterProcess::Instance() ;
-	float _nHeight = g_PeakInfo[setup_GATE_A].fGh ;
-	float _fAmp    = g_PeakInfo[setup_GATE_A].fAmp;
+    float _nHeight = g_PeakInfo[eGate_].fGh ;
+    float _fAmp    = g_PeakInfo[eGate_].fAmp;
 
 	_fAmp = fabs(_fAmp);
 
@@ -244,8 +247,11 @@ int CalLTimes(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResu
 
 	if(_nHeight > _fAmp)
 		ret  =  -1 ;
-	else
-		_nDepth = g_PeakInfo[setup_GATE_A].fD;
+    if(_process->GetGateInfo( nGroupId_ , eGate_)->eMeasure){
+        _nDepth = g_PeakInfo[eGate_].fDEdge;
+    }else{
+        _nDepth = g_PeakInfo[eGate_].fD;
+    }
 
 	float _fThickness = _process->GetPartThickness(nGroupId_) ;
 	*pResult_  = (int)(_nDepth / _fThickness)  ;
@@ -312,37 +318,37 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 	case FEILD_BdBr:
 		ret = CalGateAmp2Ref(nGroupId_ , nLaw_ , setup_GATE_B , pResult_ );
 		break;
-	case FEILD_APos://A^
-		*pResult_ = g_PeakInfo[setup_GATE_A].fH;
-
-        if(A_pGate->eMeasure)
-            {
+	case FEILD_APos://A^		
+        if(A_pGate->eMeasure){
             //*pResult_ = g_PeakInfo[setup_GATE_A].fDEdge;
             *pResult_ = g_PeakInfo[setup_GATE_A].fHEdge;
-            if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh) {
-                ret = -1;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_A].fH;
         }
-            }
+        if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh) {
+            ret = -1;
+        }
 		break;
-	case FEILD_BPos://B^
-		*pResult_ = g_PeakInfo[setup_GATE_B].fH;
-        if(B_pGate->eMeasure)
-            {
-            *pResult_ = g_PeakInfo[setup_GATE_B].fHEdge;
-            if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh) {
-                ret = -1;
+	case FEILD_BPos://B^		
+        if(B_pGate->eMeasure){
+            *pResult_ = g_PeakInfo[setup_GATE_B].fHEdge;            
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_B].fH;
         }
-            }
+        if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh) {
+            ret = -1;
+        }
 		break;
 	case FEILD_IEdge://I/
-        *pResult_ = g_PeakInfo[setup_GATE_I].fH;
-        if(I_pGate->eMeasure)
-            {
-            *pResult_ = g_PeakInfo[setup_GATE_I].fHEdge;
-            if(g_PeakInfo[setup_GATE_I].fAmp < g_PeakInfo[setup_GATE_I].fGh) {
-                ret = -1;
+
+        if(I_pGate->eMeasure){
+            *pResult_ = g_PeakInfo[setup_GATE_I].fHEdge;            
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_I].fH;
         }
-            }
+        if(g_PeakInfo[setup_GATE_I].fAmp < g_PeakInfo[setup_GATE_I].fGh) {
+            ret = -1;
+        }
 		break;
 	case FEILD_IEdgeInWater://I(W)/
 		*pResult_ = CalIEdgeInWater(nGroupId_ , g_PeakInfo[setup_GATE_I].fDEdge);
@@ -407,17 +413,25 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 	case FEILD_Imr:
 		ret = CalIMRCursor(nGroupId_ , pResult_);
 		break;
-	case FEILD_RA:
-		*pResult_ = g_PeakInfo[setup_GATE_A].fL;
-		if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh) {
-			ret = -1;
-		}
+	case FEILD_RA:		
+        if(A_pGate->eMeasure){
+            *pResult_ = g_PeakInfo[setup_GATE_A].fLEdge;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_A].fL;
+        }
+        if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh) {
+            ret = -1;
+        }
 		break;
-	case FEILD_RB:
-		*pResult_ = g_PeakInfo[setup_GATE_B].fL;
-		if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh) {
-			ret = -1;
-		}
+	case FEILD_RB:		
+        if(B_pGate->eMeasure){
+            *pResult_ = g_PeakInfo[setup_GATE_B].fLEdge;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_B].fL;
+        }
+        if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh) {
+            ret = -1;
+        }
 		break;
 	case FEILD_PA:
 		ret = CalPDist(nGroupId_ , nLaw_ , setup_GATE_A , pResult_ );
@@ -425,17 +439,45 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 	case FEILD_PB:
 		ret = CalPDist(nGroupId_ , nLaw_ , setup_GATE_B , pResult_ );
 		break;
-	case FEILD_DA:
-		*pResult_ = g_PeakInfo[setup_GATE_A].fD;
+	case FEILD_DA:		
+        if(A_pGate->eMeasure){
+            *pResult_ = g_PeakInfo[setup_GATE_A].fDEdge;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_A].fD;
+        }
+        if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh) {
+            ret = -1;
+        }
 		break;
-	case FEILD_DB:
-		*pResult_ = g_PeakInfo[setup_GATE_B].fD;
+	case FEILD_DB:		
+        if(B_pGate->eMeasure){
+            *pResult_ = g_PeakInfo[setup_GATE_B].fDEdge;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_B].fD;
+        }
+        if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh) {
+            ret = -1;
+        }
 		break;
 	case FEILD_SA:
-		*pResult_ = g_PeakInfo[setup_GATE_A].fS;
+        if(A_pGate->eMeasure){
+            *pResult_ = g_PeakInfo[setup_GATE_A].fSEdge;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_A].fS;
+        }
+        if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh) {
+            ret = -1;
+        }
 		break;
 	case FEILD_SB:
-		*pResult_ = g_PeakInfo[setup_GATE_B].fS;
+        if(B_pGate->eMeasure){
+            *pResult_ = g_PeakInfo[setup_GATE_B].fSEdge;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_B].fS;
+        }
+        if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh) {
+            ret = -1;
+        }
 		break;
 	case FEILD_ViA:
 		ret = CalViDist(nGroupId_ , nLaw_ , setup_GATE_A , pResult_) ;
@@ -453,7 +495,7 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 		ret = CalLTimes(nGroupId_ , nLaw_ , setup_GATE_A , pResult_) ;
 		break;
 	case FEILD_LB :
-		ret = CalLTimes(nGroupId_ , nLaw_ , setup_GATE_A , pResult_) ;
+        ret = CalLTimes(nGroupId_ , nLaw_ , setup_GATE_B , pResult_) ;
 		break;
     case FEILD_RL :
         *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/(RL_EL_SL[setup_RL]*100));

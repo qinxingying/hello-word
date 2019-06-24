@@ -1162,6 +1162,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, int nScanPos_, int nLawId
 	return true;
 }
 
+//计算闸门内各个参数的值，用于显示测量值
 bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId_, PEAK_CONFIG* pInfo_)
 {
 //	if(!pData_) return false;
