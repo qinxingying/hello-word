@@ -28,8 +28,13 @@ void DopplerDrawSScanSoundPath::Draw (QImage *pImage_)
     int _nLawQty      = m_SScanInfo.nLawQty   - 1    ;
     int _nPointQty    = m_SScanInfo.nPointQty - 1    ;
     int _nLawSize     = m_SScanInfo.nPointQty + 32   ;
-
-    WDATA* _pData = _process->GetGroupDataPointer(m_cInfo.nGroupId) ;
+    WDATA* _pData;
+    if( m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        _pData = _process->GetGroupDataPointer(m_cInfo.nGroupId);
+    }else{
+        _pData = _process->GetGroupDataPointerRaster(m_cInfo.nGroupId);
+    }
+    //WDATA* _pData = _process->GetGroupDataPointer(m_cInfo.nGroupId) ;
     if(!_pData)  return ;
 
     WDATA* _pLawData;

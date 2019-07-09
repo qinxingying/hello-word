@@ -570,8 +570,8 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                 {
                                     m_pDrawScan->srcscanstart = _process->GetScanStart2();
                                     m_pDrawScan->srcscanstop = _process->GetScanend();
-                                    flag1 = 1;
-                                    flag2 = 1;
+                                    //flag1 = 1;
+                                    //flag2 = 1;
                                     m_pDrawScan->currangestart = 0;
                                     m_pDrawScan->currangestop = 0;
                                     m_pDrawScan->srcBstart = _fScanStart;
@@ -628,8 +628,8 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                 {
                                     m_pDrawScan->srcscanstart = _process->GetScanStart2();
                                     m_pDrawScan->srcscanstop = _process->GetScanend();
-                                    flag1 = 1;
-                                    flag2 = 1;
+                                    //flag1 = 1;
+                                    //flag2 = 1;
                                     m_pDrawScan->currangestart = 0;
                                     m_pDrawScan->currangestop = 0;
                                     m_pDrawScan->srcBstart = _fScanStart;

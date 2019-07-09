@@ -127,10 +127,10 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
     {
         csize = QSize((currangestop - currangestart)*_nPointQty/_nWidth,_nScanend>0?_nScanend:1);
     }
-    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
-    U8* _pImageBits = TImage->bits() ;
-    memset(_pImageBits, 0 , TImage->bytesPerLine() * TImage->height() );
-    int _nWidthStep   = TImage->bytesPerLine() ;
+    //QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    //U8* _pImageBits = TImage->bits() ;
+    //memset(_pImageBits, 0 , TImage->bytesPerLine() * TImage->height() );
+    //int _nWidthStep   = TImage->bytesPerLine() ;
 	S32 _nFrameOffset = m_BScanInfo.nFrameSize  ;
 	S32      _nOffset = m_BScanInfo.nLawOffset  ;
 	U8*      _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
@@ -140,22 +140,32 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
 
 	S32 i , j , k, _iData;
 	volatile WDATA*  _pData1, *_pData2 ;
-	U8* _pImg1, *_pImg2 ;
+    //U8* _pImg1, *_pImg2 ;
 
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetRealScanMax() + _nScanOff;
 	int    _index = 0;
     memset(src,0x00,sizeof(src));
+    int fixDis;
+    if( _scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        fixDis = 0;
+    }else{
+        int index = _process->TransforIndexPosToIndex(_scanner.fIndexPos);
+        int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
+        fixDis = scanQty*index;
+
+    }
     if(zoomflag == 0)
     {
     for(i = m_PosStart , k =_nScanend  ; i <= m_PosStop && k >= 0; i++ , k--)	{
-		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
-			_index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
-            _pImg1  = _pImageBits + _nWidthStep * k ;//第K行
+        int buff = fixDis + i;
+        if(_pMarker[buff] && buff >= _nScanOff && buff < _nScanMax) {
+            _index = _process->GetRealScanIndex(m_cInfo.nGroupId, buff);
+            //_pImg1  = _pImageBits + _nWidthStep * k ;//第K行
 			_pData1 = _pData + _nOffset + _index * _nFrameOffset;
 
             for(j = 0 ; j <= _nPointQty ; j++) {
-                _pImg2  = _pImg1 + j * 3; //第j个像素
+                //_pImg2  = _pImg1 + j * 3; //第j个像素
                 _pData2 = _pData1 + j ;
 				_iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
                 src[j+1][k+1] = _iData;
@@ -173,15 +183,16 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
     else if (zoomflag == 1)
     {
         for(i = m_PosStart - 1 , k =_nScanend+1   ; i <= m_PosStop + 1 && k >= -1; i++ , k--)	{
-            if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
-                _index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
-                _pImg1  = _pImageBits + _nWidthStep * k ;//第K行
+            int buff = fixDis + i;
+            if(_pMarker[buff] && buff >= _nScanOff && buff < _nScanMax) {
+                _index = _process->GetRealScanIndex(m_cInfo.nGroupId, buff);
+                //_pImg1  = _pImageBits + _nWidthStep * k ;//第K行
                 _pData1 = _pData + _nOffset + _index * _nFrameOffset;
 
                 for(j = currangestart*_nPointQty/_nWidth - 1; j <= currangestop*_nPointQty/_nWidth+1 ; j++) {
                     if(j<0)
                         continue;
-                    _pImg2  = _pImg1 + j * 3; //第j个像素
+                    //_pImg2  = _pImg1 + j * 3; //第j个像素
                     _pData2 = _pData1 + j ;
                     _iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
                     src[j-currangestart*_nPointQty/_nWidth+1][k+1] = _iData;
@@ -196,7 +207,7 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
         }
          TransformImage((currangestop-currangestart)*_nPointQty/_nWidth,m_PosStop-m_PosStart,src,_nWidth,_nHeight,pImage_);
     }
-    delete TImage;
+    //delete TImage;
 	m_hMutex.unlock();
 }
 
@@ -297,10 +308,10 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
     {
         csize = QSize(_nScanend>0?_nScanend:1,(currangestop - currangestart)* _nPointQty / _nHeight);
     }
-    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
-    U8* _pImageBits = TImage->bits() ;
-    memset(_pImageBits, 0 , TImage->bytesPerLine() * TImage->height() );
-    int _nWidthStep   = TImage->bytesPerLine() ;
+    //QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    //U8* _pImageBits = TImage->bits() ;
+    //memset(_pImageBits, 0 , TImage->bytesPerLine() * TImage->height() );
+    //int _nWidthStep   = TImage->bytesPerLine() ;
 	S32 _nFrameOffset = m_BScanInfo.nFrameSize  ;
 	S32      _nOffset = m_BScanInfo.nLawOffset  ;
 	U8*      _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
@@ -310,21 +321,31 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
 
 	S32 i , j , k , _iData;
 	volatile WDATA* _pData1, *_pData2 ;
-	U8* _pImg1, *_pImg2 ;
+    //U8* _pImg1, *_pImg2 ;
 
 	int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
 	int _nScanMax = _process->GetRealScanMax() + _nScanOff;
 	int    _index = 0;
     memset(src,0x00,sizeof(src));
+    int fixDis;
+    if( _scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        fixDis = 0;
+    }else{
+        int index = _process->TransforIndexPosToIndex(_scanner.fIndexPos);
+        int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
+        fixDis = scanQty*index;
+
+    }
     if(zoomflag == 0)
     {
     for(i = m_PosStart , k = 0 ; i <= m_PosStop && k <= _nScanend; i++ , k++) {
-		_index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
-		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
+        int buff = fixDis + i;
+        if(_pMarker[buff] && buff >= _nScanOff && buff < _nScanMax) {
+            _index = _process->GetRealScanIndex(m_cInfo.nGroupId, buff);
 			_pData1 = _index * _nFrameOffset + _pData + _nOffset ;
             for(j = 0 ; j <= _nPointQty ; j++)	{
-				_pImg1  = _pImageBits + _nWidthStep * j ;
-				_pImg2  = _pImg1 + k * 3 ;
+                //_pImg1  = _pImageBits + _nWidthStep * j ;
+                //_pImg2  = _pImg1 + k * 3 ;
                 _pData2 = _pData1 + j   ;
 				_iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
                 src[k+1][j+1] = _iData;
@@ -344,14 +365,16 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
     else if(zoomflag == 1)
     { 
         for(i = m_PosStart-1 , k = -1 ; i <= m_PosStop+1 && k <= _nScanend+1; i++ , k++) {
-            _index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
-            if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
+            int buff = fixDis + i;
+
+            if(_pMarker[buff] && buff >= _nScanOff && buff < _nScanMax) {
+                _index = _process->GetRealScanIndex(m_cInfo.nGroupId, buff);
                 _pData1 = _index * _nFrameOffset + _pData + _nOffset ;
                 for(j = currangestart* _nPointQty / _nHeight-1 ; j <= currangestop* _nPointQty / _nHeight+1 ; j++)	{
                     if(j < 0)
                         continue;
-                    _pImg1  = _pImageBits + _nWidthStep * j ;
-                    _pImg2  = _pImg1 + k * 3 ;
+                    //_pImg1  = _pImageBits + _nWidthStep * j ;
+                    //_pImg2  = _pImg1 + k * 3 ;
                     _pData2 = _pData1 + j   ;
                     _iData  = _process->GetRefGainScaleData(*_pData2, _fScale, _bRectify);
                     src[k+1][j-currangestart* _nPointQty / _nHeight+1] = _iData;
@@ -368,6 +391,6 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
         }
         TransformImage(m_PosStop-m_PosStart,(currangestop-currangestart)* _nPointQty / _nHeight,src,_nWidth,_nHeight,pImage_);
     }
-    delete TImage;
+    //delete TImage;
 	m_hMutex.unlock();
 }

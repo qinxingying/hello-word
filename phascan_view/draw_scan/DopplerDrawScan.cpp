@@ -53,7 +53,7 @@ void DopplerDrawScan::TransformImage(int x1,int y1,U8 src[2048][2048],int x2,int
     float transy = 0.0;
     float diffx = 0.0;
     float diffy = 0.0;
-    float midy1,midy2;
+    //float midy1,midy2;
     int midy3;
     int i;
     int j;
@@ -77,8 +77,8 @@ void DopplerDrawScan::TransformImage(int x1,int y1,U8 src[2048][2048],int x2,int
            srcy = qFloor(transy);
            diffy = transy -srcy;
            srcy+=1;
-           midy1 = (src[srcx][srcy+1]-src[srcx][srcy])*diffy + src[srcx][srcy];
-           midy2 = (src[srcx+1][srcy+1]-src[srcx+1][srcy])*diffy + src[srcx+1][srcy];
+           //midy1 = (src[srcx][srcy+1]-src[srcx][srcy])*diffy + src[srcx][srcy];
+           //midy2 = (src[srcx+1][srcy+1]-src[srcx+1][srcy])*diffy + src[srcx+1][srcy];
            midy3 = (1-diffx)*(1-diffy)*src[srcx][srcy] + (1-diffx)*(diffy)*src[srcx][srcy+1]+diffx*(1-diffy)*src[srcx+1][srcy]+diffx*diffy*src[srcx+1][srcy+1];
            memcpy(_pImageTmp,&m_pColor[midy3],3);
        }
@@ -114,4 +114,28 @@ void DopplerDrawScan::UpdateDisplayRange(int nType_, int nRangle_, int nPos_)
         m_PosStop = m_PosStart + nRangle_ - 1 ;
     }
     emit signalScanRangeMove(nType_, m_PosStart, m_PosStop) ;
+}
+
+void DopplerDrawScan::UpdateIndexRange(int nType_, int nRangle_ , int nPos_)
+{
+    if(nPos_ < 0) nPos_ = 0;
+
+    if( nPos_ <= m_indexStartIndex){
+        m_indexStartIndex = nPos_;
+        m_indexStopIndex  = m_indexStartIndex + nRangle_ - 1;
+        if( m_indexStopIndex > MAX_SCAN_INDEX){
+            m_indexStartIndex = MAX_SCAN_INDEX -  nRangle_ + 1;
+            m_indexStopIndex  = MAX_SCAN_INDEX;
+        }
+    }else if(nPos_ >= m_indexStopIndex){
+        m_indexStopIndex = nPos_;
+        m_indexStartIndex = m_indexStopIndex - nRangle_ + 1;
+        if(m_indexStartIndex < 0){
+            m_indexStartIndex = 0;
+            m_indexStopIndex = nRangle_ - 1;
+        }
+    }else{
+        m_indexStopIndex = m_indexStartIndex + nRangle_ - 1;
+    }
+    emit signalIndexRangeMove(nType_, m_indexStartIndex, m_indexStopIndex);
 }

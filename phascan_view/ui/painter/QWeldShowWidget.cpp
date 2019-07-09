@@ -617,17 +617,17 @@ void QWeldShowWidget::DrawWeldTKY(QPainter &painter)
                 h1 = (l1 + X1) * cos(DEGREE_TO_ARCH(_nFizoneAngle));
                 h2 = (l1 + X2) * cos(DEGREE_TO_ARCH(_nFizoneAngle));
 
-                fx0 = w1;
-                fx1 = R;
-                fx2 = R;
-                fx3 = w2;
-                fx4 = w3;
-                fx5 = w4;
-                fx6 = w5;
-                fy0 = T2;
-                fy1 = h1;
-                fy2 = T2 / 2;
-                fy3 = T2 + h2;
+                //fx0 = w1;
+                //fx1 = R;
+                //fx2 = R;
+                //fx3 = w2;
+                //fx4 = w3;
+                //fx5 = w4;
+                //fx6 = w5;
+                //fy0 = T2;
+                //fy1 = h1;
+                //fy2 = T2 / 2;
+                //fy3 = T2 + h2;
                 _pos[0].setX(-w1);
                 _pos[1].setX(w3);
                 _pos[2].setX(-w2);

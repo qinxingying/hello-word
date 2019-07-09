@@ -219,7 +219,7 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 
 		if(_group.eTxRxMode != setup_TX_RX_MODE_TOFD)
 		{
-			_fData = _pConfig->DefectWidthValue(nGroupId_, &_fStart, i);
+            //_fData = _pConfig->DefectWidthValue(nGroupId_, &_fStart, i);
             fprintf(m_pFile,"<td %s>%smm</td>\n" ,tableTdStyle , _pDfInfo->Index_pos);
             fprintf(m_pFile,"<td %s>%sdb</td>\n" ,tableTdStyle , _pDfInfo->SL);
 		}
@@ -998,7 +998,7 @@ void DopplerHtmlReport::SprintfReportTable()
 
 void DopplerHtmlReport::SprintfGroupMeasure()
 {
-    int _nGroupId;
+    //int _nGroupId;
 	const char* bodyFormat = "i";
 	const char* newLineFormat = " align=\"center\" style=\"word-break:break-all; word-wrap:break-word;\"";
 
@@ -1007,7 +1007,7 @@ void DopplerHtmlReport::SprintfGroupMeasure()
         fprintf(m_pFile, "\t\t</br>\n");
 
         ReportValueItem _value = m_cValueList.at(i);
-        _nGroupId = _value.nGroupId;
+        //_nGroupId = _value.nGroupId;
         fprintf(m_pFile, "<table %s frame=box>\n<tr><td><table %s>\n", tableWidth, sonTableStyle);//table
 
         QString str_1 = QString(QObject::tr("Scan Pos"));

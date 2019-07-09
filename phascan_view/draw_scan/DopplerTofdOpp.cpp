@@ -263,7 +263,7 @@ int DopplerTofdOpp::TofdDataToShadow(int nGroupId_)
 			m_process->GroupDataMove(m_nGroupId, _pWaveBuf, _pShadow, _nScanOff, _nScanOff);
 		}
 		//---------------------------------------------
-		delete _pWaveBuf;
+        delete []_pWaveBuf;
 	}
 
 	return 0;
@@ -523,7 +523,8 @@ int DopplerTofdOpp::TofdSaft(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSourc
     if(_nStart < _nScanOff)	_nStart = _nScanOff;
     if(_nStop > _nScanMax)	_nStop  = _nScanMax;
 
-    int x, y, i, n, _iData, _iAv;
+    int x, y, i, n;
+    //int x, y, i, n, _iData, _iAv;
     float weight, _av, _data;
     float step = 1.0/(_iDots+1);
     for(y = _nStart; y < _nStop; y++)
@@ -540,7 +541,7 @@ int DopplerTofdOpp::TofdSaft(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSourc
 
         for(x = _rect.left; x < _rect.right; x++)
         {
-            _iData = _iAv = 0;
+            //_iData = _iAv = 0;
             _av = _data = 0;
             for(i = 0; i < _iCurveLen; i++)
             {

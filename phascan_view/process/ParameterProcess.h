@@ -121,8 +121,13 @@ public:
 
     int  GetGroupDataOffset(int nGroupId_) const ;
     int  GetScanIndexPos() const ;
+    int  transforRasterPosToMarker() const;
     int  GetScanIndexStart2() const;
     int SAxisDistToIndex(float fDist_) const;
+    float GetIndexStartPos() const;
+    float GetIndexEndPos() const;
+    int TransforIndexPosToIndex(float fPos) const;
+    float TransforIndexIndexToPos(int fIndex) const;
     int SAxisstoptoIndex(float fStop) const;
 	float SAxisIndexToDist(int index_) const;
     int  GetGroupLawDataOffset(int nGroupId_ , int nLawId_) const ;
@@ -137,6 +142,7 @@ public:
 	bool GetGatePeakInfos(int nGroupId_, int nScanPos_, int nLawId_, PEAK_CONFIG* pInfo_);
 	bool GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId_, PEAK_CONFIG* pInfo_);
     WDATA* GetGroupDataPointer(int nGroupId_);
+    WDATA* GetGroupDataPointerRaster(int nGroupId_);
     WDATA* GetLawDataPointer(int nGroupId_ , int nLawId_)  ;
     WDATA* GetCoupleDataPointer( int nGroupId_);
 
@@ -177,6 +183,8 @@ public:
     void ChangeCscanIndexstart( double* fStart_ );
     void ChangeCscanIndexstop( double* fStop_ );
     void ChangeCscanruler( int fscanstart, int fscanend);
+    float GetRasterCoveredLength( int nGroupId_);
+    int   GetRasterIndexStepBeam( int nGroupId_);
     void  GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);
     int  GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_);
     void  GetSScanHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);

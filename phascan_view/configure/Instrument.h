@@ -331,8 +331,8 @@ struct PART_CONFIG
 
 enum setup_LAW_TYPE
 {
-	setup_LAW_TYPE_AZIMUTHAL = 0 ,
-	setup_LAW_TYPE_LINEAR
+    setup_LAW_TYPE_AZIMUTHAL = 0 ,   //角度
+    setup_LAW_TYPE_LINEAR            //线扫
 } ;
 
 enum setup_FOCAL_TYPE
@@ -564,8 +564,8 @@ typedef struct _Group
 	int						nWedgeDelay;			/* 楔款延时 单位 ns */
 	int 					nTimeStart;				/* 时间起点 单位 ns */
 	int						nTimeRange;				/* 时间范围 单位 ns */
-	float					fSampleStart;			/* 显示范围 单位 mm */
-	float					fSampleRange;			/* 扫描延时 单位 mm */
+    float					fSampleStart;			/* 扫描延时 单位 mm */
+    float					fSampleRange;			/* 显示范围 单位 mm */
 	int						nPointQty;				/* 点个数(采样深度) */
 	float					fVelocity;				/* 声速 单位 m/s*/
 	float					fGain;					/* 增益 0 - 80 db  _STEP 0.01dB */
@@ -578,7 +578,8 @@ typedef struct _Group
     bool                    coupleMonitoringState;     /* 耦合监控状态 true 开启  false 关闭 */
     int                     coupleMonitoringVelocity;  /* 耦合监控声速 单位 m/s*/
 	/* 发射接收 */
-	unsigned int			nTrigeStart;			/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元与机器配置相关我们是128阵元最大,值与connect P 一样 */
+    unsigned int			nTrigeStart;			/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元与机器配置
+                                                    相关我们是128阵元最大,值与connect P 一样 */
 	unsigned int			nReceiveStart;			/* 接收阵元 必须是 PR 模式才能调节 */
 
 	setup_FILTER_MODE		eFileter;		/* 滤波 */
@@ -688,6 +689,7 @@ enum setup_SCAN_MODE
 由于文档缺失，根据个人理解，scanner有时间编码和编码器编码，两种编码有几个变量的意义是不一样的：
 在编码器编码情况下：
 fScanPos     单位mm 表示扫查线当前位置
+fIndexPos    单位mm 表示步进轴当前位置 适用于二维扫查,二维扫查无时间编码情况
 fScanStart   单位mm 表示扫查的起点
 fScanStop    单位mm 表示扫查的终点
 fScanStart2  单位mm 值和fScanStart一样

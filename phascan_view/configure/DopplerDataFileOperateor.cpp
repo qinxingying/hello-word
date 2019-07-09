@@ -72,6 +72,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
 
     m_pBeamData = m_file->map(m_cFileHead.size , reservedSize) ;
 
+
     return 0 ;
 }
 

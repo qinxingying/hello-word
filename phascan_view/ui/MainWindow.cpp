@@ -64,6 +64,16 @@ MainWindow::MainWindow(QWidget *parent) :
     sliderh->setGeometry(30,0,300,ui->toolBar->height()-4);
     sliderh->setParent(SliderWidget);
     ui->toolBar->addWidget(SliderWidget);
+
+    indexSliderWidget = new QWidget(this);
+    indexSliderWidget->setFixedWidth(350);
+    indexSliderWidget->setFixedHeight(ui->toolBar->height()-4);
+    indexSliderh = new QSlider(Qt::Horizontal);
+    indexSliderh->setBaseSize(QSize(50,50));
+    indexSliderh->setGeometry(30,0,300,ui->toolBar->height()-4);
+    indexSliderh->setParent(indexSliderWidget);
+    ui->toolBar->addWidget(indexSliderWidget);
+
     connect(ui->TabWidget_parameter, SIGNAL(signalLastTabBottonCliecked(Qt::MouseButton)), this, SLOT(slotsLeftTabButton(Qt::MouseButton)));
     connect(ui->TabWidget_parameter, SIGNAL(signalRightButtonDoubleClicked(int)), this, SLOT(slotLeftTabRightButtonDoubleClicked(int)));
     connect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentGroupChanged(int)));
@@ -74,10 +84,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionEnglish, SIGNAL(triggered()), this, SLOT(slot_actionEnglish_triggered()));
     connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(slot_actionChinese_triggered()));
     connect(sliderh,SIGNAL(valueChanged(int)),this,SLOT(slotSliderhChanged(int)));
+    connect(indexSliderh, SIGNAL(valueChanged(int)), this, SLOT(slotIndexSliderHChanged(int)));
 
     m_remoteMonitoring = new RemoteMonitoring(this);
     connect(ui->actionConnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(connect_remote_monitor()));
     connect(ui->actionDisconnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(disconnect_remote_monitor()));
+    indexSliderh->hide();
+    //indexSliderWidget->hide();
 }
 
 MainWindow::~MainWindow()
@@ -560,6 +573,18 @@ void MainWindow::slotSliderhChanged(int value)
     RunDrawThreadOnce(true);
 }
 
+void MainWindow::slotIndexSliderHChanged(int value)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    SCANNER& _scanner  = _pConfig->common.scanner;
+    _scanner.fIndexPos = _scanner.fIndexStep * value + _scanner.fIndexStart;
+    ProcessDisplay _proDisplay ;
+    for(int i = 0; i < _pConfig->common.nGroupQty; i++) {
+         _proDisplay.UpdateAllViewCursorOfGroup(i);
+    }
+    RunDrawThreadOnce(true);
+}
+
 void MainWindow::SetSelectedDataView(QWidget* pWidget_)
 {
     m_pCurrentDataView = pWidget_;
@@ -694,7 +719,7 @@ int MainWindow::SaveCurScreenshot(QString strPath_)
 }
 
 /*!
-  \brief 初始化工具栏上的slider滑动条
+  \brief 初始化工具栏上的扫查轴滑动条
 
 */
 void MainWindow::initSlider()
@@ -706,6 +731,26 @@ void MainWindow::initSlider()
     sliderh->setSingleStep(_scanner.fScanStep);
     sliderh->setMaximum((_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep );
     sliderh->blockSignals(false);
+}
+
+/*!
+  \brief 初始化工具栏上的步进轴滑动条，用于栅格扫查
+
+*/
+void MainWindow::initIndexSlider()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    SCANNER& _scanner = _pConfig->common.scanner;
+    if( _scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        indexSliderh->hide();
+    }else{
+        indexSliderh->blockSignals(true);
+        indexSliderh->setMinimum(0);
+        indexSliderh->setSingleStep(_scanner.fIndexStep);
+        indexSliderh->setMaximum((_scanner.fIndexStop - _scanner.fIndexStart) / _scanner.fIndexStep);
+        indexSliderh->blockSignals(false);
+        indexSliderh->show();
+    }
 }
 
 void MainWindow::UpdateSlider()
@@ -856,8 +901,10 @@ void MainWindow::OpenFilePro(QString strFileName_)
         UpdateStatusBarInfo();
         UpdateTableDisplay();
         initSlider();
+        initIndexSlider();
         sliderh->setValue(0);
         m_iCurGroup = 0;
+
     }
     if(m_nAlloff)
     {

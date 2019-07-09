@@ -40,8 +40,8 @@ QSize ProcessDisplay::GetMinimumWidgetSize(int eType_)
 	case DISP_3D_PROBE_WEDGE:
 	case DISP_3D_WELD:
 	case DISP_3D_SONIC_BEAMS:
-		_nWidth  = MINIMUM_WIDGET_WIDTH  ;
-		_nHeight = MINIMUM_WIDGET_HEIGHT ;
+        //_nWidth  = MINIMUM_WIDGET_WIDTH  ;
+        //_nHeight = MINIMUM_WIDGET_HEIGHT ;
 	case DISP_AH:
 	case DISP_S:
 		_nWidth  = MINIMUM_WIDGET_WIDTH  ;
@@ -2226,6 +2226,7 @@ void ProcessDisplay::UpdateDataViewDrawCH(DopplerDataView* pWidget_ , int nGroup
 		_pDraw = new DopplerDrawCScanH() ;
 		pWidget_->SetDrawScan(_pDraw) ;
         connect(_pDraw, SIGNAL(signalScanRangeMove(int, int, int)) , pWidget_, SLOT(slotScanRangeMove(int, int, int))) ;
+        connect(_pDraw, SIGNAL(signalIndexRangeMove(int,int,int)), pWidget_, SLOT(slotIndexRangeMove(int,int,int)));
 	}
 	void* _pColor = NULL;
 	if(_eSource == setup_CSCAN_AMP_A || _eSource == setup_CSCAN_AMP_B)
@@ -2268,6 +2269,7 @@ void ProcessDisplay::UpdateDataViewDrawCV(DopplerDataView* pWidget_ , int nGroup
 		_pDraw = new DopplerDrawCScanV() ;
 		pWidget_->SetDrawScan(_pDraw) ;
         connect(_pDraw, SIGNAL(signalScanRangeMove(int, int, int)) , pWidget_, SLOT(slotScanRangeMove(int, int, int))) ;
+        connect(_pDraw, SIGNAL(signalIndexRangeMove(int,int,int)), pWidget_, SLOT(slotIndexRangeMove(int,int,int)));
 	}
 	void* _pColor = NULL;
 	if(_eSource == setup_CSCAN_AMP_A || _eSource == setup_CSCAN_AMP_B)

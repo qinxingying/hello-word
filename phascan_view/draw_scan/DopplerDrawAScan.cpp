@@ -70,7 +70,7 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
     unsigned char* Image_pData = pImage_->bits() ;
     memset(Image_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
 	ParameterProcess* _process = ParameterProcess::Instance();
-	WDATA*			  _pData = _process->GetLawDataPointer(m_cInfo.nGroupId , m_cInfo.nBeamId)  ;
+    WDATA* _pData = _process->GetLawDataPointer( m_cInfo.nGroupId, m_cInfo.nBeamId);
 	if(!_pData)  return ;
 
 	int  _nPointQty = m_AScanInfo.nPointQty ;

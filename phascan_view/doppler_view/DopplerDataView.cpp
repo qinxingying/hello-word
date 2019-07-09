@@ -644,6 +644,49 @@ void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
     }
 }
 
+void DopplerDataView::slotIndexRangeMove(int nType_, int nStart_, int nStop_)
+{
+    if(m_pGraphicView->GetZoomStatus())
+        return;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    double _nStart = _process->TransforIndexIndexToPos(nStart_);
+    double _nStop  = _process->TransforIndexIndexToPos(nStop_);
+    _nStop += _process->GetRasterCoveredLength(0);
+
+    double _nSliderStart , _nSliderStop;
+    switch(nType_)
+    {
+    case 0:
+    case 3:
+        RulerRange[DATA_VIEW_RULER_LEFT].first  = _nStart;
+        RulerRange[DATA_VIEW_RULER_LEFT].second = _nStop;
+        if(m_pRulers[DATA_VIEW_RULER_LEFT]) {
+            m_pRulers[DATA_VIEW_RULER_LEFT]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+            m_pRulers[DATA_VIEW_RULER_LEFT]->SetMarkerRange(
+                        RulerRange[DATA_VIEW_RULER_LEFT].first ,
+                        RulerRange[DATA_VIEW_RULER_LEFT].second,
+                        _nSliderStart , _nSliderStop);
+        }
+        break;
+    case 1:
+    case 2:
+        RulerRange[DATA_VIEW_RULER_BOTTOM].first  = _nStart;
+        RulerRange[DATA_VIEW_RULER_BOTTOM].second = _nStop;
+        if(m_pRulers[DATA_VIEW_RULER_BOTTOM]) {
+            m_pRulers[DATA_VIEW_RULER_BOTTOM]->GetMarkerRange(&_nStart , &_nStop, &_nSliderStart , &_nSliderStop);
+            m_pRulers[DATA_VIEW_RULER_BOTTOM]->SetMarkerRange(
+                        RulerRange[DATA_VIEW_RULER_BOTTOM].first ,
+                        RulerRange[DATA_VIEW_RULER_BOTTOM].second,
+                        _nSliderStart , _nSliderStop);
+        }
+        break;
+    }
+    this->update();
+    if(m_pItemsGroup){
+        m_pItemsGroup->UpdateItems();
+    }
+}
+
 void DopplerDataView::mouseReleaseEvent(QMouseEvent* event)
 {
 	if(Qt::RightButton != event->button()) return ;

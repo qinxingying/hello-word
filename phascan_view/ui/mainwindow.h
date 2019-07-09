@@ -68,6 +68,7 @@ public:
     void UpdateCombinationDisplay();
     int SaveCurScreenshot(QString strPath_);
     void initSlider();
+    void initIndexSlider();
     void UpdateSlider();
 
 protected:
@@ -106,6 +107,8 @@ private:
     QTranslator *translator;
     QSlider* sliderh;
     QWidget* SliderWidget;
+    QSlider* indexSliderh;
+    QWidget* indexSliderWidget;
     QWidget* m_pCurrentDataView;
     QLabel* m_pStatusCell[3];
     STATUS_BAR_INFO m_BarInfo;
@@ -139,6 +142,7 @@ private slots:
     void slotCurrentGroupChanged(int);
     void slotCurrentDispChanged(int);
     void slotSliderhChanged(int);
+    void slotIndexSliderHChanged(int);
     void slotItemMoved(DopplerDataView* , DopplerGraphicsItem*);
     void slotDataViewResized(DopplerDataView*) ;
     void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_);

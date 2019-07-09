@@ -738,6 +738,16 @@ int  ParameterProcess::GetScanIndexPos() const
 	return _nScanPos ;
 }
 
+int  ParameterProcess::transforRasterPosToMarker() const
+{
+    SCANNER& _scaner = m_pConfig->common.scanner;
+    int _nScanIndex  = SAxisDistToIndex(_scaner.fScanPos);
+    int _nIndexIndex = TransforIndexPosToIndex(_scaner.fIndexPos);
+    int scanQty = ( _scaner.fScanStop - _scaner.fScanStart) / _scaner.fScanStep + 0.5;
+    int markerPos = _nIndexIndex*scanQty + _nScanIndex;
+    return markerPos;
+}
+
 int  ParameterProcess::GetScanIndexStart2() const
 {
     SCANNER& _scaner = m_pConfig->common.scanner ;
@@ -745,7 +755,11 @@ int  ParameterProcess::GetScanIndexStart2() const
     return _nScanStart2 ;
 }
 
-//fDist_ 编码器时单位为mm,时间编码时为s
+/*!
+  \brief 将超声轴坐标值转换为数据索引index
+
+  \param fDist_ 编码器时单位为mm,时间编码时为s
+*/
 int ParameterProcess::SAxisDistToIndex(float fDist_) const
 {
 	SCANNER& _scaner = m_pConfig->common.scanner ;
@@ -784,6 +798,46 @@ int ParameterProcess::SAxisstoptoIndex(float fStop) const
         _index =  (fStop * _scaner.fPrf - _scaner.fScanStart2 *_scaner.fPrf ) / _scaner.fScanStep;
     }
     return _index;
+}
+
+float ParameterProcess::GetIndexStartPos() const
+{
+    SCANNER& _scaner = m_pConfig->common.scanner;
+    return _scaner.fIndexStart;
+}
+
+float ParameterProcess::GetIndexEndPos() const
+{
+    SCANNER& _scaner = m_pConfig->common.scanner;
+    return _scaner.fIndexStop;
+}
+
+int ParameterProcess::TransforIndexPosToIndex(float fPos) const
+{
+    SCANNER& _scaner = m_pConfig->common.scanner;
+    int _index;
+    if( fPos < _scaner.fIndexStart){
+        fPos = _scaner.fIndexStart;
+    }
+    if( fPos > _scaner.fIndexStop){
+        fPos = _scaner.fIndexStop;
+    }
+    _index = ( fPos - _scaner.fIndexStart) / _scaner.fIndexStep;
+    return _index;
+}
+
+float ParameterProcess::TransforIndexIndexToPos(int fIndex) const
+{
+    SCANNER& _scaner = m_pConfig->common.scanner;
+    float _Pos;
+    if(fIndex <0){
+        fIndex = 0;
+    }
+    _Pos = _scaner.fIndexStart + fIndex*_scaner.fIndexStep;
+    if(_Pos > _scaner.fIndexStop){
+        _Pos = _scaner.fIndexStop;
+    }
+    return _Pos;
 }
 
 float ParameterProcess::SAxisIndexToDist(int index_) const
@@ -1302,9 +1356,27 @@ WDATA* ParameterProcess::GetGroupDataPointer(int nGroupId_)
 	return (_pData + _nFrameOffset + _nGroupOffset)  ;
 }
 
+WDATA* ParameterProcess::GetGroupDataPointerRaster(int nGroupId_)
+{
+    WDATA* _pData = GetShadowDataPointer();
+    if(!_pData)  return 0;
+    int   _nFrameSize = GetTotalDataSize();
+    int     _nScanPos = transforRasterPosToMarker();
+    int        _index = GetRealScanIndex(nGroupId_, _nScanPos);
+    int _nFrameOffset = _nFrameSize * _index;
+    int _nGroupOffset = GetGroupDataOffset(nGroupId_);
+    return (_pData + _nFrameOffset + _nGroupOffset);
+}
+
 WDATA* ParameterProcess::GetLawDataPointer(int nGroupId_ , int nLawId_)
 {
-	WDATA* _pData = GetGroupDataPointer(nGroupId_) ;
+    WDATA* _pData;
+    if( m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        _pData = GetGroupDataPointer(nGroupId_);
+    }else{
+        _pData = GetGroupDataPointerRaster(nGroupId_);
+    }
+
 	if(!_pData)  return 0 ;
 	int _nLawOffset  = GetGroupLawDataOffset(nGroupId_ , nLawId_)  ;
 	//*** total offset
@@ -1851,6 +1923,28 @@ void ParameterProcess::ChangeCscanruler( int fscanstart, int fscanend)
     _scanner.fScanStart2 = fscanstart;
     _scanner.fScanend = fscanend;
 
+}
+
+float ParameterProcess::GetRasterCoveredLength( int nGroupId_)
+{
+    float start, stop;
+    GetSImageHorizentalRange( nGroupId_, &start, &stop);
+    return abs( stop - start);
+}
+
+//计算步进轴一个分辨率内的beam数，一个beam对应一个像素，画栅格扫查
+int ParameterProcess::GetRasterIndexStepBeam( int nGroupId_)
+{
+    float range = GetRasterCoveredLength(nGroupId_);
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    float step = _scanner.fIndexStep;
+    int beamQty = GetGroupLawQty(nGroupId_);
+    float buff = (step * beamQty / range) + 0.5;
+    int stepBeam = (int)buff;
+    if(stepBeam == 0){
+        stepBeam++;
+    }
+    return stepBeam;
 }
 
 void ParameterProcess::GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_)

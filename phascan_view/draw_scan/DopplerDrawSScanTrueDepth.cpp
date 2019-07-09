@@ -307,18 +307,36 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 
 	ParameterProcess* _process = ParameterProcess::Instance();
     int _nLawSize	= m_cInfo.nPointQty + 32;
-    m_nScanPos		= _process->GetScanIndexPos();
-    m_nFrameOffset	= _process->GetTotalDataSize();
-    m_nGroupOffset	= _process->GetGroupDataOffset(m_cInfo.nGroupId);
 
-    volatile WDATA* _pData  = _process->GetShadowDataPointer();
+//    SCANNER& _scanner = m_pConfig->common.scanner;
+//    if(_scanner.eScanType == setup_SCAN_TYPE_RASTER){
+//        m_nScanPos = _process->transforRasterPosToMarker();
+//    }else{
+//        m_nScanPos = _process->GetScanIndexPos();
+//    }
+//    m_nFrameOffset	= _process->GetTotalDataSize();
+//    m_nGroupOffset	= _process->GetGroupDataOffset(m_cInfo.nGroupId);
+
+//    volatile WDATA* _pData  = _process->GetShadowDataPointer();
+//    if(!_pData) {
+//        m_hMutex.unlock();
+//        return;
+//    }
+
+//	int _nIndex = _process->GetRealScanIndex(m_cInfo.nGroupId, m_nScanPos);
+//	_pData += m_nFrameOffset * _nIndex + m_nGroupOffset;
+
+//    SCANNER& _scanner = m_pConfig->common.scanner;
+    WDATA* _pData;
+    if( m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        _pData = _process->GetGroupDataPointer(m_cInfo.nGroupId);
+    }else{
+        _pData = _process->GetGroupDataPointerRaster(m_cInfo.nGroupId);
+    }
     if(!_pData) {
         m_hMutex.unlock();
         return;
     }
-
-	int _nIndex = _process->GetRealScanIndex(m_cInfo.nGroupId, m_nScanPos);
-	_pData += m_nFrameOffset * _nIndex + m_nGroupOffset;
 
 	float  _fScale = _process->GetRefGainScale(m_cInfo.nGroupId) ;
 	bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;

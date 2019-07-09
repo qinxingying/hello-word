@@ -1,4 +1,4 @@
-#include "DopplerDrawCScan.h"
+﻿#include "DopplerDrawCScan.h"
 #include <process/ParameterProcess.h>
 #include <QImage>
 #include <gHeader.h>
@@ -7,6 +7,8 @@ extern int lastgroup,currentgroup;
 extern int Phascan_Version;
 int Cscan_range = 0;
 int Csrc_start = 0;
+int Cindex_range = 0;
+int Csrc_indexStart = 0;
 
 U32 getGateDataAmplitude( U32 value)
 {
@@ -173,20 +175,181 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     memset(_aGateValue, 0x00, sizeof(_aGateValue));
     //int _nHeight   = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
+    int _nHeight = pImage_->height();
     static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;
-	U8* _pImageTmp;// , *_pColorTmp;
+    //U8* _pImageTmp;// , *_pColorTmp;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
     SCANNER& _scanner = m_pConfig->common.scanner;
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     ParameterProcess* _process = ParameterProcess::Instance();
-    int _nLawQty	  = m_CScanInfo.nLawQty   ;
-    int lawstart    =_process->GetLawStart();
-    int lawstop     =_process->GetLawStop();
+    int _nLawQty  = m_CScanInfo.nLawQty;
+    int lawstart  = _process->GetLawStart();
+    int lawstop   = _process->GetLawStop();
     int lawstart2 = lawstart;
-    int lawstop2 = lawstop;
-    int _nStart     = _process->GetScanIndexStart2();
-    int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    int lawstop2  = lawstop;
+    int _nStart   = _process->GetScanIndexStart2();
+    int _nScanend = _process->SAxisstoptoIndex(_process->GetScanend());    
+
+    //二维扫查显示
+    if( _scanner.eScanType == setup_SCAN_TYPE_RASTER){
+        int indexStepBeam = _process->GetRasterIndexStepBeam(m_cInfo.nGroupId);
+
+        //命名规范，对新增的变量做如下规定：_abc a为Index或Scan表示步进轴或者扫查轴 b为Start或End等限定位置
+        //c为Pos或Index或pixel表示是坐标位置还是数据索引或像素
+        int _IndexStartIndex = _process->TransforIndexPosToIndex( _process->GetIndexStartPos());
+        int _IndexRangeIndex = _process->TransforIndexPosToIndex( _process->GetIndexEndPos());
+        int _IndexRangePixel = _IndexRangeIndex*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        //float Indexlength = _process->GetRasterCoveredLength(m_cInfo.nGroupId);
+        int heightToIndex = (_nHeight- _process->GetGroupLawQty(m_cInfo.nGroupId))/indexStepBeam;
+        if( heightToIndex < 0){
+            heightToIndex = 0;
+        }
+        if(zoomflag == 1){
+            if(((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop)) ||
+                   ((_scanner.fIndexPos > curIndexStartPos)&&(_scanner.fIndexPos < curIndexStopPos))){
+                flag = 1;
+            }
+            if( flag == 1){
+                if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                    curscanstart = _scanner.fScanPos-1;
+                if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                    curscanstop = _scanner.fScanPos+1;
+                if((_scanner.fIndexPos < curIndexStartPos+1)&&(_scanner.fIndexPos-1 >= _scanner.fIndexStart))
+                    curIndexStartPos = _scanner.fIndexPos-1;
+                if((_scanner.fIndexPos > curIndexStopPos-1)&&(_scanner.fIndexPos+1 <= _scanner.fIndexStop))
+                    curIndexStopPos = _scanner.fIndexPos+1;
+            }
+            _nStart     = _process->SAxisDistToIndex(curscanstart);
+            _nScanend   = _process->SAxisDistToIndex(curscanstop) - _nStart;
+            _IndexStartIndex = _process->TransforIndexPosToIndex(curIndexStartPos);
+            _IndexRangeIndex = _process->TransforIndexPosToIndex(curIndexStopPos) - _IndexStartIndex;
+            _IndexRangePixel = _IndexRangeIndex*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        }
+        if(_scanner.fScanPos == _scanner.fScanStart2){
+
+            m_PosStart = _process->SAxisDistToIndex(_scanner.fScanPos);
+            m_PosStop  = _process->SAxisDistToIndex(_scanner.fScanPos) + _nWidth;
+        }
+        if(_scanner.fIndexPos == _scanner.fIndexStart){
+            m_indexStartIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
+            m_indexStopIndex = m_indexStartIndex + heightToIndex;
+        }
+        if(_nWidth <_nScanend){
+            _nScanend = _nWidth;
+            if(zoomflag == 2){
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cscan_range == _nScanend){
+                    m_PosStart = Csrc_start;
+                    m_PosStop = Csrc_start + _nScanend;
+                }else{
+                    Cscan_range = _nScanend;
+                }
+            }
+            int _nScanPos	 = _process->GetScanIndexPos();
+            UpdateDisplayRange(2, _nWidth , _nScanPos) ;
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_start = m_PosStart;
+            }
+        }else{
+            if(zoomflag == 2){
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend) ;
+                _nScanend = m_PosStop - m_PosStart;
+                emit signalScanRangeMove(2, m_PosStart, m_PosStop) ;
+            }else{
+                m_PosStart = _nStart;
+                m_PosStop  = _nStart+_nScanend;
+                emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+            }
+        }
+        if(_nHeight < _IndexRangePixel){
+            _IndexRangePixel = heightToIndex*indexStepBeam + _process->GetGroupLawQty(currentgroup);
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cindex_range == _IndexRangePixel){
+                    m_indexStartIndex = Csrc_indexStart;
+                    m_indexStopIndex = Csrc_indexStart + heightToIndex;
+                }else{
+                    Cindex_range = _IndexRangePixel;
+                }
+            }
+            int _nIndexCurIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
+            UpdateIndexRange(0, heightToIndex, _nIndexCurIndex);
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_indexStart = m_indexStartIndex;
+            }
+        }else{
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
+                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
+                emit signalIndexRangeMove(0, m_indexStartIndex, m_indexStopIndex);
+            }else{
+                m_indexStartIndex = _IndexStartIndex;
+                m_indexStopIndex  = _IndexStartIndex + _IndexRangeIndex;
+                emit signalIndexRangeMove(0, m_indexStartIndex, m_indexStopIndex);
+            }
+        }
+        int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
+        U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
+        int i, j, k, p;
+        int indexStepDrawBeam = indexStepBeam;
+        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
+            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
+        }
+        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
+        U32 _nTmpValue;
+        PEAK_CONFIG _info[setup_GATE_MAX];
+        setup_GATE_NAME _eGate;
+
+        switch(eGate_)
+        {
+        case GATE_A: _eGate = setup_GATE_A; break;
+        case GATE_B: _eGate = setup_GATE_B; break;
+        case GATE_I: _eGate = setup_GATE_I; break;
+        default:  return;
+        }
+        memset(src,0x00,sizeof(src));
+        for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
+//            int indexStepBuff = indexStepDrawBeam;
+//            if(i == m_indexStopIndex){
+//                indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
+//            }
+            int indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
+            int srcBuffIndex = j*indexStepBeam;
+            int markerBuff = scanQty*i;
+            for( k = m_PosStart, p = 0; k <= m_PosStop&& p < _nScanend; k++, p++){
+                int markerPos = markerBuff + k;
+
+                if( _pMarker[markerPos]){
+                    for(int w = 0; w < indexStepBuff; w++){
+                        _process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
+                        _nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
+                        if(_nTmpValue > 255)	_nTmpValue = 255;
+
+                        src[p][srcBuffIndex + w] = _nTmpValue;
+                    }
+                }
+            }
+        }
+        unsigned char* _pData = pImage_->bits();
+        memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
+        int srcHeight = j*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        TransformImage( p, srcHeight, src, pImage_->width(), pImage_->height(), pImage_);
+        return;
+    }
     if(zoomflag == 1)
     {
         if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
@@ -277,12 +440,13 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         lawstart = 0;
         lawstop = _nLawQty;
     }
-    QSize csize = QSize(_nScanend>0?_nScanend:1,(lawstop - lawstart)>0?(lawstop - lawstart):1);
-    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
-    unsigned char* _pData = TImage->bits() ;
-    memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
-    U8* _pImageBits = TImage->bits() ;
-    int _nWidthStep   = TImage->bytesPerLine() ;
+    //QSize csize = QSize(_nScanend>0?_nScanend:1,(lawstop - lawstart)>0?(lawstop - lawstart):1);
+    //QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    //unsigned char* _pData = TImage->bits() ;
+    unsigned char* _pData;
+    //memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
+    //U8* _pImageBits = TImage->bits() ;
+    //int _nWidthStep   = TImage->bytesPerLine() ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
@@ -301,7 +465,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             for(k = lawstart-1 ; k < lawstop+1 ; k++) {
                 if(k<0||k>_nLawQty)
                     continue;
-                _pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
+                //_pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
                 _nTmpValue = getGateDataAmplitude(_aGateValue[k ])  * _fScale;
 
                 if(_nTmpValue > 255)	_nTmpValue = 255 ;
@@ -321,8 +485,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
         TransformImage(m_PosStop - m_PosStart,lawstop-lawstart,src,pImage_->width(),pImage_->height(),pImage_);
-    //qDebug()<<"m_PosStop"<<m_PosStop<<"m_PosStart"<<m_PosStart;
-    delete TImage;
+    //delete TImage;
 }
 
 void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_TYPE eGate2_)
@@ -331,11 +494,11 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	U32 _aGateValue2[256] ;
 	memset(_aGateValue1, 0x00, sizeof(_aGateValue1));
 	memset(_aGateValue2, 0x00, sizeof(_aGateValue2));
-    //int _nHeight	  = pImage_->height();
+    int _nHeight	  = pImage_->height();
 	int _nWidth	   = pImage_->width() ;
     static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;
-	U8* _pImageTmp , *_pColorTmp;
+    //U8* _pImageTmp , *_pColorTmp;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
@@ -348,6 +511,166 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     int lawstop2 = lawstop;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    //二维扫查显示
+    if( _scanner.eScanType == setup_SCAN_TYPE_RASTER){
+        int indexStepBeam = _process->GetRasterIndexStepBeam(m_cInfo.nGroupId);
+        int _IndexStartIndex = _process->TransforIndexPosToIndex( _process->GetIndexStartPos());
+        int _IndexRangeIndex = _process->TransforIndexPosToIndex( _process->GetIndexEndPos());
+        int _IndexRangePixel = _IndexRangeIndex*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        //float Indexlength = _process->GetRasterCoveredLength(m_cInfo.nGroupId);
+        int heightToIndex = (_nHeight- _process->GetGroupLawQty(m_cInfo.nGroupId))/indexStepBeam;
+        if( heightToIndex < 0){
+            heightToIndex = 0;
+        }
+        if(zoomflag == 1){
+            if(((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop)) ||
+                   ((_scanner.fIndexPos > curIndexStartPos)&&(_scanner.fIndexPos < curIndexStopPos))){
+                flag = 1;
+            }
+            if( flag == 1){
+                if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                    curscanstart = _scanner.fScanPos-1;
+                if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                    curscanstop = _scanner.fScanPos+1;
+                if((_scanner.fIndexPos < curIndexStartPos+1)&&(_scanner.fIndexPos-1 >= _scanner.fIndexStart))
+                    curIndexStartPos = _scanner.fIndexPos-1;
+                if((_scanner.fIndexPos > curIndexStopPos-1)&&(_scanner.fIndexPos+1 <= _scanner.fIndexStop))
+                    curIndexStopPos = _scanner.fIndexPos+1;
+            }
+            _nStart     = _process->SAxisDistToIndex(curscanstart);
+            _nScanend   = _process->SAxisDistToIndex(curscanstop) - _nStart;
+            _IndexStartIndex = _process->TransforIndexPosToIndex(curIndexStartPos);
+            _IndexRangeIndex = _process->TransforIndexPosToIndex(curIndexStopPos) - _IndexStartIndex;
+            _IndexRangePixel = _IndexRangeIndex*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        }
+        if(_scanner.fScanPos == _scanner.fScanStart2){
+
+            m_PosStart = _process->SAxisDistToIndex(_scanner.fScanPos);
+            m_PosStop  = _process->SAxisDistToIndex(_scanner.fScanPos) + _nWidth;
+        }
+        if(_scanner.fIndexPos == _scanner.fIndexStart){
+            m_indexStartIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
+            m_indexStopIndex = m_indexStartIndex + heightToIndex;
+        }
+        if(_nWidth <_nScanend){
+            _nScanend = _nWidth;
+            if(zoomflag == 2){
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cscan_range == _nScanend){
+                    m_PosStart = Csrc_start;
+                    m_PosStop = Csrc_start + _nScanend;
+                }else{
+                    Cscan_range = _nScanend;
+                }
+            }
+            int _nScanPos	 = _process->GetScanIndexPos();
+            UpdateDisplayRange(2, _nWidth , _nScanPos) ;
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_start = m_PosStart;
+            }
+        }else{
+            if(zoomflag == 2){
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend) ;
+                _nScanend = m_PosStop - m_PosStart;
+                emit signalScanRangeMove(2, m_PosStart, m_PosStop) ;
+            }else{
+                m_PosStart = _nStart;
+                m_PosStop  = _nStart+_nScanend;
+                emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+            }
+        }
+        if(_nHeight < _IndexRangePixel){
+            _IndexRangePixel = heightToIndex*indexStepBeam + _process->GetGroupLawQty(currentgroup);
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cindex_range == _IndexRangePixel){
+                    m_indexStartIndex = Csrc_indexStart;
+                    m_indexStopIndex = Csrc_indexStart + heightToIndex;
+                }else{
+                    Cindex_range = _IndexRangePixel;
+                }
+            }
+            int _nIndexCurIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
+            UpdateIndexRange(0, heightToIndex, _nIndexCurIndex);
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_indexStart = m_indexStartIndex;
+            }
+        }else{
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
+                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
+                emit signalIndexRangeMove(0, m_indexStartIndex, m_indexStopIndex);
+            }else{
+                m_indexStartIndex = _IndexStartIndex;
+                m_indexStopIndex  = _IndexStartIndex + _IndexRangeIndex;
+                emit signalIndexRangeMove(0, m_indexStartIndex, m_indexStopIndex);
+            }
+        }
+        int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
+        U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
+        int i, j, k, p;
+        int indexStepDrawBeam = indexStepBeam;
+        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
+            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
+        }
+//        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
+//        U32 _nTmpValue;
+//        PEAK_CONFIG _info[setup_GATE_MAX];
+//        setup_GATE_NAME _eGate;
+
+//        switch(eGate_)
+//        {
+//        case GATE_A: _eGate = setup_GATE_A; break;
+//        case GATE_B: _eGate = setup_GATE_B; break;
+//        case GATE_I: _eGate = setup_GATE_I; break;
+//        default:  return;
+//        }
+        memset(src,0x00,sizeof(src));
+        for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
+            int indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
+            int srcBuffIndex = j*indexStepBeam;
+            int markerBuff = scanQty*i;
+            for( k = m_PosStart, p = 0; k <= m_PosStop&& p < _nScanend; k++, p++){
+                int markerPos = markerBuff + k;
+
+                if( _pMarker[markerPos]){
+                    if(eGate2_){
+                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
+                        GetPixValueInfo(markerPos, eGate2_, _aGateValue2);
+                        GetPixValueDistance(_aGateValue1, _aGateValue2);
+                    }else{
+                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
+                        GetPixValuePos(_aGateValue1);
+                    }
+                    for(int w = 0; w < indexStepBuff; w++){
+//                        _process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
+//                        _nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
+//                        if(_nTmpValue > 255)	_nTmpValue = 255;
+
+                        src[p][srcBuffIndex + w] = _aGateValue1[w];
+                    }
+                }
+            }
+        }
+        unsigned char* _pData = pImage_->bits();
+        memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
+        int srcHeight = j*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        TransformImage( p, srcHeight, src, pImage_->width(), pImage_->height(), pImage_);
+        return;
+    }
     if(zoomflag == 1)
     {
         if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
@@ -436,12 +759,12 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
         lawstart = 0;
         lawstop = _nLawQty;
     }
-    QSize csize = QSize(_nScanend>0?_nScanend:1,(lawstop - lawstart)>0?(lawstop - lawstart):1);
-    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
-    unsigned char* _pData = TImage->bits() ;
-    memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
-    U8* _pImageBits = TImage->bits() ;
-    int _nWidthStep   = TImage->bytesPerLine() ;
+    //QSize csize = QSize(_nScanend>0?_nScanend:1,(lawstop - lawstart)>0?(lawstop - lawstart):1);
+    //QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    //unsigned char* _pData = TImage->bits() ;
+    //memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
+    //U8* _pImageBits = TImage->bits() ;
+    //int _nWidthStep   = TImage->bytesPerLine() ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
@@ -464,8 +787,8 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
             for(k = lawstart-1 ; k < lawstop+1 ; k++) {
                 if(k<0||k>_nLawQty)
                     continue;
-                _pImageTmp	   = _pImageBits + (k -lawstart) * _nWidthStep + j * 3 ;
-                _pColorTmp	   = m_pColor[_aGateValue1[k ]] ;
+                //_pImageTmp	   = _pImageBits + (k -lawstart) * _nWidthStep + j * 3 ;
+                //_pColorTmp	   = m_pColor[_aGateValue1[k ]] ;
                  src[j+1][k-lawstart+1]=_aGateValue1[k ];
                 //memcpy(_pImageTmp, _pColorTmp, 3);
 			}
@@ -480,10 +803,10 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 //			}
 		}
 	}
-    _pData = pImage_->bits() ;
+    unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
         TransformImage(m_PosStop - m_PosStart,lawstop-lawstart,src,pImage_->width(),pImage_->height(),pImage_);
-    delete TImage;
+    //delete TImage;
 }
 
 void DopplerDrawCScanH::GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pBuff_)
@@ -588,7 +911,7 @@ void DopplerDrawCScanH::GetPixValueDistance(U32* pBuff1_ , U32* pBuff2_)
 		}
 		else
 		{
-			pBuff1_[i] = 255 ;
+            pBuff1_[i] = 0;
 		}
 	}
 }
@@ -605,7 +928,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 	int _nWidth	   = pImage_->width() ;
     static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;
-	U8* _pImageTmp1 , *_pImageTmp2;
+    //U8* _pImageTmp1 , *_pImageTmp2;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 	ParameterProcess* _process = ParameterProcess::Instance();
@@ -616,6 +939,159 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     int lawstop2 = lawstop;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    //二维扫查显示
+    if( _scanner.eScanType == setup_SCAN_TYPE_RASTER){
+        int indexStepBeam = _process->GetRasterIndexStepBeam(m_cInfo.nGroupId);
+        int _IndexStartIndex = _process->TransforIndexPosToIndex( _process->GetIndexStartPos());
+        int _IndexRangeIndex = _process->TransforIndexPosToIndex( _process->GetIndexEndPos());
+        int _IndexRangePixel = _IndexRangeIndex*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        //float Indexlength = _process->GetRasterCoveredLength(m_cInfo.nGroupId);
+        int heightToIndex = (_nWidth - _process->GetGroupLawQty(m_cInfo.nGroupId))/indexStepBeam;
+        if( heightToIndex < 0){
+            heightToIndex = 0;
+        }
+        if(zoomflag == 1){
+            if(((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop)) ||
+                   ((_scanner.fIndexPos > curIndexStartPos)&&(_scanner.fIndexPos < curIndexStopPos))){
+                flag = 1;
+            }
+            if( flag == 1){
+                if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                    curscanstart = _scanner.fScanPos-1;
+                if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                    curscanstop = _scanner.fScanPos+1;
+                if((_scanner.fIndexPos < curIndexStartPos+1)&&(_scanner.fIndexPos-1 >= _scanner.fIndexStart))
+                    curIndexStartPos = _scanner.fIndexPos-1;
+                if((_scanner.fIndexPos > curIndexStopPos-1)&&(_scanner.fIndexPos+1 <= _scanner.fIndexStop))
+                    curIndexStopPos = _scanner.fIndexPos+1;
+            }
+            _nStart     = _process->SAxisDistToIndex(curscanstart);
+            _nScanend   = _process->SAxisDistToIndex(curscanstop) - _nStart;
+            _IndexStartIndex = _process->TransforIndexPosToIndex(curIndexStartPos);
+            _IndexRangeIndex = _process->TransforIndexPosToIndex(curIndexStopPos) - _IndexStartIndex;
+            _IndexRangePixel = _IndexRangeIndex*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        }
+        if(_scanner.fScanPos == _scanner.fScanStart2){
+
+            m_PosStart = _process->SAxisDistToIndex(_scanner.fScanPos);
+            m_PosStop  = _process->SAxisDistToIndex(_scanner.fScanPos) + _nHeight;
+        }
+        if(_scanner.fIndexPos == _scanner.fIndexStart){
+            m_indexStartIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
+            m_indexStopIndex = m_indexStartIndex + heightToIndex;
+        }
+        if(_nHeight <_nScanend){
+            _nScanend = _nHeight;
+            if(zoomflag == 2){
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cscan_range == _nScanend){
+                    m_PosStart = Csrc_start;
+                    m_PosStop = Csrc_start + _nScanend;
+                }else{
+                    Cscan_range = _nScanend;
+                }
+            }
+            int _nScanPos	 = _process->GetScanIndexPos();
+            UpdateDisplayRange(3, _nHeight, _nScanPos) ;
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_start = m_PosStart;
+            }
+        }else{
+            if(zoomflag == 2){
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend) ;
+                _nScanend = m_PosStop - m_PosStart;
+                emit signalScanRangeMove(3, m_PosStart, m_PosStop) ;
+            }else{
+                m_PosStart = _nStart;
+                m_PosStop  = _nStart+_nScanend;
+                emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+            }
+        }
+        if(_nWidth < _IndexRangePixel){
+            _IndexRangePixel = heightToIndex*indexStepBeam + _process->GetGroupLawQty(currentgroup);
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cindex_range == _IndexRangePixel){
+                    m_indexStartIndex = Csrc_indexStart;
+                    m_indexStopIndex = Csrc_indexStart + heightToIndex;
+                }else{
+                    Cindex_range = _IndexRangePixel;
+                }
+            }
+            int _nIndexCurIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
+            UpdateIndexRange(2, heightToIndex, _nIndexCurIndex);
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_indexStart = m_indexStartIndex;
+            }
+        }else{
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
+                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
+                emit signalIndexRangeMove(2, m_indexStartIndex, m_indexStopIndex);
+            }else{
+                m_indexStartIndex = _IndexStartIndex;
+                m_indexStopIndex  = _IndexStartIndex + _IndexRangeIndex;
+                emit signalIndexRangeMove(2, m_indexStartIndex, m_indexStopIndex);
+            }
+        }
+        int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
+        U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
+        int i, j, k, p;
+        int indexStepDrawBeam = indexStepBeam;
+        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
+            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
+        }
+        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
+        U32 _nTmpValue;
+        PEAK_CONFIG _info[setup_GATE_MAX];
+        setup_GATE_NAME _eGate;
+
+        switch(eGate_)
+        {
+        case GATE_A: _eGate = setup_GATE_A; break;
+        case GATE_B: _eGate = setup_GATE_B; break;
+        case GATE_I: _eGate = setup_GATE_I; break;
+        default:  return;
+        }
+        memset(src,0x00,sizeof(src));
+        int transf = m_PosStop - m_PosStart;
+        for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
+            int indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
+            int srcBuffIndex = j*indexStepBeam;
+            int markerBuff = scanQty*i;
+            for( k = m_PosStart, p = 0; k <= m_PosStop&& p < _nScanend; k++, p++){
+                int markerPos = markerBuff + k;
+
+                if( _pMarker[markerPos]){
+                    for(int w = 0; w < indexStepBuff; w++){
+                        _process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
+                        _nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
+                        if(_nTmpValue > 255)	_nTmpValue = 255;
+
+                        src[srcBuffIndex + w][transf - p] = _nTmpValue;
+                    }
+                }
+            }
+        }
+        unsigned char* _pData = pImage_->bits();
+        memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
+        int srcHeight = j*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        TransformImage( srcHeight, p, src, pImage_->width(), pImage_->height(), pImage_);
+        return;
+    }
     if(zoomflag == 1)
     {
         if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
@@ -704,12 +1180,12 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         lawstart = 0;
         lawstop = _nLawQty;
     }
-    QSize csize = QSize((lawstop - lawstart)>0?(lawstop - lawstart):1,_nScanend>0?_nScanend:1);
-    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
-    unsigned char* _pData = TImage->bits() ;
-    memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
-    U8* _pImageBits = TImage->bits() ;
-    int _nWidthStep   = TImage->bytesPerLine() ;
+    //QSize csize = QSize((lawstop - lawstart)>0?(lawstop - lawstart):1,_nScanend>0?_nScanend:1);
+    //QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    //unsigned char* _pData = TImage->bits() ;
+    //memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
+    //U8* _pImageBits = TImage->bits() ;
+    //int _nWidthStep   = TImage->bytesPerLine() ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
@@ -725,12 +1201,12 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             continue;
 		if(_pMarker[i] && i >= _nScanOff && i < _nScanMax) {
 			GetPixValueInfo(i, eGate_, _aGateValue);
-			_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
+            //_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
 
             for(k = lawstart-1 ; k < lawstop+1 ; k++) {
                 if(k<0||k>_nLawQty)
                     continue;
-                _pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
+                //_pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
 
                 _nTmpValue = getGateDataAmplitude(_aGateValue[ k]) * _fScale;
 				if(_nTmpValue > 255) _nTmpValue = 255 ;
@@ -744,10 +1220,10 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 //			}
 		}
 	}
-    _pData = pImage_->bits() ;
+    unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
     TransformImage(lawstop-lawstart,m_PosStop - m_PosStart,src,pImage_->width(),pImage_->height(),pImage_);
-    delete TImage;
+    //delete TImage;
 }
 
 void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_TYPE eGate2_)
@@ -760,7 +1236,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	int _nWidth	   = pImage_->width() ;
     static int flag = 0;
     //U8* _pImageBits = pImage_->bits() ;
-	U8* _pImageTmp1 , *_pImageTmp2 , *_pColorTmp;
+    //U8* _pImageTmp1 , *_pImageTmp2 , *_pColorTmp;
     //int _nWidthStep   = pImage_->bytesPerLine() ;
 
 	int _nLawQty	  = m_CScanInfo.nLawQty   ;
@@ -773,6 +1249,167 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     int lawstop2 = lawstop;
     int _nStart     = _process->GetScanIndexStart2();
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    //二维扫查显示
+    if( _scanner.eScanType == setup_SCAN_TYPE_RASTER){
+        int indexStepBeam = _process->GetRasterIndexStepBeam(m_cInfo.nGroupId);
+        int _IndexStartIndex = _process->TransforIndexPosToIndex( _process->GetIndexStartPos());
+        int _IndexRangeIndex = _process->TransforIndexPosToIndex( _process->GetIndexEndPos());
+        int _IndexRangePixel = _IndexRangeIndex*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        //float Indexlength = _process->GetRasterCoveredLength(m_cInfo.nGroupId);
+        int heightToIndex = (_nWidth - _process->GetGroupLawQty(m_cInfo.nGroupId))/indexStepBeam;
+        if( heightToIndex < 0){
+            heightToIndex = 0;
+        }
+        if(zoomflag == 1){
+            if(((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop)) ||
+                   ((_scanner.fIndexPos > curIndexStartPos)&&(_scanner.fIndexPos < curIndexStopPos))){
+                flag = 1;
+            }
+            if( flag == 1){
+                if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                    curscanstart = _scanner.fScanPos-1;
+                if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                    curscanstop = _scanner.fScanPos+1;
+                if((_scanner.fIndexPos < curIndexStartPos+1)&&(_scanner.fIndexPos-1 >= _scanner.fIndexStart))
+                    curIndexStartPos = _scanner.fIndexPos-1;
+                if((_scanner.fIndexPos > curIndexStopPos-1)&&(_scanner.fIndexPos+1 <= _scanner.fIndexStop))
+                    curIndexStopPos = _scanner.fIndexPos+1;
+            }
+            _nStart     = _process->SAxisDistToIndex(curscanstart);
+            _nScanend   = _process->SAxisDistToIndex(curscanstop) - _nStart;
+            _IndexStartIndex = _process->TransforIndexPosToIndex(curIndexStartPos);
+            _IndexRangeIndex = _process->TransforIndexPosToIndex(curIndexStopPos) - _IndexStartIndex;
+            _IndexRangePixel = _IndexRangeIndex*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        }
+        if(_scanner.fScanPos == _scanner.fScanStart2){
+
+            m_PosStart = _process->SAxisDistToIndex(_scanner.fScanPos);
+            m_PosStop  = _process->SAxisDistToIndex(_scanner.fScanPos) + _nHeight;
+        }
+        if(_scanner.fIndexPos == _scanner.fIndexStart){
+            m_indexStartIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
+            m_indexStopIndex = m_indexStartIndex + heightToIndex;
+        }
+        if(_nHeight <_nScanend){
+            _nScanend = _nHeight;
+            if(zoomflag == 2){
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cscan_range == _nScanend){
+                    m_PosStart = Csrc_start;
+                    m_PosStop = Csrc_start + _nScanend;
+                }else{
+                    Cscan_range = _nScanend;
+                }
+            }
+            int _nScanPos	 = _process->GetScanIndexPos();
+            UpdateDisplayRange(3, _nHeight, _nScanPos) ;
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_start = m_PosStart;
+            }
+        }else{
+            if(zoomflag == 2){
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend) ;
+                _nScanend = m_PosStop - m_PosStart;
+                emit signalScanRangeMove(3, m_PosStart, m_PosStop) ;
+            }else{
+                m_PosStart = _nStart;
+                m_PosStop  = _nStart+_nScanend;
+                emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+            }
+        }
+        if(_nWidth < _IndexRangePixel){
+            _IndexRangePixel = heightToIndex*indexStepBeam + _process->GetGroupLawQty(currentgroup);
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cindex_range == _IndexRangePixel){
+                    m_indexStartIndex = Csrc_indexStart;
+                    m_indexStopIndex = Csrc_indexStart + heightToIndex;
+                }else{
+                    Cindex_range = _IndexRangePixel;
+                }
+            }
+            int _nIndexCurIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
+            UpdateIndexRange(2, heightToIndex, _nIndexCurIndex);
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_indexStart = m_indexStartIndex;
+            }
+        }else{
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
+                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
+                emit signalIndexRangeMove(2, m_indexStartIndex, m_indexStopIndex);
+            }else{
+                m_indexStartIndex = _IndexStartIndex;
+                m_indexStopIndex  = _IndexStartIndex + _IndexRangeIndex;
+                emit signalIndexRangeMove(2, m_indexStartIndex, m_indexStopIndex);
+            }
+        }
+        int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
+        U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
+        int i, j, k, p;
+        int indexStepDrawBeam = indexStepBeam;
+        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
+            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
+        }
+//        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
+//        U32 _nTmpValue;
+//        PEAK_CONFIG _info[setup_GATE_MAX];
+//        setup_GATE_NAME _eGate;
+
+//        switch(eGate_)
+//        {
+//        case GATE_A: _eGate = setup_GATE_A; break;
+//        case GATE_B: _eGate = setup_GATE_B; break;
+//        case GATE_I: _eGate = setup_GATE_I; break;
+//        default:  return;
+//        }
+        memset(src,0x00,sizeof(src));
+        int transf = m_PosStop - m_PosStart;
+        for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
+            int indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
+            int srcBuffIndex = j*indexStepBeam;
+            int markerBuff = scanQty*i;
+            for( k = m_PosStart, p = 0; k <= m_PosStop&& p < _nScanend; k++, p++){
+                int markerPos = markerBuff + k;
+
+                if( _pMarker[markerPos]){
+                    if(eGate2_){
+                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
+                        GetPixValueInfo(markerPos, eGate2_, _aGateValue2);
+                        GetPixValueDistance(_aGateValue1, _aGateValue2);
+                    }else{
+                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
+                        GetPixValuePos(_aGateValue1);
+                    }
+                    for(int w = 0; w < indexStepBuff; w++){
+//                        _process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
+//                        _nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
+//                        if(_nTmpValue > 255)	_nTmpValue = 255;
+
+                        src[srcBuffIndex + w][transf - p] = _aGateValue1[w];
+                    }
+                }
+            }
+        }
+        unsigned char* _pData = pImage_->bits();
+        memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
+        int srcHeight = j*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        TransformImage( srcHeight, p, src, pImage_->width(), pImage_->height(), pImage_);
+        return;
+    }
     if(zoomflag == 1)
     {
         if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
@@ -860,12 +1497,12 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
         lawstart = 0;
         lawstop = _nLawQty;
     }
-    QSize csize = QSize((lawstop - lawstart)>0?(lawstop - lawstart):1,_nScanend>0?_nScanend:1);
-    QImage *TImage = new QImage(csize , QImage::Format_RGB888);
-    unsigned char* _pData = TImage->bits() ;
-    memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
-    U8* _pImageBits = TImage->bits() ;
-    int _nWidthStep   = TImage->bytesPerLine() ;
+    //QSize csize = QSize((lawstop - lawstart)>0?(lawstop - lawstart):1,_nScanend>0?_nScanend:1);
+    //QImage *TImage = new QImage(csize , QImage::Format_RGB888);
+    //unsigned char* _pData = TImage->bits() ;
+    //memset(_pData, 0 , TImage->bytesPerLine() * TImage->height() );
+    //U8* _pImageBits = TImage->bits() ;
+    //int _nWidthStep   = TImage->bytesPerLine() ;
 
 	U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	int i , j  , k ;
@@ -886,13 +1523,13 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 				GetPixValuePos(_aGateValue1);
 			}
 
-			_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
+            //_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
 
             for(k = lawstart-1 ; k < lawstop+1 ; k++) {
                 if(k<0||k>_nLawQty)
                     continue;
-                _pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
-                _pColorTmp = m_pColor[_aGateValue1[k ]] ;
+                //_pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
+                //_pColorTmp = m_pColor[_aGateValue1[k ]] ;
                 src[k-lawstart+1][j+1]=_aGateValue1[k ];
                 //memcpy(_pImageTmp2, _pColorTmp, 3);
 			}
@@ -903,8 +1540,8 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 //			}
 		}
 	}
-    _pData = pImage_->bits() ;
+    unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
     TransformImage(lawstop-lawstart,m_PosStop - m_PosStart,src,pImage_->width(),pImage_->height(),pImage_);
-    delete TImage;
+    //delete TImage;
 }

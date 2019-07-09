@@ -376,6 +376,7 @@ void DopplerOverlays::CreateOverlaysCH()
 {
 	GROUP_CONFIG&            group = m_pConfigure->group[m_nGroup];
 	DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup() ;
+    ParameterProcess* _process = ParameterProcess::Instance();
 
     if(group.bShowDefect)
     {
@@ -418,7 +419,17 @@ void DopplerOverlays::CreateOverlaysCH()
             HideMode = 0;
         }
 	}
-    _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+    if(m_pConfigure->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+    }else{
+        float indexPos = m_pConfigure->common.scanner.fIndexPos;
+        float coverlength = _process->GetRasterCoveredLength(m_nGroup);
+        int beamQty = _process->GetGroupLawQty(m_nGroup);
+        int curLaw = group.afCursor[setup_CURSOR_LAW];
+        float curPos = curLaw * coverlength / beamQty;
+        _pItemGroup->SetCursorPos( 4, indexPos + curPos);
+    }
+
     _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(false);
@@ -437,6 +448,7 @@ void DopplerOverlays::CreateOverlaysCV()
 {
 	GROUP_CONFIG&            group = m_pConfigure->group[m_nGroup];
 	DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup() ;
+    ParameterProcess* _process = ParameterProcess::Instance();
     if(group.bShowDefect)
     {
         _pItemGroup->EnableItems(OVERLAYS_DEFECT);
@@ -477,7 +489,17 @@ void DopplerOverlays::CreateOverlaysCV()
             HideMode = 2;
         }
 	}
-    _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+    if(m_pConfigure->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+    }else{
+        float indexPos = m_pConfigure->common.scanner.fIndexPos;
+        float coverlength = _process->GetRasterCoveredLength(m_nGroup);
+        int beamQty = _process->GetGroupLawQty(m_nGroup);
+        int curLaw = group.afCursor[setup_CURSOR_LAW];
+        float curPos = curLaw * coverlength / beamQty;
+        _pItemGroup->SetCursorPos( 4, indexPos + curPos);
+    }
+    //_pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
     _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(true);

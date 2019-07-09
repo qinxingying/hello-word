@@ -392,6 +392,7 @@ int DopplerConfigure::OpenData(QString& path_)
         Config::instance()->set_is_phascan_ii(false);
         if(ret)  return -1;
     }
+    ReleaseShadowData();
 
 	OldConfigureToConfigure(m_pDataFile);
 	OldGroupToGroup(m_pDataFile) ;
@@ -421,6 +422,26 @@ int DopplerConfigure::RectifyScanLength()
 		m_nComDisplay[i] = i;
 	}
 
+    if(common.scanner.eScanType == setup_SCAN_TYPE_RASTER){
+        int index = Config::instance()->data_mark_length() - 1;
+        int iMax  = index;
+        for(int i = index; i >= 0; i--){
+            if(common.nRecMark[i]){
+                iMax = i;
+                break;
+            }
+        }
+
+        int scanQty = (common.scanner.fScanStop - common.scanner.fScanStart) / common.scanner.fScanStep + 0.5;
+        int buff = iMax / scanQty;
+        if( iMax % scanQty != 0){
+            buff++;
+        }
+        common.scanner.fIndexStop = common.scanner.fIndexStart + buff * common.scanner.fIndexStep;
+        common.nRecMax = iMax + 1;
+        return iMax + 1;
+    }
+
 	int _index = (common.scanner.fScanStop - common.scanner.fScanStart) / common.scanner.fScanStep + 0.5 ;
 	int _iMax = _index;
 	for(int i = _index; i >= 0; i--)
@@ -444,17 +465,20 @@ int DopplerConfigure::RectifyScanLength()
 
 void DopplerConfigure::CreateShadowData(int iLen_)
 {
-	ReleaseShadowData();
+    //ReleaseShadowData();
 	ParameterProcess* _process = ParameterProcess::Instance();
 	int _nFrameSize = _process->GetTotalDataSize() ;
 	int _iTotalSize = iLen_ * _nFrameSize;
 
-	m_pDataShadow = new WDATA[_iTotalSize+10];
-	memset(m_pDataShadow, 0x00, _iTotalSize);
-	if(m_pData) {
-		memcpy(m_pDataShadow, m_pData, _iTotalSize);
-	}
-
+    if(common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        m_pDataShadow = new WDATA[_iTotalSize+10];
+        memset(m_pDataShadow, 0x00, _iTotalSize);
+        if(m_pData) {
+            memcpy(m_pDataShadow, m_pData, _iTotalSize);
+        }
+    }else{
+        m_pDataShadow = m_pData;
+    }
 	common.nDataSize  = _iTotalSize;
 	common.nScanOffMax = 0;
 	memset(common.nScanOff, 0x00, setup_MAX_GROUP_QTY);
@@ -462,10 +486,14 @@ void DopplerConfigure::CreateShadowData(int iLen_)
 
 void DopplerConfigure::ReleaseShadowData()
 {
-	if(m_pDataShadow){
-	delete m_pDataShadow;
-	m_pDataShadow = NULL;
-	}
+    if(common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        if(m_pDataShadow){
+            delete m_pDataShadow;
+            m_pDataShadow = NULL;
+        }
+    }else{
+        m_pDataShadow = NULL;
+    }
 }
 
 /*!
@@ -832,8 +860,8 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
         common.scanner.eScanType	= setup_SCAN_TYPE_ONE_LINE;
         common.scanner.eScanEncoderType = static_cast<setup_ENCODER_TYPE> (_pack->nEncodeType);
 		common.scanner.eScanMode	= setup_SCAN_NORMAL;
-        common.scanner.fScanPos		=  _pack->nScanStart		/ 1000.0 ;
-		common.scanner.fIndexPos	=  0 ;
+        common.scanner.fScanPos		=  _pack->nScanStart		/ 1000.0;
+        common.scanner.fIndexPos	=  _pack->nInspecStart	    / 1000.0;
         common.scanner.fScanStart   =  _pack->nScanStart		/ 1000.0;
         common.scanner.fScanStop	=  _pack->nScanEnd		    / 1000.0;
         common.scanner.fScanStep	=  _pack->nScanResolution   / 1000.0;
