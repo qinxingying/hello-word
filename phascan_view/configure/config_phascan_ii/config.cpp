@@ -106,6 +106,7 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
 //    memcpy(m_pDataFile->m_cDrawInfoPack.bScanMark, m_dataMark.data(), len);
 
     file.read((char *)&len, sizeof(len));
+    m_dataSource.clear();
     m_dataSource.resize(len);
     if (len <= 0 || len != file.read(m_dataSource.data(), len) ) {
         qWarning("%s(%s[%d]): Read Data(%d) failed", __FILE__, __func__, __LINE__, len);
