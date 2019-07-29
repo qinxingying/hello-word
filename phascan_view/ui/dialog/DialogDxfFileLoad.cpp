@@ -17,7 +17,6 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
     SetDisplayMode(DISPLAY_WELD);
     m_nGroupId = nGroupId_;
 	m_nWeldPartSel = 0;
-
 	SetPart();
     UpdateWeld();
     ui->ExpoView->SerPart(&m_cPart);

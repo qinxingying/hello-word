@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Report Setting</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../mainwindow.qrc">
+    <normaloff>:/file/resource/toolbar/0-06.png</normaloff>:/file/resource/toolbar/0-06.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -169,7 +173,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../mainwindow.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>pushButton_2</sender>

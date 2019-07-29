@@ -298,9 +298,9 @@ void DopplerDrawAScanH::DrawDacCurve(QPainter *painter, int nWidth_, int nHeight
 	float _nStepRate[5];
 
 	_nStepRate[0] = 1;
-    _nStepRate[1] = pow(10.0, CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
-    _nStepRate[2] = pow(10.0, CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
-    _nStepRate[3] = pow(10.0, CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[1] = pow(10.0, (CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
+    _nStepRate[2] = pow(10.0, (CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
+    _nStepRate[3] = pow(10.0, (CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
 	_nStepRate[4] = 1 / _nStepRate[2];
 
 	//------------------------------------------
@@ -386,9 +386,9 @@ void DopplerDrawAScanH::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 
 	float _nStepRate[5];
 	_nStepRate[0] = 1;
-    _nStepRate[1] = pow(10.0, CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
-    _nStepRate[2] = pow(10.0, CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
-    _nStepRate[3] = pow(10.0, CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[1] = pow(10.0, (CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
+    _nStepRate[2] = pow(10.0, (CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
+    _nStepRate[3] = pow(10.0, (CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
 	_nStepRate[4] = 1 / _nStepRate[2];
 	//------------------------------------------
 	_ptX[0] = 0;
@@ -535,17 +535,17 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
         midx = midx * 0.8;
         if(mode == setup_RL)
         {
-            midy = pow(10.0,CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
+            midy = pow(10.0,(CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
             midy = midx * midy;
         }
         else if(mode == setup_EL)
         {
-            midy = pow(10.0,CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
+            midy = pow(10.0,(CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
             midy = midx * midy;
         }
         else if(mode == setup_SL)
         {
-            midy = pow(10.0,CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
+            midy = pow(10.0,(CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
             midy = midx * midy;
         }
         m_linCurves[mode]<<QPointF(0 ,(1 - midy) * m_nHeight) ;
@@ -832,9 +832,9 @@ void DopplerDrawAScanV::DrawDacCurve(QPainter *painter, int nWidth_, int nHeight
 	float _nStepRate[5];
 
 	_nStepRate[0] = 1;
-    _nStepRate[1] = pow(10.0, CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
-    _nStepRate[2] = pow(10.0, CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
-    _nStepRate[3] = pow(10.0, CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[1] = pow(10.0, (CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
+    _nStepRate[2] = pow(10.0, (CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
+    _nStepRate[3] = pow(10.0, (CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
 	_nStepRate[4] = 1 / _nStepRate[2];
 
 	//------------------------------------------
@@ -921,9 +921,9 @@ void DopplerDrawAScanV::DrawLinearDacCurve(QPainter *painter, int nWidth_, int n
 
 	float _nStepRate[5];
 	_nStepRate[0] = 1;
-    _nStepRate[1] = pow(10.0, CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
-    _nStepRate[2] = pow(10.0, CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
-    _nStepRate[3] = pow(10.0, CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
+    _nStepRate[1] = pow(10.0, (CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
+    _nStepRate[2] = pow(10.0, (CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
+    _nStepRate[3] = pow(10.0, (CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
 	_nStepRate[4] = 1 / _nStepRate[2];
 	//------------------------------------------
 	_ptX[0] = _nWidth * _curve.fAmpOffsetLinear * _fRefAmpOff;
@@ -1073,17 +1073,17 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
         midx = midx * 0.8;
         if(mode == setup_RL)
         {
-            midy = pow(10.0,CUR_RES.CurRL[m_cInfo.nGroupId]/20.0);
+            midy = pow(10.0,(CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
             midy = midx * midy;
         }
         else if(mode == setup_EL)
         {
-            midy = pow(10.0,CUR_RES.CurEL[m_cInfo.nGroupId]/20.0);
+            midy = pow(10.0,(CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
             midy = midx * midy;
         }
         else if(mode == setup_SL)
         {
-            midy = pow(10.0,CUR_RES.CurSL[m_cInfo.nGroupId]/20.0);
+            midy = pow(10.0,(CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
             midy = midx * midy;
         }
         m_linCurves[mode]<<QPointF( midy * m_nWidth,0) ;

@@ -293,8 +293,8 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 flag = 0;
                 m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
                 m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
-                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
-                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
+//                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
+//                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
                 emit signalIndexRangeMove(0, m_indexStartIndex, m_indexStopIndex);
             }else{
                 m_indexStartIndex = _IndexStartIndex;
@@ -305,10 +305,10 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
         int i, j, k, p;
-        int indexStepDrawBeam = indexStepBeam;
-        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
-            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
-        }
+//        int indexStepDrawBeam = indexStepBeam;
+//        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
+//            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
+//        }
         float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
         U32 _nTmpValue;
         PEAK_CONFIG _info[setup_GATE_MAX];
@@ -610,8 +610,8 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 flag = 0;
                 m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
                 m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
-                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
-                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
+//                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
+//                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
                 emit signalIndexRangeMove(0, m_indexStartIndex, m_indexStopIndex);
             }else{
                 m_indexStartIndex = _IndexStartIndex;
@@ -622,10 +622,10 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
         int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
         int i, j, k, p;
-        int indexStepDrawBeam = indexStepBeam;
-        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
-            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
-        }
+//        int indexStepDrawBeam = indexStepBeam;
+//        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
+//            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
+//        }
 //        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
 //        U32 _nTmpValue;
 //        PEAK_CONFIG _info[setup_GATE_MAX];
@@ -1038,8 +1038,8 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 flag = 0;
                 m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
                 m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
-                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
-                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
+//                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
+//                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
                 emit signalIndexRangeMove(2, m_indexStartIndex, m_indexStopIndex);
             }else{
                 m_indexStartIndex = _IndexStartIndex;
@@ -1050,10 +1050,10 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
         int i, j, k, p;
-        int indexStepDrawBeam = indexStepBeam;
-        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
-            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
-        }
+//        int indexStepDrawBeam = indexStepBeam;
+//        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
+//            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
+//        }
         float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
         U32 _nTmpValue;
         PEAK_CONFIG _info[setup_GATE_MAX];
@@ -1348,8 +1348,8 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 flag = 0;
                 m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
                 m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
-                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
-                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
+//                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
+//                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
                 emit signalIndexRangeMove(2, m_indexStartIndex, m_indexStopIndex);
             }else{
                 m_indexStartIndex = _IndexStartIndex;
@@ -1360,10 +1360,10 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
         int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
         int i, j, k, p;
-        int indexStepDrawBeam = indexStepBeam;
-        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
-            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
-        }
+//        int indexStepDrawBeam = indexStepBeam;
+//        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
+//            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
+//        }
 //        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
 //        U32 _nTmpValue;
 //        PEAK_CONFIG _info[setup_GATE_MAX];

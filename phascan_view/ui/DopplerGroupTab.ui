@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -4924,7 +4924,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-35</y>
         <width>336</width>
         <height>848</height>
        </rect>
@@ -5895,6 +5895,66 @@
                       <string>&gt;100~200mm</string>
                      </property>
                     </item>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="">
+                 <property name="geometry">
+                  <rect>
+                   <x>2</x>
+                   <y>180</y>
+                   <width>261</width>
+                   <height>26</height>
+                  </rect>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_17">
+                  <item>
+                   <widget class="QLabel" name="LabelScannerSensitivity">
+                    <property name="text">
+                     <string>Scanner Sensitivity        </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="ValueScannerSensitivity">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="mouseTracking">
+                     <bool>false</bool>
+                    </property>
+                    <property name="focusPolicy">
+                     <enum>Qt::WheelFocus</enum>
+                    </property>
+                    <property name="contextMenuPolicy">
+                     <enum>Qt::DefaultContextMenu</enum>
+                    </property>
+                    <property name="buttonSymbols">
+                     <enum>QAbstractSpinBox::NoButtons</enum>
+                    </property>
+                    <property name="minimum">
+                     <double>-20.000000000000000</double>
+                    </property>
+                    <property name="maximum">
+                     <double>20.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="labelUnitSS">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>db</string>
+                    </property>
                    </widget>
                   </item>
                  </layout>

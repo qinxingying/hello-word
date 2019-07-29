@@ -20,6 +20,8 @@ public:
     explicit InstrumentSettingWidget(QWidget *parent = 0);
     ~InstrumentSettingWidget();
     void UpdateScanPos();
+    void UpdateIndexPos();
+    void UpdateIndexBox();
     void retranslateUi();
 
 protected:
@@ -54,6 +56,7 @@ private slots:
     void on_ValueEncoderOrg_editingFinished();
     void on_SpinBoxCurrentScanPos_valueChanged(double arg1);
     void on_SliderCurrentScanPos_valueChanged(int value);
+    void on_SliderCurrentIndexPos_valueChanged(int value);
 
     void on_SpinBoxCurrentScanend_valueChanged(double arg1);
 

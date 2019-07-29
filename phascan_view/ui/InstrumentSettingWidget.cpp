@@ -131,6 +131,18 @@ void InstrumentSettingWidget::InitCommonConfig()
 //    if(_scanner.fLawQty > 0)
 //    ui->SpinBoxCurrentIndexend->setMaximum(fstop2);
 //    ui->SpinBoxCurrentIndexend->setSingleStep(fstep);
+    if(m_pConfig->common.scanner.eScanType != setup_SCAN_TYPE_ONE_LINE){
+        ui->SliderCurrentIndexPos->blockSignals(true);
+        ui->SliderCurrentIndexPos->setMinimum(0);
+        ui->SliderCurrentIndexPos->setSingleStep(_scanner.fIndexStep);
+        ui->SliderCurrentIndexPos->setMaximum((_scanner.fIndexStop - _scanner.fIndexStart) / _scanner.fIndexStep);
+        ui->SliderCurrentIndexPos->blockSignals(false);
+        ui->SpinBoxCurrentIndexPos->blockSignals(true);
+        ui->SpinBoxCurrentIndexPos->setMinimum(_scanner.fIndexStart);
+        double max = _scanner.fIndexStop + _process->GetRasterCoveredLength(0);
+        ui->SpinBoxCurrentIndexPos->setMaximum(max);
+        ui->SpinBoxCurrentIndexPos->blockSignals(false);
+    }
     ui->SliderCurrentScanPos->setMinimum(0);
     ui->SliderCurrentScanPos->setSingleStep(_scanner.fScanStep);
     ui->SliderCurrentScanPos->setMaximum( (_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep );
@@ -149,6 +161,21 @@ void InstrumentSettingWidget::SetItemInvalide()
     ui->BoxEncoderMode->setDisabled(true);
     ui->groupBoxVoltage->setDisabled(true);
     ui->SpinBoxCurrentIndexPos->setDisabled(true);
+    if(m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+
+        ui->SliderCurrentIndexPos->setDisabled(true);
+        ui->SpinBoxCurrentScanstart->setDisabled(false);
+        ui->SpinBoxCurrentScanend->setDisabled(false);
+        ui->SpinBoxCurrentIndexstart->setDisabled(false);
+        ui->SpinBoxCurrentIndexend->setDisabled(false);
+    }else{
+        //ui->SpinBoxCurrentIndexPos->setDisabled(false);
+        ui->SliderCurrentIndexPos->setDisabled(false);
+        ui->SpinBoxCurrentScanstart->setDisabled(true);
+        ui->SpinBoxCurrentScanend->setDisabled(true);
+        ui->SpinBoxCurrentIndexstart->setDisabled(true);
+        ui->SpinBoxCurrentIndexend->setDisabled(true);
+    }
 }
 
 void InstrumentSettingWidget::UpdateScanPos()
@@ -186,6 +213,29 @@ void InstrumentSettingWidget::UpdateScanPos()
     ui->SpinBoxCurrentIndexstart->setValue(fstart);
     ui->SpinBoxCurrentIndexend->setValue(fstop) ;
 	ui->SliderCurrentScanPos->setValue(_nPos);
+}
+
+void InstrumentSettingWidget::UpdateIndexPos()
+{
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    int _nPos = _process->TransforIndexPosToIndex(_scanner.fIndexPos);
+    float indexPos = _process->GetRasterCurrentIndexPos(0);
+    ui->SliderCurrentIndexPos->blockSignals(true);
+    ui->SliderCurrentIndexPos->setValue(_nPos);
+    ui->SliderCurrentIndexPos->blockSignals(false);
+    ui->SpinBoxCurrentIndexPos->blockSignals(true);
+    ui->SpinBoxCurrentIndexPos->setValue(indexPos);
+    ui->SpinBoxCurrentIndexPos->blockSignals(false);
+}
+
+void InstrumentSettingWidget::UpdateIndexBox()
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+    float indexPos = _process->GetRasterCurrentIndexPos(0);
+    ui->SpinBoxCurrentIndexPos->blockSignals(true);
+    ui->SpinBoxCurrentIndexPos->setValue(indexPos);
+    ui->SpinBoxCurrentIndexPos->blockSignals(false);
 }
 
 void InstrumentSettingWidget::ResetEncoderSetting()
@@ -356,6 +406,14 @@ void InstrumentSettingWidget::on_SliderCurrentScanPos_valueChanged(int value)
      }
      g_pMainWnd->UpdateSlider();
 	g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void InstrumentSettingWidget::on_SliderCurrentIndexPos_valueChanged(int value)
+{
+    if(!ui->SliderCurrentIndexPos->hasFocus()) return;
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    _scanner.fIndexPos = _scanner.fIndexStep * value + _scanner.fIndexStart;
+    g_pMainWnd->UpdateIndexSlider();
 }
 
 void InstrumentSettingWidget::retranslateUi()

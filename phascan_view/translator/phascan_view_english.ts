@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="zh_CN">
 <context>
     <name>DialogAboutVersion</name>
     <message>
         <location filename="../ui/dialog/DialogAboutVersion.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Report Setting</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogAboutVersion.ui" line="31"/>
@@ -99,259 +99,255 @@
     <name>DialogDxfFileLoad</name>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="17"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="50"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="54"/>
         <source>Weld</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="55"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="59"/>
         <source>Load Part File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="65"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="69"/>
         <source>Zoom:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="147"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="151"/>
         <source>Weld Parameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="167"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="171"/>
         <source>Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="175"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="179"/>
         <source>I shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="180"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="184"/>
         <source>V shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="190"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="194"/>
         <source>U shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="185"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="189"/>
         <source>double_V shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="195"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="199"/>
         <source>diff_V shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="200"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="204"/>
         <source>J shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="205"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="209"/>
         <source>VY shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="210"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="214"/>
         <source>TKY shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="218"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="181"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="222"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="182"/>
         <source>Symmetry:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="226"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="171"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="230"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="172"/>
         <source>Symmetry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="231"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="172"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="235"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="173"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="236"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="173"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="240"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="174"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="294"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="163"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="298"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="164"/>
         <source>Weland Height:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="329"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="401"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="473"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="539"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="611"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="240"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="333"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="405"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="477"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="543"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="615"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="241"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="372"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="164"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="376"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="165"/>
         <source>Weland Offset:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="444"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="165"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="448"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="166"/>
         <source>Fizone Height:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="510"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="166"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="514"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="167"/>
         <source>Fiz_down Height:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="582"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="167"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="586"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="168"/>
         <source>Fizone Radius:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="654"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="168"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="658"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="169"/>
         <source>Fizone Angle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="683"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="764"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="170"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="687"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="768"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="171"/>
         <source>deg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="726"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="169"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="730"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="170"/>
         <source>Fiz_down Angle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="798"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="802"/>
         <source>Part File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="819"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="823"/>
         <source>Default path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="838"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="842"/>
         <source>Path Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="851"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="855"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="53"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="54"/>
         <source>Not Load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="233"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="234"/>
         <source>X1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="234"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="235"/>
         <source>X2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="235"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="236"/>
         <source>Y1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="236"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="237"/>
         <source>Y2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="237"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="238"/>
         <source>T1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="238"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="239"/>
         <source>T2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="239"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="240"/>
         <source>angle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="242"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="243"/>
         <source>Position:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="250"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="251"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="251"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="252"/>
         <source>2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="252"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="253"/>
         <source>3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="253"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="254"/>
         <source>4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="254"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="255"/>
         <source>5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="255"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="256"/>
         <source>6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="256"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="257"/>
         <source>7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="389"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="390"/>
         <source>Open Dxf File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -359,62 +355,66 @@
 <context>
     <name>DialogReportSetting</name>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Report Setting</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="157"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="161"/>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="164"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="168"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="22"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="26"/>
         <source>Part Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="43"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="14"/>
+        <source>Report Setting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="47"/>
         <source>Part No.:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="57"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="61"/>
         <source>Part Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="71"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="75"/>
         <source>Report Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="85"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="89"/>
         <source>Logo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="105"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="109"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="116"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="120"/>
         <source>Date &amp; Time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="129"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="133"/>
         <source>Without  Group Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogReportSetting.ui" line="134"/>
+        <location filename="../ui/dialog/DialogReportSetting.ui" line="138"/>
         <source>With Group Parameters</source>
         <translation type="unfinished"></translation>
     </message>
@@ -433,107 +433,107 @@
     <name>DialogWeldFixDataII</name>
     <message>
         <location filename="../ui/dialog/dialogweldfixdataii.ui" line="26"/>
-        <source>Dialog</source>
+        <source>Weld</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="34"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="38"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="41"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="45"/>
         <source>Weld Parameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="47"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="51"/>
         <source>R2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="54"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="58"/>
         <source>R1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="61"/>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="95"/>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="102"/>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="140"/>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="201"/>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="235"/>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="252"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="65"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="99"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="106"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="144"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="205"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="239"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="256"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="68"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="72"/>
         <source>H2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="109"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="113"/>
         <source>H1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="116"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="120"/>
         <source>W1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="123"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="127"/>
         <source>W2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="158"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="162"/>
         <source>NONE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="163"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="167"/>
         <source>I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="168"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="172"/>
         <source>V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="173"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="177"/>
         <source>U</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="178"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="182"/>
         <source>VY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="183"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="187"/>
         <source>VV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="188"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="192"/>
         <source>UU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="193"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="197"/>
         <source>UV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="218"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="222"/>
         <source>Weld Type:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="259"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="263"/>
         <source>W3:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -541,23 +541,23 @@
 <context>
     <name>DopplerConfigure</name>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1302"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1337"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1378"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1413"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1367"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1443"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1570"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1646"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1570"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1646"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -649,7 +649,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="9168"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9660"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9711"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="965"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="970"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -882,8 +882,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1643"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="186"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="218"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="187"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="219"/>
         <source>PA</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1259,7 +1259,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5196"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7237"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9161"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1038"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1043"/>
         <source>Width:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1386,8 +1386,8 @@
         <location filename="../ui/DopplerGroupTab.ui" line="6724"/>
         <location filename="../ui/DopplerGroupTab.ui" line="6775"/>
         <location filename="../ui/DopplerGroupTab.ui" line="6826"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="934"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="935"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="939"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="940"/>
         <source>Ref Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1410,7 +1410,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="6864"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8250"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8313"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="950"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="955"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1468,8 +1468,8 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="7177"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8893"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1037"/>
         <location filename="../ui/DopplerGroupTab.cpp" line="1042"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1047"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1606,8 +1606,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="200"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="179"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="211"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="180"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="212"/>
         <source>Wedge Delay:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1971,7 +1971,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="9449"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1036"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1041"/>
         <source>Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2060,63 +2060,63 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="178"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="210"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="179"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="211"/>
         <source>Reference Point:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="193"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="225"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="194"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="226"/>
         <source>NORMAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="195"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="227"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="196"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="228"/>
         <source>INVERSE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="208"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="209"/>
         <source>UT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="560"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2147"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="561"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2152"/>
         <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="931"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="936"/>
         <source>Mat. Atten:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="932"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="937"/>
         <source>Delay:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="964"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="969"/>
         <source>dB/mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="585"/>
         <location filename="../ui/DopplerGroupTab.ui" line="725"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="976"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="981"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1040"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1045"/>
         <source>Inner Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1041"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1046"/>
         <source>Outer Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2378,7 +2378,7 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="209"/>
-        <location filename="../ui/mainwindow.ui" line="615"/>
+        <location filename="../ui/mainwindow.ui" line="624"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2465,107 +2465,122 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Repoet Add One Item</source>
+        <translation type="vanished">Report Add One Item</translation>
+    </message>
+    <message>
         <location filename="../ui/mainwindow.ui" line="447"/>
         <location filename="../ui/mainwindow.ui" line="450"/>
-        <source>Repoet Add One Item</source>
+        <location filename="../ui/mainwindow.ui" line="453"/>
+        <source>Report Add One Item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="459"/>
-        <location filename="../ui/mainwindow.ui" line="462"/>
         <source>Repoet Del One Item</source>
+        <translation type="vanished">Report Del One Item</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="462"/>
+        <location filename="../ui/mainwindow.ui" line="465"/>
+        <location filename="../ui/mainwindow.ui" line="468"/>
+        <source>Report Del One Item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="471"/>
-        <location filename="../ui/mainwindow.ui" line="474"/>
         <source>Repoet Setting</source>
+        <translation type="vanished">Report Setting</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="477"/>
+        <location filename="../ui/mainwindow.ui" line="480"/>
+        <location filename="../ui/mainwindow.ui" line="483"/>
+        <source>Report Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="483"/>
-        <location filename="../ui/mainwindow.ui" line="486"/>
+        <location filename="../ui/mainwindow.ui" line="492"/>
+        <location filename="../ui/mainwindow.ui" line="495"/>
         <source>Save Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="495"/>
-        <location filename="../ui/mainwindow.ui" line="498"/>
+        <location filename="../ui/mainwindow.ui" line="504"/>
+        <location filename="../ui/mainwindow.ui" line="507"/>
         <source>TOFD LW Straitening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="507"/>
-        <location filename="../ui/mainwindow.ui" line="510"/>
+        <location filename="../ui/mainwindow.ui" line="516"/>
+        <location filename="../ui/mainwindow.ui" line="519"/>
         <source>TOFD BW Straitening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="519"/>
-        <location filename="../ui/mainwindow.ui" line="522"/>
+        <location filename="../ui/mainwindow.ui" line="528"/>
+        <location filename="../ui/mainwindow.ui" line="531"/>
         <source>TOFD LW Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="531"/>
-        <location filename="../ui/mainwindow.ui" line="534"/>
+        <location filename="../ui/mainwindow.ui" line="540"/>
+        <location filename="../ui/mainwindow.ui" line="543"/>
         <source>TOFD SAFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="543"/>
-        <location filename="../ui/mainwindow.ui" line="546"/>
+        <location filename="../ui/mainwindow.ui" line="552"/>
+        <location filename="../ui/mainwindow.ui" line="555"/>
         <source>TOFD Repeal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="555"/>
-        <location filename="../ui/mainwindow.ui" line="558"/>
+        <location filename="../ui/mainwindow.ui" line="564"/>
+        <location filename="../ui/mainwindow.ui" line="567"/>
         <source>TOFD Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="567"/>
-        <location filename="../ui/mainwindow.ui" line="570"/>
+        <location filename="../ui/mainwindow.ui" line="576"/>
+        <location filename="../ui/mainwindow.ui" line="579"/>
         <source>TOFD Length Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="579"/>
-        <location filename="../ui/mainwindow.ui" line="582"/>
+        <location filename="../ui/mainwindow.ui" line="588"/>
+        <location filename="../ui/mainwindow.ui" line="591"/>
         <source>TOFD Height Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="591"/>
-        <location filename="../ui/mainwindow.ui" line="594"/>
+        <location filename="../ui/mainwindow.ui" line="600"/>
+        <location filename="../ui/mainwindow.ui" line="603"/>
         <source>TOFD Depth Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="603"/>
-        <location filename="../ui/mainwindow.ui" line="606"/>
+        <location filename="../ui/mainwindow.ui" line="612"/>
+        <location filename="../ui/mainwindow.ui" line="615"/>
         <source>Save Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="618"/>
+        <location filename="../ui/mainwindow.ui" line="627"/>
         <source>CH/EN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="627"/>
-        <location filename="../ui/mainwindow.ui" line="630"/>
+        <location filename="../ui/mainwindow.ui" line="636"/>
+        <location filename="../ui/mainwindow.ui" line="639"/>
         <source>ScreenShot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="635"/>
+        <location filename="../ui/mainwindow.ui" line="644"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="640"/>
+        <location filename="../ui/mainwindow.ui" line="649"/>
         <source>Disconnect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2605,91 +2620,91 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="285"/>
+        <location filename="../ui/mainwindow.cpp" line="297"/>
         <source>Com Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="325"/>
+        <location filename="../ui/mainwindow.cpp" line="337"/>
         <source>Delete Current Display Table ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="326"/>
-        <location filename="../ui/mainwindow.cpp" line="370"/>
-        <location filename="../ui/mainwindow.cpp" line="799"/>
+        <location filename="../ui/mainwindow.cpp" line="338"/>
+        <location filename="../ui/mainwindow.cpp" line="382"/>
+        <location filename="../ui/mainwindow.cpp" line="859"/>
         <source>YES</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="327"/>
-        <location filename="../ui/mainwindow.cpp" line="371"/>
-        <location filename="../ui/mainwindow.cpp" line="800"/>
+        <location filename="../ui/mainwindow.cpp" line="339"/>
+        <location filename="../ui/mainwindow.cpp" line="383"/>
+        <location filename="../ui/mainwindow.cpp" line="860"/>
         <source>NO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="369"/>
+        <location filename="../ui/mainwindow.cpp" line="381"/>
         <source>Add One View ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="418"/>
-        <location filename="../ui/mainwindow.cpp" line="650"/>
+        <location filename="../ui/mainwindow.cpp" line="430"/>
+        <location filename="../ui/mainwindow.cpp" line="676"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1026"/>
+        <location filename="../ui/mainwindow.cpp" line="1101"/>
         <source>The defect was saved failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1028"/>
+        <location filename="../ui/mainwindow.cpp" line="1103"/>
         <source>The defect was saved successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="798"/>
+        <location filename="../ui/mainwindow.cpp" line="858"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="809"/>
+        <location filename="../ui/mainwindow.cpp" line="869"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="893"/>
+        <location filename="../ui/mainwindow.cpp" line="968"/>
         <source>save in </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="941"/>
+        <location filename="../ui/mainwindow.cpp" line="1016"/>
         <source>increase success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="952"/>
+        <location filename="../ui/mainwindow.cpp" line="1027"/>
         <source>delete success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1024"/>
+        <location filename="../ui/mainwindow.cpp" line="1099"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1024"/>
+        <location filename="../ui/mainwindow.cpp" line="1099"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="893"/>
-        <location filename="../ui/mainwindow.cpp" line="941"/>
-        <location filename="../ui/mainwindow.cpp" line="952"/>
-        <location filename="../ui/mainwindow.cpp" line="1026"/>
-        <location filename="../ui/mainwindow.cpp" line="1028"/>
+        <location filename="../ui/mainwindow.cpp" line="968"/>
+        <location filename="../ui/mainwindow.cpp" line="1016"/>
+        <location filename="../ui/mainwindow.cpp" line="1027"/>
+        <location filename="../ui/mainwindow.cpp" line="1101"/>
+        <location filename="../ui/mainwindow.cpp" line="1103"/>
         <source>prompt</source>
         <translation type="unfinished"></translation>
     </message>

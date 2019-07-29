@@ -422,12 +422,13 @@ void DopplerOverlays::CreateOverlaysCH()
     if(m_pConfigure->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
         _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
     }else{
-        float indexPos = m_pConfigure->common.scanner.fIndexPos;
-        float coverlength = _process->GetRasterCoveredLength(m_nGroup);
-        int beamQty = _process->GetGroupLawQty(m_nGroup);
-        int curLaw = group.afCursor[setup_CURSOR_LAW];
-        float curPos = curLaw * coverlength / beamQty;
-        _pItemGroup->SetCursorPos( 4, indexPos + curPos);
+//        float indexPos = m_pConfigure->common.scanner.fIndexPos;
+//        float coverlength = _process->GetRasterCoveredLength(m_nGroup);
+//        int beamQty = _process->GetGroupLawQty(m_nGroup);
+//        int curLaw = group.afCursor[setup_CURSOR_LAW];
+//        float curPos = curLaw * coverlength / beamQty;
+        float indexPos = _process->GetRasterCurrentIndexPos(m_nGroup);
+        _pItemGroup->SetCursorPos( 4, indexPos);
     }
 
     _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);

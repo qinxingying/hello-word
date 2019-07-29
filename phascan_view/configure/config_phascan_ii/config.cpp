@@ -74,6 +74,7 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
     m_global.m_groupQty = dst.value("GroupQty").toUInt();
     m_global.m_prfMode = static_cast<Paramters::Global::PrfMode> (dst.value("PrfMode").toUInt());
 
+    unpack_version();
     unpack_display();
     unpack_scanner();
     unpack_global_transceiver();
@@ -100,6 +101,10 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " len " << len
              << " mark len " << m_dataMark.length();
+    if(m_global.m_scanner.m_scanAxis.m_driving == Paramters::Axis::TIMER){
+        m_pDataFile->m_cDrawInfoPack.nScanEnd = m_pDataFile->m_cDrawInfoPack.nScanStart +
+                                                len*1000.0;
+    }
 
     /* 不拷贝到bScanMark，直接拷贝m_dataMark到common.nRecMark */
 //    memset(m_pDataFile->m_cDrawInfoPack.bScanMark, 0, sizeof(unsigned char) * 1024 * 256);
@@ -153,6 +158,19 @@ void Config::unpack_group(int groupId)
     unpack_sample(map["Sample"].toMap());
     unpack_c_scan(map["CScan"].toMap());
     unpack_sizing(map["Sizing"].toMap());
+}
+
+void Config::unpack_version()
+{
+    Paramters::Version &version = m_global.m_version;
+    version.m_phascanVersion = value("Version").toString();
+    version.m_FpgaCpuVersion = value("FpgaCpuVersion").toString();
+    version.m_FpgaPaVersion  = value("FpgaPaVersion").toString();
+
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " version " << version.m_phascanVersion
+             << " fpgaCpuVersion " << version.m_FpgaCpuVersion
+             << " fpgaPaVersion " << version.m_FpgaPaVersion;
 }
 
 void Config::unpack_display()
@@ -1389,6 +1407,26 @@ void Config::set_is_phascan_ii(bool flag)
 bool Config::is_phascan_ii()
 {
     return m_isPhascanII;
+}
+
+bool Config::is_200wave()
+{
+    QString version = m_global.m_version.m_phascanVersion;
+    QStringList list1 = version.split('.');
+    int buffV[3];
+    for(int i = 0; i < list1.size(); i++){
+        QString buffs = list1.at(i);
+        buffV[i] = buffs.toInt();
+    }
+    if( buffV[0] > 1){
+        return true;
+    }else if( buffV[0] == 1 && buffV[1] > 3){
+        return true;
+    }else if( buffV[0] == 1 && buffV[1] == 3 && buffV[2] >= 8){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 char *Config::data_mark()

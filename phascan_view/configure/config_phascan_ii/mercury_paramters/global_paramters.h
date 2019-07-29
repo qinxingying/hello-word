@@ -5,6 +5,7 @@
 #include "display_paramters.h"
 #include "global_transceiver_paramters.h"
 #include "scanner_paramters.h"
+#include "version_paramters.h"
 
 namespace Paramters {
 
@@ -34,6 +35,7 @@ public:
     explicit Global(QObject *parent = 0);
 
 private:
+    Version m_version;
     Display m_display;
     GlobalTransceiver m_transceiver;
     Scanner m_scanner;

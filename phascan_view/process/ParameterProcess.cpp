@@ -1925,11 +1925,24 @@ void ParameterProcess::ChangeCscanruler( int fscanstart, int fscanend)
 
 }
 
+//计算步进轴覆盖的长度，假如长度大于步进step表示有重复覆盖，小于表示有空白，适用于二维扫查
 float ParameterProcess::GetRasterCoveredLength( int nGroupId_)
 {
     float start, stop;
     GetSImageHorizentalRange( nGroupId_, &start, &stop);
     return abs( stop - start);
+}
+
+//计算步进轴的当前位置，要考虑Law的位置，适用于二维扫查
+float ParameterProcess::GetRasterCurrentIndexPos( int nGroupId_)
+{
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    float indexPos = _scanner.fIndexPos;
+    float coverlength = GetRasterCoveredLength(nGroupId_);
+    int beamQty = GetGroupLawQty(nGroupId_);
+    int curLaw = m_pConfig->group[nGroupId_].afCursor[setup_CURSOR_LAW];
+    float curPos = curLaw * coverlength / beamQty;
+    return indexPos + curPos;
 }
 
 //计算步进轴一个分辨率内的beam数，一个beam对应一个像素，画栅格扫查

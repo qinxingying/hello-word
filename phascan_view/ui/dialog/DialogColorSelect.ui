@@ -20,8 +20,8 @@
    <string>Pallette</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/icon/Main/resource/Main/0-01.png</normaloff>:/icon/Main/resource/Main/0-01.png</iconset>
+   <iconset resource="../../mainwindow.qrc">
+    <normaloff>:/file/resource/Main/palette.png</normaloff>:/file/resource/Main/palette.png</iconset>
   </property>
   <widget class="QListWidget" name="ListName">
    <property name="geometry">
@@ -72,6 +72,8 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../mainwindow.qrc"/>
+ </resources>
  <connections/>
 </ui>

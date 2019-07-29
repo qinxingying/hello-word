@@ -184,6 +184,7 @@ public:
     void ChangeCscanIndexstop( double* fStop_ );
     void ChangeCscanruler( int fscanstart, int fscanend);
     float GetRasterCoveredLength( int nGroupId_);
+    float GetRasterCurrentIndexPos( int nGroupId_);
     int   GetRasterIndexStepBeam( int nGroupId_);
     void  GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);
     int  GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_);

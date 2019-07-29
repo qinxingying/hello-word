@@ -72,5 +72,6 @@
         <file>resource/weld/vv.jpg</file>
         <file>resource/weld/vy.jpg</file>
         <file>resource/weld/none.jpg</file>
+        <file>resource/Main/palette.png</file>
     </qresource>
 </RCC>

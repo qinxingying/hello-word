@@ -22,6 +22,7 @@ public:
 
     void set_is_phascan_ii(bool flag);
     bool is_phascan_ii();
+    bool is_200wave();
 
     char *data_mark();
 
@@ -33,6 +34,8 @@ public:
 
 protected:
     void unpack_group(int groupId);
+
+    void unpack_version();
 
     void unpack_display();
 

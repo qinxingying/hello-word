@@ -582,6 +582,8 @@ void MainWindow::slotIndexSliderHChanged(int value)
     for(int i = 0; i < _pConfig->common.nGroupQty; i++) {
          _proDisplay.UpdateAllViewCursorOfGroup(i);
     }
+    InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+    _pScanner->UpdateIndexPos();
     RunDrawThreadOnce(true);
 }
 
@@ -762,6 +764,15 @@ void MainWindow::UpdateSlider()
     sliderh->setValue(_nPos);
 }
 
+void MainWindow::UpdateIndexSlider()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    SCANNER& _scanner = _pConfig->common.scanner ;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    int _nPos = _process->TransforIndexPosToIndex(_scanner.fIndexPos);
+    indexSliderh->setValue(_nPos);
+}
+
 void MainWindow::UpdateTableDisplay()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -903,6 +914,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
         initSlider();
         initIndexSlider();
         sliderh->setValue(0);
+        indexSliderh->setValue(0);
         m_iCurGroup = 0;
 
     }
@@ -1127,6 +1139,8 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         m_nLawIdSel = _nId;
         _group.afCursor[setup_CURSOR_LAW] = _nPos;
         updateCscanLawPos(_nPos, _nGroupId);
+        InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+        _pScanner->UpdateIndexBox();
 
         DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
         _pGroupTab->UpdateCurrentAngleCom();
@@ -1182,6 +1196,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
             return;
         }
         _group.afCursor[_nItemId] = _fCursor;
+//        qDebug()<<"aass"<<_fCursor;
 //        qDebug("xxx== _nItemId:%d, _fCursor:%.2f, line_direction type:%d, _nLawId:%d", _nItemId, _fCursor,
 //               ((DopplerLineItem*)pItem_)->GetLineType(), _nLawId);
         if(_nItemId == setup_CURSOR_C_ANGLE){
@@ -1508,17 +1523,17 @@ void MainWindow::on_actionSaveFile_triggered()
     SaveFile();
 }
 
-void MainWindow::on_actionRepoet_Add_One_Item_triggered()
+void MainWindow::on_actionReport_Add_One_Item_triggered()
 {
     ReportAddOneItem();
 }
 
-void MainWindow::on_actionRepoet_Del_One_Item_triggered()
+void MainWindow::on_actionReport_Del_One_Item_triggered()
 {
     ReportDelOneItem();
 }
 
-void MainWindow::on_actionRepoet_Setting_triggered()
+void MainWindow::on_actionReport_Setting_triggered()
 {
     ReportSetting();
 }

@@ -194,8 +194,8 @@ enum setup_WELD_TYPE_II
 enum setup_WELD_SYMMETRY_TYPE
 {
 	setup_WELD_SYMMETRY = 0 ,
-	setup_WELD_LEFT ,
-	setup_WELD_RIGHT
+    setup_WELD_RIGHT ,
+    setup_WELD_LEFT
 } ;
 
 struct WELD
@@ -445,6 +445,7 @@ struct CURVE_RL_EL_SL
     int bShowSL;
     float REF_Gain[8];
     float Com_Gain[8];
+    int CurSS[8];  //保存扫查灵敏度
 };
 
 extern CURVE_RL_EL_SL CUR_RES;

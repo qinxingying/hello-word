@@ -766,6 +766,7 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
+    ui->ValueScannerSensitivity->setValue(CUR_RES.CurSS[m_nGroupId]);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
 	ui->ValueWedgeDelay->setValue(m_pGroup->nWedgeDelay / 1000.0);
@@ -2234,6 +2235,12 @@ void DopplerGroupTab::on_CheckRLShow_clicked(bool checked)
 void DopplerGroupTab::on_ValueRL_valueChanged(double arg1)
 {
     CUR_RES.CurRL[m_nGroupId] = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueScannerSensitivity_valueChanged(double arg1)
+{
+    CUR_RES.CurSS[m_nGroupId] = arg1;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 

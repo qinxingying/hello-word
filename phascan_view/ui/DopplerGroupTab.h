@@ -195,6 +195,8 @@ private slots:
 
     void on_ValueRL_valueChanged(double arg1);
 
+    void on_ValueScannerSensitivity_valueChanged(double arg1);
+
     void on_CheckELShow_clicked(bool checked);
 
     void on_ValueEL_valueChanged(double arg1);

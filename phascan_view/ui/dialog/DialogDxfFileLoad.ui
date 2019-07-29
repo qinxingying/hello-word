@@ -14,7 +14,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Weld</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../mainwindow.qrc">
+    <normaloff>:/file/resource/main_menu/0-05.png</normaloff>:/file/resource/main_menu/0-05.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -995,7 +999,9 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../mainwindow.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

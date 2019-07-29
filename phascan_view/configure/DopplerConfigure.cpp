@@ -434,8 +434,20 @@ int DopplerConfigure::RectifyScanLength()
 
         int scanQty = (common.scanner.fScanStop - common.scanner.fScanStart) / common.scanner.fScanStep + 0.5;
         int buff = iMax / scanQty;
-        if( iMax % scanQty != 0){
-            buff++;
+        if( iMax % scanQty == 0){
+            buff--;
+        }
+        //如果只有1条，就按线扫处理
+        if( buff < 1){
+            common.scanner.eScanType = setup_SCAN_TYPE_ONE_LINE;
+            common.scanner.fScanStop = iMax * common.scanner.fScanStep + common.scanner.fScanStart;
+            common.nRecMax = iMax+1;
+            if(common.scanner.eScanEncoderType){
+                common.scanner.fScanend     =   common.scanner.fScanStop;
+            }else{
+                common.scanner.fScanend     =   common.scanner.fScanStop/common.scanner.fPrf;
+            }
+            return iMax + 1;
         }
         common.scanner.fIndexStop = common.scanner.fIndexStart + buff * common.scanner.fIndexStep;
         common.nRecMax = iMax + 1;
@@ -922,12 +934,13 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
     if(Config::instance()->is_phascan_ii()) {
-        /* Phascan II not support 200% */
-        Phascan_Version = 3;
-        //qDebug()<<"dataII";
+        if(Config::instance()->is_200wave()){
+            Phascan_Version = 2;
+        }else{
+            Phascan_Version = 3;
+        }
     } else {
         Phascan_Version = m_pDataFile->GetFileHeader()->version-m_pDataFile->GetFileHeader()->size-m_pDataFile->GetFileHeader()->reserved;
-        //qDebug()<<"dataI";
     }
 
 	for(int i = 0 ; i < common.nGroupQty ; i++)
@@ -968,6 +981,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         CUR_RES.CurRL[i]         = -4;
         CUR_RES.CurEL[i]         = -18;
         CUR_RES.CurSL[i]         = -12;
+        CUR_RES.CurSS[i]         = 0;
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;

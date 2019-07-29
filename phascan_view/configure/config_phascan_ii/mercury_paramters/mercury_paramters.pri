@@ -32,7 +32,8 @@ HEADERS += \
     $$PWD/curves_paramters.h \
     $$PWD/dac_paramters.h \
     $$PWD/tcg_paramters.h \
-    $$PWD/linear_dac_paramters.h
+    $$PWD/linear_dac_paramters.h \
+    $$PWD/version_paramters.h
 
 SOURCES += \
     $$PWD/group_paramters.cpp \
@@ -67,4 +68,5 @@ SOURCES += \
     $$PWD/curves_paramters.cpp \
     $$PWD/dac_paramters.cpp \
     $$PWD/tcg_paramters.cpp \
-    $$PWD/linear_dac_paramters.cpp
+    $$PWD/linear_dac_paramters.cpp \
+    $$PWD/version_paramters.cpp

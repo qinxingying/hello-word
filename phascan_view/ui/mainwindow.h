@@ -70,6 +70,7 @@ public:
     void initSlider();
     void initIndexSlider();
     void UpdateSlider();
+    void UpdateIndexSlider();
 
 protected:
     void CreateStatusBar();
@@ -158,9 +159,9 @@ protected slots:
   void on_actionNew_triggered();                    // (1).ToolBar
   void on_actionOpenFile_triggered();
   void on_actionSaveFile_triggered();
-  void on_actionRepoet_Add_One_Item_triggered();
-  void on_actionRepoet_Del_One_Item_triggered();
-  void on_actionRepoet_Setting_triggered();
+  void on_actionReport_Add_One_Item_triggered();
+  void on_actionReport_Del_One_Item_triggered();
+  void on_actionReport_Setting_triggered();
   void on_actionSave_Report_triggered();
   void on_actionTOFD_LW_Straitening_triggered();
   void on_actionTOFD_BW_Straitening_triggered();
