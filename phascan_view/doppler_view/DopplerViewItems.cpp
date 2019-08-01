@@ -254,13 +254,18 @@ void DopplerViewItems::UpdateItemsLwBw()
 
 void DopplerViewItems::UpdateItemsGate()
 {
-    extern int _Gate;
-    extern int _GateA,_GateB,_GateI;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int groupId = m_pDataView->GetGroupId();
+    int GateA = _pConfig->group[groupId].bShowGateA;
+    int GateB = _pConfig->group[groupId].bShowGateB;
+    int GateI = _pConfig->group[groupId].bShowGateI;
+    //extern int _Gate;
+    //extern int _GateA,_GateB,_GateI;
 	if(!(m_eShow & OVERLAYS_GATE))
 	{
-        if(m_pGate[0] && !_GateA)  m_pGate[0]->hide() ;
-        if(m_pGate[1] && !_GateB)  m_pGate[1]->hide() ;
-        if(m_pGate[2] && !_GateI)  m_pGate[2]->hide() ;
+        if(m_pGate[0] && !GateA)  m_pGate[0]->hide() ;
+        if(m_pGate[1] && !GateB)  m_pGate[1]->hide() ;
+        if(m_pGate[2] && !GateI)  m_pGate[2]->hide() ;
 		return ;
 	}
 
@@ -282,23 +287,32 @@ void DopplerViewItems::UpdateItemsGate()
 
     for(int i = 0 ; i < 3 ; i++)
     {
-        if(i == 0 && !_GateA)
+        if(i == 0 && !GateA)
             continue;
-        else if(i == 1 && !_GateB)
+        else if(i == 1 && !GateB)
             continue;
-        else if(i ==2 && !_GateI)
+        else if(i ==2 && !GateI)
             continue;
 		m_pGate[i]->SetDrawMode(m_eGateMode);
 		m_pGate[i]->SetItemType(DOPPLER_GRAPHICS_ITEM_GATE ) ;
 		m_pGate[i]->SetItemId(i);
 		GateMove(i , afGatePos[i][0] , afGatePos[i][1] , afGatePos[i][2]);
     }
-    if (_GateA)
-	m_pGate[0]->show() ;
-    if(_GateB)
-	m_pGate[1]->show() ;
-    if(_GateI)
-	m_pGate[2]->show() ;
+    if ( GateA){
+        m_pGate[0]->show();
+    }else{
+        m_pGate[0]->hide();
+    }
+    if( GateB){
+        m_pGate[1]->show();
+    }else{
+        m_pGate[1]->hide();
+    }
+    if( GateI){
+        m_pGate[2]->show();
+    }else{
+        m_pGate[2]->hide();
+    }
 
 }
 

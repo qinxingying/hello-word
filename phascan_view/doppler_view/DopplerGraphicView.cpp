@@ -46,6 +46,7 @@ public:
 	~GraphicsViewBase()
 	{
 		delete m_pImage;
+        //m_hMutex.unlock();
 	}
 
 	QImage* GetBaseImage()
@@ -1141,10 +1142,10 @@ void DopplerGraphicView::UpdateDrawing()
 {
 	if(m_pDrawScan)
 	{
-
-        m_pBackGround->m_hMutex.lock();
+        QMutexLocker locker(&m_pBackGround->m_hMutex);
+        //m_pBackGround->m_hMutex.lock();
             m_pDrawScan->Draw (m_pBackGround->GetBaseImage());
-		m_pBackGround->m_hMutex.unlock();
+        //m_pBackGround->m_hMutex.unlock();
 	}
 	emit signalUpdateDrawing();
 }

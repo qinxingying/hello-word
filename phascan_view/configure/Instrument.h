@@ -599,6 +599,7 @@ typedef struct _Group
 	setup_CSCAN_SOURCE_MODE	eCScanSource[2] ;
 	float					fMinThickness;		/* Measurements->Thickness->min */
 	float					fMaxThickness;		/* Measurements->Thickness->max */
+    int                     DisplayMode;        //显示模式
 	// wedge position
 	float					fScanOffset;		/*mm*/
 	float					fIndexOffset;		/*mm*/
@@ -617,7 +618,7 @@ typedef struct _Group
 	int						bShowMeasure;
 	int						bShowCursor;
 	int						bShowWeldPart;
-	int						bShowGate;
+    //int						bShowGate;
     int                     bShowGateA;
     int                     bShowGateB;
     int                     bShowGateI;
@@ -795,7 +796,22 @@ struct COMMON_CONFIG
 	U8					nRecMark[setup_MAX_REC_LEN];
 } ;
 
-
+struct DISPLAY_CONFIG
+{    
+    bool bShowRL;
+    bool bShowSL;
+    bool bShowEL;
+    bool bShowDAC[setup_MAX_GROUP_QTY];
+    bool bShowThickness[setup_MAX_GROUP_QTY];
+    bool bShowWeld[setup_MAX_GROUP_QTY];
+    bool bShowMeasure[setup_MAX_GROUP_QTY];
+    bool bShowCursor[setup_MAX_GROUP_QTY];
+    int  anMeasureSelection[setup_MAX_GROUP_QTY][8];
+    int  DisplayMode[setup_MAX_GROUP_QTY];
+    int  CScanSource[setup_MAX_GROUP_QTY][2];
+    float MinThickness[setup_MAX_GROUP_QTY];
+    float MaxThickness[setup_MAX_GROUP_QTY];
+};
 
 #endif // INSTRUMENT_H
 

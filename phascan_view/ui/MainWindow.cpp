@@ -805,7 +805,8 @@ void MainWindow::UpdateTableDisplay()
             _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
             _pViewFrame->SetViewFrameId(i);
 
-            int disp_mode = DopplerConfigure::getSetting(i-1,"DISP_MODE");
+            //int disp_mode = DopplerConfigure::getSetting(i-1,"DISP_MODE");
+            int disp_mode = _pConfig->group[m_iCurGroup].DisplayMode;
             if(disp_mode < 0){
                 disp_mode = (int)ProcessDisplay::DISP_S_AV;
             }
@@ -824,7 +825,8 @@ void MainWindow::UpdateTableDisplay()
         _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
         _pViewFrame->SetViewFrameId(0);
 
-        int disp_mode = DopplerConfigure::getSetting(0,"DISP_MODE");
+        //int disp_mode = DopplerConfigure::getSetting(0,"DISP_MODE");
+        int disp_mode = _pConfig->group[0].DisplayMode;
         if(disp_mode < 0){
             disp_mode = (int)ProcessDisplay::DISP_S_AV;
         }
@@ -1595,17 +1597,17 @@ void MainWindow::on_actionSave_Defect_triggered()
 
 void MainWindow::on_actionLanguage_triggered()
 {
-    DopplerConfigure* pConfig = DopplerConfigure::Instance();
+    //DopplerConfigure* pConfig = DopplerConfigure::Instance();
 
     if(m_currentLang == setup_LANG_ENGLISH) {
-        pConfig->AppEvn.eLanguage = setup_LANG_CHINESE;
+        //pConfig->AppEvn.eLanguage = setup_LANG_CHINESE;
         slot_actionChinese_triggered();
     }else if(m_currentLang == setup_LANG_CHINESE){
-        pConfig->AppEvn.eLanguage = setup_LANG_ENGLISH;
+        //pConfig->AppEvn.eLanguage = setup_LANG_ENGLISH;
         slot_actionEnglish_triggered();
     }
 
-    m_currentLang = pConfig->AppEvn.eLanguage;
+    //m_currentLang = pConfig->AppEvn.eLanguage;
 }
 
 void MainWindow::on_actionScreenShot_triggered()
@@ -1613,9 +1615,157 @@ void MainWindow::on_actionScreenShot_triggered()
     ScreenShot();
 }
 
+void MainWindow::on_actionSaveDisplay_triggered()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    QString strDirPath = QCoreApplication::applicationDirPath() + "/init/config/";
+    QString strFileName = QFileDialog::getSaveFileName(this,
+                            "Save Display Dialog",
+                            strDirPath,
+                            "Doppler Files(*.dis)");
+    if( !strFileName.isEmpty()){
+        DISPLAY_CONFIG buff;
+        buff.bShowRL = CUR_RES.bShowRL;
+        buff.bShowSL = CUR_RES.bShowSL;
+        buff.bShowEL = CUR_RES.bShowEL;
+        for( int i = 0; i < _pConfig->common.nGroupQty; i++){
+            GROUP_CONFIG& _group  = _pConfig->group[i];
+            buff.bShowDAC[i]       = _group.bShowCurve;
+            buff.bShowThickness[i] = _group.bShowThickness;
+            buff.bShowWeld[i]      = _group.bShowWeldPart;
+            buff.bShowMeasure[i]   = _group.bShowMeasure;
+            buff.bShowCursor[i]    = _group.bShowCursor;
+            for(int j = 0; j < 8; j++){
+                buff.anMeasureSelection[i][j] = _group.aeMeasureType[j];
+            }
+            buff.DisplayMode[i]    = _group.DisplayMode;
+            buff.CScanSource[i][0] = (int)_group.eCScanSource[0];
+            buff.CScanSource[i][1] = (int)_group.eCScanSource[1];
+            buff.MinThickness[i]   = _group.fMinThickness;
+            buff.MaxThickness[i]   = _group.fMaxThickness;
+        }
+        for(int i = _pConfig->common.nGroupQty; i < setup_MAX_GROUP_QTY; i++){
+            buff.bShowDAC[i]       = true;
+            buff.bShowThickness[i] = false;
+            buff.bShowWeld[i]      = false;
+            buff.bShowMeasure[i]   = true;
+            buff.bShowCursor[i]    = true;
+            buff.DisplayMode[i]    = 12;
+            buff.CScanSource[i][0] = 0;
+            buff.CScanSource[i][1] = 3;
+            buff.MinThickness[i]   = 0;
+            buff.MaxThickness[i]   = 50;
+            buff.anMeasureSelection[i][0] = 1;
+            buff.anMeasureSelection[i][1] = 32;
+            buff.anMeasureSelection[i][2] = 34;
+            buff.anMeasureSelection[i][3] = 0;
+            buff.anMeasureSelection[i][4] = 0;
+            buff.anMeasureSelection[i][5] = 0;
+            buff.anMeasureSelection[i][6] = 0;
+            buff.anMeasureSelection[i][7] = 0;
+        }
+
+        QFile file( strFileName);
+        file.open(QIODevice::WriteOnly);
+        QDataStream write(&file);
+        write.writeRawData((char*)&buff, sizeof(DISPLAY_CONFIG));
+        file.close();
+    }
+}
+
+void MainWindow::on_actionLoadDisplay_triggered()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    QString strDirPath = QCoreApplication::applicationDirPath() + "/init/config/";
+    QString strFileName = QFileDialog::getOpenFileName(this,
+                            "Load Display Dialog",
+                            strDirPath,
+                            "Doppler Files(*.dis)");
+    if( !strFileName.isEmpty()){
+        DISPLAY_CONFIG buff;
+        QFile file(strFileName);
+        file.open (QIODevice::ReadOnly);
+        QDataStream reader(&file);
+
+        int ret = reader.readRawData((char*)&buff, sizeof(DISPLAY_CONFIG));
+        if( ret != sizeof(DISPLAY_CONFIG)){
+            return;
+        }
+        int _nGroupQty = _pConfig->common.nGroupQty;
+        CUR_RES.bShowRL = buff.bShowRL;
+        CUR_RES.bShowSL = buff.bShowSL;
+        CUR_RES.bShowEL = buff.bShowEL;
+        for( int i = 0; i < _nGroupQty; i++){
+            GROUP_CONFIG& _group  = _pConfig->group[i];
+            _group.bShowCurve     = buff.bShowDAC[i];
+            _group.bShowThickness = buff.bShowThickness[i];
+            _group.bShowWeldPart  = buff.bShowWeld[i];
+            _group.bShowMeasure   = buff.bShowMeasure[i];
+            _group.bShowCursor    = buff.bShowCursor[i];
+            for(int j = 0; j < 8; j++){
+                _group.aeMeasureType[j] = buff.anMeasureSelection[i][j];
+            }
+            _group.DisplayMode = buff.DisplayMode[i];
+            _group.eCScanSource[0] = (setup_CSCAN_SOURCE_MODE)buff.CScanSource[i][0];
+            _group.eCScanSource[1] = (setup_CSCAN_SOURCE_MODE)buff.CScanSource[i][1];
+            _group.fMinThickness = buff.MinThickness[i];
+            _group.fMaxThickness = buff.MaxThickness[i];
+
+        }
+
+        for(int i = 0; i < _nGroupQty; i++){
+            m_pGroupList.at(i)->UpdateGroupConfig();
+        }
+        //sleep(600);
+//        ProcessDisplay _display;
+//        _display.UpdateAllView();
+//        _display.UpdateAllViewOverlay();
+//        RunDrawThreadOnce(true);
+        DopplerViewFrame* _pViewFrame = NULL;
+        if(_nGroupQty > 1){
+            for(int i = 1; i < _nGroupQty+1; i++){
+
+                ui->TabWidget_display->setCurrentIndex(i);
+                sleep(600); //这里一定要sleep不然会崩
+                m_iCurGroup = i-1;
+                _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
+                //_pViewFrame->SetViewFrameId(1);
+
+                int disp_mode = _pConfig->group[m_iCurGroup].DisplayMode;
+                if(disp_mode < 0){
+                    disp_mode = (int)ProcessDisplay::DISP_S_AV;
+                }
+                if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
+                    _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
+                } else {
+                    _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BV);
+                }
+
+            }
+            //ui->TabWidget_display->setCurrentIndex(0);
+        }else{
+            ui->TabWidget_display->setCurrentIndex(0);
+            m_iCurGroup = 0;
+            _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
+            _pViewFrame->SetViewFrameId(0);
+            int disp_mode = _pConfig->group[0].DisplayMode;
+            if(disp_mode < 0){
+                disp_mode = (int)ProcessDisplay::DISP_S_AV;
+            }
+            if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
+                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
+            } else {
+                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BV);
+            }
+        }
+    }
+}
+
 void MainWindow::slot_actionEnglish_triggered()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->AppEvn.eLanguage = setup_LANG_ENGLISH;
+    m_currentLang = setup_LANG_ENGLISH;
 
     ui->actionEnglish->setChecked(true);
     ui->actionChinese->setChecked(false);
@@ -1639,6 +1789,8 @@ void MainWindow::slot_actionEnglish_triggered()
 void MainWindow::slot_actionChinese_triggered()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->AppEvn.eLanguage = setup_LANG_CHINESE;
+    m_currentLang = setup_LANG_CHINESE;
 
     ui->actionChinese->setChecked(true);
     ui->actionEnglish->setChecked(false);

@@ -205,31 +205,31 @@
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="222"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="182"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="180"/>
         <source>Symmetry:</source>
         <translation>对称性：</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="230"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="172"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="170"/>
         <source>Symmetry</source>
         <translation>对称</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="235"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="173"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="171"/>
         <source>Left</source>
         <translation>左单边坡口</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="240"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="174"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="172"/>
         <source>Right</source>
         <translation>右单边坡口</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="298"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="164"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="162"/>
         <source>Weland Height:</source>
         <translation>钝边高度：</translation>
     </message>
@@ -239,31 +239,31 @@
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="477"/>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="543"/>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="615"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="241"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="239"/>
         <source>mm</source>
         <translation>毫米</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="376"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="165"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="163"/>
         <source>Weland Offset:</source>
         <translation>钝边偏移：</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="448"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="166"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="164"/>
         <source>Fizone Height:</source>
         <translation>填充区高度：</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="514"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="167"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="165"/>
         <source>Fiz_down Height:</source>
         <translation>下端填充区高度：</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="586"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="168"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="166"/>
         <source>Fizone Radius:</source>
         <translation>填充区半径：</translation>
     </message>
@@ -273,20 +273,20 @@
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="658"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="169"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="167"/>
         <source>Fizone Angle:</source>
         <translation>填充区角度：</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="687"/>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="768"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="171"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="169"/>
         <source>deg</source>
         <translation>度</translation>
     </message>
     <message>
         <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="730"/>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="170"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="168"/>
         <source>Fiz_down Angle:</source>
         <translation>下端填充区角度：</translation>
     </message>
@@ -311,87 +311,87 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="54"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="52"/>
         <source>Not Load</source>
         <translation>未加载</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="234"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="232"/>
         <source>X1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="235"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="233"/>
         <source>X2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="236"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="234"/>
         <source>Y1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="237"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="235"/>
         <source>Y2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="238"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="236"/>
         <source>T1:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="239"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="237"/>
         <source>T2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="240"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="238"/>
         <source>angle:</source>
         <translation>角度</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="243"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="241"/>
         <source>Position:</source>
         <translation>位        置：</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="251"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="249"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="252"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="250"/>
         <source>2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="253"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="251"/>
         <source>3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="254"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="252"/>
         <source>4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="255"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="253"/>
         <source>5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="256"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="254"/>
         <source>6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="257"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="255"/>
         <source>7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="390"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="388"/>
         <source>Open Dxf File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -752,23 +752,23 @@
         <translation type="vanished">普通钢</translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1378"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1413"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1398"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1433"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1443"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1463"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1646"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1666"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1646"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1666"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -835,32 +835,32 @@
         <location filename="../ui/DopplerGroupTab.ui" line="4457"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5171"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5240"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7158"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7218"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7278"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7380"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7443"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7655"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7682"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7751"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7784"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7338"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7440"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7503"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7715"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7742"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7811"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7866"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8379"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8445"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8508"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8571"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8634"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8697"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8868"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7844"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7871"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7926"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8439"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8505"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8568"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8631"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8694"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8757"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8928"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8988"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9048"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9055"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9168"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9660"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9711"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="970"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9108"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9115"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9228"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9720"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9771"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="973"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
@@ -879,6 +879,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5508"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5643"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5740"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5956"/>
         <source>db</source>
         <translation type="unfinished"></translation>
     </message>
@@ -911,7 +912,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="238"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7721"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7781"/>
         <source>us</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1004,7 +1005,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1173"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7582"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7642"/>
         <source>TOFD</source>
         <translation>衍射时差法</translation>
     </message>
@@ -1050,19 +1051,19 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1494"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="5988"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6048"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1499"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="5993"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6053"/>
         <source>2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1504"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6003"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6063"/>
         <source>4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1173,20 +1174,20 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="4159"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8827"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8887"/>
         <source>Position:</source>
         <translation>位        置：</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="4347"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9108"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9168"/>
         <source>Offset:</source>
         <translation>偏        移：</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="4089"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7840"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8953"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7900"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9013"/>
         <source>Depth:</source>
         <translation>深        度：</translation>
     </message>
@@ -1364,18 +1365,18 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5552"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5608"/>
         <location filename="../ui/DopplerGroupTab.ui" line="5699"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7285"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7560"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7825"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7991"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8197"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8748"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7345"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7620"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7885"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8051"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8257"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8808"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="5077"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="5927"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5987"/>
         <source>Select:</source>
         <translation>选        择：</translation>
     </message>
@@ -1401,15 +1402,15 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="5196"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7237"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9161"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1043"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7297"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9221"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1046"/>
         <source>Width:</source>
         <translation>宽        度：</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="5265"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9013"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9073"/>
         <source>Height:</source>
         <translation>高        度：</translation>
     </message>
@@ -1453,97 +1454,97 @@
         <translation type="vanished">曲线</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5935"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5995"/>
         <source>None</source>
         <translation>无</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5940"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6000"/>
         <source>DAC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5945"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6005"/>
         <source>Linear DAC</source>
         <translation>线性 DAC</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5950"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6010"/>
         <source>TCG</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5980"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6040"/>
         <source>Point No.:</source>
         <translation>序        号：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="5998"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6058"/>
         <source>3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6008"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6068"/>
         <source>5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6016"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6076"/>
         <source>ADD</source>
         <translation>增加</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6023"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6083"/>
         <source>DEL</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6080"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6162"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6213"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6239"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6314"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6347"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6360"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6418"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6469"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6520"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6571"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6622"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6673"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6724"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6775"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6826"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="939"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="940"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6140"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6222"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6273"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6299"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6374"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6407"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6420"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6478"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6529"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6580"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6631"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6682"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6733"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6784"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6835"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6886"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="942"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="943"/>
         <source>Ref Amplitude:</source>
         <translation>参考幅度：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6149"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6169"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6226"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6327"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6334"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6367"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6405"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6456"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6507"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6558"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6609"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6660"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6711"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6762"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6813"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="6864"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8250"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8313"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="955"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6209"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6229"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6286"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6387"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6394"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6427"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6465"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6516"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6567"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6618"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6669"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6720"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6771"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6822"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6873"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6924"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8310"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8373"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="958"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="6918"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="6978"/>
         <source>Geometry</source>
         <translation>几何结构</translation>
     </message>
@@ -1552,62 +1553,62 @@
         <translation type="vanished">焊缝 &amp; 模块文件</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7534"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7594"/>
         <source>Load:</source>
         <translation>加        载：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7547"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7607"/>
         <source>Weld</source>
         <translation>焊缝</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7008"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7068"/>
         <source>Part</source>
         <translation>模块</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7028"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7088"/>
         <source>Geometry:</source>
         <translation>结        构：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7036"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7096"/>
         <source>PLATE</source>
         <translation>平板</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7041"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7101"/>
         <source>OD</source>
         <translation>凸面</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7046"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7090"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7106"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7150"/>
         <source>ID</source>
         <translation>凹面</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7294"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7354"/>
         <source>Unified Part setting</source>
         <translation>统一模块设置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7114"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7174"/>
         <source>Thickness: </source>
         <translation>厚        度：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7177"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8893"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1042"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1047"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7237"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8953"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1045"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1050"/>
         <source>Length:</source>
         <translation>长        度：</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="373"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="7066"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7126"/>
         <source>Material:</source>
         <translation>材        料：</translation>
     </message>
@@ -1617,102 +1618,102 @@
         <translation>标准</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7080"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7140"/>
         <source>Steel 5920 3230</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7085"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7145"/>
         <source>Alumi 6000 3300</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7590"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7650"/>
         <source>Scan Mode:</source>
         <translation>扫查模式：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7601"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7661"/>
         <source>Normal</source>
         <translation>非平行</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7606"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7666"/>
         <source>Parallel</source>
         <translation>平行</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7614"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7674"/>
         <source>Process Mode:</source>
         <translation>数据处理模式:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7622"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7682"/>
         <source>Whole</source>
         <translation>全局</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7627"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7687"/>
         <source>Aera</source>
         <translation>区域</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7635"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7695"/>
         <source>Wedge Seperation:</source>
         <translation>楔块间距:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7662"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7722"/>
         <source>PCS:</source>
         <translation>探头中心间距:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7695"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7755"/>
         <source>Wedge delay correction:</source>
         <translation>楔块延时修正值:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7728"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7788"/>
         <source>Depth start:</source>
         <translation>分层起点:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7758"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7818"/>
         <source>Depth end:</source>
         <translation>分层终点:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7818"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7878"/>
         <source>LW / BW</source>
         <translation>直通波/底波</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7834"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7894"/>
         <source>Depth Calibration</source>
         <translation>深度校准</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7873"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7933"/>
         <source>Calibration</source>
         <translation>校准</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7316"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7376"/>
         <source>Position</source>
         <translation>位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7336"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7396"/>
         <source>Scan Offset:  </source>
         <translation>扫查偏置:  </translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7399"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7459"/>
         <source>Index Offset: </source>
         <translation>步进偏置：  </translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7468"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7528"/>
         <source>Skew Angle:</source>
         <translation>转向角:</translation>
     </message>
@@ -1733,22 +1734,22 @@
         <translation type="vanished">270°</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7916"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7976"/>
         <source>Measurement</source>
         <translation>测量</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7984"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8044"/>
         <source>Measure Value</source>
         <translation>测量值</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8183"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8243"/>
         <source>Cursor</source>
         <translation>光标</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8064"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8124"/>
         <source>Field 1 :</source>
         <translation>区域 1：</translation>
     </message>
@@ -1881,22 +1882,22 @@
         <translation>Rx 楔块</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7476"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7536"/>
         <source>  0 degree</source>
         <translation>0°</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7481"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7541"/>
         <source> 90 degree</source>
         <translation>90°</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7486"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7546"/>
         <source>180 degree</source>
         <translation>180°</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7491"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7551"/>
         <source>270 degree</source>
         <translation>270°</translation>
     </message>
@@ -1905,93 +1906,93 @@
         <translation type="vanished">空</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8086"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8146"/>
         <source>Field 2 :</source>
         <translation>区域 2：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8108"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8168"/>
         <source>Field 3 :</source>
         <translation>区域 3：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8130"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8190"/>
         <source>Field 4 :</source>
         <translation>区域 4：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8152"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8212"/>
         <source>Field 5 :</source>
         <translation>区域 5：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8269"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8329"/>
         <source>%(m):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8332"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8392"/>
         <source>U(r):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8398"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8458"/>
         <source>U(m):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8464"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8524"/>
         <source>S(r):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8527"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8587"/>
         <source>S(m):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8590"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8650"/>
         <source>I(r):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8653"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8713"/>
         <source>I(m):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8716"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8776"/>
         <source>%(r):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8741"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8801"/>
         <source>Defect</source>
         <translation>缺陷</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8802"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8862"/>
         <source>Index :</source>
         <translation>序        号：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9187"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9247"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9212"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9272"/>
         <source>Remark:</source>
         <translation>备        注：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7998"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="8755"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8058"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8815"/>
         <source>Background</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9281"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9341"/>
         <source>Display</source>
         <translation>显示</translation>
     </message>
@@ -2000,85 +2001,85 @@
         <translation type="vanished">语言：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9345"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9405"/>
         <source>ColorSetting</source>
         <translation>颜色设置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9479"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9539"/>
         <source>C Scan 1 Source:</source>
         <translation>C扫查数据源 1：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9487"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9550"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9547"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9610"/>
         <source>Gate A  Amplitude</source>
         <translation>闸门 A 峰值</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9492"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9555"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9552"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9615"/>
         <source>Gate B  Amplitude</source>
         <translation>闸门 B 峰值</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9497"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9560"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9557"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9620"/>
         <source>Gate  I  Position</source>
         <translation>闸门 I 位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9502"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9565"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9562"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9625"/>
         <source>Gate A  Position</source>
         <translation>闸门 A 位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9507"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9570"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9567"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9630"/>
         <source>Gate B  Position</source>
         <translation>闸门 B 位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9512"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9575"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9572"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9635"/>
         <source>Gate A-I  Position</source>
         <translation>闸门 A-I 位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9517"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9580"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9577"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9640"/>
         <source>Gate B-I  Position</source>
         <translation>闸门 B-I 位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9522"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9585"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9582"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9645"/>
         <source>Gate B-A  Position</source>
         <translation>闸门 B-A 位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9542"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9602"/>
         <source>C Scan 2 Source:</source>
         <translation>C扫查数据源 2：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9605"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9665"/>
         <source>C Scan Thickness</source>
         <translation>C扫厚度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9616"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9676"/>
         <source>Min:</source>
         <translation>最小：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9667"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9727"/>
         <source>Max:</source>
         <translation>最大：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9357"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9417"/>
         <source>A SCAN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2166,157 +2167,162 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7516"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="5915"/>
+        <source>Scanner Sensitivity        </source>
+        <translation>扫查灵敏度</translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="7576"/>
         <source>CAD DXF File</source>
         <translation>CAD DXF 文件</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8011"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8071"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8035"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8095"/>
         <source>Field 7 :</source>
         <translation type="unfinished">区域 7：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8045"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8105"/>
         <source>Field 6 :</source>
         <translation>区域 6：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8165"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8225"/>
         <source>Field 8 :</source>
         <translation type="unfinished">区域 8：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8204"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8264"/>
         <source>Cursor Sync</source>
         <translation type="unfinished">光标同步</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8725"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="8785"/>
         <source>Hide</source>
         <translation type="unfinished">隐藏</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9362"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9422"/>
         <source>A SCAN MAX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9367"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9427"/>
         <source>A SCAN MIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9376"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9436"/>
         <source>Yellow</source>
         <translation>黄</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9381"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9441"/>
         <source>Green</source>
         <translation>绿</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9386"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9446"/>
         <source>Red</source>
         <translation>红</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9391"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9451"/>
         <source>White</source>
         <translation>白</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9409"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9469"/>
         <source>Amplitude:</source>
         <translation>波        幅：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9423"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9483"/>
         <source>RF:</source>
         <translation>射        频：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9449"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1041"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9509"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1044"/>
         <source>Thickness:</source>
         <translation>厚        度：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9723"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9783"/>
         <source>Combination Display</source>
         <translation>组合显示</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9732"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9776"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9820"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9864"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9792"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9836"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9880"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9924"/>
         <source>Group1</source>
         <translation>组 1</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9737"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9781"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9825"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9869"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9797"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9841"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9885"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9929"/>
         <source>Group2</source>
         <translation>组 2</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9742"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9786"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9830"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9874"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9802"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9846"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9890"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9934"/>
         <source>Group3</source>
         <translation>组 3</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9747"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9791"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9835"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9879"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9807"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9851"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9895"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9939"/>
         <source>Group4</source>
         <translation>组 4</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9752"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9796"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9840"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9884"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9812"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9856"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9900"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9944"/>
         <source>Group5</source>
         <translation>组 5</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9757"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9801"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9845"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9889"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9817"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9861"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9905"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9949"/>
         <source>Group6</source>
         <translation>组 6</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9762"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9806"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9850"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9894"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9822"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9866"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9910"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9954"/>
         <source>Group7</source>
         <translation>组 7</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9767"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9811"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9855"/>
-        <location filename="../ui/DopplerGroupTab.ui" line="9899"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9827"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9871"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9915"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9959"/>
         <source>Group8</source>
         <translation>组 8</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="9922"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="9982"/>
         <source>Refurbish</source>
         <translation>刷新</translation>
     </message>
@@ -2326,7 +2332,7 @@
         <translation>曲线</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="7791"/>
+        <location filename="../ui/DopplerGroupTab.ui" line="7851"/>
         <source>Cal PCS:</source>
         <translation>计算中心间距：</translation>
     </message>
@@ -2359,39 +2365,39 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.cpp" line="561"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2152"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2155"/>
         <source>Display Mode</source>
         <translation>显示模式</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="936"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="939"/>
         <source>Mat. Atten:</source>
         <translation>衰减系数:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="937"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="940"/>
         <source>Delay:</source>
         <translation>延迟时间：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="969"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="972"/>
         <source>dB/mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="585"/>
         <location filename="../ui/DopplerGroupTab.ui" line="725"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="981"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="984"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1045"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1048"/>
         <source>Inner Diameter:</source>
         <translation>内部直径:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1046"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1049"/>
         <source>Outer Diameter:</source>
         <translation>外部直径:</translation>
     </message>
@@ -3068,13 +3074,13 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="209"/>
-        <location filename="../ui/mainwindow.ui" line="624"/>
+        <location filename="../ui/mainwindow.ui" line="632"/>
         <source>Language</source>
         <translation>语言</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="216"/>
-        <location filename="../ui/mainwindow.ui" line="379"/>
+        <location filename="../ui/mainwindow.ui" line="387"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
@@ -3089,79 +3095,94 @@
         <translation>远程监控</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="260"/>
+        <location filename="../ui/mainwindow.ui" line="237"/>
+        <source>Display Config</source>
+        <translation>显示配置</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="268"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="302"/>
+        <location filename="../ui/mainwindow.ui" line="310"/>
         <source>New File</source>
         <translation>新建文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="310"/>
+        <location filename="../ui/mainwindow.ui" line="318"/>
         <source>Open File</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="318"/>
+        <location filename="../ui/mainwindow.ui" line="326"/>
         <source>Save File</source>
         <translation>保存文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="336"/>
+        <location filename="../ui/mainwindow.ui" line="344"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="352"/>
+        <location filename="../ui/mainwindow.ui" line="360"/>
         <source>Chinese</source>
         <translation>中文</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="360"/>
+        <location filename="../ui/mainwindow.ui" line="368"/>
         <source>Japanese</source>
         <translation>日语</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="371"/>
+        <location filename="../ui/mainwindow.ui" line="379"/>
         <source>Korean</source>
         <translation>韩语</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="411"/>
+        <location filename="../ui/mainwindow.ui" line="419"/>
         <source>OpenFile</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="414"/>
+        <location filename="../ui/mainwindow.ui" line="422"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="423"/>
-        <location filename="../ui/mainwindow.ui" line="426"/>
+        <location filename="../ui/mainwindow.ui" line="431"/>
+        <location filename="../ui/mainwindow.ui" line="434"/>
         <source>New</source>
         <translation>新建</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="435"/>
+        <location filename="../ui/mainwindow.ui" line="443"/>
         <source>SaveFile</source>
         <translation>保存文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="438"/>
+        <location filename="../ui/mainwindow.ui" line="446"/>
         <source>Save</source>
         <translation>保存</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="662"/>
+        <source>Save Display</source>
+        <translation>保存显示参数</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="667"/>
+        <source>Load Display</source>
+        <translation>加载显示参数</translation>
     </message>
     <message>
         <source>Repoet Add One Item</source>
         <translation type="vanished">增加报告项</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="447"/>
-        <location filename="../ui/mainwindow.ui" line="450"/>
-        <location filename="../ui/mainwindow.ui" line="453"/>
+        <location filename="../ui/mainwindow.ui" line="455"/>
+        <location filename="../ui/mainwindow.ui" line="458"/>
+        <location filename="../ui/mainwindow.ui" line="461"/>
         <source>Report Add One Item</source>
         <translation>增加报告项</translation>
     </message>
@@ -3170,9 +3191,9 @@
         <translation type="vanished">删除报告项</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="462"/>
-        <location filename="../ui/mainwindow.ui" line="465"/>
-        <location filename="../ui/mainwindow.ui" line="468"/>
+        <location filename="../ui/mainwindow.ui" line="470"/>
+        <location filename="../ui/mainwindow.ui" line="473"/>
+        <location filename="../ui/mainwindow.ui" line="476"/>
         <source>Report Del One Item</source>
         <translation>删除报告项</translation>
     </message>
@@ -3181,96 +3202,96 @@
         <translation type="vanished">报告设置</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="477"/>
-        <location filename="../ui/mainwindow.ui" line="480"/>
-        <location filename="../ui/mainwindow.ui" line="483"/>
+        <location filename="../ui/mainwindow.ui" line="485"/>
+        <location filename="../ui/mainwindow.ui" line="488"/>
+        <location filename="../ui/mainwindow.ui" line="491"/>
         <source>Report Setting</source>
         <translation>报表设置</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="492"/>
-        <location filename="../ui/mainwindow.ui" line="495"/>
+        <location filename="../ui/mainwindow.ui" line="500"/>
+        <location filename="../ui/mainwindow.ui" line="503"/>
         <source>Save Report</source>
         <translation>报告生成</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="504"/>
-        <location filename="../ui/mainwindow.ui" line="507"/>
+        <location filename="../ui/mainwindow.ui" line="512"/>
+        <location filename="../ui/mainwindow.ui" line="515"/>
         <source>TOFD LW Straitening</source>
         <translation>TOFD 直通波对齐</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="516"/>
-        <location filename="../ui/mainwindow.ui" line="519"/>
+        <location filename="../ui/mainwindow.ui" line="524"/>
+        <location filename="../ui/mainwindow.ui" line="527"/>
         <source>TOFD BW Straitening</source>
         <translation>TOFD 底波对齐</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="528"/>
-        <location filename="../ui/mainwindow.ui" line="531"/>
+        <location filename="../ui/mainwindow.ui" line="536"/>
+        <location filename="../ui/mainwindow.ui" line="539"/>
         <source>TOFD LW Removal</source>
         <translation>TOFD 差分</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="540"/>
-        <location filename="../ui/mainwindow.ui" line="543"/>
+        <location filename="../ui/mainwindow.ui" line="548"/>
+        <location filename="../ui/mainwindow.ui" line="551"/>
         <source>TOFD SAFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="552"/>
-        <location filename="../ui/mainwindow.ui" line="555"/>
+        <location filename="../ui/mainwindow.ui" line="560"/>
+        <location filename="../ui/mainwindow.ui" line="563"/>
         <source>TOFD Repeal</source>
         <translation>TOFD 撤销</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="564"/>
-        <location filename="../ui/mainwindow.ui" line="567"/>
+        <location filename="../ui/mainwindow.ui" line="572"/>
+        <location filename="../ui/mainwindow.ui" line="575"/>
         <source>TOFD Redo</source>
         <translation>TOFD 重做</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="576"/>
-        <location filename="../ui/mainwindow.ui" line="579"/>
+        <location filename="../ui/mainwindow.ui" line="584"/>
+        <location filename="../ui/mainwindow.ui" line="587"/>
         <source>TOFD Length Measurement</source>
         <translation>TOFD 测长</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="588"/>
-        <location filename="../ui/mainwindow.ui" line="591"/>
+        <location filename="../ui/mainwindow.ui" line="596"/>
+        <location filename="../ui/mainwindow.ui" line="599"/>
         <source>TOFD Height Measurement</source>
         <translation>TOFD 测高</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="600"/>
-        <location filename="../ui/mainwindow.ui" line="603"/>
+        <location filename="../ui/mainwindow.ui" line="608"/>
+        <location filename="../ui/mainwindow.ui" line="611"/>
         <source>TOFD Depth Measurement</source>
         <translation>TOFD 测深</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="612"/>
-        <location filename="../ui/mainwindow.ui" line="615"/>
+        <location filename="../ui/mainwindow.ui" line="620"/>
+        <location filename="../ui/mainwindow.ui" line="623"/>
         <source>Save Defect</source>
         <translation>保存缺陷</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="627"/>
+        <location filename="../ui/mainwindow.ui" line="635"/>
         <source>CH/EN</source>
         <translation>中/英 切换</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="636"/>
-        <location filename="../ui/mainwindow.ui" line="639"/>
+        <location filename="../ui/mainwindow.ui" line="644"/>
+        <location filename="../ui/mainwindow.ui" line="647"/>
         <source>ScreenShot</source>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="644"/>
+        <location filename="../ui/mainwindow.ui" line="652"/>
         <source>Connect</source>
         <translation>连接</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="649"/>
+        <location filename="../ui/mainwindow.ui" line="657"/>
         <source>Disconnect</source>
         <translation>断开</translation>
     </message>
@@ -3279,12 +3300,12 @@
         <translation type="obsolete">新建</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="323"/>
+        <location filename="../ui/mainwindow.ui" line="331"/>
         <source>Close File</source>
         <translation>关闭文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="328"/>
+        <location filename="../ui/mainwindow.ui" line="336"/>
         <source>Open Scan Data</source>
         <translation>打开扫查数据</translation>
     </message>
@@ -3293,27 +3314,27 @@
         <translation type="vanished">关闭</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="344"/>
+        <location filename="../ui/mainwindow.ui" line="352"/>
         <source>English</source>
         <translation>英语</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="387"/>
+        <location filename="../ui/mainwindow.ui" line="395"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="392"/>
+        <location filename="../ui/mainwindow.ui" line="400"/>
         <source>Report Format</source>
         <translation>报告格式</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="397"/>
+        <location filename="../ui/mainwindow.ui" line="405"/>
         <source>Report PreView</source>
         <translation>报告预览</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="402"/>
+        <location filename="../ui/mainwindow.ui" line="410"/>
         <source>Save </source>
         <translation>保存</translation>
     </message>
@@ -3330,14 +3351,14 @@
     <message>
         <location filename="../ui/mainwindow.cpp" line="338"/>
         <location filename="../ui/mainwindow.cpp" line="382"/>
-        <location filename="../ui/mainwindow.cpp" line="859"/>
+        <location filename="../ui/mainwindow.cpp" line="861"/>
         <source>YES</source>
         <translation>是</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="339"/>
         <location filename="../ui/mainwindow.cpp" line="383"/>
-        <location filename="../ui/mainwindow.cpp" line="860"/>
+        <location filename="../ui/mainwindow.cpp" line="862"/>
         <source>NO</source>
         <translation>否</translation>
     </message>
@@ -3353,56 +3374,56 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1101"/>
+        <location filename="../ui/mainwindow.cpp" line="1103"/>
         <source>The defect was saved failed!</source>
         <translation>缺陷保存失败！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1103"/>
+        <location filename="../ui/mainwindow.cpp" line="1105"/>
         <source>The defect was saved successfully!</source>
         <translation>缺陷保存成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1099"/>
+        <location filename="../ui/mainwindow.cpp" line="1101"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1099"/>
+        <location filename="../ui/mainwindow.cpp" line="1101"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="968"/>
-        <location filename="../ui/mainwindow.cpp" line="1016"/>
-        <location filename="../ui/mainwindow.cpp" line="1027"/>
-        <location filename="../ui/mainwindow.cpp" line="1101"/>
+        <location filename="../ui/mainwindow.cpp" line="970"/>
+        <location filename="../ui/mainwindow.cpp" line="1018"/>
+        <location filename="../ui/mainwindow.cpp" line="1029"/>
         <location filename="../ui/mainwindow.cpp" line="1103"/>
+        <location filename="../ui/mainwindow.cpp" line="1105"/>
         <source>prompt</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="858"/>
+        <location filename="../ui/mainwindow.cpp" line="860"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="869"/>
+        <location filename="../ui/mainwindow.cpp" line="871"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="968"/>
+        <location filename="../ui/mainwindow.cpp" line="970"/>
         <source>save in </source>
         <translation>保存在 </translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1016"/>
+        <location filename="../ui/mainwindow.cpp" line="1018"/>
         <source>increase success!</source>
         <translation>增加成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1027"/>
+        <location filename="../ui/mainwindow.cpp" line="1029"/>
         <source>delete success!</source>
         <translation>删除成功！</translation>
     </message>

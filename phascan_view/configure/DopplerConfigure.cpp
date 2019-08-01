@@ -161,7 +161,7 @@ void DopplerConfigure::OpenEvn()
 
     int ret = reader.readRawData((char*)&AppEvn, sizeof(SYSTEM_ENVIRMENT));
 
-    if(ret < 0)
+    if(ret != sizeof(SYSTEM_ENVIRMENT))
 	{
         GetExePathName1(g_strDataFilePath.toLatin1().data(), _strPathName.toLatin1().data());
         strcpy(AppEvn.strDataFilePath, _strPathName.toLatin1().data());
@@ -195,12 +195,18 @@ void DopplerConfigure::OpenEvn()
         for(int i = 0 ; i < ENV_MAX_GROUP_QTY; i++)
 		{
             AppEvn.bShowCursor[i]	= true ;
-            AppEvn.bShowGate  [i]	= true ;
+            //AppEvn.bShowGate  [i]	= true ;
             AppEvn.bShowMeasure[i]  = true ;
             AppEvn.bShowWeld[i]	    = false;
             AppEvn.bShowThickness[i]= false;
             AppEvn.bShowLwBw[i]	    = true;
 			AppEvn.bShowDefect[i]	= true;
+            AppEvn.bShowGateA[i]    = 1;
+            AppEvn.bShowGateB[i]    = 0;
+            AppEvn.bShowGateI[i]    = 0;
+            AppEvn.CScanSource[i][0]= 0;
+            AppEvn.CScanSource[i][1]= 3;
+            AppEvn.DisplayMode[i]   = 12;
             AppEvn.bCursor[i][setup_CURSOR_LAW] = 0;
 
             AppEvn.bCursor[i][setup_CURSOR_A_REF] =
@@ -220,7 +226,7 @@ void DopplerConfigure::OpenEvn()
 		SetLastDate();
 	}
 
-	for(int i = 0 ; i < 8 ; i++)
+    for(int i = 0 ; i < ENV_MAX_GROUP_QTY; i++)
 	{
 		group[i].aeMeasureType[0] = AppEvn.anMeasureSelection[0][0] ;
 		group[i].aeMeasureType[1] = AppEvn.anMeasureSelection[0][1] ;
@@ -232,12 +238,16 @@ void DopplerConfigure::OpenEvn()
         group[i].aeMeasureType[7] = AppEvn.anMeasureSelection[0][7] ;
 
 		group[i].bShowCursor	= AppEvn.bShowCursor[i] ;
-        group[i].bShowGate		= 1 ;
+        //group[i].bShowGate		= 1 ;
         group[i].bShowThickness = AppEvn.bShowThickness[i];
         group[i].bShowWeldPart  = AppEvn.bShowWeld[i];
 		group[i].bShowMeasure   = AppEvn.bShowMeasure[i] ;
 		group[i].bShowLwBw	    = AppEvn.bShowLwBw[i] ;
         group[i].bShowDefect	= true;
+        group[i].bShowGateA     = AppEvn.bShowGateA[i];
+        group[i].bShowGateB     = AppEvn.bShowGateB[i];
+        group[i].bShowGateI     = AppEvn.bShowGateI[i];
+        group[i].DisplayMode    = AppEvn.DisplayMode[i];
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             group[i].afCursor[j] = AppEvn.bCursor[i][j];
         }
@@ -275,12 +285,19 @@ void DopplerConfigure::SaveEvn()
 
 
         AppEvn.bShowCursor[i]		= group[i].bShowCursor;
-        AppEvn.bShowGate[i]			= 1;
+        //AppEvn.bShowGate[i]			= 1;
         AppEvn.bShowThickness[i]	= group[i].bShowThickness;
         AppEvn.bShowWeld[i]			= group[i].bShowWeldPart;
         AppEvn.bShowMeasure[i]		= group[i].bShowMeasure;
         AppEvn.bShowLwBw[i]			= group[i].bShowLwBw;
         AppEvn.bShowDefect[i]		= group[i].bShowDefect;
+        AppEvn.bShowGateA[i]        = group[i].bShowGateA;
+        AppEvn.bShowGateB[i]        = group[i].bShowGateB;
+        AppEvn.bShowGateI[i]        = group[i].bShowGateI;
+        AppEvn.CScanSource[i][0]    = (int)group[i].eCScanSource[0];
+        AppEvn.CScanSource[i][1]    = (int)group[i].eCScanSource[1];
+        AppEvn.DisplayMode[i]       = group[i].DisplayMode;
+
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             AppEvn.bCursor[i][j] = group[i].afCursor[j];
         }
@@ -948,8 +965,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		GROUP_INFO* _pGroupInfo = pConf_->GetGroupInfo(i) ;
         GROUP_CONFIG& _group  = group[i] ;
         _group.ThicknessType[i] = 0;
-        _group.bShowGateA     = 1;
-        _group.bShowGateB     = _group.bShowGateI = 0;
+        //_group.bShowGateA     = 1;
+        //_group.bShowGateB     = _group.bShowGateI = 0;
 		_group.eGroupMode	  = (setup_GROUP_MODE)_pGroupInfo->group_mode  ;
 		_group.eTravelMode	  = _pGroupInfo->ut_unit ? setup_TRAVEL_MODE_TRUE_DEPTH : setup_TRAVEL_MODE_HALF_PATH;
 		_group.eTxRxMode	  = (setup_TX_RX_MODE)_pGroupInfo->tx_rxmode1 ;
@@ -1012,11 +1029,13 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		/* 参考光标 */
 		//_group.afCursor[setup_CURSOR_MAX]  ;
 		// thickness range for c scan display
-        int CScanSource1 = getSetting(i,"CScansource1");
+        //int CScanSource1 = getSetting(i,"CScansource1");
+        int CScanSource1 = AppEvn.CScanSource[i][0];
         if(CScanSource1 < 0){
             CScanSource1 = (int)setup_CSCAN_AMP_A;
         }
-        int CScanSource2 = getSetting(i,"CScansource2");
+        //int CScanSource2 = getSetting(i,"CScansource2");
+        int CScanSource2 = AppEvn.CScanSource[i][1];
         if(CScanSource2 < 0){
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }

@@ -1,4 +1,4 @@
-#ifndef FILESTRUCT_H
+﻿#ifndef FILESTRUCT_H
 #define FILESTRUCT_H
 #include <string>
 #include "Instrument.h"
@@ -49,7 +49,7 @@ struct SYSTEM_ENVIRMENT
     int iTofdDataProMode;
 	bool bSAxisCursorSync;
 	bool bTrueDepth_A_S_Sync;
-    bool bShowGate   [ENV_MAX_GROUP_QTY];
+    //bool bShowGate   [ENV_MAX_GROUP_QTY];
     bool bShowWeld   [ENV_MAX_GROUP_QTY];
     bool bShowMeasure[ENV_MAX_GROUP_QTY];
     bool bShowCursor [ENV_MAX_GROUP_QTY];
@@ -58,6 +58,11 @@ struct SYSTEM_ENVIRMENT
     bool bShowDefect[ENV_MAX_GROUP_QTY];
     unsigned int  anMeasureSelection[2][8];
     float	bCursor[ENV_MAX_GROUP_QTY][setup_CURSOR_MAX]; //保存参考线信息
+    int bShowGateA[ENV_MAX_GROUP_QTY];    //表示A闸门可见性
+    int bShowGateB[ENV_MAX_GROUP_QTY];    //表示B闸门可见性
+    int bShowGateI[ENV_MAX_GROUP_QTY];    //表示I闸门可见性
+    int CScanSource[ENV_MAX_GROUP_QTY][2];
+    int DisplayMode[ENV_MAX_GROUP_QTY];
 };
 
 #endif // FILESTRUCT_H

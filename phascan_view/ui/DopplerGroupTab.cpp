@@ -602,6 +602,7 @@ void DopplerGroupTab::CreateSettingView()
 void DopplerGroupTab::StartDrags(QModelIndex index)
 {
 	// Get item string and id
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 	const QAbstractItemModel* model = index.model() ;
 	QString _str1  = model->data(index , Qt::DisplayRole).toString()  ;
     int _nId = model->data(index , Qt::UserRole).toInt();
@@ -616,7 +617,8 @@ void DopplerGroupTab::StartDrags(QModelIndex index)
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("DOPPLER_DISPLAY_ITEM", itemData);
 
-    DopplerConfigure::setSetting(m_nGroupId,"DISP_MODE",_nId);
+    //DopplerConfigure::setSetting(m_nGroupId,"DISP_MODE",_nId);
+    _pConfig->group[m_nGroupId].DisplayMode = _nId;
 
 	QDrag *drag = new QDrag(this);
 	drag->setMimeData(mimeData);
@@ -1355,10 +1357,10 @@ void DopplerGroupTab::on_ValueElementStepPri_editingFinished()
 {
 	ElementAlign() ;
 }
-int _Gate = 0 ;
-int _GateA = 1;
-int _GateB = 0;
-int _GateI = 0;
+//int _Gate = 0 ;
+//int _GateA = 1;
+//int _GateB = 0;
+//int _GateI = 0;
 // gate
 void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 {
@@ -1368,12 +1370,12 @@ void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 	ui->ValueGateStart->setValue(_gate.fStart);
 	ui->ValueGateWidth->setValue(_gate.fWidth);
 	ui->ValueGateHeight->setValue(_gate.nThreshold);
-    _Gate = index; 
-    if(_Gate == 0)
+    //Gate = index;
+    if(index == 0)
         ui->CheckGateShow->setCheckState(m_pGroup->bShowGateA ? Qt::Checked : Qt::Unchecked);
-    else if(_Gate == 1)
+    else if(index == 1)
         ui->CheckGateShow->setCheckState(m_pGroup->bShowGateB ? Qt::Checked : Qt::Unchecked);
-    else if(_Gate == 2)
+    else if(index == 2)
         ui->CheckGateShow->setCheckState(m_pGroup->bShowGateI ? Qt::Checked : Qt::Unchecked);
 	if(index == 2) //gate i
 	{
@@ -1391,17 +1393,17 @@ void DopplerGroupTab::on_ComGateSelect_currentIndexChanged(int index)
 
 void DopplerGroupTab::on_CheckGateShow_clicked(bool checked)
 {
-	m_pGroup->bShowGate = checked ;
-    _Gate = ui->ComGateSelect->currentIndex() ;
-    if(_Gate == 0)
+    //m_pGroup->bShowGate = checked ;
+    int Gate = ui->ComGateSelect->currentIndex() ;
+    if(Gate == 0)
         m_pGroup->bShowGateA = checked;
-    else if(_Gate == 1)
+    else if(Gate == 1)
         m_pGroup->bShowGateB = checked;
-    else if(_Gate == 2)
+    else if(Gate == 2)
         m_pGroup->bShowGateI = checked;
-    _GateA = m_pGroup->bShowGateA;
-    _GateB = m_pGroup->bShowGateB;
-    _GateI = m_pGroup->bShowGateI;
+//    _GateA = m_pGroup->bShowGateA;
+//    _GateB = m_pGroup->bShowGateB;
+//    _GateI = m_pGroup->bShowGateI;
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOverlay();
 }
@@ -2033,7 +2035,7 @@ void DopplerGroupTab::on_ComCScanSource1_currentIndexChanged(int index)
 	m_pGroup->eCScanSource[0] = (setup_CSCAN_SOURCE_MODE)index ;
 	g_pMainWnd->UpdateAllDisplay();
 	g_pMainWnd->RunDrawThreadOnce();
-    DopplerConfigure::setSetting(m_nGroupId,"CScansource1",index);
+    //DopplerConfigure::setSetting(m_nGroupId,"CScansource1",index);
 }
 
 void DopplerGroupTab::on_ComCScanSource2_currentIndexChanged(int index)
@@ -2042,7 +2044,7 @@ void DopplerGroupTab::on_ComCScanSource2_currentIndexChanged(int index)
 	m_pGroup->eCScanSource[1] = (setup_CSCAN_SOURCE_MODE)index ;
 	g_pMainWnd->UpdateAllDisplay();
 	g_pMainWnd->RunDrawThreadOnce();
-    DopplerConfigure::setSetting(m_nGroupId,"CScansource2",index);
+    //DopplerConfigure::setSetting(m_nGroupId,"CScansource2",index);
 }
 
 void DopplerGroupTab::ComDispPro(int index, int iGroup)

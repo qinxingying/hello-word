@@ -18,6 +18,7 @@ DopplerDrawSScanTrueDepth::DopplerDrawSScanTrueDepth() :
 DopplerDrawSScanTrueDepth::~DopplerDrawSScanTrueDepth ()
 {
 	ReleaseMatrixBuff();
+    //m_hMutex.unlock();
 }
 
 void DopplerDrawSScanTrueDepth::UpdateDrawInfo()
@@ -295,10 +296,11 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 
 void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 {
-	m_hMutex.lock();
+    //m_hMutex.lock();
+    QMutexLocker locker(&m_hMutex);
 
 	if(MatrixBuffValid() == false) {
-		m_hMutex.unlock();
+        //m_hMutex.unlock();
 		return;
 	}
 
@@ -334,7 +336,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
         _pData = _process->GetGroupDataPointerRaster(m_cInfo.nGroupId);
     }
     if(!_pData) {
-        m_hMutex.unlock();
+        //m_hMutex.unlock();
         return;
     }
 
@@ -365,5 +367,5 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 		}
 	}
 
-	m_hMutex.unlock();
+    //m_hMutex.unlock();
 }

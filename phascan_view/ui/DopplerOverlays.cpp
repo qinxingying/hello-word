@@ -79,8 +79,8 @@ void DopplerOverlays::CreateOverlaysAH()
 	}
 	//-------------------------------------------------------------------
 
-	if(_group.bShowGate)
-	{
+//	if(_group.bShowGate)
+//	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_GATE_HORIZENTAL);
 		int _nScanPos = m_pProcess->GetScanIndexPos();
@@ -89,7 +89,7 @@ void DopplerOverlays::CreateOverlaysAH()
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
-	}
+    //}
 
 	if(_group.bShowCursor)
 	{
@@ -142,8 +142,8 @@ void DopplerOverlays::CreateOverlaysAV()
 			_pItemGroup->SetLwBwId(setup_CURSOR_TFOD_LW, setup_CURSOR_TFOD_BW);
 		}
 	}
-	if(_group.bShowGate)
-	{
+//	if(_group.bShowGate)
+//	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_GATE_VERTICAL);
 		int _nScanPos = m_pProcess->GetScanIndexPos();
@@ -152,7 +152,7 @@ void DopplerOverlays::CreateOverlaysAV()
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
-	}
+    //}
 
 	if(_group.bShowCursor)
 	{
@@ -228,8 +228,8 @@ void DopplerOverlays::CreateOverlaysBH()
 			_pItemGroup->SetLwBwId(setup_CURSOR_TFOD_LW, setup_CURSOR_TFOD_BW);
 		}
 	}
-	if(_group.bShowGate)
-	{
+//	if(_group.bShowGate)
+//	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_LINE_HORIZENTAL);
 		int _nScanPos = m_pProcess->GetScanIndexPos();
@@ -238,7 +238,7 @@ void DopplerOverlays::CreateOverlaysBH()
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
-	}
+    //}
 
 	if(_group.bShowCursor)
 	{
@@ -318,8 +318,8 @@ void DopplerOverlays::CreateOverlaysBV()
 		}
 	}
 	//-------------------------------------------------------------------
-	if(_group.bShowGate)
-	{
+//	if(_group.bShowGate)
+//	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_LINE_VERTICAL);
 		int _nScanPos = m_pProcess->GetScanIndexPos();
@@ -328,7 +328,7 @@ void DopplerOverlays::CreateOverlaysBV()
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
-	}
+    //}
 
 	if(_group.bShowCursor)
 	{
@@ -545,8 +545,8 @@ void DopplerOverlays::CreateOverlaysSS()
 		}
 	}
 	//-------------------------------------------------------------------
-	if(group.bShowGate)
-	{
+//	if(group.bShowGate)
+//	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_LINE_HORIZENTAL);
 		int _nScanPos = m_pProcess->GetScanIndexPos();
@@ -555,7 +555,7 @@ void DopplerOverlays::CreateOverlaysSS()
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
-	}
+    //}
 
 	if(group.bShowCursor)
 	{
@@ -618,8 +618,8 @@ void DopplerOverlays::CreateOverlaysSA()
 		}
 	}
 	//-------------------------------------------------------------------
-	if(group.bShowGate)
-	{
+//	if(group.bShowGate)
+//	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_LINE_VERTICAL);
 		int _nScanPos = m_pProcess->GetScanIndexPos();
@@ -628,7 +628,7 @@ void DopplerOverlays::CreateOverlaysSA()
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
-	}
+    //}
 
 	if(group.bShowCursor)
 	{
@@ -700,8 +700,8 @@ void DopplerOverlays::CreateOverlaysSL()
 		}
 	}
 	//-------------------------------------------------------------------
-	if(group.bShowGate)
-	{
+//	if(group.bShowGate)
+//	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_LINE_VERTICAL);
 		int _nScanPos = m_pProcess->GetScanIndexPos();
@@ -710,7 +710,7 @@ void DopplerOverlays::CreateOverlaysSL()
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
-	}
+    //}
 
 	if(group.bShowCursor)
 	{
