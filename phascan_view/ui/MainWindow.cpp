@@ -123,7 +123,8 @@ void MainWindow::init_ui()
     ui->actionSave->setDisabled(true);
     ui->actionNew->setDisabled(true);
     ui->actionSaveFile->setDisabled(true);
-
+    ui->actionSaveDisplay->setDisabled(true);
+    ui->actionLoadDisplay->setDisabled(true);
     // init display widget list
     for(int i = 0 ; i < MAX_LIST_QTY ; i++)
     {
@@ -838,6 +839,8 @@ void MainWindow::UpdateTableDisplay()
     }
     ui->TabWidget_parameter->setEnabled(true);
     ui->TabWidget_display->setEnabled(true);
+    ui->actionSaveDisplay->setEnabled(true);
+    ui->actionLoadDisplay->setEnabled(true);
     ui->toolBar->setEnabled(true);
     SetDispTabText();
 }
@@ -1643,6 +1646,9 @@ void MainWindow::on_actionSaveDisplay_triggered()
             buff.CScanSource[i][1] = (int)_group.eCScanSource[1];
             buff.MinThickness[i]   = _group.fMinThickness;
             buff.MaxThickness[i]   = _group.fMaxThickness;
+            buff.CurSS[i]          = CUR_RES.CurSS[i];
+            buff.Standard[i]       = CUR_RES.Standard[i];
+            buff.Thickness[i]      = CUR_RES.Thickness[i];
         }
         for(int i = _pConfig->common.nGroupQty; i < setup_MAX_GROUP_QTY; i++){
             buff.bShowDAC[i]       = true;
@@ -1655,6 +1661,9 @@ void MainWindow::on_actionSaveDisplay_triggered()
             buff.CScanSource[i][1] = 3;
             buff.MinThickness[i]   = 0;
             buff.MaxThickness[i]   = 50;
+            buff.CurSS[i]          = 0;
+            buff.Standard[i]       = 0;
+            buff.Thickness[i]      = 0;
             buff.anMeasureSelection[i][0] = 1;
             buff.anMeasureSelection[i][1] = 32;
             buff.anMeasureSelection[i][2] = 34;
@@ -1710,11 +1719,14 @@ void MainWindow::on_actionLoadDisplay_triggered()
             _group.eCScanSource[1] = (setup_CSCAN_SOURCE_MODE)buff.CScanSource[i][1];
             _group.fMinThickness = buff.MinThickness[i];
             _group.fMaxThickness = buff.MaxThickness[i];
-
+            CUR_RES.CurSS[i]     = buff.CurSS[i];
+            CUR_RES.Standard[i]  = buff.Standard[i];
+            CUR_RES.Thickness[i] = buff.Thickness[i];
         }
 
         for(int i = 0; i < _nGroupQty; i++){
             m_pGroupList.at(i)->UpdateGroupConfig();
+            m_pGroupList.at(i)->LoadStandardFormConifg();
         }
         //sleep(600);
 //        ProcessDisplay _display;

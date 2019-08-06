@@ -45,7 +45,7 @@ public:
 	void UpdateTofdParam();
 	void UpdateSizeingCurves();
     void retranslateGroupTabUi();
-
+    void LoadStandardFormConifg();
 protected:
     void SetWidgetInvalide();
     void CreateSettingView();
@@ -57,9 +57,8 @@ protected:
     void UpdateWedgeConfig(int bIsRx_);
     void UpdateLawConfig();
     void UpdateProbeWedge();
-
     void UpdateMeasureBox();
-    void UpdateStandard(int selectID,int ifadd);
+    void UpdateStandard(int selectID,int ifadd);    
     void UpdateParameterLimit();
     void UpdateFocallawState();
     void UpdateGeometryState();

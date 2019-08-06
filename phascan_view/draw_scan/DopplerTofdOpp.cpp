@@ -402,8 +402,8 @@ int DopplerTofdOpp::TofdLwStraitening(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDAT
 	int _nY       = (int)(pInfo_->fY + _nScanOff);
 	WDATA*  _pScr =  m_process->GetDataAbsolutePosPointer(m_nGroupId, _nY, 0, pSource_);
 	WDATA*  _pDst =  NULL;
-    int	 _iMax = m_process->getWaveHalfValue() + ( m_process->getWaveHalfValue() * 0.1);
-    int	 _iMin = m_process->getWaveHalfValue() - ( m_process->getWaveHalfValue() * 0.1);
+    int	 _iMax = m_process->getWaveHalfValue() + ( m_process->getWaveHalfValue() * 0.05);
+    int	 _iMin = m_process->getWaveHalfValue() - ( m_process->getWaveHalfValue() * 0.05);
 	int	_iEdge = 0;
 	int   _iStart = (int)pInfo_->fX;
 	int	_iBase = TofdSearchPos(_pScr, _iStart, _iMax, _iMin, _iEdge);
@@ -411,13 +411,22 @@ int DopplerTofdOpp::TofdLwStraitening(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDAT
 	GYRECT    _rect = pInfo_->rcArea;
 	_rect.top    += _nScanOff;
 	_rect.bottom += _nScanOff;
-
+    //解决耦合不好的时候直通波位置错误
 	int _iDot = 0;
+    int previous = _iBase;
+    int corr = 0;
 	for(int i = _rect.top; i < _rect.bottom; i++)
 	{
 		_pScr = m_process->GetDataAbsolutePosPointer(m_nGroupId, i, 0, pSource_);
 		_pDst = m_process->GetDataAbsolutePosPointer(m_nGroupId, i, 0, pDest_);
 		_iDot = TofdSearchPos(_pScr, _iStart, _iMax, _iMin, _iEdge);
+        if(abs(previous - _iDot) > 12 + corr){
+            _iDot = previous;
+            corr++;
+        }else{
+            previous = _iDot;
+            corr = 0;
+        }
 		TofdWavAlign(_iBase, _iDot, _pScr, _pDst, _rect);
 	}
 	return 0;
@@ -440,12 +449,22 @@ int DopplerTofdOpp::TofdBwStraitening(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDAT
 	GYRECT    _rect = pInfo_->rcArea;
 	_rect.top    += _nScanOff;
 	_rect.bottom += _nScanOff;
+    //解决耦合不好的情况下底波位置错误
 	int _iDot = 0;
+    int previous = _iBase;
+    int corr = 0;
 	for(int i = _rect.top; i < _rect.bottom; i++)
 	{
 		_pScr = m_process->GetDataAbsolutePosPointer(m_nGroupId, i, 0, pSource_);
 		_pDst = m_process->GetDataAbsolutePosPointer(m_nGroupId, i, 0, pDest_);
 		_iDot = TofdSearchPos(_pScr, _iStart, _iMax, _iMin, _iEdge);
+        if(abs(previous - _iDot) > 10){
+            _iDot = previous;
+            corr++;
+        }else{
+            previous = _iDot;
+            corr = 0;
+        }
 		TofdWavAlign(_iBase, _iDot, _pScr, _pDst, _rect);
 	}
 	return 0;

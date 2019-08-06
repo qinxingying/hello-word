@@ -993,12 +993,14 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.fRefGain	      = 0;
             _group.RefGain        = _pGroupInfo->gain / 100.0 - _pGroupInfo->gainr / 100.0;
         }
-        CUR_RES.REF_Gain[i]   = 0;
+        CUR_RES.REF_Gain[i]      = 0;
         CUR_RES.Com_Gain[i]      = 0;
         CUR_RES.CurRL[i]         = -4;
         CUR_RES.CurEL[i]         = -18;
         CUR_RES.CurSL[i]         = -12;
         CUR_RES.CurSS[i]         = 0;
+        CUR_RES.Standard[i]      = 0;
+        CUR_RES.Thickness[i]     = 0;
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;

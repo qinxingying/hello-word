@@ -373,6 +373,66 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
     CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
     CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
     CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+    CUR_RES.Standard[m_nGroupId] = selectID;
+    CUR_RES.Thickness[m_nGroupId] = _field->currentIndex();
+    ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
+    ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
+    ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
+}
+
+void DopplerGroupTab::LoadStandardFormConifg()
+{
+    QComboBox* _field = ui->ComThickness;
+    int selectID = CUR_RES.Standard[m_nGroupId];
+    ui->ComStandard->setCurrentIndex(selectID);
+    if(selectID == 0)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[0]);
+        _field->addItem(g_strThicknessStandard[1]);
+        _field->addItem(g_strThicknessStandard[2]);
+    }
+    else if(selectID == 1)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[3]);
+        _field->addItem(g_strThicknessStandard[4]);
+        _field->addItem(g_strThicknessStandard[5]);
+    }
+    else if(selectID == 2)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[6]);
+        _field->addItem(g_strThicknessStandard[7]);
+        _field->addItem(g_strThicknessStandard[8]);
+    }
+    else if(selectID == 3)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[9]);
+        _field->addItem(g_strThicknessStandard[10]);
+    }
+    else if(selectID == 4)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[11]);
+    }
+    else if(selectID == 5)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[12]);
+        _field->addItem(g_strThicknessStandard[13]);
+    }
+    else if(selectID == 6)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[14]);
+    }
+    int thinkness = CUR_RES.Thickness[m_nGroupId];
+    _field->setCurrentIndex(thinkness);
+    CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
+    CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
+    CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
@@ -2298,6 +2358,7 @@ void DopplerGroupTab::on_ComStandard_currentIndexChanged(int index)
 {
     if(!ui->ComStandard->hasFocus())  return ;
     m_pGroup->ThicknessType[m_nGroupId] = 0;
+
     UpdateStandard(index,1);
     g_pMainWnd->RunDrawThreadOnce(true);
 }

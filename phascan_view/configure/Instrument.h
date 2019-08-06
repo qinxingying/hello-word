@@ -437,15 +437,17 @@ struct CURVES
 
 struct CURVE_RL_EL_SL
 {
-    int CurRL[8];
-    int CurEL[8];
-    int CurSL[8];
+    int CurRL[setup_MAX_GROUP_QTY];
+    int CurEL[setup_MAX_GROUP_QTY];
+    int CurSL[setup_MAX_GROUP_QTY];
     int bShowRL;
     int bShowEL;
     int bShowSL;
-    float REF_Gain[8];
-    float Com_Gain[8];
-    int CurSS[8];  //保存扫查灵敏度
+    float REF_Gain[setup_MAX_GROUP_QTY];
+    float Com_Gain[setup_MAX_GROUP_QTY];
+    int CurSS[setup_MAX_GROUP_QTY];      //保存扫查灵敏度
+    int Standard[setup_MAX_GROUP_QTY];   //tcg曲线标准的index
+    int Thickness[setup_MAX_GROUP_QTY];  //tcg曲线厚度
 };
 
 extern CURVE_RL_EL_SL CUR_RES;
@@ -811,6 +813,9 @@ struct DISPLAY_CONFIG
     int  CScanSource[setup_MAX_GROUP_QTY][2];
     float MinThickness[setup_MAX_GROUP_QTY];
     float MaxThickness[setup_MAX_GROUP_QTY];
+    int   CurSS[setup_MAX_GROUP_QTY];
+    int   Standard[setup_MAX_GROUP_QTY];
+    int   Thickness[setup_MAX_GROUP_QTY];
 };
 
 #endif // INSTRUMENT_H
