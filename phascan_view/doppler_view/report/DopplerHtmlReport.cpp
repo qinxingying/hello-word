@@ -245,7 +245,7 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strGroup));
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strLaw));
 
-    for(int i = 0 ; i < 8 ; i++){
+    for(int i = 0 ; i < 8; i++){
         fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , _pDfInfo->m_strSzField[i] ,_pDfInfo->m_strSzFieldUnit[i]);
     }
 
@@ -600,7 +600,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
     int* _pMeasure = _pConfig->group[nGroupId_].aeMeasureType;
     int _nQty = 0;
 
-    for(int i = 0; i < 8; i++)
+    for(int i = 0; i < setup_MAX_MEASURE_QTY; i++)
 	{
 		if(_pMeasure[i])
 		{
@@ -610,7 +610,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 		}
 	}
 
-    for(int i = _nQty ; i< 8 ; i++)
+    for(int i = _nQty ; i < setup_MAX_MEASURE_QTY; i++)
 	{
 		m_szField[nGroupId_][i] = m_szFieldUnit[nGroupId_][i] = QString("-");
 	}

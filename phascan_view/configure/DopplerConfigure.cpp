@@ -174,6 +174,9 @@ void DopplerConfigure::OpenEvn()
 		AppEvn.iTofdDataProMode = 0;
         AppEvn.bSAxisCursorSync	   = true;
         AppEvn.bTrueDepth_A_S_Sync = true;
+        AppEvn.bShowRL = false;
+        AppEvn.bShowSL = false;
+        AppEvn.bShowEL = false;
 
 		AppEvn.anMeasureSelection[0][0] = 1  ;
 		AppEvn.anMeasureSelection[0][1] = 32 ;
@@ -183,6 +186,8 @@ void DopplerConfigure::OpenEvn()
         AppEvn.anMeasureSelection[0][5] = 0  ;
         AppEvn.anMeasureSelection[0][6] = 0  ;
         AppEvn.anMeasureSelection[0][7] = 0  ;
+        AppEvn.anMeasureSelection[0][8] = 0  ;
+        AppEvn.anMeasureSelection[0][9] = 0  ;
 		AppEvn.anMeasureSelection[1][0] = 42 ;
 		AppEvn.anMeasureSelection[1][1] = 43 ;
 		AppEvn.anMeasureSelection[1][2] = 44 ;
@@ -191,6 +196,8 @@ void DopplerConfigure::OpenEvn()
         AppEvn.anMeasureSelection[1][5] = 0  ;
         AppEvn.anMeasureSelection[1][6] = 0  ;
         AppEvn.anMeasureSelection[1][7] = 0  ;
+        AppEvn.anMeasureSelection[1][8] = 0  ;
+        AppEvn.anMeasureSelection[1][9] = 0  ;
 
         for(int i = 0 ; i < ENV_MAX_GROUP_QTY; i++)
 		{
@@ -207,6 +214,10 @@ void DopplerConfigure::OpenEvn()
             AppEvn.CScanSource[i][0]= 0;
             AppEvn.CScanSource[i][1]= 3;
             AppEvn.DisplayMode[i]   = 12;
+            AppEvn.bShowCurve[i]   = true;
+            AppEvn.CurSS[i]         = 0;
+            AppEvn.Standard[i]      = 0;
+            AppEvn.Thickness[i]     = 0;
             AppEvn.bCursor[i][setup_CURSOR_LAW] = 0;
 
             AppEvn.bCursor[i][setup_CURSOR_A_REF] =
@@ -226,16 +237,14 @@ void DopplerConfigure::OpenEvn()
 		SetLastDate();
 	}
 
+    CUR_RES.bShowRL = AppEvn.bShowRL;
+    CUR_RES.bShowEL = AppEvn.bShowEL;
+    CUR_RES.bShowSL = AppEvn.bShowSL;
     for(int i = 0 ; i < ENV_MAX_GROUP_QTY; i++)
 	{
-		group[i].aeMeasureType[0] = AppEvn.anMeasureSelection[0][0] ;
-		group[i].aeMeasureType[1] = AppEvn.anMeasureSelection[0][1] ;
-		group[i].aeMeasureType[2] = AppEvn.anMeasureSelection[0][2] ;
-		group[i].aeMeasureType[3] = AppEvn.anMeasureSelection[0][3] ;
-		group[i].aeMeasureType[4] = AppEvn.anMeasureSelection[0][4] ;
-        group[i].aeMeasureType[5] = AppEvn.anMeasureSelection[0][5] ;
-        group[i].aeMeasureType[6] = AppEvn.anMeasureSelection[0][6] ;
-        group[i].aeMeasureType[7] = AppEvn.anMeasureSelection[0][7] ;
+        for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
+            group[i].aeMeasureType[j] = AppEvn.anMeasureSelection[0][j];
+        }
 
 		group[i].bShowCursor	= AppEvn.bShowCursor[i] ;
         //group[i].bShowGate		= 1 ;
@@ -248,6 +257,10 @@ void DopplerConfigure::OpenEvn()
         group[i].bShowGateB     = AppEvn.bShowGateB[i];
         group[i].bShowGateI     = AppEvn.bShowGateI[i];
         group[i].DisplayMode    = AppEvn.DisplayMode[i];
+        group[i].bShowCurve     = AppEvn.bShowCurve[i];
+        CUR_RES.CurSS[i]        = AppEvn.CurSS[i];
+        CUR_RES.Standard[i]     = AppEvn.Standard[i];
+        CUR_RES.Thickness[i]    = AppEvn.Thickness[i];
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             group[i].afCursor[j] = AppEvn.bCursor[i][j];
         }
@@ -264,25 +277,14 @@ void DopplerConfigure::SaveEvn()
 	{
 		if(group[i].eGroupMode == setup_GROUP_MODE_PA )
 		{
-			AppEvn.anMeasureSelection[0][0] = group[i].aeMeasureType[0] ;
-			AppEvn.anMeasureSelection[0][1] = group[i].aeMeasureType[1] ;
-			AppEvn.anMeasureSelection[0][2] = group[i].aeMeasureType[2] ;
-			AppEvn.anMeasureSelection[0][3] = group[i].aeMeasureType[3] ;
-			AppEvn.anMeasureSelection[0][4] = group[i].aeMeasureType[4] ;
-            AppEvn.anMeasureSelection[0][5] = group[i].aeMeasureType[5] ;
-            AppEvn.anMeasureSelection[0][6] = group[i].aeMeasureType[6] ;
-            AppEvn.anMeasureSelection[0][7] = group[i].aeMeasureType[7] ;
+            for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
+                AppEvn.anMeasureSelection[0][j] = group[i].aeMeasureType[j];
+            }
         }else{
-			AppEvn.anMeasureSelection[1][0] = group[i].aeMeasureType[0] ;
-			AppEvn.anMeasureSelection[1][1] = group[i].aeMeasureType[1] ;
-			AppEvn.anMeasureSelection[1][2] = group[i].aeMeasureType[2] ;
-			AppEvn.anMeasureSelection[1][3] = group[i].aeMeasureType[3] ;
-			AppEvn.anMeasureSelection[1][4] = group[i].aeMeasureType[4] ;
-            AppEvn.anMeasureSelection[1][5] = group[i].aeMeasureType[5] ;
-            AppEvn.anMeasureSelection[1][6] = group[i].aeMeasureType[6] ;
-            AppEvn.anMeasureSelection[1][7] = group[i].aeMeasureType[7] ;
+            for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
+                AppEvn.anMeasureSelection[1][j] = group[i].aeMeasureType[j];
+            }
 		}
-
 
         AppEvn.bShowCursor[i]		= group[i].bShowCursor;
         //AppEvn.bShowGate[i]			= 1;
@@ -297,12 +299,19 @@ void DopplerConfigure::SaveEvn()
         AppEvn.CScanSource[i][0]    = (int)group[i].eCScanSource[0];
         AppEvn.CScanSource[i][1]    = (int)group[i].eCScanSource[1];
         AppEvn.DisplayMode[i]       = group[i].DisplayMode;
+        AppEvn.bShowCurve[i]        = group[i].bShowCurve;
+        AppEvn.CurSS[i]             = CUR_RES.CurSS[i];
+        AppEvn.Standard[i]          = CUR_RES.Standard[i];
+        AppEvn.Thickness[i]         = CUR_RES.Thickness[i];
 
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             AppEvn.bCursor[i][j] = group[i].afCursor[j];
         }
 
 	}
+    AppEvn.bShowRL = CUR_RES.bShowRL;
+    AppEvn.bShowEL = CUR_RES.bShowEL;
+    AppEvn.bShowSL = CUR_RES.bShowSL;
 
 	if(AppEvn.bRegStatus) {
 		SetLastDate();
@@ -998,9 +1007,9 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         CUR_RES.CurRL[i]         = -4;
         CUR_RES.CurEL[i]         = -18;
         CUR_RES.CurSL[i]         = -12;
-        CUR_RES.CurSS[i]         = 0;
-        CUR_RES.Standard[i]      = 0;
-        CUR_RES.Thickness[i]     = 0;
+//        CUR_RES.CurSS[i]         = AppEvn.CurSS[i];
+//        CUR_RES.Standard[i]      = AppEvn.Standard[i];
+//        CUR_RES.Thickness[i]     = AppEvn.Thickness[i];
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;
@@ -1105,12 +1114,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 				_curve.faPosition[k][j] = _Curve.position[k][j] / 1000.0f;
 			}
 		}
-		_group.bShowCurve = 0;
-		if(_curve.nPointQty > 0 && _curve.eType > setup_CURVE_TYPE_NULL && _curve.eType < setup_CURVE_TYPE_MAX)
-			_group.bShowCurve = 1;
-        CUR_RES.bShowRL = 0;
-        CUR_RES.bShowEL = 0;
-        CUR_RES.bShowSL = 0;
+//		_group.bShowCurve = 0;
+//		if(_curve.nPointQty > 0 && _curve.eType > setup_CURVE_TYPE_NULL && _curve.eType < setup_CURVE_TYPE_MAX)
+//			_group.bShowCurve = 1;
+        //CUR_RES.bShowRL = 0;
+        //CUR_RES.bShowEL = 0;
+        //CUR_RES.bShowSL = 0;
         memset(RL_EL_SL,0,sizeof(RL_EL_SL));
 		//-----------------------------------------
 		LAW_CONFIG& _LawConfig = _group.law ;
@@ -1317,27 +1326,17 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
 		if(_group.eGroupMode == setup_GROUP_MODE_PA )
 		{
-			_group.aeMeasureType[0]  = AppEvn.anMeasureSelection[0][0] ;
-			_group.aeMeasureType[1]  = AppEvn.anMeasureSelection[0][1] ;
-			_group.aeMeasureType[2]  = AppEvn.anMeasureSelection[0][2] ;
-			_group.aeMeasureType[3]  = AppEvn.anMeasureSelection[0][3] ;
-			_group.aeMeasureType[4]  = AppEvn.anMeasureSelection[0][4] ;
-            _group.aeMeasureType[5]  = AppEvn.anMeasureSelection[0][5] ;
-            _group.aeMeasureType[6]  = AppEvn.anMeasureSelection[0][6] ;
-            _group.aeMeasureType[7]  = AppEvn.anMeasureSelection[0][7] ;
+            for( int i = 0; i < setup_MAX_MEASURE_QTY; i++){
+                _group.aeMeasureType[i]  = AppEvn.anMeasureSelection[0][i];
+            }
 		}
 		else
 		{
-			_group.aeMeasureType[0]  = AppEvn.anMeasureSelection[1][0] ;
-			_group.aeMeasureType[1]  = AppEvn.anMeasureSelection[1][1] ;
-			_group.aeMeasureType[2]  = AppEvn.anMeasureSelection[1][2] ;
-			_group.aeMeasureType[3]  = AppEvn.anMeasureSelection[1][3] ;
-			_group.aeMeasureType[4]  = AppEvn.anMeasureSelection[1][4] ;
-            _group.aeMeasureType[5]  = AppEvn.anMeasureSelection[1][5] ;
-            _group.aeMeasureType[6]  = AppEvn.anMeasureSelection[1][6] ;
-            _group.aeMeasureType[7]  = AppEvn.anMeasureSelection[1][7] ;
+            for( int i = 0; i < setup_MAX_MEASURE_QTY; i++){
+                _group.aeMeasureType[i]  = AppEvn.anMeasureSelection[1][i];
+            }
 		}
-        for(int i=0;i<8;i++){
+        for(int i = 0; i < setup_MAX_MEASURE_QTY; i++){
             if((_group.aeMeasureType[i] < FEILD_NONE) || (_group.aeMeasureType[i] >= FEILD_VALUE_INDEX_MAX)){
                 _group.aeMeasureType[i] = FEILD_NONE;
             }
@@ -1575,7 +1574,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 			//---------------------------------------
 			int* _pMeasure = group[iGroupId_].aeMeasureType;
 			int _nQty = 0 ;
-            for(int i = 0 ; i < 8 ; i++) {
+            for(int i = 0 ; i < setup_MAX_MEASURE_QTY; i++) {
 				strcpy(_pDfInfo->m_strMeasure[i], "-");
                 strcpy(_pDfInfo->m_strSzField[i],"-");
                 strcpy(_pDfInfo->m_strSzFieldUnit[i],"-");

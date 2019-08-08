@@ -2578,7 +2578,7 @@ QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
 
     CScanInfo.calculateState = true;
 
-    int recMax = m_pConfig->common.nRecMax;
+    int recMax = m_pConfig->comTmp.nRecMax;
     CScanInfo.data.resize( recMax);
 
     CScanInfo.oldPartThickness = partThickness;
@@ -2639,7 +2639,7 @@ QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
 
     for(int i = 0; i < recMax; i++)
     {
-        if(m_pConfig->common.nRecMark[i])
+        if(m_pConfig->comTmp.nRecMark[i])
         {
             WDATA buff = 0;
             for( int j = startData; j <= endData; j++)

@@ -673,6 +673,7 @@ void MainWindow::UpdateTableParameter()
         DopplerGroupTab *_pGroup = new DopplerGroupTab(ui->TabWidget_parameter);
 
         _pGroup->SetGroupId(i);
+        _pGroup->LoadStandardFormConifg();
 
         QString str(tr("Group "));
         QString str1;
@@ -997,7 +998,7 @@ void MainWindow::ReportAddOneItem()
     int* _pMeasure  = _group.aeMeasureType;
     int _nQty = 0;
 
-    for(int i = 0; i < 8; i++)
+    for(int i = 0; i < setup_MAX_MEASURE_QTY; i++)
     {
         if(_pMeasure[i]){
             _value.szValue[_nQty] = CalcMeasurement::GetMeasureValue(_nGroup, _nLawId, (FEILD_VALUE_INDEX)_pMeasure[i]);
@@ -1007,7 +1008,7 @@ void MainWindow::ReportAddOneItem()
         }
     }
 
-    for(int i = _nQty; i < 8; i ++) {
+    for(int i = _nQty; i < setup_MAX_MEASURE_QTY; i ++) {
         _value.szValue[i] = QString("-");
         _value.szField[i] = QString("-");
         _value.szFieldUnit[i] = QString("-");
@@ -1638,7 +1639,7 @@ void MainWindow::on_actionSaveDisplay_triggered()
             buff.bShowWeld[i]      = _group.bShowWeldPart;
             buff.bShowMeasure[i]   = _group.bShowMeasure;
             buff.bShowCursor[i]    = _group.bShowCursor;
-            for(int j = 0; j < 8; j++){
+            for(int j = 0; j < setup_MAX_MEASURE_QTY; j++){
                 buff.anMeasureSelection[i][j] = _group.aeMeasureType[j];
             }
             buff.DisplayMode[i]    = _group.DisplayMode;
@@ -1672,6 +1673,8 @@ void MainWindow::on_actionSaveDisplay_triggered()
             buff.anMeasureSelection[i][5] = 0;
             buff.anMeasureSelection[i][6] = 0;
             buff.anMeasureSelection[i][7] = 0;
+            buff.anMeasureSelection[i][8] = 0;
+            buff.anMeasureSelection[i][9] = 0;
         }
 
         QFile file( strFileName);
@@ -1711,7 +1714,7 @@ void MainWindow::on_actionLoadDisplay_triggered()
             _group.bShowWeldPart  = buff.bShowWeld[i];
             _group.bShowMeasure   = buff.bShowMeasure[i];
             _group.bShowCursor    = buff.bShowCursor[i];
-            for(int j = 0; j < 8; j++){
+            for(int j = 0; j < setup_MAX_MEASURE_QTY; j++){
                 _group.aeMeasureType[j] = buff.anMeasureSelection[i][j];
             }
             _group.DisplayMode = buff.DisplayMode[i];

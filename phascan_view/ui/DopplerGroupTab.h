@@ -150,6 +150,8 @@ private slots:
     void on_ComField6_currentIndexChanged(int index);
     void on_ComField7_currentIndexChanged(int index);
     void on_ComField8_currentIndexChanged(int index);
+    void on_ComField9_currentIndexChanged(int index);
+    void on_ComField10_currentIndexChanged(int index);
 
     void update_valueChanged();
     void on_ValueARef_valueChanged(double value);

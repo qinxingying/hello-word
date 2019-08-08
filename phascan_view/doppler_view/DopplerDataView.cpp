@@ -299,7 +299,7 @@ void DopplerDataView::UpdateMeasure()
 
 			for(int i = 0; i < _nLawNum; i++) {
 				_nLaw = m_pItemsGroup->GetLawMarkerPos(i);
-                for(int k = 0; k < 8; k++) {
+                for(int k = 0; k < setup_MAX_MEASURE_QTY; k++) {
 					if(_pMeasure[k]) {
                         QString _str = CalcMeasurement::GetMeasureValueString(m_nGroupId , _nLaw , (FEILD_VALUE_INDEX)_pMeasure[k] );
                         m_pGraphicView->SetMeasureString(_nQty , &_str);
@@ -311,7 +311,7 @@ void DopplerDataView::UpdateMeasure()
 			m_pGraphicView->SetMeasureStringQty(_nQty);
 
 		} else {
-            for(int i = 0 ; i < 8 ; i++) {
+            for(int i = 0 ; i < setup_MAX_MEASURE_QTY; i++) {
 				if(_pMeasure[i]) {
                     QString _str = CalcMeasurement::GetMeasureValueString(m_nGroupId , m_nLaw , (FEILD_VALUE_INDEX)_pMeasure[i] );
                     m_pGraphicView->SetMeasureString(_nQty , &_str);

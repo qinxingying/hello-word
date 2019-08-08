@@ -56,13 +56,20 @@ struct SYSTEM_ENVIRMENT
     bool bShowThickness[ENV_MAX_GROUP_QTY];
     bool bShowLwBw[ENV_MAX_GROUP_QTY];
     bool bShowDefect[ENV_MAX_GROUP_QTY];
-    unsigned int  anMeasureSelection[2][8];
+    unsigned int  anMeasureSelection[2][10];
     float	bCursor[ENV_MAX_GROUP_QTY][setup_CURSOR_MAX]; //保存参考线信息
     int bShowGateA[ENV_MAX_GROUP_QTY];    //表示A闸门可见性
     int bShowGateB[ENV_MAX_GROUP_QTY];    //表示B闸门可见性
     int bShowGateI[ENV_MAX_GROUP_QTY];    //表示I闸门可见性
     int CScanSource[ENV_MAX_GROUP_QTY][2];
     int DisplayMode[ENV_MAX_GROUP_QTY];
+    bool bShowRL;
+    bool bShowSL;
+    bool bShowEL;
+    bool bShowCurve[ENV_MAX_GROUP_QTY];
+    int  CurSS[ENV_MAX_GROUP_QTY];
+    int  Standard[ENV_MAX_GROUP_QTY];
+    int  Thickness[ENV_MAX_GROUP_QTY];
 };
 
 #endif // FILESTRUCT_H

@@ -616,7 +616,7 @@ typedef struct _Group
 	unsigned int			anBeamDelay[setup_MAX_GROUP_LAW_QTY];
 	float					afBeamPos[setup_MAX_GROUP_LAW_QTY];
 
-    int						aeMeasureType[8];
+    int						aeMeasureType[setup_MAX_MEASURE_QTY];
 	int						bShowMeasure;
 	int						bShowCursor;
 	int						bShowWeldPart;
@@ -808,7 +808,7 @@ struct DISPLAY_CONFIG
     bool bShowWeld[setup_MAX_GROUP_QTY];
     bool bShowMeasure[setup_MAX_GROUP_QTY];
     bool bShowCursor[setup_MAX_GROUP_QTY];
-    int  anMeasureSelection[setup_MAX_GROUP_QTY][8];
+    int  anMeasureSelection[setup_MAX_GROUP_QTY][setup_MAX_MEASURE_QTY];
     int  DisplayMode[setup_MAX_GROUP_QTY];
     int  CScanSource[setup_MAX_GROUP_QTY][2];
     float MinThickness[setup_MAX_GROUP_QTY];

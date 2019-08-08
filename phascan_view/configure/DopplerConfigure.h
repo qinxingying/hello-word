@@ -87,9 +87,9 @@ struct DEFECT_INFO
     float fVPAStop;
 
 	int   nLawNo;
-    char  m_strMeasure[8][50]  ;
-    char  m_strSzField[8][20];
-    char  m_strSzFieldUnit[8][20];
+    char  m_strMeasure[setup_MAX_MEASURE_QTY][50]  ;
+    char  m_strSzField[setup_MAX_MEASURE_QTY][20];
+    char  m_strSzFieldUnit[setup_MAX_MEASURE_QTY][20];
     char SL[20];
     char Index_pos[20];
 };

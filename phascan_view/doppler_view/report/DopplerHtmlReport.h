@@ -30,10 +30,10 @@ struct ReportValueItem
     float fPos ;
     int   nGroupId ;
     int   nLawId   ;
-    QString szValue[8];
+    QString szValue[setup_MAX_MEASURE_QTY];
     QString szPixmap;
-    QString szField[8];
-    QString szFieldUnit[8];
+    QString szField[setup_MAX_MEASURE_QTY];
+    QString szFieldUnit[setup_MAX_MEASURE_QTY];
 } ;
 
 
@@ -182,8 +182,8 @@ protected:
     QString m_polarity;
     QString m_axis2;
 
-    QString  m_szField[8][8];
-    QString  m_szFieldUnit[8][8];
+    QString  m_szField[setup_MAX_GROUP_QTY][setup_MAX_MEASURE_QTY];
+    QString  m_szFieldUnit[setup_MAX_GROUP_QTY][setup_MAX_MEASURE_QTY];
     QString m_dataFilePath;
 
 	char m_strReportDir[1024];
