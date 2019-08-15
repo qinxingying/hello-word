@@ -1731,11 +1731,6 @@ void MainWindow::on_actionLoadDisplay_triggered()
             m_pGroupList.at(i)->UpdateGroupConfig();
             m_pGroupList.at(i)->LoadStandardFormConifg();
         }
-        //sleep(600);
-//        ProcessDisplay _display;
-//        _display.UpdateAllView();
-//        _display.UpdateAllViewOverlay();
-//        RunDrawThreadOnce(true);
         DopplerViewFrame* _pViewFrame = NULL;
         if(_nGroupQty > 1){
             for(int i = 1; i < _nGroupQty+1; i++){
@@ -1744,7 +1739,6 @@ void MainWindow::on_actionLoadDisplay_triggered()
                 sleep(600); //这里一定要sleep不然会崩
                 m_iCurGroup = i-1;
                 _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
-                //_pViewFrame->SetViewFrameId(1);
 
                 int disp_mode = _pConfig->group[m_iCurGroup].DisplayMode;
                 if(disp_mode < 0){
@@ -1757,7 +1751,6 @@ void MainWindow::on_actionLoadDisplay_triggered()
                 }
 
             }
-            //ui->TabWidget_display->setCurrentIndex(0);
         }else{
             ui->TabWidget_display->setCurrentIndex(0);
             m_iCurGroup = 0;

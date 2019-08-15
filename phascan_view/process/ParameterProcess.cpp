@@ -483,7 +483,7 @@ int  ParameterProcess::SetupScanArea(float afValue_[6])
 	SCANNER& _scan = m_pConfig->common.scanner  ;
 	_scan.fScanStart  = afValue_[0]  ;
 	_scan.fIndexStart = afValue_[1]  ;
-	_scan.fScanStop  = afValue_[2]  ;
+    _scan.fScanStop   = afValue_[2]  ;
 	_scan.fIndexStop  = afValue_[3]  ;
 	_scan.fScanStep   = afValue_[4]  ;
 	_scan.fIndexStep  = afValue_[5]  ;
