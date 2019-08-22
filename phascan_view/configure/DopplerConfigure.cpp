@@ -437,6 +437,8 @@ int DopplerConfigure::OpenData(QString& path_)
 	CreateShadowData(_iMax);
 	memcpy(&comTmp, &common, sizeof(COMMON_CONFIG));
 
+    InitTOPCInfo();
+
     m_pReport->set_data_path(QFileInfo(path_).absolutePath());
 	m_pReport->InitReportInfo();
 	return 0;
@@ -1271,6 +1273,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         {
             _group.part.weldFormat = PHASCAN_II_FORMAT;
             Config::instance()->getWeldData(i, _group.part.weld_ii);
+            Config::instance()->getTOPCWidth(i, _group.TopCInfo.TOPCWidth);
         }
         else
         {
@@ -1362,6 +1365,159 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_process->TofdCursorCalibration(i);
 
 	}
+}
+
+void  DopplerConfigure::InitTOPCInfo()
+{
+
+    if( !Config::instance()->is_phascan_ii() || common.scanner.eScanType != setup_SCAN_TYPE_ONE_LINE){
+        for( int i = 0; i < common.nGroupQty; i++){
+            TOPC_INFO& _TOPCInfo  = group[i].TopCInfo;
+            _TOPCInfo.TOPCValid  = false;
+            _TOPCInfo.TOPCStatus = false;
+        }
+        return;
+    }
+
+    ParameterProcess* _process = ParameterProcess::Instance();
+    for( int i = 0; i < common.nGroupQty; i++){
+        GROUP_CONFIG& _group  = group[i];
+        TOPC_INFO& _TOPCInfo  = group[i].TopCInfo;
+
+        if( _group.eGroupMode != setup_GROUP_MODE_PA){
+            _TOPCInfo.TOPCValid  = false;
+            _TOPCInfo.TOPCStatus = false;
+            continue;
+        }
+        _TOPCInfo.TOPCValid  = true;
+        _TOPCInfo.TOPCStatus = false;
+        float _nStartX, _nStopX, _nStartY, _nStopY;
+        _process->GetSImageHorizentalRange( i, &_nStartX, &_nStopX);
+        _process->GetSImageVerticalRange( i, &_nStartY, &_nStopY);
+        float realWidth = fabs( _nStopX - _nStartX);
+        float realHeigh = fabs( _nStopY - _nStartY);
+        LAW_CONFIG _law = _group.law;
+        int _nPointQty = _group.nPointQty;
+        float _nSampleRange = _group.fSampleRange;
+        int _width = realWidth / _nSampleRange * _nPointQty * 1.5;
+        int _height = realHeigh / _nSampleRange * _nPointQty * 1.5;
+        int dataSize = _width * _height;
+        //qDebug()<<"topcDataSize"<<i<<_width<<_height;
+
+        if( _TOPCInfo.pDataIndex){
+            free( _TOPCInfo.pDataIndex);
+        }
+        _TOPCInfo.pDataIndex = (int*)malloc( dataSize * sizeof(int));
+        memset((void*)(_TOPCInfo.pDataIndex), 0, dataSize * sizeof(int));
+        _TOPCInfo.startX = _nStartX;
+        _TOPCInfo.stopX  = _nStopX;
+        _TOPCInfo.startY = _nStartY;
+        _TOPCInfo.stopY  = _nStopY;
+        _TOPCInfo.pixelWidth = _width;
+        _TOPCInfo.pixelHeigh = _height;
+        int beamLength = setup_DATA_PENDIX_LENGTH + _nPointQty;
+        float *_pExitPoint = _group.afBeamPos;
+        float _nAngleStart = DEGREE_TO_ARCH( _law.nAngleStartRefract / 10.0);
+
+        if( _group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL){            
+            float _nAngleStop  = DEGREE_TO_ARCH( _law.nAngleStopRefract / 10.0);
+            float _nAngleStep  = DEGREE_TO_ARCH( _law.nAngleStepRefract / 10.0);
+            int	  _nBeamQty    = (int)(( _nAngleStop - _nAngleStart) / _nAngleStep + 1.1);
+            float _nSampleStart= _group.fSampleStart;
+            float _nSampleStop = _nSampleStart + _nSampleRange;
+            float _nStepX, _nStepY;
+            _nStepX  = (_nStopX - _nStartX) / (_width - 1);
+            _nStepY  = (_nStopY - _nStartY) / (_height - 1);
+
+            float _nTopLocation[256];
+            for(int i = 0 ; i < _nBeamQty - 1; i++){
+                _nTopLocation[i] = (_pExitPoint[i] + _pExitPoint[i+1]) / 2;
+            }
+
+            float _nAngles[256];
+            for(int i = 0 ; i < _nBeamQty ; i++){
+                _nAngles[i] = _nAngleStart + i * _nAngleStep;
+            }
+
+            float _nPosJunction[256];
+            int i, j, k, t, _index;
+            float _fX, _fY, _nTmp;
+            for( j = 0; j < _height; j++){
+                _fY = _nStartY + j * _nStepY;
+                for( k = 0; k < _nBeamQty; k++){
+                    _nPosJunction[k] = _pExitPoint[k] + tan(_nAngles[k]) * _fY;
+                }
+                t = 0;
+                for( i = 0; i < _width; i++){
+                    _fX = _nStartX + _nStepX * i;
+                    for( ; t < _nBeamQty - 1; t++){
+                        if(_fX > _nPosJunction[_nBeamQty - 1] || _fX < _nPosJunction[0]){
+                            break;
+                        }
+                        if(_fX >= _nPosJunction[t] && _fX <= _nPosJunction[t+1] ){
+                            _index = i + j * _width;
+                            _nTmp = _fX - _nTopLocation[t];
+                            _nTmp = sqrt(_fY * _fY + _nTmp * _nTmp);
+
+                            if(_nTmp > _nSampleStop || _nTmp < _nSampleStart){
+                                break;
+                            }
+                            _TOPCInfo.pDataIndex[_index] =
+                            t * beamLength + (_nPointQty * (_nTmp - _nSampleStart) / _nSampleRange);
+                            break;
+                        }
+                    }
+                }
+            }
+        }else{
+            int _nStartElement = _law.nFirstElemFir;
+            int  _nStopElement = _law.nLastElemFir;
+            int  _nStepElement = _law.nElemStepFir;
+            int   _nElementQty = _law.nElemQtyFir;
+            float _fAngle = _nAngleStart;
+            float _fRange = _nSampleRange;
+
+            int  _nBeamMaxId = (_nStopElement  - _nStartElement - _nElementQty + 1 ) / _nStepElement;
+            float _fStartPos = _pExitPoint[0];
+            float _fStopPos  = _pExitPoint[_nBeamMaxId];
+            float _angle = fabs(_fAngle);
+
+            float _real_height = _fRange * cos(_angle);
+            float _real_width  = fabs(_fStopPos - _fStartPos) + _fRange * sin(_angle);
+            float _xScale = _width / _real_width;
+            float _xVacc  = tan(_angle) * _real_height * _xScale;
+            float _fScale = _xVacc / _height;
+            float _beam_width = _width - _xVacc;
+            bool _bWedgeRev = (_fStopPos - _fStartPos) > 0 ? false : true;
+            float tmpX, xxx;
+            float tmpDrawRate;
+            float tmpDataNo;
+            int i, j, index;
+            for( i = 0; i < _height; i++){
+                tmpX = i * _fScale;
+                tmpDataNo = ((double)i) / _height;
+                for( j = 0 ; j < _width ; j++ ){
+                    index  = j + i * _width;
+                    if( _fAngle >=0 ){
+                        xxx = j - tmpX;
+                    }else{
+                        xxx = j - _xVacc + tmpX;
+                    }
+                    if( xxx < 0 || xxx >= _beam_width){
+                        continue;
+                    }
+                    tmpDrawRate = ( xxx / _beam_width) * _nBeamMaxId;
+                    int buffBeamId;
+                    if(_bWedgeRev){
+                        buffBeamId = _nBeamMaxId - (U8)tmpDrawRate;
+                    }else{
+                        buffBeamId = (U8)tmpDrawRate;
+                    }
+                    _TOPCInfo.pDataIndex[index] = buffBeamId * beamLength + _nPointQty * tmpDataNo;
+                }
+            }
+        }
+    }
 }
 
 void  DopplerConfigure::UpdateTofdConfig(int nGroupId_)

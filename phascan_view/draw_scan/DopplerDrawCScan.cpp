@@ -350,6 +350,203 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         TransformImage( p, srcHeight, src, pImage_->width(), pImage_->height(), pImage_);
         return;
     }
+
+    TOPC_INFO& _TOPCInfo  = m_pConfig->group[m_cInfo.nGroupId].TopCInfo;
+    if( _TOPCInfo.TOPCStatus){
+        //确定闸门位置和方向
+        bool   Calculation = true;   //false 表示闸门在图像外面，绘制空白即可
+        float  gateStart = m_pConfig->group[m_cInfo.nGroupId].gate[0].fStart;
+        float  gateWidth = m_pConfig->group[m_cInfo.nGroupId].gate[0].fWidth;
+        float  gateStop  = gateStart + gateWidth;
+        float  indexOffset = m_pConfig->group[m_cInfo.nGroupId].fIndexOffset;
+        double topcWidth = _TOPCInfo.TOPCWidth;
+        int    direction;
+
+        float realHeightStart, realHeightStop;
+        float realWidthStart, realWidthStop;
+        if( gateStart >= _TOPCInfo.stopY || gateStop <= _TOPCInfo.startY){
+            Calculation = false;
+        }else{
+            realHeightStart = ( gateStart > _TOPCInfo.startY) ? gateStart : _TOPCInfo.startY;
+            realHeightStop  = ( gateStop < _TOPCInfo.stopY) ? gateStop : _TOPCInfo.stopY;
+            if(fabs(realHeightStop - realHeightStart) < 1.0){
+                Calculation = false;
+            }
+        }
+        realWidthStart = 0 - topcWidth/2;
+        realWidthStop  = topcWidth/2;
+        setup_PROBE_ANGLE _eAngle = _process->GetProbeAngle(m_cInfo.nGroupId) ;
+        switch ( _eAngle) {
+        case setup_PROBE_PART_SKEW_0:
+            direction = 0;
+            break;
+        case setup_PROBE_PART_SKEW_90:
+            direction = 0;
+            realWidthStart -= indexOffset;
+            realWidthStop  -= indexOffset;
+            break;
+        case setup_PROBE_PART_SKEW_180:
+            direction = 1;
+            break;
+        case setup_PROBE_PART_SKEW_270:
+            direction = 1;
+            realWidthStart += indexOffset;
+            realWidthStop  += indexOffset;
+            break;
+        default:
+            Calculation = false;
+            break;
+        }
+
+        if( realWidthStart >= _TOPCInfo.stopX || _TOPCInfo.startX >= realWidthStop){
+            Calculation = false;
+        }else{
+            realWidthStart = (realWidthStart > _TOPCInfo.startX) ? realWidthStart : _TOPCInfo.startX;
+            realWidthStop  = (realWidthStop < _TOPCInfo.stopX) ? realWidthStop : _TOPCInfo.stopX;
+            if(fabs(realWidthStop - realWidthStart) < 1.0){
+                Calculation = false;
+            }
+        }
+
+        int pixelWidthStart, pixelWidthStop, pixelHeightStart, pixelHeightStop;
+        if(Calculation){
+            pixelWidthStart = (realWidthStart - _TOPCInfo.startX)/(_TOPCInfo.stopX - _TOPCInfo.startX)
+                                * _TOPCInfo.pixelWidth;
+            pixelWidthStop = (realWidthStop - _TOPCInfo.startX)/(_TOPCInfo.stopX - _TOPCInfo.startX)
+                                * _TOPCInfo.pixelWidth;
+            pixelHeightStart = (realHeightStart - _TOPCInfo.startY)/(_TOPCInfo.stopY - _TOPCInfo.startY)
+                                * _TOPCInfo.pixelHeigh;
+            pixelHeightStop = (realHeightStop - _TOPCInfo.startY)/(_TOPCInfo.stopY - _TOPCInfo.startY)
+                                * _TOPCInfo.pixelHeigh;
+            if(pixelWidthStop - pixelWidthStart > 2048){
+                pixelHeightStop = pixelHeightStart + 2048;
+            }
+        }else{
+            pixelWidthStart = 0;
+            pixelWidthStop  = 10;
+        }
+
+
+        if(zoomflag == 1){
+            if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
+                flag = 1;
+            if(flag == 1){
+                if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                    curscanstart = _scanner.fScanPos-1;
+                if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                    curscanstop = _scanner.fScanPos+1;
+            }
+            _nStart   = _process->SAxisDistToIndex(curscanstart);
+            _nScanend = _process->SAxisDistToIndex(curscanstop) - _nStart;
+
+        }
+        if(_scanner.fScanPos == _scanner.fScanStart2){
+            m_PosStart = _process->SAxisDistToIndex(_scanner.fScanPos);
+            m_PosStop  = _process->SAxisDistToIndex(_scanner.fScanPos) + _nWidth;
+        }
+        if(_nWidth <_nScanend){
+            _nScanend = _nWidth;
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cscan_range == _nScanend){
+                    m_PosStart = Csrc_start;
+                    m_PosStop = Csrc_start + _nScanend;
+                }else{
+                    Cscan_range = _nScanend;
+                }
+            }
+            int _nScanPos = _process->GetScanIndexPos();
+            UpdateDisplayRange(2, _nWidth, _nScanPos);
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_start = m_PosStart;
+            }
+        }else{
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+                _nScanend = m_PosStop - m_PosStart;
+                emit signalScanRangeMove(2, m_PosStart, m_PosStop);
+            }else{
+                m_PosStart = _nStart;
+                m_PosStop  = _nStart + _nScanend;
+                emit signalScanRangeMove(2, _nStart, _nStart + _nScanend);
+            }
+        }
+        unsigned char* _pData;
+        WDATA* pData;
+        U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
+        int i, j, k, m, n;
+        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
+        int TmpValue;
+        int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
+        int _nScanMax = _process->GetRealScanMax() + _nScanOff;
+        memset( src, 0x00, sizeof(src));
+        if(Calculation){
+            for(i = m_PosStart - 1, j = -1; i <= m_PosStop + 1 && j < (_nScanend)+1; i++ , j++){
+                if(i<0)
+                    continue;
+                if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
+                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+                    if(direction == 0){
+                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            src[j+1][n] = TmpValue;
+                        }
+                    }else{
+                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            src[j+1][n] = TmpValue;
+                        }
+                    }
+
+                }
+            }
+        }
+        _pData = pImage_->bits();
+        memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
+        TransformImage( m_PosStop - m_PosStart, pixelWidthStop- pixelWidthStart, src,
+                        pImage_->width(), pImage_->height(), pImage_);
+        return;
+    }
     if(zoomflag == 1)
     {
         if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
@@ -362,7 +559,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 curscanstop = _scanner.fScanPos+1;
         }
         _nStart     = _process->SAxisDistToIndex(curscanstart);
-        _nScanend    = _process->SAxisDistToIndex(curscanstop)-_nStart;
+        _nScanend   = _process->SAxisDistToIndex(curscanstop) - _nStart;
         _process->ChangeCscanIndexstart(&curlawstart);
         _process->ChangeCscanIndexstop(&curlawstop);
         lawstart = _process->GetLawStart();

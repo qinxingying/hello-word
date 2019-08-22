@@ -64,7 +64,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>3</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -4977,8 +4977,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>341</width>
-            <height>1072</height>
+            <width>327</width>
+            <height>1073</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -5053,6 +5053,20 @@
                 <property name="sizeConstraint">
                  <enum>QLayout::SetFixedSize</enum>
                 </property>
+                <item row="6" column="1">
+                 <widget class="QComboBox" name="ComCscanType">
+                  <item>
+                   <property name="text">
+                    <string>Angle</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>TopC</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
                 <item row="0" column="0">
                  <widget class="QLabel" name="LabelGateSelect">
                   <property name="sizePolicy">
@@ -5377,6 +5391,40 @@
                   </property>
                   <property name="value">
                    <double>1.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="LabelCscanType">
+                  <property name="text">
+                   <string>C Scan Type:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="0">
+                 <widget class="QLabel" name="LabelTopcWidth">
+                  <property name="text">
+                   <string>TopC Width:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="QDoubleSpinBox" name="ValueTopcWidth">
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="buttonSymbols">
+                   <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="decimals">
+                   <number>1</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="2">
+                 <widget class="QLabel" name="LabelTopcWidthUnit">
+                  <property name="text">
+                   <string>mm</string>
                   </property>
                  </widget>
                 </item>

@@ -1344,6 +1344,16 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	return true;
 }
 
+WDATA* ParameterProcess::GetScanPosPointer(int nGroupId_, int nScanPos_)
+{
+    WDATA* _pData = GetShadowDataPointer();
+    if(!_pData)  return 0;
+    int _nFrameOffset = GetTotalDataSize() ;
+    int _nGroupOffset = GetGroupDataOffset(nGroupId_);
+    int        _index = GetRealScanIndex(nGroupId_, nScanPos_);
+    return (_pData + _nFrameOffset * _index + _nGroupOffset);
+}
+
 WDATA* ParameterProcess::GetGroupDataPointer(int nGroupId_)
 {
 	WDATA* _pData = GetShadowDataPointer();

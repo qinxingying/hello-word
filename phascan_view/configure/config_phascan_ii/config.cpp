@@ -631,6 +631,11 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
 
 }
 
+void Config::getTOPCWidth( int groupId, double &topcWidth)
+{
+    topcWidth = m_groups[groupId].m_cScan.m_topCWidth;
+}
+
 void Config::getScannerData( SCANNER &scanner)
 {
     scanner.eScanEncoderType = (setup_ENCODER_TYPE)m_global.m_scanner.m_scanAxis.m_driving;

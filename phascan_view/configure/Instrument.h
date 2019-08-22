@@ -558,6 +558,20 @@ enum setup_TX_RX_MODE
 	setup_TX_RX_MODE_TOFD
 };
 
+struct TOPC_INFO
+{
+    bool   TOPCValid;    //是否有topc
+    bool   TOPCStatus;   //true开启  false关闭
+    double TOPCWidth;
+    float  startX;
+    float  stopX;
+    float  startY;
+    float  stopY;
+    int    pixelWidth;
+    int    pixelHeigh;
+    int*   pDataIndex;
+};
+
 typedef struct _Group
 {
 	setup_GROUP_MODE		eGroupMode;				/* 组工作模式  0 UT or 1 PA*/
@@ -637,6 +651,7 @@ typedef struct _Group
 	CURVES					curve;
 	GROUP_COLOR				color;
     int						ThicknessType[8];
+    TOPC_INFO               TopCInfo;
 }GROUP_CONFIG;
 //####################################################################################
 //#################				 COMMON DATA			 ######################
@@ -817,6 +832,7 @@ struct DISPLAY_CONFIG
     int   Standard[setup_MAX_GROUP_QTY];
     int   Thickness[setup_MAX_GROUP_QTY];
 };
+
 
 #endif // INSTRUMENT_H
 

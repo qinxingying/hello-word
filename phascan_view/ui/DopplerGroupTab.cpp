@@ -875,6 +875,21 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ui->ComGateMeasure->setCurrentIndex(gate.eMeasure);
 	UpdateSizeingCurves();
 
+    if( m_pGroup->TopCInfo.TOPCValid){
+        ui->ComCscanType->setEnabled(true);
+        ui->ValueTopcWidth->setEnabled(true);
+        if(m_pGroup->TopCInfo.TOPCStatus){
+            ui->ComCscanType->setCurrentIndex(1);
+        }else{
+            ui->ComCscanType->setCurrentIndex(0);
+        }
+        ui->ValueTopcWidth->setValue(m_pGroup->TopCInfo.TOPCWidth);
+    }else{
+        ui->ComCscanType->setEnabled(false);
+        ui->ValueTopcWidth->setEnabled(false);
+        ui->ComCscanType->setCurrentIndex(0);
+    }
+
     //  ********** geometry  ***************//
 	InitComBoxMaterialSelection() ;
 	ui->ComGeometry->setCurrentIndex(m_pGroup->part.eGeometry);
@@ -1506,6 +1521,21 @@ void DopplerGroupTab::on_ValueGateHeight_valueChanged(double)
 	if(!ui->ValueGateHeight->hasFocus())  return ;
 	GatePro();
 }
+
+void DopplerGroupTab::on_ValueTopcWidth_valueChanged(double)
+{
+    if(!ui->ValueTopcWidth->hasFocus()) return;
+}
+
+void DopplerGroupTab::on_ComCscanType_currentIndexChanged(int index)
+{
+    if(!ui->ComCscanType->hasFocus()) return;
+    m_pGroup->TopCInfo.TOPCStatus = index;
+    ProcessDisplay _display ;
+    _display.UpdateAllViewOverlay();
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
 void DopplerGroupTab::on_ComGateSync_currentIndexChanged(int )
 {
 	if(!ui->ComGateSync->hasFocus())  return ;
