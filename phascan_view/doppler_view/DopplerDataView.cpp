@@ -644,14 +644,20 @@ void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
     }
 }
 
-void DopplerDataView::slotIndexRangeMove(int nType_, int nStart_, int nStop_)
+void DopplerDataView::slotIndexRangeMove(int nType_, int cType, double nStart_, double nStop_)
 {
     if(m_pGraphicView->GetZoomStatus())
         return;
-    ParameterProcess* _process = ParameterProcess::Instance();
-    double _nStart = _process->TransforIndexIndexToPos(nStart_);
-    double _nStop  = _process->TransforIndexIndexToPos(nStop_);
-    _nStop += _process->GetRasterCoveredLength(0);
+    double _nStart, _nStop;
+    if(cType == 0){
+        ParameterProcess* _process = ParameterProcess::Instance();
+        _nStart = _process->TransforIndexIndexToPos(nStart_);
+        _nStop  = _process->TransforIndexIndexToPos(nStop_);
+        _nStop += _process->GetRasterCoveredLength(0);
+    }else{
+        _nStart = nStart_;
+        _nStop  = nStop_;
+    }
 
     double _nSliderStart , _nSliderStop;
     switch(nType_)

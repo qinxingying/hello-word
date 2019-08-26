@@ -146,7 +146,7 @@ protected slots:
     void slotTofdDragProAction(QPointF, QPointF);
 
 	void slotScanRangeMove(int nType_, int nStart_, int nStop_) ;
-    void slotIndexRangeMove(int nType_, int nStart_, int nStop_);
+    void slotIndexRangeMove(int nType_,int cType, double nStart_, double nStop_);
 };
 
 #endif // DOPPLERDataView_H

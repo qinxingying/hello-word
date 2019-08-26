@@ -137,5 +137,5 @@ void DopplerDrawScan::UpdateIndexRange(int nType_, int nRangle_ , int nPos_)
     }else{
         m_indexStopIndex = m_indexStartIndex + nRangle_ - 1;
     }
-    emit signalIndexRangeMove(nType_, m_indexStartIndex, m_indexStopIndex);
+    emit signalIndexRangeMove( nType_, 0, m_indexStartIndex, m_indexStopIndex);
 }

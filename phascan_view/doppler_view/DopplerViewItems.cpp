@@ -56,6 +56,7 @@ DopplerViewItems::DopplerViewItems(QObject *parent) :
 	memset((void*)m_pGate ,   0 , 12) ;
 	memset((void*)m_pCursor , 0 , 16) ;
 	memset((void*)m_pThickness , 0 , 40 ) ;
+    memset((void*)m_pTOPCWidth, 0, 8);
 	//m_pWeld		= 0;
 	m_pLawMarker	= 0;
     m_pLawMarkerCScan = 0;
@@ -98,6 +99,10 @@ DopplerViewItems::~DopplerViewItems()
 		if(m_pThickness[i]) delete m_pThickness[i]  ;
 		m_pThickness[i] = NULL ;
 	}
+    for(i = 0; i < 2; i++){
+        if(m_pTOPCWidth[i]) delete m_pTOPCWidth[i];
+        m_pTOPCWidth[i] = NULL;
+    }
 	if(m_pLawMarker)  delete m_pLawMarker ;
     if(m_pLawMarkerCScan)  delete m_pLawMarkerCScan ;
 	//if(m_pWeld)	   delete m_pWeld	  ;
@@ -135,6 +140,7 @@ void DopplerViewItems::UpdateItems()
 	UpdateItemsLawMarker() ;
     UpdateItemsLawMarkerCScan();
 	UpdateItemsThickness() ;
+    UpdateItemsTOPCWidth();
 	UpdateItemsWeld() ;
 }
 
@@ -625,6 +631,55 @@ void DopplerViewItems::UpdateItemsThickness()
 		if(m_pThickness[i])  m_pThickness[i]->hide();
 	}
 
+}
+
+void DopplerViewItems::UpdateItemsTOPCWidth()
+{
+    int i;
+    if(!(m_eShow & OVERLAYS_TOPC_WIDTH)){
+        for( i = 0; i < 2; i++){
+            if(m_pTOPCWidth[i]) m_pTOPCWidth[i]->hide();
+        }
+        return;
+    }
+
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int groupId = m_pDataView->GetGroupId();
+    if( !_pConfig->group[groupId].TopCInfo.TOPCStatus){
+        for( i = 0; i < 2; i++){
+            if(m_pTOPCWidth[i]) m_pTOPCWidth[i]->hide();
+        }
+        return;
+    }
+
+    double TOPCwidth = _pConfig->group[groupId].TopCInfo.TOPCWidth;
+    double TOPCstart = 0 - TOPCwidth/2.0;
+    double TOPCstop  = TOPCwidth/2.0;
+    QRectF _rect(0 , 0 , 0 , 0);
+    if(!m_pTOPCWidth[0]){
+        m_pTOPCWidth[0]  = new DopplerLineItem(COLOR_THICKNESS);
+        m_pTOPCWidth[0]->SetLineStyle(Qt::DashLine) ;
+        m_pTOPCWidth[0]->SetItemType(DOPPLER_GRAPHICS_ITEM_THICKNESS) ;
+        m_pTOPCWidth[0]->SetItemId(0);
+        m_pDataView->AddOverlayItems(m_pTOPCWidth[0]);
+    }
+    m_pTOPCWidth[0]->SetLineType(DopplerLineItem::LINE_VERTICAL);
+    m_pTOPCWidth[0]->SetMoveType(DopplerLineItem::LINE_MOVE_NO);
+    _rect.setLeft(TOPCstart);
+    m_pDataView->SetItemGeometry( m_pTOPCWidth[0], _rect );
+    m_pTOPCWidth[0]->show();
+    if(!m_pTOPCWidth[1]){
+        m_pTOPCWidth[1]  = new DopplerLineItem(COLOR_THICKNESS);
+        m_pTOPCWidth[1]->SetLineStyle(Qt::DashLine) ;
+        m_pTOPCWidth[1]->SetItemType(DOPPLER_GRAPHICS_ITEM_THICKNESS) ;
+        m_pTOPCWidth[1]->SetItemId(1);
+        m_pDataView->AddOverlayItems(m_pTOPCWidth[1]);
+    }
+    m_pTOPCWidth[1]->SetLineType(DopplerLineItem::LINE_VERTICAL);
+    m_pTOPCWidth[1]->SetMoveType(DopplerLineItem::LINE_MOVE_NO);
+    _rect.setLeft(TOPCstop);
+    m_pDataView->SetItemGeometry( m_pTOPCWidth[1], _rect);
+    m_pTOPCWidth[1]->show();
 }
 
 void DopplerViewItems::UpdateItemsWeld()

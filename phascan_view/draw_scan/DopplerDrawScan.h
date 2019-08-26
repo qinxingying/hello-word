@@ -82,7 +82,7 @@ protected:
 
 signals:
 	void signalScanRangeMove(int nType_, int nStart_, int nStop_) ;
-    void signalIndexRangeMove(int nType_, int nStart_, int nStop_);
+    void signalIndexRangeMove(int nType_,int cType, double nStart_, double nStop_);  //cType 0 表示二维扫查index  1 表示普通扫查 index
 };
 
 #endif // DPLDRAWSCAN_H

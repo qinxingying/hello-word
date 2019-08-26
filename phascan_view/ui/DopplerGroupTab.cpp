@@ -1522,16 +1522,20 @@ void DopplerGroupTab::on_ValueGateHeight_valueChanged(double)
 	GatePro();
 }
 
-void DopplerGroupTab::on_ValueTopcWidth_valueChanged(double)
+void DopplerGroupTab::on_ValueTopcWidth_valueChanged(double value)
 {
     if(!ui->ValueTopcWidth->hasFocus()) return;
+    m_pGroup->TopCInfo.TOPCWidth = value;
+    ProcessDisplay _display;
+    _display.UpdateAllViewOverlay();
+    g_pMainWnd->RunDrawThreadOnce(true);
 }
 
 void DopplerGroupTab::on_ComCscanType_currentIndexChanged(int index)
 {
     if(!ui->ComCscanType->hasFocus()) return;
     m_pGroup->TopCInfo.TOPCStatus = index;
-    ProcessDisplay _display ;
+    ProcessDisplay _display;
     _display.UpdateAllViewOverlay();
     g_pMainWnd->RunDrawThreadOnce(true);
 }

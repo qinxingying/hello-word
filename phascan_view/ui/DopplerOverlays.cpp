@@ -403,14 +403,21 @@ void DopplerOverlays::CreateOverlaysCH()
 
 	if(group.bShowCursor)
 	{
-		_pItemGroup->EnableItems(OVERLAYS_CURSOR);
-		_pItemGroup->SetCursorPos(0 , group.afCursor[setup_CURSOR_VPA_REF]);
-		_pItemGroup->SetCursorPos(1 , group.afCursor[setup_CURSOR_VPA_MES]);
-		_pItemGroup->SetCursorPos(2 , group.afCursor[setup_CURSOR_S_REF]);
-		_pItemGroup->SetCursorPos(3 , group.afCursor[setup_CURSOR_S_MES]);
+        _pItemGroup->EnableItems(OVERLAYS_CURSOR);
+        if(group.TopCInfo.TOPCStatus){
+            _pItemGroup->SetCursorPos(0 , group.afCursor[setup_CURSOR_I_REF]);
+            _pItemGroup->SetCursorPos(1 , group.afCursor[setup_CURSOR_I_MES]);
+            _pItemGroup->SetCursorId(0 , setup_CURSOR_I_REF);
+            _pItemGroup->SetCursorId(1 , setup_CURSOR_I_MES);
 
-		_pItemGroup->SetCursorId(0 , setup_CURSOR_VPA_REF);
-		_pItemGroup->SetCursorId(1 , setup_CURSOR_VPA_MES);
+        }else{
+            _pItemGroup->SetCursorPos(0 , group.afCursor[setup_CURSOR_VPA_REF]);
+            _pItemGroup->SetCursorPos(1 , group.afCursor[setup_CURSOR_VPA_MES]);
+            _pItemGroup->SetCursorId(0 , setup_CURSOR_VPA_REF);
+            _pItemGroup->SetCursorId(1 , setup_CURSOR_VPA_MES);
+        }
+		_pItemGroup->SetCursorPos(2 , group.afCursor[setup_CURSOR_S_REF]);
+		_pItemGroup->SetCursorPos(3 , group.afCursor[setup_CURSOR_S_MES]);		
 		_pItemGroup->SetCursorId(2 , setup_CURSOR_S_REF);
 		_pItemGroup->SetCursorId(3 , setup_CURSOR_S_MES);
 
@@ -440,8 +447,9 @@ void DopplerOverlays::CreateOverlaysCH()
     } else {
         _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
     }
-    _pItemGroup->EnableItems(OVERLAYS_LAW_MARKER_C_SCAN);
-
+    if(!group.TopCInfo.TOPCStatus){
+        _pItemGroup->EnableItems(OVERLAYS_LAW_MARKER_C_SCAN);
+    }
 	_pItemGroup->UpdateItems();
 }
 
@@ -475,13 +483,19 @@ void DopplerOverlays::CreateOverlaysCV()
 	if(group.bShowCursor)
 	{
 		_pItemGroup->EnableItems(OVERLAYS_CURSOR);
+        if(group.TopCInfo.TOPCStatus){
+            _pItemGroup->SetCursorPos(2 , group.afCursor[setup_CURSOR_I_REF]);
+            _pItemGroup->SetCursorPos(3 , group.afCursor[setup_CURSOR_I_MES]);
+            _pItemGroup->SetCursorId(2 , setup_CURSOR_I_REF);
+            _pItemGroup->SetCursorId(3 , setup_CURSOR_I_MES);
+        }else{
+            _pItemGroup->SetCursorPos(2 , group.afCursor[setup_CURSOR_VPA_REF]);
+            _pItemGroup->SetCursorPos(3 , group.afCursor[setup_CURSOR_VPA_MES]);
+            _pItemGroup->SetCursorId(2 , setup_CURSOR_VPA_REF);
+            _pItemGroup->SetCursorId(3 , setup_CURSOR_VPA_MES);
+        }
 		_pItemGroup->SetCursorPos(0 , group.afCursor[setup_CURSOR_S_REF]);
-        _pItemGroup->SetCursorPos(1 , group.afCursor[setup_CURSOR_S_MES]);
-		_pItemGroup->SetCursorPos(2 , group.afCursor[setup_CURSOR_VPA_REF]);
-		_pItemGroup->SetCursorPos(3 , group.afCursor[setup_CURSOR_VPA_MES]);
-
-		_pItemGroup->SetCursorId(2 , setup_CURSOR_VPA_REF);
-		_pItemGroup->SetCursorId(3 , setup_CURSOR_VPA_MES);
+        _pItemGroup->SetCursorPos(1 , group.afCursor[setup_CURSOR_S_MES]);				
 		_pItemGroup->SetCursorId(0 , setup_CURSOR_S_REF);
 		_pItemGroup->SetCursorId(1 , setup_CURSOR_S_MES);
 
@@ -511,8 +525,9 @@ void DopplerOverlays::CreateOverlaysCV()
     } else {
         _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
     }
-    _pItemGroup->EnableItems(OVERLAYS_LAW_MARKER_C_SCAN);
-
+    if(!group.TopCInfo.TOPCStatus){
+        _pItemGroup->EnableItems(OVERLAYS_LAW_MARKER_C_SCAN);
+    }
 	_pItemGroup->UpdateItems();
 	_pItemGroup->UpdateItems();
 }
@@ -669,6 +684,9 @@ void DopplerOverlays::CreateOverlaysSA()
 		//_pItemGroup->SetWeldInfo(&group.part.weld);
 		_pItemGroup->SetPartInfo(&group.part);
 	}
+    if(group.TopCInfo.TOPCValid){
+        _pItemGroup->EnableItems( OVERLAYS_TOPC_WIDTH);
+    }
 	_pItemGroup->UpdateItems();
 }
 
@@ -753,6 +771,9 @@ void DopplerOverlays::CreateOverlaysSL()
 		//_pItemGroup->SetWeldInfo(&group.part.weld);
 		_pItemGroup->SetPartInfo(&group.part);
 	}
+    if(group.TopCInfo.TOPCValid){
+        _pItemGroup->EnableItems( OVERLAYS_TOPC_WIDTH);
+    }
 
 	_pItemGroup->UpdateItems();
 }

@@ -15,18 +15,19 @@
 
 enum OVERLAYS
 {
-	OVERLAYS_NONE        = 0x0000 ,
-	OVERLAYS_DEFECT      = 0x0001 ,
-	OVERLAYS_LW_BW       = 0x0002 ,
-	OVERLAYS_GATE        = 0x0004 ,
-	OVERLAYS_LAW_MARKER  = 0x0008 ,
-	OVERLAYS_CURSOR      = 0x0010 ,
-	OVERLAYS_THICKNESS   = 0x0020 ,
-	OVERLAYS_WELD        = 0x0040 ,
-	OVERLAYS_SCAN_MARKER = 0x0080 ,
-	OVERLAYS_PARABOLA    = 0x0100 ,
-    OVERLAYS_LAW_MARKER_C_SCAN    = 0x0200 ,
-	OVERLAYS_ALL         = 0xFFFF
+    OVERLAYS_NONE              = 0x0000,
+    OVERLAYS_DEFECT            = 0x0001,
+    OVERLAYS_LW_BW             = 0x0002,
+    OVERLAYS_GATE              = 0x0004,
+    OVERLAYS_LAW_MARKER        = 0x0008,
+    OVERLAYS_CURSOR            = 0x0010,
+    OVERLAYS_THICKNESS         = 0x0020,
+    OVERLAYS_WELD              = 0x0040,
+    OVERLAYS_SCAN_MARKER       = 0x0080,
+    OVERLAYS_PARABOLA          = 0x0100,
+    OVERLAYS_LAW_MARKER_C_SCAN = 0x0200,
+    OVERLAYS_TOPC_WIDTH        = 0x0400,
+    OVERLAYS_ALL               = 0xFFFF
 } ;
 
 
@@ -54,6 +55,7 @@ public:
     void SetLawMarkerPos(int nId_, int nMarkerPos);
     //void SetLawMarkerCScanPos(int nMarkerPos);
 	void UpdateItemsThickness() ;
+    void UpdateItemsTOPCWidth();
 	void UpdateItemsWeld() ;
 	void UpdateScanMarker();
 
@@ -114,6 +116,7 @@ protected:
 	DopplerLawMarker*    m_pLawMarker ;
     DopplerCScanLineMark*    m_pLawMarkerCScan ;
 	DopplerLineItem*     m_pThickness[10]  ;
+    DopplerLineItem*     m_pTOPCWidth[2];
 	DopplerScanMarker*   m_pScanMarker  ;
 	DopplerParabolaItem* m_pParabola[2]    ;
 
