@@ -987,6 +987,7 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 	int _nPointPos = _curve.nPointPos;
 
 	float _fRefAmpOff = pow(10, _curve.fAmpOffsetAmp / 2.0f);
+    //qDebug()<<"dddee"<<_curve.fAmpOffsetAmp<<_fRefAmpOff;
 
 	float _ptX[18] ;
 	float _ptY[18] ;
@@ -1024,7 +1025,7 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
 	memset(_ptX, 0x00, sizeof(_ptX));
 	memset(_ptY, 0x00, sizeof(_ptY));
 	//------------------------------------------
-	_ptX[0] = _fRefAmpOff * _nWidth * _curve.faAmpRef[_nBeamNo];;
+    _ptX[0] = _fRefAmpOff * _nWidth * _curve.faAmpRef[_nBeamNo];
 	_ptY[0] = 0;
 	for(int i = 1; i < _nPointQty+1; i++ )
 	{

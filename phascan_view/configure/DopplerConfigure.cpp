@@ -963,9 +963,9 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 	ParameterProcess* _process = ParameterProcess::Instance();
     if(Config::instance()->is_phascan_ii()) {
         if(Config::instance()->is_200wave()){
-            Phascan_Version = 2;
+            Phascan_Version = 5;
         }else{
-            Phascan_Version = 3;
+            Phascan_Version = 4;
         }
     } else {
         Phascan_Version = m_pDataFile->GetFileHeader()->version-m_pDataFile->GetFileHeader()->size-m_pDataFile->GetFileHeader()->reserved;
@@ -1027,7 +1027,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.coupleMonitoringVelocity = _pGroupInfo->velocity /100;
         }
 		/* 发射接收 */
-		_group.nTrigeStart	  = _pGroupInfo->pulser1;		/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元与机器配置相关我们是128阵元最大,值与connect P 一样 */
+        _group.nTrigeStart	  = _pGroupInfo->pulser1;	/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1
+                                                        指定发射阵元与机器配置相关我们是128阵元最大,值与connect P 一样 */
 		_group.nReceiveStart  = _pGroupInfo->receiver1;		/* 接收阵元 必须是 PR 模式才能调节 */
 
 		_group.eFileter	      = (setup_FILTER_MODE)_pGroupInfo->filter_pos1 ;		/* 滤波 */
@@ -1290,7 +1291,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         _group.part.weld.Diameter        = _pGroupInfo->part.Diameter      / 1000.0 ;
         if(2 == _group.part.weld.eType)
         {
-           if(((_group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_height) != _group.part.weld.fizone_height)||(_group.part.weld.fizone_radius !=_group.part.weld.fizone_angle))
+           if(((_group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_height) !=
+               _group.part.weld.fizone_height)||(_group.part.weld.fizone_radius !=_group.part.weld.fizone_angle))
            {
                _group.part.weld.eType = (setup_WELD_TYPE)4;
                _group.part.weld.fizone_down_height = _group.part.weld.fizone_height;

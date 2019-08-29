@@ -1064,6 +1064,10 @@ void Config::convert_to_phascan_config(int groupId)
     targetGroup.rectifier1    = currentGroup.m_transceiver.m_rectifier;
     targetGroup.on_off_status = set_bit_value(targetGroup.on_off_status, 1, currentGroup.m_transceiver.m_videoFilter);
     targetGroup.averaging1    = currentGroup.m_transceiver.m_average;
+    targetGroup.on_off_status = set_bit_value(targetGroup.on_off_status, 2, currentGroup.m_focallawer.m_coupling);
+    int couplingVelocity = currentSpecimen.m_LV * 10;
+    couplingVelocity = couplingVelocity << 3;
+    targetGroup.on_off_status = targetGroup.on_off_status | couplingVelocity;
 
     /* Probe */
     memset(targetProbe.Serial, 0, 20);
@@ -1243,7 +1247,7 @@ void Config::convert_to_phascan_config(int groupId)
     targetCurves.curve_pos      = currentGroup.m_sizing.m_type;
     targetCurves.curve_step     = 0;
     targetCurves.ref_ampl_offset= 0/*80000*/;
-    targetCurves.linear_ref_ampl= currentCurves.m_refAmp * 100.0;
+    targetCurves.linear_ref_ampl= currentCurves.m_refAmp * 10.0;
 
     if(Paramters::Sizing::TCG == currentGroup.m_sizing.m_type) {
         /* TCG */
@@ -1253,7 +1257,7 @@ void Config::convert_to_phascan_config(int groupId)
             targetCurves.dac_ref_ampl[i] = currentCurves.m_refAmp * 10.0;
             beamInfo = currentCurves.m_beams.at(i);
             for(int j = 0; j < beamInfo.count(); ++j) {
-                targetCurves.amplitude[i][j] = currentCurves.m_refAmp * pow(10.0, beamInfo.at(j).first / 20.0) * 1000.0;
+                targetCurves.amplitude[i][j] = currentCurves.m_refAmp / pow(10.0, beamInfo.at(j).first / 20.0) * 1000.0;
                 targetCurves.position[i][j]  = beamInfo.at(j).second;
                 qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << " TCG "
                          << " i " << i
@@ -1273,7 +1277,7 @@ void Config::convert_to_phascan_config(int groupId)
             targetCurves.dac_ref_ampl[i] = currentCurves.m_refAmp * 10.0;
             beamInfo = currentCurves.m_beams.at(i);
             for(int j = 0; j < beamInfo.count(); ++j) {
-                targetCurves.amplitude[i][j]  = currentCurves.m_refAmp * pow(10.0 , beamInfo.at(j).first / 20.0) * 1000.0;
+                targetCurves.amplitude[i][j]  = currentCurves.m_refAmp / pow(10.0 , beamInfo.at(j).first / 20.0) * 1000.0;
                 targetCurves.position[i][j]  = beamInfo.at(j).second;
                 qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << " DAC "
                          << " i " << i
