@@ -913,7 +913,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
         common.scanner.fLawStop     =   0;
         common.scanner.fLawQty      =   0;
 
-        common.scanner.fScanend     =   common.scanner.fScanStop;//_process->SAxisstoptoIndex(common.scanner.fScanStop);  
+        common.scanner.fScanend     =   common.scanner.fScanStop;
 	}
 	else
 	{
@@ -1054,7 +1054,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }
         if(!Config::instance()->is_phascan_ii()) {
-            if(common.scanner.eScanEncoderType && Phascan_Version == 2) {
+            if(common.scanner.eScanEncoderType && Phascan_Version >= 2) {
                 common.scanner.encoder[common.scanner.eScanEncoderType - 1].fResulotion = _pGroupInfo->cursors_info[0].resolution/100.0;
             }
         }

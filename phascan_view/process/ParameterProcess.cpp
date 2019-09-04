@@ -2271,10 +2271,14 @@ QString ParameterProcess::GetCscanIndexUnit(int nGroupId_)
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 	if(setup_GROUP_MODE_PA == _group.eGroupMode)
 	{
-		if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
-			return QString("deg");
-		else
-			return QString("vpa");
+        if(_group.TopCInfo.TOPCStatus){
+            return QString("mm");
+        }else{
+            if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+                return QString("deg");
+            else
+                return QString("vpa");
+        }
 	}
 	return QString("");
 }

@@ -427,7 +427,15 @@ void DopplerOverlays::CreateOverlaysCH()
         }
 	}
     if(m_pConfigure->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        //qDebug()<<"setup_CURSOR_C_ANGLE"<<group.afCursor[setup_CURSOR_LAW];
         _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+//        if(group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL){
+//            _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
+//            _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
+//        }else{
+//            _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_LAW]);
+//            _pItemGroup->SetCursorId(4 , setup_CURSOR_LAW);
+//        }
     }else{
 //        float indexPos = m_pConfigure->common.scanner.fIndexPos;
 //        float coverlength = _process->GetRasterCoveredLength(m_nGroup);
@@ -436,6 +444,7 @@ void DopplerOverlays::CreateOverlaysCH()
 //        float curPos = curLaw * coverlength / beamQty;
         float indexPos = _process->GetRasterCurrentIndexPos(m_nGroup);
         _pItemGroup->SetCursorPos( 4, indexPos);
+        //_pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);
     }
 
     _pItemGroup->SetCursorId(4 , setup_CURSOR_C_ANGLE);

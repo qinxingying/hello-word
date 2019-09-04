@@ -59,4 +59,7 @@ versionBuild.commands = $$PWD/update_version.sh $$PWD/
 QMAKE_EXTRA_TARGETS += versionBuild
 PRE_TARGETDEPS += version
 
-#DEFINES += QT_NO_DEBUG_OUTPUT
+win32:CONFIG(release, debug|release):{
+DEFINES += QT_NO_DEBUG_OUTPUT
+}
+

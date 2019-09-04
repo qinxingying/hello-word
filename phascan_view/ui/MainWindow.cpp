@@ -622,7 +622,7 @@ void MainWindow::updateCscanLawPos(int _nPos, int _nGroupId)
     ParameterProcess* _process = ParameterProcess::Instance();
     float tmp = _process->CScanLineAngleToScanLineAngle(_nGroupId, _nPos);
     if(_law.eLawType == setup_LAW_TYPE_LINEAR)
-        _group.afCursor[setup_CURSOR_C_ANGLE] = tmp+1;
+        _group.afCursor[setup_CURSOR_C_ANGLE] = _group.afCursor[setup_CURSOR_LAW];
     else
         _group.afCursor[setup_CURSOR_C_ANGLE] = tmp;
 }
@@ -1230,8 +1230,14 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                 }
             }
 
-            tmp = _process->SCanAngleToCScanLineAngle(_nGroupId, _fCursor);
-            _group.afCursor[setup_CURSOR_LAW] = tmp;
+            if(_law.eLawType == setup_LAW_TYPE_LINEAR){
+                tmp = _group.afCursor[setup_CURSOR_C_ANGLE];
+                _group.afCursor[setup_CURSOR_LAW] = tmp;
+            }else{
+                tmp = _process->SCanAngleToCScanLineAngle(_nGroupId, _fCursor);
+                _group.afCursor[setup_CURSOR_LAW] = tmp;
+            }
+
 
             qDebug("(tmp):%.2f,_fCursor:%.2f, rect.x:%.2f, rect.y:%.2f",
                    _group.afCursor[setup_CURSOR_LAW], _fCursor, _rect.x(), _rect.y());

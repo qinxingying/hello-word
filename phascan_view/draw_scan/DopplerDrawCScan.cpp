@@ -346,7 +346,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         }
         unsigned char* _pData = pImage_->bits();
         memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
-        int srcHeight = j*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        int srcHeight = (j-1)*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
         TransformImage( p, srcHeight, src, pImage_->width(), pImage_->height(), pImage_);
         return;
     }
@@ -614,8 +614,10 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             stopAngle  = _law->nAngleStopRefract / 10.0;
 
         }else{
-            startAngle = _law->nFirstElemFir;
-            stopAngle  = _law->nLastElemFir;
+            int _nLawQty = _process->GetGroupLawQty(m_cInfo.nGroupId);
+            startAngle = 0;
+            stopAngle  = _nLawQty - 1;
+            //qDebug()<<"nFirstElemFir"<<_law->nFirstElemFir<<_law->nLastElemFir<<_law->nElemStepFir;
         }
         emit signalIndexRangeMove( 0, 1, startAngle, stopAngle);
     }
@@ -1330,7 +1332,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         }
         unsigned char* _pData = pImage_->bits();
         memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
-        int srcHeight = j*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        int srcHeight = (j-1)*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
         TransformImage( srcHeight, p, src, pImage_->width(), pImage_->height(), pImage_);
         return;
     }
@@ -1593,8 +1595,9 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             stopAngle  = _law->nAngleStopRefract / 10.0;
 
         }else{
-            startAngle = _law->nFirstElemFir;
-            stopAngle  = _law->nLastElemFir;
+            int _nLawQty = _process->GetGroupLawQty(m_cInfo.nGroupId);
+            startAngle = 0;
+            stopAngle  = _nLawQty - 1;
         }
         emit signalIndexRangeMove( 2, 1, startAngle, stopAngle);
     }

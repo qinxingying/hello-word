@@ -1536,6 +1536,7 @@ void DopplerGroupTab::on_ComCscanType_currentIndexChanged(int index)
     if(!ui->ComCscanType->hasFocus()) return;
     m_pGroup->TopCInfo.TOPCStatus = index;
     ProcessDisplay _display;
+    _display.UpdateAllViewFrame();
     _display.UpdateAllViewOverlay();
     g_pMainWnd->RunDrawThreadOnce(true);
 }
