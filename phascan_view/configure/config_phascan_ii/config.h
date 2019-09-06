@@ -82,7 +82,7 @@ protected:
 
     void unpack_beams_info();
 
-    void unpack_thickness();
+    void unpack_thickness(const QVariantMap &map);
 
     void unpack_cursor(const QVariantMap &map);
 

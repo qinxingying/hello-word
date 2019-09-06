@@ -738,6 +738,11 @@ int  ParameterProcess::GetScanIndexPos() const
 	return _nScanPos ;
 }
 
+/*!
+  \brief 二维扫查将当前位置转换成scaner数据的索引位置
+
+  \return 索引位置
+*/
 int  ParameterProcess::transforRasterPosToMarker() const
 {
     SCANNER& _scaner = m_pConfig->common.scanner;
@@ -759,6 +764,8 @@ int  ParameterProcess::GetScanIndexStart2() const
   \brief 将超声轴坐标值转换为数据索引index
 
   \param fDist_ 编码器时单位为mm,时间编码时为s
+
+  \return 数据索引index
 */
 int ParameterProcess::SAxisDistToIndex(float fDist_) const
 {
@@ -812,6 +819,13 @@ float ParameterProcess::GetIndexEndPos() const
     return _scaner.fIndexStop;
 }
 
+/*!
+  \brief 将二维扫查的距离单位mm转换成步进方向的索引值
+
+  \param fPos 在C扫中步进轴方向的位置单位mm
+
+  \return 步进索引值
+*/
 int ParameterProcess::TransforIndexPosToIndex(float fPos) const
 {
     SCANNER& _scaner = m_pConfig->common.scanner;
@@ -826,6 +840,13 @@ int ParameterProcess::TransforIndexPosToIndex(float fPos) const
     return _index;
 }
 
+/*!
+  \brief 将二维扫查的步进索引值转换为距离值mm
+
+  \param fIndex 步进方向的索引值
+
+  \return C扫步进轴对应位置，单位mm
+*/
 float ParameterProcess::TransforIndexIndexToPos(int fIndex) const
 {
     SCANNER& _scaner = m_pConfig->common.scanner;
@@ -2268,6 +2289,9 @@ QString ParameterProcess::GetIndexAxisUnit()
 
 QString ParameterProcess::GetCscanIndexUnit(int nGroupId_)
 {
+    if(m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_RASTER){
+        return QString("mm");
+    }
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 	if(setup_GROUP_MODE_PA == _group.eGroupMode)
 	{
@@ -2574,11 +2598,20 @@ void ParameterProcess::InitScanOff(int nGroupId_)
 	m_fCScanOff[nGroupId_] = _group.fScanOffset;
 }
 
+/*!
+  \brief 获取耦合监控数据
+
+  \param nGroupId_ 组ID
+
+  \return 计算后的耦合监控数据
+
+*/
 QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
 {
     coupleCScanGroupInfo &CScanInfo = m_pConfig->coupleCScanData[nGroupId_];
     float partThickness = GetPartThickness(nGroupId_);
 
+    //初始化的时候和工件厚度改变时重新计算
     if( CScanInfo.calculateState && abs(partThickness - CScanInfo.oldPartThickness) < 0.1)
     {
         return CScanInfo.data;

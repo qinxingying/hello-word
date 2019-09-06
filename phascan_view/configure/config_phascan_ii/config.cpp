@@ -158,6 +158,7 @@ void Config::unpack_group(int groupId)
     unpack_sample(map["Sample"].toMap());
     unpack_c_scan(map["CScan"].toMap());
     unpack_sizing(map["Sizing"].toMap());
+    unpack_thickness(map["Thickness"].toMap());
 }
 
 void Config::unpack_version()
@@ -743,13 +744,13 @@ void Config::unpack_beams_info()
 //    }
 }
 
-void Config::unpack_thickness()
+void Config::unpack_thickness(const QVariantMap &map)
 {
-//    m_groups[m_currentGroupID].thickness.min = map["Min"].toDouble();
-//    m_groups[m_currentGroupID].thickness.max = map["Max"].toDouble();
-//    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-//             << " thickness min " << m_groups[m_currentGroupID].thickness.min
-    //             << " thickness max " << m_groups[m_currentGroupID].thickness.max;
+    m_groups[m_currentGroupID].m_thickness.m_min = map["Min"].toDouble();
+    m_groups[m_currentGroupID].m_thickness.m_max = map["Max"].toDouble();
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " thickness min " << m_groups[m_currentGroupID].m_thickness.m_min
+                 << " thickness max " << m_groups[m_currentGroupID].m_thickness.m_max;
 }
 
 void Config::unpack_cursor(const QVariantMap &map)
