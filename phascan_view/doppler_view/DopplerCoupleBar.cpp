@@ -53,31 +53,29 @@ void DopplerCoupleSScanBar::paintEvent(QPaintEvent *)
     {
         return;
     }
+    if( coupleStart + coupleDepth < _fS || coupleStart > _fE){
+        return;
+    }
 
     int start;
     int loopQty;
     float step;
-
-    if( _fE > coupleStart) //开始处截断
-    {
+    //开始处截断
+    if( _fS > coupleStart){
         start = 0;
-        dataQty = (coupleDepth - ( _fE - coupleStart))/coupleDepth*dataQty;
-        coupleDepth = coupleDepth - ( _fE - coupleStart);
-    }
-    else
-    {
-        start = ( coupleStart - _fE)/maxDepth * _nHeight;
+        dataQty = (coupleDepth - ( _fS - coupleStart))/coupleDepth*dataQty;
+        coupleDepth = coupleDepth - ( _fS - coupleStart);
+    }else{
+        start = ( coupleStart - _fS)/maxDepth * _nHeight;
         _nHeight -= start;
-        maxDepth = maxDepth - ( coupleStart - _fE);
+        maxDepth = maxDepth - ( coupleStart - _fS);
     }
 
-    if( maxDepth > coupleDepth)
-    {
+    //尾部截断
+    if( maxDepth > coupleDepth){
         loopQty = _nHeight * coupleDepth / maxDepth;
         step = (float)dataQty / loopQty;
-    }
-    else
-    {
+    }else{
         loopQty = _nHeight;
         int dataSize = dataQty * maxDepth / coupleDepth;
         step = (float)dataSize / loopQty;
@@ -85,12 +83,9 @@ void DopplerCoupleSScanBar::paintEvent(QPaintEvent *)
 
     QPainter _painter( this);
     int _nColor;
-    for( int i = start; i < loopQty + start; i++)
-    {
-        //int dataIndex = i*step;
+    for( int i = start; i < loopQty + start; i++){
         _nColor = _process->correctionPdata(_pData[(int)(i*step)]);
-        if(_nColor > WAVE_MAX)
-        {
+        if(_nColor > WAVE_MAX){
             _nColor = WAVE_MAX;
         }
         _painter.setPen(QPen(QColor(color[_nColor][0] , color[_nColor][1] , color[_nColor][2])));

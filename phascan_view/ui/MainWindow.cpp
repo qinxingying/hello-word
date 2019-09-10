@@ -757,6 +757,10 @@ void MainWindow::initIndexSlider()
     }
 }
 
+/*!
+  \brief 更新扫查轴滑动条
+
+*/
 void MainWindow::UpdateSlider()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -766,6 +770,10 @@ void MainWindow::UpdateSlider()
     sliderh->setValue(_nPos);
 }
 
+/*!
+  \brief 更新步进轴滑动条，用于二维扫查
+
+*/
 void MainWindow::UpdateIndexSlider()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -936,6 +944,16 @@ void MainWindow::OpenFilePro(QString strFileName_)
     }
     m_fileName = strFileName_;
     this->setWindowTitle(m_titleName + m_fileName);
+
+//    ParameterProcess* _process = ParameterProcess::Instance();
+//    WDATA *ppdata = _process->GetShadowDataPointer();
+//    int nPointQty  = _process->GetGroupPointQty(0);
+//    for(int i = 0; i < 10; i++){
+//        WDATA *pdata  =  _process->GetDataAbsolutePosPointer( 0, i, 0, ppdata);
+//        pdata += nPointQty;
+//        int *p = (int *)pdata;
+//        qDebug()<<"pdata"<<p[4];
+//    }
 }
 
 void MainWindow::SaveFile()

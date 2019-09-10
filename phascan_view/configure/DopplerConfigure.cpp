@@ -970,6 +970,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
     } else {
         Phascan_Version = m_pDataFile->GetFileHeader()->version-m_pDataFile->GetFileHeader()->size-m_pDataFile->GetFileHeader()->reserved;
     }
+    qDebug()<<"Phascan_Version"<<Phascan_Version;
 
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{

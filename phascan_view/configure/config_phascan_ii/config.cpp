@@ -1048,6 +1048,7 @@ void Config::convert_to_phascan_config(int groupId)
     /* Sample */
     //二代数据在补偿增益开启的情况下 m_refGain 为基础增益对应离线分析的增益栏，m_gain 对应离线分析的补偿增益栏；
     //在补偿增益关闭的情况离线分析软件的增益栏为m_gain,补偿增益为0
+    targetGroup.on_off_status = 0;
     targetGroup.gain          = currentGroup.m_sample.m_gain * 100.0;
     targetGroup.start         = currentGroup.m_sample.m_start;
     targetGroup.range         = currentGroup.m_sample.m_range;
@@ -1335,6 +1336,7 @@ bool Config::is_phascan_ii_file(QFile &file)
     qint64 beamDataLen = 0;
 
     file.read((char *)&configLen, sizeof(configLen));
+    qDebug()<<"configLen"<<configLen<<"totalSize"<<totalSize;
     if (configLen <= 0 || configLen > totalSize) {
         qWarning("%s(%s[%d]): configLen is ERROR.", __FILE__, __func__, __LINE__);
         return false;
