@@ -60,9 +60,8 @@ typedef struct
 {
 	float fStart  ;	 // gate start position
 	float fWidth  ;	 // gate width
-	unsigned int nThreshold  ; // gate height
-	//unsigned int eSynChro	 ; // setup_GATE_SYN_MODE
-	setup_GATE_AYNC_TYPE eSynChro;
+	unsigned int nThreshold  ; // gate height 
+    setup_GATE_AYNC_TYPE eSynChro; // setup_GATE_SYN_MODE
 	unsigned int eMeasure	 ; // setup_GATE_MEASURE_MODE
 } GATE_CONFIG;
 
@@ -567,16 +566,16 @@ struct TOPC_INFO
     float  stopX;
     float  startY;
     float  stopY;
-    int    pixelWidth;
-    int    pixelHeigh;
-    int*   pDataIndex;
+    int    pixelWidth;  //对应像素长度
+    int    pixelHeigh;  //对应像素高度
+    int*   pDataIndex;  //通过坐标索引得到A扫数据的位置
 };
 
 typedef struct _Group
 {
 	setup_GROUP_MODE		eGroupMode;				/* 组工作模式  0 UT or 1 PA*/
-	setup_TRAVEL_MODE		eTravelMode;
-	setup_TX_RX_MODE		eTxRxMode;
+    setup_TRAVEL_MODE		eTravelMode;            /*声轴单位*/
+    setup_TX_RX_MODE		eTxRxMode;              /*收发模式*/
 	/* 基本设置 */
 	int						nWedgeDelay;			/* 楔款延时 单位 ns */
 	int 					nTimeStart;				/* 时间起点 单位 ns */

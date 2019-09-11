@@ -968,7 +968,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             Phascan_Version = 4;
         }
     } else {
-        Phascan_Version = m_pDataFile->GetFileHeader()->version-m_pDataFile->GetFileHeader()->size-m_pDataFile->GetFileHeader()->reserved;
+        Phascan_Version = m_pDataFile->GetFileHeader()->version - m_pDataFile->GetFileHeader()->size -
+                m_pDataFile->GetFileHeader()->reserved;
     }
     qDebug()<<"Phascan_Version"<<Phascan_Version;
 
