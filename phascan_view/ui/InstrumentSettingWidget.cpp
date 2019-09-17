@@ -76,6 +76,7 @@ void InstrumentSettingWidget::InitCommonConfig()
         ui->ComEncoderTypeSetting->setCurrentIndex(config.scanner.eScanEncoderType - 1);
     }
 	ui->ValuePrf->setValue(config.scanner.fPrf);
+    ui->rasterOffsetUnitLabel->setText("mm");
 
 	ui->ComVoltagePa->setCurrentIndex(config.instrument.eVoltagePA);
 	ui->ComVoltageUt->setCurrentIndex(config.instrument.eVoltageUT);
@@ -142,6 +143,9 @@ void InstrumentSettingWidget::InitCommonConfig()
         double max = _scanner.fIndexStop + _process->GetRasterCoveredLength(0);
         ui->SpinBoxCurrentIndexPos->setMaximum(max);
         ui->SpinBoxCurrentIndexPos->blockSignals(false);
+        ui->SpinBoxRasterOffset->setEnabled(true);
+    }else{
+        ui->SpinBoxRasterOffset->setEnabled(false);
     }
     ui->SliderCurrentScanPos->setMinimum(0);
     ui->SliderCurrentScanPos->setSingleStep(_scanner.fScanStep);
@@ -414,6 +418,20 @@ void InstrumentSettingWidget::on_SliderCurrentIndexPos_valueChanged(int value)
     SCANNER& _scanner = m_pConfig->common.scanner;
     _scanner.fIndexPos = _scanner.fIndexStep * value + _scanner.fIndexStart;
     g_pMainWnd->UpdateIndexSlider();
+}
+
+void InstrumentSettingWidget::on_SpinBoxRasterOffset_valueChanged(double value)
+{
+    if(!ui->SpinBoxRasterOffset->hasFocus()) return;
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    int indexPos = ( _scanner.fIndexPos - _scanner.fIndexStart) / _scanner.fIndexStep;
+    m_pConfig->rasterOffset[indexPos] = value;
+
+//    ProcessDisplay _proDisplay;
+//    for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
+//         _proDisplay.UpdateAllViewCursorOfGroup(i);
+//    }
+    g_pMainWnd->RunDrawThreadOnce(true);
 }
 
 void InstrumentSettingWidget::retranslateUi()

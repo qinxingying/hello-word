@@ -1870,7 +1870,7 @@ void ParameterProcess::GetCScanIndexAxisRange(int nGroupId_ , double* fStart_ , 
 			float _fStartAngle  =  _law->nAngleStartRefract / 10.0 ;
 			float _fStepAngle   =  _law->nAngleStepRefract / 10.0  ;
 
-            *fStart_  = _fStartAngle + _scanner.fLawStart * _fStepAngle;		   ;
+            *fStart_  = _fStartAngle + _scanner.fLawStart * _fStepAngle;
             *fStop_   = _fStartAngle + _scanner.fLawStop * _fStepAngle ;
 
 		}
@@ -1890,7 +1890,7 @@ void ParameterProcess::ChangeCscanIndexRange( double* fStart_ , double* fStop_,d
         _scanner.fLawStart = 0 ;
         _scanner.fLawStop   =   _nLawQty;
     }
-    *fStart_  =_scanner.fLawStart 			;
+    *fStart_  = _scanner.fLawStart 			;
     *fStop_   = _scanner.fLawStop  ;
     *fStart2_   =   0;
     *fStop2_    =   _nLawQty ;
@@ -1904,11 +1904,11 @@ void ParameterProcess::ChangeCscanIndexRange( double* fStart_ , double* fStop_,d
             float _fStartAngle  =  _law->nAngleStartRefract / 10.0 ;
             float _fStepAngle   =  _law->nAngleStepRefract / 10.0  ;
 
-            *fStart_  = _fStartAngle  + _scanner.fLawStart * _fStepAngle;		   ;
-            *fStop_   = _fStartAngle + _scanner.fLawStop * _fStepAngle  ;
-            *fStart2_  = _fStartAngle ;		   ;
-            *fStop2_   = _fStartAngle + _nLawQty * _fStepAngle ;
-            *fstep  =   _fStepAngle;
+            *fStart_  = _fStartAngle + _scanner.fLawStart * _fStepAngle;
+            *fStop_   = _fStartAngle + _scanner.fLawStop * _fStepAngle;
+            *fStart2_ = _fStartAngle;
+            *fStop2_  = _fStartAngle + _nLawQty * _fStepAngle;
+            *fstep    = _fStepAngle;
         }
     }
 }

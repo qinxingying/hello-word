@@ -588,7 +588,7 @@ typedef struct _Group
 	float					fRefGain;
     float                   RefGain;
     int                     on_off_status;
-	float					fSumGain ;
+    float					fSumGain ;                /* 总增益 */
 	int						bPointQtyAuto;
 	int						bSumGainAuto;
     bool                    coupleMonitoringState;     /* 耦合监控状态 true 开启  false 关闭 */
@@ -601,7 +601,7 @@ typedef struct _Group
 	setup_FILTER_MODE		eFileter;		/* 滤波 */
 	setup_RECTIFIER_MODE	eRectifier;		/* 检波 */
 	setup_AVERAGE_MODE		eAveraging;		/* 平均 */
-	int						bVedioFilter;
+    int						bVedioFilter;   /* 视频滤波 */
 
 	// 设置的探头频率，和对应的脉宽
 	float					fTriFrequency;		/* Mhz*/
@@ -618,7 +618,7 @@ typedef struct _Group
 	// wedge position
 	float					fScanOffset;		/*mm*/
 	float					fIndexOffset;		/*mm*/
-	setup_PROBE_ANGLE		eSkew;
+    setup_PROBE_ANGLE		eSkew;              /* 探头角度 */
 
 	/*  校准状态  */
 	int						bVelocityCalib;

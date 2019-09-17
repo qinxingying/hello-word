@@ -465,6 +465,11 @@ int DopplerConfigure::RectifyScanLength()
         if( iMax % scanQty == 0){
             buff--;
         }
+        int offsetNum = buff + 1;
+        rasterOffset.resize(offsetNum);
+        for(int i = 0; i < rasterOffset.size(); i++){
+            rasterOffset[i] = 0;
+        }
         //如果只有1条，就按线扫处理
         if( buff < 1){
             common.scanner.eScanType = setup_SCAN_TYPE_ONE_LINE;

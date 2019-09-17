@@ -323,16 +323,18 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         }
         memset(src,0x00,sizeof(src));
         for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
-//            int indexStepBuff = indexStepDrawBeam;
-//            if(i == m_indexStopIndex){
-//                indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
-//            }
+
+            double _offsetbuff = _pConfig->rasterOffset[j];
+            int _offset = scanQty * _offsetbuff /(_scanner.fScanStop - _scanner.fScanStart);
             int indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
             int srcBuffIndex = j*indexStepBeam;
             int markerBuff = scanQty*i;
             for( k = m_PosStart, p = 0; k <= m_PosStop&& p < _nScanend; k++, p++){
-                int markerPos = markerBuff + k;
 
+                if( p - _offset < 0 || p - _offset >= scanQty){
+                    continue;
+                }
+                int markerPos = markerBuff + k - _offset;
                 if( _pMarker[markerPos]){
                     for(int w = 0; w < indexStepBuff; w++){
                         _process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
@@ -1313,11 +1315,16 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         memset(src,0x00,sizeof(src));
         int transf = m_PosStop - m_PosStart;
         for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
+            double _offsetbuff = _pConfig->rasterOffset[j];
+            int _offset = scanQty * _offsetbuff /(_scanner.fScanStop - _scanner.fScanStart);
             int indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
             int srcBuffIndex = j*indexStepBeam;
             int markerBuff = scanQty*i;
             for( k = m_PosStart, p = 0; k <= m_PosStop&& p < _nScanend; k++, p++){
-                int markerPos = markerBuff + k;
+                if( p - _offset < 0 || p - _offset >= scanQty){
+                    continue;
+                }
+                int markerPos = markerBuff + k - _offset;
 
                 if( _pMarker[markerPos]){
                     for(int w = 0; w < indexStepBuff; w++){

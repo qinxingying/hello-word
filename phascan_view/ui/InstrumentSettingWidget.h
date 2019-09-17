@@ -57,6 +57,7 @@ private slots:
     void on_SpinBoxCurrentScanPos_valueChanged(double arg1);
     void on_SliderCurrentScanPos_valueChanged(int value);
     void on_SliderCurrentIndexPos_valueChanged(int value);
+    void on_SpinBoxRasterOffset_valueChanged(double value);
 
     void on_SpinBoxCurrentScanend_valueChanged(double arg1);
 
