@@ -10,11 +10,13 @@ HEADERS += \
     $$PWD/DopplerColorIndex.h \
     $$PWD/DopplerConfigure.h \
     $$PWD/DopplerDataFileOperateor.h \
-    $$PWD/DopplerXMLReader.h
+    $$PWD/DopplerXMLReader.h \
+    $$PWD/dopplermergedatafileoperateor.h
 
 SOURCES += \
     $$PWD/const.cpp \
     $$PWD/DopplerColorIndex.cpp \
     $$PWD/DopplerConfigure.cpp \
     $$PWD/DopplerDataFileOperateor.cpp \
-    $$PWD/DopplerXMLReader.cpp
+    $$PWD/DopplerXMLReader.cpp \
+    $$PWD/dopplermergedatafileoperateor.cpp
