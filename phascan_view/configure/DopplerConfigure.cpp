@@ -202,7 +202,6 @@ void DopplerConfigure::OpenEvn()
         for(int i = 0 ; i < ENV_MAX_GROUP_QTY; i++)
 		{
             AppEvn.bShowCursor[i]	= true ;
-            //AppEvn.bShowGate  [i]	= true ;
             AppEvn.bShowMeasure[i]  = true ;
             AppEvn.bShowWeld[i]	    = false;
             AppEvn.bShowThickness[i]= false;
@@ -247,7 +246,6 @@ void DopplerConfigure::OpenEvn()
         }
 
 		group[i].bShowCursor	= AppEvn.bShowCursor[i] ;
-        //group[i].bShowGate		= 1 ;
         group[i].bShowThickness = AppEvn.bShowThickness[i];
         group[i].bShowWeldPart  = AppEvn.bShowWeld[i];
 		group[i].bShowMeasure   = AppEvn.bShowMeasure[i] ;
@@ -287,7 +285,6 @@ void DopplerConfigure::SaveEvn()
 		}
 
         AppEvn.bShowCursor[i]		= group[i].bShowCursor;
-        //AppEvn.bShowGate[i]			= 1;
         AppEvn.bShowThickness[i]	= group[i].bShowThickness;
         AppEvn.bShowWeld[i]			= group[i].bShowWeldPart;
         AppEvn.bShowMeasure[i]		= group[i].bShowMeasure;

@@ -420,6 +420,12 @@ void InstrumentSettingWidget::on_SliderCurrentIndexPos_valueChanged(int value)
     g_pMainWnd->UpdateIndexSlider();
 }
 
+/*!
+  \brief 改变栅格扫查当前步进index的偏移值，用于对齐
+
+  \param value 设置的偏移值
+
+*/
 void InstrumentSettingWidget::on_SpinBoxRasterOffset_valueChanged(double value)
 {
     if(!ui->SpinBoxRasterOffset->hasFocus()) return;
@@ -427,10 +433,6 @@ void InstrumentSettingWidget::on_SpinBoxRasterOffset_valueChanged(double value)
     int indexPos = ( _scanner.fIndexPos - _scanner.fIndexStart) / _scanner.fIndexStep;
     m_pConfig->rasterOffset[indexPos] = value;
 
-//    ProcessDisplay _proDisplay;
-//    for(int i = 0; i < m_pConfig->common.nGroupQty; i ++) {
-//         _proDisplay.UpdateAllViewCursorOfGroup(i);
-//    }
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 

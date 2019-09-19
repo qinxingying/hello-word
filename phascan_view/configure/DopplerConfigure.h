@@ -190,7 +190,7 @@ public:
 	FOCALLAW_RESULT		focallaw[setup_MAX_GROUP_QTY] ;
 
     QList<coupleCScanGroupInfo> coupleCScanData;
-    QVector<double> rasterOffset; //保存二维扫查每个步进分辨率上的偏置,单位mm
+    QVector<double> rasterOffset; //保存栅格扫查每个步进分辨率上的偏置,单位mm
 
 private:
 	WDATA*				m_pData ;
