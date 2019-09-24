@@ -11,6 +11,7 @@ Date     : 2016-12-06
 #include "InstrumentSettingWidget.h"
 #include "DopplerConfigure.h"
 #include "DopplerDataFileOperateor.h"
+#include "dopplermergedatafileoperateor.h"
 #include "gHeader.h"
 #include "DopplerDataView.h"
 #include "doppler_view/DopplerViewItems.h"
@@ -894,12 +895,17 @@ void MainWindow::NewConfigure()
 void MainWindow::OpenFile()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    QString _strFileName = QFileDialog::getOpenFileName(this,
+    QStringList fileNameLst = QFileDialog::getOpenFileNames(this,
                             "Open File Dialog",
                             QString::fromLocal8Bit(_pConfig->AppEvn.strDataFilePath, 256),
                             "Doppler Files(*.cfg *.data)");
 
-    OpenFilePro(_strFileName);
+    if (fileNameLst.isEmpty()) return ;
+    if (1 != fileNameLst.size()) {
+        fileMergePro(fileNameLst);
+    } else {
+        OpenFilePro(fileNameLst.at(0));
+    }
 }
 
 void MainWindow::OpenFilePro(QString strFileName_)
@@ -954,6 +960,61 @@ void MainWindow::OpenFilePro(QString strFileName_)
 //        int *p = (int *)pdata;
 //        qDebug()<<"pdata"<<p[4];
 //    }
+}
+
+void MainWindow::fileMergePro(QStringList &fileNameLst)
+{
+    int count = fileNameLst.size();
+    if (fileNameLst.isEmpty() || 1 == count) return ;
+    for (int i = 0; i < count; i ++) {
+        QString strFileName_ = fileNameLst.at(i);
+        QString suffix = strFileName_.section('.', -1);
+        if (suffix != "data") return ;
+    }
+
+    DestroyAllDisplay();
+
+    m_fileName.clear();
+    for (int i = 0; i < count; i ++) {
+        QString strFileName_ = fileNameLst.at(i);
+        QFileInfo _fi = QFileInfo(strFileName_);
+        if (0 == i) {
+            QString path = _fi.filePath();
+            m_fileName.append(path);
+        } else {
+            QString fName = _fi.fileName();
+            m_fileName.append(fName);
+        }
+
+    }
+    QString suffStr(".data");
+    m_fileName.replace(suffStr, QString("_"));
+    m_fileName.chop(1);
+    m_fileName.append(suffStr);
+    this->setWindowTitle(m_titleName + m_fileName);
+
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    //将多个.data数据合并为一组数据
+    DopplerMergeDataFileOperateor mergeDataOp;
+    int _ret = mergeDataOp.LoadData(fileNameLst);
+    if (0 != _ret) return ;
+    _ret = mergeDataOp.MergeFile();
+    if (0 != _ret) return ;
+    mergeDataOp.WriteDataToFile(m_fileName);
+    if (!_ret) {
+        _ret  = _pConfig->OpenData(m_fileName);
+        if(!_ret)
+        {
+            _pConfig->ResetShadowData();
+            UpdateTableParameter();
+            UpdateStatusBarInfo();
+            UpdateTableDisplay();
+            m_iCurGroup = 0;
+        }
+    }
+
+    lastgroup = 0;
+    currentgroup = 0;
 }
 
 void MainWindow::SaveFile()
