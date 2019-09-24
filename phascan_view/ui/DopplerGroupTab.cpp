@@ -890,6 +890,32 @@ void DopplerGroupTab::UpdateGroupConfig()
         ui->ComCscanType->setCurrentIndex(0);
     }
 
+    if( m_pConfig->common.TOPCMergeValid){
+        ui->ComTopCMergeRefer->setEnabled(true);
+        ui->ComTopCMergeRefer->clear();
+        int buff = 0;
+        for(int i = 0, j = 0; i < m_pConfig->common.TOPCMergeQty; i++){
+            if(m_pConfig->common.TOPCMergeGroupId[i] != m_nGroupId){
+                ui->ComTopCMergeRefer->addItem(QString("%1").arg(m_pConfig->common.TOPCMergeGroupId[i]+ 1));
+                if( m_pConfig->common.TOPCMergeGroupId[i] == m_pGroup->TopCInfo.TOPCMergeRefer){
+                    buff = j;
+                }
+                j++;
+            }
+        }
+        ui->ComTopCMergeRefer->setCurrentIndex(buff);
+
+        ui->ComTopcMergeStatus->setEnabled(true);
+        ui->ComTopcMergeStatus->setCurrentIndex(m_pGroup->TopCInfo.TOPCMergeStatus);
+    }else{
+        ui->ComTopCMergeRefer->setEnabled(false);
+        ui->ComTopCMergeRefer->clear();
+        ui->ComTopCMergeRefer->addItem("NULL");
+
+        ui->ComTopcMergeStatus->setEnabled(false);
+        ui->ComTopcMergeStatus->setCurrentIndex(0);
+    }
+
     //  ********** geometry  ***************//
 	InitComBoxMaterialSelection() ;
 	ui->ComGeometry->setCurrentIndex(m_pGroup->part.eGeometry);
@@ -1535,6 +1561,31 @@ void DopplerGroupTab::on_ComCscanType_currentIndexChanged(int index)
 {
     if(!ui->ComCscanType->hasFocus()) return;
     m_pGroup->TopCInfo.TOPCStatus = index;
+    ProcessDisplay _display;
+    _display.UpdateAllViewFrame();
+    _display.UpdateAllViewOverlay();
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComTopCMergeRefer_currentIndexChanged(int index)
+{
+    if(!ui->ComTopCMergeRefer->hasFocus()) return;
+    QString buff = ui->ComTopCMergeRefer->currentText();
+    if( buff == "NULL"){
+        return;
+    }
+    int topcMergeRefer = buff.toInt() -1;
+    m_pGroup->TopCInfo.TOPCMergeRefer = topcMergeRefer;
+    ProcessDisplay _display;
+    _display.UpdateAllViewFrame();
+    _display.UpdateAllViewOverlay();
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComTopcMergeStatus_currentIndexChanged(int index)
+{
+    if(!ui->ComTopcMergeStatus->hasFocus()) return;
+    m_pGroup->TopCInfo.TOPCMergeStatus = index;
     ProcessDisplay _display;
     _display.UpdateAllViewFrame();
     _display.UpdateAllViewOverlay();

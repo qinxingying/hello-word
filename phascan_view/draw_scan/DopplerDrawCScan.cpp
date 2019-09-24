@@ -169,6 +169,7 @@ void  DopplerDrawCScanH::Draw (QImage* pImage_)
 
 
 U8 src[2048][2048];
+U8 srcMerge[2048][2048];
 void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 {
 	U32 _aGateValue[256] ;
@@ -353,7 +354,398 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         return;
     }
 
+    //TOPC融合
     TOPC_INFO& _TOPCInfo  = m_pConfig->group[m_cInfo.nGroupId].TopCInfo;
+    if( m_pConfig->common.TOPCMergeValid && _TOPCInfo.TOPCMergeStatus){
+        int mergeGroupId = _TOPCInfo.TOPCMergeRefer;
+        TOPC_INFO& _mergeTOPCInfo = m_pConfig->group[mergeGroupId].TopCInfo;
+        double topcWidth = (_TOPCInfo.TOPCWidth > _mergeTOPCInfo.TOPCWidth) ? _TOPCInfo.TOPCWidth : _mergeTOPCInfo.TOPCWidth;
+        bool   Calculation = true;   //false 表示闸门在图像外面，绘制空白即可
+        float  gateStart = m_pConfig->group[m_cInfo.nGroupId].gate[0].fStart;
+        float  gateWidth = m_pConfig->group[m_cInfo.nGroupId].gate[0].fWidth;
+        float  gateStop  = gateStart + gateWidth;
+        float  indexOffset = m_pConfig->group[m_cInfo.nGroupId].fIndexOffset;
+        int    direction;
+
+        float realHeightStart, realHeightStop;
+        float realWidthStart, realWidthStop;
+        if( gateStart >= _TOPCInfo.stopY || gateStop <= _TOPCInfo.startY){
+            Calculation = false;
+        }else{
+            realHeightStart = ( gateStart > _TOPCInfo.startY) ? gateStart : _TOPCInfo.startY;
+            realHeightStop  = ( gateStop < _TOPCInfo.stopY) ? gateStop : _TOPCInfo.stopY;
+            if(fabs(realHeightStop - realHeightStart) < 1.0){
+                Calculation = false;
+            }
+        }
+        realWidthStart = 0 - topcWidth/2;
+        realWidthStop  = topcWidth/2;
+        setup_PROBE_ANGLE _eAngle = _process->GetProbeAngle(m_cInfo.nGroupId) ;
+        switch ( _eAngle) {
+        case setup_PROBE_PART_SKEW_0:
+            direction = 0;
+            break;
+        case setup_PROBE_PART_SKEW_90:
+            direction = 0;
+            realWidthStart -= indexOffset;
+            realWidthStop  -= indexOffset;
+            break;
+        case setup_PROBE_PART_SKEW_180:
+            direction = 1;
+            break;
+        case setup_PROBE_PART_SKEW_270:
+            direction = 1;
+            realWidthStart += indexOffset;
+            realWidthStop  += indexOffset;
+            break;
+        default:
+            Calculation = false;
+            break;
+        }
+
+        if( realWidthStart >= _TOPCInfo.stopX || _TOPCInfo.startX >= realWidthStop){
+            Calculation = false;
+        }else{
+            realWidthStart = (realWidthStart > _TOPCInfo.startX) ? realWidthStart : _TOPCInfo.startX;
+            realWidthStop  = (realWidthStop < _TOPCInfo.stopX) ? realWidthStop : _TOPCInfo.stopX;
+            if(fabs(realWidthStop - realWidthStart) < 1.0){
+                Calculation = false;
+            }
+        }
+
+        int pixelWidthStart, pixelWidthStop, pixelHeightStart, pixelHeightStop;
+        if(Calculation){
+            pixelWidthStart = (realWidthStart - _TOPCInfo.startX)/(_TOPCInfo.stopX - _TOPCInfo.startX)
+                                * _TOPCInfo.pixelWidth;
+            pixelWidthStop = (realWidthStop - _TOPCInfo.startX)/(_TOPCInfo.stopX - _TOPCInfo.startX)
+                                * _TOPCInfo.pixelWidth;
+            pixelHeightStart = (realHeightStart - _TOPCInfo.startY)/(_TOPCInfo.stopY - _TOPCInfo.startY)
+                                * _TOPCInfo.pixelHeigh;
+            pixelHeightStop = (realHeightStop - _TOPCInfo.startY)/(_TOPCInfo.stopY - _TOPCInfo.startY)
+                                * _TOPCInfo.pixelHeigh;
+            if(pixelWidthStop - pixelWidthStart > 2048){
+                pixelHeightStop = pixelHeightStart + 2048;
+            }
+        }else{
+            pixelWidthStart = 0;
+            pixelWidthStop  = 10;
+            realWidthStart  = _TOPCInfo.stopX + 1.0;
+            realWidthStop   = _TOPCInfo.stopX + 11.0;
+        }
+
+        if(zoomflag == 1){
+            if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
+                flag = 1;
+            if(flag == 1){
+                if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                    curscanstart = _scanner.fScanPos-1;
+                if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                    curscanstop = _scanner.fScanPos+1;
+            }
+            _nStart   = _process->SAxisDistToIndex(curscanstart);
+            _nScanend = _process->SAxisDistToIndex(curscanstop) - _nStart;
+
+        }
+        if(_scanner.fScanPos == _scanner.fScanStart2){
+            m_PosStart = _process->SAxisDistToIndex(_scanner.fScanPos);
+            m_PosStop  = _process->SAxisDistToIndex(_scanner.fScanPos) + _nWidth;
+        }
+
+        if(zoomflag == 2 || zoomflag == 0){
+            float rulerStart, rulerStop;
+            switch ( _eAngle) {
+            case setup_PROBE_PART_SKEW_0:
+                rulerStart = realWidthStart;
+                rulerStop  = realWidthStop;
+                break;
+            case setup_PROBE_PART_SKEW_90:
+                rulerStart = realWidthStart + indexOffset;
+                rulerStop  = realWidthStop + indexOffset;
+                break;
+            case setup_PROBE_PART_SKEW_180:
+                rulerStart = realWidthStart;
+                rulerStop  = realWidthStop;
+                break;
+            case setup_PROBE_PART_SKEW_270:
+                rulerStart = realWidthStart - indexOffset;
+                rulerStop  = realWidthStop - indexOffset;
+                break;
+            default:
+                rulerStart = realWidthStart;
+                rulerStop  = realWidthStop;
+                break;
+            }
+            emit signalIndexRangeMove( 0, 1, rulerStart, rulerStop);
+        }else{
+
+        }
+        if(_nWidth <_nScanend){
+            _nScanend = _nWidth;
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cscan_range == _nScanend){
+                    m_PosStart = Csrc_start;
+                    m_PosStop = Csrc_start + _nScanend;
+                }else{
+                    Cscan_range = _nScanend;
+                }
+            }
+            int _nScanPos = _process->GetScanIndexPos();
+            UpdateDisplayRange(2, _nWidth, _nScanPos);
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_start = m_PosStart;
+            }
+        }else{
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+                _nScanend = m_PosStop - m_PosStart;
+                emit signalScanRangeMove(2, m_PosStart, m_PosStop);
+            }else{
+                m_PosStart = _nStart;
+                m_PosStop  = _nStart + _nScanend;
+                emit signalScanRangeMove(2, _nStart, _nStart + _nScanend);
+            }
+        }
+        unsigned char* _pData;
+        WDATA* pData;
+        U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
+        int i, j, k, m, n;
+        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
+        int TmpValue;
+        int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
+        int _nScanMax = _process->GetRealScanMax() + _nScanOff;
+        memset( src, 0x00, sizeof(src));
+        if(Calculation){
+            for(i = m_PosStart - 1, j = -1; i <= m_PosStop + 1 && j < (_nScanend)+1; i++ , j++){
+                if(i<0)
+                    continue;
+                if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
+                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+                    if(direction == 0){
+                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            src[j+1][n] = TmpValue;
+                        }
+                    }else{
+                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            src[j+1][n] = TmpValue;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        bool mergeCalculation  = true;
+        float mergeGateStart   = m_pConfig->group[mergeGroupId].gate[0].fStart;
+        float mergeGateWidth   = m_pConfig->group[mergeGroupId].gate[0].fWidth;
+        float mergeGateStop    = mergeGateStart + mergeGateWidth;
+        float mergeIndexOffset = m_pConfig->group[mergeGroupId].fIndexOffset;
+        int mergeDirection;
+
+        float mergeRealHeightStart, mergeRealHeightStop;
+        float mergeRealWidthStart, mergeRealWidthStop;
+        if( mergeGateStart >= _mergeTOPCInfo.stopY || mergeGateStop <= _mergeTOPCInfo.startY){
+            mergeCalculation = false;
+        }else{
+            mergeRealHeightStart = ( mergeGateStart > _mergeTOPCInfo.startY) ? mergeGateStart : _mergeTOPCInfo.startY;
+            mergeRealHeightStop  = ( mergeGateStop < _mergeTOPCInfo.stopY) ? mergeGateStop : _mergeTOPCInfo.stopY;
+            if(fabs( mergeRealHeightStop - mergeRealHeightStart) < 1.0){
+                mergeCalculation = false;
+            }
+        }
+        mergeRealWidthStart = 0 - topcWidth/2;
+        mergeRealWidthStop  = topcWidth/2;
+        setup_PROBE_ANGLE _mergeAngle = _process->GetProbeAngle(mergeGroupId);
+        switch ( _mergeAngle) {
+        case setup_PROBE_PART_SKEW_0:
+            mergeDirection = 0;
+            break;
+        case setup_PROBE_PART_SKEW_90:
+            mergeDirection = 0;
+            mergeRealWidthStart -= mergeIndexOffset;
+            mergeRealWidthStop  -= mergeIndexOffset;
+            break;
+        case setup_PROBE_PART_SKEW_180:
+            mergeDirection = 1;
+            break;
+        case setup_PROBE_PART_SKEW_270:
+            mergeDirection = 1;
+            mergeRealWidthStart += mergeIndexOffset;
+            mergeRealWidthStop  += mergeIndexOffset;
+            break;
+        default:
+            mergeCalculation = false;
+            break;
+        }
+
+        if( mergeRealWidthStart >= _mergeTOPCInfo.stopX || _mergeTOPCInfo.startX >= mergeRealWidthStop){
+            mergeCalculation = false;
+        }else{
+            mergeRealWidthStart = (mergeRealWidthStart > _mergeTOPCInfo.startX) ? mergeRealWidthStart : _mergeTOPCInfo.startX;
+            mergeRealWidthStop  = (mergeRealWidthStop < _mergeTOPCInfo.stopX) ? mergeRealWidthStop : _mergeTOPCInfo.stopX;
+            if(fabs(mergeRealWidthStop - mergeRealWidthStart) < 1.0){
+                mergeCalculation = false;
+            }
+        }
+
+        int mergePixelWidthStart, mergePixelWidthStop, mergePixelHeightStart, mergePixelHeightStop;
+        if(mergeCalculation){
+            mergePixelWidthStart = (mergeRealWidthStart - _mergeTOPCInfo.startX)/(_mergeTOPCInfo.stopX - _mergeTOPCInfo.startX)
+                                * _mergeTOPCInfo.pixelWidth;
+            mergePixelWidthStop = (mergeRealWidthStop - _mergeTOPCInfo.startX)/(_mergeTOPCInfo.stopX - _mergeTOPCInfo.startX)
+                                * _mergeTOPCInfo.pixelWidth;
+            mergePixelHeightStart = (mergeRealHeightStart - _mergeTOPCInfo.startY)/(_mergeTOPCInfo.stopY - _mergeTOPCInfo.startY)
+                                * _mergeTOPCInfo.pixelHeigh;
+            mergePixelHeightStop = (mergeRealHeightStop - _mergeTOPCInfo.startY)/(_mergeTOPCInfo.stopY - _mergeTOPCInfo.startY)
+                                * _mergeTOPCInfo.pixelHeigh;
+            if(mergePixelWidthStop - mergePixelWidthStart > 2048){
+                mergePixelHeightStop = mergePixelHeightStart + 2048;
+            }
+        }else{
+            mergePixelWidthStart = 0;
+            mergePixelWidthStop  = 10;
+            mergeRealWidthStart  = _mergeTOPCInfo.stopX + 1.0;
+            mergeRealWidthStop   = _mergeTOPCInfo.stopX + 11.0;
+        }
+
+        WDATA* pMergeData;
+        U8* _pMergeMarker = _process->GetScanMarker(mergeGroupId);
+        int mi, mj, mk, mm, mn;
+        float _mergeScale = _process->GetRefGainScale(mergeGroupId);
+        int mergeTmpValue;
+        int mergeScanOff = _process->GetScanOff(mergeGroupId);
+        int mergeScanMax = _process->GetRealScanMax() + mergeScanOff;
+        memset( srcMerge, 0x00, sizeof(srcMerge));
+        if(mergeCalculation){
+            for(mi = m_PosStart - 1, mj = -1; mi <= m_PosStop + 1 && mj < (_nScanend)+1; mi++ , mj++){
+                if(mi<0)
+                    continue;
+                if(_pMergeMarker[mi] && mi >= mergeScanOff && mi < mergeScanMax){
+                    pMergeData = _process->GetScanPosPointer( mergeGroupId, mi);
+                    if(mergeDirection == 0){
+                        for( mk = mergePixelWidthStart, mn = 0; mk < mergePixelWidthStop; mk++,mn++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
+                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
+                                index = _mergeTOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pMergeData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+
+                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+                            if( mergeTmpValue > 255) mergeTmpValue = 255;
+                            srcMerge[mj+1][mn] = mergeTmpValue;
+                        }
+                    }else{
+                        for( mk = mergePixelWidthStop - 1, mn = 0; mk >= mergePixelWidthStart; mk--, mn++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
+                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
+                                index = _mergeTOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pMergeData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+                            if( mergeTmpValue > 255) mergeTmpValue = 255;
+                            srcMerge[mj+1][mn] = mergeTmpValue;
+                        }
+                    }
+                }
+            }
+        }
+
+        //处理像素不同的融合问题
+        if( pixelWidthStop - pixelWidthStart > mergePixelWidthStop - mergePixelWidthStart){
+            int y = pixelWidthStop - pixelWidthStart;
+            int x = m_PosStop - m_PosStart;
+            float fixStep = (float)(mergePixelWidthStop - mergePixelWidthStart) / y;
+            for( int i = 0; i <= y; i++){
+                int mergeIndex = i * fixStep;
+                for( int j = 0; j <= x; j++){
+                    if( srcMerge[j][mergeIndex] > src[j][i]){
+                        src[j][i] = srcMerge[j][mergeIndex];
+                    }
+                }
+            }
+            _pData = pImage_->bits();
+            memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
+            TransformImage( x, y, src, pImage_->width(), pImage_->height(), pImage_);
+        }else{
+            int y = mergePixelWidthStop - mergePixelWidthStart;
+            int x = m_PosStop - m_PosStart;
+            float fixStep = (float)(pixelWidthStop - pixelWidthStart) / y;
+            for( int i = 0; i <= y; i++){
+                int mergeIndex = i * fixStep;
+                for( int j = 0; j <= x; j++){
+                    if( src[j][mergeIndex] > srcMerge[j][i]){
+                        srcMerge[j][i] = src[j][mergeIndex];
+                    }
+                }
+            }
+            _pData = pImage_->bits();
+            memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
+            TransformImage( x, y, srcMerge, pImage_->width(), pImage_->height(), pImage_);
+        }
+        return;
+    }
+
+    //TOPC
     if( _TOPCInfo.TOPCStatus){
         //确定闸门位置和方向
         bool   Calculation = true;   //false 表示闸门在图像外面，绘制空白即可
@@ -579,6 +971,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                         pImage_->width(), pImage_->height(), pImage_);
         return;
     }
+
     if(zoomflag == 1)
     {
         if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
@@ -1343,7 +1736,395 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         TransformImage( srcHeight, p, src, pImage_->width(), pImage_->height(), pImage_);
         return;
     }
+
+    //TOPC融合
     TOPC_INFO& _TOPCInfo  = m_pConfig->group[m_cInfo.nGroupId].TopCInfo;
+    if( m_pConfig->common.TOPCMergeValid && _TOPCInfo.TOPCMergeStatus){
+        int mergeGroupId = _TOPCInfo.TOPCMergeRefer;
+        TOPC_INFO& _mergeTOPCInfo = m_pConfig->group[mergeGroupId].TopCInfo;
+        double topcWidth = (_TOPCInfo.TOPCWidth > _mergeTOPCInfo.TOPCWidth) ? _TOPCInfo.TOPCWidth : _mergeTOPCInfo.TOPCWidth;
+        bool   Calculation = true;   //false 表示闸门在图像外面，绘制空白即可
+        float  gateStart = m_pConfig->group[m_cInfo.nGroupId].gate[0].fStart;
+        float  gateWidth = m_pConfig->group[m_cInfo.nGroupId].gate[0].fWidth;
+        float  gateStop  = gateStart + gateWidth;
+        float  indexOffset = m_pConfig->group[m_cInfo.nGroupId].fIndexOffset;
+        int    direction;
+
+        float realHeightStart, realHeightStop;
+        float realWidthStart, realWidthStop;
+        if( gateStart >= _TOPCInfo.stopY || gateStop <= _TOPCInfo.startY){
+            Calculation = false;
+        }else{
+            realHeightStart = ( gateStart > _TOPCInfo.startY) ? gateStart : _TOPCInfo.startY;
+            realHeightStop  = ( gateStop < _TOPCInfo.stopY) ? gateStop : _TOPCInfo.stopY;
+            if(fabs(realHeightStop - realHeightStart) < 1.0){
+                Calculation = false;
+            }
+        }
+        realWidthStart = 0 - topcWidth/2;
+        realWidthStop  = topcWidth/2;
+        setup_PROBE_ANGLE _eAngle = _process->GetProbeAngle(m_cInfo.nGroupId) ;
+        switch ( _eAngle) {
+        case setup_PROBE_PART_SKEW_0:
+            direction = 0;
+            break;
+        case setup_PROBE_PART_SKEW_90:
+            direction = 0;
+            realWidthStart -= indexOffset;
+            realWidthStop  -= indexOffset;
+            break;
+        case setup_PROBE_PART_SKEW_180:
+            direction = 1;
+            break;
+        case setup_PROBE_PART_SKEW_270:
+            direction = 1;
+            realWidthStart += indexOffset;
+            realWidthStop  += indexOffset;
+            break;
+        default:
+            Calculation = false;
+            break;
+        }
+
+        if( realWidthStart >= _TOPCInfo.stopX || _TOPCInfo.startX >= realWidthStop){
+            Calculation = false;
+        }else{
+            realWidthStart = (realWidthStart > _TOPCInfo.startX) ? realWidthStart : _TOPCInfo.startX;
+            realWidthStop  = (realWidthStop < _TOPCInfo.stopX) ? realWidthStop : _TOPCInfo.stopX;
+            if(fabs(realWidthStop - realWidthStart) < 1.0){
+                Calculation = false;
+            }
+        }
+
+        int pixelWidthStart, pixelWidthStop, pixelHeightStart, pixelHeightStop;
+        if(Calculation){
+            pixelWidthStart = (realWidthStart - _TOPCInfo.startX)/(_TOPCInfo.stopX - _TOPCInfo.startX)
+                                * _TOPCInfo.pixelWidth;
+            pixelWidthStop = (realWidthStop - _TOPCInfo.startX)/(_TOPCInfo.stopX - _TOPCInfo.startX)
+                                * _TOPCInfo.pixelWidth;
+            pixelHeightStart = (realHeightStart - _TOPCInfo.startY)/(_TOPCInfo.stopY - _TOPCInfo.startY)
+                                * _TOPCInfo.pixelHeigh;
+            pixelHeightStop = (realHeightStop - _TOPCInfo.startY)/(_TOPCInfo.stopY - _TOPCInfo.startY)
+                                * _TOPCInfo.pixelHeigh;
+            if(pixelWidthStop - pixelWidthStart > 2048){
+                pixelHeightStop = pixelHeightStart + 2048;
+            }
+        }else{
+            pixelWidthStart = 0;
+            pixelWidthStop  = 10;
+            realWidthStart  = _TOPCInfo.stopX + 1.0;
+            realWidthStop   = _TOPCInfo.stopX + 11.0;
+        }
+
+        if(zoomflag == 1){
+            if((_scanner.fScanPos > curscanstart)&&(_scanner.fScanPos < curscanstop))
+                flag = 1;
+            if(flag == 1){
+                if((_scanner.fScanPos < curscanstart+1)&&(_scanner.fScanPos-1 >= _scanner.fScanStart))
+                    curscanstart = _scanner.fScanPos-1;
+                if((_scanner.fScanPos > curscanstop-1)&&(_scanner.fScanPos+1 <= _scanner.fScanStop))
+                    curscanstop = _scanner.fScanPos+1;
+            }
+            _nStart   = _process->SAxisDistToIndex(curscanstart);
+            _nScanend =  _process->SAxisDistToIndex(curscanstop) - _nStart;
+        }
+        if(_scanner.fScanPos == _scanner.fScanStart2){
+            m_PosStart = _process->SAxisDistToIndex(_scanner.fScanPos);
+            m_PosStop  = _process->SAxisDistToIndex(_scanner.fScanPos) + _nWidth;
+        }
+        if(zoomflag == 2 || zoomflag == 0){
+            float rulerStart, rulerStop;
+            switch ( _eAngle) {
+            case setup_PROBE_PART_SKEW_0:
+                rulerStart = realWidthStart;
+                rulerStop  = realWidthStop;
+                break;
+            case setup_PROBE_PART_SKEW_90:
+                rulerStart = realWidthStart + indexOffset;
+                rulerStop  = realWidthStop + indexOffset;
+                break;
+            case setup_PROBE_PART_SKEW_180:
+                rulerStart = realWidthStart;
+                rulerStop  = realWidthStop;
+                break;
+            case setup_PROBE_PART_SKEW_270:
+                rulerStart = realWidthStart - indexOffset;
+                rulerStop  = realWidthStop - indexOffset;
+                break;
+            default:
+                rulerStart = realWidthStart;
+                rulerStop  = realWidthStop;
+                break;
+            }
+            emit signalIndexRangeMove( 2, 1, rulerStart, rulerStop);
+        }else{
+
+        }
+        if(_nHeight < _nScanend){
+            _nScanend = _nHeight;
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+            }
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                if(Cscan_range == _nScanend){
+                    m_PosStart = Csrc_start;
+                    m_PosStop = Csrc_start + _nScanend;
+                }else{
+                    Cscan_range = _nScanend;
+                }
+            }
+            int _nScanPos	 = _process->GetScanIndexPos() ;
+            UpdateDisplayRange(3, _nHeight , _nScanPos) ;
+            if(_pConfig->AppEvn.bSAxisCursorSync){
+                Csrc_start = m_PosStart;
+            }
+        }else{
+            if(zoomflag == 2){
+                zoomflag = 0;
+                flag = 0;
+                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                m_PosStop = _process->SAxisDistToIndex(srcCend);
+                _nScanend = m_PosStop - m_PosStart;
+                emit signalScanRangeMove(3, m_PosStart, m_PosStop) ;
+            }else{
+                m_PosStart = _nStart;
+                m_PosStop  = _nStart+_nScanend;
+                emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
+            }
+        }
+
+        unsigned char* _pData;
+        WDATA* pData;
+        U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
+        int i, j, k, m, n;
+        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
+        int TmpValue;
+        int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
+        int _nScanMax = _process->GetRealScanMax() + _nScanOff;
+        memset( src, 0x00, sizeof(src));
+        if(Calculation){
+            for(i = m_PosStart-1 , j = _nScanend  ; i <= m_PosStop+1 && j >= -1; i++ , j--){
+                if(i<0)
+                    continue;
+                if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
+                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+                    if(direction == 0){
+                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            src[n][j+1] = TmpValue;
+                        }
+                    }else{
+                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            src[n][j+1] = TmpValue;
+                        }
+                    }
+                }
+            }
+        }
+
+        bool mergeCalculation  = true;
+        float mergeGateStart   = m_pConfig->group[mergeGroupId].gate[0].fStart;
+        float mergeGateWidth   = m_pConfig->group[mergeGroupId].gate[0].fWidth;
+        float mergeGateStop    = mergeGateStart + mergeGateWidth;
+        float mergeIndexOffset = m_pConfig->group[mergeGroupId].fIndexOffset;
+        int mergeDirection;
+
+        float mergeRealHeightStart, mergeRealHeightStop;
+        float mergeRealWidthStart, mergeRealWidthStop;
+        if( mergeGateStart >= _mergeTOPCInfo.stopY || mergeGateStop <= _mergeTOPCInfo.startY){
+            mergeCalculation = false;
+        }else{
+            mergeRealHeightStart = ( mergeGateStart > _mergeTOPCInfo.startY) ? mergeGateStart : _mergeTOPCInfo.startY;
+            mergeRealHeightStop  = ( mergeGateStop < _mergeTOPCInfo.stopY) ? mergeGateStop : _mergeTOPCInfo.stopY;
+            if(fabs( mergeRealHeightStop - mergeRealHeightStart) < 1.0){
+                mergeCalculation = false;
+            }
+        }
+        mergeRealWidthStart = 0 - topcWidth/2;
+        mergeRealWidthStop  = topcWidth/2;
+        setup_PROBE_ANGLE _mergeAngle = _process->GetProbeAngle(mergeGroupId);
+        switch ( _mergeAngle) {
+        case setup_PROBE_PART_SKEW_0:
+            mergeDirection = 0;
+            break;
+        case setup_PROBE_PART_SKEW_90:
+            mergeDirection = 0;
+            mergeRealWidthStart -= mergeIndexOffset;
+            mergeRealWidthStop  -= mergeIndexOffset;
+            break;
+        case setup_PROBE_PART_SKEW_180:
+            mergeDirection = 1;
+            break;
+        case setup_PROBE_PART_SKEW_270:
+            mergeDirection = 1;
+            mergeRealWidthStart += mergeIndexOffset;
+            mergeRealWidthStop  += mergeIndexOffset;
+            break;
+        default:
+            mergeCalculation = false;
+            break;
+        }
+
+        if( mergeRealWidthStart >= _mergeTOPCInfo.stopX || _mergeTOPCInfo.startX >= mergeRealWidthStop){
+            mergeCalculation = false;
+        }else{
+            mergeRealWidthStart = (mergeRealWidthStart > _mergeTOPCInfo.startX) ? mergeRealWidthStart : _mergeTOPCInfo.startX;
+            mergeRealWidthStop  = (mergeRealWidthStop < _mergeTOPCInfo.stopX) ? mergeRealWidthStop : _mergeTOPCInfo.stopX;
+            if(fabs(mergeRealWidthStop - mergeRealWidthStart) < 1.0){
+                mergeCalculation = false;
+            }
+        }
+
+        int mergePixelWidthStart, mergePixelWidthStop, mergePixelHeightStart, mergePixelHeightStop;
+        if(mergeCalculation){
+            mergePixelWidthStart = (mergeRealWidthStart - _mergeTOPCInfo.startX)/(_mergeTOPCInfo.stopX - _mergeTOPCInfo.startX)
+                                * _mergeTOPCInfo.pixelWidth;
+            mergePixelWidthStop = (mergeRealWidthStop - _mergeTOPCInfo.startX)/(_mergeTOPCInfo.stopX - _mergeTOPCInfo.startX)
+                                * _mergeTOPCInfo.pixelWidth;
+            mergePixelHeightStart = (mergeRealHeightStart - _mergeTOPCInfo.startY)/(_mergeTOPCInfo.stopY - _mergeTOPCInfo.startY)
+                                * _mergeTOPCInfo.pixelHeigh;
+            mergePixelHeightStop = (mergeRealHeightStop - _mergeTOPCInfo.startY)/(_mergeTOPCInfo.stopY - _mergeTOPCInfo.startY)
+                                * _mergeTOPCInfo.pixelHeigh;
+            if(mergePixelWidthStop - mergePixelWidthStart > 2048){
+                mergePixelHeightStop = mergePixelHeightStart + 2048;
+            }
+        }else{
+            mergePixelWidthStart = 0;
+            mergePixelWidthStop  = 10;
+            mergeRealWidthStart  = _mergeTOPCInfo.stopX + 1.0;
+            mergeRealWidthStop   = _mergeTOPCInfo.stopX + 11.0;
+        }
+
+        WDATA* pMergeData;
+        U8* _pMergeMarker = _process->GetScanMarker(mergeGroupId);
+        int mi, mj, mk, mm, mn;
+        float _mergeScale = _process->GetRefGainScale(mergeGroupId);
+        int mergeTmpValue;
+        int mergeScanOff = _process->GetScanOff(mergeGroupId);
+        int mergeScanMax = _process->GetRealScanMax() + mergeScanOff;
+        memset( srcMerge, 0x00, sizeof(srcMerge));
+        if(mergeCalculation){
+            for(mi = m_PosStart - 1, mj = -1; mi <= m_PosStop + 1 && mj < (_nScanend)+1; mi++ , mj++){
+                if(mi<0)
+                    continue;
+                if(_pMergeMarker[mi] && mi >= mergeScanOff && mi < mergeScanMax){
+                    pMergeData = _process->GetScanPosPointer( mergeGroupId, mi);
+                    if(mergeDirection == 0){
+                        for( mk = mergePixelWidthStart, mn = 0; mk < mergePixelWidthStop; mk++,mn++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
+                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
+                                index = _mergeTOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pMergeData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+
+                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+                            if( mergeTmpValue > 255) mergeTmpValue = 255;
+                            srcMerge[mn][mj+1] = mergeTmpValue;
+                        }
+                    }else{
+                        for( mk = mergePixelWidthStop - 1, mn = 0; mk >= mergePixelWidthStart; mk--, mn++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
+                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
+                                index = _mergeTOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pMergeData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+                            if( mergeTmpValue > 255) mergeTmpValue = 255;
+                            srcMerge[mn][mj+1] = mergeTmpValue;
+                        }
+                    }
+                }
+            }
+        }
+
+        //处理像素不同的融合问题
+        if( pixelWidthStop - pixelWidthStart > mergePixelWidthStop - mergePixelWidthStart){
+            int x = pixelWidthStop - pixelWidthStart;
+            int y = m_PosStop - m_PosStart;
+            float fixStep = (float)(mergePixelWidthStop - mergePixelWidthStart) / x;
+            for( int i = 0; i <= x; i++){
+                int mergeIndex = i * fixStep;
+                for( int j = 0; j <= y; j++){
+                    if(srcMerge[mergeIndex][j] > src[i][j]){
+                        src[i][j] = srcMerge[mergeIndex][j];
+                    }
+                }
+            }
+            _pData = pImage_->bits();
+            memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
+            TransformImage( x, y, src, pImage_->width(), pImage_->height(), pImage_);
+        }else{
+            int x = mergePixelWidthStop - mergePixelWidthStart;
+            int y = m_PosStop - m_PosStart;
+            float fixStep = (float)(pixelWidthStop - pixelWidthStart) / x;
+            for( int i = 0; i <= x; i++){
+                int mergeIndex = i * fixStep;
+                for( int j = 0; j <= y; j++){
+                    if(src[mergeIndex][j] > srcMerge[i][j]){
+                        srcMerge[i][j] = src[mergeIndex][j];
+                    }
+                }
+            }
+            _pData = pImage_->bits();
+            memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
+            TransformImage( x, y, srcMerge, pImage_->width(), pImage_->height(), pImage_);
+        }
+        return;
+    }
+    //TOPC
     if( _TOPCInfo.TOPCStatus){
         //确定闸门位置和方向
         bool   Calculation = true;   //false 表示闸门在图像外面，绘制空白即可

@@ -427,7 +427,7 @@ int DopplerConfigure::OpenData(QString& path_)
     } else {
         targetGroup = m_pDataFile->GetGroupInfo(0);
     }
-
+    InitTOPCMerge();
     //SIZING_CURVES &targetCurves = targetGroup->SizingCurves;
 
 	int _iMax = RectifyScanLength();
@@ -667,7 +667,7 @@ void DopplerConfigure::InitCommonConfig()
 		 setup_ENC_POLARITY_NORNAL,
 		 48.0  ,
 		 0
-	};
+    };
 
     for( int i = 0; i < setup_MAX_ENCODER_QTY; i++){
         memcpy((char*)(&common.scanner.encoder[i]) , (void*)&_encoder , sizeof(ENCODER_CONFIG)) ;
@@ -1373,6 +1373,49 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 	}
 }
 
+void  DopplerConfigure::InitTOPCMerge()
+{
+    if( !Config::instance()->is_phascan_ii()){
+        common.TOPCMergeValid = false;
+        for(int i = 0; i < common.nGroupQty; i++){
+            TOPC_INFO& _TOPCInfo  = group[i].TopCInfo;
+            _TOPCInfo.TOPCMergeStatus = 0;
+        }
+        return;
+    }
+
+    int buff = 0;
+    for(int i = 0; i < common.nGroupQty; i++){
+        GROUP_CONFIG& _group  = group[i];
+        if( _group.eGroupMode == setup_GROUP_MODE_PA){
+            common.TOPCMergeGroupId[buff] = i;
+            buff++;
+        }
+    }
+    if( buff < 2){
+        common.TOPCMergeValid = false;
+        for(int i = 0; i < common.nGroupQty; i++){
+            TOPC_INFO& _TOPCInfo  = group[i].TopCInfo;
+            _TOPCInfo.TOPCMergeStatus = 0;
+        }
+        return;
+    }
+
+    common.TOPCMergeValid = true;
+    common.TOPCMergeQty = buff;
+    for(int i = 0; i < common.nGroupQty; i++){
+        TOPC_INFO& _TOPCInfo  = group[i].TopCInfo;
+        _TOPCInfo.TOPCMergeStatus = 0;
+        for(int j = 0; j < buff; j++){
+            if(common.TOPCMergeGroupId[j] != i){
+                _TOPCInfo.TOPCMergeRefer = common.TOPCMergeGroupId[j];
+                break;
+            }
+        }
+    }
+
+}
+
 void  DopplerConfigure::InitTOPCInfo()
 {
 
@@ -1421,6 +1464,7 @@ void  DopplerConfigure::InitTOPCInfo()
         _TOPCInfo.stopY  = _nStopY;
         _TOPCInfo.pixelWidth = _width;
         _TOPCInfo.pixelHeigh = _height;
+        qDebug()<<"topcwidtha"<<i<<_width;
         int beamLength = setup_DATA_PENDIX_LENGTH + _nPointQty;
         float *_pExitPoint = _group.afBeamPos;
         float _nAngleStart = DEGREE_TO_ARCH( _law.nAngleStartRefract / 10.0);

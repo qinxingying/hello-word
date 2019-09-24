@@ -135,6 +135,7 @@ public:
 	void  InitLawComfing  (int nGroupId_)  ;
 	void  OldConfigureToConfigure(DopplerDataFileOperateor* pConf_);
 	void  OldGroupToGroup(DopplerDataFileOperateor* pConf_) ;
+    void  InitTOPCMerge();
     void  InitTOPCInfo();
 
 	void  UpdateTofdConfig(int nGroupId) ;

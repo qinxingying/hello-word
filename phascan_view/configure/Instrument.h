@@ -568,6 +568,8 @@ struct TOPC_INFO
     float  stopY;
     int    pixelWidth;  //对应像素长度
     int    pixelHeigh;  //对应像素高度
+    int    TOPCMergeStatus; //融合的状态 0 off 1 on
+    int    TOPCMergeRefer; //融合关联的组Id
     int*   pDataIndex;  //通过坐标索引得到A扫数据的位置
 };
 
@@ -810,6 +812,9 @@ struct COMMON_CONFIG
 	int					nScanOffMax;
 	int					nScanOff[setup_MAX_GROUP_QTY];
 	U8					nRecMark[setup_MAX_REC_LEN];
+    bool                TOPCMergeValid;          //是否支持topc融合
+    int                 TOPCMergeQty;            //topc融合的组总数，等于PA组数
+    int                 TOPCMergeGroupId[setup_MAX_GROUP_QTY]; //可以融合的组的Id
 } ;
 
 struct DISPLAY_CONFIG

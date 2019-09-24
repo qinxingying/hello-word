@@ -1,4 +1,4 @@
-#include "InstrumentSettingWidget.h"
+﻿#include "InstrumentSettingWidget.h"
 #include "ui_InstrumentSettingWidget.h"
 
 #include "DopplerConfigure.h"
