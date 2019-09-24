@@ -7,6 +7,7 @@ DopplerMergeDataFileOperateor::DopplerMergeDataFileOperateor(QObject *parent)
     , m_count(-1)
     , m_pRFileOp(nullptr)
     , m_nMaxFrameLen(-1)
+    , m_version(0)
     , m_pWBeamData(nullptr)
 {
     memset(&m_wFileHead, 0, sizeof (INSPEC_DATA_FILE));
@@ -31,6 +32,16 @@ int DopplerMergeDataFileOperateor::LoadData(const QStringList &lst)
     for (int i = 0; i < m_count; i ++) {
         int ret = m_pRFileOp[i].LoadDataFile(const_cast<QString &>(lst.at(i)));
         if(ret)  return -1;
+        INSPEC_DATA_FILE *pHeader = m_pRFileOp[0].GetFileHeader();
+        int version = pHeader->version;
+        int size = pHeader->size;
+        int reserved = pHeader->reserved;
+        int swVersion = version - size - reserved;
+        if (i == 0) {
+            m_version = swVersion;
+        } else {
+            if (m_version != swVersion) return -1;
+        }
     }
 
     return 0;
@@ -123,7 +134,7 @@ int DopplerMergeDataFileOperateor::MergeFileHead()
     m_nMaxFrameLen = (fScanStop - fScanStart) / fScanStep + 1.5 ;
     m_wFileHead.reserved = m_nMaxFrameLen * _nFrameSize;
 
-    m_wFileHead.version = m_wFileHead.size + m_wFileHead.reserved;
+    m_wFileHead.version = m_wFileHead.size + m_wFileHead.reserved + m_version;
     return 0;
 }
 

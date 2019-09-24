@@ -30,6 +30,7 @@ private:
     int m_count;
     DopplerDataFileOperateor *m_pRFileOp;
     int m_nMaxFrameLen;
+    int m_version;
 
     INSPEC_DATA_FILE m_wFileHead;
     DRAW_INFO_PACK   m_wDrawInfoPack;
