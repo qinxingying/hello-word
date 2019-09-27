@@ -4909,7 +4909,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-224</y>
+        <y>0</y>
         <width>318</width>
         <height>1160</height>
        </rect>
@@ -5746,15 +5746,21 @@
                       <enum>QAbstractSpinBox::NoButtons</enum>
                      </property>
                      <property name="minimum">
-                      <double>-20.000000000000000</double>
+                      <double>-30.000000000000000</double>
                      </property>
                      <property name="maximum">
-                      <double>20.000000000000000</double>
+                      <double>30.000000000000000</double>
                      </property>
                     </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_26">
+                     <property name="minimumSize">
+                      <size>
+                       <width>40</width>
+                       <height>0</height>
+                      </size>
+                     </property>
                      <property name="text">
                       <string>db</string>
                      </property>
@@ -5829,10 +5835,10 @@
                       <enum>QAbstractSpinBox::NoButtons</enum>
                      </property>
                      <property name="minimum">
-                      <double>-20.000000000000000</double>
+                      <double>-30.000000000000000</double>
                      </property>
                      <property name="maximum">
-                      <double>20.000000000000000</double>
+                      <double>30.000000000000000</double>
                      </property>
                     </widget>
                    </item>
@@ -5840,7 +5846,7 @@
                     <widget class="QLabel" name="label_28">
                      <property name="minimumSize">
                       <size>
-                       <width>50</width>
+                       <width>40</width>
                        <height>0</height>
                       </size>
                      </property>
@@ -5918,10 +5924,10 @@
                       <enum>QAbstractSpinBox::NoButtons</enum>
                      </property>
                      <property name="minimum">
-                      <double>-20.000000000000000</double>
+                      <double>-30.000000000000000</double>
                      </property>
                      <property name="maximum">
-                      <double>20.000000000000000</double>
+                      <double>30.000000000000000</double>
                      </property>
                     </widget>
                    </item>
@@ -5929,7 +5935,7 @@
                     <widget class="QLabel" name="label_30">
                      <property name="minimumSize">
                       <size>
-                       <width>50</width>
+                       <width>40</width>
                        <height>0</height>
                       </size>
                      </property>
@@ -5970,10 +5976,10 @@
                       <enum>QAbstractSpinBox::NoButtons</enum>
                      </property>
                      <property name="minimum">
-                      <double>-20.000000000000000</double>
+                      <double>-30.000000000000000</double>
                      </property>
                      <property name="maximum">
-                      <double>20.000000000000000</double>
+                      <double>30.000000000000000</double>
                      </property>
                     </widget>
                    </item>
@@ -5981,7 +5987,7 @@
                     <widget class="QLabel" name="labelUnitSS">
                      <property name="minimumSize">
                       <size>
-                       <width>50</width>
+                       <width>40</width>
                        <height>0</height>
                       </size>
                      </property>
@@ -6974,7 +6980,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1</y>
+        <y>0</y>
         <width>318</width>
         <height>770</height>
        </rect>

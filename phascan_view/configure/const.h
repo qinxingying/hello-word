@@ -46,6 +46,7 @@ typedef U8				WDATA;	//	定义波形数据位宽 8位
 #define setup_MAX_PROBE_ELEMENT				128
 
 #define setup_MAX_REC_LEN					7 * 1024 * 1024
+#define SETUP_SCAN_MARK_PHASCAN_I           1024 * 256
 
 #define setup_MAX_FRAME_SIZE				192*1024
 //波形数据尾的长度

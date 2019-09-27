@@ -61,7 +61,7 @@ int DopplerMergeDataFileOperateor::MergeDrawInfoPackAndGroupInfo()
             m_wDrawInfoPack.nInspecEnd = m_pRFileOp[i].GetDrawInfo()->nInspecEnd;
             m_wDrawInfoPack.nInspecResolution = m_pRFileOp[i].GetDrawInfo()->nInspecResolution;
             m_wDrawInfoPack.nEncodeType = m_pRFileOp[i].GetDrawInfo()->nEncodeType;
-            memcpy(m_wDrawInfoPack.bScanMark, m_pRFileOp[i].GetDrawInfo()->bScanMark, setup_MAX_REC_LEN);
+            memcpy(m_wDrawInfoPack.bScanMark, m_pRFileOp[i].GetDrawInfo()->bScanMark, SETUP_SCAN_MARK_PHASCAN_I);
         } else {
            if (m_wDrawInfoPack.nEncodeType != m_pRFileOp[i].GetDrawInfo()->nEncodeType) return - 2;
            if (m_wDrawInfoPack.nScanResolution != m_pRFileOp[i].GetDrawInfo()->nScanResolution) return -3;
@@ -80,7 +80,7 @@ int DopplerMergeDataFileOperateor::MergeDrawInfoPackAndGroupInfo()
            if (m_wDrawInfoPack.nInspecEnd < m_pRFileOp[i].GetDrawInfo()->nInspecEnd) {
                m_wDrawInfoPack.nInspecEnd = m_pRFileOp[i].GetDrawInfo()->nInspecEnd;
            }
-           for (int var = 0; var < setup_MAX_REC_LEN; ++var) {
+           for (int var = 0; var < SETUP_SCAN_MARK_PHASCAN_I; ++var) {
                if (m_wDrawInfoPack.bScanMark[var] == 0xff) continue ;
                if (m_pRFileOp[i].GetDrawInfo()->bScanMark[var] == 0) break ;
                m_wDrawInfoPack.bScanMark[var] = m_pRFileOp[i].GetDrawInfo()->bScanMark[var];
