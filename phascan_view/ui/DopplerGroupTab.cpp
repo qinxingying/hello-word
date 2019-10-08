@@ -484,6 +484,10 @@ void DopplerGroupTab::UpdateSampleRange()
 	int _nLawId = ui->ComCurrentAngle->currentIndex() ;
 	ui->ValueStart->setValue(_process->GetSampleStart(m_nGroupId , _nLawId));
 	ui->ValueRange->setValue(_process->GetSampleRange(m_nGroupId , _nLawId));
+
+    QString _Unit =  _process->GetSonicAxisUnit(m_nGroupId);
+    ui->LabelStartUnit->setText(_Unit);
+    ui->LabelRangeUnit->setText(_Unit);
 }
 
 void DopplerGroupTab::SetWndName()
@@ -837,6 +841,11 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueVelocity->setValue(m_pGroup->fVelocity);
 	ui->ComTravelMode->setCurrentIndex(m_pGroup->eTravelMode);
 	ui->ComTxRxMode->setCurrentIndex(m_pGroup->eTxRxMode);
+    if( m_pGroup->eGroupMode == setup_GROUP_MODE_UT1 || m_pGroup->eGroupMode == setup_GROUP_MODE_UT2){
+        ui->ComTravelMode->setEnabled(true);
+    }else{
+        ui->ComTravelMode->setEnabled(false);
+    }
 
     UpdateVelocitySelection();
 	ui->ValuePulser->setValue(m_pGroup->nTrigeStart);
@@ -1168,39 +1177,39 @@ void DopplerGroupTab::on_ValueGain_editingFinished()
 }
 
 
-void DopplerGroupTab::on_ValueStart_editingFinished()
-{
-	double _fValue = ui->ValueStart->value() ;
-	ParameterProcess* _process = ParameterProcess::Instance();
+//void DopplerGroupTab::on_ValueStart_editingFinished()
+//{
+//	double _fValue = ui->ValueStart->value() ;
+//	ParameterProcess* _process = ParameterProcess::Instance();
 
-	if(ui->ComTravelMode->currentIndex() == 0)
-	{
-		int _nLawId = ui->ComCurrentAngle->currentIndex() ;
-		float _fAngle = _process->GetLawAngle(m_nGroupId , _nLawId) ;
-		_fValue = _fValue / cos(DEGREE_TO_ARCH(_fAngle))  ;
-	}
+//	if(ui->ComTravelMode->currentIndex() == 0)
+//	{
+//		int _nLawId = ui->ComCurrentAngle->currentIndex() ;
+//		float _fAngle = _process->GetLawAngle(m_nGroupId , _nLawId) ;
+//		_fValue = _fValue / cos(DEGREE_TO_ARCH(_fAngle))  ;
+//	}
 
-	_process->SetupSampleStart(m_nGroupId , _fValue) ;
-	ProcessDisplay _display ;
-	_display.UpdateAllViewOfGroup(m_nGroupId);
-}
+//	_process->SetupSampleStart(m_nGroupId , _fValue) ;
+//	ProcessDisplay _display ;
+//	_display.UpdateAllViewOfGroup(m_nGroupId);
+//}
 
-void DopplerGroupTab::on_ValueRange_editingFinished()
-{
-	double _fValue = ui->ValueRange->value() ;
-	ParameterProcess* _process = ParameterProcess::Instance();
+//void DopplerGroupTab::on_ValueRange_editingFinished()
+//{
+//	double _fValue = ui->ValueRange->value() ;
+//	ParameterProcess* _process = ParameterProcess::Instance();
 
-	if(ui->ComTravelMode->currentIndex() == 0)
-	{
-		int _nLawId = ui->ComCurrentAngle->currentIndex() ;
-		float _fAngle = _process->GetLawAngle(m_nGroupId , _nLawId) ;
-		_fValue = _fValue / cos(DEGREE_TO_ARCH(_fAngle))  ;
-	}
-	_process->SetupSampleRange(m_nGroupId , _fValue ) ;
+//	if(ui->ComTravelMode->currentIndex() == 0)
+//	{
+//		int _nLawId = ui->ComCurrentAngle->currentIndex() ;
+//		float _fAngle = _process->GetLawAngle(m_nGroupId , _nLawId) ;
+//		_fValue = _fValue / cos(DEGREE_TO_ARCH(_fAngle))  ;
+//	}
+//	_process->SetupSampleRange(m_nGroupId , _fValue ) ;
 
-	ProcessDisplay _display ;
-	_display.UpdateAllViewOfGroup(m_nGroupId);
-}
+//	ProcessDisplay _display ;
+//	_display.UpdateAllViewOfGroup(m_nGroupId);
+//}
 
 void DopplerGroupTab::on_ComCurrentAngle_currentIndexChanged(int index)
 {
@@ -1214,8 +1223,14 @@ void DopplerGroupTab::on_ComTravelMode_currentIndexChanged(int index)
 {
 	if(!ui->ComTravelMode->hasFocus())  return ;
 	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->SetupTravelMode(m_nGroupId , index) ;
+    if(index == 0){
+        ui->ComTravelMode->setCurrentIndex(1);
+        return;
+    }
+    _process->SetupTravelMode(m_nGroupId , index);
 	UpdateSampleRange();
+    ProcessDisplay _display;
+    _display.UpdateAllViewOfGroup(m_nGroupId);
 }
 
 void DopplerGroupTab::on_ValueVelocity_editingFinished()

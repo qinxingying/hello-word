@@ -39,8 +39,8 @@ public:
     //******************************
     int  SetupGain(int nGroupId_ , double fValue_);
     int  SetupRefGain(int nGroupId_ , double fValue_) ;
-    int  SetupSampleStart(int nGroupId_ , double fValue_) ;
-    int  SetupSampleRange(int nGroupId_ , double fValue_) ;
+    //int  SetupSampleStart(int nGroupId_ , double fValue_) ;
+    //int  SetupSampleRange(int nGroupId_ , double fValue_) ;
     int  SetupTravelMode(int nGroupId_ , int eMode_);
     int  SetupVelocity(int nGroupId_ , double fValue_)    ;
     int  SetupWedgeDelay(int nGroupId_ , double fValue_)  ;
@@ -200,7 +200,7 @@ public:
     int SCanAngleToCScanLineAngle(int nGroupId_, float _fCursor);
     float CScanLineAngleToScanLineAngle(int nGroupId_, int _nPos);
 
-    QString GetSonicAxisUnit() ;
+    QString GetSonicAxisUnit(int nGroupId_) ;
     QString GetScanAxisUnit()  ;
     QString GetIndexAxisUnit() ;
     QString GetCscanIndexUnit(int nGroupId_) ;

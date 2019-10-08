@@ -113,21 +113,23 @@ int  ParameterProcess::SetupRefGain(int nGroupId_ , double fValue_)
 	return 0 ;
 }
 
-int  ParameterProcess::SetupSampleStart(int nGroupId_ , double fValue_)
-{
-	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
-	group.fSampleStart  = fValue_ ; //GetSoundPath(nGroupId_ , fValue_) ;
-	qDebug("%d %f %f" , nGroupId_ , fValue_ , group.fSampleStart);
-	return 0 ;
-}
+//应该禁止改SampleStart，这个参数是扫查的时候就确定了的
+//int  ParameterProcess::SetupSampleStart(int nGroupId_ , double fValue_)
+//{
+//	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
+//	group.fSampleStart  = fValue_ ; //GetSoundPath(nGroupId_ , fValue_) ;
+//	qDebug("%d %f %f" , nGroupId_ , fValue_ , group.fSampleStart);
+//	return 0 ;
+//}
 
-int  ParameterProcess::SetupSampleRange(int nGroupId_ , double fValue_)
-{
-	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
-	group.fSampleRange  = fValue_ ; //GetSoundPath(nGroupId_ , fValue_) ;
-	qDebug("%d %f %f" , nGroupId_ , fValue_ ,  group.fSampleRange);
-	return 0 ;
-}
+//应该禁止改SampleRange，这个参数是扫查的时候就确定了的
+//int  ParameterProcess::SetupSampleRange(int nGroupId_ , double fValue_)
+//{
+//	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
+//	group.fSampleRange  = fValue_ ; //GetSoundPath(nGroupId_ , fValue_) ;
+//	qDebug("%d %f %f" , nGroupId_ , fValue_ ,  group.fSampleRange);
+//	return 0 ;
+//}
 
 int  ParameterProcess::SetupTravelMode(int nGroupId_ , int nValue_)
 {
@@ -2268,9 +2270,14 @@ int   ParameterProcess::DistMmToNs(int nGroupId_ , float fDist_)
 	return _fTime ;
 }
 */
-QString ParameterProcess::GetSonicAxisUnit()
+QString ParameterProcess::GetSonicAxisUnit(int nGroupId_)
 {
-	return QString("mm");
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TIME){
+        return QString("us");
+    }else{
+       return QString("mm");
+    }
 }
 
 QString ParameterProcess::GetScanAxisUnit()
@@ -2331,16 +2338,14 @@ float ParameterProcess::GetSampleStart(int nGroupId_ , int nLawId_)
 {
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 	float _fRet  ;
-	if(_group.eTravelMode == setup_TRAVEL_MODE_HALF_PATH)
-	{
+	if(_group.eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
 		_fRet = _group.fSampleStart ;
-	}
-	else
-	{
+	}else if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH){
 		float _fAngle = GetLawAngle(nGroupId_ , nLawId_);
 		_fRet = _group.fSampleStart * cos(DEGREE_TO_ARCH(_fAngle)) ;
-	}
-
+    }else{
+        _fRet = _group.nTimeStart / 1000.0;
+    }
 	return _fRet;
 }
 
@@ -2348,16 +2353,14 @@ float ParameterProcess::GetSampleRange(int nGroupId_ , int nLawId_)
 {
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 	float _fRet  ;
-	if(_group.eTravelMode == setup_TRAVEL_MODE_HALF_PATH)
-	{
+	if(_group.eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
 		_fRet = _group.fSampleRange ;
-	}
-	else
-	{
+    }else if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH){
 		float _fAngle = GetLawAngle(nGroupId_ ,nLawId_);
 		_fRet = _group.fSampleRange * cos(DEGREE_TO_ARCH(_fAngle)) ;
-	}
-
+    }else{
+        _fRet = _group.nTimeRange / 1000.0;
+    }
 	return _fRet;
 }
 

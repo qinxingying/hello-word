@@ -452,8 +452,9 @@ struct CURVE_RL_EL_SL
 extern CURVE_RL_EL_SL CUR_RES;
 enum setup_TRAVEL_MODE
 {
-	setup_TRAVEL_MODE_TRUE_DEPTH = 0,
-	setup_TRAVEL_MODE_HALF_PATH
+    setup_TRAVEL_MODE_TRUE_DEPTH = 0,  //真实深度
+    setup_TRAVEL_MODE_HALF_PATH,       //半声程
+    setup_TRAVEL_MODE_TIME             //时间
 } ;
 
 enum DAC_MODE

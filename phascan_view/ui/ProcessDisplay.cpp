@@ -1779,7 +1779,7 @@ void ProcessDisplay::UpdateDataViewFrameAH(DopplerDataView* pWidget_, int nGroup
     pWidget_->SetRulerRange( 100, 0,  100,  0, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
 
-    QString _strBottomUnit =  _process->GetSonicAxisUnit();
+    QString _strBottomUnit =  _process->GetSonicAxisUnit(nGroupId_);
     double _fStart = _process->GetSampleStart(nGroupId_, nLawId_);
     double _fRange = _process->GetSampleRange(nGroupId_, nLawId_);
 
@@ -1814,7 +1814,7 @@ void ProcessDisplay::UpdateDataViewFrameAH(DopplerDataView* pWidget_, int nGroup
 void ProcessDisplay::UpdateDataViewFrameAV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-	QString _strLeftUnit = _process->GetSonicAxisUnit() ;
+    QString _strLeftUnit = _process->GetSonicAxisUnit(nGroupId_) ;
 	double _fStart = _process->GetSampleStart(nGroupId_ , nLawId_) ;
 	double _fRange = _process->GetSampleRange(nGroupId_ , nLawId_) ;
 	//---------------
@@ -1875,7 +1875,7 @@ void ProcessDisplay::UpdateDataViewFrameBH(DopplerDataView* pWidget_ , int nGrou
 	pWidget_->SetRulerRange( _fStop , _fStart , _fSliderStart , _fSliderStop,DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
 
-	QString _strBottomUnit = _process->GetSonicAxisUnit() ;
+    QString _strBottomUnit = _process->GetSonicAxisUnit(nGroupId_) ;
 	_fStart = _process->GetSampleStart(nGroupId_ , nLawId_) ;
 	_fStop  = _fStart + _process->GetSampleRange(nGroupId_ , nLawId_) ;
     srcrangestart = _fStart;
@@ -1903,7 +1903,7 @@ void ProcessDisplay::UpdateDataViewFrameBV(DopplerDataView* pWidget_ , int nGrou
 	pWidget_->SetRulerRange( _fStart , _fStop ,  _fSliderStart , _fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_BOTTOM );
 
-	QString _strBottomUnit = _process->GetSonicAxisUnit() ;
+    QString _strBottomUnit = _process->GetSonicAxisUnit(nGroupId_) ;
 	_fStart = _process->GetSampleStart(nGroupId_ , nLawId_)  ;
 	_fStop =  _fStart + _process->GetSampleRange(nGroupId_ , nLawId_)  ;
     srcrangestart = _fStart;
@@ -2039,13 +2039,13 @@ void ProcessDisplay::UpdateDataViewFrameCV(DopplerDataView* pWidget_ , int nGrou
 void ProcessDisplay::UpdateDataViewFrameSS(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-	QString _strLeftUnit = _process->GetSonicAxisUnit()  ;
+    QString _strLeftUnit = _process->GetSonicAxisUnit(nGroupId_)  ;
 	float _fLStart = _process->GetGroupLawQty(nGroupId_) + 0.5;
 	float _fLStop  =  0.5;
 	pWidget_->SetRulerRange( _fLStart , _fLStop,  _fLStart , _fLStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
 
-	QString _strBottomUnit =  _process->GetSonicAxisUnit() ;
+    QString _strBottomUnit =  _process->GetSonicAxisUnit(nGroupId_) ;
 	double _fStart = _process->GetSampleStart(nGroupId_ , nLawId_) ;
 	double _fRange = _process->GetSampleRange(nGroupId_ , nLawId_) ;
 	pWidget_->SetRulerRange( _fStart , _fStart + _fRange , _fStart , _fStart + _fRange , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
@@ -2065,7 +2065,7 @@ void ProcessDisplay::UpdateDataViewFrameSS(DopplerDataView* pWidget_ , int nGrou
 void ProcessDisplay::UpdateDataViewFrameSA(DopplerDataView* pWidget_ , int nGroupId_ , int /*nLawId_*/)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-	QString _strLeftUnit = _process->GetSonicAxisUnit()  ;
+    QString _strLeftUnit = _process->GetSonicAxisUnit(nGroupId_)  ;
 	float _fStart , _fStop  ;
 	_process->GetSScanVerticalRange(nGroupId_ , &_fStart ,  &_fStop);
 	pWidget_->SetRulerRange( _fStart , _fStop,  _fStart , _fStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
@@ -2090,7 +2090,7 @@ void ProcessDisplay::UpdateDataViewFrameSA(DopplerDataView* pWidget_ , int nGrou
 void ProcessDisplay::UpdateDataViewFrameSL(DopplerDataView* pWidget_ , int nGroupId_ , int /*nLawId_*/)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-	QString _strLeftUnit = _process->GetSonicAxisUnit()  ;
+    QString _strLeftUnit = _process->GetSonicAxisUnit(nGroupId_)  ;
 	float _fStart , _fStop  ;
 	_process->GetSScanVerticalRange(nGroupId_ , &_fStart ,  &_fStop);
 	pWidget_->SetRulerRange( _fStart , _fStop,   _fStart , _fStop, DopplerDataView::DATA_VIEW_RULER_LEFT);

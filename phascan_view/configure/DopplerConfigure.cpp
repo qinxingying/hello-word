@@ -681,7 +681,6 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 
 	_pConfig->eGroupMode  = setup_GROUP_MODE_PA  ;
 	_pConfig->eTravelMode = setup_TRAVEL_MODE_TRUE_DEPTH  ;
-//  _pConfig->eTravelMode = setup_TRAVEL_MODE_TRUE_DEPTH  ;
     _pConfig->nWedgeDelay  =  0;
     _pConfig->fSampleStart =  0;
     _pConfig->fSampleRange =  48;
@@ -1315,7 +1314,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         }
         else if(6 == _group.part.weld.eType)
         {
-            _group.part.weld.fizone_down_height = _group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_height;
+            _group.part.weld.fizone_down_height = _group.part.weld.fizone_height - _group.part.weld.weland_height;
+            _group.part.weld.fizone_height = _group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_down_height;
             _group.part.weld.fizone_down_angle = _group.part.weld.fizone_radius;
         }
 

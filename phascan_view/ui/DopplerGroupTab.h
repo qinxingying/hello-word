@@ -78,8 +78,8 @@ private slots:
     void StartDrags(QModelIndex a) ;
     void slotMeasureBoxTipInfo(int nIndex_);
     void on_ValueGain_editingFinished();
-    void on_ValueStart_editingFinished();
-    void on_ValueRange_editingFinished();
+    //void on_ValueStart_editingFinished();
+    //void on_ValueRange_editingFinished();
     void on_ComCurrentAngle_currentIndexChanged(int index);
     void on_ComTravelMode_currentIndexChanged(int index);
     void on_ValueVelocity_editingFinished();

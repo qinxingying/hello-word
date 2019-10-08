@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -427,6 +427,11 @@
                  <item>
                   <property name="text">
                    <string>Half Path</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Time</string>
                   </property>
                  </item>
                 </widget>
