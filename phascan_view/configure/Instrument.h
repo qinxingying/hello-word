@@ -618,6 +618,8 @@ typedef struct _Group
 	float					fMinThickness;		/* Measurements->Thickness->min */
 	float					fMaxThickness;		/* Measurements->Thickness->max */
     int                     DisplayMode;        //显示模式
+    bool                    CScanShowAll;       //C扫完整显示标志位，false 关闭，true开启。开启后加入扫查帧数大于C扫横向像素点
+                                                //会压缩帧数
 	// wedge position
 	float					fScanOffset;		/*mm*/
 	float					fIndexOffset;		/*mm*/

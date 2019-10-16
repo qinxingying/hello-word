@@ -177,6 +177,7 @@ private slots:
     void on_ValueCScanThicknessMax_valueChanged(double);
     void on_ComCScanSource1_currentIndexChanged(int index);
     void on_ComCScanSource2_currentIndexChanged(int index);
+    void on_ComCScanShowAll_currentIndexChanged(int index);
 	void ComDispPro(int index, int iGroup);
 	void on_ComComDisp1_currentIndexChanged(int index);
 	void on_ComComDisp2_currentIndexChanged(int index);

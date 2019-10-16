@@ -598,6 +598,7 @@ void DopplerGroupTab::SetWidgetInvalide()
     ui->ComMaterial->setDisabled(true);
     ui->ValuePartSize2->setDisabled(true);
     ui->ValuePartSize3->setDisabled(true);
+    ui->ValuePartSize4->setDisabled(true);
     ui->CheckUnifiedPartSetting->setDisabled(true);
 
     ui->ValueARef->setDisabled(true);
@@ -986,6 +987,11 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ui->ComCScanSource2->setCurrentIndex(m_pGroup->eCScanSource[1]);
 	ui->ValueCScanThicknessMin->setValue(m_pGroup->fMinThickness);
 	ui->ValueCScanThicknessMax->setValue(m_pGroup->fMaxThickness);
+    if(m_pGroup->CScanShowAll == true){
+        ui->ComCScanShowAll->setCurrentIndex(1);
+    }else{
+        ui->ComCScanShowAll->setCurrentIndex(0);
+    }
 
 	UpdateColorSetting();
 	UpdateMeasureBox();
@@ -1167,6 +1173,7 @@ void DopplerGroupTab::UpdateGeometryState()
 	ui->ValuePartSize1->setValue(m_pGroup->part.afSize[0]);
 	ui->ValuePartSize2->setValue(m_pGroup->part.afSize[1]);
 	ui->ValuePartSize3->setValue(m_pGroup->part.afSize[2]);
+    ui->ValuePartSize4->setValue(m_pGroup->part.afSize[3]);
 }
 
 void DopplerGroupTab::on_ValueGain_editingFinished()
@@ -2234,6 +2241,18 @@ void DopplerGroupTab::on_ComCScanSource2_currentIndexChanged(int index)
 	g_pMainWnd->UpdateAllDisplay();
 	g_pMainWnd->RunDrawThreadOnce();
     //DopplerConfigure::setSetting(m_nGroupId,"CScansource2",index);
+}
+
+void DopplerGroupTab::on_ComCScanShowAll_currentIndexChanged(int index)
+{
+    if(!ui->ComCScanShowAll->hasFocus()) return;
+    if( index == 0){
+        m_pGroup->CScanShowAll = false;
+    }else{
+        m_pGroup->CScanShowAll = true;
+    }
+    g_pMainWnd->UpdateAllDisplay();
+    g_pMainWnd->RunDrawThreadOnce();
 }
 
 void DopplerGroupTab::ComDispPro(int index, int iGroup)

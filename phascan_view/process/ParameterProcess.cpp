@@ -1367,6 +1367,24 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	return true;
 }
 
+int ParameterProcess::GetCoupleMonitoringData(int nGroupId_, float* pResult_)
+{
+    int ret = 0;
+    DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG* config = &(m_pConfig->group[nGroupId_]);
+    if( !config->coupleMonitoringState){
+        ret = -1;
+        return ret;
+    }
+    int _nScanPos = GetScanIndexPos();
+    int _nRectify = GetRectifierMode(nGroupId_);
+    int _index = GetRealScanIndex(nGroupId_, _nScanPos);
+    QVector<WDATA> buff = GetCoupleCScanData(nGroupId_);
+    WDATA data = buff[_index];
+    *pResult_  = CalculatePeakAmp( data, _nRectify);
+    return ret;
+}
+
 WDATA* ParameterProcess::GetScanPosPointer(int nGroupId_, int nScanPos_)
 {
     WDATA* _pData = GetShadowDataPointer();

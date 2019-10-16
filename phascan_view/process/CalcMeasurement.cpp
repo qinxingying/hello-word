@@ -512,6 +512,9 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
         if(RL_EL_SL[setup_SL] < 0.0000001)
             ret = 1;
         break;
+    case FEILD_CMA :
+        ret = _process->GetCoupleMonitoringData( nGroupId_, pResult_);
+        break;
 #if 0
 	case FEILD_AWSDA:
 		break;

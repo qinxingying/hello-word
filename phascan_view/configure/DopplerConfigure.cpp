@@ -730,6 +730,7 @@ void DopplerConfigure::InitGroupConfig(int nGroupId_)
 	_pConfig->eCScanSource[1]	= setup_CSCAN_POS_A ;
 	_pConfig->fMinThickness		= 0;
 	_pConfig->fMaxThickness		= 50;
+    _pConfig->CScanShowAll      = false;
 
 	_pConfig->fScanOffset		= 0.0;	/*mm*/
 	_pConfig->fIndexOffset		= 0.0;	  /*mm*/
@@ -1066,6 +1067,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */
 		_group.fMaxThickness  = _pGroupInfo->max_thickness/1000.0 ;		/* Measurements->Thickness->max */
+        _group.CScanShowAll   = false;
 
 		/*  校准状态  */
 		_group.bVelocityCalib	 = _pGroupInfo->VelocityCalibrated  ;
@@ -1234,7 +1236,11 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_wedge.fRefPoint   = _Wedge.Ref_point / 1000.0;
 		_wedge.nWedgeDelay = _Wedge.Probe_delay  ;
 
+        _group.part.eGeometry  = (setup_PART_GEOMETRY)_pGroupInfo->part.Geometry;
 		_group.part.afSize[0]  = _pGroupInfo->part.Thickness / 1000.0 ;
+        _group.part.afSize[1]  = 100;
+        _group.part.afSize[2]  = 100;
+        _group.part.afSize[3]  = _pGroupInfo->part.Diameter / 1000.0;
         if(common.scanner.eScanEncoderType)
         {
             if(Phascan_Version == 1)
@@ -1967,7 +1973,7 @@ float DopplerConfigure::DefectLengthPos(int iGroupId_, float* pStart_, int index
 	if(_pDfInfo->bValid) {
 		if(_pDfInfo->fSStart > -10000) {
 			_fLength = _pDfInfo->fSStop - _pDfInfo->fSStart;
-			*pStart_ =_pDfInfo->fSStart;
+            *pStart_ = _pDfInfo->fSStart;
 		}
 	}
 	*pStart_ += _fScanOff;
@@ -1985,7 +1991,7 @@ float DopplerConfigure::DefectVPAPos(int iGroupId_, float* pStart_, int index_)
     if(_pDfInfo->bValid) {
         if(_pDfInfo->fVPAStart > -10000) {
             _fLength = _pDfInfo->fVPAStop - _pDfInfo->fVPAStart;
-            *pStart_ =_pDfInfo->fVPAStart;
+            *pStart_ = _pDfInfo->fVPAStart;
         }
     }
     return _fLength;

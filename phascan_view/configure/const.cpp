@@ -58,6 +58,7 @@ const char* g_strMeasureFildName[][4] =
     {"RL    " , "None"},
     {"SL    " , "None"},
     {"EL    " , "None"},
+    {"CM-A% ", "Peak amplitude in gate coupleMonitoring"},
 };
 
 const char* g_strMeasureFildUnit[][4] =
@@ -81,9 +82,9 @@ const char* g_strMeasureFildUnit[][4] =
 	{"U(r)  ", "mm"  },
 	{"U(m)  ", "mm" },
 	{"U(m-r)", "mm"  },
-	{"P(r)  " , "mm" },
+    {"P(r)  ", "mm" },
 	{"P(m)  ", "mm"  },
-	{"P(m-r)" , "mm" },
+    {"P(m-r)", "mm" },
 	{"S(r)  ", "mm" },
 	{"S(m)  ", "mm" },
 	{"S(m-r)", "mm"  },
@@ -113,6 +114,7 @@ const char* g_strMeasureFildUnit[][4] =
     {"RL    " , "db"},
     {"SL    " , "db"},
     {"EL    " , "db"},
+    {"CM-A% " , "%"},
 };
 
 const char* g_strThicknessStandard[] =

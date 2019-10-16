@@ -141,6 +141,7 @@ public:
     float GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLawId_, float fUDist_);
 	bool GetGatePeakInfos(int nGroupId_, int nScanPos_, int nLawId_, PEAK_CONFIG* pInfo_);
 	bool GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId_, PEAK_CONFIG* pInfo_);
+    int  GetCoupleMonitoringData(int nGroupId_, float* pResult_);
     WDATA* GetScanPosPointer(int nGroupId_, int nScanPos_);
     WDATA* GetGroupDataPointer(int nGroupId_);
     WDATA* GetGroupDataPointerRaster(int nGroupId_);
