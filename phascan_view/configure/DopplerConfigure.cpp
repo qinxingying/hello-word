@@ -1288,6 +1288,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         else
         {
             _group.part.weldFormat = PHASCAN_I_FORMAT;
+            _group.TopCInfo.TOPCWidth = 10;
         }
 
 		_group.part.weld.eSymmetry       = (setup_WELD_SYMMETRY_TYPE) _pGroupInfo->part.symmetry ;
@@ -1424,8 +1425,8 @@ void  DopplerConfigure::InitTOPCMerge()
 
 void  DopplerConfigure::InitTOPCInfo()
 {
-
-    if( !Config::instance()->is_phascan_ii() || common.scanner.eScanType != setup_SCAN_TYPE_ONE_LINE){
+    //if( !Config::instance()->is_phascan_ii() || common.scanner.eScanType != setup_SCAN_TYPE_ONE_LINE){
+    if( common.scanner.eScanType != setup_SCAN_TYPE_ONE_LINE){
         for( int i = 0; i < common.nGroupQty; i++){
             TOPC_INFO& _TOPCInfo  = group[i].TopCInfo;
             _TOPCInfo.TOPCValid  = false;

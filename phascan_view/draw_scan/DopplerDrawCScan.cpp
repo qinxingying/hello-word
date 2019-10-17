@@ -2153,7 +2153,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         int mergeScanMax = _process->GetRealScanMax() + mergeScanOff;
         memset( srcMerge, 0x00, sizeof(srcMerge));
         if(mergeCalculation){
-            for(mi = m_PosStart - 1, mj = -1; mi <= m_PosStop + 1 && mj < (_nScanend)+1; mi++ , mj++){
+            for(mi = m_PosStart - 1, mj = _nScanend; mi <= m_PosStop + 1 && mj >= -1; mi++ , mj--){
                 if(mi<0)
                     continue;
                 if(_pMergeMarker[mi] && mi >= mergeScanOff && mi < mergeScanMax){
