@@ -752,23 +752,23 @@
         <translation type="vanished">普通钢</translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1611"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1646"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1612"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1647"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1676"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1677"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1879"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1880"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1879"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1880"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2907,12 +2907,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="900"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="921"/>
         <source>PA Voltage:</source>
         <translation>PA 发射电压：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="958"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="979"/>
         <source>UT Voltage:</source>
         <translation>UT 发射电压：</translation>
     </message>
@@ -2922,186 +2922,201 @@
         <translation>扫查方式：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="81"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="187"/>
         <source>One Line Scan</source>
         <translation>单线扫查</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="86"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="192"/>
         <source>Two Line Scan</source>
         <translation>双线扫查</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="112"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="615"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="179"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="636"/>
         <source>Encoder Type:</source>
         <translation>编码器类型：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="120"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="81"/>
         <source>Time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="125"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="623"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="86"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="644"/>
         <source>Encoder X</source>
         <translation>编码器 X</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="130"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="628"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="91"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="649"/>
         <source>Encoder Y</source>
         <translation>编码器 Y</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="156"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="154"/>
         <source>PRF:</source>
         <translation>重复频率：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="211"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="200"/>
+        <source>Topc Merge Compare View:</source>
+        <translation>TOPC融合视图:</translation>
+    </message>
+    <message>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="208"/>
+        <source>OFF</source>
+        <translation>关</translation>
+    </message>
+    <message>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="213"/>
+        <source>ON</source>
+        <translation>开</translation>
+    </message>
+    <message>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="232"/>
         <source>Area</source>
         <translation>扫查区域</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="231"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="252"/>
         <source>Scan Axis</source>
         <translation>扫查轴</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="250"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="271"/>
         <source>Index Axis</source>
         <translation>步进轴</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="275"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="296"/>
         <source>Start:</source>
         <translation>起点：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="356"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="465"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="574"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="853"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="377"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="486"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="595"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="874"/>
         <source>mm</source>
         <translation>毫米</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="384"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="405"/>
         <source>End :</source>
         <translation>终点：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="493"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="654"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="514"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="675"/>
         <source>Resolution:</source>
         <translation>分辨率：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="595"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="616"/>
         <source>Encoder Mode</source>
         <translation>编码器类型</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="698"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="719"/>
         <source>Steps/mm</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="726"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="747"/>
         <source>Polarity:</source>
         <translation>极性：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="734"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="755"/>
         <source>Normal</source>
         <translation>正常</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="739"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="760"/>
         <source>Inverse</source>
         <translation>反转</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="765"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="786"/>
         <source>Direction:</source>
         <translation>类型：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="773"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="794"/>
         <source>Quad</source>
         <translation>正交</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="778"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="799"/>
         <source>Up</source>
         <translation>向上</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="783"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="804"/>
         <source>Down</source>
         <translation>向下</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="809"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="830"/>
         <source>Origin:</source>
         <translation>编码器起点：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="908"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="922"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="929"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="943"/>
         <source>  50V</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="913"/>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="927"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="934"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="948"/>
         <source>100V </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="932"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="953"/>
         <source>200V</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1002"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1023"/>
         <source>Current Scan Pos:</source>
         <translation>扫描轴当前位置：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1091"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1112"/>
         <source>Current Index Pos:</source>
         <translation>步进轴当前位置：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1168"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1189"/>
         <source>Raster Offset:</source>
         <translation>格栅扫查偏置：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1244"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1265"/>
         <source>Scan Start:</source>
         <translation>扫查起点：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1299"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1320"/>
         <source>Scan Stop:  </source>
         <translation>扫查终点：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1354"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1375"/>
         <source>Index Start:</source>
         <translation>步进轴起点：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1409"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1430"/>
         <source>Index Stop:</source>
         <translation>步进轴终点：</translation>
     </message>
     <message>
-        <location filename="../ui/InstrumentSettingWidget.ui" line="1453"/>
+        <location filename="../ui/InstrumentSettingWidget.ui" line="1474"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
@@ -3417,91 +3432,91 @@
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="299"/>
+        <location filename="../ui/mainwindow.cpp" line="300"/>
         <source>Com Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="339"/>
+        <location filename="../ui/mainwindow.cpp" line="340"/>
         <source>Delete Current Display Table ?</source>
         <translation>要删除当前视图吗 ？</translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.cpp" line="340"/>
-        <location filename="../ui/mainwindow.cpp" line="384"/>
-        <location filename="../ui/mainwindow.cpp" line="874"/>
-        <source>YES</source>
-        <translation>是</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="341"/>
         <location filename="../ui/mainwindow.cpp" line="385"/>
         <location filename="../ui/mainwindow.cpp" line="875"/>
+        <source>YES</source>
+        <translation>是</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="342"/>
+        <location filename="../ui/mainwindow.cpp" line="386"/>
+        <location filename="../ui/mainwindow.cpp" line="876"/>
         <source>NO</source>
         <translation>否</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="383"/>
+        <location filename="../ui/mainwindow.cpp" line="384"/>
         <source>Add One View ?</source>
         <translation>要添加新视图吗 ？</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="432"/>
-        <location filename="../ui/mainwindow.cpp" line="679"/>
+        <location filename="../ui/mainwindow.cpp" line="433"/>
+        <location filename="../ui/mainwindow.cpp" line="680"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1186"/>
+        <location filename="../ui/mainwindow.cpp" line="1187"/>
         <source>The defect was saved failed!</source>
         <translation>缺陷保存失败！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1188"/>
+        <location filename="../ui/mainwindow.cpp" line="1189"/>
         <source>The defect was saved successfully!</source>
         <translation>缺陷保存成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1184"/>
+        <location filename="../ui/mainwindow.cpp" line="1185"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1184"/>
+        <location filename="../ui/mainwindow.cpp" line="1185"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1053"/>
-        <location filename="../ui/mainwindow.cpp" line="1101"/>
-        <location filename="../ui/mainwindow.cpp" line="1112"/>
-        <location filename="../ui/mainwindow.cpp" line="1186"/>
-        <location filename="../ui/mainwindow.cpp" line="1188"/>
+        <location filename="../ui/mainwindow.cpp" line="1054"/>
+        <location filename="../ui/mainwindow.cpp" line="1102"/>
+        <location filename="../ui/mainwindow.cpp" line="1113"/>
+        <location filename="../ui/mainwindow.cpp" line="1187"/>
+        <location filename="../ui/mainwindow.cpp" line="1189"/>
         <source>prompt</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="873"/>
+        <location filename="../ui/mainwindow.cpp" line="874"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="884"/>
+        <location filename="../ui/mainwindow.cpp" line="885"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1053"/>
+        <location filename="../ui/mainwindow.cpp" line="1054"/>
         <source>save in </source>
         <translation>保存在 </translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1101"/>
+        <location filename="../ui/mainwindow.cpp" line="1102"/>
         <source>increase success!</source>
         <translation>增加成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1112"/>
+        <location filename="../ui/mainwindow.cpp" line="1113"/>
         <source>delete success!</source>
         <translation>删除成功！</translation>
     </message>

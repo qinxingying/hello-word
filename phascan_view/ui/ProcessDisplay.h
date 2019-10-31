@@ -51,7 +51,8 @@ public:
         DISP_S_AH_CV_CV         ,
         DISP_S_AV_CH_BH         ,
         DISP_S_AV_CH_N          ,
-        DISP_ALLGROUP
+        DISP_ALLGROUP           ,
+        DISP_TOPCMERGECOMPARE   ,
     };
     explicit ProcessDisplay(QObject *parent = 0);
     int CreateViews(QWidget* parent_ , int eType_);
@@ -82,6 +83,7 @@ public:
     int CreateViews_S_AV_CH_BH(QWidget*);
     int CreateViews_S_AV_CH_N(QWidget*);
     int CreateViews_AllGroups(QWidget*);
+    int CreateViews_TOPCCompare(QWidget*);
 
     void ConnectSingals(DopplerDataView** pViews_ , int nQty_) ;
     void ConnectSlots(DopplerDataView*);

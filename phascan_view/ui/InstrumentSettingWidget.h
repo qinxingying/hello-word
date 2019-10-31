@@ -24,6 +24,9 @@ public:
     void UpdateIndexBox();
     void retranslateUi();
 
+signals:
+    void topcMergeCompareViewShow(bool);
+
 protected:
     //**************************
     void SetItemInvalide() ;
@@ -38,6 +41,7 @@ protected:
 private slots:
     void on_ComScanType_currentIndexChanged(int index);
     void on_ComEncoderType_currentIndexChanged(int index);
+    void on_ComTopcMergeCompareView_currentIndexChanged(int index);
     void on_ComEncoderTypeSetting_currentIndexChanged(int index);
     void on_ComEncoderPolarity_currentIndexChanged(int index);
     void on_ComEncoderDirection_currentIndexChanged(int index);

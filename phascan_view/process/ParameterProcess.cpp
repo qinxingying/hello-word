@@ -623,6 +623,18 @@ int ParameterProcess::GetTotalLawQty() const
 	return _nRet ;
 }
 
+int ParameterProcess::GetScanIndexNum()
+{
+    SCANNER& _scaner = m_pConfig->common.scanner;
+    int _index;
+    if(_scaner.eScanEncoderType) {
+        _index = (_scaner.fScanend - _scaner.fScanStart2) / _scaner.fScanStep ;
+    } else {
+        _index =  (_scaner.fScanend * _scaner.fPrf - _scaner.fScanStart2 *_scaner.fPrf ) / _scaner.fScanStep;
+    }
+    return _index;
+}
+
 int ParameterProcess::GetGroupQty() const
 {
 	return m_pConfig->common.nGroupQty ;
@@ -2657,6 +2669,11 @@ QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
     int dataQty = m_pConfig->group[nGroupId_].nPointQty;
     float coupleStart = m_pConfig->group[nGroupId_].coupleMonitoringVelocity * m_pConfig->group[nGroupId_].nTimeStart/2000000.0;
     float coupleDepth = m_pConfig->group[nGroupId_].coupleMonitoringVelocity * m_pConfig->group[nGroupId_].nTimeRange/2000000.0;
+    int fixSize = coupleStart / partThickness;
+    if(fixSize < 0){
+        fixSize = 0;
+    }
+    partStart = ( 0.75 + fixSize)* partThickness;
 
     float overlapStart;
     float overlapEnd;

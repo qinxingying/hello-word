@@ -211,6 +211,11 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
 	m_hMutex.unlock();
 }
 
+DopplerDrawBScanV::DopplerDrawBScanV(QObject *parent) : DopplerDrawBScanH(parent)
+{
+
+}
+
 void DopplerDrawBScanV::Draw (QImage* pImage_)
 {
 	m_hMutex.lock();

@@ -404,7 +404,9 @@ void DopplerOverlays::CreateOverlaysCH()
 	if(group.bShowCursor)
 	{
         _pItemGroup->EnableItems(OVERLAYS_CURSOR);
-        if(group.TopCInfo.TOPCStatus){
+        bool topc, topcMerge;
+        m_pView->GetCScanTopcDis( topc, topcMerge);
+        if(group.TopCInfo.TOPCStatus || topc || topcMerge){
             _pItemGroup->SetCursorPos(0 , group.afCursor[setup_CURSOR_I_REF]);
             _pItemGroup->SetCursorPos(1 , group.afCursor[setup_CURSOR_I_MES]);
             _pItemGroup->SetCursorId(0 , setup_CURSOR_I_REF);

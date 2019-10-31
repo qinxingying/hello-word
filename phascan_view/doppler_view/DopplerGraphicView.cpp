@@ -5,6 +5,8 @@
 #include "DopplerViewItems.h"
 #include "DopplerGraphicView.h"
 #include "DopplerDrawScan.h"
+#include "DopplerDrawBScan.h"
+#include "DopplerDrawCScan.h"
 #include "DopplerTofdOpp.h"
 #include "DopplerGateItem.h"
 #include "DopplerDataView.h"
@@ -37,6 +39,11 @@ public:
 		m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE) ;
         m_scaleH = 1.0;
         m_scaleV = 1.0;
+        m_fix    = false;
+        m_transferX = 0;
+        m_transferY = 0;
+        ParameterProcess* _process = ParameterProcess::Instance();
+        m_scanIndex = _process->GetScanIndexNum();
 		ClearImage() ;
 		setZValue(1);
 		//m_hMutex.unlock();
@@ -67,7 +74,22 @@ public:
 		//m_hMutex.unlock();
 	}
 
+    void SetFixStatus( bool status)
+    {
+        m_fix = status;
+    }
 
+    void SetFixDirection( int direction)
+    {
+        if(direction == 0 || direction == 1){
+            m_fixDirection = direction;
+        }
+    }
+
+    int GetScanIndex()
+    {
+        return m_scanIndex;
+    }
 
 	void ClearImage()
 	{
@@ -86,10 +108,52 @@ public:
         m_scaleH = scaleH;
         m_scaleV = scaleV;
         QSizeF viewSize = size();
-        m_cSize = QSize( viewSize.width()*m_scaleH, viewSize.height()*m_scaleV);
+        if(m_fix){
+            if(!m_fixDirection){
+                double fix = m_scanIndex / viewSize.width();
+                if( fix > 1.0){
+                    m_cSize = QSize( viewSize.width()*m_scaleH*fix, viewSize.height()*m_scaleV);
+                }else{
+                    m_cSize = QSize( viewSize.width()*m_scaleH, viewSize.height()*m_scaleV);
+                }
+            }else{
+                double fix = m_scanIndex / viewSize.height();
+                if(fix > 1.0){
+                    m_cSize = QSize( viewSize.width()*m_scaleH, viewSize.height()*m_scaleV*fix);
+                }else{
+                    m_cSize = QSize( viewSize.width()*m_scaleH, viewSize.height()*m_scaleV*fix);
+                }
+            }
+        }else{
+            m_cSize = QSize( viewSize.width()*m_scaleH, viewSize.height()*m_scaleV);
+        }
         if(m_pImage) delete m_pImage ;
         m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE) ;
         ClearImage();
+    }
+
+    void setImageTransfer(double bottomStart, double bottomEnd, double leftStart, double leftEnd)
+    {
+        if(m_fix){
+            DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+            SCANNER& _scaner = _pConfig->common.scanner;
+            float start = _scaner.fScanStart2;
+            float end   = _scaner.fScanend;
+            if(!m_fixDirection){
+                m_transferY = 0;
+                    m_transferX = (start - bottomStart) / (end - start) * m_cSize.width();
+                    qDebug()<<"bottomStart"<<bottomStart<<"m_transferX"<<m_transferX<<"m_cSize.width"<<
+                              m_cSize.width()<<"start"<<start<<"bottomEnd"<<bottomEnd<<"end"<<end;
+            }else{
+                m_transferX = 0;
+                m_transferY = ( leftStart - end) / (end - start) * m_cSize.height();
+                qDebug()<<"leftStart"<<leftStart<<"m_transferY"<<m_transferY<<"m_cSize.height"<<
+                          m_cSize.height()<<"start"<<start<<"leftEnd"<<leftEnd<<"end"<<end;
+            }
+        }else{
+            m_transferX = 0;
+            m_transferY = 0;
+        }
     }
 
     //重绘时由于是放大了image，item就不要缩放
@@ -102,7 +166,8 @@ public:
             double scaleY = 1.0 / painter->matrix().m22();
             painter->scale( scaleX, scaleY);
             painter->setRenderHint(QPainter::Antialiasing, true);
-            painter->drawImage(QRect(0 , 0 , m_cSize.width() , m_cSize.height()), *m_pImage);
+            painter->drawImage(QRect( m_transferX, m_transferY, m_cSize.width() , m_cSize.height()), *m_pImage);
+//            painter->drawImage(QRect(0 , 0 , m_cSize.width() , m_cSize.height()), *m_pImage);
 			m_hMutex.unlock();
 		}
 	}
@@ -115,6 +180,11 @@ private:
     QSize   m_cSize;
     double m_scaleH;  //保存水平缩放比例，用于计算image尺寸
     double m_scaleV;  //保存垂直缩放比例，用于计算image尺寸
+    bool   m_fix;     //是否需要修正，B，C扫数据大是缩放需要修正
+    int    m_fixDirection; //修正的方向 0 水平 1 垂直
+    int    m_scanIndex;    //scan的帧数
+    int    m_transferX;
+    int    m_transferY;
 };
 
 DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
@@ -234,12 +304,14 @@ void DopplerGraphicView::mouseCursorPro(QMouseEvent *event)
 void DopplerGraphicView::SetupMatrixScale(double nScaleH_ , double nScaleV_)
 {
 	m_nScaleH = nScaleH_  ; m_nScaleV = nScaleV_;
+    if( nScaleH_ == 1 && nScaleV_ == 1){
+        m_pBackGround->SetFixStatus(false);
+    }
 	QMatrix matrix;
 	matrix.scale(m_nScaleH * m_nScaleBaseH , m_nScaleV  * m_nScaleBaseV);
 	setMatrix(matrix);
-    m_pBackGround->setScaleFactor(m_nScaleH * m_nScaleBaseH , m_nScaleV  * m_nScaleBaseV);
-    UpdateDrawing();
-	GeometryChanged() ;
+    m_pBackGround->setScaleFactor(m_nScaleH * m_nScaleBaseH , m_nScaleV  * m_nScaleBaseV);    
+    GeometryChanged();
 }
 
 void DopplerGraphicView::slotPrint()
@@ -267,6 +339,61 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 		m_nScaleH += numSteps / 10.0 ;
 		m_nScaleV += numSteps / 10.0 ;
 
+        int index_scan = 0;
+        DopplerDrawCScanV* _cvDraw = dynamic_cast<DopplerDrawCScanV*>(m_pDrawScan);
+        if( _cvDraw != NULL){
+            if(_cvDraw->getShowAllStatus()){
+                m_pBackGround->SetFixStatus(false);
+            }else{
+                int _sacnIndex = m_pBackGround->GetScanIndex();
+                int _backIndex = m_pBackGround->size().height();
+                if(_sacnIndex > _backIndex){
+                    m_pBackGround->SetFixStatus(true);
+                    m_pBackGround->SetFixDirection(1);
+                    index_scan = 2;
+                }else{
+                    m_pBackGround->SetFixStatus(false);
+                }
+            }
+        }else if( dynamic_cast<DopplerDrawCScanH*>(m_pDrawScan)){
+            DopplerDrawCScanH* _chDraw = dynamic_cast<DopplerDrawCScanH*>(m_pDrawScan);
+            if(_chDraw->getShowAllStatus()){
+                m_pBackGround->SetFixStatus(false);
+            }else{
+                int _sacnIndex = m_pBackGround->GetScanIndex();
+                int _backIndex = m_pBackGround->size().width();
+                if(_sacnIndex > _backIndex){
+                    m_pBackGround->SetFixStatus(true);
+                    m_pBackGround->SetFixDirection(0);
+                    index_scan = 1;
+                }else{
+                    m_pBackGround->SetFixStatus(false);
+                }
+            }
+        }else if(dynamic_cast<DopplerDrawBScanV*>(m_pDrawScan)){
+            int _sacnIndex = m_pBackGround->GetScanIndex();
+            int _backIndex = m_pBackGround->size().height();
+            if(_sacnIndex > _backIndex){
+                m_pBackGround->SetFixStatus(true);
+                m_pBackGround->SetFixDirection(0);
+                index_scan = 1;
+            }else{
+                m_pBackGround->SetFixStatus(false);
+            }
+        }else if(dynamic_cast<DopplerDrawBScanH*>(m_pDrawScan)){
+            int _sacnIndex = m_pBackGround->GetScanIndex();
+            int _backIndex = m_pBackGround->size().width();
+            if(_sacnIndex > _backIndex){
+                m_pBackGround->SetFixStatus(true);
+                m_pBackGround->SetFixDirection(1);
+                index_scan = 2;
+            }else{
+                m_pBackGround->SetFixStatus(false);
+            }
+        }else{
+            m_pBackGround->SetFixStatus(false);
+        }
+
         //缩放比例控制在1-10
         if(m_nScaleH < 1) {m_nScaleH = 1 ;}
         if(m_nScaleH > 10) {m_nScaleH = 10 ;}
@@ -279,19 +406,30 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
         //计算在scene里面缩放后对应的矩形框，赋值给m_cZoomRect
         if(m_nScaleH > 1 && m_nScaleV > 1) {
 			QSize _size = size();
-			//float _fWidth   = ((double)_size.width()) / m_nScaleH;
-			//float _nHeight  = ((double)_size.height()) / m_nScaleV;
 			int _fWidth   = ((double)_size.width()) / m_nScaleH;
 			int _nHeight  = ((double)_size.height()) / m_nScaleV;
+            //qDebug()<<"m_nScaleH"<<m_nScaleH;
 
 			QRect _rect;
-			_rect.setLeft(_nCenter.x() - _fWidth / 2);
-			_rect.setTop(_nCenter.y() - _nHeight / 2);
+            if(index_scan == 1){
+                if( _nCenter.x() > _fWidth / 2){
+                    int _setX = _fWidth - _nCenter.x();
+                    _nCenter.setX(_setX);
+                }
+            }else if(index_scan == 2){
+                if( _nCenter.y() > _nHeight / 2){
+                    int _setY = _nHeight - _nCenter.y();
+                    _nCenter.setY(_setY);
+                }
+            }
+            _rect.setLeft(_nCenter.x() - _fWidth / 2);
+            _rect.setTop(_nCenter.y() - _nHeight / 2);
 			_rect.setWidth(_fWidth);
 			_rect.setHeight(_nHeight);
 			if(_rect.left() < 0) {
 				_rect.setLeft(0);
 				_rect.setWidth(_fWidth);
+
 			}
 
 			if(_rect.top() < 0) {
@@ -300,22 +438,22 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 			}
 
 			if(_rect.right() >= _size.width()) {
-				_rect.setLeft(_size.width() - _fWidth);
-				_rect.setWidth(_fWidth);
-			}
+                _rect.setLeft(_size.width() - _fWidth);
+                _rect.setWidth(_fWidth);
+            }
 
             if(_rect.bottom() >= _size.height()) {
 				_rect.setTop(_size.height() - _nHeight);
 				_rect.setHeight(_nHeight);
 			}
-
-			_nCenter.setX(_rect.left() + _fWidth / 2);
+            _nCenter.setX(_rect.left() + _fWidth / 2);
 			_nCenter.setY(_rect.top() + _nHeight / 2);
 
 			m_cZoomRect = _rect;
             m_bZoom = true;
 		} else {
             m_bZoom = false;
+
 		}
 
 		//centerOn(mapToScene((event->pos())));
@@ -1062,6 +1200,12 @@ void DopplerGraphicView::zoomAction(QRect rect_)
 
 }
 
+void DopplerGraphicView::SetZoomAction(double bottomStart, double bottomEnd, double leftStart, double leftEnd)
+{
+    m_pBackGround->setImageTransfer( bottomStart, bottomEnd, leftStart, leftEnd);
+    UpdateDrawing();
+}
+
 void DopplerGraphicView::EnableRenderOpenGL(bool bEnable_)
 {
 #ifdef QT_OPENGL_LIB
@@ -1088,6 +1232,7 @@ void DopplerGraphicView::GeometryChanged()
 	QPolygonF _rect	= mapToScene (rect()) ;
 	QRectF  rectDisplay = _rect.boundingRect();
 	QRectF  rangeDisplay  = RangeTranslate(rectDisplay)  ;
+    //qDebug()<<"rectDisplay"<<rectDisplay<<"rangeDisplay"<<rangeDisplay;
 	emit signalViewChanged(rangeDisplay)  ;
 }
 

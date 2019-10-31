@@ -84,6 +84,9 @@ QSize ProcessDisplay::GetMinimumWidgetSize(int eType_)
 		_nWidth  = MINIMUM_WIDGET_WIDTH  * 3 + g_nSpliterWidth * 2;
 		_nHeight = MINIMUM_WIDGET_HEIGHT * 2 + g_nSpliterWidth;
 		break;
+    case DISP_TOPCMERGECOMPARE:
+        _nWidth  = MINIMUM_WIDGET_WIDTH  * 2 + g_nSpliterWidth * 1;
+        _nHeight = MINIMUM_WIDGET_HEIGHT * 4 + g_nSpliterWidth * 3;
 	default:
 		_nWidth  = 0  ;
 		_nHeight = 0 ;
@@ -146,6 +149,7 @@ int ProcessDisplay::CreateViews(QWidget* parent_, int eType_)
 			ret = CreateViews_AllGroups(parent_);
 		}
 		break;
+    case DISP_TOPCMERGECOMPARE: ret = CreateViews_TOPCCompare(parent_);    break;
 	default:
 		break;
 	}
@@ -909,7 +913,7 @@ int ProcessDisplay::CreateViews_S_AV_BH_CH(QWidget* pWidget_)
 	_pView[2]->SetLawIdentify(0);
 	_pView[3]->SetLawIdentify(0);
 	SetViewPara(_pView[0] , m_nGroupId , 0 , setup_DISPLAY_MODE_S) ;
-	SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_H) ;
+    SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_V) ;
 	SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_H) ;
 	SetViewPara(_pView[3] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_V) ;
 
@@ -991,7 +995,7 @@ int ProcessDisplay::CreateViews_S_AH_BH_CH(QWidget* pWidget_)
 
 	SetViewPara(_pView[0] , m_nGroupId , 0 , setup_DISPLAY_MODE_S) ;
 	SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_H) ;
-	SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_H) ;
+    SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_H) ;
 	SetViewPara(_pView[3] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_H) ;
 	_pView[0]->SetLawIdentify(0);
 	_pView[1]->SetLawIdentify(0);
@@ -1684,6 +1688,102 @@ int ProcessDisplay::CreateViews_AllGroups(QWidget* pWidget_)
 	return 0;
 }
 
+int ProcessDisplay::CreateViews_TOPCCompare(QWidget* pWidget_)
+{
+    QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
+    _layout->setMargin(0);
+    GYSplitter* split[2];
+    DopplerDataView* _pView[5];
+
+    for(int i = 0 ; i< 2; i++)
+    {
+        split[i] = new GYSplitter(0);
+        split[i]->setHandleWidth(g_nSpliterWidth);
+        split[i]->setOpaqueResize(false) ;
+    }
+
+    split[0]->setOrientation(Qt::Horizontal);
+    split[1]->setOrientation(Qt::Vertical);
+
+    int groupId1 = m_pConfig->common.TOPCMergeGroupId[0];
+    int groupId2 = m_pConfig->common.TOPCMergeGroupId[1];
+    GROUP_CONFIG& _group1 = m_pConfig->group[groupId1];
+    GROUP_CONFIG& _group2 = m_pConfig->group[groupId2];
+    if(_group1.coupleMonitoringState){
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[2] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
+    }else{
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[2] = new DopplerDataView(pWidget_);
+    }
+
+    if(_group2.coupleMonitoringState){
+        _pView[1] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[3] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
+    }else{
+        _pView[1] = new DopplerDataView(pWidget_);
+        _pView[3] = new DopplerDataView(pWidget_);
+    }
+    _pView[4] = new DopplerDataView(pWidget_);
+
+    split[0]->addWidget(_pView[0]);
+    split[0]->addWidget(_pView[1]);
+    split[1]->addWidget(split[0]);
+    split[1]->addWidget(_pView[2]);
+    split[1]->addWidget(_pView[3]);
+    split[1]->addWidget(_pView[4]);
+
+    _layout->addWidget(split[1]);
+    pWidget_->setLayout(_layout);
+
+    int _nWidth  = pWidget_->width();
+    int _nHeight = pWidget_->height();
+    QList<int> _size;
+    _size.append(_nWidth / 2);
+    _size.append(_nWidth / 2 - g_nSpliterWidth);
+    split[0]->setSizes(_size);
+    _size.clear();
+    _size.append(_nHeight / 4);
+    _size.append(_nHeight / 4);
+    _size.append(_nHeight / 4);
+    _size.append(_nHeight / 4 - g_nSpliterWidth * 3);
+    split[1]->setSizes(_size);
+
+    split[0]->setCollapsible(0 , false);
+    split[0]->setCollapsible(1 , false);
+    split[1]->setCollapsible(0 , false);
+    split[1]->setCollapsible(1 , false);
+    split[1]->setCollapsible(2 , false);
+    split[1]->setCollapsible(3 , false);
+    split[0]->show();
+    split[1]->show();
+
+    _pView[0]->SetLawIdentify(0);
+    _pView[1]->SetLawIdentify(0);
+    _pView[2]->SetLawIdentify(0);
+    _pView[3]->SetLawIdentify(0);
+    _pView[4]->SetLawIdentify(0);
+
+    _pView[0]->SetCScanTopcDis( true, false);
+    _pView[1]->SetCScanTopcDis( true, false);
+    _pView[2]->SetCScanTopcDis( true, false);
+    _pView[3]->SetCScanTopcDis( true, false);
+    _pView[4]->SetCScanTopcDis( false, true);
+
+    SetViewPara(_pView[0] , groupId1 , 0 , setup_DISPLAY_MODE_S);
+    SetViewPara(_pView[1] , groupId2 , 0 , setup_DISPLAY_MODE_S);
+    SetViewPara(_pView[2] , groupId1 , 0 , setup_DISPLAY_MODE_C_H);
+    SetViewPara(_pView[3] , groupId2 , 0 , setup_DISPLAY_MODE_C_H);
+    SetViewPara(_pView[4] , groupId1 , 0 , setup_DISPLAY_MODE_C_H);
+
+    QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
+    for(int i = 0 ; i < 5 ; i++)	_pList->append(_pView[i]);
+
+    ConnectSingals(_pView , 5);
+
+    return 0;
+}
+
 /****************************************************************************
   Description: 连接信号到主窗口
   Input: 【pWidget_：窗口指针】
@@ -2223,7 +2323,20 @@ void ProcessDisplay::UpdateDataViewDrawCH(DopplerDataView* pWidget_ , int nGroup
 	DopplerDrawCScanH* _pDraw = (DopplerDrawCScanH*)pWidget_->GetDrawScan() ;
 	if(!_pDraw)
 	{
-		_pDraw = new DopplerDrawCScanH() ;
+
+        _pDraw = new DopplerDrawCScanH();
+        bool topc, topcMerge;
+        pWidget_->GetCScanTopcDis( topc, topcMerge);
+        if( topc == false && topcMerge == false){
+            _pDraw->topcShow = false;
+            _pDraw->topcMergShow = false;
+        }else if( topc){
+            _pDraw->topcShow = true;
+            _pDraw->topcMergShow = false;
+        }else{
+            _pDraw->topcShow = false;
+            _pDraw->topcMergShow = true;
+        }
 		pWidget_->SetDrawScan(_pDraw) ;
         connect(_pDraw, SIGNAL(signalScanRangeMove(int, int, int)) , pWidget_, SLOT(slotScanRangeMove(int, int, int))) ;
         connect(_pDraw, SIGNAL(signalIndexRangeMove(int,int,double,double)), pWidget_, SLOT(slotIndexRangeMove(int,int,double,double)));
@@ -2465,7 +2578,14 @@ void ProcessDisplay::UpdateDataViewTitle(DopplerDataView* pWidget_)
 	case setup_DISPLAY_MODE_C_V:
 	case setup_DISPLAY_MODE_CC_H:
 	case setup_DISPLAY_MODE_CC_V:
-		_strTitle.sprintf("GROUP-%d/C SCAN/LAW-%d/ANGLE-%2.1f", _nGroupId + 1 , _nLawId + 1 , _fAngle) ;
+    {
+        GROUP_CONFIG* _pGroup = &m_pConfig->group[_nGroupId];
+        if(_pGroup->TopCInfo.TOPCStatus){
+            _strTitle.sprintf("GROUP-%d/TOPC SCAN/LAW-%d/ANGLE-%2.1f", _nGroupId + 1 , _nLawId + 1 , _fAngle) ;
+        }else{
+            _strTitle.sprintf("GROUP-%d/C SCAN/LAW-%d/ANGLE-%2.1f", _nGroupId + 1 , _nLawId + 1 , _fAngle) ;
+        }
+    }
 		break;
 	case setup_DISPLAY_MODE_S_SOUNDPATH:
 	case setup_DISPLAY_MODE_S_ATHUMIZ:

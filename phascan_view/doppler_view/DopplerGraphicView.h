@@ -34,6 +34,7 @@ public:
 	void   zoomAction(QRect rect) ;
 	QRect  GetZoomRect() {return m_cZoomRect;}
 	bool   GetZoomStatus() {return m_bZoom;}
+    void   SetZoomAction(double bottomStart, double bottomEnd, double leftStart, double leftEnd);
 	//bool   GetBCZoomStatus() {return m_bBCAutoZomm;}
 public:
     QMutex m_mutex;

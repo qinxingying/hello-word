@@ -94,7 +94,8 @@ public:
     void UpdateMeasure() ;
     void SetDefect(int id);
     void ResetDefect();
-
+    void SetCScanTopcDis(bool topc, bool topcMerge);
+    void GetCScanTopcDis(bool &topc, bool &topcMerge);
 
 
     void SetItemGeometry(DopplerGraphicsItem* item , QRectF& rect) ;
@@ -126,6 +127,8 @@ private:
 	QPair<double , double>  SliderRange[4];
 	//QPair<double , double>  ZoomRange[4];
 	bool   m_bSelected ;
+    bool   showTopc;       //一直显示topc
+    bool   showTopcMerge;  //一直显示topcmerge
 
 signals:
     void signalMousePressed(QWidget*);

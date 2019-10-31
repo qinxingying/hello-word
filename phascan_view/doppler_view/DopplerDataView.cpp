@@ -28,9 +28,11 @@ DopplerDataView::DopplerDataView(QWidget *parent , DATA_VIEW_COMPONENT eComponen
 	m_pColorBar	 = NULL  ;
     m_pCoupleSBar = NULL;
     m_pCoupleCBar = NULL;
-	m_pGraphicView  = NULL  ;
-	m_eComponent	= eComponent_  ;
-	m_bSelected	 = false ;
+    m_pGraphicView = NULL  ;
+    m_eComponent   = eComponent_  ;
+    m_bSelected	   = false;
+    showTopc       = false;
+    showTopcMerge  = false;
 
 	for(int i = 0; i < DATA_VIEW_RULER_MAX ; i++)
 	{
@@ -762,7 +764,8 @@ void DopplerDataView::slotZoomAction(QRectF rect)
 
 	if(m_pItemsGroup) {
 		m_pItemsGroup->UpdateItems();
-	}
+	}    
+    m_pGraphicView->SetZoomAction( _marker2.first, _marker2.second, _marker1.first, _marker1.second);
 
 }
 
@@ -865,6 +868,18 @@ void DopplerDataView::ResetDefect()
 {
     m_pItemsGroup->ResetDefect();
 
+}
+
+void DopplerDataView::SetCScanTopcDis(bool topc, bool topcMerge)
+{
+    showTopc = topc;
+    showTopcMerge = topcMerge;
+}
+
+void DopplerDataView::GetCScanTopcDis(bool &topc, bool &topcMerge)
+{
+    topc = showTopc;
+    topcMerge = showTopcMerge;
 }
 
 /****************************************************************************

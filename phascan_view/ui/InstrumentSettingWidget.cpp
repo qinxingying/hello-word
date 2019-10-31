@@ -62,6 +62,12 @@ void InstrumentSettingWidget::InitCommonConfig()
 	COMMON_CONFIG& config = m_pConfig->common ;
 	ui->ComScanType->setCurrentIndex(config.scanner.eScanType);
     ui->ComEncoderType->setCurrentIndex(config.scanner.eScanEncoderType);
+    ui->ComTopcMergeCompareView->setCurrentIndex(0);
+    if(config.TOPCMergeValid){
+        ui->ComTopcMergeCompareView->setEnabled(true);
+    }else{
+        ui->ComTopcMergeCompareView->setEnabled(false);
+    }
     if(config.scanner.eScanEncoderType == setup_ENCODER_TYPE_TIMER){
         ui->BoxEncoderMode->hide();
         ui->LabelScanStartUnit->setText("sec");
@@ -160,7 +166,10 @@ void InstrumentSettingWidget::InitCommonConfig()
 
 void InstrumentSettingWidget::SetItemInvalide()
 {
-    ui->groupBox->setDisabled(true);
+    //ui->groupBox->setDisabled(true);
+    ui->ComScanType->setDisabled(true);
+    ui->ComEncoderType->setDisabled(true);
+    ui->ValuePrf->setDisabled(true);
     ui->BoxScanArea->setDisabled(true);
     ui->BoxEncoderMode->setDisabled(true);
     ui->groupBoxVoltage->setDisabled(true);
@@ -266,6 +275,16 @@ void InstrumentSettingWidget::on_ComEncoderType_currentIndexChanged(int index)
 	if(!ui->ComEncoderType->hasFocus())  return ;
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->SetupEncoderType((setup_ENCODER_TYPE)index) ;
+}
+
+void InstrumentSettingWidget::on_ComTopcMergeCompareView_currentIndexChanged(int index)
+{
+    if(!ui->ComTopcMergeCompareView->hasFocus()) return;
+    if(index == 0){
+        emit topcMergeCompareViewShow(false);
+    }else{
+        emit topcMergeCompareViewShow(true);
+    }
 }
 
 void InstrumentSettingWidget::on_ComEncoderTypeSetting_currentIndexChanged(int)

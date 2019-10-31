@@ -101,6 +101,7 @@ public:
     int  GetGroupLawQty(int nGroupId_) const ;
     int  GetGroupLawQtyForPosition(int nGroupId_) const ;
     int  GetTotalLawQty() const ;
+    int  GetScanIndexNum();
 
     static int getWaveHalfValue();
     static int correctionPdata( WDATA value);

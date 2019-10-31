@@ -148,6 +148,7 @@ private slots:
     void slotItemMoved(DopplerDataView* , DopplerGraphicsItem*);
     void slotDataViewResized(DopplerDataView*) ;
     void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_);
+    void slotTopcMergeCompareViewShow(bool);
 
 protected slots:
   void on_actionNew_Config_triggered();

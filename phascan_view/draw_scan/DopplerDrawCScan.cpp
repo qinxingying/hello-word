@@ -50,6 +50,8 @@ DopplerDrawCScanH::DopplerDrawCScanH(QObject *parent) : DopplerDrawScan(parent)
 {
 	m_PosStart = 0  ;
 	m_PosStop  = 0  ;
+    topcShow   = false;
+    topcMergShow = false;
 	for(int i = 0  ; i < 256 ; i++)
 		m_afScale[i] = 1.0  ;
 }
@@ -120,6 +122,11 @@ void DopplerDrawCScanH::UpdateDrawInfo_private()
 float* DopplerDrawCScanH::GetAngleScaleRate()
 {
 	return m_afScale  ;
+}
+
+bool DopplerDrawCScanH::getShowAllStatus()
+{
+    return m_pConfig->group[m_cInfo.nGroupId].CScanShowAll;
 }
 
 void DopplerDrawCScanH::SetCScanType(CSCAN_TYPE eType_)
@@ -356,7 +363,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 
     //TOPC融合
     TOPC_INFO& _TOPCInfo  = m_pConfig->group[m_cInfo.nGroupId].TopCInfo;
-    if( m_pConfig->common.TOPCMergeValid && _TOPCInfo.TOPCMergeStatus){
+    if( m_pConfig->common.TOPCMergeValid && _TOPCInfo.TOPCMergeStatus || topcMergShow){
         int mergeGroupId = _TOPCInfo.TOPCMergeRefer;
         TOPC_INFO& _mergeTOPCInfo = m_pConfig->group[mergeGroupId].TopCInfo;
         double topcWidth = (_TOPCInfo.TOPCWidth > _mergeTOPCInfo.TOPCWidth) ? _TOPCInfo.TOPCWidth : _mergeTOPCInfo.TOPCWidth;
@@ -773,7 +780,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     }
 
     //TOPC
-    if( _TOPCInfo.TOPCStatus){
+    if( _TOPCInfo.TOPCStatus  || topcShow){
         //确定闸门位置和方向
         bool   Calculation = true;   //false 表示闸门在图像外面，绘制空白即可
         float  gateStart = m_pConfig->group[m_cInfo.nGroupId].gate[0].fStart;

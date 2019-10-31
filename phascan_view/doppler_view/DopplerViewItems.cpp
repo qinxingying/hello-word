@@ -645,7 +645,9 @@ void DopplerViewItems::UpdateItemsTOPCWidth()
 
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     int groupId = m_pDataView->GetGroupId();
-    if( !_pConfig->group[groupId].TopCInfo.TOPCStatus){
+    bool topc, topcMerge;
+    m_pDataView->GetCScanTopcDis( topc, topcMerge);
+    if( !_pConfig->group[groupId].TopCInfo.TOPCStatus && !topc){
         for( i = 0; i < 2; i++){
             if(m_pTOPCWidth[i]) m_pTOPCWidth[i]->hide();
         }

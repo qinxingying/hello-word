@@ -48,8 +48,11 @@ public:
 
     void SetCScanType(CSCAN_TYPE eType_);
     float* GetAngleScaleRate();
+    bool getShowAllStatus();
 
     virtual void Draw (QImage* pImage_);
+    bool topcShow;
+    bool topcMergShow;
 private:
 	void UpdateDrawInfo_private();
 protected:

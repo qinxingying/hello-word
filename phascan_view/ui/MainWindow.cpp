@@ -90,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_remoteMonitoring = new RemoteMonitoring(this);
     connect(ui->actionConnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(connect_remote_monitor()));
     connect(ui->actionDisconnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(disconnect_remote_monitor()));
+    connect(ui->ScanHardware, SIGNAL(topcMergeCompareViewShow(bool)), this, SLOT(slotTopcMergeCompareViewShow(bool)));
     indexSliderh->hide();
     //indexSliderWidget->hide();
 }
@@ -1565,6 +1566,21 @@ void MainWindow::slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF
     ProcessDisplay _process;
     _process.UpdateAllViewCursorOfGroup(_nGroupId);
     RunDrawThreadOnce(true);
+}
+
+void MainWindow::slotTopcMergeCompareViewShow( bool status)
+{
+    ui->TabWidget_display->setCurrentIndex(0);
+    DopplerViewFrame* _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
+    if(status){
+        _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_TOPCMERGECOMPARE);
+    }else{
+        _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_ALLGROUP);
+    }
+    _pViewFrame->SetViewFrameId(0);
+    _pViewFrame->update();
+
+    SetWndName();
 }
 
 void MainWindow::on_actionNew_Config_triggered()

@@ -1382,14 +1382,14 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
 void  DopplerConfigure::InitTOPCMerge()
 {
-    if( !Config::instance()->is_phascan_ii()){
-        common.TOPCMergeValid = false;
-        for(int i = 0; i < common.nGroupQty; i++){
-            TOPC_INFO& _TOPCInfo  = group[i].TopCInfo;
-            _TOPCInfo.TOPCMergeStatus = 0;
-        }
-        return;
-    }
+//    if( !Config::instance()->is_phascan_ii()){
+//        common.TOPCMergeValid = false;
+//        for(int i = 0; i < common.nGroupQty; i++){
+//            TOPC_INFO& _TOPCInfo  = group[i].TopCInfo;
+//            _TOPCInfo.TOPCMergeStatus = 0;
+//        }
+//        return;
+//    }
 
     int buff = 0;
     for(int i = 0; i < common.nGroupQty; i++){

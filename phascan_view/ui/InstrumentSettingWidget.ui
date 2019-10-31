@@ -29,7 +29,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-314</y>
+        <y>0</y>
         <width>320</width>
         <height>850</height>
        </rect>
@@ -39,8 +39,8 @@
         <rect>
          <x>10</x>
          <y>0</y>
-         <width>203</width>
-         <height>121</height>
+         <width>281</width>
+         <height>141</height>
         </rect>
        </property>
        <property name="title">
@@ -74,45 +74,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="ComScanType">
-            <item>
-             <property name="text">
-              <string>One Line Scan</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Two Line Scan</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="LabelEncoderType">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>70</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>70</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Encoder Type:</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="1">
            <widget class="QComboBox" name="ComEncoderType">
             <item>
@@ -130,31 +91,6 @@
               <string>Encoder Y</string>
              </property>
             </item>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="LabelPrf">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>70</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>70</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>PRF:</string>
-            </property>
            </widget>
           </item>
           <item row="2" column="1">
@@ -194,6 +130,91 @@
             </property>
            </widget>
           </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="LabelPrf">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>70</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>PRF:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="LabelEncoderType">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>70</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Encoder Type:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="ComScanType">
+            <item>
+             <property name="text">
+              <string>One Line Scan</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Two Line Scan</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="LabelTopcMergeCompareView">
+            <property name="text">
+             <string>Topc Merge Compare View:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="ComTopcMergeCompareView">
+            <item>
+             <property name="text">
+              <string>OFF</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>ON</string>
+             </property>
+            </item>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
@@ -202,7 +223,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>130</y>
+         <y>150</y>
          <width>242</width>
          <height>131</height>
         </rect>
@@ -586,7 +607,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>270</y>
+         <y>300</y>
          <width>302</width>
          <height>161</height>
         </rect>
@@ -865,7 +886,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>440</y>
+         <y>460</y>
          <width>155</width>
          <height>91</height>
         </rect>
@@ -1444,7 +1465,7 @@
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>480</y>
+         <y>490</y>
          <width>71</width>
          <height>41</height>
         </rect>
