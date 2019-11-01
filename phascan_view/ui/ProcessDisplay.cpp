@@ -2564,6 +2564,8 @@ void ProcessDisplay::UpdateDataViewTitle(DopplerDataView* pWidget_)
 	_eMode = (setup_DISPLAY_MODE)_nDisplay  ;
 	ParameterProcess* _process = ParameterProcess::Instance();
 	float _fAngle = _process->GetLawAngle( _nGroupId ,  _nLawId) ;
+    bool topc, topcMerge;
+    pWidget_->GetCScanTopcDis( topc, topcMerge);
 	switch(_eMode)
 	{
 	case  setup_DISPLAY_MODE_A_H:
@@ -2580,10 +2582,12 @@ void ProcessDisplay::UpdateDataViewTitle(DopplerDataView* pWidget_)
 	case setup_DISPLAY_MODE_CC_V:
     {
         GROUP_CONFIG* _pGroup = &m_pConfig->group[_nGroupId];
-        if(_pGroup->TopCInfo.TOPCStatus){
-            _strTitle.sprintf("GROUP-%d/TOPC SCAN/LAW-%d/ANGLE-%2.1f", _nGroupId + 1 , _nLawId + 1 , _fAngle) ;
+        if(topcMerge){
+            _strTitle.sprintf("GROUP-%d/TOPCMerge SCAN/LAW-%d/ANGLE-%2.1f", _nGroupId + 1 , _nLawId + 1 , _fAngle);
+        }else if(_pGroup->TopCInfo.TOPCStatus || topc){
+            _strTitle.sprintf("GROUP-%d/TOPC SCAN/LAW-%d/ANGLE-%2.1f", _nGroupId + 1 , _nLawId + 1 , _fAngle);
         }else{
-            _strTitle.sprintf("GROUP-%d/C SCAN/LAW-%d/ANGLE-%2.1f", _nGroupId + 1 , _nLawId + 1 , _fAngle) ;
+            _strTitle.sprintf("GROUP-%d/C SCAN/LAW-%d/ANGLE-%2.1f", _nGroupId + 1 , _nLawId + 1 , _fAngle);
         }
     }
 		break;
