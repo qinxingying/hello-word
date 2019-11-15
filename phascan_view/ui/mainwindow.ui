@@ -301,6 +301,7 @@
    <addaction name="actionLanguage"/>
    <addaction name="separator"/>
    <addaction name="actionScreenShot"/>
+   <addaction name="actionAided_Analysis"/>
   </widget>
   <action name="actionNew_Config">
    <property name="checkable">
@@ -665,6 +666,18 @@
   <action name="actionLoadDisplay">
    <property name="text">
     <string>Load Display</string>
+   </property>
+  </action>
+  <action name="actionAided_Analysis">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-23.png</normaloff>:/file/resource/toolbar/0-23.png</iconset>
+   </property>
+   <property name="text">
+    <string>Aided Analysis</string>
+   </property>
+   <property name="toolTip">
+    <string>Aided Analysis Defect</string>
    </property>
   </action>
  </widget>

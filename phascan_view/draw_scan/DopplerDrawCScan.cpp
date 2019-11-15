@@ -385,9 +385,16 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 Calculation = false;
             }
         }
-        realWidthStart = 0 - topcWidth/2;
-        realWidthStop  = topcWidth/2;
+        if(zoomflag == 1){
+            realWidthStart = curlawstart;
+            realWidthStop  = curlawstop;
+        }else{
+            realWidthStart = 0 - topcWidth/2;
+            realWidthStop  = topcWidth/2;
+        }
+
         setup_PROBE_ANGLE _eAngle = _process->GetProbeAngle(m_cInfo.nGroupId) ;
+        float temp;
         switch ( _eAngle) {
         case setup_PROBE_PART_SKEW_0:
             direction = 0;
@@ -399,9 +406,15 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             break;
         case setup_PROBE_PART_SKEW_180:
             direction = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             break;
         case setup_PROBE_PART_SKEW_270:
             direction = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             realWidthStart += indexOffset;
             realWidthStop  += indexOffset;
             break;
@@ -628,8 +641,14 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 mergeCalculation = false;
             }
         }
-        mergeRealWidthStart = 0 - topcWidth/2;
-        mergeRealWidthStop  = topcWidth/2;
+        if(zoomflag == 1){
+            mergeRealWidthStart = curlawstart;
+            mergeRealWidthStop  = curlawstop;
+        }else{
+            mergeRealWidthStart = 0 - topcWidth/2;
+            mergeRealWidthStop  = topcWidth/2;
+        }
+
         setup_PROBE_ANGLE _mergeAngle = _process->GetProbeAngle(mergeGroupId);
         switch ( _mergeAngle) {
         case setup_PROBE_PART_SKEW_0:
@@ -642,9 +661,15 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             break;
         case setup_PROBE_PART_SKEW_180:
             mergeDirection = 1;
+            temp = - mergeRealWidthStart;
+            mergeRealWidthStart = - mergeRealWidthStop;
+            mergeRealWidthStop = temp;
             break;
         case setup_PROBE_PART_SKEW_270:
             mergeDirection = 1;
+            temp = - mergeRealWidthStart;
+            mergeRealWidthStart = - mergeRealWidthStop;
+            mergeRealWidthStop = temp;
             mergeRealWidthStart += mergeIndexOffset;
             mergeRealWidthStop  += mergeIndexOffset;
             break;
@@ -801,9 +826,15 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 Calculation = false;
             }
         }
-        realWidthStart = 0 - topcWidth/2;
-        realWidthStop  = topcWidth/2;
+        if(zoomflag == 1){
+            realWidthStart = curlawstart;
+            realWidthStop  = curlawstop;
+        }else{
+            realWidthStart = 0 - topcWidth/2;
+            realWidthStop  = topcWidth/2;
+        }
         setup_PROBE_ANGLE _eAngle = _process->GetProbeAngle(m_cInfo.nGroupId) ;
+        float temp;
         switch ( _eAngle) {
         case setup_PROBE_PART_SKEW_0:
             direction = 0;
@@ -815,9 +846,15 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             break;
         case setup_PROBE_PART_SKEW_180:
             direction = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             break;
         case setup_PROBE_PART_SKEW_270:
             direction = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             realWidthStart += indexOffset;
             realWidthStop  += indexOffset;
             break;
@@ -1048,7 +1085,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         _process->ChangeCscanIndexstart(&curlawstart);
         _process->ChangeCscanIndexstop(&curlawstop);
         lawstart = _process->GetLawStart();
-        lawstop     =_process->GetLawStop();
+        lawstop  = _process->GetLawStop();
         _scanner.fLawStart = lawstart2;
         _scanner.fLawStop = lawstop2;
     }
@@ -1857,9 +1894,16 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 Calculation = false;
             }
         }
-        realWidthStart = 0 - topcWidth/2;
-        realWidthStop  = topcWidth/2;
+        if(zoomflag == 1){
+            realWidthStart = curlawstart;
+            realWidthStop  = curlawstop;
+        }else{
+            realWidthStart = 0 - topcWidth/2;
+            realWidthStop  = topcWidth/2;
+        }
+
         setup_PROBE_ANGLE _eAngle = _process->GetProbeAngle(m_cInfo.nGroupId) ;
+        float temp;
         switch ( _eAngle) {
         case setup_PROBE_PART_SKEW_0:
             direction = 0;
@@ -1871,9 +1915,15 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             break;
         case setup_PROBE_PART_SKEW_180:
             direction = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             break;
         case setup_PROBE_PART_SKEW_270:
             direction = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             realWidthStart += indexOffset;
             realWidthStop  += indexOffset;
             break;
@@ -2096,8 +2146,14 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 mergeCalculation = false;
             }
         }
-        mergeRealWidthStart = 0 - topcWidth/2;
-        mergeRealWidthStop  = topcWidth/2;
+        if(zoomflag == 1){
+            mergeRealWidthStart = curlawstart;
+            mergeRealWidthStop  = curlawstop;
+        }else{
+            mergeRealWidthStart = 0 - topcWidth/2;
+            mergeRealWidthStop  = topcWidth/2;
+        }
+
         setup_PROBE_ANGLE _mergeAngle = _process->GetProbeAngle(mergeGroupId);
         switch ( _mergeAngle) {
         case setup_PROBE_PART_SKEW_0:
@@ -2110,9 +2166,15 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             break;
         case setup_PROBE_PART_SKEW_180:
             mergeDirection = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             break;
         case setup_PROBE_PART_SKEW_270:
             mergeDirection = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             mergeRealWidthStart += mergeIndexOffset;
             mergeRealWidthStop  += mergeIndexOffset;
             break;
@@ -2268,9 +2330,16 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 Calculation = false;
             }
         }
-        realWidthStart = 0 - topcWidth/2;
-        realWidthStop  = topcWidth/2;
+        if(zoomflag == 1){
+            realWidthStart = curlawstart;
+            realWidthStop  = curlawstop;
+        }else{
+            realWidthStart = 0 - topcWidth/2;
+            realWidthStop  = topcWidth/2;
+        }
+
         setup_PROBE_ANGLE _eAngle = _process->GetProbeAngle(m_cInfo.nGroupId) ;
+        float temp;
         switch ( _eAngle) {
         case setup_PROBE_PART_SKEW_0:
             direction = 0;
@@ -2282,9 +2351,15 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             break;
         case setup_PROBE_PART_SKEW_180:
             direction = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             break;
         case setup_PROBE_PART_SKEW_270:
             direction = 1;
+            temp = - realWidthStart;
+            realWidthStart = - realWidthStop;
+            realWidthStop = temp;
             realWidthStart += indexOffset;
             realWidthStop  += indexOffset;
             break;

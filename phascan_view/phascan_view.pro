@@ -41,7 +41,19 @@ LIBS += -L$$PWD/./ -lDopplerFocalLaw
 LIBS += -L$$PWD/lib/opengl/ -lglut
 LIBS += -L$$PWD/lib/opengl/ -lglut32
 
+win32:CONFIG(release, debug|release): {
+LIBS += -L$$PWD/lib/OpenCV2.4.13.6/Release/ -lopencv_core2413
+LIBS += -L$$PWD/lib/OpenCV2.4.13.6/Release/ -lopencv_highgui2413
+LIBS += -L$$PWD/lib/OpenCV2.4.13.6/Release/ -lopencv_imgproc2413
+}
+else:win32:CONFIG(debug, debug|release): {
+LIBS += -L$$PWD/lib/OpenCV2.4.13.6/Debug/ -lopencv_core2413d
+LIBS += -L$$PWD/lib/OpenCV2.4.13.6/Debug/ -lopencv_highgui2413d
+LIBS += -L$$PWD/lib/OpenCV2.4.13.6/Debug/ -lopencv_imgproc2413d
+}
+
 INCLUDEPATH += $$PWD/lib/opengl
+INCLUDEPATH += $$PWD/lib/OpenCV2.4.13.6/include
 DEPENDPATH += $$PWD/lib/opengl
 
 DISTFILES += \

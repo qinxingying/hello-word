@@ -7,6 +7,7 @@ Date     : 2016-12-06
 #include "ui_mainwindow.h"
 
 #include "dialog/DialogAddOneGroup.h"
+#include "dialog/dialogmethodselect.h"
 #include "threads/DataRefreshThread.h"
 #include "InstrumentSettingWidget.h"
 #include "DopplerConfigure.h"
@@ -65,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     sliderh->setGeometry(30,0,300,ui->toolBar->height()-4);
     sliderh->setParent(SliderWidget);
     ui->toolBar->addWidget(SliderWidget);
+    ui->actionAided_Analysis->setEnabled(false);
 
     indexSliderWidget = new QWidget(this);
     indexSliderWidget->setFixedWidth(350);
@@ -786,6 +788,78 @@ void MainWindow::UpdateIndexSlider()
     indexSliderh->setValue(_nPos);
 }
 
+void MainWindow::AidedAnalysisDone(bool status)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
+    _pConfig->common.aidedAnalysis.aidedStatus  = false;
+    int _nGroupId = _pConfig->common.aidedAnalysis.aidedGroupId;
+    menuBar()->setEnabled(true);
+    ui->toolBar->setEnabled(true);
+    ui->TabWidget_parameter->setEnabled(true);
+    if(status){
+        ProcessDisplay _proDispy;
+        GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
+        int _nPos = _pConfig->common.aidedAnalysis.aidedBeamId;
+        _group.afCursor[setup_CURSOR_LAW] = _nPos;
+        updateCscanLawPos( _nPos, _nGroupId);
+        InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+        _pScanner->UpdateIndexBox();
+
+        DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
+        _pGroupTab->UpdateCurrentAngleCom();
+        _pGroupTab->UpdateSizeingCurves();
+
+        updateAllTabwidgetSscanPos(_nGroupId, _nPos);
+
+        int _nTabIndex = ui->TabWidget_display->currentIndex();
+        for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++){
+            int tmpGroupID, tmpLawId, tmpDisplay;
+            DopplerDataView* _pView = (DopplerDataView*)m_pViewList[_nTabIndex]->at(i);
+            _pView->GetDataViewConfigure(&tmpGroupID ,  &tmpLawId ,  &tmpDisplay);
+            if(_nGroupId == tmpGroupID){
+                for(int nQty = 0; nQty<_pView->GetSScanLawQty(); nQty++){
+                    _pView->SetSScanLaw(nQty, _nPos);
+                }
+            }
+        }
+
+        int _nLawId , _nDisplay;
+        for(int _nTabIndex=0; _nTabIndex < ui->TabWidget_display->count(); _nTabIndex++)
+        for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++){
+            int _nCurGroup;
+            DopplerDataView* _pView = (DopplerDataView*)m_pViewList[_nTabIndex]->at(i);
+            _pView->GetDataViewConfigure( &_nCurGroup,  &_nLawId,  &_nDisplay);
+//            if(_nDisplay < 4 && _nGroupId == _nCurGroup) {
+//                _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
+//                _proDispy.UpdateAll(_pView);
+//            }else if((_nDisplay >= 4 && _nDisplay <= 11) && _nGroupId == _nCurGroup){
+//                _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
+//                _proDispy.UpdateAll(_pView);
+//                _proDispy.UpdateDataViewTitle(_pView);
+//                _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
+//            }else{
+//                _proDispy.UpdateDataViewTitle(_pView);
+//                _proDispy.UpdateAll(_pView);
+//            }
+            if( _nGroupId == _nCurGroup){
+                _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
+                _pView->UpdateMeasure();
+                _proDispy.UpdateAll(_pView);
+            }else{
+                _proDispy.UpdateAll(_pView);
+            }
+        }
+        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
+        _pGroup->UpdateCursorValue();
+        _pGroup->UpdateDefectValue();
+        _pGroup->UpdateTofdParam();
+
+        _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
+        RunDrawThreadOnce(true);
+    }
+}
+
 void MainWindow::UpdateTableDisplay()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -952,6 +1026,8 @@ void MainWindow::OpenFilePro(QString strFileName_)
     }
     m_fileName = strFileName_;
     this->setWindowTitle(m_titleName + m_fileName);
+
+    ui->actionAided_Analysis->setEnabled(true);
 
 //    ParameterProcess* _process = ParameterProcess::Instance();
 //    WDATA *ppdata = _process->GetShadowDataPointer();
@@ -1225,6 +1301,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
         m_nLawIdSel = _nId;
         _group.afCursor[setup_CURSOR_LAW] = _nPos;
+        qDebug()<<"_nId"<<_nId<<"_nPos"<<_nPos;
         updateCscanLawPos(_nPos, _nGroupId);
         InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
         _pScanner->UpdateIndexBox();
@@ -1947,4 +2024,37 @@ void MainWindow::on_actionAbout_triggered()
 {
     DialogAboutVersion dialog(this);
     dialog.exec();
+}
+
+void MainWindow::on_actionAided_Analysis_triggered()
+{
+    if(currentgroup == -1){
+        QMessageBox::warning(this, tr("Wrong View"), tr("Please Choose a Group View"));
+        return;
+    }
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& group = _pConfig->group[currentgroup];
+    if(group.eGroupMode != setup_GROUP_MODE_PA){
+        QMessageBox::warning(this, tr("Wrong GroupMode"), tr("This is not PA Group"));
+        return;
+    }
+    if(!group.TopCInfo.TOPCStatus){
+        QMessageBox::warning(this, tr("TOPC not Open"), tr("Please Open TOPC Mode"));
+        return;
+    }
+    int _displayIndex = group.DisplayMode;
+    if(_displayIndex < 16 || _displayIndex > 24){
+        QMessageBox::warning(this, tr("Worng View Mode"), tr("Please Choose a View Has S Scan And C Scan"));
+        return;
+    }
+    DialogMethodSelect defectView( this);
+    defectView.exec();
+    int methodId = defectView.getMethodId();
+    //qDebug()<<"methodId"<<methodId;
+    _pConfig->common.aidedAnalysis.aidedGroupId = currentgroup;
+    _pConfig->common.aidedAnalysis.aidedStatus  = true;
+    _pConfig->common.aidedAnalysis.aidedMethodId = methodId;
+    menuBar()->setEnabled(false);
+    ui->toolBar->setEnabled(false);
+    ui->TabWidget_parameter->setEnabled(false);
 }

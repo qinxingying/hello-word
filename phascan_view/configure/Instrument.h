@@ -60,7 +60,7 @@ typedef struct
 {
 	float fStart  ;	 // gate start position
 	float fWidth  ;	 // gate width
-	unsigned int nThreshold  ; // gate height 
+    unsigned int nThreshold  ; // gate height (0-100)
     setup_GATE_AYNC_TYPE eSynChro; // setup_GATE_SYN_MODE
 	unsigned int eMeasure	 ; // setup_GATE_MEASURE_MODE
 } GATE_CONFIG;
@@ -801,6 +801,14 @@ enum SONIC_AXIS_UNIT
 	SONIC_AXIS_UNIT_MAX
 } ;
 
+struct AIDED_ANALYSIS
+{
+    int aidedGroupId;   //辅助分析的组
+    bool aidedStatus;   //辅助分析的状态，true开启，false关闭
+    int  aidedBeamId;   //分析得到的beamId
+    int  aidedMethodId; //0 半波长  1 绝对灵敏度
+};
+
 struct COMMON_CONFIG
 {
     int					nGroupQty	;         //总的组数量
@@ -818,6 +826,7 @@ struct COMMON_CONFIG
     bool                TOPCMergeValid;          //是否支持topc融合
     int                 TOPCMergeQty;            //topc融合的组总数，等于PA组数
     int                 TOPCMergeGroupId[setup_MAX_GROUP_QTY]; //可以融合的组的Id
+    AIDED_ANALYSIS      aidedAnalysis;
 } ;
 
 struct DISPLAY_CONFIG

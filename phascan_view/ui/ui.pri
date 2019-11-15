@@ -22,7 +22,9 @@ HEADERS += \
     $$PWD/dialog/DialogDxfFileLoad.h \
     $$PWD/dialog/DialogAbouVersion.h \
     $$PWD/dialog/dialogweldfixdataii.h \
-    $$PWD/painter/weldshowdataiiwidget.h
+    $$PWD/painter/weldshowdataiiwidget.h \
+    $$PWD/dialog/dialogdefectselect.h \
+    $$PWD/dialog/dialogmethodselect.h
 
 
 SOURCES += \
@@ -47,7 +49,9 @@ SOURCES += \
     $$PWD/painter/drawdxf.cpp \
     $$PWD/dialog/DialogAboutVersion.cpp \
     $$PWD/dialog/dialogweldfixdataii.cpp \
-    $$PWD/painter/weldshowdataiiwidget.cpp
+    $$PWD/painter/weldshowdataiiwidget.cpp \
+    $$PWD/dialog/dialogdefectselect.cpp \
+    $$PWD/dialog/dialogmethodselect.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
@@ -59,4 +63,6 @@ FORMS += \
     $$PWD/mainwindow.ui \
     $$PWD/dialog/DialogDxfFileLoad.ui \
     $$PWD/dialog/DialogAboutVersion.ui \
-    $$PWD/dialog/dialogweldfixdataii.ui
+    $$PWD/dialog/dialogweldfixdataii.ui \
+    $$PWD/dialog/dialogdefectselect.ui \
+    $$PWD/dialog/dialogmethodselect.ui

@@ -10,6 +10,8 @@
 #include "DopplerTofdOpp.h"
 #include "DopplerGateItem.h"
 #include "DopplerDataView.h"
+#include "aidedanalysis.h"
+#include "dialog/dialogdefectselect.h"
 #include <QDebug>
 #include <QPrintDialog>
 #include <QPrinter>
@@ -372,7 +374,7 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
             }
         }else if(dynamic_cast<DopplerDrawBScanV*>(m_pDrawScan)){
             int _sacnIndex = m_pBackGround->GetScanIndex();
-            int _backIndex = m_pBackGround->size().height();
+            int _backIndex = m_pBackGround->size().width();
             if(_sacnIndex > _backIndex){
                 m_pBackGround->SetFixStatus(true);
                 m_pBackGround->SetFixDirection(0);
@@ -382,7 +384,7 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
             }
         }else if(dynamic_cast<DopplerDrawBScanH*>(m_pDrawScan)){
             int _sacnIndex = m_pBackGround->GetScanIndex();
-            int _backIndex = m_pBackGround->size().width();
+            int _backIndex = m_pBackGround->size().height();
             if(_sacnIndex > _backIndex){
                 m_pBackGround->SetFixStatus(true);
                 m_pBackGround->SetFixDirection(1);
@@ -558,7 +560,97 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(Qt::LeftButton == event->button())
     {
-		if(!m_bItemSelected)
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        DopplerDrawCScanH* _cHDraw = dynamic_cast<DopplerDrawCScanH*>(m_pDrawScan);
+        if(_pConfig->common.aidedAnalysis.aidedStatus && _cHDraw){
+            if(FLOAT_EQ(m_nScaleH , 1) && FLOAT_EQ(m_nScaleV , 1)){
+                m_cPosStop = event->pos();
+                QRectF _rect = this->geometry();
+                if(_rect.contains(m_cPosStop)){
+                    QPoint leftTop, rightBottom;
+                    if( m_cPosStart.x() < m_cPosStop.x()){
+                        leftTop.setX( m_cPosStart.x());
+                        rightBottom.setX( m_cPosStop.x());
+                    }else{
+                        leftTop.setX( m_cPosStop.x());
+                        rightBottom.setX( m_cPosStart.x());
+                    }
+
+                    if( m_cPosStart.y() < m_cPosStop.y()){
+                        leftTop.setY( m_cPosStart.y());
+                        rightBottom.setY( m_cPosStop.y());
+                    }else{
+                        leftTop.setY( m_cPosStop.y());
+                        rightBottom.setY( m_cPosStart.y());
+                    }
+                    QRect rect( leftTop, rightBottom);
+                    qDebug()<<"pos"<<m_cPosStart<<m_cPosStop<<rect;
+                    if(abs(rect.height()) > 50 && abs(rect.width()) > 50 ){
+                        DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+                        int _iGroupId, _iLaw, _iDisplay;
+                        _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+                        double _fScanStart , _fScanStop , _fSliderStart, _fSliderStop;
+                        double _nScaleX1,_nScaleX2,_nScaleY1,_nScaleY2;
+                        double scanstart , scanstop;
+                        double lawstart, lawstop;
+                        QSize _size;
+                        _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+                        qDebug()<<"ScanStart"<<_fScanStart<<"ScanStop"<<_fScanStop;
+                        _size = size();
+                        _nScaleX1 = ((double)leftTop.x()) / _size.width();
+                        _nScaleY1 = ((double)leftTop.y()) / _size.height();
+                        _nScaleX2 = ((double)rightBottom.x()) / _size.width();
+                        _nScaleY2 = ((double)rightBottom.y()) / _size.height();
+                        scanstart =_fScanStart + _nScaleX1 * (_fScanStop - _fScanStart);
+                        scanstop = _fScanStart + _nScaleX2 * (_fScanStop - _fScanStart);
+                        _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
+                        qDebug()<<"indexStart"<<_fScanStart<<"indexStop"<<_fScanStop;
+                        lawstart = _fScanStart + _nScaleY1 * (_fScanStop - _fScanStart);
+                        lawstop = _fScanStart + _nScaleY2 * (_fScanStop - _fScanStart);
+                        qDebug()<<"scanstart"<<scanstart<<"scanstop"<<scanstop<<"lawstart"<<lawstart<<"lawstop"<<lawstop;
+                        AidedAnalysis *analysis = new AidedAnalysis(this);
+                        analysis->setGroupId(_iGroupId);
+                        analysis->setRange(scanstart, scanstop, lawstart, lawstop);
+                        int defectNum = analysis->analysisDefect();
+                        //qDebug()<<"defectNum"<<defectNum;
+                        if(defectNum == 0){
+                            QMessageBox::warning(this, tr("No Defect Found"), tr("No Defect Found"));
+                            g_pMainWnd->AidedAnalysisDone(false);
+                        }else if(defectNum == 1){
+                            bool status = analysis->setSelectDefectIndex(0);
+                            qDebug()<<"status"<<status;
+                            if(status){
+                                g_pMainWnd->AidedAnalysisDone(true);
+                            }else{
+                                QMessageBox::warning(this, tr("No Defect Found"), tr("No Defect Found"));
+                                g_pMainWnd->AidedAnalysisDone(false);
+                            }
+                        }else{
+                            DialogDefectSelect defectView( defectNum, this);
+                            analysis->paintDefectImage(defectView.getDefectImage());
+                            defectView.setDefectCentre(analysis->getDefectCentre());
+                            defectView.exec();
+                            int selectDefect = defectView.getSelectDefect();
+                            bool status = analysis->setSelectDefectIndex(selectDefect);
+                            qDebug()<<"status"<<status;
+                            if(status){
+                                g_pMainWnd->AidedAnalysisDone(true);
+                            }else{
+                                QMessageBox::warning(this, tr("No Defect Found"), tr("No Defect Found"));
+                                g_pMainWnd->AidedAnalysisDone(false);
+                            }
+                        }
+                    }else{
+                       QMessageBox::warning(this, tr("Range too Small"), tr("Please Selected More Wider Range"));
+                       g_pMainWnd->AidedAnalysisDone(false);
+                    }
+                }else{
+                    QMessageBox::warning(this, tr("Out of Range"), tr("Please Selected in C Scan View"));
+                    g_pMainWnd->AidedAnalysisDone(false);
+                }
+            }
+        }
+        else if(!m_bItemSelected)
 		{			
             if(FLOAT_EQ(m_nScaleH , 1) && FLOAT_EQ(m_nScaleV , 1))
             {

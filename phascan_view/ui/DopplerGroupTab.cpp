@@ -1589,7 +1589,7 @@ void DopplerGroupTab::on_ComCscanType_currentIndexChanged(int index)
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
-void DopplerGroupTab::on_ComTopCMergeRefer_currentIndexChanged(int index)
+void DopplerGroupTab::on_ComTopCMergeRefer_currentIndexChanged(int /*index*/)
 {
     if(!ui->ComTopCMergeRefer->hasFocus()) return;
     QString buff = ui->ComTopCMergeRefer->currentText();
@@ -2452,6 +2452,8 @@ void DopplerGroupTab::on_ValueScannerSensitivity_valueChanged(double arg1)
 {
     if(!ui->ValueScannerSensitivity->hasFocus())  return ;
     CUR_RES.CurSS[m_nGroupId] = arg1;
+    ProcessDisplay _display;
+    _display.UpdateAllViewOverlay();
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 

@@ -213,7 +213,7 @@ void DopplerConfigure::OpenEvn()
             AppEvn.CScanSource[i][0]= 0;
             AppEvn.CScanSource[i][1]= 3;
             AppEvn.DisplayMode[i]   = 12;
-            AppEvn.bShowCurve[i]   = true;
+            AppEvn.bShowCurve[i]    = true;
             AppEvn.CurSS[i]         = 0;
             AppEvn.Standard[i]      = 0;
             AppEvn.Thickness[i]     = 0;
@@ -893,6 +893,8 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 	DRAW_INFO_PACK* _pack = pConf_->GetDrawInfo();
 	common.nGroupQty = _pack->nGroupNum ;
     common.scanner.fPrf  = pConf_->GetGroupInfo(0)->prf1 / 10.0;
+    common.aidedAnalysis.aidedGroupId = 0;
+    common.aidedAnalysis.aidedStatus  = false;
     Cscan_range = 0;
     Csrc_start = 0;
     Bscan_range = 0;
@@ -1020,7 +1022,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;
         /* 耦合监控 版本4和5才有此功能，on_off_status 第2位表示开启关闭，0关闭；1开启 3位到21表示声速的10倍值*/
-        if( Phascan_Version == 4 || Phascan_Version == 5)
+        if(Phascan_Version == 4 || Phascan_Version == 5)
         {
             _group.coupleMonitoringState = (( _group.on_off_status>>2) & 0x01);
             _group.coupleMonitoringVelocity = ((_group.on_off_status>>3) & 0x3FFFF)/10;
@@ -1030,6 +1032,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.coupleMonitoringState = false;
             _group.coupleMonitoringVelocity = _pGroupInfo->velocity /100;
         }
+        qDebug()<<"coupleMonitoringState"<<_group.coupleMonitoringState;
+
 		/* 发射接收 */
         _group.nTrigeStart	  = _pGroupInfo->pulser1;	/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1
                                                         指定发射阵元与机器配置相关我们是128阵元最大,值与connect P 一样 */
@@ -1278,18 +1282,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		}
 
 	//	MATERIAL* _material = _list->at(_pGroupInfo->part.Material_pos) ;
-	//	memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;
-        if( Config::instance()->is_phascan_ii())
-        {
-            _group.part.weldFormat = PHASCAN_II_FORMAT;
-            Config::instance()->getWeldData(i, _group.part.weld_ii);
-            Config::instance()->getTOPCWidth(i, _group.TopCInfo.TOPCWidth);
-        }
-        else
-        {
-            _group.part.weldFormat = PHASCAN_I_FORMAT;
-            _group.TopCInfo.TOPCWidth = 10;
-        }
+	//	memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;        
 
 		_group.part.weld.eSymmetry       = (setup_WELD_SYMMETRY_TYPE) _pGroupInfo->part.symmetry ;
         _group.part.weld.eType	         = (setup_WELD_TYPE) ((_pGroupInfo->part.Weld == 4)?_pGroupInfo->part.Weld+2:_pGroupInfo->part.Weld) ;
@@ -1324,6 +1317,47 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.part.weld.fizone_down_height = _group.part.weld.fizone_height - _group.part.weld.weland_height;
             _group.part.weld.fizone_height = _group.part.afSize[0] - _group.part.weld.weland_height - _group.part.weld.fizone_down_height;
             _group.part.weld.fizone_down_angle = _group.part.weld.fizone_radius;
+        }
+
+        if( Config::instance()->is_phascan_ii())
+        {
+            _group.part.weldFormat = PHASCAN_II_FORMAT;
+            Config::instance()->getWeldData(i, _group.part.weld_ii);
+            Config::instance()->getTOPCWidth(i, _group.TopCInfo.TOPCWidth);
+        }
+        else
+        {
+            _group.part.weldFormat = PHASCAN_I_FORMAT;
+            _group.TopCInfo.TOPCWidth = 10;
+            WELD& _weld = _group.part.weld;
+            switch ( _group.part.weld.eType) {
+            case setup_WELD_I:
+                _group.TopCInfo.TOPCWidth = _weld.weland_offset * 2;
+                break;
+            case setup_WELD_V:
+            case setup_WELD_DV:
+                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                                              * _weld.fizone_height) *2;
+                break;
+            case setup_WELD_U:
+                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
+                                              _weld.fizone_height + _weld.fizone_radius) *2;
+                break;
+            case setup_WELD_DIFF_DV:
+                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                                              * _weld.fizone_height) *2;
+                break;
+            case setup_WELD_J:
+                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
+                                              _weld.fizone_height + _weld.fizone_radius) *2;
+                break;
+            case setup_WELD_VY:
+                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                                              * _weld.fizone_height) *2;
+                break;
+            default:
+                break;
+            }
         }
 
 		DopplerColorIndex _color ;

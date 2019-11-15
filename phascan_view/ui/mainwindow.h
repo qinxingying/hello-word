@@ -72,6 +72,7 @@ public:
     void initIndexSlider();
     void UpdateSlider();
     void UpdateIndexSlider();
+    void AidedAnalysisDone(bool);
 
 protected:
     void CreateStatusBar();
@@ -183,6 +184,7 @@ protected slots:
   void slot_actionChinese_triggered();
   void on_actionJapanese_triggered();
   void on_actionAbout_triggered();
+  void on_actionAided_Analysis_triggered();
 };
 
 extern MainWindow* g_pMainWnd;

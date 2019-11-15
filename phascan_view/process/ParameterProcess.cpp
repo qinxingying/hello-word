@@ -608,6 +608,10 @@ int  ParameterProcess::GetGroupLawQtyForPosition(int nGroupId_) const
         {
             _ret++;
         }
+    }else{
+        if(_group.coupleMonitoringState){
+            _ret++;
+        }
     }
     return _ret;
 }
@@ -875,6 +879,13 @@ float ParameterProcess::TransforIndexIndexToPos(int fIndex) const
     return _Pos;
 }
 
+/*!
+  \brief 将数据索引index转换为超声轴坐标值
+
+  \param index_ 数据索引index
+
+  \return 编码器时单位为mm,时间编码时为s
+*/
 float ParameterProcess::SAxisIndexToDist(int index_) const
 {
 	SCANNER& _scaner = m_pConfig->common.scanner ;
@@ -1453,6 +1464,36 @@ WDATA* ParameterProcess::GetCoupleDataPointer( int nGroupId_)
     int nLawId_ = GetGroupLawQty(nGroupId_);
     int _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH); //偏移到耦合监控beam
     return (_pData + _nLawOffset);
+}
+
+//RL RL SL 合法 返回值 0-100
+float ParameterProcess::GetDetermineThreshold(int nGroupId_, DAC_MODE mode)
+{
+    float midx,midy;
+    midy = 0;
+    switch (mode) {
+    case setup_RL:
+        midx = pow(10.0,(CUR_RES.REF_Gain[nGroupId_])/20.0);
+        midx = midx * 80;
+        midy = pow(10.0,(CUR_RES.CurRL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0);
+        midy = midx * midy;
+        break;
+    case setup_EL:
+        midx = pow(10.0,(CUR_RES.REF_Gain[nGroupId_])/20.0);
+        midx = midx * 80;
+        midy = pow(10.0,(CUR_RES.CurEL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0);
+        midy = midx * midy;
+        break;
+    case setup_SL:
+        midx = pow(10.0,(CUR_RES.REF_Gain[nGroupId_])/20.0);
+        midx = midx * 80;
+        midy = pow(10.0,(CUR_RES.CurSL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0);
+        midy = midx * midy;
+        break;
+    default:
+        break;
+    }
+    return midy;
 }
 
 unsigned int   ParameterProcess::GetLawGateDWORD(int nGroupId_ , int nLawId_ , setup_GATE_NAME eGate_)
