@@ -335,8 +335,6 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
 
     int left, right;
     int methodId = _pConfig->common.aidedAnalysis.aidedMethodId;    
-//    int size = _paintBuff.elemSize();
-//    qDebug()<<"size"<<size;
     if(methodId){
         float methodThreshold = _process->GetDetermineThreshold(m_groupId, setup_EL);
         max = methodThreshold * 255 / 100 - 1;
@@ -377,39 +375,6 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
             }
         }
     }else{
-//        int leftAmp, rightAmp;
-//        getAmpData( leftAmp, rightAmp);
-//        qDebug()<<"leftAmp"<<leftAmp<<"rightAmp"<<rightAmp;
-//        leftAmp = leftAmp / 2 - 1;
-//        if(leftAmp < 0){
-//            leftAmp = 0;
-//        }
-//        cv::threshold( _paintBuff, result, leftAmp, 255, cv::THRESH_BINARY);
-//        contours.clear();
-//        cv::findContours( result, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-//        defectNum = contours.size();
-//        left  = scanPixel -1;
-//        for( int i = 0; i < defectNum; i++){
-//            boundRect = cv::boundingRect( cv::Mat( contours[i]));
-//            if(boundRect.x < left){
-//                left = boundRect.x;
-//            }
-//        }
-//        rightAmp = rightAmp / 2 - 1;
-//        if(rightAmp < 0){
-//            rightAmp = 0;
-//        }
-//        cv::threshold( _paintBuff, result, rightAmp, 255, cv::THRESH_BINARY);
-//        contours.clear();
-//        cv::findContours( result, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-//        defectNum = contours.size();
-//        right = 0;
-//        for( int i = 0; i < defectNum; i++){
-//            boundRect = cv::boundingRect( cv::Mat( contours[i]));
-//            if(boundRect.x + boundRect.width > right){
-//                right = boundRect.x + boundRect.width;
-//            }
-//        }
         getAmpDataWatershed(left, right);
     }
 
@@ -431,10 +396,6 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
 
     float scanPos = _process->SAxisIndexToDist(scanIndex);
     _process->SetupScanPos(scanPos);
-//    qDebug()<<"scanPixel"<<scanPixel;
-//    qDebug()<<srcData;
-//    int a, b;
-//    getAmpDataWatershed(a, b);
     return true;
 }
 
@@ -738,7 +699,6 @@ void AidedAnalysis::getAmpDataWatershed(int &leftAmp, int &rightAmp)
     ParameterProcess* _process = ParameterProcess::Instance();
     float methodThreshold = _process->GetDetermineThreshold(m_groupId, setup_EL);
     int max = methodThreshold * 255 / 100;
-    //cv::Mat _paintBuff( topcWidthPixel, scanPixel, CV_8U, srcData.data());
     int rows, cols;
     if( m_orient == ORIENT_HORIZONTAL){
         rows = topcWidthPixel;
