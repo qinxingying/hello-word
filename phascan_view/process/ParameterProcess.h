@@ -149,7 +149,7 @@ public:
     WDATA* GetLawDataPointer(int nGroupId_ , int nLawId_)  ;
     WDATA* GetCoupleDataPointer( int nGroupId_);
 
-    float GetDetermineThreshold(int nGroupId_, DAC_MODE mode);
+    double GetDetermineThreshold(int nGroupId_, DAC_MODE mode);
 
     unsigned int   GetLawGateDWORD(int nGroupId_ , int nLawId_ , setup_GATE_NAME eGate_);
 	U8* GetScanMarker(int nGroupId_) const;

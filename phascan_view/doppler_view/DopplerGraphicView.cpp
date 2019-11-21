@@ -586,6 +586,10 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                     QRect rect( leftTop, rightBottom);
                     qDebug()<<"pos"<<m_cPosStart<<m_cPosStop<<rect;
                     if(abs(rect.height()) > 50 && abs(rect.width()) > 50 ){
+                        VIEW_ORIENT dirction = ORIENT_HORIZONTAL;
+                        if(dynamic_cast<DopplerDrawCScanV*>(m_pDrawScan)){
+                            dirction = ORIENT_VERTICAL;
+                        }
                         DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
                         int _iGroupId, _iLaw, _iDisplay;
                         _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
@@ -610,7 +614,13 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                         qDebug()<<"scanstart"<<scanstart<<"scanstop"<<scanstop<<"lawstart"<<lawstart<<"lawstop"<<lawstop;
                         AidedAnalysis *analysis = new AidedAnalysis(this);
                         analysis->setGroupId(_iGroupId);
-                        analysis->setRange(scanstart, scanstop, lawstart, lawstop);
+                        analysis->setOrient(dirction);
+                        if(dirction){
+                            analysis->setRange(lawstop, lawstart, scanstart, scanstop);
+                        }else{
+                            analysis->setRange(scanstart, scanstop, lawstart, lawstop);
+                        }
+
                         int defectNum = analysis->analysisDefect();
                         //qDebug()<<"defectNum"<<defectNum;
                         if(defectNum == 0){
@@ -628,7 +638,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                         }else{
                             DialogDefectSelect defectView( defectNum, this);
                             analysis->paintDefectImage(defectView.getDefectImage());
-                            defectView.setDefectCentre(analysis->getDefectCentre());
+                            defectView.setDefectCentre(analysis->getDefectCentre(), analysis->getDefectRect());
                             defectView.exec();
                             int selectDefect = defectView.getSelectDefect();
                             bool status = analysis->setSelectDefectIndex(selectDefect);

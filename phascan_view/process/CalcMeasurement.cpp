@@ -499,26 +499,40 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 		break;
     case FEILD_RL :
     {
-        float midy = _process->GetDetermineThreshold( nGroupId_, setup_RL);
-        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
-        if(RL_EL_SL[setup_RL] < 0.0000001)
+        int midy = _process->GetDetermineThreshold( nGroupId_, setup_RL);
+        if(midy == 0){
             ret = 1;
+            break;
+        }
+        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
+//        if(RL_EL_SL[setup_RL] < 0.0000001)
+//            ret = 1;
         break;
     }
     case FEILD_EL :
     {
-        float midy = _process->GetDetermineThreshold( nGroupId_, setup_EL);
-        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
-        if(RL_EL_SL[setup_EL] < 0.0000001)
+        int midy = _process->GetDetermineThreshold( nGroupId_, setup_EL);
+        if(midy == 0){
             ret = 1;
+            break;
+        }
+        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
+
+//        if(RL_EL_SL[setup_EL] < 0.0000001)
+//            ret = 1;
         break;
     }
     case FEILD_SL :
     {
-        float midy = _process->GetDetermineThreshold( nGroupId_, setup_SL);
-        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
-        if(RL_EL_SL[setup_SL] < 0.0000001)
+        int midy = _process->GetDetermineThreshold( nGroupId_, setup_SL);
+        if(midy == 0){
             ret = 1;
+            break;
+        }
+        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
+        //qDebug()<<"pResult"<<*pResult_<<"midy"<<midy;
+//        if(RL_EL_SL[setup_SL] < 0.0000001)
+//            ret = 1;
         break;
     }
     case FEILD_CMA :

@@ -15,7 +15,7 @@ public:
     explicit DialogDefectSelect(int defectNum, QWidget *parent = 0);
     ~DialogDefectSelect();
     QImage* getDefectImage(){return m_Image;}
-    void setDefectCentre(QVector<QPoint> defectCentre){m_defectCentre = defectCentre;}
+    void setDefectCentre(QVector<QPoint> defectCentre, QVector<QRect> defectRect){m_defectCentre = defectCentre;m_defectRect = defectRect;}
     int  getSelectDefect(){return m_selectDefect;}
 protected:
     void paintEvent(QPaintEvent *);
@@ -26,6 +26,7 @@ private:
     Ui::DialogDefectSelect *ui;
     QImage* m_Image;
     QVector<QPoint> m_defectCentre;
+    QVector<QRect>  m_defectRect;
     int m_selectDefect;
 };
 

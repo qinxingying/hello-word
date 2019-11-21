@@ -116,6 +116,11 @@
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../ui/dialog/dialogdefectselect.cpp" line="20"/>
+        <source>these has %1 defects found. please select one.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DialogDxfFileLoad</name>
@@ -590,23 +595,23 @@
 <context>
     <name>DopplerConfigure</name>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1646"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1681"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1648"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1683"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1711"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1713"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1914"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1916"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1914"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1916"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>

@@ -2047,9 +2047,10 @@ void MainWindow::on_actionAided_Analysis_triggered()
         QMessageBox::warning(this, tr("Worng View Mode"), tr("Please Choose a View Has S Scan And C Scan"));
         return;
     }
-    DialogMethodSelect defectView( this);
+    int methodId = _pConfig->common.aidedAnalysis.aidedMethodId;
+    DialogMethodSelect defectView( methodId, this);
     defectView.exec();
-    int methodId = defectView.getMethodId();
+    methodId = defectView.getMethodId();
     //qDebug()<<"methodId"<<methodId;
     _pConfig->common.aidedAnalysis.aidedGroupId = currentgroup;
     _pConfig->common.aidedAnalysis.aidedStatus  = true;

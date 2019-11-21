@@ -13,7 +13,7 @@ class DialogMethodSelect : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogMethodSelect(QWidget *parent = 0);
+    explicit DialogMethodSelect( int id, QWidget *parent = 0);
     ~DialogMethodSelect();
     int getMethodId(){return m_method;}
 

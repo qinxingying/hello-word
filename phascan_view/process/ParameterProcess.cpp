@@ -1467,33 +1467,23 @@ WDATA* ParameterProcess::GetCoupleDataPointer( int nGroupId_)
 }
 
 //RL RL SL 合法 返回值 0-100
-float ParameterProcess::GetDetermineThreshold(int nGroupId_, DAC_MODE mode)
+double ParameterProcess::GetDetermineThreshold(int nGroupId_, DAC_MODE mode)
 {
-    float midx,midy;
-    midy = 0;
+    double midx = 0;
     switch (mode) {
     case setup_RL:
-        midx = pow(10.0,(CUR_RES.REF_Gain[nGroupId_])/20.0);
-        midx = midx * 80;
-        midy = pow(10.0,(CUR_RES.CurRL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0);
-        midy = midx * midy;
+        midx = pow(10.0, (CUR_RES.REF_Gain[nGroupId_] + CUR_RES.CurRL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0)*80;
         break;
     case setup_EL:
-        midx = pow(10.0,(CUR_RES.REF_Gain[nGroupId_])/20.0);
-        midx = midx * 80;
-        midy = pow(10.0,(CUR_RES.CurEL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0);
-        midy = midx * midy;
+        midx = pow(10.0, (CUR_RES.REF_Gain[nGroupId_] + CUR_RES.CurEL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0)*80;
         break;
     case setup_SL:
-        midx = pow(10.0,(CUR_RES.REF_Gain[nGroupId_])/20.0);
-        midx = midx * 80;
-        midy = pow(10.0,(CUR_RES.CurSL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0);
-        midy = midx * midy;
+        midx = pow(10.0, (CUR_RES.REF_Gain[nGroupId_] + CUR_RES.CurSL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0)*80;
         break;
     default:
         break;
     }
-    return midy;
+    return midx;
 }
 
 unsigned int   ParameterProcess::GetLawGateDWORD(int nGroupId_ , int nLawId_ , setup_GATE_NAME eGate_)

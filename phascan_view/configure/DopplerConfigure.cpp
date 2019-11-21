@@ -637,6 +637,8 @@ void DopplerConfigure::InitCommonConfig()
 	memcpy (header.strVersion , CONFIG_FILE_VERSION , strlen(CONFIG_FILE_VERSION)) ;
 	common.nGroupQty = 1 ;
 	common.bUnifiedPart = 1 ;
+    common.aidedAnalysis.aidedStatus = false;
+    common.aidedAnalysis.aidedMethodId = 0;
 	//common.instrument.eTxRxModePA  = setup_TX_RX_MODE_PE ;
 	//common.instrument.eTxRxModeUT  = setup_TX_RX_MODE_PE ;
 	common.instrument.eVoltagePA   = setup_VOLTAGE_50	;

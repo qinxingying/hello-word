@@ -40,8 +40,15 @@ int AidedAnalysis::analysisDefect()
         return 0;
     }
     max--;
-
-    cv::Mat paintBuff( topcWidthPixel, scanPixel, CV_8U, srcData.data());
+    int rows, cols;
+    if( m_orient == ORIENT_HORIZONTAL){
+        rows = topcWidthPixel;
+        cols = scanPixel;
+    }else{
+        rows = scanPixel;
+        cols = topcWidthPixel;
+    }
+    cv::Mat paintBuff( rows, cols, CV_8U, srcData.data());
     cv::Mat result;
     cv::threshold( paintBuff, result, max, 255, cv::THRESH_BINARY);
 
@@ -52,6 +59,7 @@ int AidedAnalysis::analysisDefect()
 //    cv::imshow("Original Image", result);
 //    cv::waitKey();
     defectCentre.clear();
+    defectRect.clear();
     int defectNum = contours.size();
     if(defectNum != 0){
         std::vector<cv::Rect> boundRect( defectNum);
@@ -60,7 +68,9 @@ int AidedAnalysis::analysisDefect()
             int x = boundRect[i].x + (boundRect[i].width / 2);
             int y = boundRect[i].y + (boundRect[i].height / 2);
             QPoint buff(x, y);
+            QRect _buff(boundRect[i].x, boundRect[i].y, boundRect[i].width, boundRect[i].height);
             defectCentre.append(buff);
+            defectRect.append(_buff);
             qDebug()<<"x"<<boundRect[i].x<<"y"<<boundRect[i].y<<"width"<<boundRect[i].width
                    <<"height"<<boundRect[i].height;
         }
@@ -71,10 +81,18 @@ int AidedAnalysis::analysisDefect()
 
 void AidedAnalysis::paintDefectImage(QImage* pImage)
 {
+    int srcDx, srcDy;
+    if( m_orient == ORIENT_HORIZONTAL){
+        srcDx = scanPixel;
+        srcDy = topcWidthPixel;
+    }else{
+        srcDx = topcWidthPixel;
+        srcDy = scanPixel;
+    }
     int _nWidth	 = pImage->width();
     int _nHeight = pImage->height();
-    double widthscale = (double)scanPixel/_nWidth;
-    double hightscale = (double)topcWidthPixel/_nHeight;
+    double widthscale = (double)srcDx/_nWidth;
+    double hightscale = (double)srcDy/_nHeight;
     int srcx = 0;
     int srcy = 0;
     float transx = 0.0;
@@ -93,8 +111,8 @@ void AidedAnalysis::paintDefectImage(QImage* pImage)
         srcx = qFloor(transx);
         diffx = transx - srcx;
         srcx += 1;
-        if(srcx >= scanPixel - 2){
-            srcx = scanPixel - 2;
+        if(srcx >= srcDx - 2){
+            srcx = srcDx - 2;
         }
 
         for( j = 0; j < _nHeight; j++){
@@ -103,12 +121,12 @@ void AidedAnalysis::paintDefectImage(QImage* pImage)
             srcy = qFloor(transy);
             diffy = transy -srcy;
             srcy += 1;
-            if( srcy >= topcWidthPixel - 2){
-                srcy = topcWidthPixel - 2;
+            if( srcy >= srcDy - 2){
+                srcy = srcDy - 2;
             }
-            int Index = srcy*scanPixel;
-            midy3 = (1-diffx)*(1-diffy)*srcData[srcx+Index] + (1-diffx)*(diffy)*srcData[srcx+Index+scanPixel]
-                    +diffx*(1-diffy)*srcData[srcx+1+Index]+diffx*diffy*srcData[srcx+1+Index+scanPixel];
+            int Index = srcy*srcDx;
+            midy3 = (1-diffx)*(1-diffy)*srcData[srcx+Index] + (1-diffx)*(diffy)*srcData[srcx+Index+srcDx]
+                    +diffx*(1-diffy)*srcData[srcx+1+Index]+diffx*diffy*srcData[srcx+1+Index+srcDx];
             memcpy(_pImageTmp,&m_pColor[midy3],3);
         }
     }
@@ -116,10 +134,20 @@ void AidedAnalysis::paintDefectImage(QImage* pImage)
     defectInImage.clear();
     QVector<QPoint>::const_iterator ip;
     for( ip = defectCentre.begin(); ip != defectCentre.end(); ip++){
-        int x = ip->x() * (_nWidth -1) / (scanPixel -1);
-        int y = ip->y() * (_nHeight -1) / (topcWidthPixel -1);
+        int x = ip->x() * (_nWidth -1) / (srcDx -1);
+        int y = ip->y() * (_nHeight -1) / (srcDy -1);
         QPoint buff(x, y);
         defectInImage.append(buff);
+    }
+    RectInImage.clear();
+    QVector<QRect>::const_iterator ir;
+    for( ir = defectRect.begin(); ir != defectRect.end(); ir++){
+        int x = ir->x() * (_nWidth -1) / (srcDx -1);
+        int y = ir->y() * (_nHeight -1) / (srcDy -1);
+        int width  = ir->width() * (_nWidth -1) / (srcDx -1);
+        int height = ir->height() * (_nHeight -1) / (srcDy -1);
+        QRect buff( x, y, width, height);
+        RectInImage.append(buff);
     }
 }
 
@@ -132,9 +160,15 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     ParameterProcess* _process = ParameterProcess::Instance();
     TOPC_INFO& _TOPCInfo = _pConfig->group[m_groupId].TopCInfo;
-    int scanIndex = _process->SAxisDistToIndex(m_scanStart);
+    int scanIndex;
     float  indexOffset = _pConfig->group[m_groupId].fIndexOffset;
-    scanIndex = scanIndex + buff.x();
+    if( m_orient == ORIENT_HORIZONTAL){
+        scanIndex = _process->SAxisDistToIndex(m_scanStart);
+        scanIndex = scanIndex + buff.x();
+    }else{
+        scanIndex = _process->SAxisDistToIndex(m_scanStop);
+        scanIndex = scanIndex - buff.y();
+    }
     qDebug()<<"buff.x"<<buff.x()<<"scanIndex"<<scanIndex;
     int _pixelWidth = _TOPCInfo.pixelWidth;
     int _pixelHeigh = _TOPCInfo.pixelHeigh;
@@ -182,11 +216,6 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
     cv::Mat result;
     cv::threshold( paintBuff, result, max, 255, cv::THRESH_BINARY);
 
-//    cv::namedWindow("Original Image", 1);
-//    cv::imshow("Original Image", paintBuff);
-//    cv::waitKey();
-
-
     std::vector<std::vector<cv::Point> >contours;
     contours.clear();
     cv::findContours( result, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
@@ -201,11 +230,20 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
     _centre.clear();
     _centreRect.clear();
     int _selectX;
-    if(direction == 0){
-       _selectX = slectRectInfo.pixelWidthStart + buff.y();
+    if( m_orient == ORIENT_HORIZONTAL){
+        if(direction == 0){
+           _selectX = slectRectInfo.pixelWidthStart + buff.y();
+        }else{
+           _selectX = slectRectInfo.pixelWidthStop - buff.y();
+        }
     }else{
-       _selectX = slectRectInfo.pixelWidthStop - buff.y();
+        if(direction == 0){
+           _selectX = slectRectInfo.pixelWidthStart + buff.x();
+        }else{
+           _selectX = slectRectInfo.pixelWidthStop - buff.x();
+        }
     }
+
 
     for( int i = 0; i < defectNum; i++){
         boundRect = cv::boundingRect( cv::Mat( contours[i]));
@@ -295,39 +333,108 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
     _pConfig->group[m_groupId].afCursor[setup_CURSOR_I_REF] = _defectLeft;
     _pConfig->group[m_groupId].afCursor[setup_CURSOR_I_MES] = _defectRight;
 
-    int methodId = _pConfig->common.aidedAnalysis.aidedMethodId;
+    int left, right;
+    int methodId = _pConfig->common.aidedAnalysis.aidedMethodId;    
+//    int size = _paintBuff.elemSize();
+//    qDebug()<<"size"<<size;
     if(methodId){
         float methodThreshold = _process->GetDetermineThreshold(m_groupId, setup_EL);
         max = methodThreshold * 255 / 100 - 1;
         if(max < 0){
             max = 0;
         }
-        qDebug()<<"max"<<max;
+        int rows, cols;
+        if( m_orient == ORIENT_HORIZONTAL){
+            rows = topcWidthPixel;
+            cols = scanPixel;
+        }else{
+            rows = scanPixel;
+            cols = topcWidthPixel;
+        }
+        cv::Mat _paintBuff( rows, cols, CV_8U, srcData.data());
+        cv::threshold( _paintBuff, result, max, 255, cv::THRESH_BINARY);
+        contours.clear();
+        cv::findContours( result, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+        defectNum = contours.size();
+        left  = scanPixel -1;
+        right = 0;
+        for( int i = 0; i < defectNum; i++){
+            boundRect = cv::boundingRect( cv::Mat( contours[i]));
+            if( m_orient == ORIENT_HORIZONTAL){
+                if(boundRect.x < left){
+                    left = boundRect.x;
+                }
+                if(boundRect.x + boundRect.width > right){
+                    right = boundRect.x + boundRect.width;
+                }
+            }else{
+                if(boundRect.y < left){
+                    left = boundRect.y;
+                }
+                if(boundRect.y + boundRect.height > right){
+                    right = boundRect.y + boundRect.height;
+                }
+            }
+        }
+    }else{
+//        int leftAmp, rightAmp;
+//        getAmpData( leftAmp, rightAmp);
+//        qDebug()<<"leftAmp"<<leftAmp<<"rightAmp"<<rightAmp;
+//        leftAmp = leftAmp / 2 - 1;
+//        if(leftAmp < 0){
+//            leftAmp = 0;
+//        }
+//        cv::threshold( _paintBuff, result, leftAmp, 255, cv::THRESH_BINARY);
+//        contours.clear();
+//        cv::findContours( result, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+//        defectNum = contours.size();
+//        left  = scanPixel -1;
+//        for( int i = 0; i < defectNum; i++){
+//            boundRect = cv::boundingRect( cv::Mat( contours[i]));
+//            if(boundRect.x < left){
+//                left = boundRect.x;
+//            }
+//        }
+//        rightAmp = rightAmp / 2 - 1;
+//        if(rightAmp < 0){
+//            rightAmp = 0;
+//        }
+//        cv::threshold( _paintBuff, result, rightAmp, 255, cv::THRESH_BINARY);
+//        contours.clear();
+//        cv::findContours( result, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+//        defectNum = contours.size();
+//        right = 0;
+//        for( int i = 0; i < defectNum; i++){
+//            boundRect = cv::boundingRect( cv::Mat( contours[i]));
+//            if(boundRect.x + boundRect.width > right){
+//                right = boundRect.x + boundRect.width;
+//            }
+//        }
+        getAmpDataWatershed(left, right);
     }
 
-    cv::Mat _paintBuff( topcWidthPixel, scanPixel, CV_8U, srcData.data());
-    cv::threshold( _paintBuff, result, max, 255, cv::THRESH_BINARY);
-    contours.clear();
-    cv::findContours( result, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-    defectNum = contours.size();
-    int left  = scanPixel -1;
-    int right = 0;
-    for( int i = 0; i < defectNum; i++){
-        boundRect = cv::boundingRect( cv::Mat( contours[i]));
-        if(boundRect.x < left){
-            left = boundRect.x;
-        }
-        if(boundRect.x + boundRect.width > right){
-            right = boundRect.x + boundRect.width;
-        }
+
+//    cv::namedWindow("Original Image", 1);
+//    cv::imshow("Original Image", result);
+//    cv::waitKey();
+    float defectCLeft, defectCRight;
+    if( m_orient == ORIENT_HORIZONTAL){
+        defectCLeft  = (m_scanStop - m_scanStart) * left / (scanPixel -1) + m_scanStart;
+        defectCRight = (m_scanStop - m_scanStart) * right / (scanPixel -1) + m_scanStart;
+    }else{
+        defectCLeft  = m_scanStop - ((m_scanStop - m_scanStart) * left / (scanPixel -1));
+        defectCRight = m_scanStop - ((m_scanStop - m_scanStart) * right / (scanPixel -1));
     }
-    float defectCLeft  = (m_scanStop - m_scanStart) * left / (scanPixel -1) + m_scanStart;
-    float defectCRight = (m_scanStop - m_scanStart) * right / (scanPixel -1) + m_scanStart;
+
     _pConfig->group[m_groupId].afCursor[setup_CURSOR_S_REF] = defectCLeft;
     _pConfig->group[m_groupId].afCursor[setup_CURSOR_S_MES] = defectCRight;
 
     float scanPos = _process->SAxisIndexToDist(scanIndex);
     _process->SetupScanPos(scanPos);
+//    qDebug()<<"scanPixel"<<scanPixel;
+//    qDebug()<<srcData;
+//    int a, b;
+//    getAmpDataWatershed(a, b);
     return true;
 }
 
@@ -437,52 +544,103 @@ void AidedAnalysis::calculateSrcData()
     int _nScanOff = _process->GetScanOff(m_groupId);
     int _nScanMax = _process->GetRealScanMax() + _nScanOff;
     if(Calculation){
-        for(i = scanPixelStart, j = 0; i <= scanPixelStop; i++ , j++){
-            if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
-                pData = _process->GetScanPosPointer( m_groupId, i);
-                if(direction == 0){
-                    for( k = pixelWidthStart, n = 0; k <= pixelWidthStop; k++,n++){
-                        WDATA buff = 0;
-                        WDATA _nTmpValue = 0;
-                        for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                            int index = m * _TOPCInfo.pixelWidth + k;
-                            index = _TOPCInfo.pDataIndex[index];
-                            if(index){
-                                buff = pData[index];
-                            }else{
-                                buff = 0;
+        if( m_orient == ORIENT_HORIZONTAL){
+            for(i = scanPixelStart, j = 0; i <= scanPixelStop; i++ , j++){
+                if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
+                    pData = _process->GetScanPosPointer( m_groupId, i);
+                    if(direction == 0){
+                        for( k = pixelWidthStart, n = 0; k <= pixelWidthStop; k++,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
                             }
-                            if(buff > _nTmpValue){
-                                _nTmpValue = buff;
-                            }
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            srcData[n*scanPixel + j] = TmpValue;
                         }
-                        TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                        if( TmpValue > 255) TmpValue = 255;
-                        srcData[n*scanPixel + j] = TmpValue;
+                    }else{
+                        for( k = pixelWidthStop, n = 0; k >= pixelWidthStart; k--,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            srcData[n*scanPixel + j] = TmpValue;
+                        }
                     }
-                }else{
-                    for( k = pixelWidthStop, n = 0; k >= pixelWidthStart; k--,n++){
-                        WDATA buff = 0;
-                        WDATA _nTmpValue = 0;
-                        for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                            int index = m * _TOPCInfo.pixelWidth + k;
-                            index = _TOPCInfo.pDataIndex[index];
-                            if(index){
-                                buff = pData[index];
-                            }else{
-                                buff = 0;
+                }
+            }
+        }else{
+            for(i = scanPixelStop, j = 0; i >= scanPixelStart; i--, j++){
+                if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
+                    pData = _process->GetScanPosPointer( m_groupId, i);
+                    int offset = j * topcWidthPixel;
+                    if(direction == 0){
+                        for( k = pixelWidthStart, n = 0; k <= pixelWidthStop; k++,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
                             }
-                            if(buff > _nTmpValue){
-                                _nTmpValue = buff;
-                            }
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            srcData[ offset + n] = TmpValue;
                         }
-                        TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                        if( TmpValue > 255) TmpValue = 255;
-                        srcData[n*scanPixel + j] = TmpValue;
+                    }else{
+                        for( k = pixelWidthStop, n = 0; k >= pixelWidthStart; k--,n++){
+                            WDATA buff = 0;
+                            WDATA _nTmpValue = 0;
+                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+                                int index = m * _TOPCInfo.pixelWidth + k;
+                                index = _TOPCInfo.pDataIndex[index];
+                                if(index){
+                                    buff = pData[index];
+                                }else{
+                                    buff = 0;
+                                }
+                                if(buff > _nTmpValue){
+                                    _nTmpValue = buff;
+                                }
+                            }
+                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                            if( TmpValue > 255) TmpValue = 255;
+                            srcData[ offset + n] = TmpValue;
+                        }
                     }
                 }
             }
         }
+
     }
 }
 
@@ -501,4 +659,150 @@ quint8 AidedAnalysis::getDataMax()
     m_dataMaxStatus = true;
     m_dataMax = max;
     return max;
+}
+
+void AidedAnalysis::getAmpData(int &leftAmp, int &rightAmp)
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+    float methodThreshold = _process->GetDetermineThreshold(m_groupId, setup_EL);
+    int max = methodThreshold * 255 / 100;
+    QVector<int> Points_;
+    Points_.clear();
+
+    for(int i = 0; i < topcWidthPixel; i++){
+        int offset = i*scanPixel;
+        int buff = 0;
+        int position = 0;
+        for(int j = 0; j < scanPixel; j++){
+            int temp = srcData[offset + j];
+            if(temp >= buff){
+                buff =  temp;
+                position = j;
+            }else{
+                if(buff > max){
+                    break;
+                }else{
+                    buff = temp;
+                    position = j;
+                }
+            }
+        }
+        Points_.append(position);
+    }
+    int tempP = scanPixel - 1;
+    int index = 0;
+    for(int i = 0; i < Points_.size(); i++){
+        if(Points_[i] < tempP){
+            tempP = Points_[i];
+            index = i;
+        }
+    }
+    int offset = index * scanPixel + Points_[index];
+    leftAmp = srcData[offset];
+
+    Points_.clear();
+    for(int i = 0; i < topcWidthPixel; i++){
+        int offset = i*scanPixel;
+        int buff = 0;
+        int position = 0;
+        for(int j = scanPixel - 1; j >= 0; j--){
+            int temp = srcData[offset + j];
+            if(temp >= buff){
+                buff =  temp;
+                position = j;
+            }else{
+                if(buff > max){
+                    break;
+                }else{
+                    buff = temp;
+                    position = j;
+                }
+            }
+        }
+        Points_.append(position);
+    }
+    tempP = 0;
+    index = 0;
+    for(int i = 0; i < Points_.size(); i++){
+        if(Points_[i] > tempP){
+            tempP = Points_[i];
+            index = i;
+        }
+    }
+    offset = index * scanPixel + Points_[index];
+    rightAmp = srcData[offset];
+}
+
+void AidedAnalysis::getAmpDataWatershed(int &leftAmp, int &rightAmp)
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+    float methodThreshold = _process->GetDetermineThreshold(m_groupId, setup_EL);
+    int max = methodThreshold * 255 / 100;
+    //cv::Mat _paintBuff( topcWidthPixel, scanPixel, CV_8U, srcData.data());
+    int rows, cols;
+    if( m_orient == ORIENT_HORIZONTAL){
+        rows = topcWidthPixel;
+        cols = scanPixel;
+    }else{
+        rows = scanPixel;
+        cols = topcWidthPixel;
+    }
+    cv::Mat ima3( rows, cols, CV_8UC3, cv::Scalar(0,0,0));
+    for(int i = 0; i < rows; i++){
+        int offset = i*cols;
+        uchar* data = ima3.ptr<uchar> (i);
+        for(int j = 0; j < cols; j++){
+            int xoff = 3 * j;
+            uchar buff = srcData[offset + j];
+            data[xoff] = buff;
+            data[xoff + 1] = buff;
+            data[xoff + 2] = buff;
+        }
+    }
+    cv::Mat afterCanny;
+    cv::Canny( ima3, afterCanny, max, 150);
+
+    std::vector<std::vector<cv::Point>> contours;
+//    std::vector<cv::Vec4i> hierarchy;
+    cv::findContours( afterCanny, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+    //cv::findContours( afterCanny, contours, hierarchy, cv::RETR_TREE,cv::CHAIN_APPROX_SIMPLE,cv::Point());
+    //cv::Mat imageContours = cv::Mat::zeros(ima3.size(),CV_8UC1);
+//    cv::Mat marks(ima3.size(),CV_32S);
+//    marks = cv::Scalar::all(0);
+    //qDebug()<<"contours"<<contours.size();
+    int defectNum = contours.size();
+    cv::Rect boundRect;
+    int left = scanPixel - 1;
+    int right = 0;
+    for(int index = 0; index < defectNum; index++){
+        //cv::drawContours( marks, contours, index, cv::Scalar::all(255), 1, 8);
+        boundRect = cv::boundingRect( cv::Mat( contours[index]));
+        int x1, x2;
+        if( m_orient == ORIENT_HORIZONTAL){
+            x1 = boundRect.x;
+            x2 = boundRect.x + boundRect.width;
+        }else{
+            x1 = boundRect.y;
+            x2 = boundRect.y + boundRect.height;
+        }
+
+        if(x1 < left){
+            left = x1;
+        }
+        if(x2 > right){
+            right = x2;
+        }
+        //cv::drawContours( imageContours, contours, index, cv::Scalar(255), 1, 8, hierarchy);
+    }
+//    cv::Mat marksShows;
+//    cv::convertScaleAbs( marks, marksShows);
+//    cv::imshow("after Image", marksShows);
+//    cv::watershed( ima3, marks);
+//    cv::Mat afterWatershed;
+//    cv::convertScaleAbs( marks, afterWatershed);
+
+//    cv::imshow("origin Image", _paintBuff);
+    //qDebug()<<"left"<<left<<"right"<<right;
+    leftAmp  = left;
+    rightAmp = right;
 }

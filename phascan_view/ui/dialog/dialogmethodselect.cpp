@@ -2,7 +2,7 @@
 #include "ui_dialogmethodselect.h"
 #include <QButtonGroup>
 
-DialogMethodSelect::DialogMethodSelect(QWidget *parent) :
+DialogMethodSelect::DialogMethodSelect( int id, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogMethodSelect)
 {
@@ -10,8 +10,13 @@ DialogMethodSelect::DialogMethodSelect(QWidget *parent) :
     m_GroupBt = new QButtonGroup(this);
     m_GroupBt->addButton(ui->RBtHalfWave, 0);
     m_GroupBt->addButton(ui->RBtAbsoluteSensitivity, 1);
-    m_method = 0;
-    ui->RBtHalfWave->setChecked(true);
+    m_method = id;
+    if(id == 0){
+        ui->RBtHalfWave->setChecked(true);
+    }else{
+        ui->RBtAbsoluteSensitivity->setChecked(true);
+    }
+
     connect(ui->RBtHalfWave, SIGNAL(clicked(bool)), this, SLOT(methodSelect()));
     connect(ui->RBtAbsoluteSensitivity, SIGNAL(clicked(bool)), this, SLOT(methodSelect()));
     connect(ui->BtOK, SIGNAL(clicked(bool)), this, SLOT(accept()));

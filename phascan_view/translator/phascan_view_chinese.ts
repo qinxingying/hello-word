@@ -120,6 +120,11 @@
         <source>OK</source>
         <translation>确认</translation>
     </message>
+    <message>
+        <location filename="../ui/dialog/dialogdefectselect.cpp" line="20"/>
+        <source>these has %1 defects found. please select one.</source>
+        <translation type="unfinished">检测到%1 个位置均为峰值幅度.请选择合适的峰值位置.</translation>
+    </message>
 </context>
 <context>
     <name>DialogDxfFileLoad</name>
@@ -801,23 +806,23 @@
         <translation type="vanished">普通钢</translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1646"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1681"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1648"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1683"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1711"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1713"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1914"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1916"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1914"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1916"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3593,7 +3598,7 @@
     <message>
         <location filename="../ui/mainwindow.cpp" line="2042"/>
         <source>Please Open TOPC Mode</source>
-        <translation>请开启TOPC模式</translation>
+        <translation>请在闸门和曲线中将C扫模式选择投影</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="2047"/>

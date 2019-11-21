@@ -178,6 +178,12 @@ enum setup_WELD_TYPE
 	setup_WELD_MAX
 };
 
+enum VIEW_ORIENT
+{
+    ORIENT_HORIZONTAL = 0,
+    ORIENT_VERTICAL
+};
+
 enum setup_WELD_TYPE_II
 {
     NONE_TYPE = 0,

@@ -17,6 +17,7 @@ DialogDefectSelect::DialogDefectSelect(int defectNum, QWidget *parent) :
     for(int i = 1; i <= defectNum; i++){
         ui->ComboSelect->addItem(QString::number(i));
     }
+    ui->LabelNotice->setText(tr("these has %1 defects found. please select one.").arg(defectNum));
     ui->ComboSelect->setCurrentIndex(0);
     m_selectDefect = 0;
     connect(ui->ComboSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(defectSelect(int)));
@@ -51,9 +52,7 @@ void DialogDefectSelect::mousePressEvent(QMouseEvent *event)
     if(Qt::LeftButton == event->button()){
         QPoint buff = event->pos();
         for(int i = 0; i < m_defectCentre.size(); i++){
-            int x = m_defectCentre[i].x();
-            int y = m_defectCentre[i].y();
-            if((buff.x() >= x - 2 && buff.x() <= x + 8) && (buff.y() >= y - 8 && buff.y() <= y + 2)){
+            if(m_defectRect[i].contains(buff)){
                 ui->ComboSelect->setCurrentIndex(i);
                 update();
                 return;
