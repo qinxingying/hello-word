@@ -155,6 +155,7 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
 {
     int max = getDataMax();
     //max = max / 2;
+    //max = (max - 1)/2;
     max--;
     QPoint buff = defectCentre[index];
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -164,6 +165,7 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
     float  indexOffset = _pConfig->group[m_groupId].fIndexOffset;
     if( m_orient == ORIENT_HORIZONTAL){
         scanIndex = _process->SAxisDistToIndex(m_scanStart);
+        qDebug()<<"scanIndex"<<scanIndex;
         scanIndex = scanIndex + buff.x();
     }else{
         scanIndex = _process->SAxisDistToIndex(m_scanStop);
@@ -196,8 +198,12 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
         break;
     }
     WDATA* pData;
+    float _fScale = _process->GetRefGainScale(m_groupId);
     int i, j;
+    int TmpValue;
     pData = _process->GetScanPosPointer( m_groupId, scanIndex);
+    qDebug()<<"m_groupId"<<m_groupId;
+
     for( i = 0; i < _pixelWidth; i++){
         WDATA buff = 0;
         for( j = 0; j < _pixelHeigh; j++){
@@ -208,13 +214,24 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
             }else{
                 buff = 0;
             }
-            src[ j * _pixelWidth + i] = buff;
+            TmpValue =  _process->correctionPdata(buff) * _fScale;
+            if( TmpValue > 255) TmpValue = 255;
+            src[ j * _pixelWidth + i] = TmpValue;
         }
     }
-
+    int srcMax = 0;
+    for(int k = 0; k < src.size(); k++){
+        if(src[k] > srcMax){
+            srcMax = src[k];
+        }
+    }
+    qDebug()<<"srcMax"<<srcMax;
     cv::Mat paintBuff( _pixelHeigh, _pixelWidth, CV_8U, src.data());
+    //cv::imshow("origin Image", paintBuff);
     cv::Mat result;
     cv::threshold( paintBuff, result, max, 255, cv::THRESH_BINARY);
+    qDebug()<<"max"<<max;
+    //cv::imshow("result Image", result);
 
     std::vector<std::vector<cv::Point> >contours;
     contours.clear();

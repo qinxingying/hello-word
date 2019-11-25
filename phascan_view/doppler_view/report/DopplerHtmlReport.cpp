@@ -6,6 +6,7 @@
 #include <QProcess>
 #include <QStringList>
 #include <QDebug>
+#include <QDesktopServices>
 #include "../configure/config_phascan_ii/config.h"
 
 #define TABLE_WIDTH	 800
@@ -285,16 +286,18 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
 void DopplerHtmlReport::SaveReport()
 {
     BuildReport();
-#ifdef LINUX
-	QString _strExec("/usr/bin/firefox") ;
-#else
-    QString _strExec("\"C:\\Program Files\\Internet Explorer\\IEXPLORE.EXE\"");
-#endif
-    QStringList _strlist;
-	_strlist.append(m_strFile);
+//#ifdef LINUX
+//	QString _strExec("/usr/bin/firefox") ;
+//#else
+//    QString _strExec("\"C:\\Program Files\\Internet Explorer\\IEXPLORE.EXE\"");
+//#endif
+//    QStringList _strlist;
+//	_strlist.append(m_strFile);
 
-	QProcess *myProcess = new QProcess(0);
-	myProcess->start(_strExec, _strlist);
+//	QProcess *myProcess = new QProcess(0);
+//	myProcess->start(_strExec, _strlist);
+    QString path = "file:///" + m_strFile;
+    QDesktopServices::openUrl(QUrl(path));
 }
 
 void DopplerHtmlReport::AddOneValueItem(ReportValueItem* value)

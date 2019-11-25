@@ -736,8 +736,10 @@ void MainWindow::initSlider()
     SCANNER& _scanner = _pConfig->common.scanner ;
     sliderh->blockSignals(true);
     sliderh->setMinimum(0);
-    sliderh->setSingleStep(_scanner.fScanStep);
-    sliderh->setPageStep(_scanner.fScanStep);
+//    sliderh->setSingleStep(_scanner.fScanStep);
+//    sliderh->setPageStep(_scanner.fScanStep);
+    sliderh->setSingleStep(1);
+    sliderh->setPageStep(1);
     sliderh->setMaximum((_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep );
     sliderh->blockSignals(false);
 }
