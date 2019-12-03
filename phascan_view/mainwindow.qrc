@@ -74,5 +74,6 @@
         <file>resource/weld/none.jpg</file>
         <file>resource/Main/palette.png</file>
         <file>resource/toolbar/0-23.png</file>
+        <file>resource/toolbar/0-24.png</file>
     </qresource>
 </RCC>

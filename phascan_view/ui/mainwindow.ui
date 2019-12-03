@@ -300,8 +300,9 @@
    <addaction name="separator"/>
    <addaction name="actionLanguage"/>
    <addaction name="separator"/>
-   <addaction name="actionScreenShot"/>
    <addaction name="actionAided_Analysis"/>
+   <addaction name="actionStop_Analysis"/>
+   <addaction name="actionScreenShot"/>
   </widget>
   <action name="actionNew_Config">
    <property name="checkable">
@@ -678,6 +679,18 @@
    </property>
    <property name="toolTip">
     <string>Aided Analysis Defect</string>
+   </property>
+  </action>
+  <action name="actionStop_Analysis">
+   <property name="icon">
+    <iconset resource="../mainwindow.qrc">
+     <normaloff>:/file/resource/toolbar/0-24.png</normaloff>:/file/resource/toolbar/0-24.png</iconset>
+   </property>
+   <property name="text">
+    <string>actionStop_Analysis</string>
+   </property>
+   <property name="toolTip">
+    <string>Stop Analysis</string>
    </property>
   </action>
  </widget>

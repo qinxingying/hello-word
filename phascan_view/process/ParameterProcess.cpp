@@ -1427,6 +1427,7 @@ WDATA* ParameterProcess::GetGroupDataPointer(int nGroupId_)
 	int        _index = GetRealScanIndex(nGroupId_, _nScanPos);
 	int _nFrameOffset = _nFrameSize * _index  ;
 	int _nGroupOffset = GetGroupDataOffset(nGroupId_) ;
+    //qDebug()<<"_index"<<_index<<"offset"<<_nFrameOffset + _nGroupOffset;
 	return (_pData + _nFrameOffset + _nGroupOffset)  ;
 }
 

@@ -129,6 +129,7 @@ void MainWindow::init_ui()
     ui->actionSaveFile->setDisabled(true);
     ui->actionSaveDisplay->setDisabled(true);
     ui->actionLoadDisplay->setDisabled(true);
+    ui->actionStop_Analysis->setDisabled(true);
     // init display widget list
     for(int i = 0 ; i < MAX_LIST_QTY ; i++)
     {
@@ -757,7 +758,8 @@ void MainWindow::initIndexSlider()
     }else{
         indexSliderh->blockSignals(true);
         indexSliderh->setMinimum(0);
-        indexSliderh->setSingleStep(_scanner.fIndexStep);
+        //indexSliderh->setSingleStep(_scanner.fIndexStep);
+        indexSliderh->setSingleStep(1);
         indexSliderh->setMaximum((_scanner.fIndexStop - _scanner.fIndexStart) / _scanner.fIndexStep);
         indexSliderh->blockSignals(false);
         indexSliderh->show();
@@ -794,11 +796,11 @@ void MainWindow::AidedAnalysisDone(bool status)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
-    _pConfig->common.aidedAnalysis.aidedStatus  = false;
+    //_pConfig->common.aidedAnalysis.aidedStatus  = false;
     int _nGroupId = _pConfig->common.aidedAnalysis.aidedGroupId;
-    menuBar()->setEnabled(true);
-    ui->toolBar->setEnabled(true);
-    ui->TabWidget_parameter->setEnabled(true);
+//    menuBar()->setEnabled(true);
+//    ui->toolBar->setEnabled(true);
+//    ui->TabWidget_parameter->setEnabled(true);
     if(status){
         ProcessDisplay _proDispy;
         GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
@@ -2058,6 +2060,41 @@ void MainWindow::on_actionAided_Analysis_triggered()
     _pConfig->common.aidedAnalysis.aidedStatus  = true;
     _pConfig->common.aidedAnalysis.aidedMethodId = methodId;
     menuBar()->setEnabled(false);
-    ui->toolBar->setEnabled(false);
+    //ui->toolBar->setEnabled(false);
+    set_ToolBarStatus(false);
     ui->TabWidget_parameter->setEnabled(false);
+}
+
+void MainWindow::on_actionStop_Analysis_triggered()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->common.aidedAnalysis.aidedStatus  = false;
+    //int _nGroupId = _pConfig->common.aidedAnalysis.aidedGroupId;
+    menuBar()->setEnabled(true);
+    set_ToolBarStatus(true);
+    ui->TabWidget_parameter->setEnabled(true);
+}
+
+void MainWindow::set_ToolBarStatus( bool status)
+{
+    ui->actionOpenFile->setEnabled(status);
+    ui->actionReport_Add_One_Item->setEnabled(status);
+    ui->actionReport_Del_One_Item->setEnabled(status);
+    ui->actionReport_Setting->setEnabled(status);
+    ui->actionSave_Report->setEnabled(status);
+    ui->actionTOFD_LW_Straitening->setEnabled(status);
+    ui->actionTOFD_BW_Straitening->setEnabled(status);
+    ui->actionTOFD_LW_Removal->setEnabled(status);
+    ui->actionTOFD_SAFT->setEnabled(status);
+    ui->actionTOFD_Repeal->setEnabled(status);
+    ui->actionTOFD_Redo->setEnabled(status);
+    ui->actionTOFD_Length_Measurement->setEnabled(status);
+    ui->actionTOFD_Height_Measurement->setEnabled(status);
+    ui->actionTOFD_Depth_Measurement->setEnabled(status);
+    ui->actionSave_Defect->setEnabled(status);
+    ui->actionLanguage->setEnabled(status);
+    ui->actionScreenShot->setEnabled(status);
+    ui->actionAided_Analysis->setEnabled(status);
+    ui->actionStop_Analysis->setEnabled(!status);
+    sliderh->setEnabled(status);
 }

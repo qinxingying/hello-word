@@ -219,13 +219,13 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
             src[ j * _pixelWidth + i] = TmpValue;
         }
     }
-    int srcMax = 0;
-    for(int k = 0; k < src.size(); k++){
-        if(src[k] > srcMax){
-            srcMax = src[k];
-        }
-    }
-    qDebug()<<"srcMax"<<srcMax;
+//    int srcMax = 0;
+//    for(int k = 0; k < src.size(); k++){
+//        if(src[k] > srcMax){
+//            srcMax = src[k];
+//        }
+//    }
+//    qDebug()<<"srcMax"<<srcMax;
     cv::Mat paintBuff( _pixelHeigh, _pixelWidth, CV_8U, src.data());
     //cv::imshow("origin Image", paintBuff);
     cv::Mat result;
