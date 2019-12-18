@@ -13,11 +13,19 @@ DopplerParabolaItem::DopplerParabolaItem()
 	m_cColor = QColor(0 , 0 , 255);
 	m_nDisp   = 0	  ;
 	m_nGroup  = 0	 ;
+    m_scaleH  = 1;
+    m_scaleV  = 1;
 }
 
 void DopplerParabolaItem::SetPoint(QPointF pos_)
 {
 	m_cPos = pos_ ;
+}
+
+void DopplerParabolaItem::Set_Scale(float scaleH, float scaleV)
+{
+    m_scaleH  = scaleH;
+    m_scaleV  = scaleV;
 }
 
 QRectF DopplerParabolaItem::boundingRect() const
@@ -51,7 +59,12 @@ void DopplerParabolaItem::paint (QPainter *painter, const QStyleOptionGraphicsIt
 	GetPrecInfo(&_fPrecX, &_fPrecY, &_fTX0);
 
 	QPointF _ptFittedCurve[FITTED_CURVE_LEN_MAX];
-	_process->FittedCurveGetPoints(m_nGroup, _fPrecX, _fPrecY, _fTX0,  _iDots, _ptFittedCurve);
+//    if(m_nDisp == setup_DISPLAY_MODE_B_V ){
+        _process->FittedCurveGetPoints(m_nGroup, _fPrecX, _fPrecY, _fTX0,  _iDots, m_scaleH, m_scaleV, _ptFittedCurve);
+//    }else{
+
+//    }
+
 
 	if(m_nDisp == setup_DISPLAY_MODE_B_V )
 	{
@@ -83,14 +96,14 @@ void DopplerParabolaItem::GetPrecInfo(float* precX_, float* precY_, float* pTX0_
 
 	if(m_nDisp == setup_DISPLAY_MODE_B_H )
 	{
-		*precX_ = _pGroup->fSampleRange / _C / _sizeWidget.width() ;
-		*precY_ = _pConfig->common.scanner.fScanStep;
+        *precX_ = _pGroup->fSampleRange / _C / _sizeWidget.width();
+        *precY_ = _pConfig->common.scanner.fScanStep;
 		*pTX0_  = m_cPos.x()/_C + _fZeroTime;
 	}
 	else if(m_nDisp == setup_DISPLAY_MODE_B_V )
 	{
-		*precX_ = _pGroup->fSampleRange / _C / _sizeWidget.height() ;
-		*precY_ = _pConfig->common.scanner.fScanStep;
+        *precX_ = _pGroup->fSampleRange / _C / _sizeWidget.height();
+        *precY_ = _pConfig->common.scanner.fScanStep;
 		*pTX0_  = m_cPos.y()/_C + _fZeroTime;
 	}
 }

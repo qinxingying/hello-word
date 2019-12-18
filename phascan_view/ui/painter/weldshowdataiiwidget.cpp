@@ -133,24 +133,28 @@ void WeldShowDataIIWidget::DrawWeldI( QPainter &painter)
     QPainterPath path;
     QPointF _pos[2];
     double w = m_pPart->weld_ii.I.w;
-    _pos[0].setX(-w);
-    _pos[0].setY(0);
-    _pos[1].setX(-w);
-    _pos[1].setY(m_fThickness);
-    PositionTransfer(_pos[0]);
-    PositionTransfer(_pos[1]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_LEFT){
+        _pos[0].setX(-w);
+        _pos[0].setY(0);
+        _pos[1].setX(-w);
+        _pos[1].setY(m_fThickness);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+    }
 
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_RIGHT){
+        _pos[0].setX(w);
+        _pos[0].setY(0);
+        _pos[1].setX(w);
+        _pos[1].setY(m_fThickness);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+    }
 
-    _pos[0].setX(w);
-    _pos[0].setY(0);
-    _pos[1].setX(w);
-    _pos[1].setY(m_fThickness);
-    PositionTransfer(_pos[0]);
-    PositionTransfer(_pos[1]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
     painter.drawPath(path);
 }
 
@@ -158,32 +162,35 @@ void WeldShowDataIIWidget::DrawWeldV( QPainter &painter)
 {
     QPainterPath path;
     QPointF _pos[3];
-    _pos[0].setX(m_pPart->weld_ii.V.w1);
-    _pos[0].setY(0);
-    _pos[1].setX(m_pPart->weld_ii.V.w2);
-    _pos[1].setY(m_pPart->weld_ii.V.h);
-    _pos[2].setX(m_pPart->weld_ii.V.w2);
-    _pos[2].setY(m_fThickness);
-    PositionTransfer(_pos[0]);
-    PositionTransfer(_pos[1]);
-    PositionTransfer(_pos[2]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.lineTo(_pos[2]);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_LEFT){
+        _pos[0].setX(-m_pPart->weld_ii.V.w1);
+        _pos[0].setY(0);
+        _pos[1].setX(-m_pPart->weld_ii.V.w2);
+        _pos[1].setY(m_pPart->weld_ii.V.h);
+        _pos[2].setX(-m_pPart->weld_ii.V.w2);
+        _pos[2].setY(m_fThickness);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+    }
 
-    _pos[0].setX(-m_pPart->weld_ii.V.w1);
-    _pos[0].setY(0);
-    _pos[1].setX(-m_pPart->weld_ii.V.w2);
-    _pos[1].setY(m_pPart->weld_ii.V.h);
-    _pos[2].setX(-m_pPart->weld_ii.V.w2);
-    _pos[2].setY(m_fThickness);
-    PositionTransfer(_pos[0]);
-    PositionTransfer(_pos[1]);
-    PositionTransfer(_pos[2]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.lineTo(_pos[2]);
-
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_RIGHT){
+        _pos[0].setX(m_pPart->weld_ii.V.w1);
+        _pos[0].setY(0);
+        _pos[1].setX(m_pPart->weld_ii.V.w2);
+        _pos[1].setY(m_pPart->weld_ii.V.h);
+        _pos[2].setX(m_pPart->weld_ii.V.w2);
+        _pos[2].setY(m_fThickness);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+    }
     painter.drawPath(path);
 }
 
@@ -222,43 +229,47 @@ void WeldShowDataIIWidget::DrawWeldU( QPainter &painter)
     PositionTransfer(_rightbottom);
     QRectF rectangle( _lefttop, _rightbottom);
 
-    _pos[0].setX(-w1);
-    _pos[0].setY(0);
-    _pos[1].setX(-w3);
-    _pos[1].setY(h3);
-    _pos[2].setX(-w2);
-    _pos[2].setY(h);
-    _pos[3].setX(-w2);
-    _pos[3].setY(m_fThickness);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_LEFT){
+        _pos[0].setX(-w1);
+        _pos[0].setY(0);
+        _pos[1].setX(-w3);
+        _pos[1].setY(h3);
+        _pos[2].setX(-w2);
+        _pos[2].setY(h);
+        _pos[3].setX(-w2);
+        _pos[3].setY(m_fThickness);
 
-    PositionTransfer(_pos[0]);
-    PositionTransfer(_pos[1]);
-    PositionTransfer(_pos[2]);
-    PositionTransfer(_pos[3]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.arcTo( rectangle, 180+b, e);
-    path.moveTo(_pos[2]);
-    path.lineTo(_pos[3]);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        PositionTransfer(_pos[3]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.arcTo( rectangle, 180+b, e);
+        path.moveTo(_pos[2]);
+        path.lineTo(_pos[3]);
+    }
 
-    _pos[0].setX(w1);
-    _pos[0].setY(0);
-    _pos[1].setX(w3);
-    _pos[1].setY(h3);
-    _pos[2].setX(w2);
-    _pos[2].setY(h);
-    _pos[3].setX(w2);
-    _pos[3].setY(m_fThickness);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_RIGHT){
+        _pos[0].setX(w1);
+        _pos[0].setY(0);
+        _pos[1].setX(w3);
+        _pos[1].setY(h3);
+        _pos[2].setX(w2);
+        _pos[2].setY(h);
+        _pos[3].setX(w2);
+        _pos[3].setY(m_fThickness);
 
-    PositionTransfer(_pos[0]);
-    PositionTransfer(_pos[1]);
-    PositionTransfer(_pos[2]);
-    PositionTransfer(_pos[3]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.arcTo( rectangle, -b, -e);
-    path.moveTo(_pos[2]);
-    path.lineTo(_pos[3]);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        PositionTransfer(_pos[3]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.arcTo( rectangle, -b, -e);
+        path.moveTo(_pos[2]);
+        path.lineTo(_pos[3]);
+    }
 
     painter.drawPath(path);
 }
@@ -274,39 +285,44 @@ void WeldShowDataIIWidget::DrawWeldVY( QPainter &painter)
     double h2 = m_pPart->weld_ii.VY.h2;
     double w3 = m_pPart->weld_ii.VY.w3;
 
-    _pos[0].setX(-w1);
-    _pos[0].setY(0);
-    _pos[1].setX(-w2);
-    _pos[1].setY(h1);
-    _pos[2].setX(-w3);
-    _pos[2].setY(h1 + h2);
-    _pos[3].setX(-w3);
-    _pos[3].setY(m_fThickness);
-    PositionTransfer( _pos[0]);
-    PositionTransfer( _pos[1]);
-    PositionTransfer( _pos[2]);
-    PositionTransfer( _pos[3]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.lineTo(_pos[2]);
-    path.lineTo(_pos[3]);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_LEFT){
+        _pos[0].setX(-w1);
+        _pos[0].setY(0);
+        _pos[1].setX(-w2);
+        _pos[1].setY(h1);
+        _pos[2].setX(-w3);
+        _pos[2].setY(h1 + h2);
+        _pos[3].setX(-w3);
+        _pos[3].setY(m_fThickness);
+        PositionTransfer( _pos[0]);
+        PositionTransfer( _pos[1]);
+        PositionTransfer( _pos[2]);
+        PositionTransfer( _pos[3]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+        path.lineTo(_pos[3]);
 
-    _pos[0].setX(w1);
-    _pos[0].setY(0);
-    _pos[1].setX(w2);
-    _pos[1].setY(h1);
-    _pos[2].setX(w3);
-    _pos[2].setY(h1 + h2);
-    _pos[3].setX(w3);
-    _pos[3].setY(m_fThickness);
-    PositionTransfer( _pos[0]);
-    PositionTransfer( _pos[1]);
-    PositionTransfer( _pos[2]);
-    PositionTransfer( _pos[3]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.lineTo(_pos[2]);
-    path.lineTo(_pos[3]);
+    }
+
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_RIGHT){
+        _pos[0].setX(w1);
+        _pos[0].setY(0);
+        _pos[1].setX(w2);
+        _pos[1].setY(h1);
+        _pos[2].setX(w3);
+        _pos[2].setY(h1 + h2);
+        _pos[3].setX(w3);
+        _pos[3].setY(m_fThickness);
+        PositionTransfer( _pos[0]);
+        PositionTransfer( _pos[1]);
+        PositionTransfer( _pos[2]);
+        PositionTransfer( _pos[3]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+        path.lineTo(_pos[3]);
+    }
 
     painter.drawPath(path);
 }
@@ -322,39 +338,43 @@ void WeldShowDataIIWidget::DrawWeldVV( QPainter &painter)
     double h2 = m_pPart->weld_ii.VV.h2;
     double w3 = m_pPart->weld_ii.VV.w3;
 
-    _pos[0].setX(-w1);
-    _pos[0].setY(0);
-    _pos[1].setX(-w2);
-    _pos[1].setY(h1);
-    _pos[2].setX(-w2);
-    _pos[2].setY(m_fThickness - h2);
-    _pos[3].setX(-w3);
-    _pos[3].setY(m_fThickness);
-    PositionTransfer( _pos[0]);
-    PositionTransfer( _pos[1]);
-    PositionTransfer( _pos[2]);
-    PositionTransfer( _pos[3]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.lineTo(_pos[2]);
-    path.lineTo(_pos[3]);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_LEFT){
+        _pos[0].setX(-w1);
+        _pos[0].setY(0);
+        _pos[1].setX(-w2);
+        _pos[1].setY(h1);
+        _pos[2].setX(-w2);
+        _pos[2].setY(m_fThickness - h2);
+        _pos[3].setX(-w3);
+        _pos[3].setY(m_fThickness);
+        PositionTransfer( _pos[0]);
+        PositionTransfer( _pos[1]);
+        PositionTransfer( _pos[2]);
+        PositionTransfer( _pos[3]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+        path.lineTo(_pos[3]);
+    }
 
-    _pos[0].setX(w1);
-    _pos[0].setY(0);
-    _pos[1].setX(w2);
-    _pos[1].setY(h1);
-    _pos[2].setX(w2);
-    _pos[2].setY(m_fThickness - h2);
-    _pos[3].setX(w3);
-    _pos[3].setY(m_fThickness);
-    PositionTransfer( _pos[0]);
-    PositionTransfer( _pos[1]);
-    PositionTransfer( _pos[2]);
-    PositionTransfer( _pos[3]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.lineTo(_pos[2]);
-    path.lineTo(_pos[3]);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_RIGHT){
+        _pos[0].setX(w1);
+        _pos[0].setY(0);
+        _pos[1].setX(w2);
+        _pos[1].setY(h1);
+        _pos[2].setX(w2);
+        _pos[2].setY(m_fThickness - h2);
+        _pos[3].setX(w3);
+        _pos[3].setY(m_fThickness);
+        PositionTransfer( _pos[0]);
+        PositionTransfer( _pos[1]);
+        PositionTransfer( _pos[2]);
+        PositionTransfer( _pos[3]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+        path.lineTo(_pos[3]);
+    }
 
     painter.drawPath(path);
 }
@@ -417,59 +437,63 @@ void WeldShowDataIIWidget::DrawWeldUU( QPainter &painter)
     PositionTransfer( _rightbottom);
     QRectF rectangle2( _lefttop, _rightbottom);
 
-    _pos[0].setX(-w1);
-    _pos[0].setY(0);
-    _pos[1].setX(-w4);
-    _pos[1].setY(h5);
-    _pos[2].setX(-w2);
-    _pos[2].setY(h1);
-    _pos[3].setX(-w2);
-    _pos[3].setY(m_fThickness - h2);
-    _pos[4].setX(-w5);
-    _pos[4].setY(m_fThickness - h8);
-    _pos[5].setX(-w3);
-    _pos[5].setY(m_fThickness);
-    PositionTransfer( _pos[0]);
-    PositionTransfer( _pos[1]);
-    PositionTransfer( _pos[2]);
-    PositionTransfer( _pos[3]);
-    PositionTransfer( _pos[4]);
-    PositionTransfer( _pos[5]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.arcTo( rectangle1, 180+a1, a2);
-    path.moveTo(_pos[2]);
-    path.lineTo(_pos[3]);
-    path.moveTo(_pos[5]);
-    path.lineTo(_pos[4]);
-    path.arcTo( rectangle2, 180-a3, -a4);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_LEFT){
+        _pos[0].setX(-w1);
+        _pos[0].setY(0);
+        _pos[1].setX(-w4);
+        _pos[1].setY(h5);
+        _pos[2].setX(-w2);
+        _pos[2].setY(h1);
+        _pos[3].setX(-w2);
+        _pos[3].setY(m_fThickness - h2);
+        _pos[4].setX(-w5);
+        _pos[4].setY(m_fThickness - h8);
+        _pos[5].setX(-w3);
+        _pos[5].setY(m_fThickness);
+        PositionTransfer( _pos[0]);
+        PositionTransfer( _pos[1]);
+        PositionTransfer( _pos[2]);
+        PositionTransfer( _pos[3]);
+        PositionTransfer( _pos[4]);
+        PositionTransfer( _pos[5]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.arcTo( rectangle1, 180+a1, a2);
+        path.moveTo(_pos[2]);
+        path.lineTo(_pos[3]);
+        path.moveTo(_pos[5]);
+        path.lineTo(_pos[4]);
+        path.arcTo( rectangle2, 180-a3, -a4);
+    }
 
-    _pos[0].setX(w1);
-    _pos[0].setY(0);
-    _pos[1].setX(w4);
-    _pos[1].setY(h5);
-    _pos[2].setX(w2);
-    _pos[2].setY(h1);
-    _pos[3].setX(w2);
-    _pos[3].setY(m_fThickness - h2);
-    _pos[4].setX(w5);
-    _pos[4].setY(m_fThickness - h8);
-    _pos[5].setX(w3);
-    _pos[5].setY(m_fThickness);
-    PositionTransfer( _pos[0]);
-    PositionTransfer( _pos[1]);
-    PositionTransfer( _pos[2]);
-    PositionTransfer( _pos[3]);
-    PositionTransfer( _pos[4]);
-    PositionTransfer( _pos[5]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.arcTo( rectangle1, -a1, -a2);
-    path.moveTo(_pos[2]);
-    path.lineTo(_pos[3]);
-    path.moveTo(_pos[5]);
-    path.lineTo(_pos[4]);
-    path.arcTo( rectangle2, a3, a4);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_RIGHT){
+        _pos[0].setX(w1);
+        _pos[0].setY(0);
+        _pos[1].setX(w4);
+        _pos[1].setY(h5);
+        _pos[2].setX(w2);
+        _pos[2].setY(h1);
+        _pos[3].setX(w2);
+        _pos[3].setY(m_fThickness - h2);
+        _pos[4].setX(w5);
+        _pos[4].setY(m_fThickness - h8);
+        _pos[5].setX(w3);
+        _pos[5].setY(m_fThickness);
+        PositionTransfer( _pos[0]);
+        PositionTransfer( _pos[1]);
+        PositionTransfer( _pos[2]);
+        PositionTransfer( _pos[3]);
+        PositionTransfer( _pos[4]);
+        PositionTransfer( _pos[5]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.arcTo( rectangle1, -a1, -a2);
+        path.moveTo(_pos[2]);
+        path.lineTo(_pos[3]);
+        path.moveTo(_pos[5]);
+        path.lineTo(_pos[4]);
+        path.arcTo( rectangle2, a3, a4);
+    }
 
     painter.drawPath(path);
 }
@@ -512,49 +536,53 @@ void WeldShowDataIIWidget::DrawWeldUV( QPainter &painter)
     PositionTransfer( _rightbottom);
     QRectF rectangle( _lefttop, _rightbottom);
 
-    _pos[0].setX(-w1);
-    _pos[0].setY(0);
-    _pos[1].setX(-w4);
-    _pos[1].setY(h5);
-    _pos[2].setX(-w2);
-    _pos[2].setY(h1);
-    _pos[3].setX(-w2);
-    _pos[3].setY(m_fThickness - h2);
-    _pos[4].setX(-w3);
-    _pos[4].setY(m_fThickness);
-    PositionTransfer( _pos[0]);
-    PositionTransfer( _pos[1]);
-    PositionTransfer( _pos[2]);
-    PositionTransfer( _pos[3]);
-    PositionTransfer( _pos[4]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.arcTo( rectangle, 180+b, e);
-    path.moveTo(_pos[2]);
-    path.lineTo(_pos[3]);
-    path.lineTo(_pos[4]);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_LEFT){
+        _pos[0].setX(-w1);
+        _pos[0].setY(0);
+        _pos[1].setX(-w4);
+        _pos[1].setY(h5);
+        _pos[2].setX(-w2);
+        _pos[2].setY(h1);
+        _pos[3].setX(-w2);
+        _pos[3].setY(m_fThickness - h2);
+        _pos[4].setX(-w3);
+        _pos[4].setY(m_fThickness);
+        PositionTransfer( _pos[0]);
+        PositionTransfer( _pos[1]);
+        PositionTransfer( _pos[2]);
+        PositionTransfer( _pos[3]);
+        PositionTransfer( _pos[4]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.arcTo( rectangle, 180+b, e);
+        path.moveTo(_pos[2]);
+        path.lineTo(_pos[3]);
+        path.lineTo(_pos[4]);
+    }
 
-    _pos[0].setX(w1);
-    _pos[0].setY(0);
-    _pos[1].setX(w4);
-    _pos[1].setY(h5);
-    _pos[2].setX(w2);
-    _pos[2].setY(h1);
-    _pos[3].setX(w2);
-    _pos[3].setY(m_fThickness - h2);
-    _pos[4].setX(w3);
-    _pos[4].setY(m_fThickness);
-    PositionTransfer( _pos[0]);
-    PositionTransfer( _pos[1]);
-    PositionTransfer( _pos[2]);
-    PositionTransfer( _pos[3]);
-    PositionTransfer( _pos[4]);
-    path.moveTo(_pos[0]);
-    path.lineTo(_pos[1]);
-    path.arcTo( rectangle, -b, -e);
-    path.moveTo(_pos[2]);
-    path.lineTo(_pos[3]);
-    path.lineTo(_pos[4]);
+    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_RIGHT){
+        _pos[0].setX(w1);
+        _pos[0].setY(0);
+        _pos[1].setX(w4);
+        _pos[1].setY(h5);
+        _pos[2].setX(w2);
+        _pos[2].setY(h1);
+        _pos[3].setX(w2);
+        _pos[3].setY(m_fThickness - h2);
+        _pos[4].setX(w3);
+        _pos[4].setY(m_fThickness);
+        PositionTransfer( _pos[0]);
+        PositionTransfer( _pos[1]);
+        PositionTransfer( _pos[2]);
+        PositionTransfer( _pos[3]);
+        PositionTransfer( _pos[4]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.arcTo( rectangle, -b, -e);
+        path.moveTo(_pos[2]);
+        path.lineTo(_pos[3]);
+        path.lineTo(_pos[4]);
+    }
 
     painter.drawPath(path);
 }

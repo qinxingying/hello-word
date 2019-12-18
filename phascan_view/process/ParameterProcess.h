@@ -172,7 +172,7 @@ public:
     float CalculateTofdPcs(int nGroupId_);
     float GetTofdDepth(int nGroupId_ , float fCursorPos);
     int  GetTofdDepth(int nGroupId_ , int ID_ , float* fValue_) ;
-    void FittedCurveGetPoints(int nGroupId_, float fPrecX_, float fPrecY_, float fTX0_, int iDots_, QPointF* pPoints_);
+    void FittedCurveGetPoints(int nGroupId_, float fPrecX_, float fPrecY_, float fTX0_, int iDots_, float scaleH, float scaleV, QPointF* pPoints_);
 
     float GetVelocity(int nGroupId_);
     float GetPrf()  ;
@@ -190,6 +190,7 @@ public:
     void ChangeCscanruler( int fscanstart, int fscanend);
     float GetRasterCoveredLength( int nGroupId_);
     float GetRasterCurrentIndexPos( int nGroupId_);
+    void  GetRasterIndexAndLaw(int nGroupId_, float pos, float *index, int *law);
     int   GetRasterIndexStepBeam( int nGroupId_);
     void  GetSImageHorizentalRange(int nGroupId_ , float* fStart_ , float* fStop_);
     int  GetSImageVerticalRange(int nGroupId_ , float* fStart_ , float* fStop_);
@@ -218,6 +219,7 @@ public:
     float GetSampleRangeSoundpath(int nGroupId_) ;
     float GetMaterialVelocity(int nGroupId_ , int bTran_)  ;
     float GetPartThickness(int nGroupId_) const;
+    float GetWeldBorder(int nGroupId_);
     void  GetWedgePosition(int nGroupId_ , float* fScanOffset_  , float* fIndexOffset_ ) ;
     setup_PROBE_ANGLE GetProbeAngle(int nGroupId_) const;
     setup_RECTIFIER_MODE GetRectifierMode(int nGroupId_)  const ;
@@ -239,6 +241,7 @@ public:
     void InitScanOff(int nGroupId_);
 
     QVector<WDATA> GetCoupleCScanData( int nGroupId_);
+    WDATA* GetTOPCData(int nGroupId_, int startX_, int stopX_, int startY_, int stopY_, int direction_);
 protected:
     explicit ParameterProcess(QObject *parent = 0);
     DopplerConfigure* m_pConfig;

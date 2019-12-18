@@ -243,13 +243,13 @@
         <translation>对称</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="235"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="240"/>
         <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="171"/>
         <source>Left</source>
         <translation>左单边坡口</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="240"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="235"/>
         <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="172"/>
         <source>Right</source>
         <translation>右单边坡口</translation>
@@ -549,12 +549,12 @@
         <translation type="unfinished">焊缝参数</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="51"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="58"/>
         <source>R2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="58"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="51"/>
         <source>R1:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -632,12 +632,32 @@
     <message>
         <location filename="../ui/dialog/dialogweldfixdataii.ui" line="222"/>
         <source>Weld Type:</source>
-        <translation type="unfinished"></translation>
+        <translation>焊缝类型：</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogweldfixdataii.ui" line="263"/>
         <source>W3:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="270"/>
+        <source>Symmetry:</source>
+        <translation>对称性：</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="278"/>
+        <source>Symmetry</source>
+        <translation>对称</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="283"/>
+        <source>Right</source>
+        <translation>右单边坡口</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="288"/>
+        <source>Left</source>
+        <translation>左单边坡口</translation>
     </message>
 </context>
 <context>
@@ -806,23 +826,23 @@
         <translation type="vanished">普通钢</translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1648"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1683"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1656"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1691"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1713"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1721"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1916"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1924"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1916"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1924"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -830,29 +850,29 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="629"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="637"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="651"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="641"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="649"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="663"/>
         <source>No Defect Found</source>
         <translation>未发现缺陷</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="656"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="668"/>
         <source>Range too Small</source>
         <translation>范围太小</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="656"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="668"/>
         <source>Please Selected More Wider Range</source>
         <translation>请扩大选择范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="660"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="672"/>
         <source>Out of Range</source>
         <translation>超过范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="660"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="672"/>
         <source>Please Selected in C Scan View</source>
         <translation>请不要超过C扫视图</translation>
     </message>
@@ -2397,7 +2417,7 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="9754"/>
         <source>C Scan Show All:</source>
-        <translation>C扫全显:</translation>
+        <translation>B C扫全显:</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="9762"/>
@@ -2522,7 +2542,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.cpp" line="628"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2363"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2365"/>
         <source>Display Mode</source>
         <translation>显示模式</translation>
     </message>
@@ -3581,42 +3601,42 @@
         <translation>缺陷保存成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2036"/>
+        <location filename="../ui/mainwindow.cpp" line="2051"/>
         <source>Wrong View</source>
         <translation>错误的视图</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2036"/>
+        <location filename="../ui/mainwindow.cpp" line="2051"/>
         <source>Please Choose a Group View</source>
         <translation>请选择一个组视图</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2042"/>
+        <location filename="../ui/mainwindow.cpp" line="2057"/>
         <source>Wrong GroupMode</source>
         <translation>错误的组模式</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2042"/>
+        <location filename="../ui/mainwindow.cpp" line="2057"/>
         <source>This is not PA Group</source>
         <translation>本组并不是PA组</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2046"/>
+        <location filename="../ui/mainwindow.cpp" line="2061"/>
         <source>TOPC not Open</source>
         <translation>TOPC未开启</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2046"/>
+        <location filename="../ui/mainwindow.cpp" line="2061"/>
         <source>Please Open TOPC Mode</source>
         <translation>请在闸门和曲线中将C扫模式选择投影</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2051"/>
+        <location filename="../ui/mainwindow.cpp" line="2066"/>
         <source>Worng View Mode</source>
         <translation>错误的显示模式</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2051"/>
+        <location filename="../ui/mainwindow.cpp" line="2066"/>
         <source>Please Choose a View Has S Scan And C Scan</source>
         <translation>显示模式中必须包含S扫和C扫</translation>
     </message>

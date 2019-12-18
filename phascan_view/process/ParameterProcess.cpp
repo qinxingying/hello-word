@@ -1403,8 +1403,9 @@ int ParameterProcess::GetCoupleMonitoringData(int nGroupId_, float* pResult_)
     int _nRectify = GetRectifierMode(nGroupId_);
     int _index = GetRealScanIndex(nGroupId_, _nScanPos);
     QVector<WDATA> buff = GetCoupleCScanData(nGroupId_);
-    WDATA data = buff[_index];
-    *pResult_  = CalculatePeakAmp( data, _nRectify);
+    //WDATA data = buff[_index];
+    int cbuff = correctionPdata(buff[_index]);
+    *pResult_  = CalculatePeakAmp( cbuff, _nRectify);
     return ret;
 }
 
@@ -1620,7 +1621,7 @@ int  ParameterProcess::GetTofdDepth(int nGroupId_ , int ID_ , float* fValue_)
 	return 0;
 }
 
-void ParameterProcess::FittedCurveGetPoints(int nGroupId_, float fPrecX_, float fPrecY_, float fTX0_, int iDots_, QPointF* pPoints_)
+void ParameterProcess::FittedCurveGetPoints(int nGroupId_, float fPrecX_, float fPrecY_, float fTX0_, int iDots_, float scaleH, float scaleV, QPointF* pPoints_)
 {
 	CalculateTofdPcs(nGroupId_);
 
@@ -1648,33 +1649,33 @@ void ParameterProcess::FittedCurveGetPoints(int nGroupId_, float fPrecX_, float 
 
 	for(int i = 0; i < _iDots+1; i++)
 	{
-	_dY = _precY*i;
+        _dY = _precY*i;
 
-	if(_common.scanner.eScanMode == setup_SCAN_NORMAL)
-	{
-		_Tx = FittedCurveDTX(_dY, _C, _TX0, _T0);
-	}
-	else if(_common.scanner.eScanMode == setup_SCAN_PARALLEL)
-	{
-		_Tx = FittedCurveDTXParallel(_dY, _C, _TX0, _T0, _PCS);
-	}
+        if(_common.scanner.eScanMode == setup_SCAN_NORMAL)
+        {
+            _Tx = FittedCurveDTX(_dY, _C, _TX0, _T0);
+        }
+        else if(_common.scanner.eScanMode == setup_SCAN_PARALLEL)
+        {
+            _Tx = FittedCurveDTXParallel(_dY, _C, _TX0, _T0, _PCS);
+        }
 
-	int _x = (_Tx - _TX0) / _precX;
-	int _y = i;
+        int _x = (_Tx - _TX0) / _precX*scaleV;
+        int _y = i*scaleH;
 
-	pPoints_[_iDots+i].setX(_x);
-	pPoints_[_iDots+i].setY(_y);
+        pPoints_[_iDots+i].setX(_x);
+        pPoints_[_iDots+i].setY(_y);
 
-	pPoints_[_iDots-i].setX(_x);
-	pPoints_[_iDots-i].setY(-_y);
-	 }
+        pPoints_[_iDots-i].setX(_x);
+        pPoints_[_iDots-i].setY(-_y);
+    }
 
-	 float _fDeltaX = pPoints_[_iDots].x();
-	 for(int i = 0; i < 2*_iDots+1; i++)
-	 {
-	int _x = _isign*(pPoints_[i].x() - _fDeltaX);
-	pPoints_[i].setX(_x);
-	 }
+    float _fDeltaX = pPoints_[_iDots].x();
+    for(int i = 0; i < 2*_iDots+1; i++)
+    {
+        int _x = _isign*(pPoints_[i].x() - _fDeltaX);
+        pPoints_[i].setX(_x);
+    }
 }
 
 
@@ -2038,6 +2039,23 @@ float ParameterProcess::GetRasterCurrentIndexPos( int nGroupId_)
     int curLaw = m_pConfig->group[nGroupId_].afCursor[setup_CURSOR_LAW];
     float curPos = curLaw * coverlength / beamQty;
     return indexPos + curPos;
+}
+
+//通过步进轴位置计算出步进和 law
+void ParameterProcess::GetRasterIndexAndLaw(int nGroupId_, float pos, float *index, int *law)
+{
+    SCANNER& _scanner = m_pConfig->common.scanner;
+    int indexIndex = pos / _scanner.fIndexStep;
+    float indexPos = indexIndex * _scanner.fIndexStep;
+    float _remainder = pos - indexPos;
+    float coverlength = GetRasterCoveredLength(nGroupId_);
+    int beamQty = GetGroupLawQty(nGroupId_);
+    int lawPos = beamQty * _remainder / coverlength;
+    if( lawPos >= beamQty){
+        lawPos = beamQty - 1;
+    }
+    *index = indexPos;
+    *law   = lawPos;
 }
 
 //计算步进轴一个分辨率内的beam数，一个beam对应一个像素，画栅格扫查
@@ -2454,6 +2472,70 @@ float ParameterProcess::GetPartThickness(int nGroupId_) const
 	return _group.part.afSize[0] ;
 }
 
+float ParameterProcess::GetWeldBorder(int nGroupId_)
+{
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
+    float weldBorder = 10;
+    if(PHASCAN_I_FORMAT == _group.part.weldFormat){
+        WELD& _weld = _group.part.weld;
+        switch (_weld.eType) {
+        case setup_WELD_I:
+            weldBorder = _weld.weland_offset;
+            break;
+        case setup_WELD_V:
+        case setup_WELD_DV:
+            weldBorder = _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle)) * _weld.fizone_height;
+            break;
+        case setup_WELD_U:
+            weldBorder = _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
+                    _weld.fizone_height + _weld.fizone_radius;
+            break;
+        case setup_WELD_DIFF_DV:
+            weldBorder =  _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                    * _weld.fizone_height;
+            break;
+        case setup_WELD_J:
+            weldBorder = _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
+                    _weld.fizone_height + _weld.fizone_radius;
+            break;
+        case setup_WELD_VY:
+            weldBorder = _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                    * _weld.fizone_height;
+            break;
+        default:
+            break;
+        }
+    }else{
+        WELD_II& _weld = _group.part.weld_ii;
+        switch (_weld.eType) {
+        case I:
+            weldBorder = _weld.I.w;
+            break;
+        case V:
+            weldBorder = _weld.V.w1;
+            break;
+        case U:
+            weldBorder = _weld.U.w1;
+            break;
+        case VY:
+            weldBorder = _weld.VY.w1;
+            break;
+        case VV:
+            weldBorder = (_weld.VV.w1 > _weld.VV.w3) ? _weld.VV.w1 : _weld.VV.w3;
+            break;
+        case UU:
+            weldBorder = (_weld.UU.w1 > _weld.UU.w3) ? _weld.UU.w1 : _weld.UU.w3;
+            break;
+        case UV:
+            weldBorder = (_weld.UV.w1 > _weld.UV.w3) ? _weld.UV.w1 : _weld.UV.w3;
+            break;
+        default:
+            break;
+        }
+    }
+    return weldBorder;
+}
+
 void  ParameterProcess::GetWedgePosition(int nGroupId_ , float* fScanOffset_ , float* fIndexOffset_)
 {
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_]   ;
@@ -2766,13 +2848,14 @@ QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
                     buff = _pData[j];
                 }
             }
-            int cbuff = correctionPdata(buff);
-            if( cbuff > WAVE_MAX)
-            {
-                cbuff = WAVE_MAX;
-            }
+//            int cbuff = correctionPdata(buff);
+//            if( cbuff > WAVE_MAX)
+//            {
+//                cbuff = WAVE_MAX;
+//            }
 
-            CScanInfo.data[i] = (WDATA)cbuff;
+//            CScanInfo.data[i] = (WDATA)cbuff;
+            CScanInfo.data[i] = buff;
         }
         else
         {
@@ -2781,4 +2864,79 @@ QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
         _pData += _nFrameSize;
     }
     return CScanInfo.data;
+}
+
+WDATA* ParameterProcess::GetTOPCData(int nGroupId_, int startX_, int stopX_, int startY_, int stopY_, int direction_)
+{
+    //qDebug()<<"startX_"<<nGroupId_<<startX_<<stopX_<<startY_<<stopY_;
+    TOPC_DATA &TOPCData   = m_pConfig->group[nGroupId_].TopCData;
+    TOPC_INFO &_TOPCInfo  = m_pConfig->group[nGroupId_].TopCInfo;
+    if( TOPCData.startX == startX_ && TOPCData.stopX == stopX_ && TOPCData.startY == startY_
+            && TOPCData.stopY == stopY_ && TOPCData.direction == direction_){
+        return TOPCData.topcData;
+    }
+    TOPCData.startX = startX_;
+    TOPCData.stopX  = stopX_;
+    TOPCData.startY = startY_;
+    TOPCData.stopY  = stopY_;
+    TOPCData.direction = direction_;
+    int rangeY = stopX_ - startX_;
+    int recMax = m_pConfig->comTmp.nRecMax;
+    int buff = rangeY * recMax;
+    if(TOPCData.topcData){
+        free(TOPCData.topcData);
+    }
+    TOPCData.topcData = (WDATA*)malloc( buff * sizeof(WDATA));
+    //qDebug()<<"num"<<buff<<TOPCData.topcData;
+    memset(TOPCData.topcData, 0x00, buff);
+    WDATA* _disData = TOPCData.topcData;
+    WDATA* _pData = GetShadowDataPointer();
+    int _nFrameSize = GetTotalDataSize();
+    int _nGroupOffset = GetGroupDataOffset(nGroupId_);
+    _pData = _pData + _nGroupOffset;
+    int j, n;
+    for(int i = 0; i < recMax; i++){
+        if(m_pConfig->comTmp.nRecMark[i]){
+            if(direction_ == 0){
+                for( j = startX_, n = 0; j < stopX_; j++, n++){
+                    WDATA _buff = 0;
+                    WDATA _nTmpValue = 0;
+                    for( int k = startY_; k < stopY_; k++){
+                        int index = k * _TOPCInfo.pixelWidth + j;
+                        index = _TOPCInfo.pDataIndex[index];
+                        if(index){
+                            _buff = _pData[index];
+                        }else{
+                            _buff = 0;
+                        }
+                        if(_buff > _nTmpValue){
+                            _nTmpValue = _buff;
+                        }
+                    }
+                    _disData[recMax * n + i] = _nTmpValue;
+                }
+            }else{
+                for(j = stopX_ - 1, n = 0; j >= startX_; j--, n++){
+                    WDATA _buff = 0;
+                    WDATA _nTmpValue = 0;
+                    for( int k = startY_; k < stopY_; k++){
+                        int index = k * _TOPCInfo.pixelWidth + j;
+                        index = _TOPCInfo.pDataIndex[index];
+                        if(index){
+                            _buff = _pData[index];
+                        }else{
+                            _buff = 0;
+                        }
+                        if(_buff > _nTmpValue){
+                            _nTmpValue = _buff;
+                        }
+                    }
+                    _disData[recMax * n + i] = _nTmpValue;
+                }
+            }
+        }
+        _pData += _nFrameSize;
+        //_disData += recMax;
+    }
+    return TOPCData.topcData;
 }

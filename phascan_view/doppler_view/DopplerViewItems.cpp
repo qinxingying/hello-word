@@ -53,10 +53,11 @@ DopplerViewItems::DopplerViewItems(QObject *parent) :
 	m_pItemLw = NULL;
 	m_pItemBw = NULL;
 	//---------------------------------------
-	memset((void*)m_pGate ,   0 , 12) ;
-	memset((void*)m_pCursor , 0 , 16) ;
-	memset((void*)m_pThickness , 0 , 40 ) ;
-    memset((void*)m_pTOPCWidth, 0, 8);
+    memset((void*)m_pGate, 0, 3 * sizeof(void *)) ;
+    memset((void*)m_pCursor, 0, 4 * sizeof(void *)) ;
+    memset((void*)m_pThickness, 0, 10 * sizeof(void *)) ;
+    memset((void*)m_pTOPCWidth, 0, 2 * sizeof(void *));
+    memset((void*)m_pWeldBorder, 0, 3 * sizeof(void *));
 	//m_pWeld		= 0;
 	m_pLawMarker	= 0;
     m_pLawMarkerCScan = 0;
@@ -99,6 +100,10 @@ DopplerViewItems::~DopplerViewItems()
 		if(m_pThickness[i]) delete m_pThickness[i]  ;
 		m_pThickness[i] = NULL ;
 	}
+    for(i = 0; i < 3; i++){
+        if(m_pWeldBorder[i]) delete m_pWeldBorder[i];
+        m_pWeldBorder[i] = NULL;
+    }
     for(i = 0; i < 2; i++){
         if(m_pTOPCWidth[i]) delete m_pTOPCWidth[i];
         m_pTOPCWidth[i] = NULL;
@@ -140,6 +145,7 @@ void DopplerViewItems::UpdateItems()
 	UpdateItemsLawMarker() ;
     UpdateItemsLawMarkerCScan();
 	UpdateItemsThickness() ;
+    UpdateItemsWeldBorder();
     UpdateItemsTOPCWidth();
 	UpdateItemsWeld() ;
 }
@@ -633,6 +639,49 @@ void DopplerViewItems::UpdateItemsThickness()
 
 }
 
+void DopplerViewItems::UpdateItemsWeldBorder()
+{
+    int i;
+    if(!(m_eShow & OVERLAYS_C_WELD_BORDER)){
+        for(i = 0; i < 3; i++){
+            if(m_pWeldBorder[i]) m_pWeldBorder[i]->hide();
+        }
+        return;
+    }
+
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int groupId = m_pDataView->GetGroupId();
+    bool topc, topcMerge;
+    m_pDataView->GetCScanTopcDis( topc, topcMerge);
+    if( !_pConfig->group[groupId].TopCInfo.TOPCStatus && !topc){
+        for( i = 0; i < 3; i++){
+            if(m_pWeldBorder[i]) m_pWeldBorder[i]->hide();
+        }
+        return;
+    }
+
+    float weldBorder = _pConfig->group[groupId].part.weld_border;
+    float buff[3];
+    buff[0] = -weldBorder;
+    buff[1] = 0;
+    buff[2] = weldBorder;
+    QRectF _rect(0 , 0 , 0 , 0);
+    for( i = 0; i < 3; i++){
+        if(!m_pWeldBorder[i]){
+            m_pWeldBorder[i] = new DopplerLineItem(COLOR_THICKNESS);
+            m_pWeldBorder[i]->SetLineStyle(Qt::DashLine);
+            m_pWeldBorder[i]->SetItemType(DOPPLER_GRAPHICS_ITEM_THICKNESS);
+            m_pWeldBorder[i]->SetItemId(i);
+            m_pDataView->AddOverlayItems(m_pWeldBorder[i]);
+        }
+        m_pWeldBorder[i]->SetLineType( m_cWeldBorderHorizental ? DopplerLineItem::LINE_HORIZENTAL : DopplerLineItem::LINE_VERTICAL);
+        m_pWeldBorder[i]->SetMoveType(DopplerLineItem::LINE_MOVE_NO);
+        m_cWeldBorderHorizental ? _rect.setTop(buff[i]) : _rect.setLeft(buff[i]);
+        m_pDataView->SetItemGeometry( m_pWeldBorder[i], _rect );
+        m_pWeldBorder[i]->show();
+    }
+}
+
 void DopplerViewItems::UpdateItemsTOPCWidth()
 {
     int i;
@@ -732,6 +781,18 @@ void DopplerViewItems::UpdateScanMarker()
 void DopplerViewItems::SetGateDrawMode(GATE_DRAW_MODE eMode_)
 {
 	m_eGateMode   = eMode_  ;
+}
+
+void DopplerViewItems::SetParabolaScale(float scaleH, float scaleV)
+{
+    if(m_eShow & OVERLAYS_PARABOLA){
+        if(m_pParabola[0]){
+            m_pParabola[0]->Set_Scale( scaleH, scaleV);
+        }
+        if(m_pParabola[1]){
+            m_pParabola[1]->Set_Scale( scaleH, scaleV);
+        }
+    }
 }
 
 void DopplerViewItems::SetLwBwPos(float fLw_ , float fBw_)
@@ -854,6 +915,11 @@ void DopplerViewItems::EnableMarkerQty(unsigned int nQty_)
 void DopplerViewItems::SetThicknessDirection(bool bHorizental_)
 {
 	m_bHorizental = bHorizental_;
+}
+
+void DopplerViewItems::SetWeldBorderDirection(bool direction)
+{
+    m_cWeldBorderHorizental = direction;
 }
 
 void DopplerViewItems::SetThicknessInterval(float fInterval_)
@@ -1071,25 +1137,29 @@ void DopplerViewItems::DrawWeldIDataII(QPainterPath& path)
     path.moveTo(_pos[0]);
     path.lineTo(_pos[1]);
 
-    _pos[0].setX( -m_cPart.weld_ii.I.w);
-    _pos[0].setY( _fStartV);
-    _pos[1].setX( -m_cPart.weld_ii.I.w);
-    _pos[1].setY( _fStopV);
+    if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+        _pos[0].setX( -m_cPart.weld_ii.I.w);
+        _pos[0].setY( _fStartV);
+        _pos[1].setX( -m_cPart.weld_ii.I.w);
+        _pos[1].setY( _fStopV);
 
-    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
-    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
-    path.moveTo( _pos[0]);
-    path.lineTo( _pos[1]);
+        _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+        _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+        path.moveTo( _pos[0]);
+        path.lineTo( _pos[1]);
+    }
 
-    _pos[0].setX( m_cPart.weld_ii.I.w);
-    _pos[0].setY( _fStartV);
-    _pos[1].setX( m_cPart.weld_ii.I.w);
-    _pos[1].setY( _fStopV);
+    if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+        _pos[0].setX( m_cPart.weld_ii.I.w);
+        _pos[0].setY( _fStartV);
+        _pos[1].setX( m_cPart.weld_ii.I.w);
+        _pos[1].setY( _fStopV);
 
-    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
-    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
-    path.moveTo( _pos[0]);
-    path.lineTo( _pos[1]);
+        _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+        _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+        path.moveTo( _pos[0]);
+        path.lineTo( _pos[1]);
+    }
 }
 
 void  DopplerViewItems::DrawWeldV (QPainterPath& path)
@@ -1215,48 +1285,56 @@ void DopplerViewItems::DrawWeldVDataII( QPainterPath& path)
             if(i%2)
             {
                 double _nOffsetY = m_fInterval * ( i + 1);
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-_xOffset);
-                _pos[1].setY(_nOffsetY - m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-_xOffset);
+                    _pos[1].setY(_nOffsetY - m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(_xOffset);
-                _pos[1].setY(_nOffsetY - m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(_xOffset);
+                    _pos[1].setY(_nOffsetY - m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
             }
             else
             {
                 double _nOffsetY = m_fInterval * i;
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-_xOffset);
-                _pos[1].setY(_nOffsetY + m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-_xOffset);
+                    _pos[1].setY(_nOffsetY + m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(_xOffset);
-                _pos[1].setY(_nOffsetY + m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(_xOffset);
+                    _pos[1].setY(_nOffsetY + m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
             }
         }
 
@@ -1268,64 +1346,72 @@ void DopplerViewItems::DrawWeldVDataII( QPainterPath& path)
             if(i%2)
             {
                 double _nOffsetY = m_fInterval * ( i + 1) ;
-                _pos[0].setX(-m_cPart.weld_ii.V.w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-m_cPart.weld_ii.V.w2);
-                _pos[1].setY(_nOffsetY - m_cPart.weld_ii.V.h);
-                _pos[2].setX(-m_cPart.weld_ii.V.w2);
-                _pos[2].setY(_nOffsetY - m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-m_cPart.weld_ii.V.w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-m_cPart.weld_ii.V.w2);
+                    _pos[1].setY(_nOffsetY - m_cPart.weld_ii.V.h);
+                    _pos[2].setX(-m_cPart.weld_ii.V.w2);
+                    _pos[2].setY(_nOffsetY - m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]) ;
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]) ;
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                }
 
-                _pos[0].setX(m_cPart.weld_ii.V.w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(m_cPart.weld_ii.V.w2);
-                _pos[1].setY(_nOffsetY - m_cPart.weld_ii.V.h);
-                _pos[2].setX(m_cPart.weld_ii.V.w2);
-                _pos[2].setY(_nOffsetY - m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(m_cPart.weld_ii.V.w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(m_cPart.weld_ii.V.w2);
+                    _pos[1].setY(_nOffsetY - m_cPart.weld_ii.V.h);
+                    _pos[2].setX(m_cPart.weld_ii.V.w2);
+                    _pos[2].setY(_nOffsetY - m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]) ;
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]) ;
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                }
             }
             else
             {
                 double _nOffsetY = m_fInterval * i;
-                _pos[0].setX(-m_cPart.weld_ii.V.w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-m_cPart.weld_ii.V.w2);
-                _pos[1].setY(_nOffsetY + m_cPart.weld_ii.V.h);
-                _pos[2].setX(-m_cPart.weld_ii.V.w2);
-                _pos[2].setY(_nOffsetY + m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-m_cPart.weld_ii.V.w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-m_cPart.weld_ii.V.w2);
+                    _pos[1].setY(_nOffsetY + m_cPart.weld_ii.V.h);
+                    _pos[2].setX(-m_cPart.weld_ii.V.w2);
+                    _pos[2].setY(_nOffsetY + m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                }
 
-                _pos[0].setX(m_cPart.weld_ii.V.w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(m_cPart.weld_ii.V.w2);
-                _pos[1].setY(_nOffsetY + m_cPart.weld_ii.V.h);
-                _pos[2].setX(m_cPart.weld_ii.V.w2);
-                _pos[2].setY(_nOffsetY + m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(m_cPart.weld_ii.V.w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(m_cPart.weld_ii.V.w2);
+                    _pos[1].setY(_nOffsetY + m_cPart.weld_ii.V.h);
+                    _pos[2].setX(m_cPart.weld_ii.V.w2);
+                    _pos[2].setY(_nOffsetY + m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                }
             }
         }
     }
@@ -1654,44 +1740,47 @@ void DopplerViewItems::DrawWeldUDataII(QPainterPath& path)
                 _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom);
                 QRectF rectangle( _lefttop, _rightbottom);
 
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w3);
-                _pos[1].setY(_nOffsetY - h3);
-                _pos[2].setX(-w2);
-                _pos[2].setY(_nOffsetY - h);
-                _pos[3].setX(-w2);
-                _pos[3].setY(_nOffsetY - m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w3);
+                    _pos[1].setY(_nOffsetY - h3);
+                    _pos[2].setX(-w2);
+                    _pos[2].setY(_nOffsetY - h);
+                    _pos[3].setX(-w2);
+                    _pos[3].setY(_nOffsetY - m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, 180+b, e);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, 180+b, e);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
 
-                _pos[0].setX( w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX( w3);
-                _pos[1].setY(_nOffsetY - h3);
-                _pos[2].setX( w2);
-                _pos[2].setY(_nOffsetY - h);
-                _pos[3].setX( w2);
-                _pos[3].setY(_nOffsetY - m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX( w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX( w3);
+                    _pos[1].setY(_nOffsetY - h3);
+                    _pos[2].setX( w2);
+                    _pos[2].setY(_nOffsetY - h);
+                    _pos[3].setX( w2);
+                    _pos[3].setY(_nOffsetY - m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, -b, -e);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
-
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, -b, -e);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
             }
             else
             {
@@ -1705,43 +1794,47 @@ void DopplerViewItems::DrawWeldUDataII(QPainterPath& path)
                 _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom);
                 QRectF rectangle(_lefttop , _rightbottom);
 
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w3);
-                _pos[1].setY(_nOffsetY + h3);
-                _pos[2].setX(-w2);
-                _pos[2].setY(_nOffsetY + h);
-                _pos[3].setX(-w2);
-                _pos[3].setY(_nOffsetY + m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w3);
+                    _pos[1].setY(_nOffsetY + h3);
+                    _pos[2].setX(-w2);
+                    _pos[2].setY(_nOffsetY + h);
+                    _pos[3].setX(-w2);
+                    _pos[3].setY(_nOffsetY + m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, (180+b), e);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, (180+b), e);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
 
-                _pos[0].setX( w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX( w3);
-                _pos[1].setY(_nOffsetY + h3);
-                _pos[2].setX( w2);
-                _pos[2].setY(_nOffsetY + h);
-                _pos[3].setX( w2);
-                _pos[3].setY(_nOffsetY + m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX( w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX( w3);
+                    _pos[1].setY(_nOffsetY + h3);
+                    _pos[2].setX( w2);
+                    _pos[2].setY(_nOffsetY + h);
+                    _pos[3].setX( w2);
+                    _pos[3].setY(_nOffsetY + m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, -b, -e);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, -b, -e);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
             }
         }
     }//显示V+U
@@ -1763,27 +1856,31 @@ void DopplerViewItems::DrawWeldUDataII(QPainterPath& path)
                 _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom);
                 QRectF rectangle( _lefttop, _rightbottom);
 
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w3);
-                _pos[1].setY(_nOffsetY - h3);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w3);
+                    _pos[1].setY(_nOffsetY - h3);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, 180+b, e);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, 180+b, e);
+                }
 
-                _pos[0].setX( w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX( w3);
-                _pos[1].setY(_nOffsetY - h3);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX( w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX( w3);
+                    _pos[1].setY(_nOffsetY - h3);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, -b, -e);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, -b, -e);
+                }
             }
             else
             {
@@ -1797,27 +1894,31 @@ void DopplerViewItems::DrawWeldUDataII(QPainterPath& path)
                 _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom);
                 QRectF rectangle(_lefttop , _rightbottom);
 
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w3);
-                _pos[1].setY(_nOffsetY + h3);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w3);
+                    _pos[1].setY(_nOffsetY + h3);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, (180+b), e);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, (180+b), e);
+                }
 
-                _pos[0].setX( w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX( w3);
-                _pos[1].setY(_nOffsetY + h3);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX( w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX( w3);
+                    _pos[1].setY(_nOffsetY + h3);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, -b, -e);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, -b, -e);
+                }
             }
         }
 
@@ -1830,48 +1931,56 @@ void DopplerViewItems::DrawWeldUDataII(QPainterPath& path)
             if(i%2)
             {
                 double _nOffsetY = m_fInterval * ( i + 1);
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-_xOffset);
-                _pos[1].setY(_nOffsetY - m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-_xOffset);
+                    _pos[1].setY(_nOffsetY - m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(_xOffset);
-                _pos[1].setY(_nOffsetY - m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(_xOffset);
+                    _pos[1].setY(_nOffsetY - m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
             }
             else
             {
                 double _nOffsetY = m_fInterval * i;
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-_xOffset);
-                _pos[1].setY(_nOffsetY + m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-_xOffset);
+                    _pos[1].setY(_nOffsetY + m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(_xOffset);
-                _pos[1].setY(_nOffsetY + m_fInterval);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(_xOffset);
+                    _pos[1].setY(_nOffsetY + m_fInterval);
 
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
             }
         }
     }
@@ -2306,76 +2415,84 @@ void  DopplerViewItems::DrawWeldVYDataII(QPainterPath& path)
             if(i%2)
             {
                 double _nOffsetY = m_fInterval * ( i + 1);
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w2);
-                _pos[1].setY(_nOffsetY - h1);
-                _pos[2].setX(-w3);
-                _pos[2].setY(_nOffsetY - h1 - h2);
-                _pos[3].setX(-w3);
-                _pos[3].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w2);
+                    _pos[1].setY(_nOffsetY - h1);
+                    _pos[2].setX(-w3);
+                    _pos[2].setY(_nOffsetY - h1 - h2);
+                    _pos[3].setX(-w3);
+                    _pos[3].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w2);
-                _pos[1].setY(_nOffsetY - h1);
-                _pos[2].setX(w3);
-                _pos[2].setY(_nOffsetY - h1 - h2);
-                _pos[3].setX(w3);
-                _pos[3].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w2);
+                    _pos[1].setY(_nOffsetY - h1);
+                    _pos[2].setX(w3);
+                    _pos[2].setY(_nOffsetY - h1 - h2);
+                    _pos[3].setX(w3);
+                    _pos[3].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
             }
             else
             {
                 double _nOffsetY = m_fInterval * i;
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w2);
-                _pos[1].setY(_nOffsetY + h1);
-                _pos[2].setX(-w3);
-                _pos[2].setY(_nOffsetY + h1 + h2);
-                _pos[3].setX(-w3);
-                _pos[3].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w2);
+                    _pos[1].setY(_nOffsetY + h1);
+                    _pos[2].setX(-w3);
+                    _pos[2].setY(_nOffsetY + h1 + h2);
+                    _pos[3].setX(-w3);
+                    _pos[3].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w2);
-                _pos[1].setY(_nOffsetY + h1);
-                _pos[2].setX(w3);
-                _pos[2].setY(_nOffsetY + h1 + h2);
-                _pos[3].setX(w3);
-                _pos[3].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w2);
+                    _pos[1].setY(_nOffsetY + h1);
+                    _pos[2].setX(w3);
+                    _pos[2].setY(_nOffsetY + h1 + h2);
+                    _pos[3].setX(w3);
+                    _pos[3].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
             }
         }
     }//显示VV
@@ -2387,60 +2504,68 @@ void  DopplerViewItems::DrawWeldVYDataII(QPainterPath& path)
             if(i%2)
             {
                 double _nOffsetY = m_fInterval * ( i + 1);
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w2);
-                _pos[1].setY(_nOffsetY - h1);
-                _pos[2].setX(-_xOffset);
-                _pos[2].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w2);
+                    _pos[1].setY(_nOffsetY - h1);
+                    _pos[2].setX(-_xOffset);
+                    _pos[2].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w2);
-                _pos[1].setY(_nOffsetY - h1);
-                _pos[2].setX(_xOffset);
-                _pos[2].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w2);
+                    _pos[1].setY(_nOffsetY - h1);
+                    _pos[2].setX(_xOffset);
+                    _pos[2].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                }
             }
             else
             {
                 double _nOffsetY = m_fInterval * i;
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w2);
-                _pos[1].setY(_nOffsetY + h1);
-                _pos[2].setX(-_xOffset);
-                _pos[2].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w2);
+                    _pos[1].setY(_nOffsetY + h1);
+                    _pos[2].setX(-_xOffset);
+                    _pos[2].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w2);
-                _pos[1].setY(_nOffsetY + h1);
-                _pos[2].setX(_xOffset);
-                _pos[2].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w2);
+                    _pos[1].setY(_nOffsetY + h1);
+                    _pos[2].setX(_xOffset);
+                    _pos[2].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                }
             }
         }
     }//显示V
@@ -2452,44 +2577,52 @@ void  DopplerViewItems::DrawWeldVYDataII(QPainterPath& path)
             if(i%2)
             {
                 double _nOffsetY = m_fInterval * ( i + 1);
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-_xOffset);
-                _pos[1].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-_xOffset);
+                    _pos[1].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(_xOffset);
-                _pos[1].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(_xOffset);
+                    _pos[1].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
             }
             else
             {
                 double _nOffsetY = m_fInterval * i;
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-_xOffset);
-                _pos[1].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-_xOffset);
+                    _pos[1].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(_xOffset);
-                _pos[1].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(_xOffset);
+                    _pos[1].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                }
             }
         }
     }
@@ -2525,76 +2658,84 @@ void DopplerViewItems::DrawWeldVVDataII(QPainterPath& path)
             if(i%2)
             {
                 double _nOffsetY = m_fInterval * ( i + 1);
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w2);
-                _pos[1].setY(_nOffsetY - h1);
-                _pos[2].setX(-w2);
-                _pos[2].setY(_nOffsetY - m_fInterval + h2);
-                _pos[3].setX(-w3);
-                _pos[3].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w2);
+                    _pos[1].setY(_nOffsetY - h1);
+                    _pos[2].setX(-w2);
+                    _pos[2].setY(_nOffsetY - m_fInterval + h2);
+                    _pos[3].setX(-w3);
+                    _pos[3].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w2);
-                _pos[1].setY(_nOffsetY - h1);
-                _pos[2].setX(w2);
-                _pos[2].setY(_nOffsetY - m_fInterval + h2);
-                _pos[3].setX(w3);
-                _pos[3].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w2);
+                    _pos[1].setY(_nOffsetY - h1);
+                    _pos[2].setX(w2);
+                    _pos[2].setY(_nOffsetY - m_fInterval + h2);
+                    _pos[3].setX(w3);
+                    _pos[3].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
             }
             else
             {
                 double _nOffsetY = m_fInterval * i;
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w2);
-                _pos[1].setY(_nOffsetY + h1);
-                _pos[2].setX(-w2);
-                _pos[2].setY(_nOffsetY + m_fInterval - h2);
-                _pos[3].setX(-w3);
-                _pos[3].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w2);
+                    _pos[1].setY(_nOffsetY + h1);
+                    _pos[2].setX(-w2);
+                    _pos[2].setY(_nOffsetY + m_fInterval - h2);
+                    _pos[3].setX(-w3);
+                    _pos[3].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w2);
-                _pos[1].setY(_nOffsetY + h1);
-                _pos[2].setX(w2);
-                _pos[2].setY(_nOffsetY + m_fInterval - h2);
-                _pos[3].setX(w3);
-                _pos[3].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.lineTo(_pos[2]);
-                path.lineTo(_pos[3]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w2);
+                    _pos[1].setY(_nOffsetY + h1);
+                    _pos[2].setX(w2);
+                    _pos[2].setY(_nOffsetY + m_fInterval - h2);
+                    _pos[3].setX(w3);
+                    _pos[3].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                }
             }
         }
     }
@@ -2680,59 +2821,63 @@ void  DopplerViewItems::DrawWeldUUDataII(QPainterPath& path)
                 _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom);
                 QRectF rectangle2( _lefttop, _rightbottom);
 
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w4);
-                _pos[1].setY(_nOffsetY - h5);
-                _pos[2].setX(-w2);
-                _pos[2].setY(_nOffsetY - h1);
-                _pos[3].setX(-w2);
-                _pos[3].setY(_nOffsetY - m_fInterval + h2);
-                _pos[4].setX(-w5);
-                _pos[4].setY(_nOffsetY - m_fInterval + h8);
-                _pos[5].setX(-w3);
-                _pos[5].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
-                _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle1, 180+a1, a2);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
-                path.moveTo(_pos[5]);
-                path.lineTo(_pos[4]);
-                path.arcTo( rectangle2, 180-a3, -a4);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w4);
+                    _pos[1].setY(_nOffsetY - h5);
+                    _pos[2].setX(-w2);
+                    _pos[2].setY(_nOffsetY - h1);
+                    _pos[3].setX(-w2);
+                    _pos[3].setY(_nOffsetY - m_fInterval + h2);
+                    _pos[4].setX(-w5);
+                    _pos[4].setY(_nOffsetY - m_fInterval + h8);
+                    _pos[5].setX(-w3);
+                    _pos[5].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle1, 180+a1, a2);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                    path.moveTo(_pos[5]);
+                    path.lineTo(_pos[4]);
+                    path.arcTo( rectangle2, 180-a3, -a4);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w4);
-                _pos[1].setY(_nOffsetY - h5);
-                _pos[2].setX(w2);
-                _pos[2].setY(_nOffsetY - h1);
-                _pos[3].setX(w2);
-                _pos[3].setY(_nOffsetY - m_fInterval + h2);
-                _pos[4].setX(w5);
-                _pos[4].setY(_nOffsetY - m_fInterval + h8);
-                _pos[5].setX(w3);
-                _pos[5].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
-                _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle1, -a1, -a2);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
-                path.moveTo(_pos[5]);
-                path.lineTo(_pos[4]);
-                path.arcTo( rectangle2, a3, a4);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w4);
+                    _pos[1].setY(_nOffsetY - h5);
+                    _pos[2].setX(w2);
+                    _pos[2].setY(_nOffsetY - h1);
+                    _pos[3].setX(w2);
+                    _pos[3].setY(_nOffsetY - m_fInterval + h2);
+                    _pos[4].setX(w5);
+                    _pos[4].setY(_nOffsetY - m_fInterval + h8);
+                    _pos[5].setX(w3);
+                    _pos[5].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle1, -a1, -a2);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                    path.moveTo(_pos[5]);
+                    path.lineTo(_pos[4]);
+                    path.arcTo( rectangle2, a3, a4);
+                }
             }
             else
             {
@@ -2753,59 +2898,63 @@ void  DopplerViewItems::DrawWeldUUDataII(QPainterPath& path)
                 _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom);
                 QRectF rectangle2( _lefttop, _rightbottom);
 
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w4);
-                _pos[1].setY(_nOffsetY + h5);
-                _pos[2].setX(-w2);
-                _pos[2].setY(_nOffsetY + h1);
-                _pos[3].setX(-w2);
-                _pos[3].setY(_nOffsetY + m_fInterval - h2);
-                _pos[4].setX(-w5);
-                _pos[4].setY(_nOffsetY + m_fInterval - h8);
-                _pos[5].setX(-w3);
-                _pos[5].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
-                _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle1, 180+a1, a2);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
-                path.moveTo(_pos[5]);
-                path.lineTo(_pos[4]);
-                path.arcTo( rectangle2, 180-a3, -a4);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w4);
+                    _pos[1].setY(_nOffsetY + h5);
+                    _pos[2].setX(-w2);
+                    _pos[2].setY(_nOffsetY + h1);
+                    _pos[3].setX(-w2);
+                    _pos[3].setY(_nOffsetY + m_fInterval - h2);
+                    _pos[4].setX(-w5);
+                    _pos[4].setY(_nOffsetY + m_fInterval - h8);
+                    _pos[5].setX(-w3);
+                    _pos[5].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle1, 180+a1, a2);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                    path.moveTo(_pos[5]);
+                    path.lineTo(_pos[4]);
+                    path.arcTo( rectangle2, 180-a3, -a4);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w4);
-                _pos[1].setY(_nOffsetY + h5);
-                _pos[2].setX(w2);
-                _pos[2].setY(_nOffsetY + h1);
-                _pos[3].setX(w2);
-                _pos[3].setY(_nOffsetY + m_fInterval - h2);
-                _pos[4].setX(w5);
-                _pos[4].setY(_nOffsetY + m_fInterval - h8);
-                _pos[5].setX(w3);
-                _pos[5].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
-                _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle1, -a1, -a2);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
-                path.moveTo(_pos[5]);
-                path.lineTo(_pos[4]);
-                path.arcTo( rectangle2, a3, a4);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w4);
+                    _pos[1].setY(_nOffsetY + h5);
+                    _pos[2].setX(w2);
+                    _pos[2].setY(_nOffsetY + h1);
+                    _pos[3].setX(w2);
+                    _pos[3].setY(_nOffsetY + m_fInterval - h2);
+                    _pos[4].setX(w5);
+                    _pos[4].setY(_nOffsetY + m_fInterval - h8);
+                    _pos[5].setX(w3);
+                    _pos[5].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle1, -a1, -a2);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                    path.moveTo(_pos[5]);
+                    path.lineTo(_pos[4]);
+                    path.arcTo( rectangle2, a3, a4);
+                }
             }
         }
     }
@@ -2867,49 +3016,53 @@ void  DopplerViewItems::DrawWeldUVDataII(QPainterPath& path)
                 _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom);
                 QRectF rectangle( _lefttop, _rightbottom);
 
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w4);
-                _pos[1].setY(_nOffsetY - h5);
-                _pos[2].setX(-w2);
-                _pos[2].setY(_nOffsetY - h1);
-                _pos[3].setX(-w2);
-                _pos[3].setY(_nOffsetY - m_fInterval + h2);
-                _pos[4].setX(-w3);
-                _pos[4].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, 180+b, e);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
-                path.lineTo(_pos[4]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w4);
+                    _pos[1].setY(_nOffsetY - h5);
+                    _pos[2].setX(-w2);
+                    _pos[2].setY(_nOffsetY - h1);
+                    _pos[3].setX(-w2);
+                    _pos[3].setY(_nOffsetY - m_fInterval + h2);
+                    _pos[4].setX(-w3);
+                    _pos[4].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, 180+b, e);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                    path.lineTo(_pos[4]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w4);
-                _pos[1].setY(_nOffsetY - h5);
-                _pos[2].setX(w2);
-                _pos[2].setY(_nOffsetY - h1);
-                _pos[3].setX(w2);
-                _pos[3].setY(_nOffsetY - m_fInterval + h2);
-                _pos[4].setX(w3);
-                _pos[4].setY(_nOffsetY - m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, -b, -e);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
-                path.lineTo(_pos[4]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w4);
+                    _pos[1].setY(_nOffsetY - h5);
+                    _pos[2].setX(w2);
+                    _pos[2].setY(_nOffsetY - h1);
+                    _pos[3].setX(w2);
+                    _pos[3].setY(_nOffsetY - m_fInterval + h2);
+                    _pos[4].setX(w3);
+                    _pos[4].setY(_nOffsetY - m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, -b, -e);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                    path.lineTo(_pos[4]);
+                }
             }
             else
             {
@@ -2923,49 +3076,53 @@ void  DopplerViewItems::DrawWeldUVDataII(QPainterPath& path)
                 _rightbottom = m_pDataView->TranslateToScenePlan(&_rightbottom);
                 QRectF rectangle( _lefttop, _rightbottom);
 
-                _pos[0].setX(-w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(-w4);
-                _pos[1].setY(_nOffsetY + h5);
-                _pos[2].setX(-w2);
-                _pos[2].setY(_nOffsetY + h1);
-                _pos[3].setX(-w2);
-                _pos[3].setY(_nOffsetY + m_fInterval - h2);
-                _pos[4].setX(-w3);
-                _pos[4].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, 180+b, e);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
-                path.lineTo(_pos[4]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_LEFT){
+                    _pos[0].setX(-w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(-w4);
+                    _pos[1].setY(_nOffsetY + h5);
+                    _pos[2].setX(-w2);
+                    _pos[2].setY(_nOffsetY + h1);
+                    _pos[3].setX(-w2);
+                    _pos[3].setY(_nOffsetY + m_fInterval - h2);
+                    _pos[4].setX(-w3);
+                    _pos[4].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, 180+b, e);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                    path.lineTo(_pos[4]);
+                }
 
-                _pos[0].setX(w1);
-                _pos[0].setY(_nOffsetY);
-                _pos[1].setX(w4);
-                _pos[1].setY(_nOffsetY + h5);
-                _pos[2].setX(w2);
-                _pos[2].setY(_nOffsetY + h1);
-                _pos[3].setX(w2);
-                _pos[3].setY(_nOffsetY + m_fInterval - h2);
-                _pos[4].setX(w3);
-                _pos[4].setY(_nOffsetY + m_fInterval);
-                _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
-                _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
-                _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
-                _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
-                _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
-                path.moveTo(_pos[0]);
-                path.lineTo(_pos[1]);
-                path.arcTo( rectangle, -b, -e);
-                path.moveTo(_pos[2]);
-                path.lineTo(_pos[3]);
-                path.lineTo(_pos[4]);
+                if( m_cPart.weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_cPart.weld_ii.eSymmetry == setup_WELD_RIGHT){
+                    _pos[0].setX(w1);
+                    _pos[0].setY(_nOffsetY);
+                    _pos[1].setX(w4);
+                    _pos[1].setY(_nOffsetY + h5);
+                    _pos[2].setX(w2);
+                    _pos[2].setY(_nOffsetY + h1);
+                    _pos[3].setX(w2);
+                    _pos[3].setY(_nOffsetY + m_fInterval - h2);
+                    _pos[4].setX(w3);
+                    _pos[4].setY(_nOffsetY + m_fInterval);
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.arcTo( rectangle, -b, -e);
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[3]);
+                    path.lineTo(_pos[4]);
+                }
             }
         }
     }

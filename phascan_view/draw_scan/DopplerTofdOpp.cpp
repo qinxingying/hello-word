@@ -9,7 +9,7 @@ int getWaveMaxData()
 {
     if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
     {
-        return 255;
+        return WAVE_MAX;
     }
     else
     {
@@ -21,9 +21,9 @@ WDATA conversionToPdata( float data)
 {
     if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
     {
-        if(data > 255)
+        if(data > WAVE_MAX)
         {
-            data = 255;
+            data = WAVE_MAX;
         }
         return (WDATA)data;
     }
@@ -609,7 +609,7 @@ int DopplerTofdOpp::TofdSAFTInit(int nGroupId_, TOFD_PRO_INFO* pInfo_, int* pCur
 	float _fTX0 = 0;
 	for(int i = 0; i < m_pGroup->nPointQty; i++) {
 		_fTX0 = i * _fPrecX + _fTStart + _fZero;
-		m_process->FittedCurveGetPoints(m_nGroupId, _fPrecX, _fPrecY, _fTX0,  _iDots, _ptCurve);
+        m_process->FittedCurveGetPoints(m_nGroupId, _fPrecX, _fPrecY, _fTX0,  _iDots, 1, 1, _ptCurve);
 
 		_index = i * (2 * _iDots + 1);
 		for(int k = 0; k < 2 * _iDots + 1; k++) {

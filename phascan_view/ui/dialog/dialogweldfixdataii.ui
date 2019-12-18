@@ -45,35 +45,35 @@
         <string>Weld Parameter</string>
        </property>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="6" column="0">
-         <widget class="QLabel" name="r2Label">
-          <property name="text">
-           <string>R2:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="r1Label">
           <property name="text">
            <string>R1:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
+        <item row="7" column="0">
+         <widget class="QLabel" name="r2Label">
+          <property name="text">
+           <string>R2:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
          <widget class="QLabel" name="w1UnitLabel">
           <property name="text">
            <string>mm</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
+        <item row="6" column="0">
          <widget class="QLabel" name="h2Label">
           <property name="text">
            <string>H2:</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="6" column="1">
          <widget class="QDoubleSpinBox" name="h2DoubleSpinBox">
           <property name="keyboardTracking">
            <bool>false</bool>
@@ -83,7 +83,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="4" column="1">
          <widget class="QDoubleSpinBox" name="r1DoubleSpinBox">
           <property name="keyboardTracking">
            <bool>false</bool>
@@ -93,42 +93,42 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
+        <item row="5" column="2">
          <widget class="QLabel" name="w2UnitLabel">
           <property name="text">
            <string>mm</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
+        <item row="6" column="2">
          <widget class="QLabel" name="h2UnitLabel">
           <property name="text">
            <string>mm</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="h1Label">
           <property name="text">
            <string>H1:</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QLabel" name="w1Label">
           <property name="text">
            <string>W1:</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="w2Label">
           <property name="text">
            <string>W2:</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <widget class="QDoubleSpinBox" name="w3DoubleSpinBox">
           <property name="keyboardTracking">
            <bool>false</bool>
@@ -138,14 +138,14 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="2">
+        <item row="7" column="2">
          <widget class="QLabel" name="r2UnitLabel">
           <property name="text">
            <string>mm</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="1">
          <widget class="QDoubleSpinBox" name="w1DoubleSpinBox">
           <property name="keyboardTracking">
            <bool>false</bool>
@@ -199,14 +199,14 @@
           </item>
          </widget>
         </item>
-        <item row="7" column="2">
+        <item row="8" column="2">
          <widget class="QLabel" name="w3UnitLabel">
           <property name="text">
            <string>mm</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="h1DoubleSpinBox">
           <property name="keyboardTracking">
            <bool>false</bool>
@@ -223,7 +223,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="7" column="1">
          <widget class="QDoubleSpinBox" name="r2DoubleSpinBox">
           <property name="keyboardTracking">
            <bool>false</bool>
@@ -233,14 +233,14 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
+        <item row="3" column="2">
          <widget class="QLabel" name="h1UnitLabel">
           <property name="text">
            <string>mm</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QDoubleSpinBox" name="w2DoubleSpinBox">
           <property name="keyboardTracking">
            <bool>false</bool>
@@ -250,18 +250,44 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="2">
+        <item row="4" column="2">
          <widget class="QLabel" name="r1UnitLabel">
           <property name="text">
            <string>mm</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="8" column="0">
          <widget class="QLabel" name="w3Label">
           <property name="text">
            <string>W3:</string>
           </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="symmetryLabel">
+          <property name="text">
+           <string>Symmetry:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" colspan="2">
+         <widget class="QComboBox" name="symmetryComboBox">
+          <item>
+           <property name="text">
+            <string>Symmetry</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Right</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Left</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>

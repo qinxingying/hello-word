@@ -215,7 +215,7 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
                 buff = 0;
             }
             TmpValue =  _process->correctionPdata(buff) * _fScale;
-            if( TmpValue > 255) TmpValue = 255;
+            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
             src[ j * _pixelWidth + i] = TmpValue;
         }
     }
@@ -543,7 +543,7 @@ void AidedAnalysis::calculateSrcData()
                                 }
                             }
                             TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
+                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
                             srcData[n*scanPixel + j] = TmpValue;
                         }
                     }else{
@@ -563,7 +563,7 @@ void AidedAnalysis::calculateSrcData()
                                 }
                             }
                             TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
+                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
                             srcData[n*scanPixel + j] = TmpValue;
                         }
                     }
@@ -591,7 +591,7 @@ void AidedAnalysis::calculateSrcData()
                                 }
                             }
                             TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
+                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
                             srcData[ offset + n] = TmpValue;
                         }
                     }else{
@@ -611,7 +611,7 @@ void AidedAnalysis::calculateSrcData()
                                 }
                             }
                             TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
+                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
                             srcData[ offset + n] = TmpValue;
                         }
                     }

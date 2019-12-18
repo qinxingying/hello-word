@@ -12,6 +12,7 @@ class DopplerParabolaItem : public DopplerGraphicsItem
 public:
     DopplerParabolaItem();
     void SetPoint(QPointF pos_ ) ;
+    void Set_Scale(float scaleH, float scaleV);
 
 protected:
     void   GetPrecInfo(float* precX_, float* precY_, float* pTX0_);
@@ -24,6 +25,8 @@ protected:
     int     m_nDisp      ;
     int     m_nGroup     ;
     TOFD_PARA* m_pTofd   ;
+    float  m_scaleH;
+    float  m_scaleV;
 };
 
 #endif // DOPPLERPARABOLAITEM_H

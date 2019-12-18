@@ -540,7 +540,7 @@ void Config::unpack_weld(const QVariantMap &map)
     }
 
     weld.m_orientation = static_cast<Paramters::Weld::WeldOrientation> (map.value("Orientation", DEFAULT_WELD_ORIENTATION).toUInt());
-    weld.m_isSymmetry  = map.value("Symmetry", DEFAULT_WELD_SYMMETRY).toBool();
+    weld.m_isSymmetry  = static_cast<Paramters::Weld::Symmetry> (map.value("Symmetry", DEFAULT_WELD_SYMMETRY).toUInt());
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " orientation " << weld.m_orientation
@@ -579,6 +579,7 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
 {
     Paramters::Weld &weld = m_groups[groupId].m_specimen.m_weld;
     weld_ii.eType = (setup_WELD_TYPE_II)weld.m_type;
+    weld_ii.eSymmetry = (setup_WELD_SYMMETRY_TYPE)weld.m_isSymmetry;
     //if(Paramters::Weld::I == weld.m_type)
     switch (weld.m_type) {
     case Paramters::Weld::I:
@@ -1171,10 +1172,13 @@ void Config::convert_to_phascan_config(int groupId)
     /* TODO */
     if(Paramters::Specimen::PLANE == currentSpecimen.m_shape) {
         targetGroup.part.Thickness    = currentSpecimen.m_geometry.m_plane.m_height * 1000.0;
+        targetGroup.part.Diameter     = 0;
     } else if(Paramters::Specimen::CYLINDER == currentSpecimen.m_shape) {
-
+        targetGroup.part.Thickness    = (currentSpecimen.m_geometry.m_cylinder.m_outside -
+                                         currentSpecimen.m_geometry.m_cylinder.m_inside) * 1000.0;
     } else if(Paramters::Specimen::NOZZLE == currentSpecimen.m_shape) {
-
+        targetGroup.part.Thickness    = (currentSpecimen.m_geometry.m_nozzle.m_outside -
+                                         currentSpecimen.m_geometry.m_nozzle.m_inside) * 1000.0;
     }
 
     if(Paramters::Focallawer::Longitudinal == currentGroup.m_focallawer.m_waveType) {

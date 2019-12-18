@@ -15,9 +15,12 @@ DialogWeldFixDataII::DialogWeldFixDataII(QWidget *parent, int nGroupId) :
 
     int weldType = (int)m_cPart.weld_ii.eType;
     ui->weldTypeComboBox->setCurrentIndex(weldType);
+    int _buff = (int)m_cPart.weld_ii.eSymmetry;
+    ui->symmetryComboBox->setCurrentIndex(_buff);
     weldTypeChanged(weldType);
 
     connect( ui->weldTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(weldTypeChanged(int)));
+    connect( ui->symmetryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(symmetryChanged(int)));
     connect( ui->w1DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(w1ValueChanged(double)));
     connect( ui->w2DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(w2ValueChanged(double)));
     connect( ui->w3DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(w3ValueChanged(double)));
@@ -269,6 +272,12 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         break;
     }
     blockSignals(false);
+    ui->showWidget->update();
+}
+
+void DialogWeldFixDataII::symmetryChanged( int index)
+{
+    m_cPart.weld_ii.eSymmetry = (setup_WELD_SYMMETRY_TYPE)index;
     ui->showWidget->update();
 }
 

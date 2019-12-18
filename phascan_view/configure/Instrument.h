@@ -280,7 +280,8 @@ struct WELD_FORMAT_UV
 
 struct WELD_II
 {
-    setup_WELD_TYPE_II eType;		/* 焊缝 */
+    setup_WELD_TYPE_II       eType;		  /* 焊缝 */
+    setup_WELD_SYMMETRY_TYPE eSymmetry;	  /* 对称 */
     union{
         WELD_FORMAT_I  I;
         WELD_FORMAT_V  V;
@@ -331,6 +332,7 @@ struct PART_CONFIG
     WELD_FORMAT         weldFormat;
 	WELD				weld;					// weld
     WELD_II             weld_ii;
+    float               weld_border;
 	char				strPartFile[256];		// Name of part file , *.ncc
 };
 
@@ -580,6 +582,16 @@ struct TOPC_INFO
     int*   pDataIndex;  //通过坐标索引得到A扫数据的位置
 };
 
+struct TOPC_DATA
+{
+    int startX;
+    int stopX;
+    int startY;
+    int stopY;
+    int direction;
+    WDATA *topcData;
+};
+
 typedef struct _Group
 {
 	setup_GROUP_MODE		eGroupMode;				/* 组工作模式  0 UT or 1 PA*/
@@ -662,6 +674,7 @@ typedef struct _Group
 	GROUP_COLOR				color;
     int						ThicknessType[8];
     TOPC_INFO               TopCInfo;
+    TOPC_DATA               TopCData;
 }GROUP_CONFIG;
 //####################################################################################
 //#################				 COMMON DATA			 ######################

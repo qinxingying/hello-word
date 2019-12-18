@@ -232,12 +232,12 @@
              </item>
              <item>
               <property name="text">
-               <string>Left</string>
+               <string>Right</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Right</string>
+               <string>Left</string>
               </property>
              </item>
             </widget>

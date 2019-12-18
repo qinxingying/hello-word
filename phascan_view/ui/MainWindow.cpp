@@ -1373,37 +1373,51 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
             }else{
                 _fCursor = _rect.left();
             }
+            if(_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+                maxTmp = GetCurrentTabLinearScanMaxLineCount(_nGroupId);
 
-            maxTmp = GetCurrentTabLinearScanMaxLineCount(_nGroupId);
-
-            if(_isnan(_fCursor))
-            {
-                return;
-            }
-
-            LAW_CONFIG _law = _group.law ;
-            if(_law.eLawType == 1 && _law.eFocalType == 1){
-                if(_fCursor > maxTmp){
-                    _fCursor = maxTmp;
-                    _group.afCursor[_nItemId] = _fCursor;
-                }else if(_fCursor < 0){
-                    _fCursor = 0;
-                    _group.afCursor[_nItemId] = _fCursor;
+                if(_isnan(_fCursor))
+                {
+                    return;
                 }
-            }
 
-            if(_law.eLawType == setup_LAW_TYPE_LINEAR){
-                tmp = _group.afCursor[setup_CURSOR_C_ANGLE];
-                _group.afCursor[setup_CURSOR_LAW] = tmp;
+                LAW_CONFIG _law = _group.law ;
+                if(_law.eLawType == 1 && _law.eFocalType == 1){
+                    if(_fCursor > maxTmp){
+                        _fCursor = maxTmp;
+                        _group.afCursor[_nItemId] = _fCursor;
+                    }else if(_fCursor < 0){
+                        _fCursor = 0;
+                        _group.afCursor[_nItemId] = _fCursor;
+                    }
+                }
+
+                if(_law.eLawType == setup_LAW_TYPE_LINEAR){
+                    tmp = _group.afCursor[setup_CURSOR_C_ANGLE];
+                    _group.afCursor[setup_CURSOR_LAW] = tmp;
+                }else{
+                    tmp = _process->SCanAngleToCScanLineAngle(_nGroupId, _fCursor);
+                    _group.afCursor[setup_CURSOR_LAW] = tmp;
+                }
+                qDebug("(tmp):%.2f,_fCursor:%.2f, rect.x:%.2f, rect.y:%.2f",
+                       _group.afCursor[setup_CURSOR_LAW], _fCursor, _rect.x(), _rect.y());
             }else{
-                tmp = _process->SCanAngleToCScanLineAngle(_nGroupId, _fCursor);
-                _group.afCursor[setup_CURSOR_LAW] = tmp;
+                float indexPos;
+                int lawPos;
+                _process->GetRasterIndexAndLaw(_nGroupId, _fCursor, &indexPos, &lawPos);
+                qDebug()<<"_fCursor"<<_fCursor<<"indexPos"<<indexPos<<"lawPos"<<lawPos;
+                _group.afCursor[setup_CURSOR_C_ANGLE] = lawPos;
+                _group.afCursor[setup_CURSOR_LAW] = lawPos;
+                tmp = lawPos;
+                if( _pConfig->common.scanner.fIndexPos != indexPos){
+                    _pConfig->common.scanner.fIndexPos = indexPos;
+                    int pos_ = _process->TransforIndexPosToIndex(indexPos);
+                    indexSliderh->blockSignals(true);
+                    indexSliderh->setValue(pos_);
+                    indexSliderh->blockSignals(false);
+                }
+
             }
-
-
-            qDebug("(tmp):%.2f,_fCursor:%.2f, rect.x:%.2f, rect.y:%.2f",
-                   _group.afCursor[setup_CURSOR_LAW], _fCursor, _rect.x(), _rect.y());
-
 
             DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
 
@@ -1653,6 +1667,7 @@ void MainWindow::slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF
 void MainWindow::slotTopcMergeCompareViewShow( bool status)
 {
     ui->TabWidget_display->setCurrentIndex(0);
+    sleep(600);
     DopplerViewFrame* _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
     if(status){
         _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_TOPCMERGECOMPARE);

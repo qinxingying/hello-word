@@ -461,6 +461,10 @@ void DopplerOverlays::CreateOverlaysCH()
     if(!group.TopCInfo.TOPCStatus){
         _pItemGroup->EnableItems(OVERLAYS_LAW_MARKER_C_SCAN);
     }
+    if(group.TopCInfo.TOPCValid){
+        _pItemGroup->EnableItems( OVERLAYS_C_WELD_BORDER);
+        _pItemGroup->SetWeldBorderDirection(true);
+    }
 	_pItemGroup->UpdateItems();
 }
 
@@ -539,7 +543,11 @@ void DopplerOverlays::CreateOverlaysCV()
     if(!group.TopCInfo.TOPCStatus){
         _pItemGroup->EnableItems(OVERLAYS_LAW_MARKER_C_SCAN);
     }
-	_pItemGroup->UpdateItems();
+    if(group.TopCInfo.TOPCValid){
+        _pItemGroup->EnableItems( OVERLAYS_C_WELD_BORDER);
+        _pItemGroup->SetWeldBorderDirection(false);
+    }
+    //_pItemGroup->UpdateItems();
 	_pItemGroup->UpdateItems();
 }
 

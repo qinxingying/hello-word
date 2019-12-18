@@ -28,13 +28,19 @@ class Weld : public QObject
         CIRC
     };
 
+    enum Symmetry {
+        SYMMETRIC,
+        STRAIGHT_RIGHT,
+        STRAIGHT_LEFT
+    };
+
 public:
     explicit Weld(QObject *parent = 0);
 
 private:
     bool m_enable;
     WeldType m_type;
-    bool m_isSymmetry;
+    Symmetry m_isSymmetry;
     WeldOrientation m_orientation;
     WeldI m_I;
     WeldV m_V;

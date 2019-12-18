@@ -90,7 +90,7 @@ DopplerConfigure* DopplerConfigure::Instance()
 DopplerConfigure::DopplerConfigure(QObject *parent) :
 	QObject(parent)
 {
-	memset(group, 0x00, sizeof(group));
+    memset(group, 0x00, sizeof(group)*(setup_MAX_GROUP_QTY+1));
 
 	m_pData = NULL;
 	m_pDataShadow = NULL;   
@@ -435,6 +435,12 @@ int DopplerConfigure::OpenData(QString& path_)
 	memcpy(&comTmp, &common, sizeof(COMMON_CONFIG));
 
     InitTOPCInfo();
+    for(int i = 0; i < setup_MAX_GROUP_QTY + 1; i++){
+        if(group[i].TopCData.topcData){
+            free(group[i].TopCData.topcData);
+        }
+        memset( &group[i].TopCData, 0x00, sizeof(TOPC_DATA));
+    }
 
     m_pReport->set_data_path(QFileInfo(path_).absolutePath());
 	m_pReport->InitReportInfo();
@@ -1284,7 +1290,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		}
 
 	//	MATERIAL* _material = _list->at(_pGroupInfo->part.Material_pos) ;
-	//	memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;        
+    //	memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;
 
 		_group.part.weld.eSymmetry       = (setup_WELD_SYMMETRY_TYPE) _pGroupInfo->part.symmetry ;
         _group.part.weld.eType	         = (setup_WELD_TYPE) ((_pGroupInfo->part.Weld == 4)?_pGroupInfo->part.Weld+2:_pGroupInfo->part.Weld) ;
@@ -1334,33 +1340,35 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             WELD& _weld = _group.part.weld;
             switch ( _group.part.weld.eType) {
             case setup_WELD_I:
-                _group.TopCInfo.TOPCWidth = _weld.weland_offset * 2;
+                _group.TopCInfo.TOPCWidth = _weld.weland_offset * 2 + 2;
                 break;
             case setup_WELD_V:
             case setup_WELD_DV:
                 _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
-                                              * _weld.fizone_height) *2;
+                                              * _weld.fizone_height) *2 + 2;
                 break;
             case setup_WELD_U:
                 _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
-                                              _weld.fizone_height + _weld.fizone_radius) *2;
+                                              _weld.fizone_height + _weld.fizone_radius) *2 + 2;
                 break;
             case setup_WELD_DIFF_DV:
                 _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
-                                              * _weld.fizone_height) *2;
+                                              * _weld.fizone_height) *2 + 2;
                 break;
             case setup_WELD_J:
                 _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
-                                              _weld.fizone_height + _weld.fizone_radius) *2;
+                                              _weld.fizone_height + _weld.fizone_radius) *2 + 2;
                 break;
             case setup_WELD_VY:
                 _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
-                                              * _weld.fizone_height) *2;
+                                              * _weld.fizone_height) *2 + 2;
                 break;
             default:
                 break;
             }
         }
+
+        _group.part.weld_border = _process->GetWeldBorder(i);
 
 		DopplerColorIndex _color ;
 

@@ -213,7 +213,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
 						_nTmp = _nTmp / (1 + _nTmp) ;
 						m_pDrawRate[_index] =  _nTmp * COLOR_STEP ;
 					}
-					m_pDraw[_index]  = 255 ;
+                    m_pDraw[_index]  = WAVE_MAX;
 					break ;
 				}
 			}
@@ -273,7 +273,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 
 			if( xxx >= 0 && xxx < _beam_width)
 			{
-				m_pDraw[index] = 255 ;
+                m_pDraw[index] = WAVE_MAX;
             }else{
 				continue ;
 			}

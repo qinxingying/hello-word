@@ -23,6 +23,7 @@ public:
 
 private slots:
     void weldTypeChanged( int index);
+    void symmetryChanged( int index);
     void w1ValueChanged( double value);
     void w2ValueChanged( double value);
     void w3ValueChanged( double value);

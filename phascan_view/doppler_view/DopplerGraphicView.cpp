@@ -373,25 +373,37 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
                 }
             }
         }else if(dynamic_cast<DopplerDrawBScanV*>(m_pDrawScan)){
-            int _sacnIndex = m_pBackGround->GetScanIndex();
-            int _backIndex = m_pBackGround->size().width();
-            if(_sacnIndex > _backIndex){
-                m_pBackGround->SetFixStatus(true);
-                m_pBackGround->SetFixDirection(0);
-                index_scan = 1;
-            }else{
+            DopplerDrawBScanV* _bvDraw = dynamic_cast<DopplerDrawBScanV*>(m_pDrawScan);
+            if(_bvDraw->getShowAllStatus()){
                 m_pBackGround->SetFixStatus(false);
+            }else{
+                int _sacnIndex = m_pBackGround->GetScanIndex();
+                int _backIndex = m_pBackGround->size().width();
+                if(_sacnIndex > _backIndex){
+                    m_pBackGround->SetFixStatus(true);
+                    m_pBackGround->SetFixDirection(0);
+                    index_scan = 1;
+                }else{
+                    m_pBackGround->SetFixStatus(false);
+                }
             }
+
         }else if(dynamic_cast<DopplerDrawBScanH*>(m_pDrawScan)){
-            int _sacnIndex = m_pBackGround->GetScanIndex();
-            int _backIndex = m_pBackGround->size().height();
-            if(_sacnIndex > _backIndex){
-                m_pBackGround->SetFixStatus(true);
-                m_pBackGround->SetFixDirection(1);
-                index_scan = 2;
-            }else{
+            DopplerDrawBScanH* _bHDraw = dynamic_cast<DopplerDrawBScanH*>(m_pDrawScan);
+            if(_bHDraw->getShowAllStatus()){
                 m_pBackGround->SetFixStatus(false);
+            }else{
+                int _sacnIndex = m_pBackGround->GetScanIndex();
+                int _backIndex = m_pBackGround->size().height();
+                if(_sacnIndex > _backIndex){
+                    m_pBackGround->SetFixStatus(true);
+                    m_pBackGround->SetFixDirection(1);
+                    index_scan = 2;
+                }else{
+                    m_pBackGround->SetFixStatus(false);
+                }
             }
+
         }else{
             m_pBackGround->SetFixStatus(false);
         }
@@ -836,6 +848,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                 _fRangeStop = _fScanStop + _nScaleX2 * (_fScanStart - _fScanStop);
                                 if(abs(rect.height()) > 50 && abs(rect.width()) > 50 )
                                 {
+
                                     if((int)scanstart>=(int)scanstop)
                                         break;
                                     if(_fRangeStart>=_fRangeStop)
@@ -856,7 +869,10 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                     m_pDrawScan->curscanstart = scanstart;
                                     m_pDrawScan->curscanstop = scanstop;
                                     _pParent->SetRulerRange( _fRangeStart , _fRangeStop ,  _fRangeStart , _fRangeStop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
-
+                                    float scaleH = (float)_size.width() / (m_cPosStop.x() - m_cPosStart.x());
+                                    float scaleV = (float)_size.width() / (m_cPosStop.y() - m_cPosStart.y());
+                                    DopplerViewItems* _pItemGroup = _pParent->GetItemGroup();
+                                    _pItemGroup->SetParabolaScale(scaleH, scaleV);
 
                                     m_pDrawScan->zoomflag = 1;
                                     UpdateDrawing();
@@ -914,7 +930,10 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                     m_pDrawScan->curscanstart = scanstart;
                                     m_pDrawScan->curscanstop = scanstop;
                                     _pParent->SetRulerRange( _fRangeStart , _fRangeStop ,  _fRangeStart , _fRangeStop , DopplerDataView::DATA_VIEW_RULER_LEFT);
-
+                                    float scaleH = (float)_size.width() / (m_cPosStop.x() - m_cPosStart.x());
+                                    float scaleV = (float)_size.width() / (m_cPosStop.y() - m_cPosStart.y());
+                                    DopplerViewItems* _pItemGroup = _pParent->GetItemGroup();
+                                    _pItemGroup->SetParabolaScale(scaleH, scaleV);
 
                                     m_pDrawScan->zoomflag = 1;
                                     UpdateDrawing();
@@ -974,13 +993,21 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                 _pParent->SetRulerRange( _fScanStart , _fScanStop ,  _fScanStart , _fScanStop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
                 break;
             case setup_DISPLAY_MODE_B_H:
+            {
                 m_pDrawScan->zoomflag = 2;
+                DopplerViewItems* _pItemGroup = _pParent->GetItemGroup();
+                _pItemGroup->SetParabolaScale(1, 1);
                 _pParent->SetRulerRange( srcrangestart , srcrangestop ,  srcrangestart , srcrangestop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
                 break;
+            }
             case setup_DISPLAY_MODE_B_V:
+            {
                 m_pDrawScan->zoomflag = 2;
+                DopplerViewItems* _pItemGroup = _pParent->GetItemGroup();
+                _pItemGroup->SetParabolaScale(1, 1);
                 _pParent->SetRulerRange( srcrangestart , srcrangestop ,  srcrangestart , srcrangestop , DopplerDataView::DATA_VIEW_RULER_LEFT);
                 break;
+            }
             default:
                 break;
             }

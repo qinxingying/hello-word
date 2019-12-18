@@ -179,6 +179,7 @@ U8 src[2048][2048];
 U8 srcMerge[2048][2048];
 void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 {
+    qDebug()<<"cscan_group"<<m_cInfo.nGroupId;
 	U32 _aGateValue[256] ;
     memset(_aGateValue, 0x00, sizeof(_aGateValue));
     //int _nHeight   = pImage_->height();
@@ -562,63 +563,83 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         unsigned char* _pData;
         WDATA* pData;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
-        int i, j, k, m, n;
+        int i, j, k, n;
         float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
         int TmpValue;
         int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
         int _nScanMax = _process->GetRealScanMax() + _nScanOff;
         memset( src, 0x00, sizeof(src));
+//        if(Calculation){
+//            for(i = m_PosStart - 1, j = -1; i <= m_PosStop + 1 && j < (_nScanend)+1; i++ , j++){
+//                if(i<0)
+//                    continue;
+//                if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
+//                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+//                    int index_ = (j+1)*step;
+//                    if(direction == 0){
+//                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+//                                int index = m * _TOPCInfo.pixelWidth + k;
+//                                index = _TOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+
+//                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+//                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+//                            src[index_][n] = TmpValue;
+//                        }
+//                    }else{
+//                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+//                                int index = m * _TOPCInfo.pixelWidth + k;
+//                                index = _TOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+
+//                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+//                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+//                            src[index_][n] = TmpValue;
+//                        }
+//                    }
+
+//                }
+//            }
+//        }
+
         if(Calculation){
+            pData = _process->GetTOPCData(m_cInfo.nGroupId, pixelWidthStart, pixelWidthStop, pixelHeightStart,
+                                          pixelHeightStop, direction);
+            int recMax = m_pConfig->comTmp.nRecMax;
             for(i = m_PosStart - 1, j = -1; i <= m_PosStop + 1 && j < (_nScanend)+1; i++ , j++){
                 if(i<0)
                     continue;
                 if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
-                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+                    int _index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
                     int index_ = (j+1)*step;
-                    if(direction == 0){
-                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                                int index = m * _TOPCInfo.pixelWidth + k;
-                                index = _TOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-
-                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
-                            src[index_][n] = TmpValue;
-                        }
-                    }else{
-                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                                int index = m * _TOPCInfo.pixelWidth + k;
-                                index = _TOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-
-                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
-                            src[index_][n] = TmpValue;
-                        }
+                    for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+                        WDATA _nTmpValue = pData[n*recMax + _index];
+                        TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                        if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+                        src[index_][n] = TmpValue;
                     }
-
                 }
             }
         }
@@ -710,60 +731,79 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 
         WDATA* pMergeData;
         U8* _pMergeMarker = _process->GetScanMarker(mergeGroupId);
-        int mi, mj, mk, mm, mn;
+        int mi, mj, mk, mn;
         float _mergeScale = _process->GetRefGainScale(mergeGroupId);
         int mergeTmpValue;
         int mergeScanOff = _process->GetScanOff(mergeGroupId);
         int mergeScanMax = _process->GetRealScanMax() + mergeScanOff;
         memset( srcMerge, 0x00, sizeof(srcMerge));
+//        if(mergeCalculation){
+//            for(mi = m_PosStart - 1, mj = -1; mi <= m_PosStop + 1 && mj < (_nScanend)+1; mi++ , mj++){
+//                if(mi<0)
+//                    continue;
+//                if(_pMergeMarker[mi] && mi >= mergeScanOff && mi < mergeScanMax){
+//                    pMergeData = _process->GetScanPosPointer( mergeGroupId, mi);
+//                    int index_ = (mj+1)*step;
+//                    if(mergeDirection == 0){
+//                        for( mk = mergePixelWidthStart, mn = 0; mk < mergePixelWidthStop; mk++,mn++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
+//                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
+//                                index = _mergeTOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pMergeData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+
+//                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+//                            if( mergeTmpValue > WAVE_MAX) mergeTmpValue = WAVE_MAX;
+//                            srcMerge[index_][mn] = mergeTmpValue;
+//                        }
+//                    }else{
+//                        for( mk = mergePixelWidthStop - 1, mn = 0; mk >= mergePixelWidthStart; mk--, mn++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
+//                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
+//                                index = _mergeTOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pMergeData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+//                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+//                            if( mergeTmpValue > WAVE_MAX) mergeTmpValue = WAVE_MAX;
+//                            srcMerge[index_][mn] = mergeTmpValue;
+//                        }
+//                    }
+//                }
+//            }
+//        }
         if(mergeCalculation){
+            pMergeData = _process->GetTOPCData( mergeGroupId, mergePixelWidthStart, mergePixelWidthStop, mergePixelHeightStart,
+                                          mergePixelHeightStop, mergeDirection);
+            int recMax = m_pConfig->comTmp.nRecMax;
             for(mi = m_PosStart - 1, mj = -1; mi <= m_PosStop + 1 && mj < (_nScanend)+1; mi++ , mj++){
                 if(mi<0)
                     continue;
                 if(_pMergeMarker[mi] && mi >= mergeScanOff && mi < mergeScanMax){
-                    pMergeData = _process->GetScanPosPointer( mergeGroupId, mi);
+                    int _index = _process->GetRealScanIndex(mergeGroupId, mi);
                     int index_ = (mj+1)*step;
-                    if(mergeDirection == 0){
-                        for( mk = mergePixelWidthStart, mn = 0; mk < mergePixelWidthStop; mk++,mn++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
-                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
-                                index = _mergeTOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pMergeData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-
-                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
-                            if( mergeTmpValue > 255) mergeTmpValue = 255;
-                            srcMerge[index_][mn] = mergeTmpValue;
-                        }
-                    }else{
-                        for( mk = mergePixelWidthStop - 1, mn = 0; mk >= mergePixelWidthStart; mk--, mn++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
-                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
-                                index = _mergeTOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pMergeData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
-                            if( mergeTmpValue > 255) mergeTmpValue = 255;
-                            srcMerge[index_][mn] = mergeTmpValue;
-                        }
+                    for( mk = mergePixelWidthStart, mn = 0; mk < mergePixelWidthStop; mk++,mn++){
+                        WDATA _nTmpValue = pMergeData[mn*recMax + _index];
+                        mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+                        if( mergeTmpValue > WAVE_MAX) mergeTmpValue = WAVE_MAX;
+                        srcMerge[index_][mn] = mergeTmpValue;
                     }
                 }
             }
@@ -1002,63 +1042,84 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         unsigned char* _pData;
         WDATA* pData;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
-        int i, j, k, m, n;
+        int i, j, k, n;
         float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
         int TmpValue;
         int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
         int _nScanMax = _process->GetRealScanMax() + _nScanOff;
         memset( src, 0x00, sizeof(src));
+//        if(Calculation){
+//            for(i = m_PosStart - 1, j = -1; i <= m_PosStop + 1 && j < (_nScanend)+1; i++ , j++){
+//                if(i<0)
+//                    continue;
+//                if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
+//                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+//                    int index_ = (j+1)*step;
+//                    if(direction == 0){
+//                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+//                                int index = m * _TOPCInfo.pixelWidth + k;
+//                                index = _TOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+
+//                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+//                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+//                            src[index_][n] = TmpValue;
+//                        }
+//                    }else{
+//                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+//                                int index = m * _TOPCInfo.pixelWidth + k;
+//                                index = _TOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+
+//                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+//                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+//                            src[index_][n] = TmpValue;
+//                        }
+//                    }
+
+//                }
+//            }
+//        }
+
         if(Calculation){
+            pData = _process->GetTOPCData(m_cInfo.nGroupId, pixelWidthStart, pixelWidthStop, pixelHeightStart,
+                                          pixelHeightStop, direction);
+            int recMax = m_pConfig->comTmp.nRecMax;
             for(i = m_PosStart - 1, j = -1; i <= m_PosStop + 1 && j < (_nScanend)+1; i++ , j++){
                 if(i<0)
                     continue;
                 if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
-                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+                    int _index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
                     int index_ = (j+1)*step;
-                    if(direction == 0){
-                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                                int index = m * _TOPCInfo.pixelWidth + k;
-                                index = _TOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
 
-                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
-                            src[index_][n] = TmpValue;
-                        }
-                    }else{
-                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                                int index = m * _TOPCInfo.pixelWidth + k;
-                                index = _TOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-
-                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
-                            src[index_][n] = TmpValue;
-                        }
+                    for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+                        WDATA _nTmpValue = pData[n*recMax + _index];
+                        TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                        if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+                        src[index_][n] = TmpValue;
                     }
-
                 }
             }
         }
@@ -1219,7 +1280,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 //_pImageTmp = _pImageBits + (k - lawstart) * _nWidthStep + j * 3 ;
                 _nTmpValue = getGateDataAmplitude(_aGateValue[k ])  * _fScale;
 
-                if(_nTmpValue > 255)	_nTmpValue = 255 ;
+                if(_nTmpValue > WAVE_MAX)	_nTmpValue = WAVE_MAX;
 
                 src[index_][k-lawstart+1]=_nTmpValue;
                 //memcpy(_pImageTmp, &m_pColor[_nTmpValue], 3);
@@ -1634,12 +1695,12 @@ void DopplerDrawCScanH::GetPixValuePos(U32* pBuff_)
 			if(_nDepth < _nMin)
 				pBuff_[i] = 0 ;
 			else if(_nDepth > _nMax)
-				pBuff_[i] = 255 ;
+                pBuff_[i] = WAVE_MAX;
 			else
 			{
-				pBuff_[i] = 255 * (_nDepth - _nMin) / _nRange ;
-				if(pBuff_[i] > 255)
-					pBuff_[i] = 255;
+                pBuff_[i] = WAVE_MAX * (_nDepth - _nMin) / _nRange ;
+                if(pBuff_[i] > WAVE_MAX)
+                    pBuff_[i] = WAVE_MAX;
 			}
 		}
 	}
@@ -1673,12 +1734,12 @@ void DopplerDrawCScanH::GetPixValueDistance(U32* pBuff1_ , U32* pBuff2_)
 			if(_nDepth1 < _nMin)
 				pBuff1_[i] = 0 ;
 			else if(_nDepth1 > _nMax)
-				pBuff1_[i] = 255 ;
+                pBuff1_[i] = WAVE_MAX;
 			else
 			{
-				pBuff1_[i] = 255 * (_nDepth1 - _nMin) / _nRange ;
-				if(pBuff1_[i] > 255)
-					pBuff1_[i] = 255;
+                pBuff1_[i] = WAVE_MAX * (_nDepth1 - _nMin) / _nRange ;
+                if(pBuff1_[i] > WAVE_MAX)
+                    pBuff1_[i] = WAVE_MAX;
 			}
 		}
 		else
@@ -1856,7 +1917,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                     for(int w = 0; w < indexStepBuff; w++){
                         _process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
                         _nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
-                        if(_nTmpValue > 255)	_nTmpValue = 255;
+                        if(_nTmpValue > WAVE_MAX)	_nTmpValue = WAVE_MAX;
 
                         src[srcBuffIndex + w][transf - p] = _nTmpValue;
                     }
@@ -2069,60 +2130,79 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         unsigned char* _pData;
         WDATA* pData;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
-        int i, j, k, m, n;
+        int i, j, k, n;
         float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
         int TmpValue;
         int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
         int _nScanMax = _process->GetRealScanMax() + _nScanOff;
         memset( src, 0x00, sizeof(src));
+//        if(Calculation){
+//            for(i = m_PosStart-1 , j = _nScanend  ; i <= m_PosStop+1 && j >= -1; i++ , j--){
+//                if(i<0)
+//                    continue;
+//                if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
+//                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+//                    int index_ = (j+1)*step;
+//                    if(direction == 0){
+//                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+//                                int index = m * _TOPCInfo.pixelWidth + k;
+//                                index = _TOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+//                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+//                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+//                            src[n][index_] = TmpValue;
+//                        }
+//                    }else{
+//                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+//                                int index = m * _TOPCInfo.pixelWidth + k;
+//                                index = _TOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+
+//                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+//                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+//                            src[n][index_] = TmpValue;
+//                        }
+//                    }
+//                }
+//            }
+//        }
         if(Calculation){
+            pData = _process->GetTOPCData(m_cInfo.nGroupId, pixelWidthStart, pixelWidthStop, pixelHeightStart,
+                                          pixelHeightStop, direction);
+            int recMax = m_pConfig->comTmp.nRecMax;
             for(i = m_PosStart-1 , j = _nScanend  ; i <= m_PosStop+1 && j >= -1; i++ , j--){
                 if(i<0)
                     continue;
                 if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
-                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+                    int _index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
                     int index_ = (j+1)*step;
-                    if(direction == 0){
-                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                                int index = m * _TOPCInfo.pixelWidth + k;
-                                index = _TOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
-                            src[n][index_] = TmpValue;
-                        }
-                    }else{
-                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                                int index = m * _TOPCInfo.pixelWidth + k;
-                                index = _TOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-
-                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
-                            src[n][index_] = TmpValue;
-                        }
+                    for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+                        WDATA _nTmpValue = pData[n*recMax + _index];
+                        TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                        if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+                        src[n][index_] = TmpValue;
                     }
                 }
             }
@@ -2215,60 +2295,79 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 
         WDATA* pMergeData;
         U8* _pMergeMarker = _process->GetScanMarker(mergeGroupId);
-        int mi, mj, mk, mm, mn;
+        int mi, mj, mk, mn;
         float _mergeScale = _process->GetRefGainScale(mergeGroupId);
         int mergeTmpValue;
         int mergeScanOff = _process->GetScanOff(mergeGroupId);
         int mergeScanMax = _process->GetRealScanMax() + mergeScanOff;
         memset( srcMerge, 0x00, sizeof(srcMerge));
+//        if(mergeCalculation){
+//            for(mi = m_PosStart - 1, mj = _nScanend; mi <= m_PosStop + 1 && mj >= -1; mi++ , mj--){
+//                if(mi<0)
+//                    continue;
+//                if(_pMergeMarker[mi] && mi >= mergeScanOff && mi < mergeScanMax){
+//                    pMergeData = _process->GetScanPosPointer( mergeGroupId, mi);
+//                    int index_ = (mj+1)*step;
+//                    if(mergeDirection == 0){
+//                        for( mk = mergePixelWidthStart, mn = 0; mk < mergePixelWidthStop; mk++,mn++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
+//                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
+//                                index = _mergeTOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pMergeData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+
+//                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+//                            if( mergeTmpValue > WAVE_MAX) mergeTmpValue = WAVE_MAX;
+//                            srcMerge[mn][index_] = mergeTmpValue;
+//                        }
+//                    }else{
+//                        for( mk = mergePixelWidthStop - 1, mn = 0; mk >= mergePixelWidthStart; mk--, mn++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
+//                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
+//                                index = _mergeTOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pMergeData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+//                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+//                            if( mergeTmpValue > WAVE_MAX) mergeTmpValue = WAVE_MAX;
+//                            srcMerge[mn][index_] = mergeTmpValue;
+//                        }
+//                    }
+//                }
+//            }
+//        }
         if(mergeCalculation){
+            pMergeData = _process->GetTOPCData( mergeGroupId, mergePixelWidthStart, mergePixelWidthStop, mergePixelHeightStart,
+                                          mergePixelHeightStop, mergeDirection);
+            int recMax = m_pConfig->comTmp.nRecMax;
             for(mi = m_PosStart - 1, mj = _nScanend; mi <= m_PosStop + 1 && mj >= -1; mi++ , mj--){
                 if(mi<0)
                     continue;
                 if(_pMergeMarker[mi] && mi >= mergeScanOff && mi < mergeScanMax){
-                    pMergeData = _process->GetScanPosPointer( mergeGroupId, mi);
+                    int _index = _process->GetRealScanIndex(mergeGroupId, mi);
                     int index_ = (mj+1)*step;
-                    if(mergeDirection == 0){
-                        for( mk = mergePixelWidthStart, mn = 0; mk < mergePixelWidthStop; mk++,mn++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
-                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
-                                index = _mergeTOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pMergeData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-
-                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
-                            if( mergeTmpValue > 255) mergeTmpValue = 255;
-                            srcMerge[mn][index_] = mergeTmpValue;
-                        }
-                    }else{
-                        for( mk = mergePixelWidthStop - 1, mn = 0; mk >= mergePixelWidthStart; mk--, mn++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( mm = mergePixelHeightStart; mm < mergePixelHeightStop; mm++){
-                                int index = mm * _mergeTOPCInfo.pixelWidth + mk;
-                                index = _mergeTOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pMergeData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-                            mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
-                            if( mergeTmpValue > 255) mergeTmpValue = 255;
-                            srcMerge[mn][index_] = mergeTmpValue;
-                        }
+                    for( mk = mergePixelWidthStart, mn = 0; mk < mergePixelWidthStop; mk++,mn++){
+                        WDATA _nTmpValue = pMergeData[mn*recMax + _index];
+                        mergeTmpValue =  _process->correctionPdata(_nTmpValue) * _mergeScale;
+                        if( mergeTmpValue > WAVE_MAX) mergeTmpValue = WAVE_MAX;
+                        srcMerge[mn][index_] = mergeTmpValue;
                     }
                 }
             }
@@ -2505,60 +2604,79 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         unsigned char* _pData;
         WDATA* pData;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
-        int i, j, k, m, n;
+        int i, j, k, n;
         float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
         int TmpValue;
         int _nScanOff = _process->GetScanOff(m_cInfo.nGroupId);
         int _nScanMax = _process->GetRealScanMax() + _nScanOff;
         memset( src, 0x00, sizeof(src));
+//        if(Calculation){
+//            for(i = m_PosStart-1 , j = _nScanend  ; i <= m_PosStop+1 && j >= -1; i++ , j--){
+//                if(i<0)
+//                    continue;
+//                if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
+//                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+//                    int index_ = (j+1)*step;
+//                    if(direction == 0){
+//                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+//                                int index = m * _TOPCInfo.pixelWidth + k;
+//                                index = _TOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+//                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+//                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+//                            src[n][index_] = TmpValue;
+//                        }
+//                    }else{
+//                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
+//                            WDATA buff = 0;
+//                            WDATA _nTmpValue = 0;
+//                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
+//                                int index = m * _TOPCInfo.pixelWidth + k;
+//                                index = _TOPCInfo.pDataIndex[index];
+//                                if(index){
+//                                    buff = pData[index];
+//                                }else{
+//                                    buff = 0;
+//                                }
+//                                if(buff > _nTmpValue){
+//                                    _nTmpValue = buff;
+//                                }
+//                            }
+
+//                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+//                            if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+//                            src[n][index_] = TmpValue;
+//                        }
+//                    }
+//                }
+//            }
+//        }
         if(Calculation){
+            pData = _process->GetTOPCData(m_cInfo.nGroupId, pixelWidthStart, pixelWidthStop, pixelHeightStart,
+                                          pixelHeightStop, direction);
+            int recMax = m_pConfig->comTmp.nRecMax;
             for(i = m_PosStart-1 , j = _nScanend  ; i <= m_PosStop+1 && j >= -1; i++ , j--){
                 if(i<0)
                     continue;
                 if(_pMarker[i] && i >= _nScanOff && i < _nScanMax){
-                    pData = _process->GetScanPosPointer(m_cInfo.nGroupId, i);
+                    int _index = _process->GetRealScanIndex(m_cInfo.nGroupId, i);
                     int index_ = (j+1)*step;
-                    if(direction == 0){
-                        for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                                int index = m * _TOPCInfo.pixelWidth + k;
-                                index = _TOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
-                            src[n][index_] = TmpValue;
-                        }
-                    }else{
-                        for( k = pixelWidthStop - 1, n = 0; k >= pixelWidthStart; k--,n++){
-                            WDATA buff = 0;
-                            WDATA _nTmpValue = 0;
-                            for( m = pixelHeightStart; m < pixelHeightStop; m++){
-                                int index = m * _TOPCInfo.pixelWidth + k;
-                                index = _TOPCInfo.pDataIndex[index];
-                                if(index){
-                                    buff = pData[index];
-                                }else{
-                                    buff = 0;
-                                }
-                                if(buff > _nTmpValue){
-                                    _nTmpValue = buff;
-                                }
-                            }
-
-                            TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
-                            if( TmpValue > 255) TmpValue = 255;
-                            src[n][index_] = TmpValue;
-                        }
+                    for( k = pixelWidthStart, n = 0; k < pixelWidthStop; k++,n++){
+                        WDATA _nTmpValue = pData[n*recMax + _index];
+                        TmpValue =  _process->correctionPdata(_nTmpValue) * _fScale;
+                        if( TmpValue > WAVE_MAX) TmpValue = WAVE_MAX;
+                        src[n][index_] = TmpValue;
                     }
                 }
             }
@@ -2714,7 +2832,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 //_pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
 
                 _nTmpValue = getGateDataAmplitude(_aGateValue[ k]) * _fScale;
-				if(_nTmpValue > 255) _nTmpValue = 255 ;
+                if(_nTmpValue > WAVE_MAX) _nTmpValue = WAVE_MAX;
                 src[k-lawstart+1][index_]=_nTmpValue;
                 //memcpy(_pImageTmp2, &m_pColor[_nTmpValue], 3);
 			}

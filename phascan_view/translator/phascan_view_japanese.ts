@@ -199,13 +199,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="235"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="240"/>
         <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="171"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="240"/>
+        <location filename="../ui/dialog/DialogDxfFileLoad.ui" line="235"/>
         <location filename="../ui/dialog/DialogDxfFileLoad.cpp" line="172"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
@@ -489,12 +489,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="51"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="58"/>
         <source>R2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="58"/>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="51"/>
         <source>R1:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -579,27 +579,47 @@
         <source>W3:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="270"/>
+        <source>Symmetry:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="278"/>
+        <source>Symmetry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="283"/>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogweldfixdataii.ui" line="288"/>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DopplerConfigure</name>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1648"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1683"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1656"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1691"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1713"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1721"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1916"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1924"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1916"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1924"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -607,29 +627,29 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="629"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="637"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="651"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="641"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="649"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="663"/>
         <source>No Defect Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="656"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="668"/>
         <source>Range too Small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="656"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="668"/>
         <source>Please Selected More Wider Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="660"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="672"/>
         <source>Out of Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="660"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="672"/>
         <source>Please Selected in C Scan View</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2235,7 +2255,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.cpp" line="628"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2363"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2365"/>
         <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2859,42 +2879,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2036"/>
+        <location filename="../ui/mainwindow.cpp" line="2051"/>
         <source>Wrong View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2036"/>
+        <location filename="../ui/mainwindow.cpp" line="2051"/>
         <source>Please Choose a Group View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2042"/>
+        <location filename="../ui/mainwindow.cpp" line="2057"/>
         <source>Wrong GroupMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2042"/>
+        <location filename="../ui/mainwindow.cpp" line="2057"/>
         <source>This is not PA Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2046"/>
+        <location filename="../ui/mainwindow.cpp" line="2061"/>
         <source>TOPC not Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2046"/>
+        <location filename="../ui/mainwindow.cpp" line="2061"/>
         <source>Please Open TOPC Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2051"/>
+        <location filename="../ui/mainwindow.cpp" line="2066"/>
         <source>Worng View Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2051"/>
+        <location filename="../ui/mainwindow.cpp" line="2066"/>
         <source>Please Choose a View Has S Scan And C Scan</source>
         <translation type="unfinished"></translation>
     </message>

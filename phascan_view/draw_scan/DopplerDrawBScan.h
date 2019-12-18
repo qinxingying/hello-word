@@ -17,6 +17,7 @@ class DopplerDrawBScanH : public DopplerDrawScan
 public:
     explicit DopplerDrawBScanH(QObject *parent = 0);
     void UpdateDrawInfo();
+    bool getShowAllStatus();
     virtual void Draw (QImage* pImage_);
 protected:
     B_SCAN_DRAW_INFO m_BScanInfo ;

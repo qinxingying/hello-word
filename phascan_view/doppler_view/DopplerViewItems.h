@@ -27,6 +27,7 @@ enum OVERLAYS
     OVERLAYS_PARABOLA          = 0x0100,
     OVERLAYS_LAW_MARKER_C_SCAN = 0x0200,
     OVERLAYS_TOPC_WIDTH        = 0x0400,
+    OVERLAYS_C_WELD_BORDER     = 0x0800,
     OVERLAYS_ALL               = 0xFFFF
 } ;
 
@@ -55,6 +56,7 @@ public:
     void SetLawMarkerPos(int nId_, int nMarkerPos);
     //void SetLawMarkerCScanPos(int nMarkerPos);
 	void UpdateItemsThickness() ;
+    void UpdateItemsWeldBorder();
     void UpdateItemsTOPCWidth();
 	void UpdateItemsWeld() ;
 	void UpdateScanMarker();
@@ -62,6 +64,7 @@ public:
 	void SetThicknessInterval(float fInterval_);
 	void SetGateDrawMode(GATE_DRAW_MODE eMode_);
 
+    void SetParabolaScale(float scaleH, float scaleV);
 	void SetLwBwPos(float fLw_ , float fBw_);
 	void SetLwBwId(int iLwId_ , int iBwId_);
 	void SetDefect(int index_ , QRectF rect_);
@@ -77,6 +80,7 @@ public:
 	void EnableMarkerQty(unsigned int nQty_);
 
 	void SetThicknessDirection(bool bHorizental_);
+    void SetWeldBorderDirection(bool direction);
 	void SetScanMarkerDirectionHorizental(bool bHorizental_);
 	void SetScanMarkerPos(float fInterval_);
 	void SetPartInfo(PART_CONFIG* pPart_) ;
@@ -117,6 +121,7 @@ protected:
     DopplerCScanLineMark*    m_pLawMarkerCScan ;
 	DopplerLineItem*     m_pThickness[10]  ;
     DopplerLineItem*     m_pTOPCWidth[2];
+    DopplerLineItem*     m_pWeldBorder[3];
 	DopplerScanMarker*   m_pScanMarker  ;
 	DopplerParabolaItem* m_pParabola[2]    ;
 
@@ -131,6 +136,7 @@ protected:
     float afCursorPos[5]   ;
     int   anCursorId[5]    ;
 	bool  m_bHorizental ;
+    bool  m_cWeldBorderHorizental;
 	bool  m_bScanMarkerHorizental ;
 	float m_fScanPos   ;
 	float m_fInterval  ;

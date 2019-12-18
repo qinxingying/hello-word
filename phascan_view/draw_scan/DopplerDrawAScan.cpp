@@ -14,9 +14,9 @@ WDATA setPdata( WDATA data)
     else
     {
         int _data = (int)data * 2 | 1;
-        if( _data > 255)
+        if( _data > WAVE_MAX)
         {
-            return 255;
+            return WAVE_MAX;
         }
         else
         {
