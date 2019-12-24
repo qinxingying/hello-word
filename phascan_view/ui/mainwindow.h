@@ -73,6 +73,7 @@ public:
     void UpdateSlider();
     void UpdateIndexSlider();
     void AidedAnalysisDone(bool);
+    void setAllTopcWidht(double value);
 
 protected:
     void CreateStatusBar();

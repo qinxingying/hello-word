@@ -97,10 +97,18 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
             emit signalScanRangeMove(0, _nStart, _nStart+_nScanend) ;
         }
         if(_nHeight < _nScanend){
+            if(_nHeight > 2048){
+                _nHeight = 2048;
+            }
             step = (float)_nHeight/_nScanend;
             VRange = _nHeight;
         }else{
-            VRange = m_PosStop - m_PosStart;
+            if(m_PosStop - m_PosStart > 2048){
+                step = (float)2048/(m_PosStop - m_PosStart);
+                VRange = 2048;
+            }else{
+              VRange = m_PosStop - m_PosStart;
+            }
         }
     }else{
         if(_nHeight <_nScanend){
@@ -297,10 +305,19 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
             emit signalScanRangeMove(1, _nStart, _nStart+_nScanend) ;
         }
         if(_nWidth < _nScanend){
+            if(_nWidth > 2048){
+                _nWidth = 2048;
+            }
             step = (float)_nWidth/_nScanend;
             HRange = _nWidth;
         }else{
-            HRange = m_PosStop - m_PosStart;
+            if(m_PosStop - m_PosStart > 2048){
+                step = (float)2048/(m_PosStop - m_PosStart);
+                HRange = 2048;
+            }else{
+                HRange = m_PosStop - m_PosStart;
+            }
+
         }
     }else{
         if(_nWidth <_nScanend){

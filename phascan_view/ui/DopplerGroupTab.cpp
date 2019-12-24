@@ -440,6 +440,11 @@ void DopplerGroupTab::LoadStandardFormConifg()
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
 }
 
+void DopplerGroupTab::setTopcWidthValue(double value)
+{
+    ui->ValueTopcWidth->setValue(value);
+}
+
 /****************************************************************************
   Description: 当前角度选择控件更新
 *****************************************************************************/
@@ -1573,9 +1578,16 @@ void DopplerGroupTab::on_ValueGateHeight_valueChanged(double)
 void DopplerGroupTab::on_ValueTopcWidth_valueChanged(double value)
 {
     if(!ui->ValueTopcWidth->hasFocus()) return;
-    m_pGroup->TopCInfo.TOPCWidth = value;
+    //m_pGroup->TopCInfo.TOPCWidth = value;
+    int groupQty = m_pConfig->common.nGroupQty;
+    for(int i = 0; i < groupQty; i++){
+        if(m_pConfig->group[i].eGroupMode <= setup_GROUP_MODE_PA){
+            m_pConfig->group[i].TopCInfo.TOPCWidth = value;
+        }
+    }
     ProcessDisplay _display;
     _display.UpdateAllViewOverlay();
+    g_pMainWnd->setAllTopcWidht(value);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 

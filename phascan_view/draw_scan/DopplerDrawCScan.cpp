@@ -516,10 +516,19 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 emit signalScanRangeMove(2, _nStart, _nStart + _nScanend);
             }
             if(_nWidth < _nScanend){
+                if(_nWidth > 2048){
+                    _nWidth = 2048;
+                }
                 step = (float)_nWidth/_nScanend;
                 HRange = _nWidth;
             }else{
-                HRange = m_PosStop - m_PosStart;
+                if(m_PosStop - m_PosStart > 2048){
+                    step = (float)2048/(m_PosStop - m_PosStart);
+                    HRange = 2048;
+                }else{
+                    HRange = m_PosStop - m_PosStart;
+                }
+
             }
         }else{
             if(_nWidth <_nScanend){
@@ -995,10 +1004,19 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 emit signalScanRangeMove(2, _nStart, _nStart + _nScanend);
             }
             if(_nWidth < _nScanend){
+                if(_nWidth > 2048){
+                   _nWidth = 2048;
+                }
                 step = (float)_nWidth/_nScanend;
                 HRange = _nWidth;
             }else{
-                HRange = m_PosStop - m_PosStart;
+                if(m_PosStop - m_PosStart > 2048){
+                    step = (float)2048/(m_PosStop - m_PosStart);
+                    HRange = 2048;
+                }else{
+                    HRange = m_PosStop - m_PosStart;
+                }
+
             }
         }else{
             if(_nWidth <_nScanend){
@@ -1191,10 +1209,18 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
         }
         if(_nWidth < _nScanend){
+            if(_nWidth > 2048){
+                _nWidth = 2048;
+            }
             step = (float)_nWidth/_nScanend;
             HRange = _nWidth;
         }else{
-            HRange = m_PosStop - m_PosStart;
+            if(m_PosStop - m_PosStart > 2048){
+                step = (float)2048/(m_PosStop - m_PosStart);
+                HRange = 2048;
+            }else{
+                HRange = m_PosStop - m_PosStart;
+            }
         }
     }else{
         if(_nWidth < _nScanend){
@@ -1522,10 +1548,19 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
             emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
         }
         if(_nWidth < _nScanend){
+            if(_nWidth > 2048){
+                 _nWidth = 2048;
+            }
             step = (float)_nWidth/_nScanend;
             HRange = _nWidth;
         }else{
-            HRange = m_PosStop - m_PosStart;
+            if(m_PosStop - m_PosStart > 2048){
+                step = (float)2048/(m_PosStop - m_PosStart);
+                HRange = 2048;
+            }else{
+                HRange = m_PosStop - m_PosStart;
+            }
+
         }
     }else{
         if(_nWidth < _nScanend)
@@ -2083,10 +2118,18 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
             }
             if(_nHeight < _nScanend){
+                if(_nHeight > 2048){
+                    _nHeight = 2048;
+                }
                 step = (float)_nHeight/_nScanend;
                 VRange = _nHeight;
             }else{
-                VRange = m_PosStop - m_PosStart;
+                if(m_PosStop - m_PosStart > 2048){
+                    step = (float)2048/(m_PosStop - m_PosStart);
+                    VRange = 2048;
+                }else{
+                    VRange = m_PosStop - m_PosStart;
+                }
             }
         }else{
             if(_nHeight < _nScanend){
@@ -2557,10 +2600,18 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
             }
             if(_nHeight < _nScanend){
+                if(_nHeight > 2048){
+                   _nHeight = 2048;
+                }
                 step = (float)_nHeight/_nScanend;
                 VRange = _nHeight;
             }else{
-                VRange = m_PosStop - m_PosStart;
+                if(m_PosStop - m_PosStart > 2048){
+                    step = (float)2048/(m_PosStop - m_PosStart);
+                    VRange = 2048;
+                }else{
+                    VRange = m_PosStop - m_PosStart;
+                }
             }
         }else{
             if(_nHeight < _nScanend){
@@ -2746,10 +2797,19 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
         }
         if(_nHeight < _nScanend){
+            if(_nHeight > 2048){
+                _nHeight = 2048;
+            }
             step = (float)_nHeight/_nScanend;
             VRange = _nHeight;
         }else{
-            VRange = m_PosStop - m_PosStart;
+            if(m_PosStop - m_PosStart > 2048){
+                step = (float)2048/(m_PosStop - m_PosStart);
+                VRange = 2048;
+            }else{
+                VRange = m_PosStop - m_PosStart;
+            }
+
         }
     }else{
         if(_nHeight < _nScanend){
@@ -3051,10 +3111,19 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
             emit signalScanRangeMove(3, _nStart, _nStart+_nScanend) ;
         }
         if(_nHeight < _nScanend){
+            if(_nHeight > 2048){
+               _nHeight = 2048;
+            }
             step = (float)_nHeight/_nScanend;
             VRange = _nHeight;
         }else{
-            VRange = m_PosStop - m_PosStart;
+            if(m_PosStop - m_PosStart > 2048){
+                step = (float)2048/(m_PosStop - m_PosStart);
+                VRange = 2048;
+            }else{
+                VRange = m_PosStop - m_PosStart;
+            }
+
         }
     }else{
         if(_nHeight < _nScanend){

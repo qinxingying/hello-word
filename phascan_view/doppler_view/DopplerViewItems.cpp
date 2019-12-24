@@ -653,7 +653,8 @@ void DopplerViewItems::UpdateItemsWeldBorder()
     int groupId = m_pDataView->GetGroupId();
     bool topc, topcMerge;
     m_pDataView->GetCScanTopcDis( topc, topcMerge);
-    if( !_pConfig->group[groupId].TopCInfo.TOPCStatus && !topc){
+    bool status = topc || topcMerge;
+    if( !_pConfig->group[groupId].TopCInfo.TOPCStatus && !status){
         for( i = 0; i < 3; i++){
             if(m_pWeldBorder[i]) m_pWeldBorder[i]->hide();
         }
@@ -668,7 +669,7 @@ void DopplerViewItems::UpdateItemsWeldBorder()
     QRectF _rect(0 , 0 , 0 , 0);
     for( i = 0; i < 3; i++){
         if(!m_pWeldBorder[i]){
-            m_pWeldBorder[i] = new DopplerLineItem(COLOR_THICKNESS);
+            m_pWeldBorder[i] = new DopplerLineItem(COLOR_SCAN_MARKER);
             m_pWeldBorder[i]->SetLineStyle(Qt::DashLine);
             m_pWeldBorder[i]->SetItemType(DOPPLER_GRAPHICS_ITEM_THICKNESS);
             m_pWeldBorder[i]->SetItemId(i);

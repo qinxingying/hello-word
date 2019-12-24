@@ -455,6 +455,7 @@ void MainWindow::slotViewFrameButtonClicked(QWidget* pWidget_)
 *****************************************************************************/
 void MainWindow::slotCurrentGroupChanged(int nIndex_)
 {
+    //qDebug()<<"index"<<nIndex_;
     static int _nOldIndex = 0;
     if(nIndex_ + 2 >= ui->TabWidget_parameter->count())  return;
     if(ui->TabWidget_parameter->count() < 4)  return;
@@ -861,6 +862,16 @@ void MainWindow::AidedAnalysisDone(bool status)
 
         _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
         RunDrawThreadOnce(true);
+    }
+}
+
+void MainWindow::setAllTopcWidht(double value)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    for(int i = 0; i < m_pGroupList.size(); i++){
+        if(_pConfig->group[i].eGroupMode <= setup_GROUP_MODE_PA){
+            m_pGroupList[i]->setTopcWidthValue(value);
+        }
     }
 }
 
@@ -1305,14 +1316,18 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
         m_nLawIdSel = _nId;
         _group.afCursor[setup_CURSOR_LAW] = _nPos;
-        qDebug()<<"_nId"<<_nId<<"_nPos"<<_nPos;
+        //qDebug()<<"_nId"<<_nId<<"_nPos"<<_nPos;
         updateCscanLawPos(_nPos, _nGroupId);
-        InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
-        _pScanner->UpdateIndexBox();
+        //int paraIndex = ui->TabWidget_parameter->currentIndex();
+        //qDebug()<<"_paraIndex"<<paraIndex;
+
 
         DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
         _pGroupTab->UpdateCurrentAngleCom();
         _pGroupTab->UpdateSizeingCurves();
+        //ui->TabWidget_parameter->setCurrentIndex(paraIndex);
+        InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+        _pScanner->UpdateIndexBox();
 
         updateAllTabwidgetSscanPos(_nGroupId, _nPos);
 
@@ -2106,10 +2121,10 @@ void MainWindow::set_ToolBarStatus( bool status)
     ui->actionTOFD_Length_Measurement->setEnabled(status);
     ui->actionTOFD_Height_Measurement->setEnabled(status);
     ui->actionTOFD_Depth_Measurement->setEnabled(status);
-    ui->actionSave_Defect->setEnabled(status);
+    //ui->actionSave_Defect->setEnabled(status);
     ui->actionLanguage->setEnabled(status);
     ui->actionScreenShot->setEnabled(status);
     ui->actionAided_Analysis->setEnabled(status);
     ui->actionStop_Analysis->setEnabled(!status);
-    sliderh->setEnabled(status);
+    //sliderh->setEnabled(status);
 }

@@ -46,6 +46,7 @@ public:
 	void UpdateSizeingCurves();
     void retranslateGroupTabUi();
     void LoadStandardFormConifg();
+    void setTopcWidthValue(double value);
 protected:
     void SetWidgetInvalide();
     void CreateSettingView();
