@@ -592,6 +592,27 @@ struct TOPC_DATA
     WDATA *topcData;
 };
 
+enum RASTER_MODE
+{
+    raster_AMP = 0,
+    raster_POS_ONE,
+    raster_POS_TWO
+};
+
+struct RASTER_DATA
+{
+    float fStart1;	 // gate start position
+    float fWidth1;	 // gate width
+    unsigned int threshold1;
+    float fStart2;
+    float fWidth2;
+    unsigned int threshold2;
+    float fMinThickness;
+    float fMaxThickness;
+    RASTER_MODE rasterMode;
+    WDATA *rasterData;
+};
+
 typedef struct _Group
 {
 	setup_GROUP_MODE		eGroupMode;				/* 组工作模式  0 UT or 1 PA*/
@@ -675,6 +696,7 @@ typedef struct _Group
     int						ThicknessType[8];
     TOPC_INFO               TopCInfo;
     TOPC_DATA               TopCData;
+    RASTER_DATA             RasterData;
 }GROUP_CONFIG;
 //####################################################################################
 //#################				 COMMON DATA			 ######################

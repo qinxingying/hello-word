@@ -242,6 +242,7 @@ public:
 
     QVector<WDATA> GetCoupleCScanData( int nGroupId_);
     WDATA* GetTOPCData(int nGroupId_, int startX_, int stopX_, int startY_, int stopY_, int direction_);
+    WDATA* GetRasterData(int nGroupId_, setup_CSCAN_SOURCE_MODE source_mode);
 protected:
     explicit ParameterProcess(QObject *parent = 0);
     DopplerConfigure* m_pConfig;

@@ -13,8 +13,16 @@ CalcMeasurement::CalcMeasurement(QObject *parent) :
 
 void CalGatePeakInfo(int nGroupId_ , int nLaw_)
 {
-	ParameterProcess* _process = ParameterProcess::Instance() ;
-	int _nScanPos = _process->GetScanIndexPos();
+    ParameterProcess* _process = ParameterProcess::Instance();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int _nScanPos;
+    if( _pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+       _nScanPos = _process->GetScanIndexPos();
+    }else{
+        _nScanPos = _process->transforRasterPosToMarker();
+    }
+
+    //int _nScanPos = _process->GetScanIndexPos();
 	_process->GetGatePeakInfos(nGroupId_, _nScanPos, nLaw_, g_PeakInfo);
 }
 

@@ -320,17 +320,19 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 //        }
         float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
         U32 _nTmpValue;
-        PEAK_CONFIG _info[setup_GATE_MAX];
-        setup_GATE_NAME _eGate;
+//        PEAK_CONFIG _info[setup_GATE_MAX];
+//        setup_GATE_NAME _eGate;
 
-        switch(eGate_)
-        {
-        case GATE_A: _eGate = setup_GATE_A; break;
-        case GATE_B: _eGate = setup_GATE_B; break;
-        case GATE_I: _eGate = setup_GATE_I; break;
-        default:  return;
-        }
+//        switch(eGate_)
+//        {
+//        case GATE_A: _eGate = setup_GATE_A; break;
+//        case GATE_B: _eGate = setup_GATE_B; break;
+//        case GATE_I: _eGate = setup_GATE_I; break;
+//        default:  return;
+//        }
         memset(src,0x00,sizeof(src));
+        WDATA* pData;
+        pData = _process->GetRasterData(m_cInfo.nGroupId, setup_CSCAN_SOURCE_MODE (m_CScanInfo.eType));
         for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
 
             double _offsetbuff = _pConfig->rasterOffset[j];
@@ -345,10 +347,12 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
                 }
                 int markerPos = markerBuff + k - _offset;
                 if( _pMarker[markerPos]){
+                    int markOffset = markerPos * indexStepBuff;
                     for(int w = 0; w < indexStepBuff; w++){
-                        _process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
-                        _nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
-                        if(_nTmpValue > 255)	_nTmpValue = 255;
+                        //_process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
+                        //_nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
+                        _nTmpValue = _process->correctionPdata(pData[markOffset + w]) * _fScale;
+                        if(_nTmpValue > WAVE_MAX)	_nTmpValue = WAVE_MAX;
 
                         src[p][srcBuffIndex + w] = _nTmpValue;
                     }
@@ -1471,52 +1475,41 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
         int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
         int i, j, k, p;
-//        int indexStepDrawBeam = indexStepBeam;
-//        if(indexStepDrawBeam > _process->GetGroupLawQty(m_cInfo.nGroupId)){
-//            indexStepDrawBeam = _process->GetGroupLawQty(m_cInfo.nGroupId);
-//        }
-//        float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
-//        U32 _nTmpValue;
-//        PEAK_CONFIG _info[setup_GATE_MAX];
-//        setup_GATE_NAME _eGate;
-
-//        switch(eGate_)
-//        {
-//        case GATE_A: _eGate = setup_GATE_A; break;
-//        case GATE_B: _eGate = setup_GATE_B; break;
-//        case GATE_I: _eGate = setup_GATE_I; break;
-//        default:  return;
-//        }
         memset(src,0x00,sizeof(src));
+        WDATA* pData;
+        pData = _process->GetRasterData(m_cInfo.nGroupId, setup_CSCAN_SOURCE_MODE (m_CScanInfo.eType));
         for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
+            double _offsetbuff = _pConfig->rasterOffset[j];
+            int _offset = scanQty * _offsetbuff /(_scanner.fScanStop - _scanner.fScanStart);
             int indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
             int srcBuffIndex = j*indexStepBeam;
             int markerBuff = scanQty*i;
             for( k = m_PosStart, p = 0; k <= m_PosStop&& p < _nScanend; k++, p++){
-                int markerPos = markerBuff + k;
+                if( p - _offset < 0 || p - _offset >= scanQty){
+                    continue;
+                }
+                int markerPos = markerBuff + k - _offset;
 
                 if( _pMarker[markerPos]){
-                    if(eGate2_){
-                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
-                        GetPixValueInfo(markerPos, eGate2_, _aGateValue2);
-                        GetPixValueDistance(_aGateValue1, _aGateValue2);
-                    }else{
-                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
-                        GetPixValuePos(_aGateValue1);
-                    }
+//                    if(eGate2_){
+//                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
+//                        GetPixValueInfo(markerPos, eGate2_, _aGateValue2);
+//                        GetPixValueDistance(_aGateValue1, _aGateValue2);
+//                    }else{
+//                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
+//                        GetPixValuePos(_aGateValue1);
+//                    }
+                    int markOffset = markerPos * indexStepBuff;
                     for(int w = 0; w < indexStepBuff; w++){
-//                        _process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
-//                        _nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
-//                        if(_nTmpValue > 255)	_nTmpValue = 255;
-
-                        src[p][srcBuffIndex + w] = _aGateValue1[w];
+                        //src[p][srcBuffIndex + w] = _aGateValue1[w];
+                        src[p][srcBuffIndex + w] = pData[markOffset + w];
                     }
                 }
             }
         }
         unsigned char* _pData = pImage_->bits();
         memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
-        int srcHeight = j*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        int srcHeight = (j - 1)*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
         TransformImage( p, srcHeight, src, pImage_->width(), pImage_->height(), pImage_);
         return;
     }
@@ -1951,17 +1944,19 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 //        }
         float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
         U32 _nTmpValue;
-        PEAK_CONFIG _info[setup_GATE_MAX];
-        setup_GATE_NAME _eGate;
+//        PEAK_CONFIG _info[setup_GATE_MAX];
+//        setup_GATE_NAME _eGate;
 
-        switch(eGate_)
-        {
-        case GATE_A: _eGate = setup_GATE_A; break;
-        case GATE_B: _eGate = setup_GATE_B; break;
-        case GATE_I: _eGate = setup_GATE_I; break;
-        default:  return;
-        }
+//        switch(eGate_)
+//        {
+//        case GATE_A: _eGate = setup_GATE_A; break;
+//        case GATE_B: _eGate = setup_GATE_B; break;
+//        case GATE_I: _eGate = setup_GATE_I; break;
+//        default:  return;
+//        }
         memset(src,0x00,sizeof(src));
+        WDATA* pData;
+        pData = _process->GetRasterData(m_cInfo.nGroupId, setup_CSCAN_SOURCE_MODE (m_CScanInfo.eType));
         int transf = m_PosStop - m_PosStart;
         for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
             double _offsetbuff = _pConfig->rasterOffset[j];
@@ -1977,8 +1972,10 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 
                 if( _pMarker[markerPos]){
                     for(int w = 0; w < indexStepBuff; w++){
-                        _process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
-                        _nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
+                        int markOffset = markerPos * indexStepBuff;
+                        //_process->GetGatePeakInfos(m_cInfo.nGroupId, markerPos, w, _info);
+                        //_nTmpValue = getGateDataAmplitude(_info[_eGate].iY) * _fScale;
+                        _nTmpValue =  _process->correctionPdata(pData[markOffset + w]) * _fScale;
                         if(_nTmpValue > WAVE_MAX)	_nTmpValue = WAVE_MAX;
 
                         src[srcBuffIndex + w][transf - p] = _nTmpValue;
@@ -3078,32 +3075,41 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
         int i, j, k, p;
         memset(src,0x00,sizeof(src));
+        WDATA* pData;
+        pData = _process->GetRasterData(m_cInfo.nGroupId, setup_CSCAN_SOURCE_MODE (m_CScanInfo.eType));
         int transf = m_PosStop - m_PosStart;
         for(i = m_indexStartIndex, j = 0; i <= m_indexStopIndex; i++, j++){
+            double _offsetbuff = _pConfig->rasterOffset[j];
+            int _offset = scanQty * _offsetbuff /(_scanner.fScanStop - _scanner.fScanStart);
             int indexStepBuff = _process->GetGroupLawQty(m_cInfo.nGroupId);
             int srcBuffIndex = j*indexStepBeam;
             int markerBuff = scanQty*i;
             for( k = m_PosStart, p = 0; k <= m_PosStop&& p < _nScanend; k++, p++){
-                int markerPos = markerBuff + k;
+                if( p - _offset < 0 || p - _offset >= scanQty){
+                    continue;
+                }
+                int markerPos = markerBuff + k - _offset;
 
                 if( _pMarker[markerPos]){
-                    if(eGate2_){
-                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
-                        GetPixValueInfo(markerPos, eGate2_, _aGateValue2);
-                        GetPixValueDistance(_aGateValue1, _aGateValue2);
-                    }else{
-                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
-                        GetPixValuePos(_aGateValue1);
-                    }
+//                    if(eGate2_){
+//                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
+//                        GetPixValueInfo(markerPos, eGate2_, _aGateValue2);
+//                        GetPixValueDistance(_aGateValue1, _aGateValue2);
+//                    }else{
+//                        GetPixValueInfo(markerPos, eGate1_, _aGateValue1);
+//                        GetPixValuePos(_aGateValue1);
+//                    }
+                    int markOffset = markerPos * indexStepBuff;
                     for(int w = 0; w < indexStepBuff; w++){
-                        src[srcBuffIndex + w][transf - p] = _aGateValue1[w];
+                        //src[srcBuffIndex + w][transf - p] = _aGateValue1[w];
+                        src[srcBuffIndex + w][transf - p] = pData[markOffset + w];
                     }
                 }
             }
         }
         unsigned char* _pData = pImage_->bits();
         memset( _pData, 0, pImage_->bytesPerLine() * pImage_->height());
-        int srcHeight = j*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
+        int srcHeight = (j -1)*indexStepBeam + _process->GetGroupLawQty(m_cInfo.nGroupId);
         TransformImage( srcHeight, p, src, pImage_->width(), pImage_->height(), pImage_);
         return;
     }

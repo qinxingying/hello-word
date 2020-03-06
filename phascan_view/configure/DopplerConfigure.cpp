@@ -1419,6 +1419,11 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 				_group.bShowLwBw = false;
 		}
 
+        if( _group.RasterData.rasterData){
+            free(_group.RasterData.rasterData);
+        }
+        memset( &_group.RasterData, 0x00, sizeof(RASTER_DATA));
+
 		_process->TofdCursorCalibration(i);
 
 	}

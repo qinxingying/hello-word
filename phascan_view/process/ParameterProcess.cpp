@@ -2940,3 +2940,358 @@ WDATA* ParameterProcess::GetTOPCData(int nGroupId_, int startX_, int stopX_, int
     }
     return TOPCData.topcData;
 }
+
+WDATA* ParameterProcess::GetRasterData(int nGroupId_, setup_CSCAN_SOURCE_MODE source_mode)
+{
+    //峰值
+    if(source_mode == setup_CSCAN_AMP_A || source_mode == setup_CSCAN_AMP_B){
+        float _fStart;	 // gate start position
+        float _fWidth;	 // gate width
+        if(source_mode == setup_CSCAN_AMP_A){
+            GATE_CONFIG* _pGate = GetGateInfo(nGroupId_ , setup_GATE_A);
+            _fStart = _pGate->fStart;
+            _fWidth = _pGate->fWidth;
+        }else{
+            GATE_CONFIG* _pGate = GetGateInfo(nGroupId_ , setup_GATE_B);
+            _fStart = _pGate->fStart;
+            _fWidth = _pGate->fWidth;
+        }
+        RASTER_DATA &RasterData = m_pConfig->group[nGroupId_].RasterData;
+        if(_fStart == RasterData.fStart1 && _fWidth == RasterData.fWidth1 && RasterData.rasterData != NULL
+                && RasterData.rasterMode == raster_AMP){
+            return RasterData.rasterData;
+        }
+        RasterData.fStart1 = _fStart;
+        RasterData.fWidth1 = _fWidth;
+        RasterData.rasterMode = raster_AMP;
+        int markLength = Config::instance()->data_mark_length();
+        int beamQty = GetGroupLawQty(nGroupId_);
+        int dataLength = markLength * beamQty;
+        if(RasterData.rasterData == NULL){
+            RasterData.rasterData =  (WDATA*)malloc( dataLength * sizeof(WDATA));
+        }
+        memset(RasterData.rasterData, 0x00, dataLength);
+        float sampleStart = m_pConfig->group[nGroupId_].fSampleStart;
+        float sampleRange = m_pConfig->group[nGroupId_].fSampleRange;
+        int _nPointQty = GetGroupPointQty(nGroupId_);
+        int pointStart = 0;
+        int pointRange = 0;
+        if(_fStart < sampleStart){
+            if(_fStart + _fWidth <= sampleStart){
+                return RasterData.rasterData;
+            }else if(_fStart + _fWidth <= sampleStart + sampleRange){
+                pointStart = 0;
+                pointRange = _nPointQty * (_fStart + _fWidth - sampleStart) / sampleRange;
+
+            }else{
+                pointStart = 0;
+                pointRange = _nPointQty;
+            }
+        }else if(_fStart < sampleStart + sampleRange){
+            if(_fStart + _fWidth <= sampleStart + sampleRange){
+                pointStart = _nPointQty * (_fStart - sampleStart) / sampleRange;
+                pointRange = _nPointQty * _fWidth / sampleRange;
+            }else{
+                pointStart = _nPointQty * (_fStart - sampleStart) / sampleRange;
+                pointRange = _nPointQty * (sampleStart + sampleRange - _fStart) / sampleRange;
+            }
+        }else{
+            return RasterData.rasterData;
+        }
+        U8* _pMarker = GetScanMarker(nGroupId_);
+
+        int _nFrameOffset = GetTotalDataSize();
+        int _nGroupOffset = GetGroupDataOffset(nGroupId_);
+        int _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+
+        for(int i = 0; i < markLength; i++){
+            if(_pMarker[i]){
+                int _index = GetRealScanIndex(nGroupId_, i);
+                int offset = _nFrameOffset * _index + _nGroupOffset;
+                int Roffset = _index * beamQty;
+                for(int j = 0; j < beamQty; j++){
+                    WDATA* _pData = GetShadowDataPointer();
+                    _pData += offset + pointStart + j * _nLawSize;
+                    WDATA buff = 0;
+                    for(int k = 0; k < pointRange; k++){
+                        if(_pData[k] > buff){
+                            buff = _pData[k];
+                        }
+                    }
+                    RasterData.rasterData[Roffset + j] = buff;
+                }
+            }
+        }
+        return RasterData.rasterData;
+    }else if(source_mode == setup_CSCAN_POS_I || source_mode == setup_CSCAN_POS_A || source_mode == setup_CSCAN_POS_B){
+        //位置
+        float _fStart;	 // gate start position
+        float _fWidth;	 // gate width
+        unsigned int _threshold;
+        if(source_mode == setup_CSCAN_POS_I){
+            GATE_CONFIG* _pGate = GetGateInfo(nGroupId_ , setup_GATE_I);
+            _fStart = _pGate->fStart;
+            _fWidth = _pGate->fWidth;
+            _threshold = _pGate->nThreshold;
+        }else if(source_mode == setup_CSCAN_POS_A){
+            GATE_CONFIG* _pGate = GetGateInfo(nGroupId_ , setup_GATE_A);
+            _fStart = _pGate->fStart;
+            _fWidth = _pGate->fWidth;
+            _threshold = _pGate->nThreshold;
+        }else{
+            GATE_CONFIG* _pGate = GetGateInfo(nGroupId_ , setup_GATE_B);
+            _fStart = _pGate->fStart;
+            _fWidth = _pGate->fWidth;
+            _threshold = _pGate->nThreshold;
+        }
+        float _fMinThickness = m_pConfig->group[nGroupId_].fMinThickness;
+        float _fMaxThickness = m_pConfig->group[nGroupId_].fMaxThickness;
+        RASTER_DATA &RasterData = m_pConfig->group[nGroupId_].RasterData;
+        if(_fStart == RasterData.fStart1 && _fWidth == RasterData.fWidth1 && RasterData.rasterData != NULL
+                && _threshold == RasterData.threshold1 && _fMinThickness == RasterData.fMinThickness
+                && _fMaxThickness == RasterData.fMaxThickness && RasterData.rasterMode == raster_POS_ONE){
+            return RasterData.rasterData;
+        }
+        RasterData.fStart1 = _fStart;
+        RasterData.fWidth1 = _fWidth;
+        RasterData.threshold1 = _threshold;
+        RasterData.fMinThickness = _fMinThickness;
+        RasterData.fMaxThickness = _fMaxThickness;
+        RasterData.rasterMode = raster_POS_ONE;
+        int markLength = Config::instance()->data_mark_length();
+        int beamQty = GetGroupLawQty(nGroupId_);
+        int dataLength = markLength * beamQty;
+        if(RasterData.rasterData == NULL){
+            RasterData.rasterData =  (WDATA*)malloc( dataLength * sizeof(WDATA));
+        }
+        memset(RasterData.rasterData, 0x00, dataLength);
+        float sampleStart = m_pConfig->group[nGroupId_].fSampleStart;
+        float sampleRange = m_pConfig->group[nGroupId_].fSampleRange;
+        int _nPointQty = GetGroupPointQty(nGroupId_);
+        int pointStart = 0;
+        int pointRange = 0;
+        if(_fStart < sampleStart){
+            if(_fStart + _fWidth <= sampleStart){
+                return RasterData.rasterData;
+            }else if(_fStart + _fWidth <= sampleStart + sampleRange){
+                pointStart = 0;
+                pointRange = _nPointQty * (_fStart + _fWidth - sampleStart) / sampleRange;
+
+            }else{
+                pointStart = 0;
+                pointRange = _nPointQty;
+            }
+        }else if(_fStart < sampleStart + sampleRange){
+            if(_fStart + _fWidth <= sampleStart + sampleRange){
+                pointStart = _nPointQty * (_fStart - sampleStart) / sampleRange;
+                pointRange = _nPointQty * _fWidth / sampleRange;
+            }else{
+                pointStart = _nPointQty * (_fStart - sampleStart) / sampleRange;
+                pointRange = _nPointQty * (sampleStart + sampleRange - _fStart) / sampleRange;
+            }
+        }else{
+            return RasterData.rasterData;
+        }
+        U8* _pMarker = GetScanMarker(nGroupId_);
+
+        int _nFrameOffset = GetTotalDataSize();
+        int _nGroupOffset = GetGroupDataOffset(nGroupId_);
+        int _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+        float _posRange = _fMaxThickness - _fMinThickness;
+        int _threshold_ = _threshold * 255.0 / 100;
+        float _fScale = GetRefGainScale(nGroupId_);
+        int _nTmpValue;
+        float _nDepth;
+        for(int i = 0; i < markLength; i++){
+            if(_pMarker[i]){
+                int _index = GetRealScanIndex(nGroupId_, i);
+                int offset = _nFrameOffset * _index + _nGroupOffset;
+                int Roffset = _index * beamQty;
+                for(int j = 0; j < beamQty; j++){
+                    WDATA* _pData = GetShadowDataPointer();
+                    _pData += offset + pointStart + j * _nLawSize;
+                    WDATA buff = 0;
+                    int posBuff = pointStart;
+                    for(int k = 0; k < pointRange; k++){
+                        if(_pData[k] > buff){
+                            buff = _pData[k];
+                            posBuff = pointStart + k;
+                        }
+                    }
+                    _nTmpValue = correctionPdata(buff) * _fScale;
+                    if(_nTmpValue < _threshold_){
+                        RasterData.rasterData[Roffset + j] = 0;
+                    }else{
+                         _nDepth = ( posBuff * sampleRange / _nPointQty) + sampleStart;
+                         if(_nDepth < _fMinThickness){
+                             RasterData.rasterData[Roffset + j] = 0;
+                         }else if(_nDepth > _fMaxThickness){
+                             RasterData.rasterData[Roffset + j] = WAVE_MAX;
+                         }else{
+                             _nTmpValue = WAVE_MAX * (_nDepth - _fMinThickness) / _posRange;
+                             RasterData.rasterData[Roffset + j] = _nTmpValue;
+                         }
+                    }
+                }
+            }
+        }
+        return RasterData.rasterData;
+    }else{
+        GATE_CONFIG* _pGate1;
+        GATE_CONFIG* _pGate2;
+        if(source_mode == setup_CSCAN_POS_AI){
+            _pGate1 = GetGateInfo(nGroupId_ , setup_GATE_A);
+            _pGate2 = GetGateInfo(nGroupId_ , setup_GATE_I);
+        }else if(source_mode == setup_CSCAN_POS_BI){
+            _pGate1 = GetGateInfo(nGroupId_ , setup_GATE_B);
+            _pGate2 = GetGateInfo(nGroupId_ , setup_GATE_I);
+        }else{
+            _pGate1 = GetGateInfo(nGroupId_ , setup_GATE_B);
+            _pGate2 = GetGateInfo(nGroupId_ , setup_GATE_A);
+        }
+        float _fStart1 = _pGate1->fStart;
+        float _fWidth1 = _pGate1->fWidth;
+        unsigned int _threshold1 = _pGate1->nThreshold;
+        float _fStart2 = _pGate2->fStart;
+        float _fWidth2 = _pGate2->fWidth;;
+        unsigned int _threshold2 = _pGate2->nThreshold;
+        float _fMinThickness = m_pConfig->group[nGroupId_].fMinThickness;
+        float _fMaxThickness = m_pConfig->group[nGroupId_].fMaxThickness;
+        RASTER_DATA &RasterData = m_pConfig->group[nGroupId_].RasterData;
+        if(_fStart1 == RasterData.fStart1 && _fWidth1 == RasterData.fWidth1 && RasterData.rasterData != NULL
+                && _threshold1 == RasterData.threshold1 && _fMinThickness == RasterData.fMinThickness
+                && _fMaxThickness == RasterData.fMaxThickness && RasterData.rasterMode == raster_POS_TWO
+                && _fStart2 == RasterData.fStart2 && _fWidth2 == RasterData.fWidth2 && _threshold2 == RasterData.threshold2){
+            return RasterData.rasterData;
+        }
+        RasterData.fStart1 = _fStart1;
+        RasterData.fWidth1 = _fWidth1;
+        RasterData.threshold1 = _threshold1;
+        RasterData.fStart2 = _fStart2;
+        RasterData.fWidth2 = _fWidth2;
+        RasterData.threshold2 = _threshold2;
+        RasterData.fMinThickness = _fMinThickness;
+        RasterData.fMaxThickness = _fMaxThickness;
+        RasterData.rasterMode = raster_POS_TWO;
+        int markLength = Config::instance()->data_mark_length();
+        int beamQty = GetGroupLawQty(nGroupId_);
+        int dataLength = markLength * beamQty;
+        if(RasterData.rasterData == NULL){
+            RasterData.rasterData =  (WDATA*)malloc( dataLength * sizeof(WDATA));
+        }
+        memset(RasterData.rasterData, 0x00, dataLength);
+        float sampleStart = m_pConfig->group[nGroupId_].fSampleStart;
+        float sampleRange = m_pConfig->group[nGroupId_].fSampleRange;
+        int _nPointQty = GetGroupPointQty(nGroupId_);
+        int pointStart1 = 0;
+        int pointRange1 = 0;
+        int pointStart2 = 0;
+        int pointRange2 = 0;
+
+        if(_fStart1 < sampleStart){
+            if(_fStart1 + _fWidth1 <= sampleStart){
+                return RasterData.rasterData;
+            }else if(_fStart1 + _fWidth1 <= sampleStart + sampleRange){
+                pointStart1 = 0;
+                pointRange1 = _nPointQty * (_fStart1 + _fWidth1 - sampleStart) / sampleRange;
+
+            }else{
+                pointStart1 = 0;
+                pointRange1 = _nPointQty;
+            }
+        }else if(_fStart1 < sampleStart + sampleRange){
+            if(_fStart1 + _fWidth1 <= sampleStart + sampleRange){
+                pointStart1 = _nPointQty * (_fStart1 - sampleStart) / sampleRange;
+                pointRange1 = _nPointQty * _fWidth1 / sampleRange;
+            }else{
+                pointStart1 = _nPointQty * (_fStart1 - sampleStart) / sampleRange;
+                pointRange1 = _nPointQty * (sampleStart + sampleRange - _fStart1) / sampleRange;
+            }
+        }else{
+            return RasterData.rasterData;
+        }
+
+        if(_fStart2 < sampleStart){
+            if(_fStart2 + _fWidth2 <= sampleStart){
+                return RasterData.rasterData;
+            }else if(_fStart2 + _fWidth2 <= sampleStart + sampleRange){
+                pointStart2 = 0;
+                pointRange2 = _nPointQty * (_fStart2 + _fWidth2 - sampleStart) / sampleRange;
+
+            }else{
+                pointStart2 = 0;
+                pointRange2 = _nPointQty;
+            }
+        }else if(_fStart2 < sampleStart + sampleRange){
+            if(_fStart2 + _fWidth2 <= sampleStart + sampleRange){
+                pointStart2 = _nPointQty * (_fStart2 - sampleStart) / sampleRange;
+                pointRange2 = _nPointQty * _fWidth2 / sampleRange;
+            }else{
+                pointStart2 = _nPointQty * (_fStart2 - sampleStart) / sampleRange;
+                pointRange2 = _nPointQty * (sampleStart + sampleRange - _fStart2) / sampleRange;
+            }
+        }else{
+            return RasterData.rasterData;
+        }
+
+        U8* _pMarker = GetScanMarker(nGroupId_);
+        int _nFrameOffset = GetTotalDataSize();
+        int _nGroupOffset = GetGroupDataOffset(nGroupId_);
+        int _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+        float _posRange = _fMaxThickness - _fMinThickness;
+        float _fScale = GetRefGainScale(nGroupId_);
+        int _threshold1_ = _threshold1 * 255.0 / 100;
+        int _threshold2_ = _threshold2 * 255.0 / 100;
+        int _nTmpValue1, _nTmpValue2;
+        float _nDepth1, _nDepth2;
+        for(int i = 0; i < markLength; i++){
+            if(_pMarker[i]){
+                int _index = GetRealScanIndex(nGroupId_, i);
+                int offset = _nFrameOffset * _index + _nGroupOffset;
+                int Roffset = _index * beamQty;
+                for(int j = 0; j < beamQty; j++){
+                    WDATA* _pData = GetShadowDataPointer();
+                    _pData += offset + pointStart1 + j * _nLawSize;
+                    WDATA buff1 = 0;
+                    int posBuff1 = pointStart1;
+                    for(int k = 0; k < pointRange1; k++){
+                        if(_pData[k] > buff1){
+                            buff1 = _pData[k];
+                            posBuff1 = pointStart1 + k;
+                        }
+                    }
+                    _pData = GetShadowDataPointer();
+                    _pData += offset + pointStart2 + j * _nLawSize;
+                    WDATA buff2 = 0;
+                    int posBuff2 = pointStart2;
+                    for(int k = 0; k < pointRange2; k++){
+                        if(_pData[k] > buff2){
+                            buff2 = _pData[k];
+                            posBuff2 = pointStart2 + k;
+                        }
+                    }
+                    _nTmpValue1 = correctionPdata(buff1) * _fScale;
+                    _nTmpValue2 = correctionPdata(buff2) * _fScale;
+
+                    if(_nTmpValue1 >= _threshold1_ && _nTmpValue2 >= _threshold2_){
+                        _nDepth1 = ( posBuff1 * sampleRange / _nPointQty) + sampleStart;
+                        _nDepth2 = ( posBuff2 * sampleRange / _nPointQty) + sampleStart;
+                        _nDepth1 = abs(_nDepth2 - _nDepth1);
+
+                        if(_nDepth1 < _fMinThickness){
+                            RasterData.rasterData[Roffset + j] = 0;
+                        }else if(_nDepth1 > _fMaxThickness){
+                            RasterData.rasterData[Roffset + j] = WAVE_MAX;
+                        }else{
+                            _nTmpValue1 = WAVE_MAX * (_nDepth1 - _fMinThickness) / _posRange;
+                            RasterData.rasterData[Roffset + j] = _nTmpValue1;
+                        }
+                    }else{
+                        RasterData.rasterData[Roffset + j] = 0;
+                    }
+                }
+            }
+        }
+        return RasterData.rasterData;
+    }
+}
