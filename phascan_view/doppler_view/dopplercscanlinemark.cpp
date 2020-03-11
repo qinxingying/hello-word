@@ -2,6 +2,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsScene>
+#include "DopplerConfigure.h"
 
 const int g_nRectSize = 2 ;
 
@@ -68,6 +69,7 @@ void DopplerCScanLineMark::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
 void DopplerCScanLineMark::DrawLabel(QPainter *painter)
 {
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     QPen _pen = painter->pen();
     _pen.setColor(m_cColor) ;
     painter->setPen(_pen);
@@ -89,7 +91,11 @@ void DopplerCScanLineMark::DrawLabel(QPainter *painter)
     {
     case LINE_VERTICAL:
         _str.sprintf("%.1f", m_Geometry.left())  ;
-        _str.prepend("ang:");
+        if( _pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+            _str.prepend("ang:");
+        }else{
+            _str.append("mm");
+        }
         _rcFont = _fm.boundingRect(_str);
         _W = _rcFont.width();
         _H = _rcFont.height();
@@ -102,7 +108,12 @@ void DopplerCScanLineMark::DrawLabel(QPainter *painter)
         break;
     case LINE_HORIZENTAL:
         _str.sprintf("%.1f", m_Geometry.top())  ;
-        _str.prepend("ang:");
+        if( _pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+            _str.prepend("ang:");
+        }else{
+            _str.append("mm");
+        }
+
         _rcFont = _fm.boundingRect(_str);
         _W = _rcFont.width();
         _H = _rcFont.height();

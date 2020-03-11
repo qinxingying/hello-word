@@ -146,21 +146,39 @@ int CalIRCursor(int nGroupId_ , float* pResult_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance() ;
 	GROUP_CONFIG* _pGroup = _process->GetGroupConfig(nGroupId_) ;
-	*pResult_ = _pGroup->afCursor[setup_CURSOR_I_REF] ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    if( _pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        *pResult_ = _pGroup->afCursor[setup_CURSOR_I_REF];
+    }else{
+        *pResult_ = _pGroup->afCursor[setup_CURSOR_VPA_REF];
+    }
+
 	return 0;
 }
 int CalIMCursor(int nGroupId_ , float* pResult_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance() ;
 	GROUP_CONFIG* _pGroup = _process->GetGroupConfig(nGroupId_) ;
-	*pResult_ = _pGroup->afCursor[setup_CURSOR_I_MES] ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    if( _pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        *pResult_ = _pGroup->afCursor[setup_CURSOR_I_MES];
+    }else{
+        *pResult_ = _pGroup->afCursor[setup_CURSOR_VPA_MES];
+    }
+
 	return 0;
 }
 int CalIMRCursor(int nGroupId_ , float* pResult_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance() ;
 	GROUP_CONFIG* _pGroup = _process->GetGroupConfig(nGroupId_) ;
-	*pResult_ = _pGroup->afCursor[setup_CURSOR_I_MES] -  _pGroup->afCursor[setup_CURSOR_I_REF] ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    if( _pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+        *pResult_ = _pGroup->afCursor[setup_CURSOR_I_MES] -  _pGroup->afCursor[setup_CURSOR_I_REF];
+    }else{
+        *pResult_ = _pGroup->afCursor[setup_CURSOR_VPA_MES] -  _pGroup->afCursor[setup_CURSOR_VPA_REF];
+    }
+
 	return 0;
 }
 

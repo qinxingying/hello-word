@@ -244,73 +244,121 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
             m_indexStartIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
             m_indexStopIndex = m_indexStartIndex + heightToIndex;
         }
-        if(_nWidth <_nScanend){
-            _nScanend = _nWidth;
-            if(zoomflag == 2){
-                m_PosStart = _process->SAxisDistToIndex(srcCstart);
-                m_PosStop = _process->SAxisDistToIndex(srcCend);
-            }
-            if(_pConfig->AppEvn.bSAxisCursorSync){
-                if(Cscan_range == _nScanend){
-                    m_PosStart = Csrc_start;
-                    m_PosStop = Csrc_start + _nScanend;
+//        float Hstep = 1.0;
+//        int HRange;
+//        float Vstep = 1.0;
+//        int VRange;
+//        if(m_pConfig->group[m_cInfo.nGroupId].CScanShowAll){
+//            if(zoomflag == 2){
+//                m_PosStart = _process->SAxisDistToIndex(srcCstart);
+//                m_PosStop = _process->SAxisDistToIndex(srcCend) ;
+//                _nScanend = m_PosStop - m_PosStart;
+//                emit signalScanRangeMove(2, m_PosStart, m_PosStop) ;
+//                zoomflag = 0;
+//                flag = 0;
+//                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+//                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+//                emit signalIndexRangeMove( 0, 0, m_indexStartIndex, m_indexStopIndex);
+//            }else{
+//                m_PosStart = _nStart;
+//                m_PosStop  = _nStart+_nScanend;
+//                emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
+//                m_indexStartIndex = _IndexStartIndex;
+//                m_indexStopIndex  = _IndexStartIndex + _IndexRangeIndex;
+//                emit signalIndexRangeMove( 0, 0, m_indexStartIndex, m_indexStopIndex);
+//            }
+//            if(_nWidth < _nScanend){
+//                if(_nWidth > 2048){
+//                    _nWidth = 2048;
+//                }
+//                Hstep = (float)_nWidth/_nScanend;
+//                HRange = _nWidth;
+//            }else{
+//                if(m_PosStop - m_PosStart > 2048){
+//                    Hstep = (float)2048/(m_PosStop - m_PosStart);
+//                    HRange = 2048;
+//                }else{
+//                    HRange = m_PosStop - m_PosStart;
+//                }
+//            }
+
+//            if(_nHeight < _IndexRangePixel){
+//                if(_nHeight > 2048){
+//                    _nHeight = 2048;
+//                }
+//                Vstep = (float)_nHeight/_IndexRangePixel;
+//                VRange = _nHeight;
+//            }else{
+
+//            }
+//        }else{
+            if(_nWidth <_nScanend){
+                _nScanend = _nWidth;
+                if(zoomflag == 2){
+                    m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                    m_PosStop = _process->SAxisDistToIndex(srcCend);
+                }
+                if(_pConfig->AppEvn.bSAxisCursorSync){
+                    if(Cscan_range == _nScanend){
+                        m_PosStart = Csrc_start;
+                        m_PosStop = Csrc_start + _nScanend;
+                    }else{
+                        Cscan_range = _nScanend;
+                    }
+                }
+                int _nScanPos	 = _process->GetScanIndexPos();
+                UpdateDisplayRange(2, _nWidth , _nScanPos) ;
+                if(_pConfig->AppEvn.bSAxisCursorSync){
+                    Csrc_start = m_PosStart;
+                }
+            }else{
+                if(zoomflag == 2){
+                    m_PosStart = _process->SAxisDistToIndex(srcCstart);
+                    m_PosStop = _process->SAxisDistToIndex(srcCend) ;
+                    _nScanend = m_PosStop - m_PosStart;
+                    emit signalScanRangeMove(2, m_PosStart, m_PosStop) ;
                 }else{
-                    Cscan_range = _nScanend;
+                    m_PosStart = _nStart;
+                    m_PosStop  = _nStart+_nScanend;
+                    emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
                 }
             }
-            int _nScanPos	 = _process->GetScanIndexPos();
-            UpdateDisplayRange(2, _nWidth , _nScanPos) ;
-            if(_pConfig->AppEvn.bSAxisCursorSync){
-                Csrc_start = m_PosStart;
-            }
-        }else{
-            if(zoomflag == 2){
-                m_PosStart = _process->SAxisDistToIndex(srcCstart);
-                m_PosStop = _process->SAxisDistToIndex(srcCend) ;
-                _nScanend = m_PosStop - m_PosStart;
-                emit signalScanRangeMove(2, m_PosStart, m_PosStop) ;
+            if(_nHeight < _IndexRangePixel){
+                _IndexRangePixel = heightToIndex*indexStepBeam + _process->GetGroupLawQty(currentgroup);
+                if(zoomflag == 2){
+                    zoomflag = 0;
+                    flag = 0;
+                    m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                    m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+                }
+                if(_pConfig->AppEvn.bSAxisCursorSync){
+                    if(Cindex_range == _IndexRangePixel){
+                        m_indexStartIndex = Csrc_indexStart;
+                        m_indexStopIndex = Csrc_indexStart + heightToIndex;
+                    }else{
+                        Cindex_range = _IndexRangePixel;
+                    }
+                }
+                int _nIndexCurIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
+                UpdateIndexRange(0, heightToIndex, _nIndexCurIndex);
+                if(_pConfig->AppEvn.bSAxisCursorSync){
+                    Csrc_indexStart = m_indexStartIndex;
+                }
             }else{
-                m_PosStart = _nStart;
-                m_PosStop  = _nStart+_nScanend;
-                emit signalScanRangeMove(2, _nStart, _nStart+_nScanend) ;
-            }
-        }
-        if(_nHeight < _IndexRangePixel){
-            _IndexRangePixel = heightToIndex*indexStepBeam + _process->GetGroupLawQty(currentgroup);
-            if(zoomflag == 2){
-                zoomflag = 0;
-                flag = 0;
-                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
-                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
-            }
-            if(_pConfig->AppEvn.bSAxisCursorSync){
-                if(Cindex_range == _IndexRangePixel){
-                    m_indexStartIndex = Csrc_indexStart;
-                    m_indexStopIndex = Csrc_indexStart + heightToIndex;
+                if(zoomflag == 2){
+                    zoomflag = 0;
+                    flag = 0;
+                    m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
+                    m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
+                    emit signalIndexRangeMove( 0, 0, m_indexStartIndex, m_indexStopIndex);
                 }else{
-                    Cindex_range = _IndexRangePixel;
+                    m_indexStartIndex = _IndexStartIndex;
+                    m_indexStopIndex  = _IndexStartIndex + _IndexRangeIndex;
+                    emit signalIndexRangeMove( 0, 0, m_indexStartIndex, m_indexStopIndex);
                 }
             }
-            int _nIndexCurIndex = _process->TransforIndexPosToIndex( _scanner.fIndexPos);
-            UpdateIndexRange(0, heightToIndex, _nIndexCurIndex);
-            if(_pConfig->AppEvn.bSAxisCursorSync){
-                Csrc_indexStart = m_indexStartIndex;
-            }
-        }else{
-            if(zoomflag == 2){
-                zoomflag = 0;
-                flag = 0;
-                m_indexStartIndex = _process->TransforIndexPosToIndex(srcCIndexStartPos);
-                m_indexStopIndex = _process->TransforIndexPosToIndex(srcCIndexEndPos);
-//                _IndexRangePixel = (m_indexStopIndex - m_indexStartIndex)*indexStepBeam +
-//                                    _process->GetGroupLawQty(m_cInfo.nGroupId);
-                emit signalIndexRangeMove( 0, 0, m_indexStartIndex, m_indexStopIndex);
-            }else{
-                m_indexStartIndex = _IndexStartIndex;
-                m_indexStopIndex  = _IndexStartIndex + _IndexRangeIndex;
-                emit signalIndexRangeMove( 0, 0, m_indexStartIndex, m_indexStopIndex);
-            }
-        }
+        //}
+
         int scanQty = ( _scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep + 0.5;
         U8* _pMarker = _process->GetScanMarker(m_cInfo.nGroupId);
         int i, j, k, p;
