@@ -59,21 +59,28 @@ MainWindow::MainWindow(QWidget *parent) :
         slot_actionChinese_triggered();
     }
     SliderWidget = new QWidget(this);
-    SliderWidget->setFixedWidth(350);
+    SliderWidget->setFixedWidth(300);
     SliderWidget->setFixedHeight(ui->toolBar->height()-4);
     sliderh = new QSlider(Qt::Horizontal);
     sliderh->setBaseSize(QSize(50,50));
-    sliderh->setGeometry(30,0,300,ui->toolBar->height()-4);
+    sliderh->setGeometry(20,0,260,ui->toolBar->height()-4);
     sliderh->setParent(SliderWidget);
     ui->toolBar->addWidget(SliderWidget);
     ui->actionAided_Analysis->setEnabled(false);
 
+    scanSpin = new QDoubleSpinBox(this);
+    scanSpin->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    scanSpin->setFixedWidth(40);
+    scanSpin->setDecimals(2);
+    scanSpin->setEnabled(false);
+    ui->toolBar->addWidget(scanSpin);
+
     indexSliderWidget = new QWidget(this);
-    indexSliderWidget->setFixedWidth(350);
+    indexSliderWidget->setFixedWidth(300);
     indexSliderWidget->setFixedHeight(ui->toolBar->height()-4);
     indexSliderh = new QSlider(Qt::Horizontal);
     indexSliderh->setBaseSize(QSize(50,50));
-    indexSliderh->setGeometry(30,0,300,ui->toolBar->height()-4);
+    indexSliderh->setGeometry(20,0,260,ui->toolBar->height()-4);
     indexSliderh->setParent(indexSliderWidget);
     ui->toolBar->addWidget(indexSliderWidget);
 
@@ -88,6 +95,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionChinese, SIGNAL(triggered()), this, SLOT(slot_actionChinese_triggered()));
     connect(sliderh,SIGNAL(valueChanged(int)),this,SLOT(slotSliderhChanged(int)));
     connect(indexSliderh, SIGNAL(valueChanged(int)), this, SLOT(slotIndexSliderHChanged(int)));
+    connect(scanSpin, SIGNAL(valueChanged(double)), this, SLOT(slotScanSpinChanged(double)));
 
     m_remoteMonitoring = new RemoteMonitoring(this);
     connect(ui->actionConnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(connect_remote_monitor()));
@@ -571,6 +579,7 @@ void MainWindow::slotSliderhChanged(int value)
     } else {
             _scanner.fScanPos =  value / _scanner.fPrf  + _scanner.fScanStart2;
     }
+    scanSpin->setValue( _scanner.fScanPos);
     ProcessDisplay _proDisplay ;
     for(int i = 0; i < _pConfig->common.nGroupQty; i ++) {
          _proDisplay.UpdateAllViewCursorOfGroup(i);
@@ -592,6 +601,16 @@ void MainWindow::slotIndexSliderHChanged(int value)
     InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
     _pScanner->UpdateIndexPos();
     RunDrawThreadOnce(true);
+}
+
+void MainWindow::slotScanSpinChanged(double value)
+{
+//    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+//    SCANNER& _scanner  = _pConfig->common.scanner;
+//    _scanner.fScanPos = value;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    int _nPos = _process->SAxisDistToIndex(value);
+    sliderh->setValue(_nPos);
 }
 
 void MainWindow::SetSelectedDataView(QWidget* pWidget_)
@@ -744,6 +763,13 @@ void MainWindow::initSlider()
     sliderh->setPageStep(1);
     sliderh->setMaximum((_scanner.fScanStop - _scanner.fScanStart) / _scanner.fScanStep );
     sliderh->blockSignals(false);
+
+    scanSpin->blockSignals(true);
+    scanSpin->setMinimum( _scanner.fScanStart2);
+    scanSpin->setMaximum( _scanner.fScanend);
+    scanSpin->setSingleStep( _scanner.fScanStep);
+    scanSpin->blockSignals(false);
+    scanSpin->setEnabled(true);
 }
 
 /*!
@@ -1025,6 +1051,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
         initSlider();
         initIndexSlider();
         sliderh->setValue(0);
+        scanSpin->setValue(scanSpin->minimum());
         indexSliderh->setValue(0);
         m_iCurGroup = 0;
 

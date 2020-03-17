@@ -8,6 +8,7 @@
 #include <QDir.h>
 #include <QStandardItem>
 #include <QDebug>
+#include <QTextCodec>
 
 DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
 	QDialog(parent),
@@ -367,13 +368,14 @@ void DialogDxfFileLoad::on_SpinFAngle_2_valueChanged(double arg1)
 
 void DialogDxfFileLoad::on_PartFileListDbClicked(QModelIndex index)
 {
-    QString _str = index.data().toString();
+    std::string _str = index.data().toString().toStdString();
     m_cPart.weld.eType = setup_WELD_DXF;
 
     std::string str = m_path.toStdString();
     const char* p = str.c_str();
 
-    sprintf(m_cPart.strPartFile, "%s%s", p, (char*)(qPrintable(_str)));
+    //sprintf(m_cPart.strPartFile, "%s%s", p, (char*)(qPrintable(_str)));
+    sprintf(m_cPart.strPartFile, "%s%s", p, (char*)(_str.c_str()));
 
     SetWndName();
 	UpdateDisplay();

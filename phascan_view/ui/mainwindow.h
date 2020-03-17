@@ -12,6 +12,7 @@
 #include <qslider.h>
 #include <QMainWindow>
 #include <QTranslator>
+#include <QDoubleSpinBox>
 
 #define MAX_LIST_QTY     10
 class DataRefreshThread;
@@ -111,6 +112,7 @@ private:
     DataRefreshThread* m_pThreadDraw;
     QTranslator *translator;
     QSlider* sliderh;
+    QDoubleSpinBox *scanSpin;
     QWidget* SliderWidget;
     QSlider* indexSliderh;
     QWidget* indexSliderWidget;
@@ -148,6 +150,7 @@ private slots:
     void slotCurrentDispChanged(int);
     void slotSliderhChanged(int);
     void slotIndexSliderHChanged(int);
+    void slotScanSpinChanged(double);
     void slotItemMoved(DopplerDataView* , DopplerGraphicsItem*);
     void slotDataViewResized(DopplerDataView*) ;
     void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_);
