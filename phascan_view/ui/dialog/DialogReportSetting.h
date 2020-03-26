@@ -16,6 +16,7 @@ public:
     explicit DialogReportSetting(QWidget *parent = 0);
     ~DialogReportSetting();
     void SetReportInfo(ReportInfo*) ;
+    void SetRepotName(QString);
     ReportInfo* GetRePortInfo() ;
 
 protected:

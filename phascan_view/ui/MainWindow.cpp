@@ -38,6 +38,7 @@ int currentgroup = 0; //-1表示全部组的那个tab
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    m_baseName("Report"),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -1067,6 +1068,8 @@ void MainWindow::OpenFilePro(QString strFileName_)
         currentgroup = 0;
     }
     m_fileName = strFileName_;
+    QFileInfo fi(strFileName_);
+    m_baseName = fi.baseName();
     this->setWindowTitle(m_titleName + m_fileName);
 
     ui->actionAided_Analysis->setEnabled(true);
@@ -1243,6 +1246,7 @@ void MainWindow::ReportSetting()
     DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
     ReportInfo* _pInfo = _pReport->GetReportInfo();
     _dialog.SetReportInfo(_pInfo);
+    _dialog.SetRepotName(m_baseName);
 
     if(_dialog.exec())
     {
@@ -1993,6 +1997,7 @@ void MainWindow::on_actionLoadDisplay_triggered()
             }
         }else{
             ui->TabWidget_display->setCurrentIndex(0);
+            sleep(600);
             m_iCurGroup = 0;
             _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
             _pViewFrame->SetViewFrameId(0);

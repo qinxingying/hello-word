@@ -42,6 +42,11 @@ void DialogReportSetting::SetReportInfo(ReportInfo* pInfo_)
     UpdateItems() ;
 }
 
+void DialogReportSetting::SetRepotName(QString baseName)
+{
+    ui->StrReportName->setText(baseName);
+}
+
 ReportInfo* DialogReportSetting::GetRePortInfo()
 {
     return &m_cInfo ;

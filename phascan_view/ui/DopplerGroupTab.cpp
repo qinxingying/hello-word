@@ -386,7 +386,9 @@ void DopplerGroupTab::LoadStandardFormConifg()
 {
     QComboBox* _field = ui->ComThickness;
     int selectID = CUR_RES.Standard[m_nGroupId];
+    ui->ComStandard->blockSignals(true);
     ui->ComStandard->setCurrentIndex(selectID);
+    ui->ComStandard->blockSignals(false);
     if(selectID == 0)
     {
         _field->clear();

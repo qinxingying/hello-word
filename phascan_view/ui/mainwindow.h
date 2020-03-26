@@ -121,6 +121,7 @@ private:
     STATUS_BAR_INFO m_BarInfo;
     QString m_titleName;
     QString m_fileName;
+    QString m_baseName;
 
     QList<DopplerGroupTab*> m_pGroupList;
     RemoteMonitoring *m_remoteMonitoring;
