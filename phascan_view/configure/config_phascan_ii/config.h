@@ -30,6 +30,7 @@ public:
 
     void getWeldData( int groupId, WELD_II & weld);
     void getTOPCWidth( int groupId, double &topcWidth);
+    void getApertureSec( int groupId, unsigned int * apertureData);
 
     void getScannerData( SCANNER &scanner);
 

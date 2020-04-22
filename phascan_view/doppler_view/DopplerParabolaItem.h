@@ -16,6 +16,7 @@ public:
 
 protected:
     void   GetPrecInfo(float* precX_, float* precY_, float* pTX0_);
+    void update_parabola_points( int nGroupId_, QPointF* pPoints_);
     QRectF boundingRect() const;
     QPainterPath shape() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);

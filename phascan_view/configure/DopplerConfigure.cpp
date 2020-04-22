@@ -1180,6 +1180,10 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_LawConfig.nAngleStopSecSteer   = 1;
 		_LawConfig.nAngleStepSecSteer   = 1;
 
+        if(Config::instance()->is_phascan_ii()){
+            Config::instance()->getApertureSec( i, &_LawConfig.nElemQtySec);
+        }
+
 		if(_group.eGroupMode <= setup_GROUP_MODE_PA)
 		{
 			PROBE_CONFIG& _probe = _group.probe[0] ;
@@ -1197,6 +1201,10 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			_probe.fSizePri   =  1 ;
 			_probe.fSizeSec   =  1 ;
 			_probe.fReferencePoint  = _Probe.Reference_Point / 1000.0 ;
+            if(Config::instance()->is_phascan_ii()){
+                _probe.nElementSec = _Probe.A4;
+                _probe.fPitchSec   = _Probe.A3 /1000.0;
+            }
 		}
 		else
 		{

@@ -638,6 +638,14 @@ void Config::getTOPCWidth( int groupId, double &topcWidth)
     topcWidth = m_groups[groupId].m_cScan.m_topCWidth;
 }
 
+void Config::getApertureSec( int groupId, unsigned int * apertureData)
+{
+    apertureData[0] = m_groups[groupId].m_focallawer.m_scan.m_secApe;
+    apertureData[1] = m_groups[groupId].m_focallawer.m_scan.m_secStartElem;
+    apertureData[2] = m_groups[groupId].m_focallawer.m_scan.m_secStopElem;
+    apertureData[3] = m_groups[groupId].m_focallawer.m_scan.m_secElemStep;
+}
+
 void Config::getScannerData( SCANNER &scanner)
 {
     scanner.eScanEncoderType = (setup_ENCODER_TYPE)m_global.m_scanner.m_scanAxis.m_driving;
@@ -1099,8 +1107,10 @@ void Config::convert_to_phascan_config(int groupId)
     }
 
     if (currentGroup.m_mode == Paramters::Group::PA) {
-        targetProbe.Elem_qty  = currentProbe.m_priElemQty;
-        targetProbe.Pitch     = currentProbe.m_priPitch * 1000.0;
+        targetProbe.Elem_qty = currentProbe.m_priElemQty;
+        targetProbe.Pitch    = currentProbe.m_priPitch * 1000.0;
+        targetProbe.A4       = currentProbe.m_secElemQty;
+        targetProbe.A3       = currentProbe.m_secPitch * 1000.0;
 
         /* PA Scan */
         targetLawInfo.Focal_type      = !currentGroup.m_focallawer.m_scanMode;
@@ -1386,7 +1396,7 @@ bool Config::is_phascan_ii_file(QFile &file)
              << " totalLen " << totalLen
              << " framesize " << beamDataLen / dataMarkLen;
 
-    if(totalLen != totalSize) {
+    if(totalLen > totalSize) {
         qWarning("%s(%s[%d]): cal Len is not equal totalSzie.", __FILE__, __func__, __LINE__);
         return false;
     }

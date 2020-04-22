@@ -1269,17 +1269,39 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	memset(pInfo_, 0x00, 3*sizeof(PEAK_CONFIG));
     DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG* config = &(m_pConfig->group[nGroupId_]);
-	int      _nPointQty = GetGroupPointQty(nGroupId_);
-	float _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
-	float _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
-	float	   _fScale  = _nPointQty / _fSampleRange;
-	int       _nRectify = GetRectifierMode(nGroupId_);
+    int      _nPointQty = GetGroupPointQty(nGroupId_);
+    int       _nRectify = GetRectifierMode(nGroupId_);
+    float _fSampleStart, _fSampleRange, _fScale;
+    float _fDist, _fEdge;
+    float _fAngle  = DEGREE_TO_ARCH(GetLawAngle(nGroupId_ , nLawId_)) ;
+    float _fThick  = GetPartThickness(nGroupId_);
+    float _fSin    = sin(_fAngle);
+    float _fCos    = cos(_fAngle);
+    float _fIRadius, _fORadius, _fSstep, _fLstep;
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
+        _fSampleStart = config->fSampleStart;
+        _fSampleRange = config->fSampleRange;
+        _fScale  = _nPointQty / _fSampleRange;
+        _fIRadius = config->part.afSize[3] / 2 - _fThick;
+        _fORadius = config->part.afSize[3] / 2;
+        _fSstep = _fORadius * _fCos + sqrt( _fIRadius * _fIRadius - _fORadius * _fORadius * _fSin * _fSin);
+        _fLstep = ( asin( _fORadius * _fSin / _fIRadius) - _fAngle) * _fORadius;
 
-	float _fDist, _fEdge;
-	float _fAngle  = DEGREE_TO_ARCH(GetLawAngle(nGroupId_ , nLawId_)) ;
-	float _fThick  = GetPartThickness(nGroupId_);
-	float _fSin    = sin(_fAngle);
-	float _fCos    = cos(_fAngle);
+    }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        _fSampleStart = config->fSampleStart;
+        _fSampleRange = config->fSampleRange;
+        _fScale  = _nPointQty / _fSampleRange;
+        _fIRadius = config->part.afSize[3] / 2;
+        _fORadius = config->part.afSize[3] / 2 + _fThick;
+        _fSstep = sqrt( _fORadius * _fORadius - _fIRadius * _fIRadius * _fSin * _fSin) - _fIRadius * _fCos;
+        _fLstep = ( _fAngle - asin( _fIRadius * _fSin / _fORadius)) * _fORadius;
+    }else{
+        _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
+        _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
+        _fScale  = _nPointQty / _fSampleRange;
+    }
+
+
 	//-----------------------------------
 	// I
 	GATE_CONFIG* _pGate = GetGateInfo(nGroupId_ , setup_GATE_I);
@@ -1292,21 +1314,102 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_I].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_I].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
 	pInfo_[setup_GATE_I].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_I].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
 
-	pInfo_[setup_GATE_I].fGs   = _pGate->fStart;
-	pInfo_[setup_GATE_I].fGw   = _pGate->fWidth;
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        pInfo_[setup_GATE_I].fGs   = _pGate->fStart * _fCos;
+        pInfo_[setup_GATE_I].fGw   = _pGate->fWidth * _fCos;
+    }else{
+        pInfo_[setup_GATE_I].fGs   = _pGate->fStart;
+        pInfo_[setup_GATE_I].fGw   = _pGate->fWidth;
+    }
 	pInfo_[setup_GATE_I].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
 
 	_fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_I].iXEdge);
 	pInfo_[setup_GATE_I].fSEdge = _fEdge;
-	pInfo_[setup_GATE_I].fHEdge = _fEdge * _fCos;
-	pInfo_[setup_GATE_I].fLEdge = _fEdge * _fSin;
-	pInfo_[setup_GATE_I].fDEdge = GetDepth(pInfo_[setup_GATE_I].fHEdge, _fThick);
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
+        int cycle = _fEdge / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+        }else{
+            calSEdge = _fEdge - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_I].fDEdge = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_I].fDEdge = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_I].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_I].fLEdge = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_I].fHEdge = _fEdge;
+    }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        int cycle = _fEdge / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+        }else{
+            calSEdge = _fEdge - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_I].fDEdge = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_I].fDEdge = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_I].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_I].fLEdge = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_I].fHEdge = _fEdge;
+    }else{
+        pInfo_[setup_GATE_I].fHEdge = _fEdge * _fCos;
+        pInfo_[setup_GATE_I].fLEdge = _fEdge * _fSin;
+        pInfo_[setup_GATE_I].fDEdge = GetDepth(pInfo_[setup_GATE_I].fHEdge, _fThick);
+    }
 
 	_fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_I].iX);
 	pInfo_[setup_GATE_I].fS     = _fDist;
-	pInfo_[setup_GATE_I].fH     = _fDist * _fCos;
-	pInfo_[setup_GATE_I].fL     = _fDist * _fSin;
-	pInfo_[setup_GATE_I].fD     = GetDepth(pInfo_[setup_GATE_I].fH, _fThick);
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
+        int cycle = _fDist / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fDist;
+        }else{
+            calSEdge = _fDist - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_I].fD = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_I].fD = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_I].fL = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_I].fL = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_I].fH = _fDist;
+    }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        int cycle = _fDist / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fDist;
+        }else{
+            calSEdge = _fDist - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_I].fD = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_I].fD = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_I].fL = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_I].fL = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_I].fH = _fDist;
+    }else{
+        pInfo_[setup_GATE_I].fH     = _fDist * _fCos;
+        pInfo_[setup_GATE_I].fL     = _fDist * _fSin;
+        pInfo_[setup_GATE_I].fD     = GetDepth(pInfo_[setup_GATE_I].fH, _fThick);
+    }
 
     pInfo_[setup_GATE_I].fAmp = CalculatePeakAmp(pInfo_[setup_GATE_I].iY, _nRectify);
     pInfo_[setup_GATE_I].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_I].fAmp, pInfo_[setup_GATE_I].fGh);
@@ -1329,21 +1432,101 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_A].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
 	pInfo_[setup_GATE_A].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_A].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
 
-    pInfo_[setup_GATE_A].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
-    pInfo_[setup_GATE_A].fGw   = /*_fWidth / _fScale;//*/_pGate->fWidth;
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        pInfo_[setup_GATE_A].fGs   = ( _fStart / _fScale + _fSampleStart) * _fCos;
+        pInfo_[setup_GATE_A].fGw   = _pGate->fWidth * _fCos;
+    }else{
+        pInfo_[setup_GATE_A].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
+        pInfo_[setup_GATE_A].fGw   = /*_fWidth / _fScale;//*/_pGate->fWidth;
+    }
     pInfo_[setup_GATE_A].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
 
     _fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_A].iXEdge);
 	pInfo_[setup_GATE_A].fSEdge = _fEdge;
-	pInfo_[setup_GATE_A].fHEdge = _fEdge * _fCos;
-	pInfo_[setup_GATE_A].fLEdge = _fEdge * _fSin;
-	pInfo_[setup_GATE_A].fDEdge = GetDepth(pInfo_[setup_GATE_A].fHEdge, _fThick);
-
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
+        int cycle = _fEdge / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+        }else{
+            calSEdge = _fEdge - cycle * _fSstep;
+        }
+        //pInfo_[setup_GATE_A].fDEdge = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+        //float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_A].fDEdge = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_A].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_A].fLEdge = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_A].fHEdge = _fEdge;
+    }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        int cycle = _fEdge / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+        }else{
+            calSEdge = _fEdge - cycle * _fSstep;
+        }
+        //pInfo_[setup_GATE_A].fDEdge = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+        //float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_A].fDEdge = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_A].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_A].fLEdge = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_A].fHEdge = _fEdge;
+    }else{
+        pInfo_[setup_GATE_A].fHEdge = _fEdge * _fCos;
+        pInfo_[setup_GATE_A].fLEdge = _fEdge * _fSin;
+        pInfo_[setup_GATE_A].fDEdge = GetDepth(pInfo_[setup_GATE_A].fHEdge, _fThick);
+    }
     _fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_A].iX);
 	pInfo_[setup_GATE_A].fS     = _fDist;
-	pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
-	pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
-	pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
+        int cycle = _fDist / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fDist;
+        }else{
+            calSEdge = _fDist - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_A].fD = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_A].fD = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_A].fL = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_A].fL = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_A].fH = _fDist;
+    }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        int cycle = _fDist / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fDist;
+        }else{
+            calSEdge = _fDist - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_A].fD = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_A].fD = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_A].fL = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_A].fL = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_A].fH = _fDist;
+    }else{
+        pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
+        pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
+        pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
+    }
 
     pInfo_[setup_GATE_A].fAmp = CalculatePeakAmp(pInfo_[setup_GATE_A].iY, _nRectify);
     pInfo_[setup_GATE_A].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_A].fAmp, pInfo_[setup_GATE_A].fGh);
@@ -1369,21 +1552,103 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_B].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_B].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
 	pInfo_[setup_GATE_B].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_B].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
 
-    pInfo_[setup_GATE_B].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
-    pInfo_[setup_GATE_B].fGw   = /*_fWidth / _fScale;//*/_pGate->fWidth;
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        pInfo_[setup_GATE_B].fGs   = ( _fStart / _fScale + _fSampleStart) * _fCos;
+        pInfo_[setup_GATE_B].fGw   = _pGate->fWidth * _fCos;
+    }else{
+        pInfo_[setup_GATE_B].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
+        pInfo_[setup_GATE_B].fGw   = /*_fWidth / _fScale;//*/_pGate->fWidth;
+    }
+
 	pInfo_[setup_GATE_B].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
 
     _fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_B].iXEdge);
     pInfo_[setup_GATE_B].fSEdge = _fEdge;
-    pInfo_[setup_GATE_B].fHEdge = _fEdge * _fCos;
-    pInfo_[setup_GATE_B].fLEdge = _fEdge * _fSin;
-    pInfo_[setup_GATE_B].fDEdge = GetDepth(pInfo_[setup_GATE_B].fHEdge, _fThick);
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
+        int cycle = _fEdge / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+        }else{
+            calSEdge = _fEdge - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_B].fDEdge = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_B].fDEdge = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_B].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_B].fLEdge = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_B].fHEdge = _fEdge;
+    }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        int cycle = _fEdge / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+        }else{
+            calSEdge = _fEdge - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_B].fDEdge = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_B].fDEdge = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_B].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_B].fLEdge = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_B].fHEdge = _fEdge;
+    }else{
+        pInfo_[setup_GATE_B].fHEdge = _fEdge * _fCos;
+        pInfo_[setup_GATE_B].fLEdge = _fEdge * _fSin;
+        pInfo_[setup_GATE_B].fDEdge = GetDepth(pInfo_[setup_GATE_B].fHEdge, _fThick);
+    }
 
 	_fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_B].iX);
 	pInfo_[setup_GATE_B].fS     = _fDist;
-	pInfo_[setup_GATE_B].fH     = _fDist * _fCos;
-	pInfo_[setup_GATE_B].fL     = _fDist * _fSin;
-	pInfo_[setup_GATE_B].fD     = GetDepth(pInfo_[setup_GATE_B].fH, _fThick);
+    if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
+        int cycle = _fDist / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fDist;
+        }else{
+            calSEdge = _fDist - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_B].fD = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_B].fD = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_B].fL = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_B].fL = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_B].fH = _fDist;
+    }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
+        int cycle = _fDist / _fSstep;
+        float calSEdge;
+        if( cycle & 0x1){
+            calSEdge = ( cycle + 1) * _fSstep - _fDist;
+        }else{
+            calSEdge = _fDist - cycle * _fSstep;
+        }
+//        pInfo_[setup_GATE_B].fD = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+        pInfo_[setup_GATE_B].fD = calSEdge / _fSstep * _fThick;
+        float calLEdge = calSEdge / _fSstep * _fLstep;
+        if(cycle & 0x1){
+            pInfo_[setup_GATE_B].fL = ( cycle + 1) * _fLstep - calLEdge;
+        }else{
+            pInfo_[setup_GATE_B].fL = cycle * _fLstep + calLEdge;
+        }
+        pInfo_[setup_GATE_B].fH = _fDist;
+    }else{
+        pInfo_[setup_GATE_B].fH     = _fDist * _fCos;
+        pInfo_[setup_GATE_B].fL     = _fDist * _fSin;
+        pInfo_[setup_GATE_B].fD     = GetDepth(pInfo_[setup_GATE_B].fH, _fThick);
+    }
 
     pInfo_[setup_GATE_B].fAmp = CalculatePeakAmp(pInfo_[setup_GATE_B].iY, _nRectify);
     pInfo_[setup_GATE_B].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_B].fAmp, pInfo_[setup_GATE_B].fGh);
