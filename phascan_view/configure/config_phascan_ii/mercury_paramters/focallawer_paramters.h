@@ -15,8 +15,9 @@ class Focallawer : public QObject
 
 public:
     enum ScanMode {
-        Linear,     /* 线性扫查 */
-        Sectorial   /* 扇性扫查 */
+        Linear,      /* 线性扫查 */
+        Sectorial,   /* 扇性扫查 */
+        TFM_MODE     /* 全聚焦 */
     };
 
     enum FocusMode {

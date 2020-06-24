@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
-
+#include <QDebug>
 #include <QVarLengthArray>
 
 const int g_nGateMarkerHeight = 5;
@@ -24,6 +24,13 @@ DopplerGateItem::DopplerGateItem(const QColor& cColor_)
 void DopplerGateItem::SetDrawMode(GATE_DRAW_MODE eMode_)
 {
     m_eMode  = eMode_  ;
+}
+
+void DopplerGateItem::setCurveGate(QVector<QPointF> start, QVector<QPointF> end)
+{
+    m_gateStart = start;
+    m_gateEnd = end;
+    this->setPos(0, 0);
 }
 
 QRectF DopplerGateItem::boundingRect() const
@@ -146,6 +153,55 @@ void DopplerGateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 			painter->drawLines(lines.data() , 2);
 		}
 		break;
+    case GATE_MODE_S_TRUEDEPTH:
+        {
+            QGraphicsScene* _pScene = scene ();
+            if(_pScene)
+                m_nWidth = _pScene->width();
+
+            QVector<qreal> dashes;
+            dashes << 1 << 4 << 1 <<4 ;
+            _NewPen.setDashPattern(dashes);
+            painter->setPen(_NewPen);
+
+            if(m_gateStart.size() == 0){
+                QVarLengthArray<QLineF, 2> lines;
+                lines.append(QLineF(0 , 0 , m_nWidth -1 ,  0 ));
+                lines.append(QLineF(0 , m_nHeight + 1 , m_nWidth -1, m_nHeight + 1));
+                painter->drawLines(lines.data() , 2);
+            }else{
+                for(int i = 0; i < m_gateStart.size() - 1; i++){
+                    painter->drawLine(m_gateStart[i], m_gateStart[i+1]);
+                    painter->drawLine(m_gateEnd[i], m_gateEnd[i+1]);
+                }
+            }
+        }
+        break;
+    case GATE_MODE_S_SOUNDPATH:
+        {
+            QGraphicsScene* _pScene = scene ();
+            if(_pScene)
+                m_nHeight = _pScene->height();
+
+            QVector<qreal> dashes;
+            dashes << 1 << 4 << 1 <<4 ;
+            _NewPen.setDashPattern(dashes);
+            painter->setPen(_NewPen);
+
+            if(m_gateStart.size() == 0){
+                QVarLengthArray<QLineF, 2> lines;
+                lines.append(QLineF(0 , 0 , 0 , m_nHeight-1  ));
+                lines.append(QLineF(m_nWidth + 1 , 0 , m_nWidth + 1, m_nHeight-1 ));
+                //qDebug()<<"QLineF"<<lines.data()[0]<<lines.data()[1];
+                painter->drawLines(lines.data() , 2);
+            }else{
+                for(int i = 0; i < m_gateStart.size() - 1; i++){
+                    painter->drawLine(m_gateStart[i], m_gateStart[i+1]);
+                    painter->drawLine(m_gateEnd[i], m_gateEnd[i+1]);
+                }
+            }
+        }
+        break;
 	default:
 		break;
 	}
@@ -193,6 +249,22 @@ void DopplerGateItem::SetItemGeometry (QRectF& rect_)
 		this->setPos(0 , rect_.top());
 		break;
     }
+    case GATE_MODE_S_TRUEDEPTH:
+    {
+        QGraphicsScene* _pScene = scene ();
+        if(_pScene)
+            m_nWidth = _pScene->width();
+        this->setPos(0 , rect_.top());
+    }
+        break;
+    case GATE_MODE_S_SOUNDPATH:
+    {
+        QGraphicsScene* _pScene = scene () ;
+        if(_pScene)
+            m_nHeight = _pScene->height() ;
+        this->setPos(rect_.left() , 0);
+    }
+        break;
 	default:
 		break;
     }

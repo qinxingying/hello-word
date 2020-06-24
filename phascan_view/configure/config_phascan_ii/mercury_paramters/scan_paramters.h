@@ -23,6 +23,14 @@ private:
     double m_screwStopAngle;
     double m_screwStepAngle;
 
+    double m_colOffset;
+    double m_colRes;
+    double m_rowOffset;
+    double m_rowRes;
+
+    int m_colQty;
+    int m_rowQty;
+
     uint m_secApe;
     uint m_secStartElem;
     uint m_secElemStep;

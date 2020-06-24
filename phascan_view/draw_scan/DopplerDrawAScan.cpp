@@ -110,6 +110,10 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
     }
     else
     start = 0;
+    if(_process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_HALF_PATH ||
+            _process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_TIME){
+        start = 0;
+    }
     int i;
 	for(i = 0 ; i < _nPointQty ; i++)
 	{
@@ -666,6 +670,11 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
     }
     else
         start =0;
+
+    if(_process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_HALF_PATH ||
+            _process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_TIME){
+        start = 0;
+    }
     int i  ;
 	for(i = 0 ; i < _nPointQty  ; i++)
 	{

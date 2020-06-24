@@ -42,6 +42,7 @@ public:
     //int  SetupSampleStart(int nGroupId_ , double fValue_) ;
     //int  SetupSampleRange(int nGroupId_ , double fValue_) ;
     int  SetupTravelMode(int nGroupId_ , int eMode_);
+    setup_TRAVEL_MODE getTravelMode(int nGroupId_);
     int  SetupVelocity(int nGroupId_ , double fValue_)    ;
     int  SetupWedgeDelay(int nGroupId_ , double fValue_)  ;
     int  SetupTxElementStart(int nGroupId_ , int nValue_) ;
@@ -142,6 +143,7 @@ public:
     float GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLawId_, float fUDist_);
 	bool GetGatePeakInfos(int nGroupId_, int nScanPos_, int nLawId_, PEAK_CONFIG* pInfo_);
 	bool GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId_, PEAK_CONFIG* pInfo_);
+    void GetGateRangeInfos(int nGroupId_, int nLawId_, PEAK_CONFIG* gInfo_);
     int  GetCoupleMonitoringData(int nGroupId_, float* pResult_);
     WDATA* GetScanPosPointer(int nGroupId_, int nScanPos_);
     WDATA* GetGroupDataPointer(int nGroupId_);
@@ -170,6 +172,8 @@ public:
     void UpdateTofdParam(int nGroupId_);
     float CalculateTofdProbeDelay(int nGroupId_);
     float CalculateTofdPcs(int nGroupId_);
+    double transTofdHalfSoundPathToDepth(double halfSoundPath, float pcs);
+    double transTofdDepthToHalfSoundPath(double depth, float pcs);
     float GetTofdDepth(int nGroupId_ , float fCursorPos);
     int  GetTofdDepth(int nGroupId_ , int ID_ , float* fValue_) ;
     void FittedCurveGetPoints(int nGroupId_, float fPrecX_, float fPrecY_, float fTX0_, int iDots_, float scaleH, float scaleV, QPointF* pPoints_);

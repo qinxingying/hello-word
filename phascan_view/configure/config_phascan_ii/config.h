@@ -31,6 +31,8 @@ public:
     void getWeldData( int groupId, WELD_II & weld);
     void getTOPCWidth( int groupId, double &topcWidth);
     void getApertureSec( int groupId, unsigned int * apertureData);
+    void getTofdData( int groupId, float *PCS, float *RefPoint);
+    void getTMFRange(int groupId, float *start, float *range, int *pointQty);
 
     void getScannerData( SCANNER &scanner);
 
@@ -84,6 +86,8 @@ protected:
     void unpack_beams_info();
 
     void unpack_thickness(const QVariantMap &map);
+
+    void unpack_tofd(const QVariantMap &map);
 
     void unpack_cursor(const QVariantMap &map);
 

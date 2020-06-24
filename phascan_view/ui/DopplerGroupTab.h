@@ -121,6 +121,7 @@ private slots:
     void on_ComCscanType_currentIndexChanged(int index);
     void on_ComTopCMergeRefer_currentIndexChanged(int index);
     void on_ComTopcMergeStatus_currentIndexChanged(int index);
+    void on_ComGateMode_currentIndexChanged(int index);
     void on_ComGateSync_currentIndexChanged(int index);
     void on_ComGateMeasure_currentIndexChanged(int index);
     void on_CheckShowThickness_clicked(bool checked);

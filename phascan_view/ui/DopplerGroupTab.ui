@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -3207,6 +3207,11 @@
                   <string>Linear Sector</string>
                  </property>
                 </item>
+                <item>
+                 <property name="text">
+                  <string>TFM Sector</string>
+                 </property>
+                </item>
                </widget>
               </item>
               <item>
@@ -4974,7 +4979,7 @@
             <x>0</x>
             <y>0</y>
             <width>309</width>
-            <height>1156</height>
+            <height>1159</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -5034,14 +5039,14 @@
                 <property name="sizeConstraint">
                  <enum>QLayout::SetFixedSize</enum>
                 </property>
-                <item row="7" column="2">
+                <item row="8" column="2">
                  <widget class="QLabel" name="LabelTopcWidthUnit">
                   <property name="text">
                    <string>mm</string>
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="1">
+                <item row="7" column="1">
                  <widget class="QComboBox" name="ComCscanType">
                   <item>
                    <property name="text">
@@ -5268,7 +5273,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="0">
+                <item row="5" column="0">
                  <widget class="QLabel" name="LabelGateSync">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5287,7 +5292,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="1">
+                <item row="5" column="1">
                  <widget class="QComboBox" name="ComGateSync">
                   <item>
                    <property name="text">
@@ -5306,7 +5311,7 @@
                   </item>
                  </widget>
                 </item>
-                <item row="5" column="0">
+                <item row="6" column="0">
                  <widget class="QLabel" name="LabelGateMeasure">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5331,7 +5336,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="1">
+                <item row="6" column="1">
                  <widget class="QComboBox" name="ComGateMeasure">
                   <item>
                    <property name="text">
@@ -5382,21 +5387,21 @@
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="0">
+                <item row="7" column="0">
                  <widget class="QLabel" name="LabelCscanType">
                   <property name="text">
                    <string>C Scan Type:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="7" column="0">
+                <item row="8" column="0">
                  <widget class="QLabel" name="LabelTopcWidth">
                   <property name="text">
                    <string>TopC Width:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="7" column="1">
+                <item row="8" column="1">
                  <widget class="QDoubleSpinBox" name="ValueTopcWidth">
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -5409,24 +5414,24 @@
                   </property>
                  </widget>
                 </item>
-                <item row="8" column="1">
+                <item row="9" column="1">
                  <widget class="QComboBox" name="ComTopCMergeRefer"/>
                 </item>
-                <item row="8" column="0">
+                <item row="9" column="0">
                  <widget class="QLabel" name="LabelTopcMergeRefer">
                   <property name="text">
                    <string>TopC Merge Refer:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="9" column="0">
+                <item row="10" column="0">
                  <widget class="QLabel" name="LabelTopcMergeStatus">
                   <property name="text">
                    <string>TopC Merge Status:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="9" column="1">
+                <item row="10" column="1">
                  <widget class="QComboBox" name="ComTopcMergeStatus">
                   <item>
                    <property name="text">
@@ -5436,6 +5441,27 @@
                   <item>
                    <property name="text">
                     <string>On</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="LabelGateMode">
+                  <property name="text">
+                   <string>Mode:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QComboBox" name="ComGateMode">
+                  <item>
+                   <property name="text">
+                    <string>Straight Line Gate</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Curve Line Gate</string>
                    </property>
                   </item>
                  </widget>

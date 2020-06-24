@@ -31,6 +31,7 @@ public:
     void SetMoveType(LINE_MOVE_TYPE eType_) ;
     void SetLineStyle(Qt::PenStyle eStype_) ;
     void SetScenceSize(QSize);
+    void SetTofdPCS(bool tofdDepth, float pcs){m_tofdDepth = tofdDepth;m_pcs = pcs;}
     virtual void SetItemGeometry (QRectF& rect_);
 //----------------------------------------------------------
 //  wuhan cursor 2015-05-19
@@ -55,7 +56,8 @@ protected:
     Qt::PenStyle   m_eStype ;
     QSize          m_cSize ;
 	QRect          m_rcWnd ;
-
+    bool m_tofdDepth;
+    float m_pcs;
 };
 
 class DopplerScanMarker :public QObject, public DopplerLineItem

@@ -13,6 +13,7 @@
 #include "wedge_paramters.h"
 #include "specimen_paramters.h"
 #include "thickness_paramters.h"
+#include "tofd_paramters.h"
 #include "sizing_paramters.h"
 
 namespace Paramters {
@@ -54,6 +55,7 @@ private:
     Wedge m_wedge;
     Specimen m_specimen;
     Thickness m_thickness;
+    Tofd m_tofd;
     Sizing m_sizing;
 
     friend class Config;

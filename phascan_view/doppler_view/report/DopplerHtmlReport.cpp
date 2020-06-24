@@ -537,7 +537,7 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
 	m_lastRXelement = QString("-");
 
     m_startAngle.sprintf("%.1f deg" ,_pGroup->law.nAngleStartRefract * 0.1);
-	if(setup_LAW_TYPE_LINEAR == _pGroup->law.eLawType )//线扫
+    if(setup_LAW_TYPE_LINEAR == _pGroup->law.eLawType || setup_LAW_TYPE_TFM == _pGroup->law.eLawType)//线扫
 	{
 		m_resolution.sprintf("%d" , _pGroup->law.nElemStepFir ) ;
 		m_stopAngle = QString("-");
@@ -1122,4 +1122,11 @@ void DopplerHtmlReport::CreateFolder()
 void DopplerHtmlReport::set_data_path(QString &str)
 {
     m_dataFilePath = str;
+}
+
+void DopplerHtmlReport::set_reportName(QString &str)
+{
+    std::string t2 = str.toStdString();
+    const char * t3 = t2.c_str();
+    strcpy(m_cInfo.strReportName, t3);
 }

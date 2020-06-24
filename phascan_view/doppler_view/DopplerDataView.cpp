@@ -173,6 +173,20 @@ void DopplerDataView::SetRulerRange(double nStart_ , double nStop_ , double nSli
 	}
 }
 
+void DopplerDataView::SetTofdDepth(bool tofdDepth, float pcs, DATA_VIEW_RULER eRuler_)
+{
+    if(m_pRulers[eRuler_]){
+        m_pRulers[eRuler_]->SetTofdStatus( tofdDepth, pcs);
+    }
+}
+
+void DopplerDataView::GetTofdDepth(bool &tofdDepth, float &pcs, DATA_VIEW_RULER eRuler_)
+{
+    if(m_pRulers[eRuler_]){
+        m_pRulers[eRuler_]->GetTofdStatus( tofdDepth, pcs);
+    }
+}
+
 void DopplerDataView::GetRulerRange(double* nStart_ , double* nStop_ , double *nSliderStart_ , double *nSliderStop_ , DATA_VIEW_RULER eRuler_ )
 {
 	if(eRuler_ >= DATA_VIEW_RULER_MAX)  return ;
@@ -343,6 +357,93 @@ void DopplerDataView::SetItemGeometry(DopplerGraphicsItem* item , QRectF& rect_)
 	item->SetItemGeometryReal(rect_);
 }
 
+void DopplerDataView::SetTofdItemGeometry(DopplerGraphicsItem* item, QRectF& rect_)
+{
+    QPointF _pos1 = rect_.topLeft();
+    QPointF _pos2 = rect_.bottomRight();
+    _pos1 = TranslateTofdToScenePlan(&_pos1);
+    _pos2 = TranslateTofdToScenePlan(&_pos2);
+    QRectF _rect ( _pos1 , _pos2);
+    item->SetItemGeometry(_rect);
+    item->SetItemGeometryReal(rect_);
+}
+
+//计算 S_san_SoundPath 的闸门位置
+void DopplerDataView::setSSCurveGatePoints(DopplerGateItem* item, int eGate_)
+{
+    QVector<QPointF> start;
+    QVector<QPointF> end;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    ParameterProcess*	_pProcess = ParameterProcess::Instance();
+    float buff_s = _pConfig->group[m_nGroupId].gate[eGate_].fStart;
+    float buff_e = _pConfig->group[m_nGroupId].gate[eGate_].fWidth + buff_s;
+    int lawQty = _pProcess->GetGroupLawQty(m_nGroupId);
+    for(int i = 0; i < lawQty; i++){
+        float _fCos  = cos(DEGREE_TO_ARCH(_pProcess->GetLawAngle(m_nGroupId, i)));
+        float start_x = buff_s / _fCos;
+        float end_x = buff_e / _fCos;
+        QPointF _pos1(start_x, i);
+        QPointF _pos2(end_x, i);
+        _pos1 = TranslateToScenePlan(&_pos1);
+        _pos2 = TranslateToScenePlan(&_pos2);
+        start.append(_pos1);
+        end.append(_pos2);
+    }
+    item->setCurveGate(start, end);
+}
+
+//计算 S_san_trueDepth 的闸门位置
+void DopplerDataView::setSTCurveGatePoints(DopplerGateItem* item, int eGate_)
+{
+    QVector<QPointF> start;
+    QVector<QPointF> end;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    ParameterProcess* _pProcess = ParameterProcess::Instance();
+    float buff_s = _pConfig->group[m_nGroupId].gate[eGate_].fStart;
+    float buff_e = _pConfig->group[m_nGroupId].gate[eGate_].fWidth + buff_s;
+    int lawQty = _pProcess->GetGroupLawQty(m_nGroupId);
+    float *_pExitPoint = _pConfig->group[m_nGroupId].afBeamPos;
+    float _nAngleStart = DEGREE_TO_ARCH( _pConfig->group[m_nGroupId].law.nAngleStartRefract / 10.0);
+    float _nAngleStep  = DEGREE_TO_ARCH( _pConfig->group[m_nGroupId].law.nAngleStepRefract / 10.0);
+    float indexOffset  = _pConfig->group[m_nGroupId].fIndexOffset;
+    setup_PROBE_ANGLE _eAngle = _pProcess->GetProbeAngle(m_nGroupId);
+
+    for(int i = 0; i < lawQty; i++){
+        float _Angles = _nAngleStart + i * _nAngleStep;
+        float _sinA = sin(_Angles);
+        float _cosA = cos(_Angles);
+        float start_x = _pExitPoint[i] + buff_s * _sinA;
+        float end_x = _pExitPoint[i] + buff_e * _sinA;
+        float start_y = buff_s * _cosA;
+        float end_y = buff_e * _cosA;
+        switch (_eAngle) {
+        case setup_PROBE_PART_SKEW_0:
+            break;
+        case setup_PROBE_PART_SKEW_90:
+            start_x += indexOffset;
+            end_x   += indexOffset;
+            break;
+        case setup_PROBE_PART_SKEW_180:
+            start_x = -start_x;
+            end_x   = -end_x;
+            break;
+        case setup_PROBE_PART_SKEW_270:
+            start_x = -start_x + indexOffset;
+            end_x   = -end_x + indexOffset;
+            break;
+        default:
+            break;
+        }
+        QPointF _pos1(start_x, start_y);
+        QPointF _pos2(end_x, end_y);
+        _pos1 = TranslateToScenePlan(&_pos1);
+        _pos2 = TranslateToScenePlan(&_pos2);
+        start.append(_pos1);
+        end.append(_pos2);
+    }
+    item->setCurveGate(start, end);
+}
+
 /****************************************************************************
   Description: 换算实际坐标到场景坐标
   Input:  的实际坐标
@@ -367,6 +468,43 @@ QPointF DopplerDataView::TranslateToScenePlan(QPointF* pPos_)
 	_fY   = _nSceneHeight * (_fY - _nVStart) / _nVHeight  ;
 
 	return QPointF(_fX , _fY);
+}
+
+QPointF DopplerDataView::TranslateTofdToScenePlan(QPointF* pPos_)
+{
+    ParameterProcess* _pProcess = ParameterProcess::Instance();
+    bool tofdDepth = false;
+    float pcs;
+    double _fX   = pPos_->x();
+    double _fY   = pPos_->y();
+
+    double _nVStart = RulerRange[DATA_VIEW_RULER_LEFT].first;
+    double _nVStop  = RulerRange[DATA_VIEW_RULER_LEFT].second;
+    double _nVHeight = _nVStop - _nVStart;
+    m_pRulers[DATA_VIEW_RULER_LEFT]->GetTofdStatus( tofdDepth, pcs);
+    if(tofdDepth){
+        //_nVStart = _pProcess->transTofdHalfSoundPathToDepth( _nVStart, pcs);
+        //_nVStop  = _pProcess->transTofdHalfSoundPathToDepth( _nVStop, pcs);
+        _fY = _pProcess->transTofdDepthToHalfSoundPath( _fY, pcs);
+    }
+
+    double _nHStart = RulerRange[DATA_VIEW_RULER_BOTTOM].first;
+    double _nHStop  = RulerRange[DATA_VIEW_RULER_BOTTOM].second;
+    double _nHWidth = _nHStop - _nHStart;
+    m_pRulers[DATA_VIEW_RULER_BOTTOM]->GetTofdStatus( tofdDepth, pcs);
+    if(tofdDepth){
+        //_nHStart = _pProcess->transTofdHalfSoundPathToDepth( _nHStart, pcs);
+        //_nHStop  = _pProcess->transTofdHalfSoundPathToDepth( _nHStop, pcs);
+        _fX = _pProcess->transTofdDepthToHalfSoundPath( _fX, pcs);
+    }
+
+    int _nSceneWidth  = m_pGraphicView->GetSceneSize().width();
+    int _nSceneHeight = m_pGraphicView->GetSceneSize().height();
+
+    _fX = _nSceneWidth * (_fX - _nHStart) / _nHWidth;
+    _fY   = _nSceneHeight * (_fY - _nVStart) / _nVHeight;
+
+    return QPointF(_fX, _fY);
 }
 
 /****************************************************************************
@@ -555,6 +693,7 @@ void DopplerDataView::slotViewMousePressed(QMouseEvent* event)
 void DopplerDataView::slotMouseDoubleClicked(QPointF pos_)
 {
 	QPointF _pos = PixTransferToReal(pos_) ;
+    //qDebug()<<"realPos"<<_pos;
 	emit signalMouseDoubleClicked(this , _pos) ;
 }
 
@@ -781,7 +920,7 @@ QRectF DopplerDataView::slotItemSetAngleLineLimit(QRectF &_rect, DopplerGraphics
     QRectF rect(_rect);
     if(DopplerLineItem::LINE_HORIZENTAL == ((DopplerCScanLineMark*)pItem_)->GetLineType()){
         qDebug("%s[%d]: MarkQty:%d \n", __FUNCTION__, __LINE__, m_pItemsGroup->GetLawMarkerLinesCount());
-        if(_fAngleStop == 0 && _fAngleStart == 0 && _law.eLawType == 1){
+        if(_fAngleStop == 0 && _fAngleStart == 0 && (_law.eLawType == setup_LAW_TYPE_LINEAR || _law.eLawType == setup_LAW_TYPE_TFM)){
             if(rect.top()<0)
             {
                 rect.setTop(0);
@@ -796,7 +935,7 @@ QRectF DopplerDataView::slotItemSetAngleLineLimit(QRectF &_rect, DopplerGraphics
             rect.setTop(_fAngleStart);
         }
     }else{
-        if(_fAngleStop == 0 && _fAngleStart == 0 && _law.eLawType == 1){
+        if(_fAngleStop == 0 && _fAngleStart == 0 && (_law.eLawType == setup_LAW_TYPE_LINEAR || _law.eLawType == setup_LAW_TYPE_TFM)){
             if(rect.left()<0)
             {
                 rect.setLeft(0);

@@ -135,15 +135,21 @@ int  ParameterProcess::SetupTravelMode(int nGroupId_ , int nValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
 	group.eTravelMode  = (setup_TRAVEL_MODE)nValue_ ;
-	qDebug("%d %d" , nGroupId_ , nValue_);
+    //qDebug("%d %d" , nGroupId_ , nValue_);
 	return 0 ;
+}
+
+setup_TRAVEL_MODE ParameterProcess::getTravelMode(int nGroupId_)
+{
+    GROUP_CONFIG& group = m_pConfig->group[nGroupId_];
+    return group.eTravelMode;
 }
 
 int  ParameterProcess::SetupVelocity(int nGroupId_ , double fValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
 	group.fVelocity	 = fValue_ ;
-	qDebug("%d %f" , nGroupId_ , fValue_);
+    //qDebug("%d %f" , nGroupId_ , fValue_);
 	return 0 ;
 }
 
@@ -151,7 +157,7 @@ int  ParameterProcess::SetupWedgeDelay(int nGroupId_ , double fValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
 	group.nWedgeDelay   = (int)(fValue_ * 1000);
-	qDebug("%d %f" , nGroupId_ , fValue_);
+    //qDebug("%d %f" , nGroupId_ , fValue_);
 	return 0 ;
 }
 
@@ -159,7 +165,7 @@ int  ParameterProcess::SetupTxElementStart(int nGroupId_ , int nValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
 	group.nTrigeStart   = nValue_ ;
-	qDebug("%d %d" , nGroupId_ , nValue_);
+    //qDebug("%d %d" , nGroupId_ , nValue_);
 	return 0 ;
 }
 
@@ -167,7 +173,7 @@ int  ParameterProcess::SetupRxElementStart(int nGroupId_ , int nValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
 	group.nReceiveStart   = nValue_ ;
-	qDebug("%d %d" , nGroupId_ , nValue_);
+    //qDebug("%d %d" , nGroupId_ , nValue_);
 	return 0 ;
 }
 
@@ -176,7 +182,7 @@ int  ParameterProcess::SetupFilter(int nGroupId_ , int nValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_] ;
 	group.eFileter   = (setup_FILTER_MODE) nValue_ ;
-	qDebug("%d %d" , nGroupId_ , nValue_);
+    //qDebug("%d %d" , nGroupId_ , nValue_);
 	return 0 ;
 }
 
@@ -184,7 +190,7 @@ int  ParameterProcess::SetupRectifier(int nGroupId_ , int nValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_]   ;
 	group.eRectifier   = (setup_RECTIFIER_MODE) nValue_ ;
-	qDebug("%d %d" , nGroupId_ , nValue_);
+    //qDebug("%d %d" , nGroupId_ , nValue_);
 	return 0 ;
 }
 
@@ -192,7 +198,7 @@ int  ParameterProcess::SetupVedioOnOff(int nGroupId_ , int nValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_]   ;
 	group.bVedioFilter   =  nValue_ ;
-	qDebug("%d %d" , nGroupId_ , nValue_);
+    //qDebug("%d %d" , nGroupId_ , nValue_);
 	return 0 ;
 }
 
@@ -200,7 +206,7 @@ int  ParameterProcess::SetupPointQty(int nGroupId_ , int nValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_]   ;
 	group.nPointQty  =  nValue_ ;
-	qDebug("%d %d" , nGroupId_ , nValue_);
+    //qDebug("%d %d" , nGroupId_ , nValue_);
 	return 0 ;
 }
 
@@ -208,7 +214,7 @@ int  ParameterProcess::SetupPointQtyAutoMode(int nGroupId_ , int bValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_]   ;
 	group.bPointQtyAuto = bValue_ ;
-	qDebug("%d %d" , nGroupId_ , bValue_);
+    //qDebug("%d %d" , nGroupId_ , bValue_);
 	return 0;
 }
 
@@ -217,7 +223,7 @@ int  ParameterProcess::SetupSumGain(int nGroupId_ , double fValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_]   ;
 	group.fSumGain  =  fValue_ ;
-	qDebug("%d %f" , nGroupId_ , fValue_);
+    //qDebug("%d %f" , nGroupId_ , fValue_);
 	return 0 ;
 }
 
@@ -225,7 +231,7 @@ int  ParameterProcess::SetupSumGainAutoMode(int nGroupId_ , int bValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_]   ;
 	group.bSumGainAuto = bValue_ ;
-	qDebug("%d %d" , nGroupId_ , bValue_);
+    //qDebug("%d %d" , nGroupId_ , bValue_);
 	return 0;
 }
 
@@ -233,14 +239,14 @@ int  ParameterProcess::SetupAverage(int nGroupId_ , int nValue_)
 {
 	GROUP_CONFIG& group = m_pConfig->group[nGroupId_]   ;
 	group.eAveraging  =  (setup_AVERAGE_MODE) nValue_ ;
-	qDebug("%d %d" , nGroupId_ , nValue_);
+    //qDebug("%d %d" , nGroupId_ , nValue_);
 	return 0 ;
 }
 
 int ParameterProcess::SetupGroupMode(int nGroupId_ , int nValue_)
 {
 	m_pConfig->GroupModeChanged(nGroupId_ , (setup_GROUP_MODE)nValue_) ;
-	qDebug("%d %d" , nGroupId_ , nValue_);
+    //qDebug("%d %d" , nGroupId_ , nValue_);
 	return 0 ;
 }
 
@@ -538,7 +544,12 @@ int ParameterProcess::GetGroupDataSize(int nGroupId_) const
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 	int _nPointQty = _group.nPointQty ;
     int _nBeamQty  = GetGroupLawQtyForPosition(nGroupId_) ;
-	int _nRet = (setup_DATA_PENDIX_LENGTH + _nPointQty) * _nBeamQty  ;
+    int _nRet;
+//    if(_group.law.eLawType == setup_LAW_TYPE_TFM){
+//        _nRet = _nPointQty * _nBeamQty + setup_DATA_PENDIX_LENGTH;
+//    }else{
+        _nRet = (setup_DATA_PENDIX_LENGTH + _nPointQty) * _nBeamQty;
+//    }
 	return _nRet;
 }
 
@@ -579,10 +590,12 @@ int ParameterProcess::GetGroupLawQty(int nGroupId_) const
 		{
 			_ret = (_law.nAngleStopRefract - _law.nAngleStartRefract) / _law.nAngleStepRefract + 1;
 		}
-		else
+        else if(_law.eLawType == setup_LAW_TYPE_LINEAR)
 		{
 			_ret = (_law.nLastElemFir - _law.nFirstElemFir - _law.nElemQtyFir + 1) / _law.nElemStepFir + 1 ;
-		}
+        }else{
+            _ret = (_law.nLastElemFir - _law.nFirstElemFir) / _law.nElemStepFir + 1;
+        }
 	}
 	return _ret;
 }
@@ -598,9 +611,11 @@ int  ParameterProcess::GetGroupLawQtyForPosition(int nGroupId_) const
         {
             _ret = (_law.nAngleStopRefract - _law.nAngleStartRefract) / _law.nAngleStepRefract + 1;
         }
-        else
+        else if(_law.eLawType == setup_LAW_TYPE_LINEAR)
         {
             _ret = (_law.nLastElemFir - _law.nFirstElemFir - _law.nElemQtyFir + 1) / _law.nElemStepFir + 1 ;
+        }else{
+            _ret = (_law.nLastElemFir - _law.nFirstElemFir) / _law.nElemStepFir + 1;
         }
 
         //耦合监控有一条beam用于耦合监控
@@ -904,7 +919,12 @@ float ParameterProcess::SAxisIndexToDist(int index_) const
 
 int  ParameterProcess::GetGroupLawDataOffset(int nGroupId_ , int nLawId_) const
 {
-	int _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH)  ;
+    int _nLawOffset;
+//    if(m_pConfig->group[nGroupId_].law.eLawType == setup_LAW_TYPE_TFM){
+//        _nLawOffset  = nLawId_ * m_pConfig->group[nGroupId_].nPointQty;
+//    }else{
+        _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH);
+    //}
 	return _nLawOffset ;
 }
 
@@ -1251,8 +1271,13 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, int nScanPos_, int nLawId
 	int    _nPointQty = GetGroupPointQty(nGroupId_);
 	int _nFrameOffset = GetTotalDataSize() ;
 	int _nGroupOffset = GetGroupDataOffset(nGroupId_);
-    int     _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
-	int        _index = GetRealScanIndex(nGroupId_, nScanPos_);
+    int _nLawSize;
+//    if(m_pConfig->group[nGroupId_].law.eLawType == setup_LAW_TYPE_TFM){
+//        _nLawSize = _nPointQty;
+//    }else{
+        _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+    //}
+    int _index = GetRealScanIndex(nGroupId_, nScanPos_);
 
 	if(_pData) {
 		_pData += (_nFrameOffset * _index + _nGroupOffset + nLawId_ * _nLawSize);
@@ -1301,14 +1326,36 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
         _fScale  = _nPointQty / _fSampleRange;
     }
 
-
 	//-----------------------------------
 	// I
 	GATE_CONFIG* _pGate = GetGateInfo(nGroupId_ , setup_GATE_I);
-
-	float _fStart = _fScale * (_pGate->fStart - _fSampleStart) ;
-	float _fWidth = _fScale * _pGate->fWidth;
-	float _fHeigh = _pGate->nThreshold * WAVE_MAX / 100;
+    float _fStart, _fWidth, _fHeigh;
+    if(config->eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH){
+        if(_pGate->gTravelMode == setup_GATE_DEPTH){
+            _fStart = _fScale * (_pGate->fStart - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth;
+        }else{
+            _fStart = _fScale * (_pGate->fStart * _fCos - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth * _fCos;
+        }
+    }else if(config->eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
+        if(_pGate->gTravelMode == setup_GATE_DEPTH){
+            _fStart = _fScale * (_pGate->fStart / _fCos - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth / _fCos;
+        }else{
+            _fStart = _fScale * (_pGate->fStart - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth;
+        }
+    } else{
+        if(_pGate->gTravelMode == setup_GATE_DEPTH){
+            _fStart = _fScale * ( DistMmToUs( nGroupId_, _pGate->fStart / _fCos) - _fSampleStart);
+            _fWidth = _fScale * DistMmToUs( nGroupId_, _pGate->fWidth / _fCos);
+        }else{
+            _fStart = _fScale * ( DistMmToUs( nGroupId_, _pGate->fStart) - _fSampleStart);
+            _fWidth = _fScale * DistMmToUs( nGroupId_, _pGate->fWidth);
+        }
+    }
+    _fHeigh = _pGate->nThreshold * WAVE_MAX / 100;
 //	if(_fStart+_fWidth >= _nPointQty) _fWidth = _nPointQty - _fStart - 1;
 
 	pInfo_[setup_GATE_I].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_I].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
@@ -1416,9 +1463,32 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	//-----------------------------------
 	// A
 	_pGate = GetGateInfo(nGroupId_ , setup_GATE_A);
+    if(config->eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH){
+        if(_pGate->gTravelMode == setup_GATE_DEPTH){
+            _fStart = _fScale * (_pGate->fStart - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth;
+        }else{
+            _fStart = _fScale * (_pGate->fStart * _fCos - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth * _fCos;
+        }
+    }else if(config->eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
+        if(_pGate->gTravelMode == setup_GATE_DEPTH){
+            _fStart = _fScale * (_pGate->fStart / _fCos - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth / _fCos;
+        }else{
+            _fStart = _fScale * (_pGate->fStart - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth;
+        }
+    }else{
+        if(_pGate->gTravelMode == setup_GATE_DEPTH){
+            _fStart = _fScale * ( DistMmToUs( nGroupId_, _pGate->fStart / _fCos) - _fSampleStart);
+            _fWidth = _fScale * DistMmToUs( nGroupId_, _pGate->fWidth / _fCos);
+        }else{
+            _fStart = _fScale * ( DistMmToUs( nGroupId_, _pGate->fStart) - _fSampleStart);
+            _fWidth = _fScale * DistMmToUs( nGroupId_, _pGate->fWidth);
+        }
+    }
 
-	_fStart = _fScale * (_pGate->fStart - _fSampleStart);
-	_fWidth = _fScale * _pGate->fWidth;
 	_fHeigh = _pGate->nThreshold * WAVE_MAX / 100;
 	switch(_pGate->eSynChro)
 	{
@@ -1534,8 +1604,31 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	// B
 	_pGate = GetGateInfo(nGroupId_ , setup_GATE_B);
 
-	_fStart = _fScale * (_pGate->fStart - _fSampleStart);
-	_fWidth = _fScale * _pGate->fWidth;
+    if(config->eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH){
+        if(_pGate->gTravelMode == setup_GATE_DEPTH){
+            _fStart = _fScale * (_pGate->fStart - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth;
+        }else{
+            _fStart = _fScale * (_pGate->fStart * _fCos - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth * _fCos;
+        }
+    }else if(config->eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
+        if(_pGate->gTravelMode == setup_GATE_DEPTH){
+            _fStart = _fScale * (_pGate->fStart / _fCos - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth / _fCos;
+        }else{
+            _fStart = _fScale * (_pGate->fStart - _fSampleStart);
+            _fWidth = _fScale * _pGate->fWidth;
+        }
+    }else{
+        if(_pGate->gTravelMode == setup_GATE_DEPTH){
+            _fStart = _fScale * ( DistMmToUs( nGroupId_, _pGate->fStart / _fCos) - _fSampleStart);
+            _fWidth = _fScale * DistMmToUs( nGroupId_, _pGate->fWidth / _fCos);
+        }else{
+            _fStart = _fScale * ( DistMmToUs( nGroupId_, _pGate->fStart) - _fSampleStart);
+            _fWidth = _fScale * DistMmToUs( nGroupId_, _pGate->fWidth);
+        }
+    }
 	_fHeigh = _pGate->nThreshold * WAVE_MAX / 100;
 	switch(_pGate->eSynChro)
 	{
@@ -1655,6 +1748,68 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	return true;
 }
 
+void ParameterProcess::GetGateRangeInfos(int nGroupId_, int nLawId_, PEAK_CONFIG* gInfo_)
+{
+    DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG* config = &(m_pConfig->group[nGroupId_]);
+    int       _nRectify = GetRectifierMode(nGroupId_);
+    if(config->eGroupMode == setup_GROUP_MODE_PA){
+        float _fAngle = DEGREE_TO_ARCH(GetLawAngle(nGroupId_, nLawId_));
+        float _fCos    = cos(_fAngle);
+        if(config->eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH){
+            for(int i = 0; i < setup_GATE_MAX; i++){
+                if(config->gate[i].gTravelMode == setup_GATE_DEPTH){
+                    gInfo_[i].fGs = config->gate[i].fStart;
+                    gInfo_[i].fGw = config->gate[i].fWidth;
+                    gInfo_[i].fGh = GateHeight(config->gate[i].nThreshold, _nRectify);
+                }else{
+                    gInfo_[i].fGs = config->gate[i].fStart * _fCos;
+                    gInfo_[i].fGw = config->gate[i].fWidth * _fCos;
+                    gInfo_[i].fGh = GateHeight(config->gate[i].nThreshold, _nRectify);
+                }
+            }
+        }else if(config->eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
+            for(int i = 0; i < setup_GATE_MAX; i++){
+                if(config->gate[i].gTravelMode == setup_GATE_DEPTH){
+                    gInfo_[i].fGs = config->gate[i].fStart / _fCos;
+                    gInfo_[i].fGw = config->gate[i].fWidth / _fCos;
+                    gInfo_[i].fGh = GateHeight(config->gate[i].nThreshold, _nRectify);
+                }else{
+                    gInfo_[i].fGs = config->gate[i].fStart;
+                    gInfo_[i].fGw = config->gate[i].fWidth;
+                    gInfo_[i].fGh = GateHeight(config->gate[i].nThreshold, _nRectify);
+                }
+            }
+        }else{
+            for(int i = 0; i < setup_GATE_MAX; i++){
+                if(config->gate[i].gTravelMode == setup_GATE_DEPTH){
+                    gInfo_[i].fGs = DistMmToUs( nGroupId_, config->gate[i].fStart / _fCos);
+                    gInfo_[i].fGw = DistMmToUs( nGroupId_, config->gate[i].fWidth / _fCos);
+                    gInfo_[i].fGh = GateHeight(config->gate[i].nThreshold, _nRectify);
+                }else{
+                    gInfo_[i].fGs = DistMmToUs( nGroupId_, config->gate[i].fStart);
+                    gInfo_[i].fGw = DistMmToUs( nGroupId_, config->gate[i].fWidth);
+                    gInfo_[i].fGh = GateHeight(config->gate[i].nThreshold, _nRectify);
+                }
+            }
+        }
+    }else{
+        if(config->eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
+            for(int i = 0; i < setup_GATE_MAX; i++){
+                gInfo_[i].fGs = config->gate[i].fStart;
+                gInfo_[i].fGw = config->gate[i].fWidth;
+                gInfo_[i].fGh = GateHeight(config->gate[i].nThreshold, _nRectify);
+            }
+        }else{
+            for(int i = 0; i < setup_GATE_MAX; i++){
+                gInfo_[i].fGs = DistMmToUs(nGroupId_, config->gate[i].fStart);
+                gInfo_[i].fGw = DistMmToUs(nGroupId_, config->gate[i].fWidth);
+                gInfo_[i].fGh = GateHeight(config->gate[i].nThreshold, _nRectify);
+            }
+        }
+    }
+}
+
 int ParameterProcess::GetCoupleMonitoringData(int nGroupId_, float* pResult_)
 {
     int ret = 0;
@@ -1729,7 +1884,13 @@ WDATA* ParameterProcess::GetCoupleDataPointer( int nGroupId_)
     WDATA* _pData = GetGroupDataPointer( nGroupId_);
     if( !_pData)  return 0;
     int nLawId_ = GetGroupLawQty(nGroupId_);
-    int _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH); //偏移到耦合监控beam
+    int _nLawOffset;
+//    if(m_pConfig->group[nGroupId_].law.eLawType == setup_LAW_TYPE_TFM){
+//        _nLawOffset  = nLawId_ * m_pConfig->group[nGroupId_].nPointQty; //偏移到耦合监控beam
+//    }else{
+        _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH); //偏移到耦合监控beam
+    //}
+
     return (_pData + _nLawOffset);
 }
 
@@ -1842,6 +2003,29 @@ float ParameterProcess::CalculateTofdPcs(int nGroupId_)
 	TOFD_PARA* _pTofd = m_pConfig->GetTofdConfig(nGroupId_) ;
 	TofdPcs(_pTofd);
 	return _pTofd->fPcs;
+}
+
+double ParameterProcess::transTofdHalfSoundPathToDepth(double halfSoundPath, float pcs)
+{
+    float halfPcs = pcs / 2;
+    if(halfSoundPath > halfPcs){
+        return qSqrt(qPow(halfSoundPath, 2) - qPow(halfPcs, 2));
+    }else if(halfSoundPath < halfPcs){
+        return 0 - qSqrt(qPow(halfPcs, 2) - qPow(halfSoundPath, 2));
+    }else{
+        return 0;
+    }
+}
+
+double ParameterProcess::transTofdDepthToHalfSoundPath(double depth, float pcs)
+{
+    if(depth > 0){
+        return qSqrt(qPow( depth, 2) + qPow( pcs / 2, 2));
+    }else if(depth < 0){
+        return qSqrt(qPow(pcs / 2, 2) - qPow( -depth, 2));
+    }else{
+        return pcs;
+    }
 }
 
 float  ParameterProcess::GetTofdDepth(int nGroupId_ , float fCursorPos_)
@@ -2568,7 +2752,7 @@ int ParameterProcess::SCanAngleToCScanLineAngle(int nGroupId_, float _fCursor)
            _law.eLawType, _law.eFocalType, _law.eAngleType, _fCursor, _law.fDepthStart, _law.fDepthStop,
            _law.nAngleStartRefract, _law.nAngleStepRefract, _law.nAngleStopRefract, _law.fOffsetStart, _law.fOffsetStop,
            _law.fPositionStart, _law.fPositionStop, _law.fPositionStep);
-    if(_law.eLawType == 1 && _law.eFocalType == 1){
+    if((_law.eLawType == setup_LAW_TYPE_LINEAR || _law.eLawType == setup_LAW_TYPE_TFM) && _law.eFocalType == 1){
         return (int)(_fCursor);
     }
 
@@ -2686,8 +2870,13 @@ float ParameterProcess::GetSampleStart(int nGroupId_ , int nLawId_)
 	if(_group.eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
 		_fRet = _group.fSampleStart ;
 	}else if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH){
-		float _fAngle = GetLawAngle(nGroupId_ , nLawId_);
-		_fRet = _group.fSampleStart * cos(DEGREE_TO_ARCH(_fAngle)) ;
+        if(_group.eGroupMode == setup_GROUP_MODE_PA){
+            float _fAngle = GetLawAngle(nGroupId_ , nLawId_);
+            _fRet = _group.fSampleStart * cos(DEGREE_TO_ARCH(_fAngle));
+        }else{
+            _fRet = _group.fSampleStart;
+        }
+
     }else{
         _fRet = _group.nTimeStart / 1000.0;
     }
@@ -2701,8 +2890,12 @@ float ParameterProcess::GetSampleRange(int nGroupId_ , int nLawId_)
 	if(_group.eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
 		_fRet = _group.fSampleRange ;
     }else if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH){
-		float _fAngle = GetLawAngle(nGroupId_ ,nLawId_);
-		_fRet = _group.fSampleRange * cos(DEGREE_TO_ARCH(_fAngle)) ;
+        if(_group.eGroupMode == setup_GROUP_MODE_PA){
+            float _fAngle = GetLawAngle(nGroupId_ ,nLawId_);
+            _fRet = _group.fSampleRange * cos(DEGREE_TO_ARCH(_fAngle));
+        }else{
+            _fRet = _group.fSampleRange;
+        }
     }else{
         _fRet = _group.nTimeRange / 1000.0;
     }
@@ -3098,7 +3291,13 @@ QVector<WDATA> ParameterProcess::GetCoupleCScanData( int nGroupId_)
     int _nFrameSize = GetTotalDataSize();
     int _nGroupOffset = GetGroupDataOffset(nGroupId_);
     int nLawId_ = GetGroupLawQty(nGroupId_);
-    int _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH);
+    int _nLawOffset;
+//    if(m_pConfig->group[nGroupId_].law.eLawType == setup_LAW_TYPE_TFM){
+//        _nLawOffset  = nLawId_ * m_pConfig->group[nGroupId_].nPointQty;
+//    }else{
+        _nLawOffset  = nLawId_ * (m_pConfig->group[nGroupId_].nPointQty + setup_DATA_PENDIX_LENGTH);
+    //}
+
     _pData = _pData + _nGroupOffset + _nLawOffset;
 
     for(int i = 0; i < recMax; i++)
@@ -3267,7 +3466,12 @@ WDATA* ParameterProcess::GetRasterData(int nGroupId_, setup_CSCAN_SOURCE_MODE so
 
         int _nFrameOffset = GetTotalDataSize();
         int _nGroupOffset = GetGroupDataOffset(nGroupId_);
-        int _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+        int _nLawSize;
+//        if(m_pConfig->group[nGroupId_].law.eLawType == setup_LAW_TYPE_TFM){
+//            _nLawSize = _nPointQty;
+//        }else{
+            _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+        //}
 
         for(int i = 0; i < markLength; i++){
             if(_pMarker[i]){
@@ -3361,7 +3565,12 @@ WDATA* ParameterProcess::GetRasterData(int nGroupId_, setup_CSCAN_SOURCE_MODE so
 
         int _nFrameOffset = GetTotalDataSize();
         int _nGroupOffset = GetGroupDataOffset(nGroupId_);
-        int _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+        int _nLawSize;
+//        if(m_pConfig->group[nGroupId_].law.eLawType == setup_LAW_TYPE_TFM){
+//            _nLawSize = _nPointQty;
+//        }else{
+            _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+        //}
         float _posRange = _fMaxThickness - _fMinThickness;
         int _threshold_ = _threshold * 255.0 / 100;
         float _fScale = GetRefGainScale(nGroupId_);
@@ -3502,7 +3711,12 @@ WDATA* ParameterProcess::GetRasterData(int nGroupId_, setup_CSCAN_SOURCE_MODE so
         U8* _pMarker = GetScanMarker(nGroupId_);
         int _nFrameOffset = GetTotalDataSize();
         int _nGroupOffset = GetGroupDataOffset(nGroupId_);
-        int _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+        int _nLawSize;
+//        if(m_pConfig->group[nGroupId_].law.eLawType == setup_LAW_TYPE_TFM){
+//            _nLawSize = _nPointQty;
+//        }else{
+            _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+        //}
         float _posRange = _fMaxThickness - _fMinThickness;
         float _fScale = GetRefGainScale(nGroupId_);
         int _threshold1_ = _threshold1 * 255.0 / 100;

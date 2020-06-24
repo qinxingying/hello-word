@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
+#include <process/ParameterProcess.h>
 
 const int g_nRectSize = 2 ;
 static int g_nZValue = 50 ;
@@ -23,6 +24,7 @@ DopplerLineItem::DopplerLineItem(const QColor& cColor_)
     SetMoveType(LINE_MOVE_NO);
     m_eStype = Qt::SolidLine;
     m_eLineType = LINE_TYPE::LINE_FREE;
+    m_tofdDepth = false;
 }
 
 void DopplerLineItem::SetLineType(LINE_TYPE eType_)
@@ -156,6 +158,7 @@ QPointF ptTmp;
 QRectF  rcTmp;
 void DopplerLineItem::DrawLabel(QPainter *painter)
 {
+    ParameterProcess* _pProcess = ParameterProcess::Instance();
 	QPen _pen = painter->pen();
 	_pen.setColor(m_cColor) ;
 	painter->setPen(_pen);
@@ -185,10 +188,16 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 	QRect _rcFont;
 
 	int _x, _y, _W, _H;
+    double buff;
 	switch (m_eLineType)
 	{
 	case LINE_VERTICAL:
-		_str.sprintf("%.1f", m_Geometry.left())  ;
+        if(m_tofdDepth){
+            buff = _pProcess->transTofdHalfSoundPathToDepth( m_Geometry.left(), m_pcs);
+        }else{
+            buff = m_Geometry.left();
+        }
+        _str.sprintf("%.1f", buff);
 		_rcFont = _fm.boundingRect(_str);
         _W = _rcFont.width();
         _H = _rcFont.height();
@@ -202,7 +211,12 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 		else							_x = 1;
 		break;
 	case LINE_HORIZENTAL:
-		_str.sprintf("%.1f", m_Geometry.top())  ;
+        if(m_tofdDepth){
+            buff = _pProcess->transTofdHalfSoundPathToDepth( m_Geometry.top(), m_pcs);
+        }else{
+            buff = m_Geometry.top();
+        }
+        _str.sprintf("%.1f", buff);
 		_rcFont = _fm.boundingRect(_str);
         _W = _rcFont.width();
         _H = _rcFont.height();

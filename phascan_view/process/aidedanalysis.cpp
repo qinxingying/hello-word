@@ -330,7 +330,13 @@ bool AidedAnalysis::setSelectDefectIndex(int index)
     }
     int _index_ = _defectC.y() * _TOPCInfo.pixelWidth + _defectC.x();
     _index_ = _TOPCInfo.pDataIndex[_index_];
-    int pointQty = _pConfig->group[m_groupId].nPointQty + setup_DATA_PENDIX_LENGTH;
+    int pointQty;
+//    if(_pConfig->group[m_groupId].law.eLawType == setup_LAW_TYPE_TFM){
+//        pointQty = _pConfig->group[m_groupId].nPointQty;
+//    }else{
+        pointQty = _pConfig->group[m_groupId].nPointQty + setup_DATA_PENDIX_LENGTH;
+    //}
+
     int curLaw = _index_ / pointQty;
      _pConfig->common.aidedAnalysis.aidedBeamId = curLaw;
     qDebug()<<pData[_index_]<<"pointQty"<<pointQty<<"_index_"<<_index_<<"curLaw"<<curLaw;

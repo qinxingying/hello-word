@@ -378,6 +378,20 @@ void DopplerViewItems::UpdateItemsCursor()
 		m_pDataView->AddOverlayItems(m_pCursor[3]);
 	}
 
+    bool tofdDepth = false;
+    float pcs;
+    m_pDataView->GetTofdDepth(tofdDepth, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
+    if(tofdDepth){
+        m_pCursor[0]->SetTofdPCS(true, pcs);
+        m_pCursor[1]->SetTofdPCS(true, pcs);
+    }
+
+    m_pDataView->GetTofdDepth(tofdDepth, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+    if(tofdDepth){
+        m_pCursor[2]->SetTofdPCS(true, pcs);
+        m_pCursor[3]->SetTofdPCS(true, pcs);
+    }
+
 	m_pCursor[0]->SetWndRect(m_pDataView->GetZoomRect());
 	m_pCursor[1]->SetWndRect(m_pDataView->GetZoomRect());
 	m_pCursor[2]->SetWndRect(m_pDataView->GetZoomRect());
@@ -600,43 +614,78 @@ void DopplerViewItems::UpdateItemsThickness()
 	}
 
 	double _fStart , _fStop , _fSliderStart , _fSliderStop;
-	if(m_bHorizental)
-		m_pDataView->GetRulerRange(&_fStart , &_fStop , &_fSliderStart , &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
-	else
-		m_pDataView->GetRulerRange(&_fStart , &_fStop , &_fSliderStart , &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
+    bool tofdDepth = false;
+    float pcs;
+    if(m_bHorizental){
+        m_pDataView->GetRulerRange(&_fStart , &_fStop , &_fSliderStart , &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+        m_pDataView->GetTofdDepth(tofdDepth, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+    }else{
+        m_pDataView->GetRulerRange(&_fStart , &_fStop , &_fSliderStart , &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
+        m_pDataView->GetTofdDepth(tofdDepth, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
+    }
+    ParameterProcess* _pProcess = ParameterProcess::Instance();
+    if(tofdDepth){
+        double depthStart = _pProcess->transTofdHalfSoundPathToDepth( _fStart, pcs);
+        double depthEnd   = _pProcess->transTofdHalfSoundPathToDepth( _fStop, pcs);
+        if(depthStart > depthEnd){
+            double _fTmp = depthEnd;
+            depthEnd = depthStart;
+            depthStart = _fTmp;
+        }
+        int _nQty = (int)(depthEnd / m_fInterval) - (int)(depthStart / m_fInterval);
+        if(_nQty > 10) _nQty = 10;
+        float _fStartPos = (1 + (int)(depthStart / m_fInterval)) * m_fInterval;
+        QRectF _rect(0 , 0 , 0 , 0);
+        for(i = 0 ; i < _nQty ; i++){
+            if(!m_pThickness[i]){
+                m_pThickness[i]  = new DopplerLineItem(COLOR_THICKNESS);
+                m_pThickness[i]->SetLineStyle(Qt::DashLine) ;
+                m_pThickness[i]->SetItemType(DOPPLER_GRAPHICS_ITEM_THICKNESS) ;
+                m_pThickness[i]->SetItemId(i);
+                m_pDataView->AddOverlayItems(m_pThickness[i]);
+            }
+            m_pThickness[i]->SetLineType(m_bHorizental ? DopplerLineItem::LINE_VERTICAL : DopplerLineItem::LINE_HORIZENTAL);
+            m_pThickness[i]->SetMoveType(DopplerLineItem::LINE_MOVE_NO);
+            m_bHorizental ? _rect.setLeft(_fStartPos + i * m_fInterval) : _rect.setTop(_fStartPos + i * m_fInterval);
+            m_pDataView->SetTofdItemGeometry(m_pThickness[i] , _rect );
+            m_pThickness[i]->show();
+        }
+        for(i = _nQty ; i < 10 ; i++){
+            if(m_pThickness[i])  m_pThickness[i]->hide();
+        }
+    }else{
+        if(_fStart > _fStop)
+        {
+            double _fTmp = _fStop ;
+            _fStop = _fStart ;
+            _fStart= _fTmp   ;
+        }
+        int _nQty =(int)(_fStop / m_fInterval) - (int)(_fStart / m_fInterval)  ;
+        if(_nQty > 10) _nQty = 10 ;
+        float _fStartPos = (1 + (int)(_fStart / m_fInterval)) * m_fInterval ;
 
-	if(_fStart > _fStop)
-	{
-		double _fTmp = _fStop ;
-		_fStop = _fStart ;
-		_fStart= _fTmp   ;
-	}
-	int _nQty =(int)(_fStop / m_fInterval) - (int)(_fStart / m_fInterval)  ;
-	if(_nQty > 10) _nQty = 10 ;
-	float _fStartPos = (1 + (int)(_fStart / m_fInterval)) * m_fInterval ;
-
-	QRectF _rect(0 , 0 , 0 , 0);
-	for(i = 0 ; i < _nQty ; i++)
-	{
-		if(!m_pThickness[i])
-		{
-			m_pThickness[i]  = new DopplerLineItem(COLOR_THICKNESS);
-			m_pThickness[i]->SetLineStyle(Qt::DashLine) ;
-			m_pThickness[i]->SetItemType(DOPPLER_GRAPHICS_ITEM_THICKNESS) ;
-			m_pThickness[i]->SetItemId(i);
-			m_pDataView->AddOverlayItems(m_pThickness[i]);
-		}
-		m_pThickness[i]->SetLineType(m_bHorizental ? DopplerLineItem::LINE_VERTICAL : DopplerLineItem::LINE_HORIZENTAL);
-		m_pThickness[i]->SetMoveType(DopplerLineItem::LINE_MOVE_NO);
-		m_bHorizental ? _rect.setLeft(_fStartPos + i * m_fInterval) : _rect.setTop(_fStartPos + i * m_fInterval)  ;
-		m_pDataView->SetItemGeometry(m_pThickness[i] , _rect );
-		m_pThickness[i]->show();
-	}
-	for(i = _nQty ; i < 10 ; i++)
-	{
-		if(m_pThickness[i])  m_pThickness[i]->hide();
-	}
-
+        QRectF _rect(0 , 0 , 0 , 0);
+        for(i = 0 ; i < _nQty ; i++)
+        {
+            if(!m_pThickness[i])
+            {
+                m_pThickness[i]  = new DopplerLineItem(COLOR_THICKNESS);
+                m_pThickness[i]->SetLineStyle(Qt::DashLine) ;
+                m_pThickness[i]->SetItemType(DOPPLER_GRAPHICS_ITEM_THICKNESS) ;
+                m_pThickness[i]->SetItemId(i);
+                m_pDataView->AddOverlayItems(m_pThickness[i]);
+            }
+            m_pThickness[i]->SetLineType(m_bHorizental ? DopplerLineItem::LINE_VERTICAL : DopplerLineItem::LINE_HORIZENTAL);
+            m_pThickness[i]->SetMoveType(DopplerLineItem::LINE_MOVE_NO);
+            m_bHorizental ? _rect.setLeft(_fStartPos + i * m_fInterval) : _rect.setTop(_fStartPos + i * m_fInterval)  ;
+            m_pDataView->SetItemGeometry(m_pThickness[i] , _rect );
+            m_pThickness[i]->show();
+        }
+        for(i = _nQty ; i < 10 ; i++)
+        {
+            if(m_pThickness[i])  m_pThickness[i]->hide();
+        }
+    }
 }
 
 void DopplerViewItems::UpdateItemsWeldBorder()
@@ -839,7 +888,8 @@ void DopplerViewItems::GateMove(int eGate_ , float fStart_ , float fWidth_ , flo
 {
 	QRectF _rect(0 , 0 , 0 , 0);
     DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-    if(_pConfig->group[m_pDataView->GetGroupId()].eTxRxMode == setup_TX_RX_MODE_TOFD)
+    int _GroupId = m_pDataView->GetGroupId();
+    if(_pConfig->group[_GroupId].eTxRxMode == setup_TX_RX_MODE_TOFD)
         fHeight_ = (fHeight_+100)/2.0;
 	switch(m_eGateMode)
 	{
@@ -855,6 +905,36 @@ void DopplerViewItems::GateMove(int eGate_ , float fStart_ , float fWidth_ , flo
 		if(m_pGate[eGate_])
 			m_pDataView->SetItemGeometry(m_pGate[eGate_] , _rect );
 		break;
+    case GATE_MODE_S_TRUEDEPTH:
+        if(_pConfig->group[_GroupId].gate[eGate_].gTravelMode == setup_GATE_DEPTH){
+            _rect = QRectF(fHeight_, fStart_, 0, fWidth_);
+            if(m_pGate[eGate_]){
+                m_pDataView->SetItemGeometry(m_pGate[eGate_], _rect);
+                m_pGate[eGate_]->clearCurveGate();
+            }
+        }else{
+            m_pDataView->setSTCurveGatePoints( m_pGate[eGate_], eGate_);
+        }
+        break;
+    case GATE_MODE_S_SOUNDPATH:
+        if(_pConfig->group[_GroupId].gate[eGate_].gTravelMode == setup_GATE_DEPTH){
+            if( _pConfig->group[_GroupId].law.eLawType == setup_LAW_TYPE_AZIMUTHAL){
+                m_pDataView->setSSCurveGatePoints( m_pGate[eGate_], eGate_);
+            }else{
+                _rect = QRectF(fStart_, fHeight_, fWidth_, 0);
+                if(m_pGate[eGate_]){
+                    m_pDataView->SetItemGeometry(m_pGate[eGate_], _rect);
+                    m_pGate[eGate_]->clearCurveGate();
+                }
+            }
+        }else{
+            _rect = QRectF(fStart_, fHeight_, fWidth_, 0);
+            if(m_pGate[eGate_]){
+                m_pDataView->SetItemGeometry(m_pGate[eGate_], _rect);
+                m_pGate[eGate_]->clearCurveGate();
+            }
+        }
+        break;
 	default:
 		break;
 	}

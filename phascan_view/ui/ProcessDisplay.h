@@ -89,7 +89,7 @@ public:
     void ConnectSlots(DopplerDataView*);
 
     void SetViewPara(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_ , setup_DISPLAY_MODE eDsipaly_);
-    void UpdateAll(DopplerDataView* pWidget_ );
+    void UpdateAll(DopplerDataView* pWidget_ , bool flash);
     void UpdateAllView();
 
     void UpdateDataViewFrame(DopplerDataView* pWidget_ );
@@ -103,16 +103,16 @@ public:
     void UpdateDataViewFrameSA(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
     void UpdateDataViewFrameSL(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
 
-    void UpdateDataViewDraw(DopplerDataView* pWidget_ );
-    void UpdateDataViewDrawAH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
-    void UpdateDataViewDrawAV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
-    void UpdateDataViewDrawBH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
-    void UpdateDataViewDrawBV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
-    void UpdateDataViewDrawCH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
-    void UpdateDataViewDrawCV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
-    void UpdateDataViewDrawSS(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
-    void UpdateDataViewDrawSA(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
-    void UpdateDataViewDrawSL(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_);
+    void UpdateDataViewDraw(DopplerDataView* pWidget_, bool flash);
+    void UpdateDataViewDrawAH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash);
+    void UpdateDataViewDrawAV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash);
+    void UpdateDataViewDrawBH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash);
+    void UpdateDataViewDrawBV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash);
+    void UpdateDataViewDrawCH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash);
+    void UpdateDataViewDrawCV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash);
+    void UpdateDataViewDrawSS(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash);
+    void UpdateDataViewDrawSA(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash);
+    void UpdateDataViewDrawSL(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash);
 
     void UpdateDataViewOverlay(DopplerDataView* pWidget_);
     void UpdateDataViewTitle(DopplerDataView* pWidget_);
@@ -122,6 +122,7 @@ public:
     void UpdateAllViewFrameOfGroup(int nGroupId_);
     void UpdateAllViewOverlayOfGroup(int nGroupId_);
     void UpdateAllViewOfGroup(int nGroupId_);
+    void UpdateAllViewOfGroupAndScanDraw(int nGroupId_, bool flash);
     void UpdateAllViewGateOfGroup(int);
     void UpdateAllViewCursorOfGroup(int) ;
     void ShowDefectInfo(int nGroupId_, int id);

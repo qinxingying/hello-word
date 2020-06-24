@@ -31,6 +31,7 @@ Date     : 2016-12-06
 #include <QPixmap>
 #include "dialog/DialogAbouVersion.h"
 #include "remote_monitoring/RemoteMonitoring.h"
+#include "remote_monitoring/assemblyremotesdialog.h"
 #include "version.h"
 
 int lastgroup = 0;
@@ -39,6 +40,7 @@ int currentgroup = 0; //-1表示全部组的那个tab
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     m_baseName("Report"),
+    m_assemblyRemotes(nullptr),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -98,9 +100,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(indexSliderh, SIGNAL(valueChanged(int)), this, SLOT(slotIndexSliderHChanged(int)));
     connect(scanSpin, SIGNAL(valueChanged(double)), this, SLOT(slotScanSpinChanged(double)));
 
-    m_remoteMonitoring = new RemoteMonitoring(this);
-    connect(ui->actionConnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(connect_remote_monitor()));
-    connect(ui->actionDisconnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(disconnect_remote_monitor()));
+    //m_remoteMonitoring = new RemoteMonitoring(this);
+    //connect(ui->actionConnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(connect_remote_monitor()));
+    //connect(ui->actionDisconnect, SIGNAL(triggered()), m_remoteMonitoring, SLOT(disconnect_remote_monitor()));
+    connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(connect_remote_monitor()));
     connect(ui->ScanHardware, SIGNAL(topcMergeCompareViewShow(bool)), this, SLOT(slotTopcMergeCompareViewShow(bool)));
     indexSliderh->hide();
     //indexSliderWidget->hide();
@@ -647,7 +650,7 @@ void MainWindow::updateCscanLawPos(int _nPos, int _nGroupId)
     LAW_CONFIG _law = _group.law ;
     ParameterProcess* _process = ParameterProcess::Instance();
     float tmp = _process->CScanLineAngleToScanLineAngle(_nGroupId, _nPos);
-    if(_law.eLawType == setup_LAW_TYPE_LINEAR)
+    if(_law.eLawType == setup_LAW_TYPE_LINEAR || _law.eLawType == setup_LAW_TYPE_TFM)
         _group.afCursor[setup_CURSOR_C_ANGLE] = _group.afCursor[setup_CURSOR_LAW];
     else
         _group.afCursor[setup_CURSOR_C_ANGLE] = tmp;
@@ -877,9 +880,9 @@ void MainWindow::AidedAnalysisDone(bool status)
             if( _nGroupId == _nCurGroup){
                 _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
                 _pView->UpdateMeasure();
-                _proDispy.UpdateAll(_pView);
+                _proDispy.UpdateAll(_pView, false);
             }else{
-                _proDispy.UpdateAll(_pView);
+                _proDispy.UpdateAll(_pView, false);
             }
         }
         DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
@@ -1070,6 +1073,8 @@ void MainWindow::OpenFilePro(QString strFileName_)
     m_fileName = strFileName_;
     QFileInfo fi(strFileName_);
     m_baseName = fi.baseName();
+    DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
+    _pReport->set_reportName(m_baseName);
     this->setWindowTitle(m_titleName + m_fileName);
 
     ui->actionAided_Analysis->setEnabled(true);
@@ -1373,7 +1378,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
             if(_nDisplay < 4 && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
                 if(_nId == _pView->GetLawIdentify()) {
                     _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
-                    _proDispy.UpdateAll(_pView);
+                    _proDispy.UpdateAll(_pView, false);
                 }
             } else if( (_nDisplay >= 4 && _nDisplay < 8) && _nGroupId == _nCurGroup) {
                 _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
@@ -1428,7 +1433,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                 }
 
                 LAW_CONFIG _law = _group.law ;
-                if(_law.eLawType == 1 && _law.eFocalType == 1){
+                if((_law.eLawType == setup_LAW_TYPE_LINEAR || _law.eLawType == setup_LAW_TYPE_TFM)&& _law.eFocalType == 1){
                     if(_fCursor > maxTmp){
                         _fCursor = maxTmp;
                         _group.afCursor[_nItemId] = _fCursor;
@@ -1438,7 +1443,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                     }
                 }
 
-                if(_law.eLawType == setup_LAW_TYPE_LINEAR){
+                if(_law.eLawType == setup_LAW_TYPE_LINEAR || _law.eLawType == setup_LAW_TYPE_TFM){
                     tmp = _group.afCursor[setup_CURSOR_C_ANGLE];
                     _group.afCursor[setup_CURSOR_LAW] = tmp;
                 }else{
@@ -1497,7 +1502,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
                 if(_nDisplay < 4 && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
                         _pView->SetDataViewConfigure(_nCurGroup,  tmp,  _nDisplay);
-                        _proDispy.UpdateAll(_pView);
+                        _proDispy.UpdateAll(_pView, false);
 
                 } else if(_nDisplay < 8  && _nGroupId == _nCurGroup) {
                     _pView->SetDataViewConfigure(_nCurGroup,  tmp,  _nDisplay);
@@ -1724,6 +1729,14 @@ void MainWindow::slotTopcMergeCompareViewShow( bool status)
     _pViewFrame->update();
 
     SetWndName();
+}
+
+void MainWindow::connect_remote_monitor()
+{
+    if(m_assemblyRemotes == nullptr){
+        m_assemblyRemotes = new assemblyRemotesDialog(this);
+    }
+    m_assemblyRemotes->exec();
 }
 
 void MainWindow::on_actionNew_Config_triggered()

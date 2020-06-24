@@ -83,8 +83,8 @@ void DopplerCoupleSScanBar::paintEvent(QPaintEvent *)
 
     QPainter _painter( this);
     int _nColor;
-    for( int i = start; i < loopQty + start; i++){
-        _nColor = _process->correctionPdata(_pData[(int)(i*step)]);
+    for( int i = start, j = 0; i < loopQty + start; i++, j++){
+        _nColor = _process->correctionPdata(_pData[(int)(j*step)]);
         if(_nColor > WAVE_MAX){
             _nColor = WAVE_MAX;
         }

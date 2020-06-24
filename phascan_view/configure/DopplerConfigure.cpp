@@ -993,10 +993,27 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         //_group.bShowGateA     = 1;
         //_group.bShowGateB     = _group.bShowGateI = 0;
 		_group.eGroupMode	  = (setup_GROUP_MODE)_pGroupInfo->group_mode  ;
-		_group.eTravelMode	  = _pGroupInfo->ut_unit ? setup_TRAVEL_MODE_TRUE_DEPTH : setup_TRAVEL_MODE_HALF_PATH;
+        switch (_pGroupInfo->ut_unit) {
+        case 0:
+            _group.eTravelMode = setup_TRAVEL_MODE_HALF_PATH;
+            break;
+        case 1:
+            _group.eTravelMode = setup_TRAVEL_MODE_TIME;
+            break;
+        case 2:
+            _group.eTravelMode = setup_TRAVEL_MODE_TRUE_DEPTH;
+            break;
+        default:
+            _group.eTravelMode = setup_TRAVEL_MODE_TRUE_DEPTH;
+            break;
+        }
+        if( _group.eGroupMode != setup_GROUP_MODE_PA && _group.eTravelMode == setup_TRAVEL_MODE_HALF_PATH){
+            _group.eTravelMode = setup_TRAVEL_MODE_TRUE_DEPTH;
+        }
+        //_group.eTravelMode	  = _pGroupInfo->ut_unit ? setup_TRAVEL_MODE_TRUE_DEPTH : setup_TRAVEL_MODE_HALF_PATH;
 		_group.eTxRxMode	  = (setup_TX_RX_MODE)_pGroupInfo->tx_rxmode1 ;
 		_group.nWedgeDelay	  = _pGroupInfo->wedge_delay ;
-		_group.fVelocity	  = _pGroupInfo->velocity   / 100.0 ;
+        _group.fVelocity	  = _pGroupInfo->velocity   / 100.0 ;
 		_group.nTimeStart     = _pGroupInfo->start;									/* 时间起点 单位 ns */
 		_group.nTimeRange     = _pGroupInfo->range;									/* 时间范围 单位 ns */
 		_group.fSampleStart   = _process->DistNsToMm(i , _pGroupInfo->start) ;		/* 显示范围 单位 mm		*/
@@ -1102,6 +1119,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			_gate.nThreshold   = _Gate.height ;
 			_gate.eMeasure	   = _Gate.measure;
 			_gate.eSynChro	   = (setup_GATE_AYNC_TYPE)_Gate.synchro;
+            _gate.gTravelMode  = (setup_GATE_TRAVEL_MODE)_Gate.travel_mode;
 		}
 
 		SIZING_CURVES& _Curve = _pGroupInfo->SizingCurves;
@@ -1145,6 +1163,11 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		LAW_CONFIG& _LawConfig = _group.law ;
 		LAW_INFO&     _LawInfo = _pGroupInfo->law_info ;
 		_LawConfig.eLawType	      = (setup_LAW_TYPE)_LawInfo.Focal_type  ;
+        if(_LawConfig.eLawType == setup_LAW_TYPE_TFM){
+            Config::instance()->getTMFRange(i, &_group.fSampleStart, &_group.fSampleRange, &_group.nPointQty);
+            _group.nTimeStart = _process->DistMmToNs(i, _group.fSampleStart);
+            _group.nTimeRange = _process->DistMmToNs(i, _group.fSampleRange);
+        }
 		_LawConfig.eFocalType     = (setup_FOCAL_TYPE)_LawInfo.Focal_point_type  ;
 		_LawConfig.nElemQtyFir	  = _LawInfo.Elem_qty   ;
 		_LawConfig.nElemQtySec	  = 1 ;
@@ -1250,7 +1273,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
 		_wedge.fLength	= 50; /*楔块长度*/
 		_wedge.fWidth	= 40; /*楔块宽度*/
-		_wedge.fHeight	= 30 ;/*楔块高度*/
+        _wedge.fHeight	= 30; /*楔块高度*/
 
 		//ut 探头参数
 		_wedge.fRefPoint   = _Wedge.Ref_point / 1000.0;
@@ -1529,7 +1552,13 @@ void  DopplerConfigure::InitTOPCInfo()
         _TOPCInfo.pixelWidth = _width;
         _TOPCInfo.pixelHeigh = _height;
         qDebug()<<"topcwidtha"<<i<<_width;
-        int beamLength = setup_DATA_PENDIX_LENGTH + _nPointQty;
+        int beamLength;
+//        if(_group.law.eLawType == setup_LAW_TYPE_TFM){
+//            beamLength = _nPointQty;
+//        }else{
+            beamLength = setup_DATA_PENDIX_LENGTH + _nPointQty;
+        //}
+
         float *_pExitPoint = _group.afBeamPos;
         float _nAngleStart = DEGREE_TO_ARCH( _law.nAngleStartRefract / 10.0);
 
@@ -1648,6 +1677,15 @@ void  DopplerConfigure::UpdateTofdConfig(int nGroupId_)
 	_tofd.fZeroOff		= 0;
 	_tofd.fRefPoint		=  (_tofd.fPCS - _group.afBeamPos[255]) / 2;
 	_tofd.fWedgeSep		=  _group.afBeamPos[255] ;
+
+    if( Config::instance()->is_phascan_ii()){
+        Config::instance()->getTofdData( nGroupId_, &_tofd.fPCS, &_tofd.fRefPoint);
+        _tofd.fWedgeSep = _tofd.fPCS - 2 *_tofd.fRefPoint;
+    }else{
+        _tofd.fPCS			= _group.afBeamPos[254];
+        _tofd.fRefPoint		=  (_tofd.fPCS - _group.afBeamPos[255]) / 2;
+        _tofd.fWedgeSep		=  _group.afBeamPos[255];
+    }
 
 	memset(_tofd.proInfo, 0x00,  sizeof(_tofd.proInfo));
 	_tofd.eProingST = TOFD_PRO_NONE;

@@ -27,12 +27,18 @@ public:
 	void   GetMarkerRange(double* nStart_ , double* nStop_, double* nSliderStart_ , double* nSliderStop_);
 	void   SetMarkerUnit(QString* strUnit_) ;
 	void   ShowSlider(bool bDisp_) {m_bSliderON = bDisp_;}
+    void   SetTofdStatus(bool tofdDepth, float pcs){ m_tofdDepth = tofdDepth; m_PCS = pcs;}
+    void   GetTofdStatus(bool &tofdDepth, float &pcs){tofdDepth = m_tofdDepth; pcs = m_PCS;}
 protected:
 	void   paintEvent(QPaintEvent *) ;
 	void   drawLeftRuler(QPainter& painter);
+    void   drawTofdLeftRuler(QPainter& painter);
 	void   drawRightRuler(QPainter& painter);
 	void   drawBottomRuler(QPainter& painter);
+    void   drawTofdBottomRuler(QPainter& painter);
 	int	   getRulerMarkQty(int nLength_) ;
+    double calDepth(double soundPath);
+    double transDepthToSoundPath(double depth);
 	double getRulerMarInterval(int nMarkQty_ , double nRange_) ;
 
 //	void   getSliderArea(QPainter& painter);
@@ -76,6 +82,8 @@ protected:
 	double			m_nSliderStart;
 	double			m_nSliderEnd;
 	QString			m_strUnit ;
+    bool            m_tofdDepth;
+    float           m_PCS;
 
 signals:
 	void signalRulerMoved(double nStart_, double nStop_) ;

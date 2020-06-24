@@ -29,7 +29,7 @@ typedef struct _gate_info
 	unsigned char	parameters;		// 调节模式 0 Positions 1 Mode //
 	unsigned char	synchro;        // 同步 //
 	unsigned char	measure;        //  //
-	unsigned char	rectifier_freq; //射频 //
+    unsigned char	travel_mode; //0 深度闸门 1 声程闸门 //
 	char	height;
 	char	tt[3];
 	int	start;			//单位ns

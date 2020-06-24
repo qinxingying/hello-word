@@ -39,7 +39,7 @@ private:
     double m_clampOffset;
 
     WaveType m_waveType;
-    uint m_refPoint;
+    double m_refPoint;
 
     friend class Config;
 };

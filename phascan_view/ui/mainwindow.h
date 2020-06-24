@@ -22,6 +22,7 @@ class QLabel;
 class DopplerViewFrame;
 class InstrumentSettingWidget;
 class RemoteMonitoring;
+class assemblyRemotesDialog;
 
 struct STATUS_BAR_INFO
 {
@@ -124,7 +125,8 @@ private:
     QString m_baseName;
 
     QList<DopplerGroupTab*> m_pGroupList;
-    RemoteMonitoring *m_remoteMonitoring;
+    //RemoteMonitoring *m_remoteMonitoring;
+    assemblyRemotesDialog *m_assemblyRemotes;
 
     void init_ui();
 
@@ -156,7 +158,7 @@ private slots:
     void slotDataViewResized(DopplerDataView*) ;
     void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_);
     void slotTopcMergeCompareViewShow(bool);
-
+    void connect_remote_monitor();
 protected slots:
   void on_actionNew_Config_triggered();
   void on_actionOpen_triggered();

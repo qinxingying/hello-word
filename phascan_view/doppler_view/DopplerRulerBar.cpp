@@ -1,6 +1,7 @@
 #include "DopplerRulerBar.h"
 #include <QPainter>
 #include <math.h>
+#include <QtMath>
 #include <QDragEnterEvent>
 
 const int g_nBaseLineOffset = 3 ;
@@ -14,6 +15,7 @@ DopplerRulerBar::DopplerRulerBar(QWidget *parent , RULER_BAR_TYPE eType_) :
 	QWidget(parent)
 {
 	m_eType = eType_  ;
+    m_tofdDepth = false;
 	setAutoFillBackground(true);
 	if(RULER_BAR_LEFT == m_eType || RULER_BAR_RIGHT == m_eType)
 		setFixedWidth(DOPPLER_RULER_WIDTH);
@@ -94,13 +96,21 @@ void DopplerRulerBar::paintEvent(QPaintEvent*)
 	switch(m_eType)
 	{
 	case RULER_BAR_LEFT:
-		drawLeftRuler(painter);
+        if(m_tofdDepth){
+            drawTofdLeftRuler(painter);
+        }else{
+           drawLeftRuler(painter);
+        }
 		break;
 	case RULER_BAR_RIGHT:
 		drawRightRuler(painter);
 		break;
 	case RULER_BAR_BOTTOM:
-		drawBottomRuler(painter);
+        if(m_tofdDepth){
+            drawTofdBottomRuler(painter);
+        }else{
+            drawBottomRuler(painter);
+        }
 		break;
 	case RULER_BAR_TOP:
 		break;
@@ -110,6 +120,27 @@ void DopplerRulerBar::paintEvent(QPaintEvent*)
 	painter.setPen(_OldPen);
 }
 
+double DopplerRulerBar::calDepth(double soundPath)
+{
+    if(soundPath > m_PCS){
+        return qSqrt(qPow(soundPath / 2, 2) - qPow(m_PCS / 2, 2));
+    }else if(soundPath < m_PCS){
+        return 0 - qSqrt(qPow(m_PCS / 2, 2) - qPow(soundPath / 2, 2));
+    }else{
+        return 0;
+    }
+}
+
+double DopplerRulerBar::transDepthToSoundPath(double depth)
+{
+    if(depth > 0){
+        return qSqrt(qPow( depth, 2) + qPow(m_PCS / 2, 2)) * 2;
+    }else if(depth < 0){
+        return qSqrt(qPow(m_PCS / 2, 2) - qPow( -depth, 2)) * 2;
+    }else{
+        return m_PCS;
+    }
+}
 
 int DopplerRulerBar::getRulerMarkQty(int nLength_)
 {
@@ -232,6 +263,74 @@ void DopplerRulerBar::drawLeftRuler(QPainter& painter)
 	}
 }
 
+void DopplerRulerBar::drawTofdLeftRuler(QPainter& painter)
+{
+    if(m_nStart == m_nEnd)	 return;
+    double _nStart, _nStop, _nCurrentPos, _nRange, buff_start;
+    int i, _nStartIndex, _nPos, _nDirection;
+    int _nWidth   = width();
+    int _nHeight  = height();
+    int _nMarkQty = getRulerMarkQty(_nHeight);
+    double n_start = 2 * m_nStart;
+    double n_end = 2 * m_nEnd;
+    _nStart = calDepth(n_start);
+    _nStop  = calDepth(n_end);
+    _nRange = fabs(_nStop - _nStart);
+    double _nInterval = getRulerMarInterval(_nMarkQty , _nRange);
+    double _nPixelPerUnit = _nHeight / fabs(n_end - n_start);
+
+    int _nBaseLinePos = _nWidth - g_nBaseLineOffset  - 1;
+    int _nMinLineLeftPos = _nBaseLinePos - g_nMinMarkerLength;
+    int _nMidLineLeftPos = _nBaseLinePos - g_nMidMarkerLength;
+    int _nMaxLineLeftPos = _nBaseLinePos - g_nMaxMarkerLength;
+    if(m_nStart > m_nEnd){
+        _nDirection = 1;
+        qSwap(_nStart, _nStop);
+        buff_start = n_end;
+    }else{
+        _nDirection = 0;
+        buff_start = n_start;
+    }
+    _nStartIndex = _nStart / _nInterval;
+    if(_nStart > 0){
+        _nStartIndex += 1;
+    }
+    _nCurrentPos = _nStart;
+    QString _str;
+    for(i = _nStartIndex ; _nCurrentPos < _nStop ; i++){
+        _nCurrentPos = i * _nInterval;
+        _nPos = (transDepthToSoundPath(_nCurrentPos) - buff_start) * _nPixelPerUnit;
+        if(_nDirection){
+            _nPos  = _nHeight - _nPos - 1;
+        }
+        _nPos += 0.5;
+        if(i % 10 == 0){
+            painter.drawLine(QPointF(_nMaxLineLeftPos ,_nPos) , QPointF(_nBaseLinePos , _nPos));
+            _str.sprintf("%.0f", _nCurrentPos);
+            painter.save();
+            painter.translate(13 , _nPos - 2);
+            painter.rotate(-90.0);
+            painter.drawText(0 , 0 , _str );
+            painter.restore();
+            _str.clear();
+        }else if(i%5 == 0){
+            painter.drawLine(QPointF(_nMidLineLeftPos , _nPos) , QPointF(_nBaseLinePos ,  _nPos));
+        }else{
+            painter.drawLine(QPointF(_nMinLineLeftPos , _nPos) , QPointF(_nBaseLinePos , _nPos));
+        }
+    }
+    painter.drawLine(QPointF(_nBaseLinePos,  0 ) , QPointF(_nBaseLinePos , _nHeight));
+    //***** draw ruler unit marker
+    if(!m_strUnit.isEmpty())
+    {
+        painter.save();
+        painter.translate(8 , _nHeight - 10);
+        painter.rotate(-90.0);
+        painter.drawText(0 , 0 , m_strUnit );
+        painter.restore();
+    }
+}
+
 void DopplerRulerBar::drawBottomRuler(QPainter& painter)
 {
 	//***** if start == end , do not draw anything
@@ -302,6 +401,64 @@ void DopplerRulerBar::drawBottomRuler(QPainter& painter)
 	{
 		painter.drawText(10 , 19 , m_strUnit );
 	}
+}
+
+void DopplerRulerBar::drawTofdBottomRuler(QPainter& painter)
+{
+    if(m_nStart == m_nEnd)	 return;
+    double _nStart, _nStop, _nCurrentPos, _nRange, buff_start;
+    int i, _nStartIndex, _nPos, _nDirection;
+    int _nWidth = width();
+    int _nMarkQty = getRulerMarkQty(_nWidth);
+    double n_start = 2 * m_nStart;
+    double n_end   = 2 * m_nEnd;
+    _nStart = calDepth(n_start);
+    _nStop  = calDepth(n_end);
+    _nRange = fabs(_nStop - _nStart);
+    double _nInterval = getRulerMarInterval(_nMarkQty , _nRange);
+    double _nPixelPerUnit = _nWidth / fabs(n_end - n_start);
+
+    int _nBaseLinePos =  g_nBaseLineOffset;
+    int _nMinLineToptPos = _nBaseLinePos + g_nMinMarkerLength;
+    int _nMidLineToptPos = _nBaseLinePos + g_nMidMarkerLength;
+    int _nMaxLineTopPos  = _nBaseLinePos + g_nMaxMarkerLength;
+
+    if(m_nStart > m_nEnd){
+        _nDirection = 1;
+        qSwap(_nStart, _nStop);
+        buff_start = n_end;
+    }else{
+        _nDirection = 0;
+        buff_start = n_start;
+    }
+    _nStartIndex = _nStart / _nInterval;
+    if(_nStart > 0){
+        _nStartIndex += 1;
+    }
+    _nCurrentPos = _nStart;
+    QString _str;
+    for(i = _nStartIndex ; _nCurrentPos < _nStop ; i++){
+        _nCurrentPos = i * _nInterval;
+        _nPos = (transDepthToSoundPath(_nCurrentPos) - buff_start) * _nPixelPerUnit;
+        if(_nDirection){
+            _nPos  = _nWidth - _nPos - 1;
+        }
+        _nPos += 0.5;
+        if(i % 10 == 0){
+            painter.drawLine(QPointF(_nPos + 0.5 , _nBaseLinePos) , QPointF(_nPos + 0.5 , _nMaxLineTopPos));
+            _str.sprintf("%.0f", _nCurrentPos);
+            painter.drawText( _nPos + 2 , 14 , _str );
+            _str.clear();
+        }else if(i%5 == 0){
+            painter.drawLine(QPointF( _nPos , _nBaseLinePos) , QPointF( _nPos , _nMidLineToptPos));
+        }else{
+            painter.drawLine(QPointF( _nPos , _nBaseLinePos) , QPointF( _nPos , _nMinLineToptPos));
+        }
+    }
+    painter.drawLine(QPointF(0 ,  _nBaseLinePos ) , QPointF(_nWidth , _nBaseLinePos));
+    if(!m_strUnit.isEmpty()){
+        painter.drawText(10 , 19 , m_strUnit);
+    }
 }
 
 void DopplerRulerBar::drawRightRuler(QPainter& painter)

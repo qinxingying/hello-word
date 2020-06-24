@@ -159,6 +159,7 @@ void Config::unpack_group(int groupId)
     unpack_c_scan(map["CScan"].toMap());
     unpack_sizing(map["Sizing"].toMap());
     unpack_thickness(map["Thickness"].toMap());
+    unpack_tofd(map["Tofd"].toMap());
 }
 
 void Config::unpack_version()
@@ -321,7 +322,7 @@ void Config::unpack_scan(const QVariantMap &map)
                  << " secStartElem " << scan.m_secStartElem
                  << " secElemStep " << scan.m_secElemStep
                  << " secStopElem " << scan.m_secStopElem;
-    } else {
+    } else if(Paramters::Focallawer::Sectorial == m_groups[m_currentGroupID].m_focallawer.m_scanMode){
 
         scan.m_refractStartAngle = map["RefractStartAngle"].toDouble();
         scan.m_refractStopAngle  = map["RefractStopAngle"].toDouble();
@@ -343,6 +344,31 @@ void Config::unpack_scan(const QVariantMap &map)
                  << " screwStartAngle " << scan.m_screwStartAngle
                  << " screwStopAngle " << scan.m_screwStopAngle
                  << " screwStepAngle " << scan.m_screwStepAngle
+                 << " priApe " << scan.m_priApe
+                 << " priStartElem " << scan.m_priStartElem
+                 << " secApe " << scan.m_secApe
+                 << " secStartElem " << scan.m_secStartElem;
+    }else{
+        scan.m_colOffset = map["ColOffset"].toDouble();
+        scan.m_colRes    = map["ColRes"].toDouble();
+        scan.m_rowOffset = map["RowOffset"].toDouble();
+        scan.m_rowRes    = map["RowRes"].toDouble();
+
+        scan.m_colQty = map["ColQty"].toInt();
+        scan.m_rowQty = map["RowQty"].toInt();
+
+        scan.m_priApe       = 1;
+        scan.m_priStartElem = map["PriStartElem"].toUInt();
+        scan.m_secApe         = map["SecApe"].toUInt();
+        scan.m_secStartElem   = map["SecStartElem"].toUInt();
+
+        qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+                 << " colOffset " << scan.m_colOffset
+                 << " colRes " << scan.m_colRes
+                 << " rowOffset " << scan.m_rowOffset
+                 << " rowRes " << scan.m_rowRes
+                 << " colQty " << scan.m_colQty
+                 << " rowQty " << scan.m_rowQty
                  << " priApe " << scan.m_priApe
                  << " priStartElem " << scan.m_priStartElem
                  << " secApe " << scan.m_secApe
@@ -405,7 +431,7 @@ void Config::unpack_wedge(const QVariantMap &map)
     wedge.m_clampOffset   = map.value("Delay", DEFAULT_WEDGE_CLAMP_OFFSET).toDouble();
     /* 以下键值暂不清楚是否存在 */
     wedge.m_waveType      = static_cast<Paramters::Wedge::WaveType> (map.value("WaveType", DEFAULT_WEDGE_WAVE_TYPE).toUInt());
-    wedge.m_refPoint      = map.value("RefPoint", DEFAULT_WEDGE_REF_POINT).toUInt();
+    wedge.m_refPoint      = map.value("RefPoint", DEFAULT_WEDGE_REF_POINT).toDouble();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " serial " << wedge.m_serial
@@ -646,6 +672,19 @@ void Config::getApertureSec( int groupId, unsigned int * apertureData)
     apertureData[3] = m_groups[groupId].m_focallawer.m_scan.m_secElemStep;
 }
 
+void Config::getTofdData( int groupId, float *PCS, float *RefPoint)
+{
+    *PCS = m_groups[groupId].m_tofd.m_PCS;
+    *RefPoint = m_groups[groupId].m_tofd.m_RefPosition;
+}
+
+void Config::getTMFRange(int groupId, float *start, float *range, int *pointQty)
+{
+    *start = m_groups[groupId].m_focallawer.m_scan.m_rowOffset;
+    *range = (m_groups[groupId].m_focallawer.m_scan.m_rowQty - 1) * m_groups[groupId].m_focallawer.m_scan.m_rowRes;
+    *pointQty = m_groups[groupId].m_focallawer.m_scan.m_rowQty;
+}
+
 void Config::getScannerData( SCANNER &scanner)
 {
     scanner.eScanEncoderType = (setup_ENCODER_TYPE)m_global.m_scanner.m_scanAxis.m_driving;
@@ -760,6 +799,15 @@ void Config::unpack_thickness(const QVariantMap &map)
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " thickness min " << m_groups[m_currentGroupID].m_thickness.m_min
                  << " thickness max " << m_groups[m_currentGroupID].m_thickness.m_max;
+}
+
+void Config::unpack_tofd(const QVariantMap &map)
+{
+    m_groups[m_currentGroupID].m_tofd.m_PCS = map["PCS"].toFloat();
+    m_groups[m_currentGroupID].m_tofd.m_RefPosition = map["RefPosition"].toFloat();
+    qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
+             << " tofd PCS " << m_groups[m_currentGroupID].m_tofd.m_PCS
+             << " tofd RefPosition " << m_groups[m_currentGroupID].m_tofd.m_RefPosition;
 }
 
 void Config::unpack_cursor(const QVariantMap &map)
@@ -1043,11 +1091,25 @@ void Config::convert_to_phascan_config(int groupId)
     PROBE &targetProbe = targetGroup.probe;
 
     targetGroup.group_mode  = currentGroup.m_mode;
-    if(Paramters::Group::Time == currentGroup.m_utUnit
-            || Paramters::Group::TruePath == currentGroup.m_utUnit) {
+//    if(Paramters::Group::Time == currentGroup.m_utUnit
+//            || Paramters::Group::TruePath == currentGroup.m_utUnit) {
+//        targetGroup.ut_unit = 1;
+//    } else {
+//        targetGroup.ut_unit = 0;
+//    }
+    switch (currentGroup.m_utUnit) {
+    case Paramters::Group::Time:
         targetGroup.ut_unit = 1;
-    } else {
+        break;
+    case Paramters::Group::SoundPath:
         targetGroup.ut_unit = 0;
+        break;
+    case Paramters::Group::TruePath:
+        targetGroup.ut_unit = 2;
+        break;
+    default:
+        targetGroup.ut_unit = 2;
+        break;
     }
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
@@ -1113,7 +1175,21 @@ void Config::convert_to_phascan_config(int groupId)
         targetProbe.A3       = currentProbe.m_secPitch * 1000.0;
 
         /* PA Scan */
-        targetLawInfo.Focal_type      = !currentGroup.m_focallawer.m_scanMode;
+        switch (currentGroup.m_focallawer.m_scanMode) {
+        case Paramters::Focallawer::Linear:
+            targetLawInfo.Focal_type = 1;
+            break;
+        case Paramters::Focallawer::Sectorial:
+            targetLawInfo.Focal_type = 0;
+            break;
+        case Paramters::Focallawer::TFM_MODE:
+            targetLawInfo.Focal_type = 2;
+            break;
+        default:
+            targetLawInfo.Focal_type = 0;
+            break;
+        }
+        //targetLawInfo.Focal_type      = !currentGroup.m_focallawer.m_scanMode;
         targetLawInfo.Elem_qty        = currentScan.m_priApe;
         targetLawInfo.First_tx_elem   = currentScan.m_priStartElem;
 
@@ -1142,6 +1218,10 @@ void Config::convert_to_phascan_config(int groupId)
                      << " max " << targetLawInfo.Angle_max
                      << " step " << targetLawInfo.Angle_step;
         } else {
+            targetLawInfo.First_tx_elem = 0;
+            targetLawInfo.Last_tx_elem  = currentScan.m_colQty - 1;
+            targetLawInfo.Elem_step     = 1;
+            targetLawInfo.Angle_min     = 0;
             qWarning("%s(%s[%d]): unimplement", __FILE__, __func__, __LINE__);
         }
     }
@@ -1167,8 +1247,9 @@ void Config::convert_to_phascan_config(int groupId)
     targetWedge.Height            = currentWedge.m_fstElemHeight * 1000.0;
     targetWedge.Orientation       = currentWedge.m_orientation;
     targetWedge.Wave_type         = currentWedge.m_waveType;
-    targetWedge.Ref_point         = currentWedge.m_refPoint;
+    targetWedge.Ref_point         = currentWedge.m_refPoint * 1000.0;
     targetWedge.Probe_delay       = currentWedge.m_delay;
+    targetGroup.wedge_delay       = currentWedge.m_delay;
 
     /* Specimen */
     targetGroup.part.Geometry     = currentSpecimen.m_shape;
@@ -1222,12 +1303,25 @@ void Config::convert_to_phascan_config(int groupId)
     /* BeamsInfo */
     memset(targetGroup.beam_delay, 0, sizeof(unsigned int) * setup_MAX_GROUP_LAW_QTY);
     memset(targetGroup.field_distance, 0, sizeof(float) * setup_MAX_GROUP_LAW_QTY);
-    memset(targetGroup.field_distance, 0, sizeof(float) * setup_MAX_GROUP_LAW_QTY);
+    memset(targetGroup.gain_offset, 0, sizeof(unsigned short) * setup_MAX_GROUP_LAW_QTY);
 
-    for(int i = 0; i < currentGroup.m_focallawer.m_delays.count(); ++i) {
-        targetGroup.gain_offset[i] = currentGroup.m_focallawer.m_gains[i];
-        targetGroup.beam_delay[i] = currentGroup.m_focallawer.m_delays[i];
-        targetGroup.field_distance[i] = currentGroup.m_focallawer.m_fieldDistance[i];
+    if(Paramters::Focallawer::TFM_MODE == currentGroup.m_focallawer.m_scanMode){
+        for(int i = 0; i < currentGroup.m_focallawer.m_delays.count(); ++i) {
+            targetGroup.gain_offset[i] = currentGroup.m_focallawer.m_gains[i];
+            targetGroup.beam_delay[i] = currentGroup.m_focallawer.m_delays[i];
+        }
+        int distanceQty = setup_MAX_GROUP_LAW_QTY > currentScan.m_colQty ? currentScan.m_colQty : setup_MAX_GROUP_LAW_QTY;
+        float step = currentScan.m_colRes;
+        float start = currentScan.m_colOffset;
+        for(int i = 0; i < distanceQty; i++){
+            targetGroup.field_distance[i] = i * step + start;
+        }
+    }else{
+        for(int i = 0; i < currentGroup.m_focallawer.m_delays.count(); ++i) {
+            targetGroup.gain_offset[i] = currentGroup.m_focallawer.m_gains[i];
+            targetGroup.beam_delay[i] = currentGroup.m_focallawer.m_delays[i];
+            targetGroup.field_distance[i] = currentGroup.m_focallawer.m_fieldDistance[i];
+        }
     }
 
     /* Thickness */
@@ -1240,18 +1334,21 @@ void Config::convert_to_phascan_config(int groupId)
     targetGroup.gate[0].height  = currentGroup.m_gateA.m_height;
     targetGroup.gate[0].measure = !currentGroup.m_gateA.m_measureMode;
     targetGroup.gate[0].synchro = currentGroup.m_gateA.m_synchroMode;
+    targetGroup.gate[0].travel_mode = currentGroup.m_gateA.m_gateMode;
 
     targetGroup.gate[1].start   = currentGroup.m_gateB.m_start;
     targetGroup.gate[1].width   = currentGroup.m_gateB.m_width;
     targetGroup.gate[1].height  = currentGroup.m_gateB.m_height;
     targetGroup.gate[1].measure = !currentGroup.m_gateB.m_measureMode;
     targetGroup.gate[1].synchro = currentGroup.m_gateB.m_synchroMode;
+    targetGroup.gate[1].travel_mode = currentGroup.m_gateB.m_gateMode;
 
     targetGroup.gate[2].start   = currentGroup.m_gateI.m_start;
     targetGroup.gate[2].width   = currentGroup.m_gateI.m_width;
     targetGroup.gate[2].height  = currentGroup.m_gateI.m_height;
     targetGroup.gate[2].measure = !currentGroup.m_gateI.m_measureMode;
     targetGroup.gate[2].synchro = currentGroup.m_gateI.m_synchroMode;
+    targetGroup.gate[2].travel_mode = currentGroup.m_gateI.m_gateMode;
 
     Paramters::Curves &currentCurves = currentGroup.m_sizing.m_curves;
     SIZING_CURVES &targetCurves = targetGroup.SizingCurves;

@@ -50,7 +50,7 @@ void DopplerParabolaItem::paint (QPainter *painter, const QStyleOptionGraphicsIt
 	int _nLaw ;
 	m_pDataView->GetDataViewConfigure(&m_nGroup , &_nLaw , &m_nDisp);
 
-	ParameterProcess* _process = ParameterProcess::Instance();
+//	ParameterProcess* _process = ParameterProcess::Instance();
 
 	float _fPrecX;
 	float _fPrecY;
@@ -153,6 +153,8 @@ void DopplerParabolaItem::update_parabola_points( int nGroupId_, QPointF* pPoint
             return;
     }
 
+    //qDebug()<<"utCursorPos"<<utCursorPos;
+
     double scanPos = 0.0;
     double utPos = 0.0;
     const int halfPointsCount = 20;
@@ -173,4 +175,5 @@ void DopplerParabolaItem::update_parabola_points( int nGroupId_, QPointF* pPoint
         double x = pPoints_[i].x() - offset;
         pPoints_[i].setX(x);
     }
+    //qDebug()<<"utCursorPos"<<pPoints_[0];
 }

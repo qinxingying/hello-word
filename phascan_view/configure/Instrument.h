@@ -56,6 +56,12 @@ enum setup_GATE_AYNC_TYPE   //闸门跟踪方式
 	setup_GATE_AYNC_A
 };
 
+enum setup_GATE_TRAVEL_MODE
+{
+    setup_GATE_DEPTH,       //深度闸门
+    setup_GATE_SOUND_PATH   //声程闸门
+};
+
 typedef struct
 {
 	float fStart  ;	 // gate start position
@@ -63,6 +69,7 @@ typedef struct
     unsigned int nThreshold  ; // gate height (0-100)
     setup_GATE_AYNC_TYPE eSynChro; // setup_GATE_SYN_MODE
 	unsigned int eMeasure	 ; // setup_GATE_MEASURE_MODE
+    setup_GATE_TRAVEL_MODE gTravelMode;
 } GATE_CONFIG;
 
 typedef struct
@@ -339,7 +346,8 @@ struct PART_CONFIG
 enum setup_LAW_TYPE
 {
     setup_LAW_TYPE_AZIMUTHAL = 0 ,   //角度
-    setup_LAW_TYPE_LINEAR            //线扫
+    setup_LAW_TYPE_LINEAR,           //线扫
+    setup_LAW_TYPE_TFM               //全聚焦
 } ;
 
 enum setup_FOCAL_TYPE

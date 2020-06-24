@@ -308,7 +308,13 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
     int _nWidthStep = pImage_->bytesPerLine();
 
 	ParameterProcess* _process = ParameterProcess::Instance();
-    int _nLawSize	= m_cInfo.nPointQty + 32;
+    int _nLawSize;
+//    if(m_SScaninfo.eType == 2){
+//        _nLawSize	= m_cInfo.nPointQty;
+//    }else{
+        _nLawSize	= m_cInfo.nPointQty + setup_DATA_PENDIX_LENGTH;
+//    }
+
 
 //    SCANNER& _scanner = m_pConfig->common.scanner;
 //    if(_scanner.eScanType == setup_SCAN_TYPE_RASTER){

@@ -1812,7 +1812,7 @@ void ProcessDisplay::ConnectSlots(DopplerDataView* pViews_)
   Description: 更新指定窗口
   Input: 【pWidget_：窗口指针】
 *****************************************************************************/
-void ProcessDisplay::UpdateAll(DopplerDataView* pWidget_)
+void ProcessDisplay::UpdateAll(DopplerDataView* pWidget_, bool flash)
 {
 	int _nGroupId , _nLawId , _nDisplay  ;
 	pWidget_->GetDataViewConfigure(&_nGroupId , &_nLawId , &_nDisplay);
@@ -1842,7 +1842,7 @@ void ProcessDisplay::UpdateAll(DopplerDataView* pWidget_)
 	// 刷新窗口标尺，色条和标题栏
 	UpdateDataViewFrame(pWidget_);
 	// 刷新窗口绘图区设置
-	UpdateDataViewDraw(pWidget_) ;
+    UpdateDataViewDraw(pWidget_, flash);
 	// 刷新光标
 	DopplerOverlays _overlay(pWidget_);
 	_overlay.CreateOverlays();
@@ -1853,7 +1853,7 @@ void ProcessDisplay::UpdateAll(DopplerDataView* pWidget_)
 void ProcessDisplay::SetViewPara(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_ , setup_DISPLAY_MODE eDisplay_)
 {
 	pWidget_->SetDataViewConfigure(nGroupId_ ,  nLawId_ ,  eDisplay_);
-	UpdateAll(pWidget_) ;
+    UpdateAll(pWidget_, false);
 }
 
 int ProcessDisplay::IsSizeAvailable(int nId_, QWidget* pWidget_)
@@ -1869,6 +1869,8 @@ void ProcessDisplay::UpdateDataViewFrameAH(DopplerDataView* pWidget_, int nGroup
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
     QString _strLeftUnit("%");
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[nGroupId_];
 	
     bool _bRectify = (_process->GetRectifierMode(nGroupId_) == setup_RECTIFIER_RF );
 
@@ -1882,6 +1884,7 @@ void ProcessDisplay::UpdateDataViewFrameAH(DopplerDataView* pWidget_, int nGroup
     QString _strBottomUnit =  _process->GetSonicAxisUnit(nGroupId_);
     double _fStart = _process->GetSampleStart(nGroupId_, nLawId_);
     double _fRange = _process->GetSampleRange(nGroupId_, nLawId_);
+    float pcs = _pConfig->TOFD[nGroupId_].fPCS;
 
 	SYSTEM_ENVIRMENT& _appEvn = m_pConfig->AppEvn;
 	if(_appEvn.bTrueDepth_A_S_Sync) {
@@ -1893,6 +1896,11 @@ void ProcessDisplay::UpdateDataViewFrameAH(DopplerDataView* pWidget_, int nGroup
 			_fRange = _fE - _fS;
 		}
 	}
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
+        pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+    }else{
+        pWidget_->SetTofdDepth(false, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+    }
 
     pWidget_->SetRulerRange( _fStart , _fStart + _fRange , _fStart, _fStart + _fRange, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
 	pWidget_->SetRulerUnit(&_strBottomUnit , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
@@ -1915,8 +1923,11 @@ void ProcessDisplay::UpdateDataViewFrameAV(DopplerDataView* pWidget_ , int nGrou
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
     QString _strLeftUnit = _process->GetSonicAxisUnit(nGroupId_) ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[nGroupId_];
 	double _fStart = _process->GetSampleStart(nGroupId_ , nLawId_) ;
 	double _fRange = _process->GetSampleRange(nGroupId_ , nLawId_) ;
+    float pcs = _pConfig->TOFD[nGroupId_].fPCS;
 	//---------------
 	SYSTEM_ENVIRMENT& _appEvn = m_pConfig->AppEvn;
 	if(_appEvn.bTrueDepth_A_S_Sync) {
@@ -1929,6 +1940,11 @@ void ProcessDisplay::UpdateDataViewFrameAV(DopplerDataView* pWidget_ , int nGrou
 		}
 	}
 	//---------------
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
+        pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
+    }else{
+        pWidget_->SetTofdDepth(false, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
+    }
 	pWidget_->SetRulerRange( _fStart , _fStart + _fRange , _fStart , _fStart + _fRange ,DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit(&_strLeftUnit , DopplerDataView::DATA_VIEW_RULER_LEFT );
 
@@ -1958,6 +1974,8 @@ void ProcessDisplay::UpdateDataViewFrameBH(DopplerDataView* pWidget_ , int nGrou
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
 	QString _strLeftUnit = _process->GetScanAxisUnit()  ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[nGroupId_];
 	double _fStart , _fStop , _fSliderStart , _fSliderStop;
     //SCANNER& _scan = m_pConfig->common.scanner ;
     int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
@@ -1980,6 +1998,12 @@ void ProcessDisplay::UpdateDataViewFrameBH(DopplerDataView* pWidget_ , int nGrou
 	_fStop  = _fStart + _process->GetSampleRange(nGroupId_ , nLawId_) ;
     srcrangestart = _fStart;
     srcrangestop = _fStop;
+    float pcs = _pConfig->TOFD[nGroupId_].fPCS;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
+        pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+    }else{
+       pWidget_->SetTofdDepth(false, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+    }
 	pWidget_->SetRulerRange( _fStart , _fStop ,  _fStart , _fStop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
 	pWidget_->SetRulerUnit(&_strBottomUnit , DopplerDataView::DATA_VIEW_RULER_BOTTOM );
 	pWidget_->SetRulerRange( 100 , 0 ,  100 , 0 , DopplerDataView::DATA_VIEW_RULER_RIGHT);
@@ -1996,6 +2020,8 @@ void ProcessDisplay::UpdateDataViewFrameBV(DopplerDataView* pWidget_ , int nGrou
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
 	QString _strLeftUnit = _process->GetScanAxisUnit()  ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[nGroupId_];
 
 	double _fStart , _fStop , _fSliderStart, _fSliderStop;
 	pWidget_->GetRulerRange(&_fStart , &_fStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
@@ -2008,6 +2034,12 @@ void ProcessDisplay::UpdateDataViewFrameBV(DopplerDataView* pWidget_ , int nGrou
 	_fStop =  _fStart + _process->GetSampleRange(nGroupId_ , nLawId_)  ;
     srcrangestart = _fStart;
     srcrangestop = _fStop;
+    float pcs = _pConfig->TOFD[nGroupId_].fPCS;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
+        pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
+    }else{
+        pWidget_->SetTofdDepth(false, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
+    }
 	pWidget_->SetRulerRange( _fStart , _fStop ,  _fStart , _fStop , DopplerDataView::DATA_VIEW_RULER_LEFT);
 	pWidget_->SetRulerUnit(&_strBottomUnit , DopplerDataView::DATA_VIEW_RULER_LEFT );
 
@@ -2213,7 +2245,7 @@ void ProcessDisplay::UpdateDataViewFrameSL(DopplerDataView* pWidget_ , int nGrou
 }
 
 
-void ProcessDisplay::UpdateDataViewDrawAH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewDrawAH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash)
 {
 	GROUP_CONFIG* _pGroup = &m_pConfig->group[nGroupId_];
 	DrawInfo info ;
@@ -2228,10 +2260,12 @@ void ProcessDisplay::UpdateDataViewDrawAH(DopplerDataView* pWidget_ , int nGroup
 	}
 	_pDraw->SetDrawInfo(&info)	;
 	_pDraw->UpdateDrawInfo();
-
+    if(flash){
+        pWidget_->UpdateDrawing();
+    }
 }
 
-void ProcessDisplay::UpdateDataViewDrawAV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewDrawAV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash)
 {
 	GROUP_CONFIG* _pGroup = &m_pConfig->group[nGroupId_];
 	DrawInfo info ;
@@ -2247,9 +2281,12 @@ void ProcessDisplay::UpdateDataViewDrawAV(DopplerDataView* pWidget_ , int nGroup
 	}
 	_pDraw->SetDrawInfo(&info)	;
 	_pDraw->UpdateDrawInfo();
+    if(flash){
+        pWidget_->UpdateDrawing();
+    }
 }
 
-void ProcessDisplay::UpdateDataViewDrawBH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewDrawBH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash)
 {
 	GROUP_CONFIG* _pGroup = &m_pConfig->group[nGroupId_];
 	DrawInfo info ;
@@ -2275,10 +2312,12 @@ void ProcessDisplay::UpdateDataViewDrawBH(DopplerDataView* pWidget_ , int nGroup
 	else
 		_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
 	_pDraw->SetColorIndex(_pColor);
-
+    if(flash){
+        pWidget_->UpdateDrawing();
+    }
 }
 
-void ProcessDisplay::UpdateDataViewDrawBV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewDrawBV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash)
 {
 	GROUP_CONFIG* _pGroup = &m_pConfig->group[nGroupId_];
 	DrawInfo info ;
@@ -2302,9 +2341,12 @@ void ProcessDisplay::UpdateDataViewDrawBV(DopplerDataView* pWidget_ , int nGroup
 	else
 		_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
 	_pDraw->SetColorIndex(_pColor);
+    if(flash){
+        pWidget_->UpdateDrawing();
+    }
 }
 
-void ProcessDisplay::UpdateDataViewDrawCH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewDrawCH(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash)
 {
 	setup_DISPLAY_MODE _eMode = (setup_DISPLAY_MODE)pWidget_->GetDataViewDrawType();
 	ParameterProcess* _process = ParameterProcess::Instance();
@@ -2357,10 +2399,12 @@ void ProcessDisplay::UpdateDataViewDrawCH(DopplerDataView* pWidget_ , int nGroup
 	_pDraw->SetCScanType(CSCAN_TYPE(_eSource));
 	_pDraw->UpdateDrawInfo ();
 
-
+    if(flash){
+        pWidget_->UpdateDrawing();
+    }
 }
 
-void ProcessDisplay::UpdateDataViewDrawCV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewDrawCV(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash)
 {
 	setup_DISPLAY_MODE _eMode = (setup_DISPLAY_MODE)pWidget_->GetDataViewDrawType();
 	ParameterProcess* _process = ParameterProcess::Instance();
@@ -2400,9 +2444,12 @@ void ProcessDisplay::UpdateDataViewDrawCV(DopplerDataView* pWidget_ , int nGroup
 	_pDraw->SetCScanType(CSCAN_TYPE(_eSource));
 	_pDraw->UpdateDrawInfo ();
 
+    if(flash){
+        pWidget_->UpdateDrawing();
+    }
 }
 
-void ProcessDisplay::UpdateDataViewDrawSS(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewDrawSS(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash)
 {
 	GROUP_CONFIG* _pGroup = &m_pConfig->group[nGroupId_];
 	DrawInfo info ;
@@ -2410,11 +2457,16 @@ void ProcessDisplay::UpdateDataViewDrawSS(DopplerDataView* pWidget_ , int nGroup
 	info.nGroupId  = nGroupId_  ;
 	info.nBeamId   = nLawId_	;
 	DopplerDrawSScanSoundPath* _pDraw = (DopplerDrawSScanSoundPath*)pWidget_->GetDrawScan() ;
-	if(!_pDraw)
-	{
-		_pDraw = new DopplerDrawSScanSoundPath() ;
-		pWidget_->SetDrawScan(_pDraw) ;
-	}
+    if(flash){
+        _pDraw = new DopplerDrawSScanSoundPath() ;
+        pWidget_->SetDrawScan(_pDraw);
+    }else{
+        if(!_pDraw)
+        {
+            _pDraw = new DopplerDrawSScanSoundPath() ;
+            pWidget_->SetDrawScan(_pDraw) ;
+        }
+    }
 
 	_pDraw->SetDrawInfo(&info);
 	_pDraw->UpdateDrawInfo ();
@@ -2426,9 +2478,12 @@ void ProcessDisplay::UpdateDataViewDrawSS(DopplerDataView* pWidget_ , int nGroup
 	else
 		_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
 	_pDraw->SetColorIndex(_pColor);
+    if(flash){
+        pWidget_->UpdateDrawing();
+    }
 }
 
-void ProcessDisplay::UpdateDataViewDrawSA(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewDrawSA(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash)
 {
 	GROUP_CONFIG* _pGroup = &m_pConfig->group[nGroupId_];
 	DrawInfo info ;
@@ -2436,11 +2491,17 @@ void ProcessDisplay::UpdateDataViewDrawSA(DopplerDataView* pWidget_ , int nGroup
 	info.nGroupId  = nGroupId_  ;
 	info.nBeamId   = nLawId_	;
 	DopplerDrawSScanTrueDepth* _pDraw = (DopplerDrawSScanTrueDepth*)pWidget_->GetDrawScan() ;
-	if(!_pDraw)
-	{
-		_pDraw = new DopplerDrawSScanTrueDepth() ;
-		pWidget_->SetDrawScan(_pDraw) ;
-	}
+    if(flash){
+        _pDraw = new DopplerDrawSScanTrueDepth() ;
+        pWidget_->SetDrawScan(_pDraw) ;
+    }else{
+        if(!_pDraw)
+        {
+            _pDraw = new DopplerDrawSScanTrueDepth() ;
+            pWidget_->SetDrawScan(_pDraw) ;
+        }
+    }
+
 
 	_pDraw->SetDrawInfo(&info);
 	_pDraw->UpdateDrawInfo ();
@@ -2452,18 +2513,21 @@ void ProcessDisplay::UpdateDataViewDrawSA(DopplerDataView* pWidget_ , int nGroup
 	else
 		_pColor = _process->GetPalete(nGroupId_ , PALETTE_AMP);
 	_pDraw->SetColorIndex(_pColor);
+    if(flash){
+        pWidget_->UpdateDrawing();
+    }
 }
 
-void ProcessDisplay::UpdateDataViewDrawSL(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_)
+void ProcessDisplay::UpdateDataViewDrawSL(DopplerDataView* pWidget_ , int nGroupId_ , int nLawId_, bool flash)
 {
-	UpdateDataViewDrawSA(pWidget_ , nGroupId_ , nLawId_);
+    UpdateDataViewDrawSA(pWidget_ , nGroupId_ , nLawId_, flash);
 }
 
 /****************************************************************************
   Description: 更新指定窗口的画图操作
   Input: 【pWidget_：窗口指针】
 *****************************************************************************/
-void ProcessDisplay::UpdateDataViewDraw(DopplerDataView* pWidget_ )
+void ProcessDisplay::UpdateDataViewDraw(DopplerDataView* pWidget_, bool flash)
 {
 	int _nGroupId , _nLawId , _nDisplay  ;
 	setup_DISPLAY_MODE _eMode  ;
@@ -2472,33 +2536,33 @@ void ProcessDisplay::UpdateDataViewDraw(DopplerDataView* pWidget_ )
 	switch(_eMode)
 	{
 	case  setup_DISPLAY_MODE_A_H:
-		UpdateDataViewDrawAH(pWidget_ , _nGroupId , _nLawId) ;
+        UpdateDataViewDrawAH(pWidget_ , _nGroupId , _nLawId, flash) ;
 		break;
 	case  setup_DISPLAY_MODE_A_V:
-		UpdateDataViewDrawAV(pWidget_ , _nGroupId , _nLawId) ;
+        UpdateDataViewDrawAV(pWidget_ , _nGroupId , _nLawId, flash) ;
 		break;
 	case  setup_DISPLAY_MODE_B_H:
-		UpdateDataViewDrawBH(pWidget_ , _nGroupId , _nLawId) ;
+        UpdateDataViewDrawBH(pWidget_ , _nGroupId , _nLawId, flash) ;
 		break;
 	case setup_DISPLAY_MODE_B_V:
-		UpdateDataViewDrawBV(pWidget_ , _nGroupId , _nLawId) ;
+        UpdateDataViewDrawBV(pWidget_ , _nGroupId , _nLawId, flash) ;
 		break;
 	case setup_DISPLAY_MODE_C_H:
 	case setup_DISPLAY_MODE_CC_H:
-		UpdateDataViewDrawCH(pWidget_ , _nGroupId , _nLawId) ;
+        UpdateDataViewDrawCH(pWidget_ , _nGroupId , _nLawId, flash) ;
 		break;
 	case setup_DISPLAY_MODE_C_V:
 	case setup_DISPLAY_MODE_CC_V:
-		UpdateDataViewDrawCV(pWidget_ , _nGroupId , _nLawId) ;
+        UpdateDataViewDrawCV(pWidget_ , _nGroupId , _nLawId, flash) ;
 		break;
 	case setup_DISPLAY_MODE_S_SOUNDPATH:
-		UpdateDataViewDrawSS (pWidget_ , _nGroupId , _nLawId) ;
+        UpdateDataViewDrawSS (pWidget_ , _nGroupId , _nLawId, flash) ;
 		break;
 	case setup_DISPLAY_MODE_S_ATHUMIZ:
-		UpdateDataViewDrawSA (pWidget_ , _nGroupId , _nLawId) ;
+        UpdateDataViewDrawSA (pWidget_ , _nGroupId , _nLawId, flash) ;
 		break;
 	case setup_DISPLAY_MODE_S_LINEAR:
-		UpdateDataViewDrawSL (pWidget_ , _nGroupId , _nLawId) ;
+        UpdateDataViewDrawSL (pWidget_ , _nGroupId , _nLawId, flash) ;
 		break;
 	default:
 		break;
@@ -2631,7 +2695,7 @@ void ProcessDisplay::UpdateAllView()
 
 		for(int i = 0 ; i < pList->count() ; i++)
 		{
-			UpdateAll((DopplerDataView*)pList->at(i));
+            UpdateAll((DopplerDataView*)pList->at(i), false);
 		}
 	}
 }
@@ -2728,6 +2792,26 @@ void ProcessDisplay::UpdateAllViewOfGroup(int nGroupId_)
 {
 	UpdateAllViewFrameOfGroup(nGroupId_);
 	UpdateAllViewOverlayOfGroup(nGroupId_);
+}
+
+/****************************************************************************
+  Description: 更新所有指定组窗口，包括标尺、标题、光标、窗口绘图区
+  Input:   【nGroupId_ ： 组ID】 flash : true 重新创建绘图区
+*****************************************************************************/
+void ProcessDisplay::UpdateAllViewOfGroupAndScanDraw(int nGroupId_, bool flash)
+{
+    int _nGroupId, _nLawId, _nDisplay;
+    DopplerDataView* _pView;
+    for(int j = 0 ; j < g_pMainWnd->GetDisplayTableQty() ; j++){
+        QList<QWidget*>* pList = g_pMainWnd->GetDisplayTableWidgetList(j);
+        for(int i = 0 ; i < pList->count() ; i++){
+            _pView =  (DopplerDataView*)pList->at(i);
+            _pView->GetDataViewConfigure(&_nGroupId , &_nLawId , &_nDisplay);
+            if(_nGroupId == nGroupId_){
+                UpdateAll(_pView, flash);
+            }
+        }
+    }
 }
 
 /****************************************************************************

@@ -33,7 +33,8 @@ HEADERS += \
     $$PWD/dac_paramters.h \
     $$PWD/tcg_paramters.h \
     $$PWD/linear_dac_paramters.h \
-    $$PWD/version_paramters.h
+    $$PWD/version_paramters.h \
+    $$PWD/tofd_paramters.h
 
 SOURCES += \
     $$PWD/group_paramters.cpp \
@@ -69,4 +70,5 @@ SOURCES += \
     $$PWD/dac_paramters.cpp \
     $$PWD/tcg_paramters.cpp \
     $$PWD/linear_dac_paramters.cpp \
-    $$PWD/version_paramters.cpp
+    $$PWD/version_paramters.cpp \
+    $$PWD/tofd_paramters.cpp

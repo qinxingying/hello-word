@@ -53,6 +53,7 @@ public:
     void CreateDefect(int nGroupId_);
 	void CreateDefectCell(int nGroupId_, int index_);
     void set_data_path(QString &str);
+    void set_reportName(QString &str);
 
 protected:
     void BuildStarter () ;

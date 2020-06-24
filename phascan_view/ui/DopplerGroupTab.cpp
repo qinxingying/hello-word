@@ -119,7 +119,8 @@ void DopplerGroupTab::InitComBoxMaterialSelection()
 	{
 		MATERIAL* _pMaterial = _list->at(i) ;
         QString _str ;
-        _str.sprintf("[%s][L:%.0f][T:%.0f]" , QString(tr(_pMaterial->strName[_iLang])).toUtf8().data(), _pMaterial->fVelocityLon , _pMaterial->fVelocityTran ) ;
+        _str.sprintf("[%s][L:%.0f][T:%.0f]" , QString(tr(_pMaterial->strName[_iLang])).toUtf8().data(),
+                     _pMaterial->fVelocityLon, _pMaterial->fVelocityTran);
         _strList.append(_str);
         if(!strcmp( _pMaterial->strName[0], m_pGroup->part.material.strName[0]) )
 			_nIndex= i ;
@@ -472,7 +473,7 @@ void DopplerGroupTab::UpdateCurrentAngleCom()
 		ui->ComCurrentAngle->addItem(_str);
 	}
 	int _nCurrentId  = (int)m_pGroup->afCursor[setup_CURSOR_LAW]  ;
-    if(m_pGroup->law.eLawType != setup_LAW_TYPE_LINEAR)
+    if(m_pGroup->law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
     {
         if(_nCurrentId > ui->ComCurrentAngle->count() - 1)
         {
@@ -569,7 +570,7 @@ void DopplerGroupTab::SetWidgetInvalide()
     ui->ValueVelocity->setDisabled(true);
     ui->ComCurrentAngle->setDisabled(true);
     ui->ComVelocitySelection->setDisabled(true);
-    ui->ComTravelMode->setDisabled(true);
+    //ui->ComTravelMode->setDisabled(true);
     ui->BoxPulserReceiver->setDisabled(true);
     ui->groupBox_2->setDisabled(true);
 
@@ -849,11 +850,11 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueVelocity->setValue(m_pGroup->fVelocity);
 	ui->ComTravelMode->setCurrentIndex(m_pGroup->eTravelMode);
 	ui->ComTxRxMode->setCurrentIndex(m_pGroup->eTxRxMode);
-    if( m_pGroup->eGroupMode == setup_GROUP_MODE_UT1 || m_pGroup->eGroupMode == setup_GROUP_MODE_UT2){
-        ui->ComTravelMode->setEnabled(true);
-    }else{
-        ui->ComTravelMode->setEnabled(false);
-    }
+//    if( m_pGroup->eGroupMode == setup_GROUP_MODE_UT1 || m_pGroup->eGroupMode == setup_GROUP_MODE_UT2){
+//        ui->ComTravelMode->setEnabled(true);
+//    }else{
+//        ui->ComTravelMode->setEnabled(false);
+//    }
 
     UpdateVelocitySelection();
 	ui->ValuePulser->setValue(m_pGroup->nTrigeStart);
@@ -888,6 +889,12 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ui->ValueGateStart->setValue(gate.fStart);
 	ui->ValueGateWidth->setValue(gate.fWidth);
 	ui->ValueGateHeight->setValue(gate.nThreshold);
+    ui->ComGateMode->setCurrentIndex(gate.gTravelMode);
+    if(m_pGroup->part.eGeometry == setup_PART_GEOMETRY_FLAT){
+        ui->ComGateMode->setEnabled(true);
+    }else{
+        ui->ComGateMode->setEnabled(false);
+    }
 	ui->ComGateSync->setCurrentIndex(gate.eSynChro);
 	ui->ComGateMeasure->setCurrentIndex(gate.eMeasure);
 	UpdateSizeingCurves();
@@ -1237,14 +1244,25 @@ void DopplerGroupTab::on_ComTravelMode_currentIndexChanged(int index)
 {
 	if(!ui->ComTravelMode->hasFocus())  return ;
 	ParameterProcess* _process = ParameterProcess::Instance();
-    if(index == 0){
-        ui->ComTravelMode->setCurrentIndex(1);
-        return;
-    }
-    _process->SetupTravelMode(m_nGroupId , index);
-	UpdateSampleRange();
-    ProcessDisplay _display;
-    _display.UpdateAllViewOfGroup(m_nGroupId);
+    if( m_pGroup->eGroupMode == setup_GROUP_MODE_PA){
+//        if(index == 2){
+//            ui->ComTravelMode->setCurrentIndex(0);
+//            return;
+//        }
+        _process->SetupTravelMode(m_nGroupId , index);
+        UpdateSampleRange();
+        ProcessDisplay _display;
+        _display.UpdateAllViewOfGroupAndScanDraw(m_nGroupId, true);
+    }else{//ut
+        if(index == 1){
+            ui->ComTravelMode->setCurrentIndex(0);
+            return;
+        }
+        _process->SetupTravelMode(m_nGroupId , index);
+        UpdateSampleRange();
+        ProcessDisplay _display;
+        _display.UpdateAllViewOfGroup(m_nGroupId);
+    }    
 }
 
 void DopplerGroupTab::on_ValueVelocity_editingFinished()
@@ -1550,6 +1568,7 @@ void DopplerGroupTab::GatePro()
 	_gate.nThreshold = ui->ValueGateHeight->value();
 	_gate.eMeasure   = ui->ComGateMeasure->currentIndex() ;
 	_gate.eSynChro   = (setup_GATE_AYNC_TYPE)ui->ComGateSync->currentIndex() ;
+    _gate.gTravelMode = (setup_GATE_TRAVEL_MODE)ui->ComGateMode->currentIndex();
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->SetupGateInfo(m_nGroupId , (setup_GATE_NAME)ui->ComGateSelect->currentIndex() , &_gate) ;
 
@@ -1626,6 +1645,12 @@ void DopplerGroupTab::on_ComTopcMergeStatus_currentIndexChanged(int index)
     _display.UpdateAllViewFrame();
     _display.UpdateAllViewOverlay();
     g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComGateMode_currentIndexChanged(int )
+{
+    if(!ui->ComGateMode->hasFocus()) return;
+    GatePro();
 }
 
 void DopplerGroupTab::on_ComGateSync_currentIndexChanged(int )

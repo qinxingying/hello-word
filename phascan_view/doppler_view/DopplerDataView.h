@@ -26,6 +26,7 @@ class DopplerGraphicsItem  ;
 class DopplerViewItems     ;
 class DopplerCoupleSScanBar;
 class DopplerCoupleCScanBar;
+class DopplerGateItem;
 class DopplerDataView : public QWidget
 {
     Q_OBJECT
@@ -76,6 +77,8 @@ public:
 
     void EnableComponent(DATA_VIEW_COMPONENT eComponent_);
 	void SetRulerRange(double nStart_ , double nStop_ , double nSliderStart_ , double nSliderStop_ , DATA_VIEW_RULER eRuler_ ) ;
+    void SetTofdDepth(bool tofdDepth, float pcs, DATA_VIEW_RULER eRuler_);
+    void GetTofdDepth(bool &tofdDepth, float &pcs, DATA_VIEW_RULER eRuler_);
 	void GetRulerRange(double* nStart_, double* nStop_, double *nSliderStart_, double *nSliderStop_, DATA_VIEW_RULER eRuler_ ) ;
     void SetRulerColor(QColor* color , DATA_VIEW_RULER eRuler_ ) ;
     void SetRulerMarkerColor(QColor* color , DATA_VIEW_RULER eRuler_ ) ;
@@ -99,7 +102,11 @@ public:
 
 
     void SetItemGeometry(DopplerGraphicsItem* item , QRectF& rect) ;
+    void SetTofdItemGeometry(DopplerGraphicsItem* item , QRectF& rect);
+    void setSSCurveGatePoints(DopplerGateItem* item, int eGate_);
+    void setSTCurveGatePoints(DopplerGateItem* item, int eGate_);
     QPointF TranslateToScenePlan(QPointF* pPos_) ;
+    QPointF TranslateTofdToScenePlan(QPointF* pPos_);
     void SetWidgetSelected(bool bSelect_) ;
     DopplerViewItems* GetItemGroup() const ;
     void UpdateScene();
