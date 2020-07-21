@@ -83,10 +83,10 @@ void DopplerOverlays::CreateOverlaysAH()
 //	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_GATE_HORIZENTAL);
-        //int _nScanPos = m_pProcess->GetScanIndexPos();
+        int _nScanPos = m_pProcess->GetScanIndexPos();
 		PEAK_CONFIG _info[setup_GATE_MAX];
-        //m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
-        m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
+        m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
+        //m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
@@ -147,10 +147,10 @@ void DopplerOverlays::CreateOverlaysAV()
 //	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_GATE_VERTICAL);
-        //int _nScanPos = m_pProcess->GetScanIndexPos();
+        int _nScanPos = m_pProcess->GetScanIndexPos();
 		PEAK_CONFIG _info[setup_GATE_MAX];
-        m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
-        //m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
+        //m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
+        m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
@@ -234,10 +234,10 @@ void DopplerOverlays::CreateOverlaysBH()
 //	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_LINE_HORIZENTAL);
-        //int _nScanPos = m_pProcess->GetScanIndexPos();
+        int _nScanPos = m_pProcess->GetScanIndexPos();
 		PEAK_CONFIG _info[setup_GATE_MAX];
-        //m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
-        m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
+        m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
+        //m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
@@ -325,10 +325,10 @@ void DopplerOverlays::CreateOverlaysBV()
 //	{
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
 		_pItemGroup->SetGateDrawMode(GATE_MODE_LINE_VERTICAL);
-        //int _nScanPos = m_pProcess->GetScanIndexPos();
+        int _nScanPos = m_pProcess->GetScanIndexPos();
 		PEAK_CONFIG _info[setup_GATE_MAX];
-        //m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
-        m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
+        m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
+        //m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
@@ -588,10 +588,10 @@ void DopplerOverlays::CreateOverlaysSS()
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
         _pItemGroup->SetGateDrawMode(GATE_MODE_S_SOUNDPATH);
         //_pItemGroup->SetGateDrawMode(GATE_MODE_LINE_HORIZENTAL);
-        //int _nScanPos = m_pProcess->GetScanIndexPos();
+        int _nScanPos = m_pProcess->GetScanIndexPos();
 		PEAK_CONFIG _info[setup_GATE_MAX];
-        //m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
-        m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
+        m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
+        //m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
@@ -663,10 +663,10 @@ void DopplerOverlays::CreateOverlaysSA()
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
         _pItemGroup->SetGateDrawMode(GATE_MODE_S_TRUEDEPTH);
         //_pItemGroup->SetGateDrawMode(GATE_MODE_LINE_VERTICAL);
-        //int _nScanPos = m_pProcess->GetScanIndexPos();
+        int _nScanPos = m_pProcess->GetScanIndexPos();
 		PEAK_CONFIG _info[setup_GATE_MAX];
-        //m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
-        m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
+        m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
+        //m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;
@@ -750,10 +750,10 @@ void DopplerOverlays::CreateOverlaysSL()
 		_pItemGroup->EnableItems(OVERLAYS_GATE);
         //_pItemGroup->SetGateDrawMode(GATE_MODE_S_TRUEDEPTH);
         _pItemGroup->SetGateDrawMode(GATE_MODE_LINE_VERTICAL);
-        //int _nScanPos = m_pProcess->GetScanIndexPos();
+        int _nScanPos = m_pProcess->GetScanIndexPos();
 		PEAK_CONFIG _info[setup_GATE_MAX];
-        //m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
-        m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
+        m_pProcess->GetGatePeakInfos(m_nGroup, _nScanPos, m_nLaw, _info);
+        //m_pProcess->GetGateRangeInfos(m_nGroup, m_nLaw, _info);
 		_pItemGroup->SetGatePos(0 , _info[setup_GATE_A].fGs, _info[setup_GATE_A].fGw, _info[setup_GATE_A].fGh) ;
 		_pItemGroup->SetGatePos(1 , _info[setup_GATE_B].fGs, _info[setup_GATE_B].fGw, _info[setup_GATE_B].fGh) ;
 		_pItemGroup->SetGatePos(2 , _info[setup_GATE_I].fGs, _info[setup_GATE_I].fGw, _info[setup_GATE_I].fGh) ;

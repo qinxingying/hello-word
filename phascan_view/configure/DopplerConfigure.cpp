@@ -1441,6 +1441,11 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         int tmpCScanLinePos =  _fAngleStart + 0*_fAngleStep;
         _group.afCursor[setup_CURSOR_C_ANGLE]  = tmpCScanLinePos ;
 
+        _group.bShowAScanMeasure = _group.bShowMeasure;
+        _group.bShowBScanMeasure = _group.bShowMeasure;
+        _group.bShowCScanMeasure = _group.bShowMeasure;
+        _group.bShowSScanMeasure = _group.bShowMeasure;
+
 		ParameterProcess* _process = ParameterProcess::Instance() ;
 		unsigned char*	  _pData = _process->GetLawDataPointer(i , 0) ;
 		if(_pData)

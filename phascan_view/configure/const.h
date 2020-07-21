@@ -125,8 +125,10 @@ enum FEILD_VALUE_INDEX
 	FEILD_TofdDepth2 ,
 	FEILD_TofdLength ,
 	FEILD_TofdHeight ,
-    FEILD_APos_DEC_IPos,
-    FEILD_BPos_DEC_IPos,
+    FEILD_APos_DEC_IPos,    //"A^-I^        闸门A峰值位置和闸门I峰值位置之差"
+    FEILD_BPos_DEC_IPos,    //"B^-I^        闸门B峰值位置和闸门I峰值位置之差"
+    FEILD_APos_DEC_BPos,    //"A^-B^        闸门A峰值位置和闸门B峰值位置之差"
+    FEILD_BPos_DEC_APos,    //"B^-A^        闸门B峰值位置和闸门A峰值位置之差"
     FEILD_RL,
     FEILD_SL,
     FEILD_EL,

@@ -75,5 +75,6 @@
         <file>resource/Main/palette.png</file>
         <file>resource/toolbar/0-23.png</file>
         <file>resource/toolbar/0-24.png</file>
+        <file>resource/display/0-28.png</file>
     </qresource>
 </RCC>

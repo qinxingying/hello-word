@@ -683,8 +683,13 @@ typedef struct _Group
 
     int						aeMeasureType[setup_MAX_MEASURE_QTY];
 	int						bShowMeasure;
+    bool                    bShowAScanMeasure;
+    bool                    bShowBScanMeasure;
+    bool                    bShowCScanMeasure;
+    bool                    bShowSScanMeasure;
 	int						bShowCursor;
 	int						bShowWeldPart;
+
     //int						bShowGate;
     int                     bShowGateA;
     int                     bShowGateB;

@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>5</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -4919,7 +4919,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-391</y>
         <width>318</width>
         <height>1160</height>
        </rect>
@@ -7011,15 +7011,15 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-81</y>
         <width>318</width>
-        <height>770</height>
+        <height>850</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>300</width>
-        <height>0</height>
+        <height>850</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -7082,8 +7082,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>312</width>
-            <height>851</height>
+            <width>318</width>
+            <height>850</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -7095,7 +7095,7 @@
           <property name="maximumSize">
            <size>
             <width>1777125</width>
-            <height>1777125</height>
+            <height>850</height>
            </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -8053,7 +8053,7 @@
         <x>0</x>
         <y>0</y>
         <width>318</width>
-        <height>850</height>
+        <height>900</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -8084,7 +8084,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>850</height>
+           <height>900</height>
           </size>
          </property>
          <property name="frameShape">
@@ -8099,13 +8099,13 @@
             <x>0</x>
             <y>0</y>
             <width>318</width>
-            <height>850</height>
+            <height>900</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>300</width>
-            <height>800</height>
+            <height>850</height>
            </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_19" stretch="6,9,0">
@@ -8120,11 +8120,17 @@
            </property>
            <item>
             <widget class="QGroupBox" name="groupBox_6">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>300</height>
+              </size>
+             </property>
              <property name="title">
               <string/>
              </property>
-             <layout class="QGridLayout" name="gridLayout_6">
-              <item row="0" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_26">
+              <item>
                <layout class="QHBoxLayout" name="horizontalLayout_16">
                 <item>
                  <widget class="QLabel" name="LabelMeasureValue">
@@ -8162,14 +8168,46 @@
                 </item>
                </layout>
               </item>
-              <item row="1" column="0">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_23">
+                <item>
+                 <widget class="QCheckBox" name="checkAScanShow">
+                  <property name="text">
+                   <string>A Sacn</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkBScanShow">
+                  <property name="text">
+                   <string>B Scan</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkCScanShow">
+                  <property name="text">
+                   <string>C Scan</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkSScanShow">
+                  <property name="text">
+                   <string>S Scan</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
                <widget class="Line" name="line_6">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
+              <item>
                <layout class="QGridLayout" name="gridLayout_15">
                 <property name="sizeConstraint">
                  <enum>QLayout::SetDefaultConstraint</enum>

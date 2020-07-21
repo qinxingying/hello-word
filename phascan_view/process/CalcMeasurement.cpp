@@ -523,47 +523,6 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 	case FEILD_LB :
         ret = CalLTimes(nGroupId_ , nLaw_ , setup_GATE_B , pResult_) ;
 		break;
-    case FEILD_RL :
-    {
-        int midy = _process->GetDetermineThreshold( nGroupId_, setup_RL);
-        if(midy == 0){
-            ret = 1;
-            break;
-        }
-        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
-//        if(RL_EL_SL[setup_RL] < 0.0000001)
-//            ret = 1;
-        break;
-    }
-    case FEILD_EL :
-    {
-        int midy = _process->GetDetermineThreshold( nGroupId_, setup_EL);
-        if(midy == 0){
-            ret = 1;
-            break;
-        }
-        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
-
-//        if(RL_EL_SL[setup_EL] < 0.0000001)
-//            ret = 1;
-        break;
-    }
-    case FEILD_SL :
-    {
-        int midy = _process->GetDetermineThreshold( nGroupId_, setup_SL);
-        if(midy == 0){
-            ret = 1;
-            break;
-        }
-        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
-        //qDebug()<<"pResult"<<*pResult_<<"midy"<<midy;
-//        if(RL_EL_SL[setup_SL] < 0.0000001)
-//            ret = 1;
-        break;
-    }
-    case FEILD_CMA :
-        ret = _process->GetCoupleMonitoringData( nGroupId_, pResult_);
-        break;
 #if 0
 	case FEILD_AWSDA:
 		break;
@@ -617,10 +576,94 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 		ret = TOFD_GetDepth(nGroupId_  , pResult_ , 3) ;
 		break;
     case FEILD_APos_DEC_IPos:
-        *pResult_ = g_PeakInfo[setup_GATE_A].fH - g_PeakInfo[setup_GATE_I].fH;
+        if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh &&
+                g_PeakInfo[setup_GATE_I].fAmp < g_PeakInfo[setup_GATE_I].fGh){
+            ret = -1;
+        }else if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh){
+            *pResult_ = -g_PeakInfo[setup_GATE_I].fH;
+        }else if(g_PeakInfo[setup_GATE_I].fAmp < g_PeakInfo[setup_GATE_I].fGh){
+            *pResult_ = g_PeakInfo[setup_GATE_A].fH;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_A].fH - g_PeakInfo[setup_GATE_I].fH;
+        }
         break;
     case FEILD_BPos_DEC_IPos:
-        *pResult_ = g_PeakInfo[setup_GATE_B].fH - g_PeakInfo[setup_GATE_I].fH;
+        if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh &&
+                g_PeakInfo[setup_GATE_I].fAmp < g_PeakInfo[setup_GATE_I].fGh){
+            ret = -1;
+        }else if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh){
+            *pResult_ = -g_PeakInfo[setup_GATE_I].fH;
+        }else if(g_PeakInfo[setup_GATE_I].fAmp < g_PeakInfo[setup_GATE_I].fGh){
+            *pResult_ = g_PeakInfo[setup_GATE_B].fH;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_B].fH - g_PeakInfo[setup_GATE_I].fH;
+        }
+        break;
+    case FEILD_APos_DEC_BPos:
+        if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh &&
+                g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh){
+            ret = -1;
+        }else if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh){
+            *pResult_ = -g_PeakInfo[setup_GATE_B].fH;
+        }else if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh){
+            *pResult_ = g_PeakInfo[setup_GATE_A].fH;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_A].fH - g_PeakInfo[setup_GATE_B].fH;
+        }
+        break;
+    case FEILD_BPos_DEC_APos:
+        if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh &&
+                g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh){
+            ret = -1;
+        }else if(g_PeakInfo[setup_GATE_A].fAmp < g_PeakInfo[setup_GATE_A].fGh){
+            *pResult_ = g_PeakInfo[setup_GATE_B].fH;
+        }else if(g_PeakInfo[setup_GATE_B].fAmp < g_PeakInfo[setup_GATE_B].fGh){
+            *pResult_ = -g_PeakInfo[setup_GATE_A].fH;
+        }else{
+            *pResult_ = g_PeakInfo[setup_GATE_B].fH - g_PeakInfo[setup_GATE_A].fH;
+        }
+        //*pResult_ = g_PeakInfo[setup_GATE_B].fH - g_PeakInfo[setup_GATE_A].fH;
+        break;
+    case FEILD_RL :
+    {
+        int midy = _process->GetDetermineThreshold( nGroupId_, setup_RL);
+        if(midy == 0){
+            ret = 1;
+            break;
+        }
+        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
+//        if(RL_EL_SL[setup_RL] < 0.0000001)
+//            ret = 1;
+        break;
+    }
+    case FEILD_SL :
+    {
+        int midy = _process->GetDetermineThreshold( nGroupId_, setup_SL);
+        if(midy == 0){
+            ret = 1;
+            break;
+        }
+        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
+        //qDebug()<<"pResult"<<*pResult_<<"midy"<<midy;
+//        if(RL_EL_SL[setup_SL] < 0.0000001)
+//            ret = 1;
+        break;
+    }
+    case FEILD_EL :
+    {
+        int midy = _process->GetDetermineThreshold( nGroupId_, setup_EL);
+        if(midy == 0){
+            ret = 1;
+            break;
+        }
+        *pResult_ = 20 * log10(pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp/midy);
+
+//        if(RL_EL_SL[setup_EL] < 0.0000001)
+//            ret = 1;
+        break;
+    }
+    case FEILD_CMA :
+        ret = _process->GetCoupleMonitoringData( nGroupId_, pResult_);
         break;
 	default:
 		break;

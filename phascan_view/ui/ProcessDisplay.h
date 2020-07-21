@@ -51,6 +51,7 @@ public:
         DISP_S_AH_CV_CV         ,
         DISP_S_AV_CH_BH         ,
         DISP_S_AV_CH_N          ,
+        DISP_S_AV_BH_CHH        ,
         DISP_ALLGROUP           ,
         DISP_TOPCMERGECOMPARE   ,
     };
@@ -82,6 +83,7 @@ public:
     int CreateViews_S_AH_CV_CV(QWidget*);
     int CreateViews_S_AV_CH_BH(QWidget*);
     int CreateViews_S_AV_CH_N(QWidget*);
+    int CreateViews_S_AV_BH_CHH(QWidget*);
     int CreateViews_AllGroups(QWidget*);
     int CreateViews_TOPCCompare(QWidget*);
 

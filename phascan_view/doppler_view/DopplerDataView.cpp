@@ -287,7 +287,7 @@ DopplerDrawScan* DopplerDataView::GetDrawScan() const
 #include <process/CalcMeasurement.h>
 void DopplerDataView::UpdateDrawing()
 {
-	UpdateMeasure() ;
+    UpdateMeasure();
 	m_pGraphicView->UpdateDrawing();
     if( m_pCoupleSBar)
     {
@@ -297,7 +297,7 @@ void DopplerDataView::UpdateDrawing()
 //    {
 //        m_pCoupleCBar->update();
 //    }
-    UpdateMeasure() ;
+    //UpdateMeasure() ;
 }
 
 #include <process/ParameterProcess.h>
@@ -305,7 +305,11 @@ void DopplerDataView::UpdateMeasure()
 {
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
 
-	if(_pConfig->group[m_nGroupId].bShowMeasure)
+    //if(_pConfig->group[m_nGroupId].bShowMeasure)
+    if( (_pConfig->group[m_nGroupId].bShowAScanMeasure && (m_eDisplayMode == setup_DISPLAY_MODE_A_H || m_eDisplayMode == setup_DISPLAY_MODE_A_V)) ||
+         (_pConfig->group[m_nGroupId].bShowBScanMeasure && (m_eDisplayMode == setup_DISPLAY_MODE_B_H || m_eDisplayMode == setup_DISPLAY_MODE_B_V)) ||
+         (_pConfig->group[m_nGroupId].bShowCScanMeasure && (m_eDisplayMode >= setup_DISPLAY_MODE_C_H && m_eDisplayMode <= setup_DISPLAY_MODE_CC_V)) ||
+         (_pConfig->group[m_nGroupId].bShowSScanMeasure && (m_eDisplayMode >= setup_DISPLAY_MODE_S)))
 	{
 		int* _pMeasure = _pConfig->group[m_nGroupId].aeMeasureType ;
 		int _nQty = 0 ;

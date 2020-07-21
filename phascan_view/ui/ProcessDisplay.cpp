@@ -84,9 +84,13 @@ QSize ProcessDisplay::GetMinimumWidgetSize(int eType_)
 		_nWidth  = MINIMUM_WIDGET_WIDTH  * 3 + g_nSpliterWidth * 2;
 		_nHeight = MINIMUM_WIDGET_HEIGHT * 2 + g_nSpliterWidth;
 		break;
+    case DISP_S_AV_BH_CHH:
+        _nWidth  = MINIMUM_WIDGET_WIDTH  * 3 + g_nSpliterWidth;
+        _nHeight = MINIMUM_WIDGET_HEIGHT * 3 + g_nSpliterWidth;
     case DISP_TOPCMERGECOMPARE:
         _nWidth  = MINIMUM_WIDGET_WIDTH  * 2 + g_nSpliterWidth * 1;
         _nHeight = MINIMUM_WIDGET_HEIGHT * 4 + g_nSpliterWidth * 3;
+        break;
 	default:
 		_nWidth  = 0  ;
 		_nHeight = 0 ;
@@ -139,6 +143,7 @@ int ProcessDisplay::CreateViews(QWidget* parent_, int eType_)
 	case DISP_S_AH_CV_CV:		ret = CreateViews_S_AH_CV_CV(parent_);		break;
     case DISP_S_AV_CH_BH:       ret = CreateViews_S_AV_CH_BH(parent_);		break;
     case DISP_S_AV_CH_N:        ret = CreateViews_S_AV_CH_N(parent_);		break;
+    case DISP_S_AV_BH_CHH:      ret = CreateViews_S_AV_BH_CHH(parent_);		break;
 	case DISP_ALLGROUP:
 		{
 			DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
@@ -1541,6 +1546,88 @@ int ProcessDisplay::CreateViews_S_AV_CH_N(QWidget* pWidget_)
 
     //**************  transfer item move signal to main window
     ConnectSingals(_pView , 3) ;
+    return 0;
+}
+
+int ProcessDisplay::CreateViews_S_AV_BH_CHH(QWidget* pWidget_)
+{
+    QBoxLayout* _layout = new QBoxLayout(QBoxLayout::LeftToRight );
+    _layout->setMargin(0);
+    GYSplitter* split[3];
+    DopplerDataView* _pView[4];
+    for(int i = 0 ; i< 3 ; i++)
+    {
+        split[i] = new GYSplitter(0);
+        split[i]->setHandleWidth(g_nSpliterWidth);
+        split[i]->setOpaqueResize(false) ;
+    }
+
+    split[0]->setOrientation(Qt::Vertical);
+    split[1]->setOrientation(Qt::Horizontal);
+    split[2]->setOrientation(Qt::Horizontal);
+
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+    if( _group.coupleMonitoringState)
+    {
+        _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+        _pView[3] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECH);
+    }
+    else
+    {
+        _pView[0] = new DopplerDataView(pWidget_);
+        _pView[3] = new DopplerDataView(pWidget_);
+    }
+
+    _pView[1] = new DopplerDataView(pWidget_);
+    _pView[2] = new DopplerDataView(pWidget_);
+
+    split[1]->addWidget(_pView[3]);
+    split[1]->addWidget(_pView[0]);
+    split[2]->addWidget(_pView[2]);
+    split[2]->addWidget(_pView[1]);
+    split[0]->addWidget(split[1]);
+    split[0]->addWidget(split[2]);
+
+    _layout->addWidget(split[0]);
+    pWidget_->setLayout(_layout);
+    //**************  set window sizes
+    int _nWidth  = pWidget_->width()  ;
+    int _nHeight = pWidget_->height() ;
+    QList<int> _size ;
+    _size.append(_nHeight / 2);
+    _size.append(_nHeight - _nHeight / 2 - g_nSpliterWidth);
+    split[0]->setSizes(_size);
+    _size.clear();
+    _size.append(_nWidth * 2 / 3);
+    _size.append(_nWidth - _nWidth  * 2 / 3 - g_nSpliterWidth);
+    split[1]->setSizes(_size);
+    split[2]->setSizes(_size);
+
+    //**************  set window sizes
+    split[0]->setCollapsible(0 , false);
+    split[0]->setCollapsible(1 , false);
+    split[1]->setCollapsible(0 , false);
+    split[1]->setCollapsible(1 , false);
+    split[2]->setCollapsible(0 , false);
+    split[2]->setCollapsible(1 , false);
+    split[0]->show();
+    split[1]->show();
+    split[2]->show();
+
+    SetViewPara(_pView[0] , m_nGroupId , 0 , setup_DISPLAY_MODE_S) ;
+    SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_V) ;
+    SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_H) ;
+    SetViewPara(_pView[3] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_H) ;
+    _pView[0]->SetLawIdentify(0);
+    _pView[1]->SetLawIdentify(0);
+    _pView[2]->SetLawIdentify(0);
+    _pView[3]->SetLawIdentify(0);
+
+    QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
+    for(int i = 0 ; i < 4 ; i++)	_pList->append(_pView[i]);
+
+    //**************  transfer item move signal to main window
+    ConnectSingals(_pView , 4) ;
     return 0;
 }
 

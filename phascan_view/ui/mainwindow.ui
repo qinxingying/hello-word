@@ -114,7 +114,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>370</width>
          <height>0</height>
         </size>
        </property>
@@ -150,6 +150,12 @@
         <bool>false</bool>
        </property>
        <widget class="DopplerGroupTab" name="Group1">
+        <property name="minimumSize">
+         <size>
+          <width>360</width>
+          <height>0</height>
+         </size>
+        </property>
         <attribute name="icon">
          <iconset resource="../mainwindow.qrc">
           <normaloff>:/file/resource/main_menu/0-27.png</normaloff>:/file/resource/main_menu/0-27.png</iconset>
@@ -159,6 +165,12 @@
         </attribute>
        </widget>
        <widget class="InstrumentSettingWidget" name="ScanHardware">
+        <property name="minimumSize">
+         <size>
+          <width>360</width>
+          <height>0</height>
+         </size>
+        </property>
         <attribute name="icon">
          <iconset resource="../mainwindow.qrc">
           <normaloff>:/file/resource/main_menu/0-28.png</normaloff>:/file/resource/main_menu/0-28.png</iconset>
@@ -168,6 +180,12 @@
         </attribute>
        </widget>
        <widget class="QWidget" name="GroupAdd">
+        <property name="minimumSize">
+         <size>
+          <width>360</width>
+          <height>0</height>
+         </size>
+        </property>
         <attribute name="icon">
          <iconset resource="../mainwindow.qrc">
           <normaloff>:/file/resource/main_menu/0-36.png</normaloff>:/file/resource/main_menu/0-36.png</iconset>
@@ -230,7 +248,6 @@
      <string>Remote Monitor</string>
     </property>
     <addaction name="actionConnect"/>
-    <addaction name="actionDisconnect"/>
    </widget>
    <widget class="QMenu" name="menuDisplay">
     <property name="title">

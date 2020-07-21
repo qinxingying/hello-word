@@ -14,6 +14,12 @@ private:
     void saveRemotes();
     singleRemoteWidget* m_singleRemote1;
     singleRemoteWidget* m_singleRemote2;
+    singleRemoteWidget* m_singleRemote3;
+    singleRemoteWidget* m_singleRemote4;
+    singleRemoteWidget* m_singleRemote5;
+    singleRemoteWidget* m_singleRemote6;
+    singleRemoteWidget* m_singleRemote7;
+    singleRemoteWidget* m_singleRemote8;
     QPushButton *m_hide;
 };
 

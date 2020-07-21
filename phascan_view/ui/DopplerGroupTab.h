@@ -147,6 +147,10 @@ private slots:
 //    void on_CheckPartFileShow_clicked(bool checked);
     void on_CheckDxfFileShow_clicked(bool checked);
     void on_CheckMeasureShow_clicked(bool checked);
+    void on_checkAScanShow_clicked(bool checked);
+    void on_checkBScanShow_clicked(bool checked);
+    void on_checkCScanShow_clicked(bool checked);
+    void on_checkSScanShow_clicked(bool checked);
 	void on_CheckBackShow_clicked(bool checked);
 	void on_ComField1_currentIndexChanged(int index);
     void on_ComField2_currentIndexChanged(int index);

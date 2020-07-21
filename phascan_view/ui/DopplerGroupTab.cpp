@@ -26,7 +26,8 @@ static const char* g_strDisplayMode[] =
 	"S-A-B SCAN" , "S-A-B SCAN" ,"S-A-B SCAN" ,
 	"S-A-B-C SCAN" , "S-A-B-C SCAN" , "S-A-B-C SCAN" ,
 	"S-A-C SCAN"  , "S-A-C SCAN"  ,
-    "S-A-C-C SCAN"  , "S-A-C-C SCAN","S-A-B-C SCAN","S-A-C SCAN"
+    "S-A-C-C SCAN"  , "S-A-C-C SCAN","S-A-B-C SCAN","S-A-C SCAN",
+    "S-A-B-C SCAN"
 };
 
 DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
@@ -976,6 +977,11 @@ void DopplerGroupTab::UpdateGroupConfig()
 
 	//*********** measure
 	ui->CheckMeasureShow->setCheckState(m_pGroup->bShowMeasure ? Qt::Checked : Qt::Unchecked );
+    ui->checkAScanShow->setCheckState(m_pGroup->bShowAScanMeasure ? Qt::Checked : Qt::Unchecked);
+    ui->checkBScanShow->setCheckState(m_pGroup->bShowBScanMeasure ? Qt::Checked : Qt::Unchecked);
+    ui->checkCScanShow->setCheckState(m_pGroup->bShowCScanMeasure ? Qt::Checked : Qt::Unchecked);
+    ui->checkSScanShow->setCheckState(m_pGroup->bShowSScanMeasure ? Qt::Checked : Qt::Unchecked);
+
 	//ui->CheckBackShow->setCheckState(g_pMainWnd->ParamBackMode() ? Qt::Checked : Qt::Unchecked );
 	//ui->CheckBackShow->setChecked(g_pMainWnd->ParamBackMode()); //放开程序崩溃
 	ui->ComField1->setCurrentIndex(m_pGroup->aeMeasureType[0]);
@@ -1949,8 +1955,44 @@ void DopplerGroupTab::on_CheckDxfFileShow_clicked(bool checked)
 void DopplerGroupTab::on_CheckMeasureShow_clicked(bool checked)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->SetupShowMeasure(m_nGroupId , checked)  ;
+    _process->SetupShowMeasure(m_nGroupId , checked);
+    m_pConfig->group[m_nGroupId].bShowAScanMeasure = checked;
+    m_pConfig->group[m_nGroupId].bShowBScanMeasure = checked;
+    m_pConfig->group[m_nGroupId].bShowCScanMeasure = checked;
+    m_pConfig->group[m_nGroupId].bShowSScanMeasure = checked;
+    ui->checkAScanShow->setCheckState( checked ? Qt::Checked : Qt::Unchecked);
+    ui->checkBScanShow->setCheckState( checked ? Qt::Checked : Qt::Unchecked);
+    ui->checkCScanShow->setCheckState( checked ? Qt::Checked : Qt::Unchecked);
+    ui->checkSScanShow->setCheckState( checked ? Qt::Checked : Qt::Unchecked);
 	g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_checkAScanShow_clicked(bool checked)
+{
+    if(!ui->checkAScanShow->hasFocus()) return;
+    m_pConfig->group[m_nGroupId].bShowAScanMeasure = checked;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_checkBScanShow_clicked(bool checked)
+{
+    if(!ui->checkBScanShow->hasFocus()) return;
+    m_pConfig->group[m_nGroupId].bShowBScanMeasure = checked;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_checkCScanShow_clicked(bool checked)
+{
+    if(!ui->checkCScanShow->hasFocus()) return;
+    m_pConfig->group[m_nGroupId].bShowCScanMeasure = checked;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_checkSScanShow_clicked(bool checked)
+{
+    if(!ui->checkSScanShow->hasFocus()) return;
+    m_pConfig->group[m_nGroupId].bShowSScanMeasure = checked;
+    g_pMainWnd->RunDrawThreadOnce(true);
 }
 
 void DopplerGroupTab::on_CheckBackShow_clicked(bool checked)
@@ -1966,10 +2008,10 @@ void DopplerGroupTab::on_ComField1_currentIndexChanged(int index)
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->SetupMeasureData(m_nGroupId , 0 , index)  ;
 
-	if(ui->CheckMeasureShow->checkState())
-	{
+    //if(ui->CheckMeasureShow->checkState())
+    //{
 		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    //}
 }
 
 void DopplerGroupTab::on_ComField2_currentIndexChanged(int index)
@@ -1978,10 +2020,10 @@ void DopplerGroupTab::on_ComField2_currentIndexChanged(int index)
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->SetupMeasureData(m_nGroupId , 1 , index)  ;
 
-	if(ui->CheckMeasureShow->checkState())
-	{
+    //if(ui->CheckMeasureShow->checkState())
+    //{
 		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    //}
 }
 
 void DopplerGroupTab::on_ComField3_currentIndexChanged(int index)
@@ -1990,10 +2032,10 @@ void DopplerGroupTab::on_ComField3_currentIndexChanged(int index)
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->SetupMeasureData(m_nGroupId , 2 , index)  ;
 
-	if(ui->CheckMeasureShow->checkState())
-	{
+    //if(ui->CheckMeasureShow->checkState())
+    //{
 		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    //}
 }
 
 void DopplerGroupTab::on_ComField4_currentIndexChanged(int index)
@@ -2002,10 +2044,10 @@ void DopplerGroupTab::on_ComField4_currentIndexChanged(int index)
 	ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupMeasureData(m_nGroupId , 3 , index);
 
-	if(ui->CheckMeasureShow->checkState())
-	{
+    //if(ui->CheckMeasureShow->checkState())
+    //{
 		 g_pMainWnd->RunDrawThreadOnce(true);
-	}
+    //}
 }
 
 void DopplerGroupTab::on_ComField5_currentIndexChanged(int index)
@@ -2014,10 +2056,10 @@ void DopplerGroupTab::on_ComField5_currentIndexChanged(int index)
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->SetupMeasureData(m_nGroupId , 4 , index)  ;
 
-	if(ui->CheckMeasureShow->checkState())
-	{
+    //if(ui->CheckMeasureShow->checkState())
+    //{
 		 g_pMainWnd->RunDrawThreadOnce(true);
-    }
+    //}
 }
 
 void DopplerGroupTab::on_ComField6_currentIndexChanged(int index)
@@ -2026,10 +2068,10 @@ void DopplerGroupTab::on_ComField6_currentIndexChanged(int index)
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupMeasureData(m_nGroupId , 5 , index)  ;
 
-    if(ui->CheckMeasureShow->checkState())
-    {
+    //if(ui->CheckMeasureShow->checkState())
+    //{
          g_pMainWnd->RunDrawThreadOnce(true);
-    }
+    //}
 }
 
 void DopplerGroupTab::on_ComField7_currentIndexChanged(int index)
@@ -2038,10 +2080,10 @@ void DopplerGroupTab::on_ComField7_currentIndexChanged(int index)
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupMeasureData(m_nGroupId , 6 , index)  ;
 
-    if(ui->CheckMeasureShow->checkState())
-    {
+    //if(ui->CheckMeasureShow->checkState())
+    //{
          g_pMainWnd->RunDrawThreadOnce(true);
-    }
+    //}
 }
 
 void DopplerGroupTab::on_ComField8_currentIndexChanged(int index)
@@ -2050,10 +2092,10 @@ void DopplerGroupTab::on_ComField8_currentIndexChanged(int index)
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupMeasureData(m_nGroupId , 7 , index)  ;
 
-    if(ui->CheckMeasureShow->checkState())
-    {
+    //if(ui->CheckMeasureShow->checkState())
+    //{
          g_pMainWnd->RunDrawThreadOnce(true);
-    }
+    //}
 }
 
 void DopplerGroupTab::on_ComField9_currentIndexChanged(int index)
@@ -2062,10 +2104,10 @@ void DopplerGroupTab::on_ComField9_currentIndexChanged(int index)
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupMeasureData(m_nGroupId , 8 , index)  ;
 
-    if(ui->CheckMeasureShow->checkState())
-    {
+    //if(ui->CheckMeasureShow->checkState())
+    //{
          g_pMainWnd->RunDrawThreadOnce(true);
-    }
+    //}
 }
 
 void DopplerGroupTab::on_ComField10_currentIndexChanged(int index)
@@ -2074,10 +2116,10 @@ void DopplerGroupTab::on_ComField10_currentIndexChanged(int index)
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupMeasureData(m_nGroupId , 9 , index)  ;
 
-    if(ui->CheckMeasureShow->checkState())
-    {
+    //if(ui->CheckMeasureShow->checkState())
+    //{
          g_pMainWnd->RunDrawThreadOnce(true);
-    }
+    //}
 }
 
 void DopplerGroupTab::on_CheckCursorShow_clicked(bool checked)
