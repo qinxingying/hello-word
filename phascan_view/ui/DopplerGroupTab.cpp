@@ -449,6 +449,13 @@ void DopplerGroupTab::setTopcWidthValue(double value)
     ui->ValueTopcWidth->setValue(value);
 }
 
+void DopplerGroupTab::setThicknessValue(double value)
+{
+    ui->ValuePartSize1->blockSignals(true);
+    ui->ValuePartSize1->setValue(value);
+    ui->ValuePartSize1->blockSignals(false);
+}
+
 /****************************************************************************
   Description: 当前角度选择控件更新
 *****************************************************************************/
@@ -1702,10 +1709,11 @@ void DopplerGroupTab::PartPro()
 	UpdateDefectValue();
 }
 
-void DopplerGroupTab::on_ValuePartSize1_valueChanged(double)
+void DopplerGroupTab::on_ValuePartSize1_valueChanged(double value)
 {
 	if(!ui->ValuePartSize1->hasFocus())  return ;
-	PartPro();
+    emit thicknessChange(value);
+    //PartPro();
 }
 
 void DopplerGroupTab::on_ValuePartSize2_valueChanged(double)

@@ -1224,6 +1224,18 @@ void Config::convert_to_phascan_config(int groupId)
             targetLawInfo.Angle_min     = 0;
             qWarning("%s(%s[%d]): unimplement", __FILE__, __func__, __LINE__);
         }
+    }else{
+        targetLawInfo.Focal_type = 0;
+        targetProbe.Elem_qty = currentProbe.m_priElemQty;
+        targetProbe.Pitch    = 1000.0;
+        targetProbe.A4       = 1;
+        targetProbe.A3       = 1000.0;
+        targetLawInfo.Elem_qty        = currentScan.m_priApe;
+        targetLawInfo.First_tx_elem   = currentScan.m_priStartElem;
+        targetLawInfo.Angle_min   = 4000;
+        targetLawInfo.Angle_max   = 4000;
+        targetLawInfo.Angle_step  = 100;
+
     }
 
     /* Wedge */

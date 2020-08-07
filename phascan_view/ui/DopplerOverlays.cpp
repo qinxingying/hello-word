@@ -559,6 +559,10 @@ void DopplerOverlays::CreateOverlaysSS()
 {
 	GROUP_CONFIG&            group = m_pConfigure->group[m_nGroup];
 	DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup() ;
+    if(group.eGroupMode != setup_GROUP_MODE_PA){
+        _pItemGroup->EnableItems(OVERLAYS_NONE);
+        return;
+    }
 
 	if(group.bShowDefect)
 	{
@@ -634,6 +638,10 @@ void DopplerOverlays::CreateOverlaysSA()
 {
 	GROUP_CONFIG&            group = m_pConfigure->group[m_nGroup];
 	DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup() ;
+    if(group.eGroupMode != setup_GROUP_MODE_PA){
+        _pItemGroup->EnableItems(OVERLAYS_NONE);
+        return;
+    }
 
 	if(group.bShowDefect)
 	{
@@ -721,6 +729,10 @@ void DopplerOverlays::CreateOverlaysSL()
 {
 	GROUP_CONFIG&            group = m_pConfigure->group[m_nGroup];
 	DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup() ;
+    if(group.eGroupMode != setup_GROUP_MODE_PA){
+        _pItemGroup->EnableItems(OVERLAYS_NONE);
+        return;
+    }
 
 	if(group.bShowDefect)
 	{
@@ -994,6 +1006,8 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 		}
 		break;
 	default:
+//        QLineF _line( 0 , 1, 30 , 1);
+//        _pVector->append(_line);
 		break;
 	};
 }

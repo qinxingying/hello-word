@@ -159,6 +159,7 @@ private slots:
     void slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_);
     void slotTopcMergeCompareViewShow(bool);
     void connect_remote_monitor();
+    void allThicknessChange(double thickness);
 protected slots:
   void on_actionNew_Config_triggered();
   void on_actionOpen_triggered();

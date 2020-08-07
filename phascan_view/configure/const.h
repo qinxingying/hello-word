@@ -36,6 +36,7 @@ typedef U8				WDATA;	//	定义波形数据位宽 8位
 #define setup_MAX_GROUP_QTY					8
 #define setup_MAX_ENCODER_QTY				2
 #define setup_MAX_MEASURE_QTY               10   //测量框的数据
+#define setup_MAX_DISPLAY_QTY               4
 
 #define setup_MAX_CHANNEL_TRIGGER			32
 #define setup_MAX_CHANNEL_RECIEVE			128

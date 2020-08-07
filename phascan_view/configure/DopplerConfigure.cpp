@@ -449,7 +449,7 @@ int DopplerConfigure::OpenData(QString& path_)
 
 int DopplerConfigure::RectifyScanLength()
 {
-	for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < setup_MAX_DISPLAY_QTY; i++) {
 		m_nComDisplay[i] = i;
 	}
 
@@ -1190,6 +1190,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_LawConfig.nAngleStartRefract   = _LawInfo.Angle_min / 10;						  // 0.1 degree
 		_LawConfig.nAngleStopRefract	= _LawInfo.Angle_max / 10;					 // focal law  angle setting
 		_LawConfig.nAngleStepRefract	= _LawInfo.Angle_step / 10;  		 					 //
+        //qDebug()<<"ElemQtyFir"<<_LawConfig.nElemQtyFir<<""<<
 		// beam skew angle
 		_LawConfig.nAngleStartBeamSkew  = 1;
 		_LawConfig.nAngleStopBeamSkew   = 1;
@@ -1556,7 +1557,7 @@ void  DopplerConfigure::InitTOPCInfo()
         _TOPCInfo.stopY  = _nStopY;
         _TOPCInfo.pixelWidth = _width;
         _TOPCInfo.pixelHeigh = _height;
-        qDebug()<<"topcwidtha"<<i<<_width;
+        //qDebug()<<"topcwidtha"<<i<<_width;
         int beamLength;
 //        if(_group.law.eLawType == setup_LAW_TYPE_TFM){
 //            beamLength = _nPointQty;

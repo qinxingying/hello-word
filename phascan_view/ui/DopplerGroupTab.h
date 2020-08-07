@@ -47,6 +47,7 @@ public:
     void retranslateGroupTabUi();
     void LoadStandardFormConifg();
     void setTopcWidthValue(double value);
+    void setThicknessValue(double value);
 protected:
     void SetWidgetInvalide();
     void CreateSettingView();
@@ -74,6 +75,9 @@ protected:
     QLabel*	m_pSizingCurveName[setup_DAC_POINT_QTY];
 	QDoubleSpinBox* m_pSizingCurveValue[setup_DAC_POINT_QTY];
     QLabel*	m_pSizingCurveUnit[setup_DAC_POINT_QTY];
+
+signals:
+    void thicknessChange(double thickness);
 
 private slots:
     void StartDrags(QModelIndex a) ;

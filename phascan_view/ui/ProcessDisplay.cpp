@@ -1616,7 +1616,7 @@ int ProcessDisplay::CreateViews_S_AV_BH_CHH(QWidget* pWidget_)
 
     SetViewPara(_pView[0] , m_nGroupId , 0 , setup_DISPLAY_MODE_S) ;
     SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_V) ;
-    SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_H) ;
+    SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_V) ;
     SetViewPara(_pView[3] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_H) ;
     _pView[0]->SetLawIdentify(0);
     _pView[1]->SetLawIdentify(0);
@@ -1649,129 +1649,177 @@ int ProcessDisplay::CreateViews_AllGroups(QWidget* pWidget_)
 	_splitBase->setOrientation(Qt::Horizontal);
 
 	int _nQty = _nGroupQty;
-	if(_nQty > 4)	_nQty = 4;
+    if(_nQty > setup_MAX_DISPLAY_QTY)	_nQty = setup_MAX_DISPLAY_QTY;
 	U8* _pComDisp = m_pConfig->GetComDisplayPoint();
 //	for(int i = 0; i < _nGroupQty; i++) {
-	for(int i = 0; i < _nQty; i++) {
-		_split_S_A[i] = NULL;
+//    if(_nQty <= 4){
+        for(int i = 0; i < _nQty; i++) {
+            _split_S_A[i] = NULL;
 
-		_split[i] = new GYSplitter(0);
-		_split[i]->setHandleWidth(g_nSpliterWidth);
-		_split[i]->setOpaqueResize(false) ;
-		_split[i]->setOrientation(Qt::Vertical);
+            _split[i] = new GYSplitter(0);
+            _split[i]->setHandleWidth(g_nSpliterWidth);
+            _split[i]->setOpaqueResize(false) ;
+            _split[i]->setOrientation(Qt::Vertical);
 
-		int _nGroup = _pComDisp[i];
-		if(m_pConfig->group[_nGroup].eGroupMode == setup_GROUP_MODE_PA) {
-			DopplerDataView* _pView[3] ;
+            int _nGroup = _pComDisp[i];
+            if(m_pConfig->group[_nGroup].eGroupMode == setup_GROUP_MODE_PA) {
+                DopplerDataView* _pView[3] ;
 
-            if( m_pConfig->group[_nGroup].coupleMonitoringState)
-            {
-                _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV);
-                _pView[1] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+                if( m_pConfig->group[_nGroup].coupleMonitoringState)
+                {
+                    _pView[0] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV);
+                    _pView[1] = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLES);
+                }
+                else
+                {
+                    _pView[0] = new DopplerDataView(pWidget_);
+                    _pView[1] = new DopplerDataView(pWidget_);
+                }
+
+                _pView[2] = new DopplerDataView(pWidget_);
+
+                _pView[0]->SetLawIdentify(0);
+                _pList->append(_pView[0]);
+                _pView[1]->SetLawIdentify(0);
+                _pList->append(_pView[1]);
+                _pView[2]->SetLawIdentify(0);
+                _pList->append(_pView[2]);
+
+
+                ConnectSingals(_pView , 3) ;
+
+                _split_S_A[i] = new GYSplitter(0);
+                _split_S_A[i]->setHandleWidth(g_nSpliterWidth);
+                _split_S_A[i]->setOpaqueResize(false) ;
+                _split_S_A[i]->setOrientation(Qt::Horizontal);
+
+                _split[i]->addWidget(_pView[0]);
+                _split[i]->addWidget(_split_S_A[i]);
+
+                _split_S_A[i]->addWidget(_pView[1]);
+                _split_S_A[i]->addWidget(_pView[2]);
+
+                SetViewPara(_pView[0] , _nGroup , 0 , setup_DISPLAY_MODE_C_V) ;
+                SetViewPara(_pView[1] , _nGroup , 0 , setup_DISPLAY_MODE_S) ;
+                SetViewPara(_pView[2] , _nGroup , 0 , setup_DISPLAY_MODE_A_V) ;
+            } else {
+                DopplerDataView* _pView[2] ;
+                for(int k = 0; k < 2; k++) {
+                    _pView[k] = new DopplerDataView(pWidget_) ;
+                    _pView[k]->SetLawIdentify(0);
+                    _pList->append(_pView[k]);
+                }
+                ConnectSingals(_pView , 2) ;
+
+                _split[i]->addWidget(_pView[0]);
+                _split[i]->addWidget(_pView[1]);
+
+                SetViewPara(_pView[0] , _nGroup , 0 , setup_DISPLAY_MODE_B_H) ;
+                SetViewPara(_pView[1] , _nGroup , 0 , setup_DISPLAY_MODE_A_H) ;
             }
-            else
-            {
-                _pView[0] = new DopplerDataView(pWidget_);
-                _pView[1] = new DopplerDataView(pWidget_);
+
+            _splitBase->addWidget(_split[i]);
+        }
+
+        //**************  set window sizes
+        int _nWidth  = pWidget_->width()  ;
+        int _nHeight = pWidget_->height() ;
+        int _nW   = _nWidth / _nQty;
+        int _nRes = _nWidth;
+        int _nWTab[8];
+        QList<int> _size ;
+
+        int i = 0;
+        for(i= 0 ; i < _nQty - 1 ; i++) {
+            _nWTab[i] = _nW;
+            _nRes -= _nW;
+        }
+        _nWTab[i] = _nRes;
+
+        for(i = 0; i < _nQty; i++) {
+            _size.append(_nWTab[i]);
+        }
+        _splitBase->setSizes(_size);
+        //-----------------------
+        _size.clear();
+        _size.append(_nHeight * 2 / 3);
+        _size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
+
+        for(int i= 0 ; i < _nQty ; i++) {
+            _split[i]->setSizes(_size);
+        }
+        //-----------------------
+        for(i = 0; i < _nQty; i++) {
+            if(_split_S_A[i]) {
+                _size.clear();
+                _size.append(_nWTab[i] * 3 / 5);
+                _size.append(_nWTab[i] - _nWTab[i] * 3 / 5 - g_nSpliterWidth);
+                _split_S_A[i]->setSizes(_size);
+            }
+        }
+        //-----------------------
+        _layout->addWidget(_splitBase);
+        pWidget_->setLayout(_layout);
+        //**************  set window sizes
+        for(i = 0 ; i < _nQty ; i++) {
+            if(_split_S_A[i]) {
+                _split_S_A[i]->setCollapsible(0 , false);
+                _split_S_A[i]->show();
             }
 
-            _pView[2] = new DopplerDataView(pWidget_);
+            _split[i]->setCollapsible(0 , false);
+            _split[i]->show();
+        }
+        _splitBase->setCollapsible(0 , false);
+        _splitBase->show();
+//    }else{
+//        for(int i = 0; i < _nQty; i++){
+//            int _nGroup = _pComDisp[i];
+//            DopplerDataView* _pView;
+//            if(m_pConfig->group[_nGroup].eGroupMode == setup_GROUP_MODE_PA){
+//                if( m_pConfig->group[_nGroup].coupleMonitoringState){
+//                     _pView = new DopplerDataView( pWidget_, DopplerDataView::DATA_VIEW_COMPONENT_ALL_WITHCOUPLECV);
+//                }else{
+//                    _pView = new DopplerDataView(pWidget_);
+//                }
+//                _pView->SetLawIdentify(0);
+//                _pList->append(_pView);
+//                ConnectSingals(&_pView, 1);
+//                SetViewPara( _pView, _nGroup, 0, setup_DISPLAY_MODE_C_V);
+//            }else{
+//                _pView = new DopplerDataView(pWidget_);
+//                _pView->SetLawIdentify(0);
+//                _pList->append(_pView);
+//                ConnectSingals(&_pView, 1);
+//                SetViewPara( _pView, _nGroup, 0, setup_DISPLAY_MODE_B_H);
+//            }
+//            _splitBase->addWidget(_pView);
+//        }
+//        //**************  set window sizes
+//        int _nWidth  = pWidget_->width();
+//        int _nHeight = pWidget_->height();
+//        int _nW   = _nWidth / _nQty;
+//        int _nRes = _nWidth;
+//        int _nWTab[8];
+//        QList<int> _size;
 
-            _pView[0]->SetLawIdentify(0);
-            _pList->append(_pView[0]);
-            _pView[1]->SetLawIdentify(0);
-            _pList->append(_pView[1]);
-            _pView[2]->SetLawIdentify(0);
-            _pList->append(_pView[2]);
+//        int i = 0;
+//        for(i= 0 ; i < _nQty - 1 ; i++) {
+//            _nWTab[i] = _nW;
+//            _nRes -= _nW;
+//        }
+//        _nWTab[i] = _nRes;
 
+//        for(i = 0; i < _nQty; i++) {
+//            _size.append(_nWTab[i]);
+//        }
+//        _splitBase->setSizes(_size);
 
-			ConnectSingals(_pView , 3) ;
-
-			_split_S_A[i] = new GYSplitter(0);
-			_split_S_A[i]->setHandleWidth(g_nSpliterWidth);
-			_split_S_A[i]->setOpaqueResize(false) ;
-			_split_S_A[i]->setOrientation(Qt::Horizontal);
-
-			_split[i]->addWidget(_pView[0]);
-			_split[i]->addWidget(_split_S_A[i]);
-
-			_split_S_A[i]->addWidget(_pView[1]);
-			_split_S_A[i]->addWidget(_pView[2]);
-
-			SetViewPara(_pView[0] , _nGroup , 0 , setup_DISPLAY_MODE_C_V) ;
-			SetViewPara(_pView[1] , _nGroup , 0 , setup_DISPLAY_MODE_S) ;
-			SetViewPara(_pView[2] , _nGroup , 0 , setup_DISPLAY_MODE_A_V) ;
-		} else {
-			DopplerDataView* _pView[2] ;
-			for(int k = 0; k < 2; k++) {
-				_pView[k] = new DopplerDataView(pWidget_) ;
-				_pView[k]->SetLawIdentify(0);
-				_pList->append(_pView[k]);
-			}
-			ConnectSingals(_pView , 2) ;
-
-			_split[i]->addWidget(_pView[0]);
-			_split[i]->addWidget(_pView[1]);
-
-			SetViewPara(_pView[0] , _nGroup , 0 , setup_DISPLAY_MODE_B_H) ;
-			SetViewPara(_pView[1] , _nGroup , 0 , setup_DISPLAY_MODE_A_H) ;
-		}
-
-		_splitBase->addWidget(_split[i]);
-	}
-
-	//**************  set window sizes
-	int _nWidth  = pWidget_->width()  ;
-	int _nHeight = pWidget_->height() ;
-	int _nW   = _nWidth / _nQty;
-	int _nRes = _nWidth;
-	int _nWTab[8];
-	QList<int> _size ;
-
-	int i = 0;
-	for(i= 0 ; i < _nQty - 1 ; i++) {
-		_nWTab[i] = _nW;
-		_nRes -= _nW;
-	}
-	_nWTab[i] = _nRes;
-
-	for(i = 0; i < _nQty; i++) {
-		_size.append(_nWTab[i]);
-	}
-	_splitBase->setSizes(_size);
-	//-----------------------
-	_size.clear();
-	_size.append(_nHeight * 2 / 3);
-	_size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
-
-	for(int i= 0 ; i < _nQty ; i++) {
-		_split[i]->setSizes(_size);
-	}
-	//-----------------------
-	for(i = 0; i < _nQty; i++) {
-		if(_split_S_A[i]) {
-			_size.clear();
-			_size.append(_nWTab[i] * 3 / 5);
-			_size.append(_nWTab[i] - _nWTab[i] * 3 / 5 - g_nSpliterWidth);
-			_split_S_A[i]->setSizes(_size);
-		}
-	}
-	//-----------------------
-	_layout->addWidget(_splitBase);
-	pWidget_->setLayout(_layout);
-	//**************  set window sizes
-	for(i = 0 ; i < _nQty ; i++) {
-		if(_split_S_A[i]) {
-			_split_S_A[i]->setCollapsible(0 , false);
-			_split_S_A[i]->show();
-		}
-
-		_split[i]->setCollapsible(0 , false);
-		_split[i]->show();
-	}
-	_splitBase->setCollapsible(0 , false);
-	_splitBase->show();
-
+//        _layout->addWidget(_splitBase);
+//        pWidget_->setLayout(_layout);
+//        _splitBase->setCollapsible(0 , false);
+//        _splitBase->show();
+//    }
 	return 0;
 }
 

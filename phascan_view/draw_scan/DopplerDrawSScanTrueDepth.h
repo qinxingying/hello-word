@@ -67,6 +67,7 @@ protected:
     U8*  m_pAngleZoom;
     U8*  m_pDraw;
     U8*  m_pDrawRate;
+    U8*  m_pColRate;
     int* m_pDataNo;
     bool m_bClear;
 };

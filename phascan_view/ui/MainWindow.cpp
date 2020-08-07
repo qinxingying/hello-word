@@ -709,6 +709,7 @@ void MainWindow::UpdateTableParameter()
         str1.sprintf("%d", i + 1);
         str += str1;
         QIcon icon(":/file/resource/main_menu/0-27.png");
+        connect(_pGroup, SIGNAL(thicknessChange(double)), this, SLOT(allThicknessChange(double)));
         ui->TabWidget_parameter->insertTab(i, _pGroup, icon, str);
         m_pGroupList.append(_pGroup);
     }
@@ -1737,6 +1738,20 @@ void MainWindow::connect_remote_monitor()
         m_assemblyRemotes = new assemblyRemotesDialog(this);
     }
     m_assemblyRemotes->exec();
+}
+
+void MainWindow::allThicknessChange(double thickness)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    for(int i = 0; i < _pConfig->common.nGroupQty; i ++){
+        _pConfig->group[i].part.afSize[0] = thickness;
+        m_pGroupList[i]->setThicknessValue(thickness);
+    }
+    ProcessDisplay _proDisplay ;
+    for(int i = 0; i < _pConfig->common.nGroupQty; i ++) {
+         _proDisplay.UpdateAllViewOverlayOfGroup(i);
+    }
+    RunDrawThreadOnce(true);
 }
 
 void MainWindow::on_actionNew_Config_triggered()
