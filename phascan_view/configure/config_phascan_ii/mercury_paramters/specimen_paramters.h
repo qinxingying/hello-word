@@ -53,7 +53,8 @@ class Specimen : public QObject
         VY,
         VV,
         UU,
-        UV
+        UV,
+        TKY
     };
 
 public:

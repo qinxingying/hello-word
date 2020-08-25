@@ -67,11 +67,13 @@ protected:
 
     void unpack_geometry(const QVariantMap &map);
 
-    void unpack_geometry_plane(const QVariantMap &map);
+    void unpack_geometry_plane(const QVariantMap &map, Paramters::Plane &plane);
 
     void unpack_geometry_cylinder(const QVariantMap &map, Paramters::Cylinder &cylinder);
 
     void unpack_geometry_nozzle(const QVariantMap &map);
+
+    void unpack_geometry_fillet(const QVariantMap &map);
 
     void unpack_weld(const QVariantMap &map);
 

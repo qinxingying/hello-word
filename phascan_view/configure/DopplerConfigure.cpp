@@ -420,7 +420,7 @@ int DopplerConfigure::OpenData(QString& path_)
 	OldConfigureToConfigure(m_pDataFile);
 	OldGroupToGroup(m_pDataFile) ;
 	m_pData = m_pDataFile->GetData();
-
+    m_pDataSize = m_pDataFile->GetDataSize();
     GROUP_INFO *targetGroup;
     if(Config::instance()->is_phascan_ii()) {
         targetGroup = m_pDataFile->GetGroupInfo(0);
@@ -522,7 +522,11 @@ void DopplerConfigure::CreateShadowData(int iLen_)
         m_pDataShadow = new WDATA[_iTotalSize+10];
         memset(m_pDataShadow, 0x00, _iTotalSize);
         if(m_pData) {
-            memcpy(m_pDataShadow, m_pData, _iTotalSize);
+            if(_iTotalSize > m_pDataSize){
+                memcpy(m_pDataShadow, m_pData, m_pDataSize);
+            }else{
+                memcpy(m_pDataShadow, m_pData, _iTotalSize);
+            }
         }
     }else{
         m_pDataShadow = m_pData;
@@ -983,7 +987,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         Phascan_Version = m_pDataFile->GetFileHeader()->version - m_pDataFile->GetFileHeader()->size -
                 m_pDataFile->GetFileHeader()->reserved;
     }
-    qDebug()<<"Phascan_Version"<<Phascan_Version;
+    //qDebug()<<"Phascan_Version"<<Phascan_Version;
 
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{
@@ -1057,7 +1061,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.coupleMonitoringState = false;
             _group.coupleMonitoringVelocity = _pGroupInfo->velocity /100;
         }
-        qDebug()<<"coupleMonitoringState"<<_group.coupleMonitoringState;
+        //qDebug()<<"coupleMonitoringState"<<_group.coupleMonitoringState;
 
 		/* 发射接收 */
         _group.nTrigeStart	  = _pGroupInfo->pulser1;	/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1

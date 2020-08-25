@@ -83,6 +83,8 @@
 #define DEFAULT_NOZZLE_INSIDE       0
 #define DEFAULT_NOZZLE_ANGLE        90
 
+#define DEFAULT_FILLET_ANGLE        90
+#define DEFAULT_FILLET_PROBE_POS    4
 /* Weld */
 #define DEFAULT_WELD_ORIENTATION  0
 #define DEFAULT_WELD_SYMMETRY     true

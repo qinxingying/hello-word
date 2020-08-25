@@ -5,6 +5,7 @@
 #include "weld_i_paramters.h"
 #include "weld_v_paramters.h"
 #include "weld_u_paramters.h"
+#include "weld_t_paramters.h"
 
 namespace Paramters {
 
@@ -20,7 +21,8 @@ class Weld : public QObject
         VY,
         VV,
         UU,
-        UV
+        UV,
+        TKY
     };
 
     enum WeldOrientation {
@@ -52,7 +54,7 @@ private:
     WeldV m_BtmV;
     WeldV m_MidV;
     WeldV m_TopV;
-
+    WeldTKY m_TKY;
     friend class Config;
 };
 

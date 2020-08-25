@@ -25,7 +25,7 @@ ProcessDisplay::ProcessDisplay(QObject *parent) :
 }
 
 static const int g_nSpliterWidth = 1 ;
-float srcrangestart,srcrangestop;
+//float srcrangestart,srcrangestop;
 QSize ProcessDisplay::GetMinimumWidgetSize(int eType_)
 {
 	QSize _size ;
@@ -2131,8 +2131,10 @@ void ProcessDisplay::UpdateDataViewFrameBH(DopplerDataView* pWidget_ , int nGrou
     QString _strBottomUnit = _process->GetSonicAxisUnit(nGroupId_) ;
 	_fStart = _process->GetSampleStart(nGroupId_ , nLawId_) ;
 	_fStop  = _fStart + _process->GetSampleRange(nGroupId_ , nLawId_) ;
-    srcrangestart = _fStart;
-    srcrangestop = _fStop;
+//    srcrangestart = _fStart;
+//    srcrangestop = _fStop;
+//    _group.currentRangeStart = _fStart;
+//    _group.currentRangeStop = _fStop;
     float pcs = _pConfig->TOFD[nGroupId_].fPCS;
     if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
         pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
@@ -2167,8 +2169,10 @@ void ProcessDisplay::UpdateDataViewFrameBV(DopplerDataView* pWidget_ , int nGrou
     QString _strBottomUnit = _process->GetSonicAxisUnit(nGroupId_) ;
 	_fStart = _process->GetSampleStart(nGroupId_ , nLawId_)  ;
 	_fStop =  _fStart + _process->GetSampleRange(nGroupId_ , nLawId_)  ;
-    srcrangestart = _fStart;
-    srcrangestop = _fStop;
+//    srcrangestart = _fStart;
+//    srcrangestop = _fStop;
+//    _group.currentRangeStart = _fStart;
+//    _group.currentRangeStop = _fStop;
     float pcs = _pConfig->TOFD[nGroupId_].fPCS;
     if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
         pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);

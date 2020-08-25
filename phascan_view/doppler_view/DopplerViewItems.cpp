@@ -344,6 +344,7 @@ void DopplerViewItems::UpdateItemsCursor()
 	if(!m_pCursor[0])
 	{
 		m_pCursor[0] = new DopplerLineItem(COLOR_CURSOR_AREF);
+        m_pCursor[0]->SetWheelEnable();
 		m_pCursor[0]->SetItemType(DOPPLER_GRAPHICS_ITEM_CURSOR ) ;
 		m_pCursor[0]->SetLineType(DopplerLineItem::LINE_HORIZENTAL);
 		m_pCursor[0]->SetMoveType(DopplerLineItem::LINE_MOVE_VERTICAL);
@@ -353,6 +354,7 @@ void DopplerViewItems::UpdateItemsCursor()
 	if(!m_pCursor[1])
 	{
 		m_pCursor[1] = new DopplerLineItem(COLOR_CURSOR_AMES);
+        m_pCursor[1]->SetWheelEnable();
 		m_pCursor[1]->SetItemType(DOPPLER_GRAPHICS_ITEM_CURSOR ) ;
 		m_pCursor[1]->SetLineType(DopplerLineItem::LINE_HORIZENTAL);
 		m_pCursor[1]->SetMoveType(DopplerLineItem::LINE_MOVE_VERTICAL);
@@ -362,6 +364,7 @@ void DopplerViewItems::UpdateItemsCursor()
 	if(!m_pCursor[2])
 	{
 		m_pCursor[2] = new DopplerLineItem(COLOR_CURSOR_UREF);
+        m_pCursor[2]->SetWheelEnable();
 		m_pCursor[2]->SetItemType(DOPPLER_GRAPHICS_ITEM_CURSOR ) ;
 		m_pCursor[2]->SetLineType(DopplerLineItem::LINE_VERTICAL);
 		m_pCursor[2]->SetMoveType(DopplerLineItem::LINE_MOVE_HORIZENTAL);
@@ -371,6 +374,7 @@ void DopplerViewItems::UpdateItemsCursor()
 	if(!m_pCursor[3])
 	{
 		m_pCursor[3] = new DopplerLineItem(COLOR_CURSOR_UMES);
+        m_pCursor[3]->SetWheelEnable();
 		m_pCursor[3]->SetItemType(DOPPLER_GRAPHICS_ITEM_CURSOR ) ;
 		m_pCursor[3]->SetLineType(DopplerLineItem::LINE_VERTICAL);
 		m_pCursor[3]->SetMoveType(DopplerLineItem::LINE_MOVE_HORIZENTAL);
@@ -1065,6 +1069,12 @@ void  DopplerViewItems::DrawWeld(QPainterPath& path)
             break;
         case UV:
             DrawWeldUVDataII( path);
+            break;
+        case TKY:
+            DrawWeldTKYDataII( path);
+            break;
+        case DXF:
+            DrawWeldDxf(path);
             break;
         default:
             DrawWeldNoneDataII( path);
@@ -3207,6 +3217,364 @@ void  DopplerViewItems::DrawWeldUVDataII(QPainterPath& path)
             }
         }
     }
+}
+
+void  DopplerViewItems::DrawWeldTKYDataII(QPainterPath& path)
+{
+    QPointF _pos[4];
+    double _fStartV, _fStopV, _fSliderStartV, _fSliderStopV;
+    m_pDataView->GetRulerRange( &_fStartV, &_fStopV, &_fSliderStartV, &_fSliderStopV, DopplerDataView::DATA_VIEW_RULER_LEFT);
+    double _fStartH, _fStopH, _fSliderStartH, _fSliderStopH;
+    m_pDataView->GetRulerRange( &_fStartH, &_fStopH, &_fSliderStartH, &_fSliderStopH, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+    _pos[0].setX(0);
+    _pos[0].setY(_fStartV);
+    _pos[1].setX(0);
+    _pos[1].setY(_fStopV);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+
+    double w1 = m_cPart.weld_ii.TKY.w1;
+    double w2 = m_cPart.weld_ii.TKY.w2;
+    double h1 = m_cPart.weld_ii.TKY.h1;
+    double h2 = m_cPart.weld_ii.TKY.h2;
+    double a1 = DEGREE_TO_ARCH(m_cPart.weld_ii.TKY.a1);
+    double a2 = DEGREE_TO_ARCH(m_cPart.weld_ii.TKY.a2);
+    double _btoT = m_cPart.weld_ii.eBottomThinkness;
+
+    switch (m_cPart.weld_ii.eProbePos) {
+    case KTY_WED_1:
+    {
+        if(m_cPart.weld_ii.eAngle == 90){
+            DrawWeld90degTKYWeb(w2, h1, h2, a1, a2, _fStartV, _fStopV, _fStartH, path);
+        }else{
+            DrawWeldTKYWeb( m_cPart.weld_ii.TKY, _fStartV, _fStopV, _fStartH, m_cPart.weld_ii.eAngle, path);
+        }
+    }
+        break;
+    case KTY_WED_2:
+    {
+        if(m_cPart.weld_ii.eAngle == 90){
+            DrawWeld90degTKYWeb(w1, h2, h1, a2, a1, _fStartV, _fStopV, _fStartH, path);
+        }else{
+            WELD_FORMAT_TKY temp_tky;
+            temp_tky.w1 = m_cPart.weld_ii.TKY.w2;
+            temp_tky.w2 = m_cPart.weld_ii.TKY.w1;
+            temp_tky.h1 = m_cPart.weld_ii.TKY.h2;
+            temp_tky.h2 = m_cPart.weld_ii.TKY.h1;
+            temp_tky.a1 = m_cPart.weld_ii.TKY.a2;
+            temp_tky.a2 = m_cPart.weld_ii.TKY.a1;
+
+            double temp_angle = 180 - m_cPart.weld_ii.eAngle;
+            DrawWeldTKYWeb( temp_tky, _fStartV, _fStopV, _fStartH, temp_angle, path);
+        }
+    }
+        break;
+    case KTY_WING_1:
+    case KTY_WING_2:
+        DrawWeldTKYPlain(_fStartH, _fStopH, _fStartV, _btoT, path);
+        break;
+    case KTY_WING_3:
+    {
+        DrawWeldTKYPlain(_fStartH, _fStopH, _fStartV, _btoT, path);
+        if(m_cPart.weld_ii.eAngle == 90){
+            DrawWeld90degTKY(w1, w2, h1, h2, a1, a2, _fStartV, _fStopV, path);
+        }else{
+            DrawWeldTKYWing( m_cPart.weld_ii.TKY, _fStartV, _fStopV, m_cPart.weld_ii.eAngle, path);
+        }
+    }
+        break;
+    case KTY_WING_4:
+    {
+        DrawWeldTKYPlain(_fStartH, _fStopH, _fStartV, _btoT, path);
+        if(m_cPart.weld_ii.eAngle == 90){
+            DrawWeld90degTKY(w2, w1, h2, h1, a2, a1, _fStartV, _fStopV, path);
+        }else{
+            WELD_FORMAT_TKY temp_tky;
+            temp_tky.w1 = m_cPart.weld_ii.TKY.w2;
+            temp_tky.w2 = m_cPart.weld_ii.TKY.w1;
+            temp_tky.h1 = m_cPart.weld_ii.TKY.h2;
+            temp_tky.h2 = m_cPart.weld_ii.TKY.h1;
+            temp_tky.a1 = m_cPart.weld_ii.TKY.a2;
+            temp_tky.a2 = m_cPart.weld_ii.TKY.a1;
+
+            double temp_angle = 180 - m_cPart.weld_ii.eAngle;
+            DrawWeldTKYWing( temp_tky, _fStartV, _fStopV, temp_angle, path);
+        }
+    }
+        break;
+    default:
+        break;
+    }
+}
+
+void DopplerViewItems::DrawWeldTKYPlain(double startH, double stopH, double startV, double thinkness, QPainterPath& path)
+{
+    QPointF _pos[2];
+    _pos[0].setX(startH);
+    _pos[0].setY(startV);
+    _pos[1].setX(stopH);
+    _pos[1].setY(startV);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+
+    _pos[0].setX(startH);
+    _pos[0].setY(startV + thinkness);
+    _pos[1].setX(stopH);
+    _pos[1].setY(startV + thinkness);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+}
+
+void  DopplerViewItems::DrawWeld90degTKY(double w1, double w2, double h1, double h2, double a1, double a2,
+                                         double startV, double stopV, QPainterPath& path)
+{
+    QPointF _pos[4];
+    double topT = m_cPart.weld_ii.eTopThinkness / 2;
+    double _btoT = m_cPart.weld_ii.eBottomThinkness;
+    _pos[0].setX(-w1 - topT);
+    _pos[0].setY(startV + _btoT);
+    _pos[1].setX(- topT);
+    _pos[1].setY(startV + _btoT + h1);
+    _pos[2].setX(- topT + tan(a1)*h1);
+    _pos[2].setY(startV + _btoT);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+    path.lineTo(_pos[2]);
+
+    _pos[3].setX(- topT);
+    _pos[3].setY(stopV);
+    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+    path.moveTo(_pos[1]);
+    path.lineTo(_pos[3]);
+
+    _pos[0].setX( w2 + topT);
+    _pos[0].setY(startV + _btoT);
+    _pos[1].setX( topT);
+    _pos[1].setY(startV + _btoT + h2);
+    _pos[2].setX( topT - tan(a2)*h2);
+    _pos[2].setY(startV + _btoT);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+    path.lineTo(_pos[2]);
+
+    _pos[3].setX( topT);
+    _pos[3].setY( stopV);
+    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+    path.moveTo(_pos[1]);
+    path.lineTo(_pos[3]);
+}
+
+void  DopplerViewItems::DrawWeldTKYWing( WELD_FORMAT_TKY &weld_tky, double startV, double stopV,double eAngle, QPainterPath& path)
+{
+    QPointF _pos[4];
+    double w1 = weld_tky.w1;
+    double h1 = weld_tky.h1;
+    double w2 = weld_tky.w2;
+    double h2 = weld_tky.h2;
+    double topT = m_cPart.weld_ii.eTopThinkness / 2;
+    double TKYAngle = DEGREE_TO_ARCH(eAngle);
+    double _btoT = m_cPart.weld_ii.eBottomThinkness;
+    double tkyH = abs(stopV - startV) - _btoT;
+
+    double TKYA1X = h1 / tan( TKYAngle);
+    double topTx = topT / sin(TKYAngle);
+    double _a1X, _a2X;
+    double tkyHx = tkyH / tan( TKYAngle);
+    double a1a = 180 - eAngle - weld_tky.a1;
+    if(a1a == 90){
+        _a1X = 0;
+    }else{
+        double a1aArch = DEGREE_TO_ARCH(a1a);
+        _a1X = h1 / tan(a1aArch);
+    }
+
+    _pos[0].setX( TKYA1X - w1 - topTx);
+    _pos[0].setY( startV + _btoT);
+    _pos[1].setX( TKYA1X - topTx);
+    _pos[1].setY( startV + _btoT + h1);
+    _pos[2].setX( TKYA1X - topTx + _a1X);
+    _pos[2].setY( startV + _btoT);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+    path.lineTo(_pos[2]);
+
+    _pos[3].setX( tkyHx - topTx);
+    _pos[3].setY( stopV);
+    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+    path.moveTo(_pos[1]);
+    path.lineTo(_pos[3]);
+
+    double TKYA2X = h2 / tan( TKYAngle);
+    double a2a = eAngle - weld_tky.a2;
+    double a2aArch = DEGREE_TO_ARCH(a2a);
+    _a2X = h2 / tan(a2aArch);
+    _pos[0].setX( TKYA2X + w2 + topTx);
+    _pos[0].setY( startV + _btoT);
+    _pos[1].setX( TKYA2X + topTx);
+    _pos[1].setY( startV + _btoT + h2);
+    _pos[2].setX( TKYA2X + topTx - _a2X);
+    _pos[2].setY( startV + _btoT);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+    path.lineTo(_pos[2]);
+
+    _pos[3].setX( tkyHx + topTx);
+    _pos[3].setY( stopV);
+    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+    path.moveTo(_pos[1]);
+    path.lineTo(_pos[3]);
+}
+
+void  DopplerViewItems::DrawWeld90degTKYWeb(double w2, double h1, double h2, double a1, double a2, double startV, double stopV,
+                                            double startH,QPainterPath& path)
+{
+    QPointF _pos[4];
+    double topT = m_cPart.weld_ii.eTopThinkness;
+    double _btoT = m_cPart.weld_ii.eBottomThinkness;
+    _pos[0].setX(0);
+    _pos[0].setY(startV);
+    _pos[1].setX(0);
+    _pos[1].setY(stopV);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+
+    _pos[0].setX(_btoT);
+    _pos[0].setY(startV);
+    _pos[1].setX(_btoT);
+    _pos[1].setY(stopV);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+
+    _pos[0].setX(0);
+    _pos[0].setY(startV + topT - tan(a2)*h2);
+    _pos[1].setX(-h2);
+    _pos[1].setY(startV + topT);
+    _pos[2].setX(0);
+    _pos[2].setY(startV + topT + w2);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+    path.lineTo(_pos[2]);
+
+    _pos[3].setX(startH);
+    _pos[3].setY(startV + topT);
+    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+    path.moveTo(_pos[1]);
+    path.lineTo(_pos[3]);
+
+    _pos[0].setX(0);
+    _pos[0].setY(startV + tan(a1)*h1);
+    _pos[1].setX(-h1);
+    _pos[1].setY(startV);
+    _pos[2].setX(startH);
+    _pos[2].setY(startV);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+    path.lineTo(_pos[2]);
+}
+
+void DopplerViewItems::DrawWeldTKYWeb( WELD_FORMAT_TKY &weld_tky, double startV, double stopV, double startH, double eAngle,
+                                       QPainterPath& path)
+{
+    QPointF _pos[4];
+    double h1 = weld_tky.h1;
+    double w2 = weld_tky.w2;
+    double h2 = weld_tky.h2;
+    double topT = m_cPart.weld_ii.eTopThinkness / 2;
+    double topT2 = topT * 2;
+    double TKYAngle = DEGREE_TO_ARCH(eAngle);
+    double _btoT = m_cPart.weld_ii.eBottomThinkness;
+    double _rangeV = abs(stopV - startV);
+    double _btoTx = _btoT/sin(TKYAngle);
+
+    double _tanAngle = tan(TKYAngle);
+    double _cosAngle = cos(TKYAngle);
+    double _sinAngle = sin(TKYAngle);
+    _pos[0].setX(topT/_tanAngle);
+    _pos[0].setY(startV);
+    _pos[1].setX((topT - _rangeV)/_tanAngle);
+    _pos[1].setY(stopV);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+
+    float _tranBotx = m_pDataView->TranslateToScenePlanH(_btoTx);
+    _pos[0].setX(_pos[0].x() + _tranBotx);
+    _pos[1].setX(_pos[1].x() + _tranBotx);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+
+    double a2a = 90 - eAngle + weld_tky.a2;
+    if(a2a > 89){
+        return;
+    }
+    double a2aArch = DEGREE_TO_ARCH(a2a);
+    double _a2X = h2 * tan(a2aArch);
+    double pos1x = - (topT + _cosAngle*h2)/_tanAngle;
+    double pos1y = topT2 + h2*_cosAngle;
+    _pos[0].setX(pos1x + _a2X*_cosAngle);
+    _pos[0].setY(startV + pos1y - _a2X*_sinAngle);
+    _pos[1].setX(-h2/_sinAngle - topT/_tanAngle);
+    _pos[1].setY(startV + topT2);
+    _pos[2].setX(pos1x - w2*_cosAngle);
+    _pos[2].setY(startV + pos1y + w2*_sinAngle);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+    path.lineTo(_pos[2]);
+
+    _pos[3].setX(startH);
+    _pos[3].setY(startV + topT2);
+    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+    path.moveTo(_pos[1]);
+    path.lineTo(_pos[3]);
+
+    double _a1X;
+    double a1a = 90 - eAngle - weld_tky.a1;
+    if(a1a == 0){
+        _a1X = 0;
+    }else{
+        double a1aArch = DEGREE_TO_ARCH(a1a);
+        _a1X = h1 * tan(a1aArch);
+    }
+    _pos[0].setX(topT/_tanAngle + _a1X*_cosAngle - h1*_cosAngle/_tanAngle);
+    _pos[0].setY(startV + h1*_cosAngle - _a1X*_sinAngle);
+    _pos[1].setX(topT/_tanAngle - h1/_sinAngle);
+    _pos[1].setY(startV);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
 }
 
 void  DopplerViewItems::DrawWeldTKY(QPainterPath& path)

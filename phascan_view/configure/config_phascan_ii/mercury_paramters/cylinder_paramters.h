@@ -20,7 +20,7 @@ private:
     double m_angle;
     double m_inside;
     double m_outside;
-    ProbePosition m_probePos;
+    Cylinder::ProbePosition m_probePos;
 
     friend class Config;
 };

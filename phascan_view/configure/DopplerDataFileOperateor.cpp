@@ -71,7 +71,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     }
 
     m_pBeamData = m_file->map(m_cFileHead.size , reservedSize) ;
-
+    m_mapdataSize = reservedSize;
 
     return 0 ;
 }
@@ -80,6 +80,11 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
 unsigned char* DopplerDataFileOperateor::GetData() const
 {
     return m_pBeamData  ;
+}
+
+qint64 DopplerDataFileOperateor::GetDataSize() const
+{
+    return m_mapdataSize;
 }
 
 INSPEC_DATA_FILE* DopplerDataFileOperateor::GetFileHeader()

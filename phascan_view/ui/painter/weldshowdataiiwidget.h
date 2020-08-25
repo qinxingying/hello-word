@@ -14,10 +14,17 @@ class WeldShowDataIIWidget : public QWidget
 public:
     explicit WeldShowDataIIWidget(QWidget *parent = 0);
     void SerPart(PART_CONFIG *pInfo_);
-
+    void clear_point();
+public slots:
+    void do_zoom_change(double value);
 protected:
     void paintEvent( QPaintEvent *event);
-
+    void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+signals:
+    void zoom(double v);
 private:
     void UpdateDisplayRangle();
     void PositionTransfer( QPointF &pos_);
@@ -29,6 +36,7 @@ private:
     void DrawWeldVV( QPainter &painter);
     void DrawWeldUU( QPainter &painter);
     void DrawWeldUV( QPainter &painter);
+    void DrawWeldTKY( QPainter &painter);
     struct RANGE_INFO
     {
         double fWidth;
@@ -40,6 +48,10 @@ private:
     PART_CONFIG *m_pPart;
     RANGE_INFO m_cRange;
     float m_fThickness;
+    double m_zoom;
+    QPoint m_startPoint;
+    QPoint m_endPoint;
+    QPoint m_lastPoint;
 };
 
 #endif // WELDSHOWDATAIIWIDGET_H

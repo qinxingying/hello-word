@@ -474,6 +474,17 @@ QPointF DopplerDataView::TranslateToScenePlan(QPointF* pPos_)
 	return QPointF(_fX , _fY);
 }
 
+//将标尺宽度转换为场景宽度
+float DopplerDataView::TranslateToScenePlanH(double width)
+{
+    double _nHStart = RulerRange[DATA_VIEW_RULER_BOTTOM].first;
+    double _nHStop  = RulerRange[DATA_VIEW_RULER_BOTTOM].second;
+    double _nHWidth = abs(_nHStop - _nHStart);
+    int _nSceneWidth = m_pGraphicView->GetSceneSize().width();
+    float _fx = _nSceneWidth * width / _nHWidth;
+    return _fx;
+}
+
 QPointF DopplerDataView::TranslateTofdToScenePlan(QPointF* pPos_)
 {
     ParameterProcess* _pProcess = ParameterProcess::Instance();

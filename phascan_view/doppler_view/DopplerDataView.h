@@ -107,6 +107,7 @@ public:
     void setSTCurveGatePoints(DopplerGateItem* item, int eGate_);
     QPointF TranslateToScenePlan(QPointF* pPos_) ;
     QPointF TranslateTofdToScenePlan(QPointF* pPos_);
+    float TranslateToScenePlanH(double width);
     void SetWidgetSelected(bool bSelect_) ;
     DopplerViewItems* GetItemGroup() const ;
     void UpdateScene();

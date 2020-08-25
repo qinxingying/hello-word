@@ -1059,7 +1059,11 @@ void MainWindow::OpenFilePro(QString strFileName_)
         scanSpin->setValue(scanSpin->minimum());
         indexSliderh->setValue(0);
         m_iCurGroup = 0;
+        ui->actionAided_Analysis->setEnabled(true);
 
+    }else{
+        QMessageBox::warning(this, tr("Illegal Datafile"), tr("This is illegal datafile. Please Choose another one."));
+        return;
     }
     if(m_nAlloff)
     {
@@ -1078,7 +1082,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
     _pReport->set_reportName(m_baseName);
     this->setWindowTitle(m_titleName + m_fileName);
 
-    ui->actionAided_Analysis->setEnabled(true);
+
 
 //    ParameterProcess* _process = ParameterProcess::Instance();
 //    WDATA *ppdata = _process->GetShadowDataPointer();

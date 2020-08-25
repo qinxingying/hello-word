@@ -120,6 +120,7 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
     }
 
     m_pDataFile->m_pBeamData = (unsigned char *)m_dataSource.data();
+    m_pDataFile->m_mapdataSize = len;
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << " Read Phascan II Data Success!!";
     set_is_phascan_ii(true);
@@ -507,22 +508,24 @@ void Config::unpack_gains(const QVariantList &list)
 void Config::unpack_geometry(const QVariantMap &map)
 {
     if(Paramters::Specimen::PLANE == m_groups[m_currentGroupID].m_specimen.m_shape) {
-        unpack_geometry_plane(map);
+        unpack_geometry_plane(map, m_groups[m_currentGroupID].m_specimen.m_geometry.m_plane);
     } else if(Paramters::Specimen::CYLINDER == m_groups[m_currentGroupID].m_specimen.m_shape) {
         unpack_geometry_cylinder(map, m_groups[m_currentGroupID].m_specimen.m_geometry.m_cylinder);
     } else if(Paramters::Specimen::NOZZLE == m_groups[m_currentGroupID].m_specimen.m_shape) {
         unpack_geometry_nozzle(map);
+    } else if(Paramters::Specimen::FILLET == m_groups[m_currentGroupID].m_specimen.m_shape) {
+        unpack_geometry_fillet(map);
     } else {
         qWarning("%s(%s[%d]): unimplement", __FILE__, __func__, __LINE__);
     }
 }
 
-void Config::unpack_geometry_plane(const QVariantMap &map)
+void Config::unpack_geometry_plane(const QVariantMap &map, Paramters::Plane &plane)
 {
-    Paramters::Plane &plane = m_groups[m_currentGroupID].m_specimen.m_geometry.m_plane;
+    //Paramters::Plane &plane = m_groups[m_currentGroupID].m_specimen.m_geometry.m_plane;
     plane.m_height = map.value("Height", DEFAULT_PLANE_HEIGHT).toDouble();
-    plane.m_length = map.value("Height", DEFAULT_PLANE_LENGTH).toDouble();
-    plane.m_width  = map.value("Height", DEFAULT_PLANE_WIDTH).toDouble();
+    plane.m_length = map.value("Length", DEFAULT_PLANE_LENGTH).toDouble();
+    plane.m_width  = map.value("Width", DEFAULT_PLANE_WIDTH).toDouble();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " height " << plane.m_height
@@ -555,6 +558,16 @@ void Config::unpack_geometry_nozzle(const QVariantMap &map)
 
     unpack_geometry_cylinder(map.value("Cylinder1").toMap(), nozzle.m_cylinder1);
     unpack_geometry_cylinder(map.value("Cylinder2").toMap(), nozzle.m_cylinder2);
+}
+
+void Config::unpack_geometry_fillet(const QVariantMap &map)
+{
+    Paramters::Fillet &fillet = m_groups[m_currentGroupID].m_specimen.m_geometry.m_fillet;
+    fillet.m_angle = map.value("Angle", DEFAULT_FILLET_ANGLE).toDouble();
+    fillet.m_probePos = static_cast<Paramters::Fillet::ProbePosition> (map.value("ProbePos",
+                                                                        DEFAULT_FILLET_PROBE_POS).toUInt());
+    unpack_geometry_plane(map.value("BottomPlane").toMap(), fillet.m_bottomPlane);
+    unpack_geometry_plane(map.value("TopPlane").toMap(), fillet.m_topPlane);
 }
 
 void Config::unpack_weld(const QVariantMap &map)
@@ -596,6 +609,13 @@ void Config::unpack_weld(const QVariantMap &map)
         unpack_U_weld(map.value("U").toMap(), weld.m_U);
         unpack_I_weld(map.value("I").toMap(), weld.m_I);
         unpack_V_weld(map.value("V").toMap(), weld.m_V);
+    } else if(Paramters::Weld::TKY == weld.m_type) {
+        weld.m_TKY.m_a1 = map.value("a1").toDouble();
+        weld.m_TKY.m_a2 = map.value("a2").toDouble();
+        weld.m_TKY.m_h1 = map.value("h1").toDouble();
+        weld.m_TKY.m_h2 = map.value("h2").toDouble();
+        weld.m_TKY.m_l1 = map.value("l1").toDouble();
+        weld.m_TKY.m_l2 = map.value("l2").toDouble();
     } else {
         qWarning("%s(%s[%d]): unimplement", __FILE__, __func__, __LINE__);
     }
@@ -604,8 +624,9 @@ void Config::unpack_weld(const QVariantMap &map)
 void Config::getWeldData( int groupId, WELD_II & weld_ii)
 {
     Paramters::Weld &weld = m_groups[groupId].m_specimen.m_weld;
-    weld_ii.eType = (setup_WELD_TYPE_II)weld.m_type;
-    weld_ii.eSymmetry = (setup_WELD_SYMMETRY_TYPE)weld.m_isSymmetry;
+    Paramters::Fillet &fillet = m_groups[groupId].m_specimen.m_geometry.m_fillet;
+    weld_ii.eType = static_cast<setup_WELD_TYPE_II>(weld.m_type);
+    weld_ii.eSymmetry = static_cast<setup_WELD_SYMMETRY_TYPE>(weld.m_isSymmetry);
     //if(Paramters::Weld::I == weld.m_type)
     switch (weld.m_type) {
     case Paramters::Weld::I:
@@ -653,10 +674,29 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
         weld_ii.UV.w3 = weld.m_V.m_width;
         weld_ii.UV.h2 = weld.m_V.m_height;
         break;
+    case Paramters::Weld::TKY:
+        weld_ii.TKY.w1 = weld.m_TKY.m_l1;
+        weld_ii.TKY.w2 = weld.m_TKY.m_l2;
+        weld_ii.TKY.h1 = weld.m_TKY.m_h1;
+        weld_ii.TKY.h2 = weld.m_TKY.m_h2;
+        weld_ii.TKY.a1 = weld.m_TKY.m_a1;
+        weld_ii.TKY.a2 = weld.m_TKY.m_a2;
+        break;
     default:
         break;
     }
-
+    if(Paramters::Weld::TKY == weld.m_type){
+        weld_ii.eProbePos = static_cast<KTY_ProbePosition>(fillet.m_probePos);
+        weld_ii.eAngle    = fillet.m_angle;
+        //weld_ii.eAngle    = 60;
+        weld_ii.eTopThinkness    = fillet.m_topPlane.m_height;
+        weld_ii.eBottomThinkness = fillet.m_bottomPlane.m_height;
+    }else{
+        weld_ii.eProbePos = static_cast<KTY_ProbePosition>(DEFAULT_FILLET_PROBE_POS);
+        weld_ii.eAngle    = DEFAULT_FILLET_ANGLE;
+        weld_ii.eTopThinkness    = DEFAULT_PLANE_HEIGHT;
+        weld_ii.eBottomThinkness = DEFAULT_PLANE_HEIGHT;
+    }
 }
 
 void Config::getTOPCWidth( int groupId, double &topcWidth)
@@ -1282,6 +1322,13 @@ void Config::convert_to_phascan_config(int groupId)
     } else if(Paramters::Specimen::NOZZLE == currentSpecimen.m_shape) {
         targetGroup.part.Thickness    = (currentSpecimen.m_geometry.m_nozzle.m_outside -
                                          currentSpecimen.m_geometry.m_nozzle.m_inside) * 1000.0;
+    } else if(Paramters::Specimen::FILLET == currentSpecimen.m_shape) {
+        if(Paramters::Fillet::WED_1 == currentSpecimen.m_geometry.m_fillet.m_probePos
+                || Paramters::Fillet::WED_2 == currentSpecimen.m_geometry.m_fillet.m_probePos){
+            targetGroup.part.Thickness = currentSpecimen.m_geometry.m_fillet.m_topPlane.m_height;
+        }else{
+            targetGroup.part.Thickness = currentSpecimen.m_geometry.m_fillet.m_bottomPlane.m_height;
+        }
     }
 
     if(Paramters::Focallawer::Longitudinal == currentGroup.m_focallawer.m_waveType) {

@@ -110,6 +110,14 @@ protected:
     void  DrawWeldVVDataII(QPainterPath& path);
     void  DrawWeldUUDataII(QPainterPath& path);
     void  DrawWeldUVDataII(QPainterPath& path);
+    void  DrawWeldTKYDataII(QPainterPath& path);
+    void  DrawWeldTKYPlain(double startH, double stopH, double startV, double thinkness, QPainterPath& path);
+    void  DrawWeld90degTKY(double w1, double w2, double h1, double h2, double a1, double a2, double startV, double stopV,
+                           QPainterPath& path);
+    void  DrawWeldTKYWing( WELD_FORMAT_TKY &weld_tky, double startV, double stopV, double eAngle, QPainterPath& path);
+    void  DrawWeld90degTKYWeb(double w2, double h1, double h2, double a1, double a2, double startV, double stopV, double startH,
+                              QPainterPath& path);
+    void DrawWeldTKYWeb( WELD_FORMAT_TKY &weld_tky, double startV, double stopV, double startH, double eAngle, QPainterPath& path);
 
 	DopplerDataView*     m_pDataView  ;
 	DopplerDefectItem*   m_pDefect[DEFECT_SIGN_MAX];

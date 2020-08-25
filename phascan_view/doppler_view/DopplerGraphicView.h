@@ -9,6 +9,7 @@ class QGraphicsScene;
 class DopplerGraphicsItem;
 class GraphicsViewBase;
 class DopplerDrawScan;
+class DopplerLineItem;
 
 #define MAX_MEASURE_DATA_DISPLAY  24
 
@@ -58,6 +59,7 @@ private:
     QGraphicsScene*   m_pScene        ;
     GraphicsViewBase* m_pBackGround   ;
     DopplerDrawScan*  m_pDrawScan     ;
+    DopplerLineItem*  m_tempItem;
     //**************************************
     double            m_nScaleH       ;
     double            m_nScaleV       ;
@@ -74,6 +76,7 @@ private:
 	//bool              m_bBCAutoZomm  ;
 	//bool              m_bZommInit    ;
 	bool              m_bZoom        ;
+    bool              m_wheelItemSelect;
 signals:
     void signalViewChanged(QRectF rect)  ;
     void signalUpdateDrawing();

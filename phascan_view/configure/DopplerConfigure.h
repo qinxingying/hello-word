@@ -197,7 +197,7 @@ private:
 	WDATA*				m_pData ;
 	WDATA*				m_pDataShadow ;
     U8					m_nComDisplay[setup_MAX_DISPLAY_QTY];
-
+    qint64  m_pDataSize;
     QString g_strColorAmp;
     QString g_strColorThickness;
     QString g_strColorRectifier;

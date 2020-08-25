@@ -32,7 +32,7 @@ bool DopplerDrawBScanH::getShowAllStatus()
 }
 
 extern U8 src[2048][2048];
-extern int srcrangestart,srcrangestop;
+//extern int srcrangestart,srcrangestop;
 
 void DopplerDrawBScanH::Draw (QImage* pImage_)
 {

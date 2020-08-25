@@ -32,6 +32,8 @@ public:
     void SetLineStyle(Qt::PenStyle eStype_) ;
     void SetScenceSize(QSize);
     void SetTofdPCS(bool tofdDepth, float pcs){m_tofdDepth = tofdDepth;m_pcs = pcs;}
+    void SetWheelEnable(){m_wheelAble = true;}
+    bool GetWheelStatus(){return m_wheelAble;}
     virtual void SetItemGeometry (QRectF& rect_);
 //----------------------------------------------------------
 //  wuhan cursor 2015-05-19
@@ -57,6 +59,7 @@ protected:
     QSize          m_cSize ;
 	QRect          m_rcWnd ;
     bool m_tofdDepth;
+    bool m_wheelAble;
     float m_pcs;
 };
 

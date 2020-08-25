@@ -1,17 +1,34 @@
 #include "weldshowdataiiwidget.h"
 #include <QPainter>
 #include "painter/DrawDxf.h"
+#include <math.h>
+#include <gHeader.h>
 
 WeldShowDataIIWidget::WeldShowDataIIWidget(QWidget *parent) :
     QWidget(parent)
 {
     m_pPart = NULL;
+    m_zoom = 1.0;
 }
 
 void WeldShowDataIIWidget::SerPart(PART_CONFIG *pInfo_)
 {
     m_pPart = pInfo_;
     m_fThickness = m_pPart->afSize[0];
+}
+
+void WeldShowDataIIWidget::clear_point()
+{
+    m_lastPoint = QPoint();
+    m_startPoint = QPoint();
+    m_endPoint = QPoint();
+}
+
+void WeldShowDataIIWidget::do_zoom_change(double value)
+{
+    if(m_zoom == value) return;
+    m_zoom = value;
+    update();
 }
 
 void WeldShowDataIIWidget::paintEvent( QPaintEvent *event)
@@ -30,23 +47,103 @@ void WeldShowDataIIWidget::paintEvent( QPaintEvent *event)
     NewPen.setColor(QColor(255, 0, 0));
     painter.setPen(NewPen);
 
-    painter.drawLine(0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
-    painter.drawLine(0, m_cRange.fStopY, m_cRange.fWidth, m_cRange.fStopY);
-    DrawWeld( painter);
+    if(m_pPart->weld_ii.eType == DXF){
+        QVector<qreal> dashes;
+        dashes << 3 << 5;
+        NewPen.setWidth(1);
+        NewPen.setDashPattern(dashes);
+        NewPen.setColor(QColor(0, 0, 255));
+        painter.setPen(NewPen);
 
-    QVector<qreal> dashes;
-    dashes << 3 << 5;
-    NewPen.setWidth(1);
-    NewPen.setDashPattern(dashes);
-    NewPen.setColor(QColor(0, 0, 255));
-    painter.setPen(NewPen);
-    painter.drawLine(m_cRange.fWidth / 2, 0, m_cRange.fWidth / 2, m_cRange.fHeight);
+        double _zoom = int(m_zoom * 100) / 100;
+
+        if(m_lastPoint.isNull()) {
+            m_lastPoint = QPoint(width() / 2, height() / 2);
+        }
+
+        int x = m_lastPoint.x() + m_endPoint.x() - m_startPoint.x();
+        int y = m_lastPoint.y() + m_endPoint.y() - m_startPoint.y();
+
+        DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
+        drawDxf->set_part(m_pPart);
+        drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
+
+        drawDxf->set(width(), height(), x, y, _zoom, _zoom);
+
+
+        drawDxf->draw_dxf_header(painter);
+
+        QPen dxf_pen(pen);
+        dxf_pen.setWidth(2);
+        dxf_pen.setColor(QColor(0, 255, 0));
+        painter.setPen(dxf_pen);
+
+        drawDxf->draw_dxf_part(painter);
+    }else{
+        painter.drawLine(0, m_cRange.fStartY, m_cRange.fWidth, m_cRange.fStartY);
+        painter.drawLine(0, m_cRange.fStopY, m_cRange.fWidth, m_cRange.fStopY);
+        DrawWeld( painter);
+
+        QVector<qreal> dashes;
+        dashes << 3 << 5;
+        NewPen.setWidth(1);
+        NewPen.setDashPattern(dashes);
+        NewPen.setColor(QColor(0, 0, 255));
+        painter.setPen(NewPen);
+        painter.drawLine(m_cRange.fWidth / 2, 0, m_cRange.fWidth / 2, m_cRange.fHeight);
+    }
+}
+
+void WeldShowDataIIWidget::wheelEvent(QWheelEvent *event)
+{
+    if(event->delta() >0){
+        m_zoom += 1;
+
+    }else{
+        if(m_zoom > 1){
+            m_zoom -= 1;
+
+        }else if(0 < m_zoom && m_zoom <= 1){
+            m_zoom -= 0.5*m_zoom;
+        }
+    }
+    update();
+    emit zoom(m_zoom);
+}
+
+void WeldShowDataIIWidget::mousePressEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        m_lastPoint = m_lastPoint + m_endPoint - m_startPoint;
+        m_startPoint = event->pos();
+    }
+}
+
+void WeldShowDataIIWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if(event->buttons() & Qt::LeftButton){
+        m_endPoint = event->pos();
+        update();
+    }
+}
+
+void WeldShowDataIIWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        m_endPoint = event->pos();
+        update();
+    }
 }
 
 void WeldShowDataIIWidget::UpdateDisplayRangle()
 {
     double _fWidth = (double) width();
     double _fHeight= (double) height();
+    if(TKY == m_pPart->weld_ii.eType){
+        m_fThickness = m_pPart->weld_ii.eBottomThinkness;
+    }else{
+        m_fThickness = m_pPart->afSize[0];
+    }
     m_cRange.fWidth	 = _fWidth;
     m_cRange.fHeight	= _fHeight;
     m_cRange.fPixelSize = m_fThickness * 3 / (2 * _fHeight);
@@ -94,6 +191,34 @@ void WeldShowDataIIWidget::UpdateDisplayRangle()
         }
     }
         break;
+    case TKY:
+    {
+        double TKYAngle, tabx, maxwidth1, maxwidth2, _fMaxWidth;
+        if(m_pPart->weld_ii.eAngle == 90){
+            tabx = m_pPart->weld_ii.eTopThinkness / 2;
+            maxwidth1 = tabx + m_pPart->weld_ii.TKY.w1;
+            maxwidth2 = tabx + m_pPart->weld_ii.TKY.w2;
+        }else{
+            TKYAngle = DEGREE_TO_ARCH(m_pPart->weld_ii.eAngle);
+            tabx = m_pPart->weld_ii.eTopThinkness / ( sin(TKYAngle) * 2);
+            maxwidth1 = tabx + m_pPart->weld_ii.TKY.w1 - ( m_pPart->weld_ii.TKY.h1 / tan(TKYAngle));
+            maxwidth2 = tabx + m_pPart->weld_ii.TKY.w2 + ( m_pPart->weld_ii.TKY.h2 / tan(TKYAngle));
+        }
+        _fMaxWidth = maxwidth1 > maxwidth2 ? maxwidth1 : maxwidth2;
+        if(_fMaxWidth > _fDefaultWidth){
+            m_cRange.fPixelSize = _fMaxWidth * 3 / _fWidth;
+        }
+        double buff = m_pPart->weld_ii.TKY.h1;
+        if(m_pPart->weld_ii.TKY.h2 > buff){
+            buff = m_pPart->weld_ii.TKY.h2;
+        }
+        if(m_fThickness > buff){
+            buff = m_fThickness;
+        }
+        m_cRange.fStartY	= _fHeight / 2;
+        m_cRange.fStopY	 = _fHeight / 2 + m_fThickness * _fHeight / ( 4 * buff);
+    }
+        break;
     default:
         break;
     }
@@ -122,6 +247,9 @@ void WeldShowDataIIWidget::DrawWeld( QPainter &painter)
         break;
     case UV:
         DrawWeldUV( painter);
+        break;
+    case TKY:
+        DrawWeldTKY( painter);
         break;
     default:
         break;
@@ -585,6 +713,205 @@ void WeldShowDataIIWidget::DrawWeldUV( QPainter &painter)
     }
 
     painter.drawPath(path);
+}
+
+void WeldShowDataIIWidget::DrawWeldTKY( QPainter &painter)
+{
+    QPainterPath path;
+    QPointF _pos[4];
+    QPointF _topPos[2];
+    double w1 = m_pPart->weld_ii.TKY.w1;
+    double h1 = m_pPart->weld_ii.TKY.h1;
+    double a1 = DEGREE_TO_ARCH(m_pPart->weld_ii.TKY.a1);
+    double w2 = m_pPart->weld_ii.TKY.w2;
+    double h2 = m_pPart->weld_ii.TKY.h2;
+    double a2 = DEGREE_TO_ARCH(m_pPart->weld_ii.TKY.a2);
+    double topT = m_pPart->weld_ii.eTopThinkness / 2;
+    double tkyH = m_pPart->weld_ii.TKY.h1;
+    //m_pPart->weld_ii.eAngle = 120;
+    double TKYAngle = DEGREE_TO_ARCH(m_pPart->weld_ii.eAngle);
+    if(m_pPart->weld_ii.TKY.h2 > tkyH){
+        tkyH = m_pPart->weld_ii.TKY.h2;
+    }
+    if(m_fThickness > tkyH){
+        tkyH = m_fThickness;
+    }
+    tkyH *= 2;
+
+    if(m_pPart->weld_ii.eAngle == 90){
+        _pos[0].setX(-w1 - topT);
+        _pos[0].setY(0);
+        _pos[1].setX(- topT);
+        _pos[1].setY(-h1);
+        _pos[2].setX(- topT + tan(a1)*h1);
+        _pos[2].setY(0);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+
+        _pos[3].setX(- topT);
+        _pos[3].setY(- tkyH);
+        PositionTransfer(_pos[3]);
+        _topPos[0] = _pos[3];
+        path.moveTo(_pos[1]);
+        path.lineTo(_pos[3]);
+
+        _pos[0].setX( w2 + topT);
+        _pos[0].setY(0);
+        _pos[1].setX( topT);
+        _pos[1].setY( -h2);
+        _pos[2].setX( topT - tan(a2)*h2);
+        _pos[2].setY(0);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+
+        _pos[3].setX( topT);
+        _pos[3].setY( - tkyH);
+        PositionTransfer(_pos[3]);
+        _topPos[1] = _pos[3];
+        path.moveTo(_pos[1]);
+        path.lineTo(_pos[3]);
+    }else{
+        double TKYA1X = h1 / tan( TKYAngle);
+        double topTx = topT / sin(TKYAngle);
+        double _a1X, _a2X;
+        double tkyHx = tkyH / tan( TKYAngle);
+        double a1a = 180 - m_pPart->weld_ii.eAngle - m_pPart->weld_ii.TKY.a1;
+        if(a1a == 90){
+            _a1X = 0;
+        }else{
+            double a1aArch = DEGREE_TO_ARCH(a1a);
+            _a1X = h1 / tan(a1aArch);
+        }
+
+        _pos[0].setX( TKYA1X - w1 - topTx);
+        _pos[0].setY(0);
+        _pos[1].setX( TKYA1X - topTx);
+        _pos[1].setY(-h1);
+        _pos[2].setX( TKYA1X - topTx + _a1X);
+        _pos[2].setY(0);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+
+        _pos[3].setX( tkyHx - topTx);
+        _pos[3].setY( - tkyH);
+        PositionTransfer(_pos[3]);
+        _topPos[0] = _pos[3];
+        path.moveTo(_pos[1]);
+        path.lineTo(_pos[3]);
+
+        double TKYA2X = h2 / tan( TKYAngle);
+        double a2a = m_pPart->weld_ii.eAngle - m_pPart->weld_ii.TKY.a2;
+        double a2aArch = DEGREE_TO_ARCH(a2a);
+        _a2X = h2 / tan(a2aArch);
+        _pos[0].setX( TKYA2X + w2 + topTx);
+        _pos[0].setY(0);
+        _pos[1].setX( TKYA2X + topTx);
+        _pos[1].setY(-h2);
+        _pos[2].setX( TKYA2X + topTx - _a2X);
+        _pos[2].setY(0);
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+
+        _pos[3].setX( tkyHx + topTx);
+        _pos[3].setY( - tkyH);        
+        PositionTransfer(_pos[3]);
+        _topPos[1] = _pos[3];
+        path.moveTo(_pos[1]);
+        path.lineTo(_pos[3]);
+    }
+    painter.drawPath(path);
+
+    QPen pen = painter.pen();
+    QPen NewPen(pen);
+    NewPen.setWidth(1);
+    NewPen.setColor(QColor(0, 255, 0));
+    painter.setPen(NewPen);
+    painter.save();
+    QPainterPath pathProbe;
+    double BotT = abs(m_cRange.fStopY - m_cRange.fStartY) / 2;
+    QPolygonF polygon1;
+    polygon1 << QPointF( 0.5 * BotT, 0) << QPointF( 2 * BotT, 0) << QPointF( 2 * BotT, BotT)
+            << QPointF( 0, BotT) << QPointF( 0, 0.5 * BotT) << QPointF( 0.5 * BotT, 0);
+    QPolygonF polygon2;
+    polygon2 << QPointF( 0, 0) << QPointF( 1.5 * BotT, 0) << QPointF( 2 * BotT, 0.5 * BotT)
+            << QPointF( 2 * BotT, BotT) << QPointF( 0, BotT) << QPointF( 0, 0);
+
+    switch (m_pPart->weld_ii.eProbePos) {
+    case KTY_WED_1:
+    {
+        double temptopx;
+        if(m_pPart->weld_ii.eAngle == 90){
+            temptopx = _topPos[0].x();
+        }else{
+            temptopx = _topPos[0].x() + _topPos[0].y() / tan(TKYAngle);
+        }
+        double tempx = temptopx - BotT / sin(TKYAngle) - 2 * BotT * cos(TKYAngle);
+        double tempy = 2 * BotT * sin(TKYAngle);
+        painter.translate( tempx - 2, tempy + 2);
+        painter.rotate(-m_pPart->weld_ii.eAngle);
+        pathProbe.addPolygon(polygon2);
+        painter.drawPath(pathProbe);
+    }
+        break;
+    case KTY_WED_2:
+    {
+        double temptopx;
+        if(m_pPart->weld_ii.eAngle == 90){
+            temptopx = _topPos[1].x();
+        }else{
+            temptopx = _topPos[1].x() + _topPos[1].y() / tan(TKYAngle);
+        }
+        double tempx = temptopx + BotT * sin(TKYAngle);
+        double tempy = BotT * cos(TKYAngle);
+
+        painter.translate( tempx + 3, tempy + 1);
+        painter.rotate(180 - m_pPart->weld_ii.eAngle);
+        pathProbe.addPolygon(polygon1);
+        painter.drawPath(pathProbe);
+    }
+        break;
+    case KTY_WING_1:
+        painter.translate(2, m_cRange.fStartY - BotT - 2);
+        pathProbe.addPolygon(polygon1);
+        painter.drawPath(pathProbe);
+        break;
+    case KTY_WING_2:
+        painter.translate( m_cRange.fWidth - 2 * BotT - 2, m_cRange.fStartY - BotT - 2);
+        pathProbe.addPolygon(polygon2);
+        painter.drawPath(pathProbe);
+        break;
+    case KTY_WING_3:
+        painter.translate( 2 * BotT + 2, m_cRange.fStopY + BotT + 1);
+        painter.rotate(180);
+        pathProbe.addPolygon(polygon2);
+        painter.drawPath(pathProbe);
+        break;
+    case KTY_WING_4:
+        painter.translate( m_cRange.fWidth - 2, m_cRange.fStopY + BotT + 1);
+        painter.rotate(180);
+        pathProbe.addPolygon(polygon1);
+        painter.drawPath(pathProbe);
+        break;
+    default:
+        break;
+    }
+    painter.restore();
 }
 
 void WeldShowDataIIWidget::PositionTransfer( QPointF &pos_)

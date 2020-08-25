@@ -200,7 +200,9 @@ enum setup_WELD_TYPE_II
     VY,
     VV,
     UU,
-    UV
+    UV,
+    TKY,
+    DXF
 };
 
 enum setup_WELD_SYMMETRY_TYPE
@@ -243,6 +245,8 @@ struct WELD_FORMAT_U
     double w1;
     double h;
     double w2;
+    double fill1;
+    double fill2;
     double r;
 };
 
@@ -285,10 +289,34 @@ struct WELD_FORMAT_UV
     double r;
 };
 
+struct WELD_FORMAT_TKY
+{
+    double w1;
+    double h1;
+    double w2;
+    double h2;
+    double fill1;
+    double a1;
+    double a2;
+};
+
+enum KTY_ProbePosition {
+    KTY_WED_1,
+    KTY_WED_2,
+    KTY_WING_1,
+    KTY_WING_2,
+    KTY_WING_3,
+    KTY_WING_4
+};
+
 struct WELD_II
 {
     setup_WELD_TYPE_II       eType;		  /* 焊缝 */
     setup_WELD_SYMMETRY_TYPE eSymmetry;	  /* 对称 */
+    KTY_ProbePosition eProbePos;         //TKY探头位置
+    double eAngle;                       //TKY腹板与翼板夹角
+    double eTopThinkness;                //TKY腹板厚度
+    double eBottomThinkness;             //TKY翼板厚度
     union{
         WELD_FORMAT_I  I;
         WELD_FORMAT_V  V;
@@ -297,6 +325,7 @@ struct WELD_II
         WELD_FORMAT_VV VV;
         WELD_FORMAT_UU UU;
         WELD_FORMAT_UV UV;
+        WELD_FORMAT_TKY TKY;
     };
 };
 
@@ -697,7 +726,7 @@ typedef struct _Group
 	int						bShowThickness;
 	int						bShowCurve;
 	int						bShowLwBw;
-	int						bShowDefect;
+	int						bShowDefect;    
 
 	LAW_CONFIG				law;
 	GATE_CONFIG				gate[setup_GATE_MAX] ;

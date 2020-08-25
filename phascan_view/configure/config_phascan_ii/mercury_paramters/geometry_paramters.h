@@ -5,6 +5,7 @@
 #include "plane_paramters.h"
 #include "cylinder_paramters.h"
 #include "nozzle_paramters.h"
+#include "fillet_paramters.h"
 
 namespace Paramters {
 
@@ -18,7 +19,7 @@ private:
     Plane m_plane;
     Cylinder m_cylinder;
     Nozzle m_nozzle;
-
+    Fillet m_fillet;
     friend class Config;
 };
 

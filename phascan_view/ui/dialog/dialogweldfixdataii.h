@@ -21,20 +21,38 @@ public:
     ~DialogWeldFixDataII();
     PART_CONFIG* GetPart();
 
+protected:
+    enum DISPLAY_MODE
+    {
+        DISPLAY_WELD = 0,
+        DISPLAY_PART
+    };
+    void SetDisplayMode(DISPLAY_MODE eMode_);
+    void SetWndName();
+    void ListPartFiles();
 private slots:
     void weldTypeChanged( int index);
     void symmetryChanged( int index);
+    void probePosChanged( int index);
+    void weldFormChanged(int index);
     void w1ValueChanged( double value);
     void w2ValueChanged( double value);
     void w3ValueChanged( double value);
     void h1ValueChanged( double value);
     void h2ValueChanged( double value);
     void r1ValueChanged( double value);
-    void r2ValueChanged( double value);
+    void r2ValueChanged( double value);    
+    void PartFileListClicked(QModelIndex index);
+    void zoomValueChanged(double value);
+    void on_nccDefaultPathBt_clicked();
+    void on_nccPathBt_clicked();
+
 private:
     Ui::DialogWeldFixDataII *ui;
     int m_nGroupId;
     PART_CONFIG m_cPart;
+    DISPLAY_MODE m_eDisplay;
+    QString m_path;
 };
 
 #endif // DIALOGWELDFIXDATAII_H

@@ -25,6 +25,7 @@ DopplerLineItem::DopplerLineItem(const QColor& cColor_)
     m_eStype = Qt::SolidLine;
     m_eLineType = LINE_TYPE::LINE_FREE;
     m_tofdDepth = false;
+    m_wheelAble = false;
 }
 
 void DopplerLineItem::SetLineType(LINE_TYPE eType_)

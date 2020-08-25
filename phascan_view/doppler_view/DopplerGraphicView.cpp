@@ -224,6 +224,7 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 //	m_bBCAutoZomm = true;
 //	m_bZommInit = false;
 	m_bZoom     = false;
+    m_wheelItemSelect = false;
 //	m_nTimerId = startTimer(100);
 }
 
@@ -333,13 +334,34 @@ void DopplerGraphicView::slotPrint()
 */
 void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
 {
-	if(tofdProAction() < 0)
-	{
-		int numDegrees = event->delta() / 8;
-		int numSteps = numDegrees / 15;
+    if(m_wheelItemSelect){
+        int offset;
+        //qDebug()<<event->angleDelta().y();
+        if(event->angleDelta().y() > 0){
+            offset = -1;
+        }else{
+            offset = 1;
+        }
+        DopplerLineItem::LINE_TYPE lineType = m_tempItem->GetLineType();
+        if(lineType == DopplerLineItem::LINE_VERTICAL){
+            QPointF temp = m_tempItem->GetItemScenePos();
+            temp.setX(temp.x() + offset);
+            m_tempItem->setPos(temp);
+        }else if(lineType == DopplerLineItem::LINE_HORIZENTAL){
+            QPointF temp = m_tempItem->GetItemScenePos();
+            temp.setY(temp.y() + offset);
+            m_tempItem->setPos(temp);
+        }
+        emit signalItemMoved(dynamic_cast<DopplerGraphicsItem*>(m_tempItem));
+        return QGraphicsView::wheelEvent(event);
+    }
+    if(tofdProAction() < 0)
+    {
+        int numDegrees = event->delta() / 8;
+        int numSteps = numDegrees / 15;
 
-		m_nScaleH += numSteps / 10.0 ;
-		m_nScaleV += numSteps / 10.0 ;
+        m_nScaleH += numSteps / 10.0 ;
+        m_nScaleV += numSteps / 10.0 ;
 
         int index_scan = 0;
         DopplerDrawCScanV* _cvDraw = dynamic_cast<DopplerDrawCScanV*>(m_pDrawScan);
@@ -414,17 +436,17 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
         if(m_nScaleV < 1) {m_nScaleV = 1 ;}
         if(m_nScaleV > 10) {m_nScaleV = 10 ;}
 
-		//****************************************
-		QPointF _nCenter = mapToScene((event->pos()));
+        //****************************************
+        QPointF _nCenter = mapToScene((event->pos()));
 
         //计算在scene里面缩放后对应的矩形框，赋值给m_cZoomRect
         if(m_nScaleH > 1 && m_nScaleV > 1) {
-			QSize _size = size();
-			int _fWidth   = ((double)_size.width()) / m_nScaleH;
-			int _nHeight  = ((double)_size.height()) / m_nScaleV;
+            QSize _size = size();
+            int _fWidth   = ((double)_size.width()) / m_nScaleH;
+            int _nHeight  = ((double)_size.height()) / m_nScaleV;
             //qDebug()<<"m_nScaleH"<<m_nScaleH;
 
-			QRect _rect;
+            QRect _rect;
             if(index_scan == 1){
                 if( _nCenter.x() > _fWidth / 2){
                     int _setX = _fWidth - _nCenter.x();
@@ -438,42 +460,42 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
             }
             _rect.setLeft(_nCenter.x() - _fWidth / 2);
             _rect.setTop(_nCenter.y() - _nHeight / 2);
-			_rect.setWidth(_fWidth);
-			_rect.setHeight(_nHeight);
-			if(_rect.left() < 0) {
-				_rect.setLeft(0);
-				_rect.setWidth(_fWidth);
+            _rect.setWidth(_fWidth);
+            _rect.setHeight(_nHeight);
+            if(_rect.left() < 0) {
+                _rect.setLeft(0);
+                _rect.setWidth(_fWidth);
 
-			}
+            }
 
-			if(_rect.top() < 0) {
-				_rect.setTop(0);
-				_rect.setHeight(_nHeight);
-			}
+            if(_rect.top() < 0) {
+                _rect.setTop(0);
+                _rect.setHeight(_nHeight);
+            }
 
-			if(_rect.right() >= _size.width()) {
+            if(_rect.right() >= _size.width()) {
                 _rect.setLeft(_size.width() - _fWidth);
                 _rect.setWidth(_fWidth);
             }
 
             if(_rect.bottom() >= _size.height()) {
-				_rect.setTop(_size.height() - _nHeight);
-				_rect.setHeight(_nHeight);
-			}
+                _rect.setTop(_size.height() - _nHeight);
+                _rect.setHeight(_nHeight);
+            }
             _nCenter.setX(_rect.left() + _fWidth / 2);
-			_nCenter.setY(_rect.top() + _nHeight / 2);
+            _nCenter.setY(_rect.top() + _nHeight / 2);
 
-			m_cZoomRect = _rect;
+            m_cZoomRect = _rect;
             m_bZoom = true;
-		} else {
+        } else {
             m_bZoom = false;
 
-		}
+        }
 
-		//centerOn(mapToScene((event->pos())));
+        //centerOn(mapToScene((event->pos())));
         centerOn(_nCenter);
         SetupMatrixScale( m_nScaleH , m_nScaleV ) ;
-	}
+    }
 }
 
 void DopplerGraphicView::resizeEvent(QResizeEvent *event)
@@ -535,6 +557,12 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
     if(!list.empty() && m_bItemSelected)
     {
         DopplerGraphicsItem* _item = (DopplerGraphicsItem*)list.at(0) ;
+        if(DopplerLineItem* wheelItem = dynamic_cast<DopplerLineItem*>(_item)){
+            if(wheelItem->GetWheelStatus()){
+                m_tempItem = wheelItem;
+                m_wheelItemSelect = true;
+            }
+        }
         emit signalItemPressed(_item) ;
     }
 
@@ -567,7 +595,7 @@ void DopplerGraphicView::mouseMoveEvent(QMouseEvent *event)
 	}
 }
 
-extern float srcrangestart,srcrangestop;
+//extern float srcrangestart,srcrangestop;
 void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(Qt::LeftButton == event->button())
@@ -955,6 +983,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 		}
 		else
 		{
+            m_wheelItemSelect = false;
 			QList<QGraphicsItem*> list = m_pScene->selectedItems();
 			if(!list.empty())
 			{
@@ -976,6 +1005,9 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
         {
 
             ParameterProcess* _process = ParameterProcess::Instance();
+            double _fStart, _fStop;
+            _fStart = _process->GetSampleStart(_iGroupId, _iLaw);
+            _fStop =  _fStart + _process->GetSampleRange(_iGroupId, _iLaw);
             _process->ChangeCscanruler(m_pDrawScan->srcscanstart,m_pDrawScan->srcscanstop);
             _process->ChangeLawStart(m_pDrawScan->srclawstart);
             _process->ChangeLawStop(m_pDrawScan->srclawstop);
@@ -997,7 +1029,8 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                 m_pDrawScan->zoomflag = 2;
                 DopplerViewItems* _pItemGroup = _pParent->GetItemGroup();
                 _pItemGroup->SetParabolaScale(1, 1);
-                _pParent->SetRulerRange( srcrangestart , srcrangestop ,  srcrangestart , srcrangestop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+                _pParent->SetRulerRange( _fStart, _fStop,  _fStart, _fStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+                //_pParent->SetRulerRange( srcrangestart , srcrangestop ,  srcrangestart , srcrangestop , DopplerDataView::DATA_VIEW_RULER_BOTTOM);
                 break;
             }
             case setup_DISPLAY_MODE_B_V:
@@ -1005,7 +1038,8 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                 m_pDrawScan->zoomflag = 2;
                 DopplerViewItems* _pItemGroup = _pParent->GetItemGroup();
                 _pItemGroup->SetParabolaScale(1, 1);
-                _pParent->SetRulerRange( srcrangestart , srcrangestop ,  srcrangestart , srcrangestop , DopplerDataView::DATA_VIEW_RULER_LEFT);
+                _pParent->SetRulerRange( _fStart, _fStop,  _fStart, _fStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
+                //_pParent->SetRulerRange( srcrangestart , srcrangestop ,  srcrangestart , srcrangestop , DopplerDataView::DATA_VIEW_RULER_LEFT);
                 break;
             }
             default:
