@@ -64,7 +64,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     qint64 fileSize = info1.size();
     qint64 reservedSize;
     if( m_cFileHead.version > fileSize){
-        reservedSize = fileSize - m_cFileHead.size -1;
+        reservedSize = fileSize - m_cFileHead.size - 1;
     }
     else{
         reservedSize = m_cFileHead.reserved;

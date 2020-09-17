@@ -557,10 +557,12 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
     if(!list.empty() && m_bItemSelected)
     {
         DopplerGraphicsItem* _item = (DopplerGraphicsItem*)list.at(0) ;
-        if(DopplerLineItem* wheelItem = dynamic_cast<DopplerLineItem*>(_item)){
-            if(wheelItem->GetWheelStatus()){
-                m_tempItem = wheelItem;
-                m_wheelItemSelect = true;
+        if(Qt::MiddleButton == event->button()){
+            if(DopplerLineItem* wheelItem = dynamic_cast<DopplerLineItem*>(_item)){
+                if(wheelItem->GetWheelStatus()){
+                    m_tempItem = wheelItem;
+                    m_wheelItemSelect = true;
+                }
             }
         }
         emit signalItemPressed(_item) ;
@@ -983,7 +985,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 		}
 		else
 		{
-            m_wheelItemSelect = false;
+
 			QList<QGraphicsItem*> list = m_pScene->selectedItems();
 			if(!list.empty())
 			{
@@ -1056,7 +1058,9 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 		else {
 			slotResetView();
 		}
-	}
+    }else if(Qt::MiddleButton == event->button()){
+        m_wheelItemSelect = false;
+    }
 
 	QList<QGraphicsItem*> list = m_pScene->selectedItems();
 	for(int i = 0 ; i < list.count() ; i++)

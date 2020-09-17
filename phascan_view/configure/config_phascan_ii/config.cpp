@@ -564,7 +564,7 @@ void Config::unpack_geometry_fillet(const QVariantMap &map)
 {
     Paramters::Fillet &fillet = m_groups[m_currentGroupID].m_specimen.m_geometry.m_fillet;
     fillet.m_angle = map.value("Angle", DEFAULT_FILLET_ANGLE).toDouble();
-    fillet.m_probePos = static_cast<Paramters::Fillet::ProbePosition> (map.value("ProbePos",
+    fillet.m_probePos = static_cast<Paramters::Fillet::ProbePosition> (map.value("ProbePosition",
                                                                         DEFAULT_FILLET_PROBE_POS).toUInt());
     unpack_geometry_plane(map.value("BottomPlane").toMap(), fillet.m_bottomPlane);
     unpack_geometry_plane(map.value("TopPlane").toMap(), fillet.m_topPlane);
@@ -1325,9 +1325,9 @@ void Config::convert_to_phascan_config(int groupId)
     } else if(Paramters::Specimen::FILLET == currentSpecimen.m_shape) {
         if(Paramters::Fillet::WED_1 == currentSpecimen.m_geometry.m_fillet.m_probePos
                 || Paramters::Fillet::WED_2 == currentSpecimen.m_geometry.m_fillet.m_probePos){
-            targetGroup.part.Thickness = currentSpecimen.m_geometry.m_fillet.m_topPlane.m_height;
+            targetGroup.part.Thickness = currentSpecimen.m_geometry.m_fillet.m_topPlane.m_height * 1000.0;
         }else{
-            targetGroup.part.Thickness = currentSpecimen.m_geometry.m_fillet.m_bottomPlane.m_height;
+            targetGroup.part.Thickness = currentSpecimen.m_geometry.m_fillet.m_bottomPlane.m_height * 1000.0;
         }
     }
 
