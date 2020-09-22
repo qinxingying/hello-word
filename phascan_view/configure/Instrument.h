@@ -59,7 +59,7 @@ enum setup_GATE_AYNC_TYPE   //闸门跟踪方式
 enum setup_GATE_TRAVEL_MODE
 {
     setup_GATE_DEPTH,       //深度闸门
-    setup_GATE_SOUND_PATH   //声程闸门
+    setup_GATE_SOUND_PATH   //半声程闸门
 };
 
 typedef struct
