@@ -317,6 +317,7 @@ struct WELD_II
     double eAngle;                       //TKY腹板与翼板夹角
     double eTopThinkness;                //TKY腹板厚度
     double eBottomThinkness;             //TKY翼板厚度
+    double eHAZ;                         //焊缝热影响区
     union{
         WELD_FORMAT_I  I;
         WELD_FORMAT_V  V;
@@ -650,6 +651,13 @@ struct RASTER_DATA
     WDATA *rasterData;
 };
 
+struct STORE_SCAN_LAWID
+{
+    bool status;
+    float scanPos;
+    int lawId;
+};
+
 typedef struct _Group
 {
 	setup_GROUP_MODE		eGroupMode;				/* 组工作模式  0 UT or 1 PA*/
@@ -739,6 +747,7 @@ typedef struct _Group
     TOPC_INFO               TopCInfo;
     TOPC_DATA               TopCData;
     RASTER_DATA             RasterData;
+    STORE_SCAN_LAWID        storeScanLawId;
 }GROUP_CONFIG;
 //####################################################################################
 //#################				 COMMON DATA			 ######################
@@ -930,6 +939,10 @@ struct DISPLAY_CONFIG
     int   CurSS[setup_MAX_GROUP_QTY];
     int   Standard[setup_MAX_GROUP_QTY];
     int   Thickness[setup_MAX_GROUP_QTY];
+    bool bShowAScanMeasure[setup_MAX_GROUP_QTY];
+    bool bShowBScanMeasure[setup_MAX_GROUP_QTY];
+    bool bShowCScanMeasure[setup_MAX_GROUP_QTY];
+    bool bShowSScanMeasure[setup_MAX_GROUP_QTY];
 };
 
 

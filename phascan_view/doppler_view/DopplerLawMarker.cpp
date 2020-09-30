@@ -369,7 +369,7 @@ void DopplerLawMarker::GetCurrentLineIndex(QPointF pos_ , int* nIndex_ , int* nZ
                     return ;
                 }
             }
-            *nIndex_ = *nZoom_ = _nCount -1;
+            *nIndex_ = *nZoom_ = _nCount - 1;
             *fScale_  = 0;
         }
     }

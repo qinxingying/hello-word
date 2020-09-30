@@ -153,7 +153,7 @@ void MainWindow::init_ui()
 
     // tofd setting dialog
     m_iCurGroup  = 0;
-    m_nLawIdSel  = 0;
+    //m_nLawIdSel  = 0;
     m_nAlloff	 = 0;
     m_bCursorSel = true;
     m_bParamBackMode = false;
@@ -170,6 +170,20 @@ void MainWindow::closeEvent (QCloseEvent* e)
 {
     QMainWindow::closeEvent(e);
 }
+
+//void MainWindow::keyPressEvent(QKeyEvent *event)
+//{
+//    switch ( event->key()) {
+//    case Qt::Key_Left:
+//        sliderh->setValue(sliderh->value() - 1);
+//        break;
+//    case Qt::Key_Right:
+//        sliderh->setValue(sliderh->value() + 1);
+//        break;
+//    default:
+//        break;
+//    }
+//}
 
 void MainWindow::resizeEvent(QResizeEvent* )
 {
@@ -1354,46 +1368,46 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         int _nId = ((DopplerLawMarker*)pItem_)->GetMarkerId();
         int _nPos = ((DopplerLawMarker*)pItem_)->GetMarkerPos(_nId);
         //int _nQty = ((DopplerLawMarker*)pItem_)->GetMarkerQty();
-
-        m_nLawIdSel = _nId;
-        _group.afCursor[setup_CURSOR_LAW] = _nPos;
-        //qDebug()<<"_nId"<<_nId<<"_nPos"<<_nPos;
-        updateCscanLawPos(_nPos, _nGroupId);
+        updateCurLawPos(_nGroupId, _nPos, _nId);
+        //m_nLawIdSel = _nId;
+//        _group.afCursor[setup_CURSOR_LAW] = _nPos;
+//        //qDebug()<<"_nId"<<_nId<<"_nPos"<<_nPos;
+//        updateCscanLawPos(_nPos, _nGroupId);
         //int paraIndex = ui->TabWidget_parameter->currentIndex();
         //qDebug()<<"_paraIndex"<<paraIndex;
 
 
-        DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
-        _pGroupTab->UpdateCurrentAngleCom();
-        _pGroupTab->UpdateSizeingCurves();
-        //ui->TabWidget_parameter->setCurrentIndex(paraIndex);
-        InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
-        _pScanner->UpdateIndexBox();
+//        DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
+//        _pGroupTab->UpdateCurrentAngleCom();
+//        _pGroupTab->UpdateSizeingCurves();
+//        //ui->TabWidget_parameter->setCurrentIndex(paraIndex);
+//        InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+//        _pScanner->UpdateIndexBox();
 
-        updateAllTabwidgetSscanPos(_nGroupId, _nPos);
+//        updateAllTabwidgetSscanPos(_nGroupId, _nPos);
 
-        for(_nTabIndex=0; _nTabIndex < ui->TabWidget_display->count(); _nTabIndex++)
-        for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
-        {
-            int _nCurGroup;
+//        for(_nTabIndex=0; _nTabIndex < ui->TabWidget_display->count(); _nTabIndex++)
+//        for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
+//        {
+//            int _nCurGroup;
 
-            DopplerDataView* _pView = (DopplerDataView*)m_pViewList[_nTabIndex]->at(i);
-            _pView->GetDataViewConfigure( &_nCurGroup,  &_nLawId,  &_nDisplay);
+//            DopplerDataView* _pView = (DopplerDataView*)m_pViewList[_nTabIndex]->at(i);
+//            _pView->GetDataViewConfigure( &_nCurGroup,  &_nLawId,  &_nDisplay);
 
-            if(_nDisplay < 4 && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
-                if(_nId == _pView->GetLawIdentify()) {
-                    _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
-                    _proDispy.UpdateAll(_pView, false);
-                }
-            } else if( (_nDisplay >= 4 && _nDisplay < 8) && _nGroupId == _nCurGroup) {
-                _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
-                _proDispy.UpdateDataViewTitle(_pView);
-                _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
-            } else {
-                _proDispy.UpdateDataViewTitle(_pView);
-            }
-        }
-        RunDrawThreadOnce(true);
+//            if(_nDisplay < 4 && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
+//                if(_nId == _pView->GetLawIdentify()) {
+//                    _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
+//                    _proDispy.UpdateAll(_pView, false);
+//                }
+//            } else if( (_nDisplay >= 4 && _nDisplay < 8) && _nGroupId == _nCurGroup) {
+//                _pView->SetDataViewConfigure(_nCurGroup,  _nPos,  _nDisplay);
+//                _proDispy.UpdateDataViewTitle(_pView);
+//                _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
+//            } else {
+//                _proDispy.UpdateDataViewTitle(_pView);
+//            }
+//        }
+//        RunDrawThreadOnce(true);
     }
     break;
     case DOPPLER_GRAPHICS_ITEM_CURSOR:
@@ -1758,6 +1772,96 @@ void MainWindow::allThicknessChange(double thickness)
     RunDrawThreadOnce(true);
 }
 
+void MainWindow::slotScanPosChange(int steps)
+{
+    sliderh->setValue(sliderh->value() + steps);
+}
+
+void MainWindow::slotLawPosChange(int groupId, int lawId, int steps)
+{
+    ParameterProcess* _pProcess = ParameterProcess::Instance();
+    int lawQty = _pProcess->GetGroupLawQty(groupId);
+    if( lawId == 0 && steps < 0){
+        return;
+    }
+    if((lawId == lawQty - 1) && steps > 0){
+        return;
+    }
+    int dstLaw = lawId + steps;
+//    if(orientation){
+//        if(lawId == lawQty - 1){
+//            return;
+//        }
+//        dstLaw = lawId + 1;
+//    }else{
+//        if(lawId == 0){
+//            return;
+//        }
+//        dstLaw = lawId - 1;
+//    }
+    if(dstLaw < 0){
+        dstLaw = 0;
+    }else if(dstLaw >= lawQty){
+        dstLaw = lawQty - 1;
+    }
+
+    updateCurLawPos( groupId, dstLaw, 0);
+}
+
+void MainWindow::slotCursorScanChange(int groupId, bool orientation)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    ProcessDisplay _proDispy;
+    float _fPos = _pConfig->common.scanner.fScanPos;
+    if(orientation){
+        if(_pConfig->group[groupId].afCursor[setup_CURSOR_S_MES] == _fPos){
+            return;
+        }
+        _pConfig->group[groupId].afCursor[setup_CURSOR_S_MES] = _fPos;
+    }else{
+        if(_pConfig->group[groupId].afCursor[setup_CURSOR_S_REF] == _fPos){
+            return;
+        }
+        _pConfig->group[groupId].afCursor[setup_CURSOR_S_REF] = _fPos;
+    }
+    DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
+    _pGroup->UpdateCursorValue();
+    _pGroup->UpdateDefectValue();
+    _pGroup->UpdateTofdParam();
+
+    _proDispy.UpdateAllViewCursorOfGroup(groupId);
+    RunDrawThreadOnce(true);
+}
+
+void MainWindow::slotCursorUChange(int groupId, int lawId, bool orientation)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    ParameterProcess* _pProcess = ParameterProcess::Instance();
+    ProcessDisplay _proDispy;
+    int scanIndex = _pProcess->GetScanIndexPos();
+    PEAK_CONFIG _info[setup_GATE_MAX];
+    _pProcess->GetGatePeakInfos(groupId, scanIndex, lawId, _info);
+    float _fPos = _info[setup_GATE_A].fH;
+    if(orientation){
+        if(_pConfig->group[groupId].afCursor[setup_CURSOR_U_MES] == _fPos){
+            return;
+        }
+        _pConfig->group[groupId].afCursor[setup_CURSOR_U_MES] = _fPos;
+    }else{
+        if(_pConfig->group[groupId].afCursor[setup_CURSOR_U_REF] == _fPos){
+            return;
+        }
+        _pConfig->group[groupId].afCursor[setup_CURSOR_U_REF] = _fPos;
+    }
+    DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
+    _pGroup->UpdateCursorValue();
+    _pGroup->UpdateDefectValue();
+    _pGroup->UpdateTofdParam();
+
+    _proDispy.UpdateAllViewCursorOfGroup(groupId);
+    RunDrawThreadOnce(true);
+}
+
 void MainWindow::on_actionNew_Config_triggered()
 {
     ui->actionNew_Config->setCheckable(true);
@@ -1926,6 +2030,10 @@ void MainWindow::on_actionSaveDisplay_triggered()
             buff.CurSS[i]          = CUR_RES.CurSS[i];
             buff.Standard[i]       = CUR_RES.Standard[i];
             buff.Thickness[i]      = CUR_RES.Thickness[i];
+            buff.bShowAScanMeasure[i] = _group.bShowAScanMeasure;
+            buff.bShowBScanMeasure[i] = _group.bShowBScanMeasure;
+            buff.bShowCScanMeasure[i] = _group.bShowCScanMeasure;
+            buff.bShowSScanMeasure[i] = _group.bShowSScanMeasure;
         }
         for(int i = _pConfig->common.nGroupQty; i < setup_MAX_GROUP_QTY; i++){
             buff.bShowDAC[i]       = true;
@@ -1941,6 +2049,10 @@ void MainWindow::on_actionSaveDisplay_triggered()
             buff.CurSS[i]          = 0;
             buff.Standard[i]       = 0;
             buff.Thickness[i]      = 0;
+            buff.bShowAScanMeasure[i] = true;
+            buff.bShowBScanMeasure[i] = true;
+            buff.bShowCScanMeasure[i] = true;
+            buff.bShowSScanMeasure[i] = true;
             buff.anMeasureSelection[i][0] = 1;
             buff.anMeasureSelection[i][1] = 32;
             buff.anMeasureSelection[i][2] = 34;
@@ -2001,6 +2113,10 @@ void MainWindow::on_actionLoadDisplay_triggered()
             CUR_RES.CurSS[i]     = buff.CurSS[i];
             CUR_RES.Standard[i]  = buff.Standard[i];
             CUR_RES.Thickness[i] = buff.Thickness[i];
+            _group.bShowAScanMeasure = buff.bShowAScanMeasure[i];
+            _group.bShowBScanMeasure = buff.bShowBScanMeasure[i];
+            _group.bShowCScanMeasure = buff.bShowCScanMeasure[i];
+            _group.bShowSScanMeasure = buff.bShowSScanMeasure[i];
         }
 
         for(int i = 0; i < _nGroupQty; i++){
@@ -2191,4 +2307,45 @@ void MainWindow::set_ToolBarStatus( bool status)
     ui->actionAided_Analysis->setEnabled(status);
     ui->actionStop_Analysis->setEnabled(!status);
     //sliderh->setEnabled(status);
+}
+
+void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
+{
+    int _nLawId , _nDisplay;
+    int _nTabIndex = ui->TabWidget_display->currentIndex();
+    ProcessDisplay _proDispy;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
+
+    _group.afCursor[setup_CURSOR_LAW] = lawPos;
+    updateCscanLawPos(lawPos, _nGroupId);
+    DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
+    _pGroupTab->UpdateCurrentAngleCom();
+    _pGroupTab->UpdateSizeingCurves();
+    InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+    _pScanner->UpdateIndexBox();
+    updateAllTabwidgetSscanPos(_nGroupId, lawPos);
+
+    for(_nTabIndex=0; _nTabIndex < ui->TabWidget_display->count(); _nTabIndex++)
+    for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
+    {
+        int _nCurGroup;
+
+        DopplerDataView* _pView = (DopplerDataView*)m_pViewList[_nTabIndex]->at(i);
+        _pView->GetDataViewConfigure( &_nCurGroup,  &_nLawId,  &_nDisplay);
+
+        if(_nDisplay < 4 && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
+            if(_nId == _pView->GetLawIdentify()) {
+                _pView->SetDataViewConfigure(_nCurGroup,  lawPos,  _nDisplay);
+                _proDispy.UpdateAll(_pView, false);
+            }
+        } else if( (_nDisplay >= 4 && _nDisplay < 8) && _nGroupId == _nCurGroup) {
+            _pView->SetDataViewConfigure(_nCurGroup,  lawPos,  _nDisplay);
+            _proDispy.UpdateDataViewTitle(_pView);
+            _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
+        } else {
+            _proDispy.UpdateDataViewTitle(_pView);
+        }
+    }
+    RunDrawThreadOnce(true);
 }

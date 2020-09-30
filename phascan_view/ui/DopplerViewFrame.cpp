@@ -79,6 +79,7 @@ void DopplerViewFrame::DropEventProcess(QDropEvent* event)
 	CreateDrawView(_nGroupId, _nId);
 }
 
+
 /*  *************************************************
  *  function: create scan data display window
  *  input   : pWidget_ ->  parent window

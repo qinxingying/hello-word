@@ -88,6 +88,7 @@
 /* Weld */
 #define DEFAULT_WELD_ORIENTATION  0
 #define DEFAULT_WELD_SYMMETRY     true
+#define DEFAULT_WELD_HAZ          5.0
 
 /* Wedge */
 #define DEFAULT_WEDGE_SERIAL            ""

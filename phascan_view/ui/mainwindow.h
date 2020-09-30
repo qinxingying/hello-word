@@ -105,10 +105,12 @@ protected:
     QList<QWidget*>* m_pViewList[MAX_LIST_QTY];
 
     virtual void closeEvent(QCloseEvent *event);
+    //virtual void keyPressEvent(QKeyEvent *event) override;
     void resizeEvent(QResizeEvent *);
 
 private:
     void set_ToolBarStatus( bool status);
+    void updateCurLawPos(int _nGroupId, int lawPos, int _nId);
     Ui::MainWindow *ui;
     DataRefreshThread* m_pThreadDraw;
     QTranslator *translator;
@@ -131,7 +133,7 @@ private:
     void init_ui();
 
     int  m_iCurGroup;
-    int  m_nLawIdSel;
+    //int  m_nLawIdSel;
     int  m_nTBCnt;
     int  m_nAlloff;  //0值时表示只有一个组
     bool m_bCursorSel;
@@ -160,6 +162,10 @@ private slots:
     void slotTopcMergeCompareViewShow(bool);
     void connect_remote_monitor();
     void allThicknessChange(double thickness);
+    void slotScanPosChange(int steps);
+    void slotLawPosChange(int groupId, int lawId, int steps);
+    void slotCursorScanChange(int groupId, bool orientation);
+    void slotCursorUChange(int groupId, int lawId, bool orientation);
 protected slots:
   void on_actionNew_Config_triggered();
   void on_actionOpen_triggered();

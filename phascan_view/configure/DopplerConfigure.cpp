@@ -217,6 +217,10 @@ void DopplerConfigure::OpenEvn()
             AppEvn.CurSS[i]         = 0;
             AppEvn.Standard[i]      = 0;
             AppEvn.Thickness[i]     = 0;
+            AppEvn.bShowAScanMeasure[i] = true;
+            AppEvn.bShowBScanMeasure[i] = true;
+            AppEvn.bShowCScanMeasure[i] = true;
+            AppEvn.bShowSScanMeasure[i] = true;
             AppEvn.bCursor[i][setup_CURSOR_LAW] = 0;
 
             AppEvn.bCursor[i][setup_CURSOR_A_REF] =
@@ -259,6 +263,10 @@ void DopplerConfigure::OpenEvn()
         CUR_RES.CurSS[i]        = AppEvn.CurSS[i];
         CUR_RES.Standard[i]     = AppEvn.Standard[i];
         CUR_RES.Thickness[i]    = AppEvn.Thickness[i];
+        group[i].bShowAScanMeasure = AppEvn.bShowAScanMeasure[i];
+        group[i].bShowBScanMeasure = AppEvn.bShowBScanMeasure[i];
+        group[i].bShowCScanMeasure = AppEvn.bShowCScanMeasure[i];
+        group[i].bShowSScanMeasure = AppEvn.bShowSScanMeasure[i];
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             group[i].afCursor[j] = AppEvn.bCursor[i][j];
         }
@@ -300,6 +308,10 @@ void DopplerConfigure::SaveEvn()
         AppEvn.CurSS[i]             = CUR_RES.CurSS[i];
         AppEvn.Standard[i]          = CUR_RES.Standard[i];
         AppEvn.Thickness[i]         = CUR_RES.Thickness[i];
+        AppEvn.bShowAScanMeasure[i] = group[i].bShowAScanMeasure;
+        AppEvn.bShowBScanMeasure[i] = group[i].bShowBScanMeasure;
+        AppEvn.bShowCScanMeasure[i] = group[i].bShowCScanMeasure;
+        AppEvn.bShowSScanMeasure[i] = group[i].bShowSScanMeasure;
 
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             AppEvn.bCursor[i][j] = group[i].afCursor[j];
@@ -1446,10 +1458,13 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         int tmpCScanLinePos =  _fAngleStart + 0*_fAngleStep;
         _group.afCursor[setup_CURSOR_C_ANGLE]  = tmpCScanLinePos ;
 
-        _group.bShowAScanMeasure = _group.bShowMeasure;
-        _group.bShowBScanMeasure = _group.bShowMeasure;
-        _group.bShowCScanMeasure = _group.bShowMeasure;
-        _group.bShowSScanMeasure = _group.bShowMeasure;
+//        _group.bShowAScanMeasure = _group.bShowMeasure;
+//        _group.bShowBScanMeasure = _group.bShowMeasure;
+//        _group.bShowCScanMeasure = _group.bShowMeasure;
+//        _group.bShowSScanMeasure = _group.bShowMeasure;
+        _group.storeScanLawId.status = false;
+        _group.storeScanLawId.scanPos = 0.0;
+        _group.storeScanLawId.lawId = 0;
 
 		ParameterProcess* _process = ParameterProcess::Instance() ;
 		unsigned char*	  _pData = _process->GetLawDataPointer(i , 0) ;

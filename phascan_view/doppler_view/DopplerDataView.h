@@ -120,6 +120,7 @@ private:
     void paintEvent(QPaintEvent *) ;
     void mouseReleaseEvent(QMouseEvent *) ;
     void mousePressEvent(QMouseEvent *) ;
+    //void keyPressEvent(QKeyEvent *event);
 private:
     QGridLayout*        m_pLayout           ;
     DopplerRulerBar*    m_pRulers[DATA_VIEW_RULER_MAX]  ;
@@ -144,7 +145,6 @@ signals:
     void signalItemMoved(DopplerDataView* , DopplerGraphicsItem*)  ;
     void signalDataViewResized(DopplerDataView*);
     void signalMouseDoubleClicked(DopplerDataView* , QPointF pos_) ;
-
 public slots:
 	void slotZoomAction(QRectF rect) ;
 protected slots:

@@ -53,7 +53,6 @@ DopplerDataView::DopplerDataView(QWidget *parent , DATA_VIEW_COMPONENT eComponen
 	CreateComponent() ;
 	//connect(this, SIGNAL(signalMousePressed(QWidget*)) , g_pMainWnd , SLOT(slotViewFrameButtonClicked(QWidget*)));
 	//connect(this, SIGNAL(signalViewFrameMenuSelection(DopplerDataView* , int)) , g_pMainWnd , SLOT(slotViewFrameMenuSelection(DopplerDataView* , int))) ;
-
 	m_pItemsGroup = new DopplerViewItems(this);
 }
 
@@ -140,6 +139,7 @@ int DopplerDataView::GetSScanLaw(int index_)
 void DopplerDataView::SetSScanLaw(int index_, int nMarkerLawPos)
 {
     m_pItemsGroup->SetLawMarkerPos(index_, nMarkerLawPos);
+    m_nLaw = nMarkerLawPos;
 }
 
 void DopplerDataView::EnableComponent(DATA_VIEW_COMPONENT eComponent_)
@@ -637,7 +637,6 @@ void DopplerDataView::CreateComponent()
 	connect(m_pGraphicView , SIGNAL(signalButtonRelease(QMouseEvent*)) , SLOT(slotViewMouseRelease(QMouseEvent*)));
 	connect(m_pGraphicView , SIGNAL(signalButtonPressed(QMouseEvent*)) , SLOT(slotViewMousePressed(QMouseEvent*)));
 	connect(m_pGraphicView , SIGNAL(signalButtonDoubleClicked(QPointF)) , SLOT(slotMouseDoubleClicked(QPointF))) ;
-
 	connect(m_pGraphicView , SIGNAL(signalTofdDragProAction(QPointF, QPointF)) , SLOT(slotTofdDragProAction(QPointF, QPointF))) ;
 
 	setLayout(m_pLayout);
@@ -863,6 +862,13 @@ void DopplerDataView::mousePressEvent (QMouseEvent* )
 	g_pMainWnd->SetCurGroup(m_nGroupId);
 	emit signalMousePressed(this) ;
 }
+
+//void DopplerDataView::keyPressEvent(QKeyEvent *event)
+//{
+//    if(m_eDisplayMode >= setup_DISPLAY_MODE_C_H && m_eDisplayMode <= setup_DISPLAY_MODE_CC_V){
+//        qDebug()<<"in cscan";
+//    }
+//}
 
 void DopplerDataView::RangeTransfer(QPair<double , double> range_ , QPair<double , double>* pos_)
 {

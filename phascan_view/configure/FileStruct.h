@@ -70,6 +70,10 @@ struct SYSTEM_ENVIRMENT
     int  CurSS[ENV_MAX_GROUP_QTY];
     int  Standard[ENV_MAX_GROUP_QTY];
     int  Thickness[ENV_MAX_GROUP_QTY];
+    bool bShowAScanMeasure[ENV_MAX_GROUP_QTY];
+    bool bShowBScanMeasure[ENV_MAX_GROUP_QTY];
+    bool bShowCScanMeasure[ENV_MAX_GROUP_QTY];
+    bool bShowSScanMeasure[ENV_MAX_GROUP_QTY];
 };
 
 #endif // FILESTRUCT_H

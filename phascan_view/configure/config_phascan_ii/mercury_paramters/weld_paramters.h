@@ -44,6 +44,7 @@ private:
     WeldType m_type;
     Symmetry m_isSymmetry;
     WeldOrientation m_orientation;
+    double HAZ;    //焊缝热影响区
     WeldI m_I;
     WeldV m_V;
     WeldU m_U;

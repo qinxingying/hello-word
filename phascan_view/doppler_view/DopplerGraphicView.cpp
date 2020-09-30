@@ -211,6 +211,10 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 
 	// connect update signal for multi threads update user interface
     connect(this, SIGNAL(signalUpdateDrawing()), SLOT(slotUpdateDrawing()));
+    connect(this, SIGNAL(signalScanPosChange(int)), g_pMainWnd, SLOT(slotScanPosChange(int)));
+    connect(this, SIGNAL(signalLawPosChange(int,int,int)), g_pMainWnd, SLOT(slotLawPosChange(int,int,int)));
+    connect(this, SIGNAL(signalCursorScanChange(int,bool)), g_pMainWnd, SLOT(slotCursorScanChange(int,bool)));
+    connect(this, SIGNAL(signalCursorUChange(int,int,bool)), g_pMainWnd, SLOT(slotCursorUChange(int,int,bool)));
 	// pass the drop event to father widget
 	setAcceptDrops(false);
 	// use openGL to render drawing
@@ -225,6 +229,7 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 //	m_bZommInit = false;
 	m_bZoom     = false;
     m_wheelItemSelect = false;
+    setFocusPolicy(Qt::StrongFocus);
 //	m_nTimerId = startTimer(100);
 }
 
@@ -355,147 +360,147 @@ void DopplerGraphicView::wheelEvent ( QWheelEvent * event )
         emit signalItemMoved(dynamic_cast<DopplerGraphicsItem*>(m_tempItem));
         return QGraphicsView::wheelEvent(event);
     }
-    if(tofdProAction() < 0)
-    {
-        int numDegrees = event->delta() / 8;
-        int numSteps = numDegrees / 15;
+//    if(tofdProAction() < 0)
+//    {
+//        int numDegrees = event->delta() / 8;
+//        int numSteps = numDegrees / 15;
 
-        m_nScaleH += numSteps / 10.0 ;
-        m_nScaleV += numSteps / 10.0 ;
+//        m_nScaleH += numSteps / 10.0 ;
+//        m_nScaleV += numSteps / 10.0 ;
 
-        int index_scan = 0;
-        DopplerDrawCScanV* _cvDraw = dynamic_cast<DopplerDrawCScanV*>(m_pDrawScan);
-        if( _cvDraw != NULL){
-            if(_cvDraw->getShowAllStatus()){
-                m_pBackGround->SetFixStatus(false);
-            }else{
-                int _sacnIndex = m_pBackGround->GetScanIndex();
-                int _backIndex = m_pBackGround->size().height();
-                if(_sacnIndex > _backIndex){
-                    m_pBackGround->SetFixStatus(true);
-                    m_pBackGround->SetFixDirection(1);
-                    index_scan = 2;
-                }else{
-                    m_pBackGround->SetFixStatus(false);
-                }
-            }
-        }else if( dynamic_cast<DopplerDrawCScanH*>(m_pDrawScan)){
-            DopplerDrawCScanH* _chDraw = dynamic_cast<DopplerDrawCScanH*>(m_pDrawScan);
-            if(_chDraw->getShowAllStatus()){
-                m_pBackGround->SetFixStatus(false);
-            }else{
-                int _sacnIndex = m_pBackGround->GetScanIndex();
-                int _backIndex = m_pBackGround->size().width();
-                if(_sacnIndex > _backIndex){
-                    m_pBackGround->SetFixStatus(true);
-                    m_pBackGround->SetFixDirection(0);
-                    index_scan = 1;
-                }else{
-                    m_pBackGround->SetFixStatus(false);
-                }
-            }
-        }else if(dynamic_cast<DopplerDrawBScanV*>(m_pDrawScan)){
-            DopplerDrawBScanV* _bvDraw = dynamic_cast<DopplerDrawBScanV*>(m_pDrawScan);
-            if(_bvDraw->getShowAllStatus()){
-                m_pBackGround->SetFixStatus(false);
-            }else{
-                int _sacnIndex = m_pBackGround->GetScanIndex();
-                int _backIndex = m_pBackGround->size().width();
-                if(_sacnIndex > _backIndex){
-                    m_pBackGround->SetFixStatus(true);
-                    m_pBackGround->SetFixDirection(0);
-                    index_scan = 1;
-                }else{
-                    m_pBackGround->SetFixStatus(false);
-                }
-            }
+//        int index_scan = 0;
+//        DopplerDrawCScanV* _cvDraw = dynamic_cast<DopplerDrawCScanV*>(m_pDrawScan);
+//        if( _cvDraw != NULL){
+//            if(_cvDraw->getShowAllStatus()){
+//                m_pBackGround->SetFixStatus(false);
+//            }else{
+//                int _sacnIndex = m_pBackGround->GetScanIndex();
+//                int _backIndex = m_pBackGround->size().height();
+//                if(_sacnIndex > _backIndex){
+//                    m_pBackGround->SetFixStatus(true);
+//                    m_pBackGround->SetFixDirection(1);
+//                    index_scan = 2;
+//                }else{
+//                    m_pBackGround->SetFixStatus(false);
+//                }
+//            }
+//        }else if( dynamic_cast<DopplerDrawCScanH*>(m_pDrawScan)){
+//            DopplerDrawCScanH* _chDraw = dynamic_cast<DopplerDrawCScanH*>(m_pDrawScan);
+//            if(_chDraw->getShowAllStatus()){
+//                m_pBackGround->SetFixStatus(false);
+//            }else{
+//                int _sacnIndex = m_pBackGround->GetScanIndex();
+//                int _backIndex = m_pBackGround->size().width();
+//                if(_sacnIndex > _backIndex){
+//                    m_pBackGround->SetFixStatus(true);
+//                    m_pBackGround->SetFixDirection(0);
+//                    index_scan = 1;
+//                }else{
+//                    m_pBackGround->SetFixStatus(false);
+//                }
+//            }
+//        }else if(dynamic_cast<DopplerDrawBScanV*>(m_pDrawScan)){
+//            DopplerDrawBScanV* _bvDraw = dynamic_cast<DopplerDrawBScanV*>(m_pDrawScan);
+//            if(_bvDraw->getShowAllStatus()){
+//                m_pBackGround->SetFixStatus(false);
+//            }else{
+//                int _sacnIndex = m_pBackGround->GetScanIndex();
+//                int _backIndex = m_pBackGround->size().width();
+//                if(_sacnIndex > _backIndex){
+//                    m_pBackGround->SetFixStatus(true);
+//                    m_pBackGround->SetFixDirection(0);
+//                    index_scan = 1;
+//                }else{
+//                    m_pBackGround->SetFixStatus(false);
+//                }
+//            }
 
-        }else if(dynamic_cast<DopplerDrawBScanH*>(m_pDrawScan)){
-            DopplerDrawBScanH* _bHDraw = dynamic_cast<DopplerDrawBScanH*>(m_pDrawScan);
-            if(_bHDraw->getShowAllStatus()){
-                m_pBackGround->SetFixStatus(false);
-            }else{
-                int _sacnIndex = m_pBackGround->GetScanIndex();
-                int _backIndex = m_pBackGround->size().height();
-                if(_sacnIndex > _backIndex){
-                    m_pBackGround->SetFixStatus(true);
-                    m_pBackGround->SetFixDirection(1);
-                    index_scan = 2;
-                }else{
-                    m_pBackGround->SetFixStatus(false);
-                }
-            }
+//        }else if(dynamic_cast<DopplerDrawBScanH*>(m_pDrawScan)){
+//            DopplerDrawBScanH* _bHDraw = dynamic_cast<DopplerDrawBScanH*>(m_pDrawScan);
+//            if(_bHDraw->getShowAllStatus()){
+//                m_pBackGround->SetFixStatus(false);
+//            }else{
+//                int _sacnIndex = m_pBackGround->GetScanIndex();
+//                int _backIndex = m_pBackGround->size().height();
+//                if(_sacnIndex > _backIndex){
+//                    m_pBackGround->SetFixStatus(true);
+//                    m_pBackGround->SetFixDirection(1);
+//                    index_scan = 2;
+//                }else{
+//                    m_pBackGround->SetFixStatus(false);
+//                }
+//            }
 
-        }else{
-            m_pBackGround->SetFixStatus(false);
-        }
+//        }else{
+//            m_pBackGround->SetFixStatus(false);
+//        }
 
-        //缩放比例控制在1-10
-        if(m_nScaleH < 1) {m_nScaleH = 1 ;}
-        if(m_nScaleH > 10) {m_nScaleH = 10 ;}
-        if(m_nScaleV < 1) {m_nScaleV = 1 ;}
-        if(m_nScaleV > 10) {m_nScaleV = 10 ;}
+//        //缩放比例控制在1-10
+//        if(m_nScaleH < 1) {m_nScaleH = 1 ;}
+//        if(m_nScaleH > 10) {m_nScaleH = 10 ;}
+//        if(m_nScaleV < 1) {m_nScaleV = 1 ;}
+//        if(m_nScaleV > 10) {m_nScaleV = 10 ;}
 
-        //****************************************
-        QPointF _nCenter = mapToScene((event->pos()));
+//        //****************************************
+//        QPointF _nCenter = mapToScene((event->pos()));
 
-        //计算在scene里面缩放后对应的矩形框，赋值给m_cZoomRect
-        if(m_nScaleH > 1 && m_nScaleV > 1) {
-            QSize _size = size();
-            int _fWidth   = ((double)_size.width()) / m_nScaleH;
-            int _nHeight  = ((double)_size.height()) / m_nScaleV;
-            //qDebug()<<"m_nScaleH"<<m_nScaleH;
+//        //计算在scene里面缩放后对应的矩形框，赋值给m_cZoomRect
+//        if(m_nScaleH > 1 && m_nScaleV > 1) {
+//            QSize _size = size();
+//            int _fWidth   = ((double)_size.width()) / m_nScaleH;
+//            int _nHeight  = ((double)_size.height()) / m_nScaleV;
+//            //qDebug()<<"m_nScaleH"<<m_nScaleH;
 
-            QRect _rect;
-            if(index_scan == 1){
-                if( _nCenter.x() > _fWidth / 2){
-                    int _setX = _fWidth - _nCenter.x();
-                    _nCenter.setX(_setX);
-                }
-            }else if(index_scan == 2){
-                if( _nCenter.y() > _nHeight / 2){
-                    int _setY = _nHeight - _nCenter.y();
-                    _nCenter.setY(_setY);
-                }
-            }
-            _rect.setLeft(_nCenter.x() - _fWidth / 2);
-            _rect.setTop(_nCenter.y() - _nHeight / 2);
-            _rect.setWidth(_fWidth);
-            _rect.setHeight(_nHeight);
-            if(_rect.left() < 0) {
-                _rect.setLeft(0);
-                _rect.setWidth(_fWidth);
+//            QRect _rect;
+//            if(index_scan == 1){
+//                if( _nCenter.x() > _fWidth / 2){
+//                    int _setX = _fWidth - _nCenter.x();
+//                    _nCenter.setX(_setX);
+//                }
+//            }else if(index_scan == 2){
+//                if( _nCenter.y() > _nHeight / 2){
+//                    int _setY = _nHeight - _nCenter.y();
+//                    _nCenter.setY(_setY);
+//                }
+//            }
+//            _rect.setLeft(_nCenter.x() - _fWidth / 2);
+//            _rect.setTop(_nCenter.y() - _nHeight / 2);
+//            _rect.setWidth(_fWidth);
+//            _rect.setHeight(_nHeight);
+//            if(_rect.left() < 0) {
+//                _rect.setLeft(0);
+//                _rect.setWidth(_fWidth);
 
-            }
+//            }
 
-            if(_rect.top() < 0) {
-                _rect.setTop(0);
-                _rect.setHeight(_nHeight);
-            }
+//            if(_rect.top() < 0) {
+//                _rect.setTop(0);
+//                _rect.setHeight(_nHeight);
+//            }
 
-            if(_rect.right() >= _size.width()) {
-                _rect.setLeft(_size.width() - _fWidth);
-                _rect.setWidth(_fWidth);
-            }
+//            if(_rect.right() >= _size.width()) {
+//                _rect.setLeft(_size.width() - _fWidth);
+//                _rect.setWidth(_fWidth);
+//            }
 
-            if(_rect.bottom() >= _size.height()) {
-                _rect.setTop(_size.height() - _nHeight);
-                _rect.setHeight(_nHeight);
-            }
-            _nCenter.setX(_rect.left() + _fWidth / 2);
-            _nCenter.setY(_rect.top() + _nHeight / 2);
+//            if(_rect.bottom() >= _size.height()) {
+//                _rect.setTop(_size.height() - _nHeight);
+//                _rect.setHeight(_nHeight);
+//            }
+//            _nCenter.setX(_rect.left() + _fWidth / 2);
+//            _nCenter.setY(_rect.top() + _nHeight / 2);
 
-            m_cZoomRect = _rect;
-            m_bZoom = true;
-        } else {
-            m_bZoom = false;
+//            m_cZoomRect = _rect;
+//            m_bZoom = true;
+//        } else {
+//            m_bZoom = false;
 
-        }
+//        }
 
-        //centerOn(mapToScene((event->pos())));
-        centerOn(_nCenter);
-        SetupMatrixScale( m_nScaleH , m_nScaleV ) ;
-    }
+//        //centerOn(mapToScene((event->pos())));
+//        centerOn(_nCenter);
+//        SetupMatrixScale( m_nScaleH , m_nScaleV ) ;
+//    }
 }
 
 void DopplerGraphicView::resizeEvent(QResizeEvent *event)
@@ -597,6 +602,110 @@ void DopplerGraphicView::mouseMoveEvent(QMouseEvent *event)
 	}
 }
 
+void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
+{
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId, _iLaw, _iDisplay;
+    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+    setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
+    if(event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Left){
+        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+            emit signalScanPosChange(-10);
+        }
+        return;
+    }else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Right){
+        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+            emit signalScanPosChange(10);
+        }
+        return;
+    }
+    switch (event->key()) {
+    case Qt::Key_Left:
+        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+            emit signalScanPosChange(-1);
+        }
+        break;
+    case Qt::Key_Up:
+        if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+            emit signalLawPosChange(_iGroupId, _iLaw, 1);
+        }
+        break;
+    case Qt::Key_Right:
+        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+            emit signalScanPosChange(1);
+        }
+        break;
+    case Qt::Key_Down:
+        if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+            emit signalLawPosChange(_iGroupId, _iLaw, -1);
+        }
+        break;
+    case Qt::Key_A:
+        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+            emit signalCursorScanChange(_iGroupId, false);
+        }
+        break;
+    case Qt::Key_C:
+    {
+        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+            DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+            ParameterProcess* _process = ParameterProcess::Instance();
+            if(_pConfig->group[_iGroupId].storeScanLawId.status){
+                float scanPos = _pConfig->group[_iGroupId].storeScanLawId.scanPos;
+                _process->SetupScanPos(scanPos);
+                int lawId = _pConfig->group[_iGroupId].storeScanLawId.lawId;
+                if(lawId != _iLaw){
+                    emit signalLawPosChange(_iGroupId, lawId, 0);
+                }
+            }
+        }
+        break;
+    }
+    case Qt::Key_D:
+        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+            emit signalCursorScanChange(_iGroupId, true);
+        }
+        break;
+    case Qt::Key_S:
+        if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+            emit signalCursorUChange(_iGroupId, _iLaw, false);
+        }
+        break;
+    case Qt::Key_W:
+        if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+            emit signalCursorUChange(_iGroupId, _iLaw, true);
+        }
+        break;
+    case Qt::Key_Z:
+    {
+        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+            QMessageBox msgBox;
+            msgBox.setText(tr("Store Current LawId and ScanPos ?"));
+            msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            int ret = msgBox.exec();
+            switch (ret) {
+            case QMessageBox::Ok:
+            {
+                DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+                _pConfig->group[_iGroupId].storeScanLawId.status = true;
+                _pConfig->group[_iGroupId].storeScanLawId.lawId = _iLaw;
+                _pConfig->group[_iGroupId].storeScanLawId.scanPos = _pConfig->common.scanner.fScanPos;
+                break;
+            }
+            case QMessageBox::Cancel:
+                break;
+            default:
+                break;
+            }
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+
 //extern float srcrangestart,srcrangestop;
 void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -628,7 +737,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                             rightBottom.setY( m_cPosStart.y());
                         }
                         QRect rect( leftTop, rightBottom);
-                        qDebug()<<"pos"<<m_cPosStart<<m_cPosStop<<rect;
+                        //qDebug()<<"pos"<<m_cPosStart<<m_cPosStop<<rect;
                         if(abs(rect.height()) > 40 && abs(rect.width()) > 40 ){
                             VIEW_ORIENT dirction = ORIENT_HORIZONTAL;
                             if(dynamic_cast<DopplerDrawCScanV*>(m_pDrawScan)){

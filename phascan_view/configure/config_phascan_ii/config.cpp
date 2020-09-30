@@ -580,10 +580,12 @@ void Config::unpack_weld(const QVariantMap &map)
 
     weld.m_orientation = static_cast<Paramters::Weld::WeldOrientation> (map.value("Orientation", DEFAULT_WELD_ORIENTATION).toUInt());
     weld.m_isSymmetry  = static_cast<Paramters::Weld::Symmetry> (map.value("Symmetry", DEFAULT_WELD_SYMMETRY).toUInt());
+    weld.HAZ = map.value("HAZ", DEFAULT_WELD_HAZ).toDouble();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " orientation " << weld.m_orientation
-             << " symmetry " << weld.m_isSymmetry;
+             << " symmetry " << weld.m_isSymmetry
+             << " HAZ " << weld.HAZ;
 
     if(Paramters::Weld::I == weld.m_type) {
         unpack_I_weld(map.value("I").toMap(), weld.m_I);
@@ -627,6 +629,7 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
     Paramters::Fillet &fillet = m_groups[groupId].m_specimen.m_geometry.m_fillet;
     weld_ii.eType = static_cast<setup_WELD_TYPE_II>(weld.m_type);
     weld_ii.eSymmetry = static_cast<setup_WELD_SYMMETRY_TYPE>(weld.m_isSymmetry);
+    weld_ii.eHAZ = weld.HAZ;
     //if(Paramters::Weld::I == weld.m_type)
     switch (weld.m_type) {
     case Paramters::Weld::I:

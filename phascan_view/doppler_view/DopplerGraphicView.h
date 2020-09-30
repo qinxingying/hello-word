@@ -46,6 +46,7 @@ protected:
     void   mouseDoubleClickEvent(QMouseEvent *event);
     void   mouseReleaseEvent(QMouseEvent *event);
     void   mouseMoveEvent(QMouseEvent *event);
+    void   keyPressEvent(QKeyEvent *event);
     void   paintEvent(QPaintEvent *event);
     void   InitGraphicView(const QSize& cSize_); 
     void mouseCursorPro(QMouseEvent *event);
@@ -86,6 +87,10 @@ signals:
     void signalButtonPressed(QMouseEvent* event);
     void signalButtonDoubleClicked(QPointF pos_);
     void signalTofdDragProAction(QPointF ptS_, QPointF ptE_);
+    void signalScanPosChange(int steps);
+    void signalLawPosChange(int groupId, int lawId, int steps);
+    void signalCursorScanChange(int groupId, bool orientation);
+    void signalCursorUChange(int groupId, int lawId, bool orientation);
 public slots:
     void slotResetView();
     void slotPrint();
