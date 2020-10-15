@@ -369,6 +369,18 @@ struct DRAW_INFO_PACK
     unsigned char bScanMark[1024 * 256] ;
 };
 
+struct _ExtConfig
+{
+    unsigned char sscanMode;                    /* S扫二次翻转开关，叠加翻转、非叠加翻转、关 */
+    double  firsOverLay[8];   /* 翻转时，工件厚度对应的第一条线 */
+    double  secondOverLay[8]; /* 翻转时，工件厚度对应的第二条线 */
+    /* 投影C扫 */
+    int cshadowFlag[8];
+    /* 预留配置信息项 */
+    int extInt[8 * 8];
+    double extDouble[8 * 8];
+};
+
 struct INSPEC_DATA_FILE
 {
     int type;       // 类型

@@ -91,7 +91,7 @@ protected:
 	void GateMove(int eGate_ , float fStart_ , float fWidth_ , float fHeight_);
 	void CursorMove(int eCursor , float fPos_) ;
 
-	void  DrawWeld(QPainterPath& path)   ;
+    void  DrawWeld(QPainterPath& path, QPainterPath& HAZpath, bool &brushHAZ)   ;
 	void  DrawWeldI (QPainterPath& path) ;    
 	void  DrawWeldV (QPainterPath& path) ;
 	void  DrawWeldDV(QPainterPath& path) ;
@@ -103,13 +103,13 @@ protected:
 //	void  DrawWeldNcc (QPainterPath& path);
     void  DrawWeldDxf(QPainterPath &path);
     void  DrawWeldNoneDataII(QPainterPath& path);
-    void  DrawWeldIDataII(QPainterPath& path);
-    void  DrawWeldVDataII(QPainterPath& path);
-    void  DrawWeldUDataII(QPainterPath& path);
-    void  DrawWeldVYDataII(QPainterPath& path);
-    void  DrawWeldVVDataII(QPainterPath& path);
-    void  DrawWeldUUDataII(QPainterPath& path);
-    void  DrawWeldUVDataII(QPainterPath& path);
+    void  DrawWeldIDataII(QPainterPath& path, QPainterPath& HAZpath);
+    void  DrawWeldVDataII(QPainterPath& path, QPainterPath& HAZpath);
+    void  DrawWeldUDataII(QPainterPath& path, QPainterPath& HAZpath);
+    void  DrawWeldVYDataII(QPainterPath& path, QPainterPath& HAZpath);
+    void  DrawWeldVVDataII(QPainterPath& path, QPainterPath& HAZpath);
+    void  DrawWeldUUDataII(QPainterPath& path, QPainterPath& HAZpath);
+    void  DrawWeldUVDataII(QPainterPath& path, QPainterPath& HAZpath);
     void  DrawWeldTKYDataII(QPainterPath& path);
     void  DrawWeldTKYPlain(double startH, double stopH, double startV, double thinkness, QPainterPath& path);
     void  DrawWeld90degTKY(double w1, double w2, double h1, double h2, double a1, double a2, double startV, double stopV,

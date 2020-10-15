@@ -13,6 +13,7 @@ DialogWeldFixDataII::DialogWeldFixDataII(QWidget *parent, int nGroupId) :
     PART_CONFIG* _pPart = _process->GetPart(m_nGroupId);
     memcpy((void*)&m_cPart, (void*)_pPart, sizeof(PART_CONFIG));
     ui->showWidget->SerPart( &m_cPart);
+    ui->showWidget->setGroupId(nGroupId);
     ui->showWidget->setAutoFillBackground(true);
     QPalette palette;
     palette.setColor(QPalette::Background, QColor(0, 0, 0));
@@ -24,6 +25,8 @@ DialogWeldFixDataII::DialogWeldFixDataII(QWidget *parent, int nGroupId) :
     ui->symmetryComboBox->setCurrentIndex(_buff);
     _buff = (int)m_cPart.weld_ii.eProbePos;
     ui->ProbePosComboBox->setCurrentIndex(_buff);
+    double HAZ = m_cPart.weld_ii.eHAZ;
+    ui->HAZDoubleSpinBox->setValue(HAZ);
     weldTypeChanged(weldType);
 
     m_path = QCoreApplication::applicationDirPath() + "/init/part/dxf/";
@@ -34,6 +37,7 @@ DialogWeldFixDataII::DialogWeldFixDataII(QWidget *parent, int nGroupId) :
     connect( ui->symmetryComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(symmetryChanged(int)));
     connect( ui->ProbePosComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(probePosChanged(int)));
     connect( ui->weldFormComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(weldFormChanged(int)));
+    connect( ui->HAZDoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(HAZValueChanged(double)));
     connect( ui->w1DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(w1ValueChanged(double)));
     connect( ui->w2DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(w2ValueChanged(double)));
     connect( ui->w3DoubleSpinBox, SIGNAL(valueChanged(double)), this, SLOT(w3ValueChanged(double)));
@@ -132,6 +136,9 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->symmetryComboBox->show();
         ui->probePosLabel->hide();
         ui->ProbePosComboBox->hide();
+        ui->HAZLabel->hide();
+        ui->HAZDoubleSpinBox->hide();
+        ui->HAZUnitLabel->hide();
         ui->w1Label->hide();
         ui->w1DoubleSpinBox->hide();
         ui->w1UnitLabel->hide();
@@ -160,6 +167,9 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->symmetryComboBox->show();
         ui->probePosLabel->hide();
         ui->ProbePosComboBox->hide();
+        ui->HAZLabel->show();
+        ui->HAZDoubleSpinBox->show();
+        ui->HAZUnitLabel->show();
         ui->w1Label->show();
         ui->w1DoubleSpinBox->show();
         ui->w1UnitLabel->show();
@@ -189,6 +199,9 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->symmetryComboBox->show();
         ui->probePosLabel->hide();
         ui->ProbePosComboBox->hide();
+        ui->HAZLabel->show();
+        ui->HAZDoubleSpinBox->show();
+        ui->HAZUnitLabel->show();
         ui->w1Label->show();
         ui->w1DoubleSpinBox->show();
         ui->w1UnitLabel->show();
@@ -220,6 +233,9 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->symmetryComboBox->show();
         ui->probePosLabel->hide();
         ui->ProbePosComboBox->hide();
+        ui->HAZLabel->show();
+        ui->HAZDoubleSpinBox->show();
+        ui->HAZUnitLabel->show();
         ui->w1Label->show();
         ui->w1DoubleSpinBox->show();
         ui->w1UnitLabel->show();
@@ -252,6 +268,9 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->symmetryComboBox->show();
         ui->probePosLabel->hide();
         ui->ProbePosComboBox->hide();
+        ui->HAZLabel->show();
+        ui->HAZDoubleSpinBox->show();
+        ui->HAZUnitLabel->show();
         ui->w1Label->show();
         ui->w1DoubleSpinBox->show();
         ui->w1UnitLabel->show();
@@ -285,6 +304,9 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->symmetryComboBox->show();
         ui->probePosLabel->hide();
         ui->ProbePosComboBox->hide();
+        ui->HAZLabel->show();
+        ui->HAZDoubleSpinBox->show();
+        ui->HAZUnitLabel->show();
         ui->w1Label->show();
         ui->w1DoubleSpinBox->show();
         ui->w1UnitLabel->show();
@@ -318,6 +340,9 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->symmetryComboBox->show();
         ui->probePosLabel->hide();
         ui->ProbePosComboBox->hide();
+        ui->HAZLabel->show();
+        ui->HAZDoubleSpinBox->show();
+        ui->HAZUnitLabel->show();
         ui->w1Label->show();
         ui->w1DoubleSpinBox->show();
         ui->w1UnitLabel->show();
@@ -353,6 +378,9 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->symmetryComboBox->show();
         ui->probePosLabel->hide();
         ui->ProbePosComboBox->hide();
+        ui->HAZLabel->show();
+        ui->HAZDoubleSpinBox->show();
+        ui->HAZUnitLabel->show();
         ui->w1Label->show();
         ui->w1DoubleSpinBox->show();
         ui->w1UnitLabel->show();
@@ -387,6 +415,9 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->symmetryComboBox->hide();
         ui->probePosLabel->show();
         ui->ProbePosComboBox->show();
+        ui->HAZLabel->hide();
+        ui->HAZDoubleSpinBox->hide();
+        ui->HAZUnitLabel->hide();
         ui->w1Label->show();
         ui->w1DoubleSpinBox->show();
         ui->w1UnitLabel->show();
@@ -472,6 +503,11 @@ void DialogWeldFixDataII::weldFormChanged(int index)
     SetDisplayMode((DISPLAY_MODE)index);
 }
 
+void DialogWeldFixDataII::HAZValueChanged(double value)
+{
+    m_cPart.weld_ii.eHAZ = value;
+}
+
 void DialogWeldFixDataII::w1ValueChanged( double value)
 {
     if(m_cPart.weld_ii.eType == U){
@@ -510,7 +546,7 @@ void DialogWeldFixDataII::w3ValueChanged( double value)
         if( value > m_cPart.weld_ii.VY.w2){
             ui->w3DoubleSpinBox->setValue(m_cPart.weld_ii.VY.w3);
             return;
-        }
+        }        
     case VV:
     case UU:
     case UV:
@@ -523,6 +559,8 @@ void DialogWeldFixDataII::w3ValueChanged( double value)
     default:
         break;
     }
+    m_cPart.weld_ii.VY.w3 = value;
+    ui->showWidget->update();
 }
 
 void DialogWeldFixDataII::h1ValueChanged( double value)
@@ -651,6 +689,7 @@ void DialogWeldFixDataII::PartFileListClicked(QModelIndex index)
 {
      std::string _str = index.data().toString().toStdString();
      m_cPart.weld_ii.eType = DXF;
+     m_cPart.CADFresh = false;
      std::string str = m_path.toStdString();
      const char* p = str.c_str();
      sprintf(m_cPart.strPartFile, "%s%s", p, (char*)(_str.c_str()));

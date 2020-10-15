@@ -36,7 +36,7 @@ public:
     int GetMarkerPos(int nId) const;
     int GetMarkerId() const ;
     int GetMarkerLinesCount();
-    void SetWeldInfo(bool bShow_ , QPainterPath* path );
+    void SetWeldInfo(bool bShow_ , int brushHAZ, QPainterPath* path, QPainterPath* HAZpath);
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
     void DrawLabel(QPainter *painter , int nIndex_) ;
@@ -61,7 +61,9 @@ protected:
     DIRECTION  m_eDirection  ;
 
     bool   m_bShowWeld     ;
+    bool   m_brushHAZ;
     QPainterPath weld      ;
+    QPainterPath HAZBrush  ;
 public slots:
     void SlotChangeLinePos(int nNewLineIndex);
 

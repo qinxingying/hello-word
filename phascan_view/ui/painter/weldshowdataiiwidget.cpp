@@ -64,7 +64,7 @@ void WeldShowDataIIWidget::paintEvent( QPaintEvent *event)
         int x = m_lastPoint.x() + m_endPoint.x() - m_startPoint.x();
         int y = m_lastPoint.y() + m_endPoint.y() - m_startPoint.y();
 
-        DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance();
+        DplDxf::DrawDxf* drawDxf = DplDxf::DrawDxf::Instance(m_groupId);
         drawDxf->set_part(m_pPart);
         drawDxf->set_axis_orientation(DplDxf::DrawDxf::Axis_Normal);
 

@@ -380,13 +380,14 @@ void DrawDxfHeaderPrivate::clear()
     m_dataLtScale.clear();
 }
 
-DrawDxf * g_pDrawDxf = NULL;
-DrawDxf *DrawDxf::Instance()
+DrawDxf * g_pDrawDxf[setup_MAX_GROUP_QTY] = {0};
+DrawDxf *DrawDxf::Instance(int groupId)
 {
-    if(!g_pDrawDxf){
-        g_pDrawDxf = new DrawDxf();
+
+    if(!g_pDrawDxf[groupId]){
+        g_pDrawDxf[groupId] = new DrawDxf();
     }
-    return g_pDrawDxf;
+    return g_pDrawDxf[groupId];
 }
 
 DrawDxf::DrawDxf(QWidget *parent) :

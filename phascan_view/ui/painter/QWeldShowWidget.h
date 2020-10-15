@@ -12,6 +12,7 @@ public:
 	explicit QWeldShowWidget(QWidget *parent = 0);
 	void SerPart(PART_CONFIG* pInfo_);
     void clear_point();
+    void setGroupId(int groupId){m_groupId = groupId;}
 
     double m_zoom;
 
@@ -51,6 +52,7 @@ private:
     QPoint m_startPoint;
     QPoint m_endPoint;
     QPoint m_lastPoint;
+    int    m_groupId;
 
 public slots:
     void do_zoom_change(double value);

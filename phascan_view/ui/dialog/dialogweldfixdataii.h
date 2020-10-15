@@ -35,6 +35,7 @@ private slots:
     void symmetryChanged( int index);
     void probePosChanged( int index);
     void weldFormChanged(int index);
+    void HAZValueChanged(double value);
     void w1ValueChanged( double value);
     void w2ValueChanged( double value);
     void w3ValueChanged( double value);

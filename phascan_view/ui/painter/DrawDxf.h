@@ -29,7 +29,7 @@ public:
 
     explicit DrawDxf(QWidget *parent = 0);
     ~DrawDxf();
-    static   DrawDxf* Instance();
+    static   DrawDxf* Instance(int groupId);
     int set_part(PART_CONFIG* pInfo_);
     void draw_dxf_part(QPainter& painter);
     void draw_dxf_header(QPainter& painter);

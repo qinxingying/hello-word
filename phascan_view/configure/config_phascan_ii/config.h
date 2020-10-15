@@ -22,7 +22,7 @@ public:
 
     void set_is_phascan_ii(bool flag);
     bool is_phascan_ii();
-    bool is_200wave();
+    int getPhascanVersion();
 
     char *data_mark();
 

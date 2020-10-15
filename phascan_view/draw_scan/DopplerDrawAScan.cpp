@@ -7,7 +7,7 @@ extern int Phascan_Version;
 
 WDATA setPdata( WDATA data)
 {
-    if(Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    if(Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
     {
         return data;
     }

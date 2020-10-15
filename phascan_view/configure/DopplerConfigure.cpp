@@ -990,11 +990,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
     if(Config::instance()->is_phascan_ii()) {
-        if(Config::instance()->is_200wave()){
-            Phascan_Version = 5;
-        }else{
-            Phascan_Version = 4;
-        }
+//        if(Config::instance()->is_200wave()){
+//            Phascan_Version = 5;
+//        }else{
+//            Phascan_Version = 4;
+//        }
+        Phascan_Version = Config::instance()->getPhascanVersion();
     } else {
         Phascan_Version = m_pDataFile->GetFileHeader()->version - m_pDataFile->GetFileHeader()->size -
                 m_pDataFile->GetFileHeader()->reserved;
@@ -1063,7 +1064,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;
         /* 耦合监控 版本4和5才有此功能，on_off_status 第2位表示开启关闭，0关闭；1开启 3位到21表示声速的10倍值*/
-        if(Phascan_Version == 4 || Phascan_Version == 5)
+        if(Phascan_Version == 4 || Phascan_Version == 5 || Phascan_Version == 6 || Phascan_Version == 7)
         {
             _group.coupleMonitoringState = (( _group.on_off_status>>2) & 0x01);
             _group.coupleMonitoringVelocity = ((_group.on_off_status>>3) & 0x3FFFF)/10;
@@ -1336,12 +1337,26 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 			MATERIAL* _material = _list->at(_pGroupInfo->part.Material_pos) ;
 			memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;
 		}
+        _group.part.CADFresh = false;
+        bool hasCADData = false;
+        if(Phascan_Version >= 6){
+            if(m_pDataFile->GetCADExist(i)){
+                QString g_filePath = QCoreApplication::applicationDirPath() + QString("/temp/%1.dxf").arg(i);
+                std::string str = g_filePath.toStdString();
+                const char* p = str.c_str();
+                sprintf(_group.part.strPartFile, "%s", p);
+                hasCADData = true;
+            }
+        }
 
 	//	MATERIAL* _material = _list->at(_pGroupInfo->part.Material_pos) ;
     //	memcpy((void*)&_group.part.material , (void*)_material , sizeof(MATERIAL)) ;
 
 		_group.part.weld.eSymmetry       = (setup_WELD_SYMMETRY_TYPE) _pGroupInfo->part.symmetry ;
         _group.part.weld.eType	         = (setup_WELD_TYPE) ((_pGroupInfo->part.Weld == 4)?_pGroupInfo->part.Weld+2:_pGroupInfo->part.Weld) ;
+        if(hasCADData){
+            _group.part.weld.eType = setup_WELD_DXF;
+        }
 		_group.part.weld.weland_height   = _pGroupInfo->part.weland_height / 1000.0 ;
 		_group.part.weld.weland_offset   = _pGroupInfo->part.weland_offset / 1000.0 ;
 		_group.part.weld.fizone_angle	 = _pGroupInfo->part.fizone_angle  / 1000.0 ;

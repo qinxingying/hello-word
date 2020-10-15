@@ -208,8 +208,18 @@ void DopplerLawMarker::DrawWeld(QPainter *painter)
     dashes << 5 << 2  ;
     _pen.setDashPattern(dashes);
     _pen.setColor(m_cColorWeld);
-    painter->setPen(_pen) ;
-    painter->drawPath(weld) ;
+    painter->setPen(_pen);
+    painter->drawPath(weld);
+    if(m_brushHAZ){
+        QBrush curBrush = painter->brush();
+        curBrush.setColor(m_cColorWeld);
+        curBrush.setStyle(Qt::Dense7Pattern);
+        painter->setBrush(curBrush);
+        _pen.setStyle(Qt::NoPen);
+        painter->setPen(_pen);
+        painter->drawPath(HAZBrush);
+        //painter->setBrush(Qt::Dense7Pattern);
+    }
 }
 
 
@@ -433,11 +443,15 @@ int DopplerLawMarker::GetMarkerId() const
     return m_nPostSelect ;
 }
 
-void DopplerLawMarker::SetWeldInfo(bool bShow_ , QPainterPath* path )
+void DopplerLawMarker::SetWeldInfo(bool bShow_ , int brushHAZ, QPainterPath* path, QPainterPath* HAZpath)
 {
     m_bShowWeld = bShow_ ;
+    m_brushHAZ = brushHAZ;
     if(path)
     {
         weld = *path ;
+    }
+    if(HAZpath){
+        HAZBrush = *HAZpath;
     }
 }

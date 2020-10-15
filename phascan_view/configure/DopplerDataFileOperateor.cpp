@@ -3,6 +3,7 @@
 
 #include <QDataStream>
 #include <QFileInfo>
+#include <QCoreApplication>
 
 DopplerDataFileOperateor::DopplerDataFileOperateor(QObject *parent) :
     QObject(parent)
@@ -51,6 +52,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     ret = reader.readRawData((char*)&m_cFileHead , _nTmp) ;
     if(ret != _nTmp)
         return -1 ;
+    int Phascan_Version = m_cFileHead.version - m_cFileHead.size - m_cFileHead.reserved;
     _nTmp = sizeof(DRAW_INFO_PACK) ;
     ret = reader.readRawData((char*)&m_cDrawInfoPack , _nTmp) ;
     if(ret != _nTmp)
@@ -64,10 +66,58 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     qint64 fileSize = info1.size();
     qint64 reservedSize;
     if( m_cFileHead.version > fileSize){
+        if(Phascan_Version >= 6){
+            return -1;
+        }
         reservedSize = fileSize - m_cFileHead.size - 1;
     }
     else{
         reservedSize = m_cFileHead.reserved;
+    }
+
+    if(Phascan_Version >= 6){//有CAD信息
+        _nTmp = m_cFileHead.reserved;
+        ret = reader.skipRawData(_nTmp);
+        if(ret != _nTmp){
+            return -1;
+        }
+        _nTmp = sizeof(_ExtConfig);
+        ret = reader.skipRawData(_nTmp);
+        if(ret != _nTmp){
+            return -1;
+        }
+        _nTmp = sizeof(int) * 8;
+        ret = reader.readRawData((char*)&m_cadInfo, _nTmp);
+        if(ret != _nTmp){
+            return -1;
+        }
+        int cadTotalData = 0;
+        for(int i = 0; i < 8; i++){
+            cadTotalData += m_cadInfo[i];
+        }
+        if(cadTotalData && fileSize < (m_cFileHead.size + m_cFileHead.reserved + sizeof(_ExtConfig) + sizeof(int) * 8 + cadTotalData)){
+            return -1;
+        }
+        for(int i = 0; i < 8; i++){
+            if(m_cadInfo[i]){
+                int caddataSize = m_cadInfo[i];
+                QString g_filePath = QCoreApplication::applicationDirPath() + QString("/temp/%1.dxf").arg(i);
+                QFile file(g_filePath);
+                if (!file.open(QIODevice::ReadWrite | QIODevice::Truncate)){
+                    return -1;
+                }
+                if(!file.resize(caddataSize)){
+                    return -1;
+                }
+                uchar *buff = file.map(0, caddataSize);
+                ret = reader.readRawData((char*)buff, caddataSize);
+                file.unmap(buff);
+                file.close();
+                if(ret != caddataSize){
+                    return -1;
+                }
+            }
+        }
     }
 
     m_pBeamData = m_file->map(m_cFileHead.size , reservedSize) ;
@@ -102,4 +152,13 @@ GROUP_INFO* DopplerDataFileOperateor::GetGroupInfo(int nGroupId_)
     if(nGroupId_ > 7)  return 0 ;
     if(nGroupId_ < 0)  return 0 ;
     return &(m_cGroupInfo[nGroupId_]);
+}
+
+bool DopplerDataFileOperateor::GetCADExist(int nGroupId_)
+{
+    if(m_cadInfo[nGroupId_]){
+        return true;
+    }else{
+        return false;
+    }
 }

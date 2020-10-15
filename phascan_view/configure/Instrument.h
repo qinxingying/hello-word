@@ -370,6 +370,7 @@ struct PART_CONFIG
 	WELD				weld;					// weld
     WELD_II             weld_ii;
     float               weld_border;
+    bool                CADFresh;
 	char				strPartFile[256];		// Name of part file , *.ncc
 };
 

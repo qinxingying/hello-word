@@ -2,6 +2,7 @@
 #include "msgpack/msgpack.h"
 #include <QDebug>
 #include <QList>
+#include <QDataStream>
 #include "../DopplerDataFileOperateor.h"
 #include "mercury_paramters/group_paramters.h"
 
@@ -169,11 +170,18 @@ void Config::unpack_version()
     version.m_phascanVersion = value("Version").toString();
     version.m_FpgaCpuVersion = value("FpgaCpuVersion").toString();
     version.m_FpgaPaVersion  = value("FpgaPaVersion").toString();
+    if(!value("DxfData").isNull()){
+        version.m_dxfExist = true;
+        version.m_dxfData = value("DxfData").toByteArray();
+    }else{
+        version.m_dxfExist = false;
+    }
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " version " << version.m_phascanVersion
              << " fpgaCpuVersion " << version.m_FpgaCpuVersion
-             << " fpgaPaVersion " << version.m_FpgaPaVersion;
+             << " fpgaPaVersion " << version.m_FpgaPaVersion
+             << " DxfDataExist " << version.m_dxfExist << version.m_dxfData.size();
 }
 
 void Config::unpack_display()
@@ -699,6 +707,9 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
         weld_ii.eAngle    = DEFAULT_FILLET_ANGLE;
         weld_ii.eTopThinkness    = DEFAULT_PLANE_HEIGHT;
         weld_ii.eBottomThinkness = DEFAULT_PLANE_HEIGHT;
+    }
+    if(m_global.m_version.m_dxfExist){
+        weld_ii.eType = DXF;
     }
 }
 
@@ -1475,6 +1486,19 @@ void Config::convert_other_to_phascan_config()
 {
     DRAW_INFO_PACK &drawInfoPack = m_pDataFile->m_cDrawInfoPack;
     drawInfoPack.nGroupNum = m_global.m_groupQty;
+    memset(m_pDataFile->m_cadInfo, 0, 8*sizeof(int));
+    if(m_global.m_version.m_dxfExist){
+        for(int i = 0; i < m_global.m_groupQty; i++){
+            m_pDataFile->m_cadInfo[i] = 10;
+            int caddataSize = m_global.m_version.m_dxfData.size();
+            QString g_filePath = QCoreApplication::applicationDirPath() + QString("/temp/%1.dxf").arg(i);
+            QFile file(g_filePath);
+            file.open(QIODevice::ReadWrite | QIODevice::Truncate);
+            QDataStream writer(&file);
+            writer.writeRawData(m_global.m_version.m_dxfData.data(), caddataSize);
+            file.close();
+        }
+    }
 
     /* Scanner */
     drawInfoPack.nScanStart        = m_global.m_scanner.m_scanAxis.m_start * 1000.0;
@@ -1594,23 +1618,29 @@ bool Config::is_phascan_ii()
     return m_isPhascanII;
 }
 
-bool Config::is_200wave()
+int Config::getPhascanVersion()
 {
-    QString version = m_global.m_version.m_phascanVersion;
-    QStringList list1 = version.split('.');
-    int buffV[3];
-    for(int i = 0; i < list1.size(); i++){
-        QString buffs = list1.at(i);
-        buffV[i] = buffs.toInt();
-    }
-    if( buffV[0] > 1){
-        return true;
-    }else if( buffV[0] == 1 && buffV[1] > 3){
-        return true;
-    }else if( buffV[0] == 1 && buffV[1] == 3 && buffV[2] >= 8){
-        return true;
+//    QString version = m_global.m_version.m_phascanVersion;
+//    QStringList list1 = version.split('.');
+//    int buffV[3];
+//    for(int i = 0; i < list1.size(); i++){
+//        QString buffs = list1.at(i);
+//        buffV[i] = buffs.toInt();
+//    }
+//    int buff;
+//    if( buffV[0] > 1){
+//        buff = 5;
+//    }else if( buffV[0] == 1 && buffV[1] > 3){
+//        return 5;
+//    }else if( buffV[0] == 1 && buffV[1] == 3 && buffV[2] >= 8){
+//        return 5;
+//    }else{
+//        return 4;
+//    }
+    if(m_global.m_version.m_dxfExist){
+        return 7;
     }else{
-        return false;
+        return 5;
     }
 }
 

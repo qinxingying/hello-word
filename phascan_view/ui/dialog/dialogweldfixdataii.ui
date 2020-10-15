@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>750</width>
-    <height>450</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>750</width>
-    <height>450</height>
+    <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>750</width>
-    <height>450</height>
+    <height>500</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -95,35 +95,35 @@
           <string>Weld Parameter</string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="5" column="0">
+          <item row="6" column="0">
            <widget class="QLabel" name="r1Label">
             <property name="text">
              <string>R1:</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="0">
+          <item row="9" column="0">
            <widget class="QLabel" name="r2Label">
             <property name="text">
              <string>R2:</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="2">
+          <item row="4" column="2">
            <widget class="QLabel" name="w1UnitLabel">
             <property name="text">
              <string>mm</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="8" column="0">
            <widget class="QLabel" name="h2Label">
             <property name="text">
              <string>H2:</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="8" column="1">
            <widget class="QDoubleSpinBox" name="h2DoubleSpinBox">
             <property name="keyboardTracking">
              <bool>false</bool>
@@ -133,7 +133,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="6" column="1">
            <widget class="QDoubleSpinBox" name="r1DoubleSpinBox">
             <property name="keyboardTracking">
              <bool>false</bool>
@@ -143,42 +143,42 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="2">
+          <item row="7" column="2">
            <widget class="QLabel" name="w2UnitLabel">
             <property name="text">
              <string>mm</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="2">
+          <item row="8" column="2">
            <widget class="QLabel" name="h2UnitLabel">
             <property name="text">
              <string>mm</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="h1Label">
             <property name="text">
              <string>H1:</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="w1Label">
             <property name="text">
              <string>W1:</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="7" column="0">
            <widget class="QLabel" name="w2Label">
             <property name="text">
              <string>W2:</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="1">
+          <item row="10" column="1">
            <widget class="QDoubleSpinBox" name="w3DoubleSpinBox">
             <property name="keyboardTracking">
              <bool>false</bool>
@@ -188,14 +188,14 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="2">
+          <item row="9" column="2">
            <widget class="QLabel" name="r2UnitLabel">
             <property name="text">
              <string>mm</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="4" column="1">
            <widget class="QDoubleSpinBox" name="w1DoubleSpinBox">
             <property name="keyboardTracking">
              <bool>false</bool>
@@ -254,14 +254,14 @@
             </item>
            </widget>
           </item>
-          <item row="9" column="2">
+          <item row="10" column="2">
            <widget class="QLabel" name="w3UnitLabel">
             <property name="text">
              <string>mm</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="5" column="1">
            <widget class="QDoubleSpinBox" name="h1DoubleSpinBox">
             <property name="keyboardTracking">
              <bool>false</bool>
@@ -278,7 +278,7 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
+          <item row="9" column="1">
            <widget class="QDoubleSpinBox" name="r2DoubleSpinBox">
             <property name="keyboardTracking">
              <bool>false</bool>
@@ -288,14 +288,14 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="2">
+          <item row="5" column="2">
            <widget class="QLabel" name="h1UnitLabel">
             <property name="text">
              <string>mm</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="7" column="1">
            <widget class="QDoubleSpinBox" name="w2DoubleSpinBox">
             <property name="keyboardTracking">
              <bool>false</bool>
@@ -305,14 +305,14 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="2">
+          <item row="6" column="2">
            <widget class="QLabel" name="r1UnitLabel">
             <property name="text">
              <string>mm</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="0">
+          <item row="10" column="0">
            <widget class="QLabel" name="w3Label">
             <property name="text">
              <string>W3:</string>
@@ -384,6 +384,27 @@
               <string>Wing4</string>
              </property>
             </item>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="HAZLabel">
+            <property name="text">
+             <string>HAZ:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QDoubleSpinBox" name="HAZDoubleSpinBox">
+            <property name="decimals">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="HAZUnitLabel">
+            <property name="text">
+             <string>mm</string>
+            </property>
            </widget>
           </item>
          </layout>

@@ -12,7 +12,7 @@ int Csrc_indexStart = 0;
 
 U32 getGateDataAmplitude( U32 value)
 {
-    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
     {
         return value & 0xFF;
     }
@@ -24,7 +24,7 @@ U32 getGateDataAmplitude( U32 value)
 
 U32 getGateDataDepth( U32 value)
 {
-    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
     {
         return value >> 8;
     }
@@ -36,7 +36,7 @@ U32 getGateDataDepth( U32 value)
 
 U32 combinedGateDate( U32 depth, int amp)
 {
-    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4)
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
     {
         return ( (depth << 8) | (U8)amp);
     }

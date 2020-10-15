@@ -15,6 +15,7 @@ public:
     explicit WeldShowDataIIWidget(QWidget *parent = 0);
     void SerPart(PART_CONFIG *pInfo_);
     void clear_point();
+    void setGroupId(int groupId){m_groupId = groupId;}
 public slots:
     void do_zoom_change(double value);
 protected:
@@ -52,6 +53,7 @@ private:
     QPoint m_startPoint;
     QPoint m_endPoint;
     QPoint m_lastPoint;
+    int m_groupId;
 };
 
 #endif // WELDSHOWDATAIIWIDGET_H

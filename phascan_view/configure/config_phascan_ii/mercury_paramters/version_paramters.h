@@ -15,6 +15,8 @@ private:
     QString m_phascanVersion;
     QString m_FpgaCpuVersion;
     QString m_FpgaPaVersion;
+    bool m_dxfExist;
+    QByteArray m_dxfData;
     friend class Config;
 };
 }

@@ -7,7 +7,7 @@
 #include <QtOpenGL>
 #include <math.h>
 
-extern int Phascan_Version;
+//extern int Phascan_Version;
 const int CURCLE_STEP = 3600;//360;
 const F32 DEST_HEIGHT = 6.0;//360;
 const int PEAK_CLIP = 204;

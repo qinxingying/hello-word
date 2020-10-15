@@ -21,6 +21,7 @@ DialogDxfFileLoad::DialogDxfFileLoad(QWidget *parent , int nGroupId_) :
 	SetPart();
     UpdateWeld();
     ui->ExpoView->SerPart(&m_cPart);
+    ui->ExpoView->setGroupId(m_nGroupId);
 
 	ui->ExpoView->setAutoFillBackground(true);
 	QPalette palette;
@@ -376,6 +377,7 @@ void DialogDxfFileLoad::on_PartFileListDbClicked(QModelIndex index)
 
     //sprintf(m_cPart.strPartFile, "%s%s", p, (char*)(qPrintable(_str)));
     sprintf(m_cPart.strPartFile, "%s%s", p, (char*)(_str.c_str()));
+    m_cPart.CADFresh = false;
 
     SetWndName();
 	UpdateDisplay();

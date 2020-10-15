@@ -1030,6 +1030,7 @@ void MainWindow::NewConfigure()
 */
 void MainWindow::OpenFile()
 {
+    //setCursor(QCursor(Qt::BusyCursor));
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     QStringList fileNameLst = QFileDialog::getOpenFileNames(this,
                             "Open File Dialog",
@@ -1900,7 +1901,7 @@ void MainWindow::on_actionNew_triggered()
 }
 
 void MainWindow::on_actionOpenFile_triggered()
-{
+{    
     OpenFile();
 }
 

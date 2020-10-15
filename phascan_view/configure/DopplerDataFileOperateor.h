@@ -19,6 +19,7 @@ public:
     INSPEC_DATA_FILE* GetFileHeader() ;
     DRAW_INFO_PACK*   GetDrawInfo() ;
     GROUP_INFO*       GetGroupInfo(int nGroupId_)  ;
+    bool GetCADExist(int nGroupId_);
 
 
 protected:
@@ -28,6 +29,7 @@ protected:
     unsigned char* m_pBeamData;
     QFile* m_file ;
     qint64 m_mapdataSize;
+    int m_cadInfo[8];
 signals:
 
 public slots:
