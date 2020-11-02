@@ -1144,11 +1144,11 @@ void MainWindow::fileMergePro(QStringList &fileNameLst)
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     //将多个.data数据合并为一组数据
     DopplerMergeDataFileOperateor mergeDataOp;
-    int _ret = mergeDataOp.LoadData(fileNameLst);
+    int _ret = mergeDataOp.TestData(fileNameLst);
     if (0 != _ret) return ;
-    _ret = mergeDataOp.MergeFile();
+    _ret = mergeDataOp.TestMergeFile(fileNameLst);
     if (0 != _ret) return ;
-    mergeDataOp.WriteDataToFile(m_fileName);
+    mergeDataOp.TryWriteData(m_fileName);
     if (!_ret) {
         _ret  = _pConfig->OpenData(m_fileName);
         if(!_ret)

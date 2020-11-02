@@ -1051,7 +1051,7 @@ void DopplerViewItems::ResetDefect()
 
 void  DopplerViewItems::DrawWeld(QPainterPath& path, QPainterPath& HAZpath, bool &brushHAZ)
 {
-    qDebug()<<"indndn";
+    //qDebug()<<"indndn";
     if(m_cPart.weldFormat)
     {
         brushHAZ = true;

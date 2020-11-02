@@ -634,10 +634,11 @@ void DopplerDataView::CreateComponent()
 	connect(m_pGraphicView , SIGNAL(signalViewChanged(QRectF)) , SLOT(slotZoomAction(QRectF)));
 	connect(m_pGraphicView , SIGNAL(signalItemMoved(DopplerGraphicsItem*)) , SLOT(slotItemMoved(DopplerGraphicsItem*)));
     connect(m_pGraphicView , SIGNAL(signalItemPressed(DopplerGraphicsItem*)) , SLOT(slotItemPressed(DopplerGraphicsItem*)));
-	connect(m_pGraphicView , SIGNAL(signalButtonRelease(QMouseEvent*)) , SLOT(slotViewMouseRelease(QMouseEvent*)));
+    //connect(m_pGraphicView , SIGNAL(signalButtonRelease(QMouseEvent*)) , SLOT(slotViewMouseRelease(QMouseEvent*)));
 	connect(m_pGraphicView , SIGNAL(signalButtonPressed(QMouseEvent*)) , SLOT(slotViewMousePressed(QMouseEvent*)));
 	connect(m_pGraphicView , SIGNAL(signalButtonDoubleClicked(QPointF)) , SLOT(slotMouseDoubleClicked(QPointF))) ;
 	connect(m_pGraphicView , SIGNAL(signalTofdDragProAction(QPointF, QPointF)) , SLOT(slotTofdDragProAction(QPointF, QPointF))) ;
+    connect(m_pGraphicView, SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), this, SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)));
 
 	setLayout(m_pLayout);
 }
@@ -695,10 +696,10 @@ void DopplerDataView::paintEvent(QPaintEvent* event)
 	QWidget::paintEvent(event) ;
 }
 
-void DopplerDataView::slotViewMouseRelease(QMouseEvent *event)
-{
-	mouseReleaseEvent(event);
-}
+//void DopplerDataView::slotViewMouseRelease(QMouseEvent *event)
+//{
+//	mouseReleaseEvent(event);
+//}
 void DopplerDataView::slotViewMousePressed(QMouseEvent* event)
 {
 	mousePressEvent(event);
@@ -929,6 +930,13 @@ void DopplerDataView::slotZoomAction(QRectF rect)
 
 }
 
+void DopplerDataView::slotRespondView(QPoint startPos, QPoint endPos, bool zoomStatus)
+{
+    if(m_pGraphicView){
+        m_pGraphicView->respondView(startPos, endPos, zoomStatus);
+    }
+}
+
 QRectF DopplerDataView::slotItemSetAngleLineLimit(QRectF &_rect, DopplerGraphicsItem* pItem_)
 {
     int _nGroupId , _nLawId , _nDisplay;
@@ -1119,4 +1127,18 @@ QRect DopplerDataView::GetZoomRect()
 	_rect.setHeight(_nHeight - 4);
 	*/
 	return _rect;
+}
+
+void DopplerDataView::setInteractionStatus(bool status)
+{
+    if(m_pGraphicView){
+        m_pGraphicView->setInteractionStatus(status);
+    }
+}
+
+void DopplerDataView::updateAllItems()
+{
+    if(m_pItemsGroup) {
+        m_pItemsGroup->UpdateItems();
+    }
 }

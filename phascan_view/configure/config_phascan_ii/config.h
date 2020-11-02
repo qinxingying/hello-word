@@ -35,6 +35,7 @@ public:
     void getTMFRange(int groupId, float *start, float *range, int *pointQty);
 
     void getScannerData( SCANNER &scanner);
+    bool is_phascan_ii_file(QFile &file);
 
 protected:
     void unpack_group(int groupId);
@@ -115,9 +116,7 @@ protected:
     int get_bit_value (int val, int bit);
 
     void convert_to_phascan_config(int groupId);
-    void convert_other_to_phascan_config();
-
-    bool is_phascan_ii_file(QFile &file);
+    void convert_other_to_phascan_config();    
 
     void print_all_key(int depth, const QVariantMap &map);
 

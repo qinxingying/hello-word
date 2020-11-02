@@ -433,12 +433,12 @@ int DopplerConfigure::OpenData(QString& path_)
 	OldGroupToGroup(m_pDataFile) ;
 	m_pData = m_pDataFile->GetData();
     m_pDataSize = m_pDataFile->GetDataSize();
-    GROUP_INFO *targetGroup;
-    if(Config::instance()->is_phascan_ii()) {
-        targetGroup = m_pDataFile->GetGroupInfo(0);
-    } else {
-        targetGroup = m_pDataFile->GetGroupInfo(0);
-    }
+//    GROUP_INFO *targetGroup;
+//    if(Config::instance()->is_phascan_ii()) {
+//        targetGroup = m_pDataFile->GetGroupInfo(0);
+//    } else {
+//        targetGroup = m_pDataFile->GetGroupInfo(0);
+//    }
     InitTOPCMerge();
     //SIZING_CURVES &targetCurves = targetGroup->SizingCurves;
 

@@ -1,6 +1,7 @@
 #include <QMessageBox>
 #include "dopplermergedatafileoperateor.h"
 #include "const.h"
+#include <config_phascan_ii/config.h>
 
 DopplerMergeDataFileOperateor::DopplerMergeDataFileOperateor(QObject *parent)
     : QObject(parent)
@@ -8,6 +9,7 @@ DopplerMergeDataFileOperateor::DopplerMergeDataFileOperateor(QObject *parent)
     , m_pRFileOp(nullptr)
     , m_nMaxFrameLen(-1)
     , m_version(0)
+    , m_DataType(FORMATDATA_NONE)
     , m_pWBeamData(nullptr)
 {
     memset(&m_wFileHead, 0, sizeof (INSPEC_DATA_FILE));
@@ -23,11 +25,14 @@ DopplerMergeDataFileOperateor::~DopplerMergeDataFileOperateor()
     }
 }
 
-int DopplerMergeDataFileOperateor::LoadData(const QStringList &lst)
+int DopplerMergeDataFileOperateor::LoadDataI(const QStringList &lst)
 {
     if (lst.isEmpty()) return -1;
 
     m_count = lst.size();
+    if(m_count > 8){
+        return -1;
+    }
     m_pRFileOp = new DopplerDataFileOperateor[m_count];
     for (int i = 0; i < m_count; i ++) {
         int ret = m_pRFileOp[i].LoadDataFile(const_cast<QString &>(lst.at(i)));
@@ -43,8 +48,110 @@ int DopplerMergeDataFileOperateor::LoadData(const QStringList &lst)
             if (m_version != swVersion) return -1;
         }
     }
-
+    if(m_version == 6 || m_version == 7){
+        m_version -= 2;
+    }
+    m_DataType = FORMATDATA_I;
     return 0;
+}
+
+int DopplerMergeDataFileOperateor::LoadDataII(const QStringList &lst)
+{
+    if (lst.isEmpty()) return -1;
+
+    m_count = lst.size();
+    if(m_count > 8){
+        return -1;
+    }
+    m_dataIIinfo.resize(m_count);
+    for(int i = 0; i < m_count; i++){
+        if( !isDataII(const_cast<QString &>(lst.at(i)), m_dataIIinfo[i])){
+            return -1;
+        }
+    }
+    m_DataType = FORMATDATA_II;
+    return 0;
+}
+
+bool DopplerMergeDataFileOperateor::isDataII(QString& strPath, dataIIInfo &info)
+{
+    QFile file(strPath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return false;
+    }
+    if(!Config::instance()->is_phascan_ii_file(file)){
+        return false;
+    }
+
+    quint64 len = 0;
+    file.read((char *)&len, sizeof(len));
+    QByteArray data = file.read(len);
+    QFile tmp("mercury.cfg");
+    if (!tmp.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
+        return false;
+    }
+    tmp.write(data);
+    tmp.close();
+    QSettings src("mercury.cfg", QSettings::defaultFormat());
+    info.groupQty = src.value("GroupQty").toUInt();
+    QVariantMap map = src.value("Scanner").toMap();
+    if(map["Mode"].toUInt() != 0){
+        return false;
+    }
+    info.rate = map["Rate"].toUInt();
+
+    QVariantMap scanmap = map["ScanAxis"].toMap();
+    info.drivingType = scanmap["Driving"].toUInt();
+    info.start = scanmap["Start"].toDouble();
+    info.end = scanmap["End"].toDouble();
+    info.resolution = scanmap["Resolution"].toDouble();
+    info.frameSize = 0;
+    for(int i = 0; i < info.groupQty; i++){
+        QVariantMap groupMap = src.value(QString("Group%1").arg(i)).toMap();
+        uint groupMode = groupMap["Mode"].toUInt();
+        QVariantMap SampleMap = groupMap["Sample"].toMap();
+        int pointQty = SampleMap["PointQty"].toInt();
+        QVariantMap FocallawerMap = groupMap["Focallawer"].toMap();
+        uint scanMode = FocallawerMap["ScanMode"].toUInt();
+        bool coupling = FocallawerMap["Coupling"].toBool();
+        QVariantMap ScanMap = FocallawerMap["Scan"].toMap();
+        int groupDataSize = 0;
+        if(groupMode == 1){
+            if(scanMode == 0){//线扫
+                uint elemStart = ScanMap["PriStartElem"].toUInt();
+                uint elemStop = ScanMap["PriStopElem"].toUInt();
+                uint elemStep = ScanMap["PriElemStep"].toUInt();
+                uint priApe = ScanMap["PriApe"].toUInt();
+                int ret = (elemStop - elemStart - priApe + 1) / elemStep + 1;
+                if(coupling){
+                    ret++;
+                }
+                groupDataSize = ret * (pointQty + setup_DATA_PENDIX_LENGTH);
+            }else if(scanMode == 1){//扇扫
+                double angleStart = ScanMap["RefractStartAngle"].toDouble();
+                double angleStop = ScanMap["RefractStopAngle"].toDouble();
+                double angleStep = ScanMap["RefractStepAngle"].toDouble();
+                int ret = (angleStop - angleStart) / angleStep + 1;
+                if(coupling){
+                    ret++;
+                }
+                groupDataSize = ret * (pointQty + setup_DATA_PENDIX_LENGTH);
+            }else{//全聚焦
+                int colQty = ScanMap["ColQty"].toInt();
+                int rowQty = ScanMap["RowQty"].toInt();
+                groupDataSize = colQty * ( rowQty + setup_DATA_PENDIX_LENGTH);
+            }
+        }else{
+            int ret = 1;
+            if(coupling){
+                ret++;
+            }
+            groupDataSize = ret*(pointQty + setup_DATA_PENDIX_LENGTH);
+        }
+        info.frameSize += groupDataSize;
+    }
+    QFile::remove("mercury.cfg");
+    return true;
 }
 
 int DopplerMergeDataFileOperateor::MergeDrawInfoPackAndGroupInfo()
@@ -250,7 +357,48 @@ void DopplerMergeDataFileOperateor::CreateBeamData()
     memset(m_pWBeamData, 0x00, m_wFileHead.reserved);
 }
 
-int DopplerMergeDataFileOperateor::MergeFile()
+int  DopplerMergeDataFileOperateor::TestData(const QStringList &lst)
+{
+    int ret = LoadDataI(lst);
+    if(ret != 0){
+        ret = LoadDataII(lst);
+    }
+    return ret;
+}
+
+int DopplerMergeDataFileOperateor::TestMergeFile(const QStringList &lst)
+{
+    int ret = -1;
+    switch (m_DataType) {
+    case FORMATDATA_I:
+        ret = MergeFileI();
+        break;
+    case FORMATDATA_II:
+        ret = MergeFileII(lst);
+        break;
+    default:
+        break;
+    }
+    return ret;
+}
+
+int DopplerMergeDataFileOperateor::TryWriteData(const QString &fileName)
+{
+    int ret = -1;
+    switch (m_DataType) {
+    case FORMATDATA_I:
+        ret = WriteDataIToFile(fileName);
+        break;
+    case FORMATDATA_II:
+        ret = WriteDataIIToFile(fileName);
+        break;
+    default:
+        break;
+    }
+    return ret;
+}
+
+int DopplerMergeDataFileOperateor::MergeFileI()
 {
     if (m_count <= 1) return -1;
 
@@ -265,7 +413,145 @@ int DopplerMergeDataFileOperateor::MergeFile()
     return 0;
 }
 
-int DopplerMergeDataFileOperateor::WriteDataToFile(const QString &fileName)
+int DopplerMergeDataFileOperateor::MergeFileII(const QStringList &lst)
+{
+    if (m_count <= 1) return -1;
+    uint groupqty = m_dataIIinfo[0].groupQty;
+    double start = m_dataIIinfo[0].start;
+    double end = m_dataIIinfo[0].end;
+    double range = end - start;
+
+    for(int i = 1; i < m_count; i++){
+        groupqty += m_dataIIinfo[i].groupQty;
+        if(m_dataIIinfo[i].drivingType != m_dataIIinfo[0].drivingType){
+            return -1;
+        }
+        if(m_dataIIinfo[i].drivingType == 0 && m_dataIIinfo[i].rate != m_dataIIinfo[0].rate){
+            return -1;
+        }
+        if(m_dataIIinfo[i].drivingType != 0 && m_dataIIinfo[i].resolution != m_dataIIinfo[0].resolution){
+            return -1;
+        }
+        if( m_dataIIinfo[i].end -  m_dataIIinfo[i].start > range){
+            start = m_dataIIinfo[i].start;
+            end = m_dataIIinfo[i].end;
+            range = end - start;
+        }
+    }
+
+    if(groupqty > 8){
+        return -1;
+    }
+
+    QVector<QByteArray> dataIIMark;
+    QVector<QByteArray> dataIISource;
+    QVector<int> srcframeSize;
+    srcframeSize.resize(m_count);
+    QVector<int> dstframeSize;
+    dstframeSize.resize(m_count);
+    int lastGroupIndex = 0;
+    quint64 markLen = 0;
+    QFile tmpbuff("merge.cfg");
+    if(!tmpbuff.open(QIODevice::WriteOnly|QIODevice::Truncate)){
+        return false;
+    }
+    tmpbuff.close();
+    QSettings dst("merge.cfg",QSettings::defaultFormat());
+    for(int i = 0; i < m_count; i++){
+        QFile file(const_cast<QString &>(lst.at(i)));
+        file.open(QIODevice::ReadOnly);
+        quint64 len = 0;
+        quint64 sMarkLen = 0;
+        file.read((char *)&len, sizeof(len));
+        QByteArray data = file.read(len);
+        QFile tmp("mercury.cfg");
+        if (!tmp.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
+            return false;
+        }
+        tmp.write(data);
+        tmp.close();
+        QSettings src("mercury.cfg", QSettings::defaultFormat());
+        if(i == 0){
+            src.setValue("GroupQty", groupqty);
+            QVariantMap map = src.value("Scanner").toMap();
+            QVariantMap scanmap = map["ScanAxis"].toMap();
+            scanmap["Start"] = start;
+            scanmap["End"] = end;
+            map["ScanAxis"] = scanmap;
+            src.setValue("Scanner", map);
+            QStringList keys = src.allKeys();
+            foreach (QString key, keys) {
+                dst.setValue(key, src.value(key));
+            }
+            //lastGroupIndex += m_dataIIinfo[i].groupQty;
+        }else{
+            for(int j = 0; j < m_dataIIinfo[i].groupQty; j++){
+                QVariantMap map = src.value(QString("Group%1").arg(j)).toMap();
+                dst.setValue(QString("Group%1").arg(j + lastGroupIndex), map);
+            }
+        }
+        lastGroupIndex += m_dataIIinfo[i].groupQty;
+        QFile::remove("mercury.cfg");
+
+        file.read((char *)&len, sizeof(len));
+        dataIIMark.append(file.read(len));
+        sMarkLen = len;
+        if(markLen < len){
+            markLen = len;
+        }
+
+        file.read((char *)&len, sizeof(len));
+        dataIISource.append(file.read(len));
+        srcframeSize[i] = len / sMarkLen;
+        file.close();
+    }
+
+    m_dataIIMark.resize(markLen);
+    memset(m_dataIIMark.data(), 0x00, markLen);
+    char *dstPtr = m_dataIIMark.data();
+    for(int i = 0; i < m_count; i++){
+        char *srcPtr = dataIIMark[i].data();
+        for(int j = 0; j < dataIIMark[i].size(); j++){
+            if(srcPtr[j]){
+                dstPtr[j] = srcPtr[j];
+            }
+
+        }
+    }
+
+    int dstFrame = 0;
+    for(int i = 0; i < m_count; i++){
+        dstFrame += m_dataIIinfo[i].frameSize;
+    }
+    //字节对齐
+    dstFrame = (dstFrame + 4 - 1) / 4;
+    dstFrame  = 4 * dstFrame;
+
+    quint64 sourceLen = dstFrame * markLen;
+    m_dataIISource.resize(sourceLen);
+    memset(m_dataIISource.data(), 0x00, sourceLen);
+
+    int dstGroupOffset = 0;
+    for(int i = 0; i < m_count; i++){
+        char *dstDataPtr = m_dataIISource.data() + dstGroupOffset;
+        char *markPtr = dataIIMark[i].data();
+        int cpDataSize = m_dataIIinfo[i].frameSize;
+        char *srcPtr = dataIISource[i].data();
+        int srcFrameOffset = srcframeSize[i];
+        for(int j = 0; j < dataIIMark[i].size(); j++){
+            if(markPtr[j]){
+                memcpy(dstDataPtr, srcPtr, cpDataSize);
+            }
+            srcPtr += srcFrameOffset;
+            dstDataPtr += dstFrame;
+        }
+        dstGroupOffset += m_dataIIinfo[i].frameSize;
+    }
+
+    return 0;
+}
+
+int DopplerMergeDataFileOperateor::WriteDataIToFile(const QString &fileName)
 {
     Q_ASSERT_X(!fileName.isNull(),
                "DopplerMergeDataFileOperateor::WriteDataToFile", "The file name is NULL");
@@ -273,7 +559,7 @@ int DopplerMergeDataFileOperateor::WriteDataToFile(const QString &fileName)
                "DopplerMergeDataFileOperateor::WriteDataToFile", "The file name is empty");
 
     QFile file(fileName);
-    if (!file.open(QIODevice::WriteOnly)) {
+    if (!file.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
         return -6;
     }
     file.write((char *)&m_wFileHead, sizeof(INSPEC_DATA_FILE));
@@ -286,5 +572,35 @@ int DopplerMergeDataFileOperateor::WriteDataToFile(const QString &fileName)
     unsigned char cEndFile = 0xfe;
     file.write((char*)&cEndFile,1);
     file.close();
+    return 0;
+}
+
+int DopplerMergeDataFileOperateor::WriteDataIIToFile(const QString &fileName)
+{
+    Q_ASSERT_X(!fileName.isNull(),
+               "DopplerMergeDataFileOperateor::WriteDataToFile", "The file name is NULL");
+    Q_ASSERT_X(!fileName.isEmpty(),
+               "DopplerMergeDataFileOperateor::WriteDataToFile", "The file name is empty");
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly|QIODevice::Truncate)) {
+        return -6;
+    }
+    QFile tmpbuff("merge.cfg");
+    if(!tmpbuff.open(QIODevice::ReadOnly)){
+        return -6;
+    }
+    qint64 totalSize = tmpbuff.size();
+    QByteArray data = tmpbuff.read(totalSize);
+    file.write((char *)&totalSize, sizeof(qint64));
+    file.write(data.data(), totalSize);
+    totalSize = m_dataIIMark.size();
+    file.write((char *)&totalSize, sizeof(qint64));
+    file.write(m_dataIIMark.data(), totalSize);
+    totalSize = m_dataIISource.size();
+    file.write((char *)&totalSize, sizeof(qint64));
+    file.write(m_dataIISource.data(), totalSize);
+    file.close();
+    tmpbuff.close();
     return 0;
 }

@@ -36,6 +36,8 @@ public:
 	QRect  GetZoomRect() {return m_cZoomRect;}
 	bool   GetZoomStatus() {return m_bZoom;}
     void   SetZoomAction(double bottomStart, double bottomEnd, double leftStart, double leftEnd);
+    void   setInteractionStatus(bool status){m_interactionView = status;}
+    void   respondView(QPoint startPos, QPoint endPos, bool zoomStatus);
 	//bool   GetBCZoomStatus() {return m_bBCAutoZomm;}
 public:
     QMutex m_mutex;
@@ -57,6 +59,7 @@ protected:
     QRectF RangeTranslate(QRectF& rect_) ;
 
 private:
+    void backNoZoom();
     QGraphicsScene*   m_pScene        ;
     GraphicsViewBase* m_pBackGround   ;
     DopplerDrawScan*  m_pDrawScan     ;
@@ -78,12 +81,13 @@ private:
 	//bool              m_bZommInit    ;
 	bool              m_bZoom        ;
     bool              m_wheelItemSelect;
+    bool              m_interactionView;
 signals:
     void signalViewChanged(QRectF rect)  ;
     void signalUpdateDrawing();
     void signalItemMoved(DopplerGraphicsItem* item_) ;
     void signalItemPressed(DopplerGraphicsItem* item_) ;
-    void signalButtonRelease(QMouseEvent *event);
+    //void signalButtonRelease(QMouseEvent *event);
     void signalButtonPressed(QMouseEvent* event);
     void signalButtonDoubleClicked(QPointF pos_);
     void signalTofdDragProAction(QPointF ptS_, QPointF ptE_);
@@ -91,6 +95,7 @@ signals:
     void signalLawPosChange(int groupId, int lawId, int steps);
     void signalCursorScanChange(int groupId, bool orientation);
     void signalCursorUChange(int groupId, int lawId, bool orientation);
+    void signalNotifyOtherView(QPoint startPos, QPoint endPos, bool zoomStatus);
 public slots:
     void slotResetView();
     void slotPrint();

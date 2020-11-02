@@ -921,6 +921,10 @@ int ProcessDisplay::CreateViews_S_AV_BH_CH(QWidget* pWidget_)
     SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_V) ;
 	SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_H) ;
 	SetViewPara(_pView[3] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_V) ;
+    _pView[1]->setInteractionStatus(true);
+    _pView[2]->setInteractionStatus(true);
+    connect(_pView[1], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[2], SLOT(slotRespondView(QPoint,QPoint,bool)));
+    connect(_pView[2], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[1], SLOT(slotRespondView(QPoint,QPoint,bool)));
 
 	QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
 	for(int i = 0 ; i < 4 ; i++)	_pList->append(_pView[i]);
@@ -1309,6 +1313,10 @@ int ProcessDisplay::CreateViews_S_AV_CH_CH(QWidget* pWidget_)
 	SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_H) ;
 	SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_CC_H) ;
 	SetViewPara(_pView[3] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_V) ;
+    _pView[1]->setInteractionStatus(true);
+    _pView[2]->setInteractionStatus(true);
+    connect(_pView[1], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[2], SLOT(slotRespondView(QPoint,QPoint,bool)));
+    connect(_pView[2], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[1], SLOT(slotRespondView(QPoint,QPoint,bool)));
 
 	QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
 	for(int i = 0 ; i < 4 ; i++)	_pList->append(_pView[i]);
@@ -1388,6 +1396,10 @@ int ProcessDisplay::CreateViews_S_AH_CV_CV(QWidget* pWidget_)
 	SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_H) ;
 	SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_V) ;
 	SetViewPara(_pView[3] , m_nGroupId , 0 , setup_DISPLAY_MODE_CC_V) ;
+    _pView[2]->setInteractionStatus(true);
+    _pView[3]->setInteractionStatus(true);
+    connect(_pView[2], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[3], SLOT(slotRespondView(QPoint,QPoint,bool)));
+    connect(_pView[3], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[2], SLOT(slotRespondView(QPoint,QPoint,bool)));
 
 	QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
 	for(int i = 0 ; i < 4 ; i++)	_pList->append(_pView[i]);
@@ -1467,6 +1479,10 @@ int ProcessDisplay::CreateViews_S_AV_CH_BH(QWidget* pWidget_)
     SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_V) ;
     SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_H) ;
     SetViewPara(_pView[3] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_V) ;
+    _pView[2]->setInteractionStatus(true);
+    _pView[3]->setInteractionStatus(true);
+    connect(_pView[2], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[3], SLOT(slotRespondView(QPoint,QPoint,bool)));
+    connect(_pView[3], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[2], SLOT(slotRespondView(QPoint,QPoint,bool)));
 
     QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
     for(int i = 0 ; i < 4 ; i++)	_pList->append(_pView[i]);
@@ -1618,6 +1634,10 @@ int ProcessDisplay::CreateViews_S_AV_BH_CHH(QWidget* pWidget_)
     SetViewPara(_pView[1] , m_nGroupId , 0 , setup_DISPLAY_MODE_A_V) ;
     SetViewPara(_pView[2] , m_nGroupId , 0 , setup_DISPLAY_MODE_B_V) ;
     SetViewPara(_pView[3] , m_nGroupId , 0 , setup_DISPLAY_MODE_C_H) ;
+    _pView[2]->setInteractionStatus(true);
+    _pView[3]->setInteractionStatus(true);
+    connect(_pView[2], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[3], SLOT(slotRespondView(QPoint,QPoint,bool)));
+    connect(_pView[3], SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), _pView[2], SLOT(slotRespondView(QPoint,QPoint,bool)));
     _pView[0]->SetLawIdentify(0);
     _pView[1]->SetLawIdentify(0);
     _pView[2]->SetLawIdentify(0);

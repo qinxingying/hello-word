@@ -112,6 +112,8 @@ public:
     DopplerViewItems* GetItemGroup() const ;
     void UpdateScene();
 	QRect GetZoomRect();
+    void setInteractionStatus(bool status);
+    void updateAllItems();
 private:
     void CreateComponent();
     void RangeTransfer(QPair<double , double> range_ , QPair<double , double>* pos_) ;
@@ -145,13 +147,15 @@ signals:
     void signalItemMoved(DopplerDataView* , DopplerGraphicsItem*)  ;
     void signalDataViewResized(DopplerDataView*);
     void signalMouseDoubleClicked(DopplerDataView* , QPointF pos_) ;
+    void signalNotifyOtherView(QPoint startPos, QPoint endPos, bool zoomStatus);
 public slots:
 	void slotZoomAction(QRectF rect) ;
+    void slotRespondView(QPoint startPos, QPoint endPos, bool zoomStatus);
 protected slots:
     QRectF slotItemSetAngleLineLimit(QRectF &_rect, DopplerGraphicsItem* pItem_);
     void slotItemMoved(DopplerGraphicsItem* item_);
     void slotItemPressed(DopplerGraphicsItem* item_);
-    void slotViewMouseRelease(QMouseEvent*) ;
+//    void slotViewMouseRelease(QMouseEvent*) ;
     void slotViewMousePressed(QMouseEvent*) ;
     void slotMouseDoubleClicked(QPointF pos_);
     void slotTofdDragProAction(QPointF, QPointF);
