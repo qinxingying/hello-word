@@ -215,6 +215,10 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
     connect(this, SIGNAL(signalLawPosChange(int,int,int)), g_pMainWnd, SLOT(slotLawPosChange(int,int,int)));
     connect(this, SIGNAL(signalCursorScanChange(int,bool)), g_pMainWnd, SLOT(slotCursorScanChange(int,bool)));
     connect(this, SIGNAL(signalCursorUChange(int,int,bool)), g_pMainWnd, SLOT(slotCursorUChange(int,int,bool)));
+    connect(this, SIGNAL(signalShowCursor(int,bool)), g_pMainWnd, SLOT(slotShowCursor(int,bool)));
+    connect(this, SIGNAL(signalShowDefect(int,bool)), g_pMainWnd, SLOT(slotShowDefect(int,bool)));
+    connect(this, SIGNAL(signalCscanShowallChange(int)), g_pMainWnd, SLOT(slotCsanShowallChange(int)));
+    connect(this, SIGNAL(signalMeasureGate(int)), g_pMainWnd, SLOT(slotMeasureGate(int)));
 	// pass the drop event to father widget
 	setAcceptDrops(false);
 	// use openGL to render drawing
@@ -230,7 +234,9 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 	m_bZoom     = false;
     m_wheelItemSelect = false;
     m_interactionView = false;
+    m_flashMenu = true;
     setFocusPolicy(Qt::StrongFocus);
+    creatActionAndMenu();
 //	m_nTimerId = startTimer(100);
 }
 
@@ -549,42 +555,74 @@ void DopplerGraphicView::SetDrawOperation(DopplerDrawScan* pDrawScan_)
 
 void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
 {
-	if(Qt::LeftButton == event->button())
-	{
-		m_cPosStart = event->pos() ;
-	}
+    if(Qt::RightButton == event->button()){
+        DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+        int _iGroupId, _iLaw, _iDisplay;
+        _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        bool dataModeStatus, cursorStatus, defectStatus;
+        dataModeStatus = _pConfig->common.dataModeStatus;
+        cursorStatus = _pConfig->group[_iGroupId].bShowCursor;
+        defectStatus = _pConfig->group[_iGroupId].bShowDefect;        
+        m_dataMode->blockSignals(true);
+        m_showCursor->blockSignals(true);
+        m_showDefect->blockSignals(true);
+        m_dataMode->setChecked( dataModeStatus);
+        m_showCursor->setChecked( cursorStatus);
+        m_showDefect->setChecked( defectStatus);
+        m_dataMode->blockSignals(false);
+        m_showCursor->blockSignals(false);
+        m_showDefect->blockSignals(false);
 
-	QGraphicsView::mousePressEvent(event) ;
-	if(m_pScene->selectedItems().isEmpty())
-		m_bItemSelected = 0  ;
-	else
-		m_bItemSelected = 1  ;
-    QList<QGraphicsItem*> list = m_pScene->selectedItems();
-    if(!list.empty() && m_bItemSelected)
-    {
-        DopplerGraphicsItem* _item = (DopplerGraphicsItem*)list.at(0) ;
-        if(Qt::MiddleButton == event->button()){
-            if(DopplerLineItem* wheelItem = dynamic_cast<DopplerLineItem*>(_item)){
-                if(wheelItem->GetWheelStatus()){
-                    m_tempItem = wheelItem;
-                    m_wheelItemSelect = true;
+        if(m_flashMenu){
+            m_contextMenu->addAction(m_scaleRecover);
+            if(_iDisplay > 1){
+                m_contextMenu->addAction(m_dataMode);
+            }
+            m_contextMenu->addAction(m_showCursor);
+            m_contextMenu->addAction(m_showDefect);
+            m_flashMenu = false;
+        }
+
+        m_contextMenu->exec(event->globalPos());
+    }else{
+        if(Qt::LeftButton == event->button())
+        {
+            m_cPosStart = event->pos() ;
+        }
+
+        QGraphicsView::mousePressEvent(event) ;
+        if(m_pScene->selectedItems().isEmpty())
+            m_bItemSelected = 0  ;
+        else
+            m_bItemSelected = 1  ;
+        QList<QGraphicsItem*> list = m_pScene->selectedItems();
+        if(!list.empty() && m_bItemSelected)
+        {
+            DopplerGraphicsItem* _item = (DopplerGraphicsItem*)list.at(0) ;
+            if(Qt::MiddleButton == event->button()){
+                if(DopplerLineItem* wheelItem = dynamic_cast<DopplerLineItem*>(_item)){
+                    if(wheelItem->GetWheelStatus()){
+                        m_tempItem = wheelItem;
+                        m_wheelItemSelect = true;
+                    }
                 }
             }
+            emit signalItemPressed(_item) ;
         }
-        emit signalItemPressed(_item) ;
-    }
 
-	emit signalButtonPressed(event) ;
+        emit signalButtonPressed(event) ;
+    }
+    //QGraphicsView::mousePressEvent(event) ;
 }
 
 void  DopplerGraphicView::mouseDoubleClickEvent(QMouseEvent* event)
 {
-	if(Qt::LeftButton  != event->button() )
-		return  ;
+    if(Qt::LeftButton != event->button())
+        return;
 	QPoint  _pos = event->pos() ;
 	QPointF _pos1 = mapToScene(_pos) ;
-	emit signalButtonDoubleClicked(_pos1);
-
+    emit signalButtonDoubleClicked(_pos1);
 }
 
 void DopplerGraphicView::mouseMoveEvent(QMouseEvent *event)
@@ -608,47 +646,50 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
     DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
     int _iGroupId, _iLaw, _iDisplay;
     _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
-    setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
-    if(event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Left){
-        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+    //setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
+    if(event->modifiers() == Qt::ShiftModifier && event->key() == Qt::Key_Left){
+        //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
             emit signalScanPosChange(-10);
-        }
+        //}
         return;
-    }else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Right){
-        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+    }else if (event->modifiers() == Qt::ShiftModifier && event->key() == Qt::Key_Right){
+        //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
             emit signalScanPosChange(10);
-        }
+        //}
         return;
     }
     switch (event->key()) {
     case Qt::Key_Left:
-        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+        //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
             emit signalScanPosChange(-1);
-        }
+        //}
         break;
     case Qt::Key_Up:
-        if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+        //if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
             emit signalLawPosChange(_iGroupId, _iLaw, 1);
-        }
+        //}
         break;
     case Qt::Key_Right:
-        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+        //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
             emit signalScanPosChange(1);
-        }
+        //}
         break;
     case Qt::Key_Down:
-        if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+        //if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
             emit signalLawPosChange(_iGroupId, _iLaw, -1);
-        }
+        //}
+        break;
+    case Qt::Key_0:
+        emit signalCscanShowallChange(_iGroupId);
         break;
     case Qt::Key_A:
-        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+        //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
             emit signalCursorScanChange(_iGroupId, false);
-        }
+        //}
         break;
     case Qt::Key_C:
     {
-        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+        //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
             DopplerConfigure* _pConfig = DopplerConfigure::Instance();
             ParameterProcess* _process = ParameterProcess::Instance();
             if(_pConfig->group[_iGroupId].storeScanLawId.status){
@@ -659,27 +700,30 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
                     emit signalLawPosChange(_iGroupId, lawId, 0);
                 }
             }
-        }
+        //}
         break;
     }
     case Qt::Key_D:
-        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
+        //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_CC_V){
             emit signalCursorScanChange(_iGroupId, true);
-        }
+        //}
+        break;
+    case Qt::Key_G:
+        emit signalMeasureGate(_iGroupId);
         break;
     case Qt::Key_S:
-        if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+        //if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
             emit signalCursorUChange(_iGroupId, _iLaw, false);
-        }
+        //}
         break;
     case Qt::Key_W:
-        if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+        //if(_eMode >= setup_DISPLAY_MODE_S && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
             emit signalCursorUChange(_iGroupId, _iLaw, true);
-        }
+        //}
         break;
     case Qt::Key_Z:
     {
-        if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
+        //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
             QMessageBox msgBox;
             msgBox.setText(tr("Store Current LawId and ScanPos ?"));
             msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -699,7 +743,7 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
             default:
                 break;
             }
-        }
+        //}
         break;
     }
     default:
@@ -1547,6 +1591,36 @@ QRectF DopplerGraphicView::RangeTranslate(QRectF& rect_)
     return QRectF( _nStartX , _nStartY , _nStopX - _nStartX ,  _nStopY - _nStartY )  ;
 }
 
+void DopplerGraphicView::scaleRecover()
+{
+    backNoZoom();
+    if(m_interactionView){
+        emit signalNotifyOtherView(QPoint(), QPoint(), true);
+    }
+}
+
+void DopplerGraphicView::setDataMode(bool status)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->common.dataModeStatus = status;
+}
+
+void DopplerGraphicView::setShowCursor(bool status)
+{
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId, _iLaw, _iDisplay;
+    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+    signalShowCursor(_iGroupId, status);
+}
+
+void DopplerGraphicView::setShowDefect(bool status)
+{
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId, _iLaw, _iDisplay;
+    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+    signalShowDefect(_iGroupId, status);
+}
+
 void DopplerGraphicView::backNoZoom()
 {
     DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
@@ -1608,6 +1682,47 @@ void DopplerGraphicView::backNoZoom()
     else {
         slotResetView();
     }
+}
+
+void DopplerGraphicView::creatActionAndMenu()
+{
+//    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+//    int _iGroupId, _iLaw, _iDisplay;
+//    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+//    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+//    bool cursorStatus, defectStatus;
+//    cursorStatus = _pConfig->group[_iGroupId].bShowCursor;
+//    defectStatus = _pConfig->group[_iGroupId].bShowDefect;
+
+    m_contextMenu = new QMenu;
+
+    m_scaleRecover = new QAction(tr("Scale Recover"), this);
+    m_scaleRecover->setIcon(QIcon(":/file/resource/main_menu/recover.png"));
+    connect( m_scaleRecover, SIGNAL(triggered()), this, SLOT(scaleRecover()));
+
+    m_dataMode = new QAction(tr("Data Mode"), this);
+    //m_dataMode->setIcon(QIcon(":/file/resource/main_menu/dataMode.png"));
+    m_dataMode->setCheckable( true);
+    m_dataMode->setChecked(false);
+    connect( m_dataMode, SIGNAL(toggled(bool)), this, SLOT(setDataMode(bool)));
+
+    m_showCursor = new QAction(tr("Show Cursor"), this);
+    //m_showCursor->setIcon(QIcon(":/file/resource/main_menu/cursor.png"));
+    m_showCursor->setCheckable( true);
+    m_showCursor->setChecked( true);
+    connect( m_showCursor, SIGNAL(toggled(bool)), this, SLOT(setShowCursor(bool)));
+
+    m_showDefect = new QAction(tr("Show Defect"), this);
+    //m_showDefect->setIcon(QIcon(":/file/resource/main_menu/defect.png"));
+    m_showDefect->setCheckable( true);
+    m_showDefect->setChecked( true);
+    connect( m_showDefect, SIGNAL(toggled(bool)), this, SLOT(setShowDefect(bool)));
+
+//    m_contextMenu->addAction(m_scaleRecover);
+//    m_contextMenu->addAction(m_dataMode);
+//    m_contextMenu->addAction(m_showCursor);
+//    m_contextMenu->addAction(m_showDefect);
+
 }
 
 void DopplerGraphicView::AddOverlayItems(QGraphicsItem* item_)
@@ -1682,7 +1797,7 @@ void DopplerGraphicView::respondView(QPoint startPos, QPoint endPos, bool zoomSt
         double _fRangeStart,_fRangeStop;
         double scanstart , scanstop ;
         double lawstart, lawstop ;
-        int lawstart2,lawstop2;
+        //int lawstart2,lawstop2;
         double flag1,flag2;
         int distance;
 
@@ -1704,19 +1819,21 @@ void DopplerGraphicView::respondView(QPoint startPos, QPoint endPos, bool zoomSt
             }
             _size = size();
             _nScaleX1 = ((double)startPos.x()) / _size.width();
-            _nScaleY1 = ((double)startPos.y()) / _size.height();
+            //_nScaleY1 = ((double)startPos.y()) / _size.height();
             _nScaleX2 = ((double)endPos.x()) / _size.width();
-            _nScaleY2 = ((double)endPos.y()) / _size.height();
+            //_nScaleY2 = ((double)endPos.y()) / _size.height();
             scanstart =_fScanStart + _nScaleX1 * (_fScanStop - _fScanStart);
             scanstop = _fScanStart + _nScaleX2 * (_fScanStop - _fScanStart);
             _pParent->GetRulerRange(&_fScanStart, &_fScanStop, &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
-            lawstart = _fScanStart + _nScaleY1 * (_fScanStop - _fScanStart);
-            lawstop = _fScanStart + _nScaleY2 * (_fScanStop - _fScanStart);
-            lawstart2 = (int)lawstart;
-            lawstop2 = (int)lawstop;
+//            lawstart = _fScanStart + _nScaleY1 * (_fScanStop - _fScanStart);
+//            lawstop = _fScanStart + _nScaleY2 * (_fScanStop - _fScanStart);
+//            lawstart2 = (int)lawstart;
+//            lawstop2 = (int)lawstop;
 
-            lawstart=(double)lawstart2;
-            lawstop=(double)lawstop2;
+//            lawstart =(double)lawstart2;
+//            lawstop =(double)lawstop2;
+            lawstart = _fScanStart;
+            lawstop = _fScanStop;
             m_pDrawScan->curscanstart = scanstart;
             m_pDrawScan->curscanstop = scanstop;
             m_pDrawScan->curlawstart = lawstart;
@@ -1740,15 +1857,17 @@ void DopplerGraphicView::respondView(QPoint startPos, QPoint endPos, bool zoomSt
                 m_pDrawScan->srcCend = _fScanStop;
             }
             _size = size();
-            _nScaleX1 = ((double)startPos.x()) / _size.width();
+            //_nScaleX1 = ((double)startPos.x()) / _size.width();
             _nScaleY1 = ((double)startPos.y()) / _size.height();
-            _nScaleX2 = ((double)endPos.x()) / _size.width();
+            //_nScaleX2 = ((double)endPos.x()) / _size.width();
             _nScaleY2 = ((double)endPos.y()) / _size.height();
             scanstart =_fScanStop - _nScaleY2 * (_fScanStop - _fScanStart);
             scanstop = _fScanStop - _nScaleY1 * (_fScanStop - _fScanStart);
             _pParent->GetRulerRange(&_fScanStop, &_fScanStart, &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
-            lawstart = _fScanStop + _nScaleX1 * (_fScanStart - _fScanStop);
-            lawstop = _fScanStop + _nScaleX2 * (_fScanStart - _fScanStop);
+            //lawstart = _fScanStop + _nScaleX1 * (_fScanStart - _fScanStop);
+            //lawstop = _fScanStop + _nScaleX2 * (_fScanStart - _fScanStop);
+            lawstart = _fScanStop;
+            lawstop = _fScanStop;
             _process->ChangeCscanruler(scanstart,scanstop);
             m_pDrawScan->curscanstart = scanstart;
             m_pDrawScan->curscanstop = scanstop;
@@ -1773,9 +1892,11 @@ void DopplerGraphicView::respondView(QPoint startPos, QPoint endPos, bool zoomSt
                 m_pDrawScan->srcBend = _fScanStop;
             }
             _size = size();
-            _nScaleX1 = ((double)startPos.x()) / _size.width() ;
+            startPos.setX(0);
+            endPos.setX(_size.width());
+            //_nScaleX1 = ((double)startPos.x()) / _size.width() ;
             _nScaleY1 = ((double)startPos.y()) / _size.height() ;
-            _nScaleX2 = ((double)endPos.x()) / _size.width() ;
+            //_nScaleX2 = ((double)endPos.x()) / _size.width() ;
             _nScaleY2 = ((double)endPos.y()) / _size.height() ;
             scanstart =_fScanStop - _nScaleY2 * (_fScanStop - _fScanStart);
             scanstop = _fScanStop - _nScaleY1 * (_fScanStop - _fScanStart);
@@ -1784,8 +1905,10 @@ void DopplerGraphicView::respondView(QPoint startPos, QPoint endPos, bool zoomSt
             if(scanstop > _fScanStop)
                 scanstop = _fScanStop;
             _pParent->GetRulerRange(&_fScanStop , &_fScanStart , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
-            _fRangeStart = _fScanStop + _nScaleX1 * (_fScanStart - _fScanStop);
-            _fRangeStop = _fScanStop + _nScaleX2 * (_fScanStart - _fScanStop);
+            //_fRangeStart = _fScanStop + _nScaleX1 * (_fScanStart - _fScanStop);
+            //_fRangeStop = _fScanStop + _nScaleX2 * (_fScanStart - _fScanStop);
+            _fRangeStart = _fScanStop;
+            _fRangeStop = _fScanStart;
 
             if(m_pDrawScan->zoomflag == 0)
             {
@@ -1824,10 +1947,12 @@ void DopplerGraphicView::respondView(QPoint startPos, QPoint endPos, bool zoomSt
                 m_pDrawScan->srcBend = _fScanStop;
             }
             _size = size();
+            startPos.setY(0);
+            endPos.setY(_size.height());
             _nScaleX1 = ((double)startPos.x()) / _size.width();
-            _nScaleY1 = ((double)startPos.y()) / _size.height();
+            //_nScaleY1 = ((double)startPos.y()) / _size.height();
             _nScaleX2 = ((double)endPos.x()) / _size.width();
-            _nScaleY2 = ((double)endPos.y()) / _size.height();
+            //_nScaleY2 = ((double)endPos.y()) / _size.height();
             scanstart =_fScanStart + _nScaleX1 * (_fScanStop - _fScanStart);
             scanstop = _fScanStart + _nScaleX2 * (_fScanStop - _fScanStart);
             if(scanstart < 0)
@@ -1835,8 +1960,10 @@ void DopplerGraphicView::respondView(QPoint startPos, QPoint endPos, bool zoomSt
             if(scanstop > _fScanStop)
                 scanstop = _fScanStop;
             _pParent->GetRulerRange(&_fScanStart, &_fScanStop, &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
-            _fRangeStart = _fScanStart + _nScaleY1 * (_fScanStop - _fScanStart);
-            _fRangeStop = _fScanStart + _nScaleY2 * (_fScanStop - _fScanStart);
+            //_fRangeStart = _fScanStart + _nScaleY1 * (_fScanStop - _fScanStart);
+            //_fRangeStop = _fScanStart + _nScaleY2 * (_fScanStop - _fScanStart);
+            _fRangeStart = _fScanStart;
+            _fRangeStop = _fScanStop;
 
             if(m_pDrawScan->zoomflag == 0)
             {

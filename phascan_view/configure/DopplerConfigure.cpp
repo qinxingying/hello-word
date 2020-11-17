@@ -916,6 +916,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 {
 	DRAW_INFO_PACK* _pack = pConf_->GetDrawInfo();
 	common.nGroupQty = _pack->nGroupNum ;
+    common.dataModeStatus = false;
     common.scanner.fPrf  = pConf_->GetGroupInfo(0)->prf1 / 10.0;
     common.aidedAnalysis.aidedGroupId = 0;
     common.aidedAnalysis.aidedStatus  = false;
@@ -1463,7 +1464,15 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             if((_group.aeMeasureType[i] < FEILD_NONE) || (_group.aeMeasureType[i] >= FEILD_VALUE_INDEX_MAX)){
                 _group.aeMeasureType[i] = FEILD_NONE;
             }
+            _group.measuregateType[i] = _group.aeMeasureType[i];
         }
+
+        _group.measureGateStatus = false;
+        _group.measuregateType[0] = FEILD_B100;
+        _group.measuregateType[1] = FEILD_DB;
+        _group.measuregateType[2] = FEILD_ViB;
+
+
 		_group.afCursor[setup_CURSOR_TFOD_LW] = _group.fSampleStart + _group.fSampleRange  / 10;
 		_group.afCursor[setup_CURSOR_TFOD_BW] = _group.fSampleStart + 9 * _group.fSampleRange / 10;
 

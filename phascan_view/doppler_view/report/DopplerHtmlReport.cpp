@@ -321,15 +321,20 @@ void DopplerHtmlReport::BuildReport()
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
     char _strName[1024];
-    strcpy(_strName , m_strReportDir);
-    strcat(_strName , m_cInfo.strReportName);
-    strcat(_strName , ".html");
+//    strcpy(_strName , m_strReportDir);
+//    strcat(_strName , m_cInfo.strReportName);
+//    strcat(_strName , ".html");
 
-#ifdef QT_NO_DEBUG
-    m_strFile = QString(_strName);
-#else
-    m_strFile  = QDir::currentPath() + "/" + QString(_strName);
-#endif
+//#ifdef QT_NO_DEBUG
+//    m_strFile = QString(_strName);
+//#else
+//    m_strFile  = QDir::currentPath() + "/" + QString(_strName);
+//#endif
+    m_strFile.clear();
+    m_strFile.append(m_strReportDir);
+    m_strFile.append(m_cInfo.strReportName);
+    //m_strFile = m_strReportDir + m_cInfo.strReportName;
+    m_strFile.append(".html");
 
     m_strFolder.clear();
     m_strFolderDir.clear();
@@ -600,7 +605,13 @@ void DopplerHtmlReport::UpdateGroupConfig(int nGroupId_)
     m_geometry = g_strGeometry[_pGroup->part.eGeometry];
     m_thickness.sprintf("%.2f mm", _pGroup->part.afSize[0]);
 
-    int* _pMeasure = _pConfig->group[nGroupId_].aeMeasureType;
+    int* _pMeasure;
+    if(_pGroup->measureGateStatus){
+        _pMeasure = _pConfig->group[nGroupId_].measuregateType;
+    }else{
+        _pMeasure = _pConfig->group[nGroupId_].aeMeasureType;
+    }
+
     int _nQty = 0;
 
     for(int i = 0; i < setup_MAX_MEASURE_QTY; i++)

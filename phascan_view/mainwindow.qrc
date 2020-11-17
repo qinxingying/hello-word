@@ -77,5 +77,9 @@
         <file>resource/toolbar/0-24.png</file>
         <file>resource/display/0-28.png</file>
         <file>resource/weld/tky.jpg</file>
+        <file>resource/main_menu/recover.png</file>
+        <file>resource/main_menu/dataMode.png</file>
+        <file>resource/main_menu/cursor.png</file>
+        <file>resource/main_menu/defect.png</file>
     </qresource>
 </RCC>

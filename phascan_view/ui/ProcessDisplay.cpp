@@ -1959,8 +1959,8 @@ void ProcessDisplay::ConnectSlots(DopplerDataView* pViews_)
 	connect(pViews_ , SIGNAL(signalDataViewResized(DopplerDataView*)) ,
 			g_pMainWnd ,  SLOT(slotDataViewResized(DopplerDataView*)) /*, Qt::QueuedConnection*/) ;
 
-	connect(pViews_ , SIGNAL(signalMouseDoubleClicked(DopplerDataView*,QPointF)) ,
-			g_pMainWnd , SLOT(slotDataViewMouseDoubleClicked(DopplerDataView*,QPointF))) ;
+    connect(pViews_ , SIGNAL(signalMouseDoubleClicked(DopplerDataView*, QPointF)),
+            g_pMainWnd , SLOT(slotDataViewMouseDoubleClicked(DopplerDataView*,QPointF)));
 }
 
 /****************************************************************************

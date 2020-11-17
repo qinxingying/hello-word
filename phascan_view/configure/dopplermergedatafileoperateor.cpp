@@ -1,4 +1,4 @@
-#include <QMessageBox>
+﻿#include <QMessageBox>
 #include "dopplermergedatafileoperateor.h"
 #include "const.h"
 #include <config_phascan_ii/config.h>
@@ -106,7 +106,7 @@ bool DopplerMergeDataFileOperateor::isDataII(QString& strPath, dataIIInfo &info)
     info.end = scanmap["End"].toDouble();
     info.resolution = scanmap["Resolution"].toDouble();
     info.frameSize = 0;
-    for(int i = 0; i < info.groupQty; i++){
+    for(uint i = 0; i < info.groupQty; i++){
         QVariantMap groupMap = src.value(QString("Group%1").arg(i)).toMap();
         uint groupMode = groupMap["Mode"].toUInt();
         QVariantMap SampleMap = groupMap["Sample"].toMap();
@@ -485,7 +485,7 @@ int DopplerMergeDataFileOperateor::MergeFileII(const QStringList &lst)
             }
             //lastGroupIndex += m_dataIIinfo[i].groupQty;
         }else{
-            for(int j = 0; j < m_dataIIinfo[i].groupQty; j++){
+            for(uint j = 0; j < m_dataIIinfo[i].groupQty; j++){
                 QVariantMap map = src.value(QString("Group%1").arg(j)).toMap();
                 dst.setValue(QString("Group%1").arg(j + lastGroupIndex), map);
             }

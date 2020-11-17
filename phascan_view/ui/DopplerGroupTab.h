@@ -48,6 +48,10 @@ public:
     void LoadStandardFormConifg();
     void setTopcWidthValue(double value);
     void setThicknessValue(double value);
+    void setShowCursorStatus(bool status);
+    void setShowDefectStatus(bool status);
+    void setCscanShowallChange();
+    void setMeasureEnable(bool status);
 protected:
     void SetWidgetInvalide();
     void CreateSettingView();

@@ -146,7 +146,7 @@ signals:
     //void signalViewFrameMenuSelection(DopplerDataView* , int);
     void signalItemMoved(DopplerDataView* , DopplerGraphicsItem*)  ;
     void signalDataViewResized(DopplerDataView*);
-    void signalMouseDoubleClicked(DopplerDataView* , QPointF pos_) ;
+    void signalMouseDoubleClicked(DopplerDataView* , QPointF pos_);
     void signalNotifyOtherView(QPoint startPos, QPoint endPos, bool zoomStatus);
 public slots:
 	void slotZoomAction(QRectF rect) ;

@@ -1488,7 +1488,7 @@ void Config::convert_other_to_phascan_config()
     drawInfoPack.nGroupNum = m_global.m_groupQty;
     memset(m_pDataFile->m_cadInfo, 0, 8*sizeof(int));
     if(m_global.m_version.m_dxfExist){
-        for(int i = 0; i < m_global.m_groupQty; i++){
+        for(uint i = 0; i < m_global.m_groupQty; i++){
             m_pDataFile->m_cadInfo[i] = 10;
             int caddataSize = m_global.m_version.m_dxfData.size();
             QString g_filePath = QCoreApplication::applicationDirPath() + QString("/temp/%1.dxf").arg(i);

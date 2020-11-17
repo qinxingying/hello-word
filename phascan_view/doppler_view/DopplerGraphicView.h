@@ -10,6 +10,7 @@ class DopplerGraphicsItem;
 class GraphicsViewBase;
 class DopplerDrawScan;
 class DopplerLineItem;
+class QMenu;
 
 #define MAX_MEASURE_DATA_DISPLAY  24
 
@@ -58,8 +59,15 @@ protected:
     void   DrawMeasureValue();
     QRectF RangeTranslate(QRectF& rect_) ;
 
+
+private slots:
+    void scaleRecover();
+    void setDataMode(bool status);
+    void setShowCursor(bool status);
+    void setShowDefect(bool status);
 private:
     void backNoZoom();
+    void creatActionAndMenu();
     QGraphicsScene*   m_pScene        ;
     GraphicsViewBase* m_pBackGround   ;
     DopplerDrawScan*  m_pDrawScan     ;
@@ -82,6 +90,12 @@ private:
 	bool              m_bZoom        ;
     bool              m_wheelItemSelect;
     bool              m_interactionView;
+    bool              m_flashMenu;
+    QAction *m_scaleRecover;
+    QAction *m_dataMode;
+    QAction *m_showCursor;
+    QAction *m_showDefect;
+    QMenu *m_contextMenu;
 signals:
     void signalViewChanged(QRectF rect)  ;
     void signalUpdateDrawing();
@@ -96,6 +110,10 @@ signals:
     void signalCursorScanChange(int groupId, bool orientation);
     void signalCursorUChange(int groupId, int lawId, bool orientation);
     void signalNotifyOtherView(QPoint startPos, QPoint endPos, bool zoomStatus);
+    void signalShowCursor(int groupId, bool status);
+    void signalShowDefect(int groupId, bool status);
+    void signalCscanShowallChange(int groupId);
+    void signalMeasureGate(int groupId);
 public slots:
     void slotResetView();
     void slotPrint();

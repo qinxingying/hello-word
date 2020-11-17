@@ -1852,7 +1852,7 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="5423"/>
         <source>TopC Merge Refer:</source>
-        <translation>TPOC融合组:</translation>
+        <translation>TOPC融合组:</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="5430"/>

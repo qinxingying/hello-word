@@ -2768,6 +2768,48 @@ int ParameterProcess::SCanAngleToCScanLineAngle(int nGroupId_, float _fCursor)
     return tmpCScanLinePos;
 }
 
+//通过S扫的点坐标查询到此点的lawId和在此beam上的位置index,返回值 false表示点在s扫范围外
+bool ParameterProcess::SscanPointMaptoLawAndindex(int nGroupId_, QPointF point, int &lawId, int &pointIndex)
+{
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
+    TOPC_INFO& _TOPCInfo = _group.TopCInfo;
+    int _nPointQty = _group.nPointQty;
+    float pointx = point.x();
+    float pointy = point.y();
+    float indexOffset = _group.fIndexOffset;
+
+    switch (_group.eSkew) {
+    case setup_PROBE_PART_SKEW_0:
+        break;
+    case setup_PROBE_PART_SKEW_90:
+        pointx -= indexOffset;
+        break;
+    case setup_PROBE_PART_SKEW_180:
+        pointx = -pointx;
+        break;
+    case setup_PROBE_PART_SKEW_270:
+        pointx = -pointx;
+        pointx += indexOffset;
+        break;
+    default:
+        break;
+    }
+
+    if( _TOPCInfo.startX > pointx || _TOPCInfo.stopX < pointx || _TOPCInfo.startY > pointy || _TOPCInfo.stopY < pointy){
+        return false;
+    }
+    int index_x = ( pointx - _TOPCInfo.startX) / ( _TOPCInfo.stopX - _TOPCInfo.startX) * (_TOPCInfo.pixelWidth - 1);
+    int index_y = ( pointy - _TOPCInfo.startY) / ( _TOPCInfo.stopY - _TOPCInfo.startY) * (_TOPCInfo.pixelHeigh - 1);
+    int index_offset = _TOPCInfo.pixelWidth * index_y + index_x;
+    int buff = _TOPCInfo.pDataIndex[index_offset];
+    if(buff == 0){
+        return false;
+    }
+    lawId = buff / _nPointQty;
+    pointIndex = buff % _nPointQty;
+    return true;
+}
+
 float ParameterProcess::CScanLineAngleToScanLineAngle(int nGroupId_, int _nPos)
 {
     GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;

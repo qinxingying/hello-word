@@ -638,7 +638,7 @@ void MainWindow::SetSelectedDataView(QWidget* pWidget_)
 
 void MainWindow::updateAllTabwidgetSscanPos(int _nGroupId, int pos)
 {
-    if(m_nAlloff){
+    //if(m_nAlloff){
         for(int i = 0; i < ui->TabWidget_display->count(); i++){
             for(int j = 0; j < m_pViewList[i]->count(); j++){
                 int tmpGroupID, tmpLawId, tmpDisplay;
@@ -654,7 +654,7 @@ void MainWindow::updateAllTabwidgetSscanPos(int _nGroupId, int pos)
             }
         }
 
-    }
+    //}
 }
 
 void MainWindow::updateCscanLawPos(int _nPos, int _nGroupId)
@@ -1613,126 +1613,182 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
 void MainWindow::slotDataViewMouseDoubleClicked(DopplerDataView* pView_, QPointF pos_)
 {
-    m_bCursorSel = !m_bCursorSel;
-
     int _nGroupId, _nLawId, _nDisplay;
     pView_->GetDataViewConfigure(&_nGroupId, &_nLawId, &_nDisplay);
 
     setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_nDisplay;
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
+    ParameterProcess* _process = ParameterProcess::Instance();
 
-    bool _bScanPosSync = false;
-    float _fSyncData = 0;
+    int temp;
+    if(_pConfig->common.dataModeStatus && _eMode > setup_DISPLAY_MODE_A_V){
+        switch (_eMode) {
+        case setup_DISPLAY_MODE_B_H:
+        {
+            temp = _process->SAxisDistToIndex(pos_.y());
+            sliderh->setValue(temp);
+            return;
+        }
+        case setup_DISPLAY_MODE_B_V:
+        {
+            temp = _process->SAxisDistToIndex(pos_.x());
+            sliderh->setValue(temp);
+            return;
+        }
+        case setup_DISPLAY_MODE_C_H:
+        case setup_DISPLAY_MODE_CC_H:
+        {
+            if(!_group.TopCInfo.TOPCStatus){
+                temp = _process->SCanAngleToCScanLineAngle(_nGroupId, pos_.y());
+                updateCurLawPos( _nGroupId, temp, 0);
+            }
+            temp = _process->SAxisDistToIndex(pos_.x());
+            sliderh->setValue(temp);
+            return;
+        }
+        case setup_DISPLAY_MODE_C_V:
+        case setup_DISPLAY_MODE_CC_V:
+        {
+            if(!_group.TopCInfo.TOPCStatus){
+                temp = _process->SCanAngleToCScanLineAngle(_nGroupId, pos_.x());
+                updateCurLawPos( _nGroupId, temp, 0);
+            }
+            temp = _process->SAxisDistToIndex(pos_.y());
+            sliderh->setValue(temp);
+            return;
+        }
+        case setup_DISPLAY_MODE_S_SOUNDPATH:
+            break;
+        case setup_DISPLAY_MODE_S_ATHUMIZ:
+        case setup_DISPLAY_MODE_S_LINEAR:
+        {
+            int lawId, pointIndex;
+            bool status = _process->SscanPointMaptoLawAndindex( _nGroupId, pos_, lawId, pointIndex);
+            if(status){
+                updateCurLawPos( _nGroupId, lawId, 0);
+            }
+            break;
+        }
+        default:
+            break;
+        }
+    }else{
+        m_bCursorSel = !m_bCursorSel;
 
-    switch(_eMode){
-    case setup_DISPLAY_MODE_A_H:
-        if(m_bCursorSel) {
-            _group.afCursor[setup_CURSOR_A_REF] = pos_.y();
-            _group.afCursor[setup_CURSOR_U_REF] = pos_.x();
-        } else {
-            _group.afCursor[setup_CURSOR_A_MES] = pos_.y();
-            _group.afCursor[setup_CURSOR_U_MES] = pos_.x();
-        }
-        break;
-    case setup_DISPLAY_MODE_A_V:
-        if(m_bCursorSel) {
-            _group.afCursor[setup_CURSOR_A_REF] = pos_.x();
-            _group.afCursor[setup_CURSOR_U_REF] = pos_.y();
-        } else {
-            _group.afCursor[setup_CURSOR_A_MES] = pos_.x();
-            _group.afCursor[setup_CURSOR_U_MES] = pos_.y();
-        }
-        break;
-    case setup_DISPLAY_MODE_B_H:
-        if(m_bCursorSel) {
-            _group.afCursor[setup_CURSOR_S_REF] = pos_.y();
-            _group.afCursor[setup_CURSOR_U_REF] = pos_.x();
-        } else {
-            _group.afCursor[setup_CURSOR_S_MES] = pos_.y();
-            _group.afCursor[setup_CURSOR_U_MES] = pos_.x();
-        }
+        bool _bScanPosSync = false;
+        float _fSyncData = 0;
 
-        _fSyncData = pos_.y();
-        _bScanPosSync = true;
-        break;
-    case setup_DISPLAY_MODE_B_V:
-        if(m_bCursorSel) {
-            _group.afCursor[setup_CURSOR_S_REF] = pos_.x();
-            _group.afCursor[setup_CURSOR_U_REF] = pos_.y();
-        } else {
-            _group.afCursor[setup_CURSOR_S_MES] = pos_.x();
-            _group.afCursor[setup_CURSOR_U_MES] = pos_.y();
-        }
+        switch(_eMode){
+        case setup_DISPLAY_MODE_A_H:
+            if(m_bCursorSel) {
+                _group.afCursor[setup_CURSOR_A_REF] = pos_.y();
+                _group.afCursor[setup_CURSOR_U_REF] = pos_.x();
+            } else {
+                _group.afCursor[setup_CURSOR_A_MES] = pos_.y();
+                _group.afCursor[setup_CURSOR_U_MES] = pos_.x();
+            }
+            break;
+        case setup_DISPLAY_MODE_A_V:
+            if(m_bCursorSel) {
+                _group.afCursor[setup_CURSOR_A_REF] = pos_.x();
+                _group.afCursor[setup_CURSOR_U_REF] = pos_.y();
+            } else {
+                _group.afCursor[setup_CURSOR_A_MES] = pos_.x();
+                _group.afCursor[setup_CURSOR_U_MES] = pos_.y();
+            }
+            break;
+        case setup_DISPLAY_MODE_B_H:
+            if(m_bCursorSel) {
+                _group.afCursor[setup_CURSOR_S_REF] = pos_.y();
+                _group.afCursor[setup_CURSOR_U_REF] = pos_.x();
+            } else {
+                _group.afCursor[setup_CURSOR_S_MES] = pos_.y();
+                _group.afCursor[setup_CURSOR_U_MES] = pos_.x();
+            }
 
-        _fSyncData = pos_.x();
-        _bScanPosSync = true;
-        break;
-    case setup_DISPLAY_MODE_C_H:
-    case setup_DISPLAY_MODE_CC_H:
-        if(m_bCursorSel) {
-            _group.afCursor[setup_CURSOR_S_REF] = pos_.x();
-            _group.afCursor[setup_CURSOR_VPA_REF] = pos_.y();
-        } else {
-            _group.afCursor[setup_CURSOR_S_MES] = pos_.x();
-            _group.afCursor[setup_CURSOR_VPA_MES] = pos_.y();
-        }
-        _fSyncData = pos_.x();
-        _bScanPosSync = true;
-        break;
-    case setup_DISPLAY_MODE_C_V:
-    case setup_DISPLAY_MODE_CC_V:
-        if(m_bCursorSel) {
-            _group.afCursor[setup_CURSOR_S_REF] = pos_.y();
-            _group.afCursor[setup_CURSOR_VPA_REF] = pos_.x();
-        } else {
-            _group.afCursor[setup_CURSOR_S_MES] = pos_.y();
-            _group.afCursor[setup_CURSOR_VPA_MES] = pos_.x();
-        }
-        _fSyncData = pos_.y();
-        _bScanPosSync = true;
-        break;
-    case setup_DISPLAY_MODE_S_SOUNDPATH:
-        if(m_bCursorSel) {
-            _group.afCursor[setup_CURSOR_U_REF] = pos_.x();
-        } else {
-            _group.afCursor[setup_CURSOR_U_MES] = pos_.x();
-        }
-        break;
-    case setup_DISPLAY_MODE_S_ATHUMIZ:
-    case setup_DISPLAY_MODE_S_LINEAR:
-        if(m_bCursorSel) {
-            _group.afCursor[setup_CURSOR_U_REF] = pos_.y();
-            _group.afCursor[setup_CURSOR_I_REF] = pos_.x();
-        } else {
-            _group.afCursor[setup_CURSOR_U_MES] = pos_.y();
-            _group.afCursor[setup_CURSOR_I_MES] = pos_.x();
-        }
-        break;
-    default:
-        break;
-    };
+            _fSyncData = pos_.y();
+            _bScanPosSync = true;
+            break;
+        case setup_DISPLAY_MODE_B_V:
+            if(m_bCursorSel) {
+                _group.afCursor[setup_CURSOR_S_REF] = pos_.x();
+                _group.afCursor[setup_CURSOR_U_REF] = pos_.y();
+            } else {
+                _group.afCursor[setup_CURSOR_S_MES] = pos_.x();
+                _group.afCursor[setup_CURSOR_U_MES] = pos_.y();
+            }
 
-    if(_pConfig->AppEvn.bSAxisCursorSync) {
-        if(_bScanPosSync) {
-            ParameterProcess* _process = ParameterProcess::Instance();
-            _process->SetupScanPos(_fSyncData);
+            _fSyncData = pos_.x();
+            _bScanPosSync = true;
+            break;
+        case setup_DISPLAY_MODE_C_H:
+        case setup_DISPLAY_MODE_CC_H:
+            if(m_bCursorSel) {
+                _group.afCursor[setup_CURSOR_S_REF] = pos_.x();
+                _group.afCursor[setup_CURSOR_VPA_REF] = pos_.y();
+            } else {
+                _group.afCursor[setup_CURSOR_S_MES] = pos_.x();
+                _group.afCursor[setup_CURSOR_VPA_MES] = pos_.y();
+            }
+            _fSyncData = pos_.x();
+            _bScanPosSync = true;
+            break;
+        case setup_DISPLAY_MODE_C_V:
+        case setup_DISPLAY_MODE_CC_V:
+            if(m_bCursorSel) {
+                _group.afCursor[setup_CURSOR_S_REF] = pos_.y();
+                _group.afCursor[setup_CURSOR_VPA_REF] = pos_.x();
+            } else {
+                _group.afCursor[setup_CURSOR_S_MES] = pos_.y();
+                _group.afCursor[setup_CURSOR_VPA_MES] = pos_.x();
+            }
+            _fSyncData = pos_.y();
+            _bScanPosSync = true;
+            break;
+        case setup_DISPLAY_MODE_S_SOUNDPATH:
+            if(m_bCursorSel) {
+                _group.afCursor[setup_CURSOR_U_REF] = pos_.x();
+            } else {
+                _group.afCursor[setup_CURSOR_U_MES] = pos_.x();
+            }
+            break;
+        case setup_DISPLAY_MODE_S_ATHUMIZ:
+        case setup_DISPLAY_MODE_S_LINEAR:
+            if(m_bCursorSel) {
+                _group.afCursor[setup_CURSOR_U_REF] = pos_.y();
+                _group.afCursor[setup_CURSOR_I_REF] = pos_.x();
+            } else {
+                _group.afCursor[setup_CURSOR_U_MES] = pos_.y();
+                _group.afCursor[setup_CURSOR_I_MES] = pos_.x();
+            }
+            break;
+        default:
+            break;
+        };
 
-            for(int i = 0; i < _pConfig->common.nGroupQty; i++) {
-                if(m_bCursorSel) {
-                    _pConfig->group[i].afCursor[setup_CURSOR_S_REF] = _fSyncData;
-                } else {
-                    _pConfig->group[i].afCursor[setup_CURSOR_S_MES] = _fSyncData;
+        if(_pConfig->AppEvn.bSAxisCursorSync) {
+            if(_bScanPosSync) {
+                ParameterProcess* _process = ParameterProcess::Instance();
+                _process->SetupScanPos(_fSyncData);
+
+                for(int i = 0; i < _pConfig->common.nGroupQty; i++) {
+                    if(m_bCursorSel) {
+                        _pConfig->group[i].afCursor[setup_CURSOR_S_REF] = _fSyncData;
+                    } else {
+                        _pConfig->group[i].afCursor[setup_CURSOR_S_MES] = _fSyncData;
+                    }
                 }
             }
         }
+
+        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
+        _pGroup->UpdateCursorValue();
+        ProcessDisplay _process;
+        _process.UpdateAllViewCursorOfGroup(_nGroupId);
+        RunDrawThreadOnce(true);
     }
 
-    DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
-    _pGroup->UpdateCursorValue();
-    ProcessDisplay _process;
-    _process.UpdateAllViewCursorOfGroup(_nGroupId);
-    RunDrawThreadOnce(true);
 }
 
 void MainWindow::slotTopcMergeCompareViewShow( bool status)
@@ -1860,6 +1916,45 @@ void MainWindow::slotCursorUChange(int groupId, int lawId, bool orientation)
     _pGroup->UpdateTofdParam();
 
     _proDispy.UpdateAllViewCursorOfGroup(groupId);
+    RunDrawThreadOnce(true);
+}
+
+void MainWindow::slotShowCursor(int groupId, bool status)
+{
+    m_pGroupList[groupId]->setShowCursorStatus(status);
+}
+
+void MainWindow::slotShowDefect(int groupId, bool status)
+{
+    m_pGroupList[groupId]->setShowDefectStatus(status);
+}
+
+void MainWindow::slotCsanShowallChange(int groupId)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->group[groupId].CScanShowAll = !_pConfig->group[groupId].CScanShowAll;
+
+    m_pGroupList[groupId]->setCscanShowallChange();
+
+    UpdateAllDisplay();
+    RunDrawThreadOnce();
+}
+
+void MainWindow::slotMeasureGate(int groupId)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[groupId];
+    _group.measureGateStatus = !_group.measureGateStatus;
+    if( _group.measureGateStatus){
+        for(int i = 0; i < setup_MAX_MEASURE_QTY; i++){
+            _group.measuregateType[i] = _group.aeMeasureType[i];
+        }
+        _group.measuregateType[0] = FEILD_B100;
+        _group.measuregateType[1] = FEILD_DB;
+        _group.measuregateType[2] = FEILD_ViB;
+    }
+    DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
+    _pGroup->setMeasureEnable(!_group.measureGateStatus);
     RunDrawThreadOnce(true);
 }
 
@@ -2334,17 +2429,19 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
 
         DopplerDataView* _pView = (DopplerDataView*)m_pViewList[_nTabIndex]->at(i);
         _pView->GetDataViewConfigure( &_nCurGroup,  &_nLawId,  &_nDisplay);
+        //qDebug()<<"_nCurGroup"<<_nCurGroup<<"_nDisplay"<<_nDisplay;
 
-        if(_nDisplay < 4 && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
+        if((_nDisplay < 4) && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
             if(_nId == _pView->GetLawIdentify()) {
                 _pView->SetDataViewConfigure(_nCurGroup,  lawPos,  _nDisplay);
                 _proDispy.UpdateAll(_pView, false);
             }
         } else if( (_nDisplay >= 4 && _nDisplay < 8) && _nGroupId == _nCurGroup) {
+        //} else if( (_nDisplay >= 4 ) && _nGroupId == _nCurGroup) {
             _pView->SetDataViewConfigure(_nCurGroup,  lawPos,  _nDisplay);
             _proDispy.UpdateDataViewTitle(_pView);
-            _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
-        } else {
+            _proDispy.UpdateAllViewCursorOfGroup(_nCurGroup);
+        } else if(_nGroupId == _nCurGroup){
             _proDispy.UpdateDataViewTitle(_pView);
         }
     }

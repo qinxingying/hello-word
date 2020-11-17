@@ -166,6 +166,10 @@ private slots:
     void slotLawPosChange(int groupId, int lawId, int steps);
     void slotCursorScanChange(int groupId, bool orientation);
     void slotCursorUChange(int groupId, int lawId, bool orientation);
+    void slotShowCursor(int groupId, bool status);
+    void slotShowDefect(int groupId, bool status);
+    void slotCsanShowallChange(int groupId);
+    void slotMeasureGate(int groupId);
 protected slots:
   void on_actionNew_Config_triggered();
   void on_actionOpen_triggered();

@@ -33,7 +33,20 @@ void DopplerViewFrame::dragEnterEvent(QDragEnterEvent* event)
 {
 	if (event->mimeData()->hasFormat("DOPPLER_DISPLAY_ITEM"))
 		event->acceptProposedAction();
-	else
+    else if(event->mimeData()->hasUrls()){
+        QString path = event->mimeData()->urls().at(0).path();
+        if(path.endsWith(".data")){
+            path.remove(0,1);
+            QFileInfo file(path);
+            if(file.exists()){
+                event->acceptProposedAction();
+            }else{
+                event->ignore();
+            }
+        }else{
+           event->ignore();
+        }
+    }else
 		event->ignore();
 	//setBackgroundRole(QPalette::Highlight);
 }
@@ -55,7 +68,12 @@ void DopplerViewFrame::dropEvent(QDropEvent* event)
 		}
 		//DropEventProcess(event)  ;
 		event->ignore();
-	}
+    }else if(event->mimeData()->hasUrls()){
+        QString path = event->mimeData()->urls().at(0).path();
+        path.remove(0,1);
+        g_pMainWnd->OpenFilePro(path);
+        event->ignore();
+    }
 	else
 		event->ignore();
 }

@@ -727,6 +727,8 @@ typedef struct _Group
     bool                    bShowSScanMeasure;
 	int						bShowCursor;
 	int						bShowWeldPart;
+    int                     measuregateType[setup_MAX_MEASURE_QTY]; //测量闸门类型，measureGateStatus为true时读取显示此
+    bool                    measureGateStatus; //测量闸门状态，开启将测量值前三个换成B闸门
 
     //int						bShowGate;
     int                     bShowGateA;
@@ -906,6 +908,7 @@ struct COMMON_CONFIG
 {
     int					nGroupQty	;         //总的组数量
 	int					bUnifiedPart ;
+    bool                dataModeStatus; //数据模式状态
 	SONIC_AXIS_UNIT		eUAxisUnit   ;
 	INSTRUMENT_CONFIG	instrument   ;
 	ALARM_CONFIG		alarm   ;

@@ -51,8 +51,6 @@ DopplerDataView::DopplerDataView(QWidget *parent , DATA_VIEW_COMPONENT eComponen
 	setFont(QFont("simsun" ,9));
 	//*********** create widgets of this view
 	CreateComponent() ;
-	//connect(this, SIGNAL(signalMousePressed(QWidget*)) , g_pMainWnd , SLOT(slotViewFrameButtonClicked(QWidget*)));
-	//connect(this, SIGNAL(signalViewFrameMenuSelection(DopplerDataView* , int)) , g_pMainWnd , SLOT(slotViewFrameMenuSelection(DopplerDataView* , int))) ;
 	m_pItemsGroup = new DopplerViewItems(this);
 }
 
@@ -311,7 +309,13 @@ void DopplerDataView::UpdateMeasure()
          (_pConfig->group[m_nGroupId].bShowCScanMeasure && (m_eDisplayMode >= setup_DISPLAY_MODE_C_H && m_eDisplayMode <= setup_DISPLAY_MODE_CC_V)) ||
          (_pConfig->group[m_nGroupId].bShowSScanMeasure && (m_eDisplayMode >= setup_DISPLAY_MODE_S)))
 	{
-		int* _pMeasure = _pConfig->group[m_nGroupId].aeMeasureType ;
+        int* _pMeasure;
+        if(_pConfig->group[m_nGroupId].measureGateStatus){
+            _pMeasure = _pConfig->group[m_nGroupId].measuregateType;
+        }else{
+            _pMeasure = _pConfig->group[m_nGroupId].aeMeasureType;
+        }
+
 		int _nQty = 0 ;
 		if(m_eDisplayMode >= setup_DISPLAY_MODE_S) {
 			int _nLawNum = m_pItemsGroup->GetLawMarkerQty();
@@ -636,7 +640,7 @@ void DopplerDataView::CreateComponent()
     connect(m_pGraphicView , SIGNAL(signalItemPressed(DopplerGraphicsItem*)) , SLOT(slotItemPressed(DopplerGraphicsItem*)));
     //connect(m_pGraphicView , SIGNAL(signalButtonRelease(QMouseEvent*)) , SLOT(slotViewMouseRelease(QMouseEvent*)));
 	connect(m_pGraphicView , SIGNAL(signalButtonPressed(QMouseEvent*)) , SLOT(slotViewMousePressed(QMouseEvent*)));
-	connect(m_pGraphicView , SIGNAL(signalButtonDoubleClicked(QPointF)) , SLOT(slotMouseDoubleClicked(QPointF))) ;
+    connect(m_pGraphicView , SIGNAL(signalButtonDoubleClicked(QPointF)) , SLOT(slotMouseDoubleClicked(QPointF))) ;
 	connect(m_pGraphicView , SIGNAL(signalTofdDragProAction(QPointF, QPointF)) , SLOT(slotTofdDragProAction(QPointF, QPointF))) ;
     connect(m_pGraphicView, SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), this, SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)));
 
@@ -709,7 +713,7 @@ void DopplerDataView::slotMouseDoubleClicked(QPointF pos_)
 {
 	QPointF _pos = PixTransferToReal(pos_) ;
     //qDebug()<<"realPos"<<_pos;
-	emit signalMouseDoubleClicked(this , _pos) ;
+    emit signalMouseDoubleClicked(this , _pos);
 }
 
 #include "DopplerTofdOpp.h"

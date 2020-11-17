@@ -456,6 +456,35 @@ void DopplerGroupTab::setThicknessValue(double value)
     ui->ValuePartSize1->blockSignals(false);
 }
 
+void DopplerGroupTab::setShowCursorStatus(bool status)
+{
+    ui->CheckCursorShow->setChecked(status);
+    on_CheckCursorShow_clicked(status);
+}
+
+void DopplerGroupTab::setShowDefectStatus(bool status)
+{
+    ui->CheckDefectShow->setChecked(status);
+    on_CheckDefectShow_clicked(status);
+}
+
+void DopplerGroupTab::setCscanShowallChange()
+{
+    int index = ui->ComCScanShowAll->currentIndex();
+    if(index){
+        ui->ComCScanShowAll->setCurrentIndex(0);
+    }else{
+        ui->ComCScanShowAll->setCurrentIndex(1);
+    }
+}
+
+void DopplerGroupTab::setMeasureEnable(bool status)
+{
+    ui->ComField1->setEnabled(status);
+    ui->ComField2->setEnabled(status);
+    ui->ComField3->setEnabled(status);
+}
+
 /****************************************************************************
   Description: 当前角度选择控件更新
 *****************************************************************************/
@@ -2401,8 +2430,8 @@ void DopplerGroupTab::on_BtnRefurbishComDisp_clicked()
 
 void DopplerGroupTab::on_CheckDefectShow_clicked(bool checked)
 {
-	m_pGroup->bShowDefect = checked ;
-	ProcessDisplay _display ;
+    m_pGroup->bShowDefect = checked;
+    ProcessDisplay _display;
 	_display.UpdateAllViewOverlay();
 }
 
