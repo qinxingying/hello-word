@@ -661,7 +661,7 @@ void MainWindow::updateCscanLawPos(int _nPos, int _nGroupId)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
-    LAW_CONFIG _law = _group.law ;
+    LAW_CONFIG& _law = _group.law ;
     ParameterProcess* _process = ParameterProcess::Instance();
     float tmp = _process->CScanLineAngleToScanLineAngle(_nGroupId, _nPos);
     if(_law.eLawType == setup_LAW_TYPE_LINEAR || _law.eLawType == setup_LAW_TYPE_TFM)
@@ -1895,20 +1895,35 @@ void MainWindow::slotCursorUChange(int groupId, int lawId, bool orientation)
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     ParameterProcess* _pProcess = ParameterProcess::Instance();
     ProcessDisplay _proDispy;
+    setup_LAW_TYPE	 lawType = _pConfig->group[groupId].law.eLawType;
+    float tmp = _pProcess->CScanLineAngleToScanLineAngle(groupId, lawId);
     int scanIndex = _pProcess->GetScanIndexPos();
     PEAK_CONFIG _info[setup_GATE_MAX];
     _pProcess->GetGatePeakInfos(groupId, scanIndex, lawId, _info);
     float _fPos = _info[setup_GATE_A].fH;
+    float _pointx = _pProcess->SscanLawAndDepthMaptoPointx(groupId, lawId, _fPos);
     if(orientation){
         if(_pConfig->group[groupId].afCursor[setup_CURSOR_U_MES] == _fPos){
             return;
         }
         _pConfig->group[groupId].afCursor[setup_CURSOR_U_MES] = _fPos;
+        _pConfig->group[groupId].afCursor[setup_CURSOR_I_MES] = _pointx;
+        if(lawType == setup_LAW_TYPE_LINEAR || lawType == setup_LAW_TYPE_TFM){
+            _pConfig->group[groupId].afCursor[setup_CURSOR_VPA_REF] = lawId;
+        }else{
+            _pConfig->group[groupId].afCursor[setup_CURSOR_VPA_REF] = tmp;
+        }
     }else{
         if(_pConfig->group[groupId].afCursor[setup_CURSOR_U_REF] == _fPos){
             return;
         }
         _pConfig->group[groupId].afCursor[setup_CURSOR_U_REF] = _fPos;
+        _pConfig->group[groupId].afCursor[setup_CURSOR_I_REF] = _pointx;
+        if(lawType == setup_LAW_TYPE_LINEAR || lawType == setup_LAW_TYPE_TFM){
+            _pConfig->group[groupId].afCursor[setup_CURSOR_VPA_MES] = lawId;
+        }else{
+            _pConfig->group[groupId].afCursor[setup_CURSOR_VPA_MES] = tmp;
+        }
     }
     DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
     _pGroup->UpdateCursorValue();

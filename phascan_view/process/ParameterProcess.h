@@ -208,6 +208,7 @@ public:
     int   DistMmToNs(int nGroupId_ , float fDist_);
     int SCanAngleToCScanLineAngle(int nGroupId_, float _fCursor);
     bool SscanPointMaptoLawAndindex(int nGroupId_, QPointF point, int &lawId, int &pointIndex);
+    float SscanLawAndDepthMaptoPointx(int nGroupId_, int lawId, float depth);
     float CScanLineAngleToScanLineAngle(int nGroupId_, int _nPos);
 
     QString GetSonicAxisUnit(int nGroupId_) ;
