@@ -23,7 +23,7 @@ public:
     void UpdateIndexPos();
     void UpdateIndexBox();
     void retranslateUi();
-
+    void InitCommonConfig();
 signals:
     void topcMergeCompareViewShow(bool);
 
@@ -31,7 +31,7 @@ protected:
     //**************************
     void SetItemInvalide() ;
     //**************************
-    void InitCommonConfig() ;
+
     DopplerConfigure* m_pConfig ;
     void showEvent(QShowEvent *) ;
     void UpdateEncoderInfo();

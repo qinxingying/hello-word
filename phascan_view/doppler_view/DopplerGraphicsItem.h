@@ -1,4 +1,4 @@
-
+﻿
 /***************************
   Description:   数据显示窗口　闸门
 ************************************/
@@ -23,7 +23,7 @@ enum DOPPLER_GRAPHICS_ITEM_TYPE
     DOPPLER_GRAPHICS_ITEM_LAW_MARKER , //S扫里面的law光标
     DOPPLER_GRAPHICS_ITEM_DAC_TCG    ,
     DOPPLER_GRAPHICS_ITEM_PART       ,
-    DOPPLER_GRAPHICS_ITEM_SCAN       ,
+    DOPPLER_GRAPHICS_ITEM_SCAN       ,//扫查线光标
     DOPPLER_GRAPHICS_ITEM_OTHERS     ,
     DOPPLER_GRAPHICS_ITEM_TYPE_MAX
 } ;

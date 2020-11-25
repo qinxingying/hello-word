@@ -631,6 +631,21 @@ void Config::unpack_weld(const QVariantMap &map)
     }
 }
 
+bool Config::getCurve_RL_EL_SL(int groupId)
+{
+    if(Paramters::Sizing::TCG == m_groups[groupId].m_sizing.m_type){
+        Paramters::Curves &curves = m_groups[groupId].m_sizing.m_curves;
+        if(curves.m_offsets.size() == 4){
+            CUR_RES.CurSS[groupId] = curves.m_offsets[0];
+            CUR_RES.CurRL[groupId] = curves.m_offsets[1];
+            CUR_RES.CurSL[groupId] = curves.m_offsets[2];
+            CUR_RES.CurEL[groupId] = curves.m_offsets[3];
+            return true;
+        }
+    }
+    return false;
+}
+
 void Config::getWeldData( int groupId, WELD_II & weld_ii)
 {
     Paramters::Weld &weld = m_groups[groupId].m_specimen.m_weld;
@@ -935,6 +950,7 @@ void Config::unpack_curves(const QVariantMap &map)
     curves.m_refAmp     = map.value("RefAmp").toDouble();
     QVariantList offsets = map.value("Offsets").toList();
     //QVariantList offsets = map.value("Gains").toList();
+    curves.m_offsets.clear();
     for(int i = 0; i < offsets.count(); ++i) {
         curves.m_offsets.append(offsets.at(i).toDouble());
         qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]"

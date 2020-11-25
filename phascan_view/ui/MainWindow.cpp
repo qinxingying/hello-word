@@ -727,7 +727,7 @@ void MainWindow::UpdateTableParameter()
         ui->TabWidget_parameter->insertTab(i, _pGroup, icon, str);
         m_pGroupList.append(_pGroup);
     }
-
+    ui->ScanHardware->InitCommonConfig();
     ui->TabWidget_parameter->setCurrentIndex(0);
     connect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentGroupChanged(int)));
 }
@@ -1583,9 +1583,9 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         {
             return;
         }
-        InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
-        _pScanner->UpdateScanPos();
-        UpdateSlider();
+        //InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+        //_pScanner->UpdateScanPos();
+        //UpdateSlider();
         if(_pConfig->AppEvn.bSAxisCursorSync) {
             pView_->GetDataViewConfigure(&_nGroupId,  &_nLawId,  &_nDisplay);
 

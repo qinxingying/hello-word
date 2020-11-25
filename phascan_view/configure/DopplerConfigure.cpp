@@ -1396,9 +1396,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.part.weldFormat = PHASCAN_II_FORMAT;
             Config::instance()->getWeldData(i, _group.part.weld_ii);
             Config::instance()->getTOPCWidth(i, _group.TopCInfo.TOPCWidth);
+            _group.loadCurveData = Config::instance()->getCurve_RL_EL_SL(i);
+            //qDebug()<<"loadCurveData"<<_group.loadCurveData<<CUR_RES.CurSS[i];
         }
         else
         {
+            _group.loadCurveData = false;
             _group.part.weldFormat = PHASCAN_I_FORMAT;
             _group.TopCInfo.TOPCWidth = 10;
             WELD& _weld = _group.part.weld;

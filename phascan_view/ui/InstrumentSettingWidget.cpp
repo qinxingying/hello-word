@@ -26,8 +26,8 @@ InstrumentSettingWidget::~InstrumentSettingWidget()
 
 void InstrumentSettingWidget::showEvent (QShowEvent *event)
 {
-	InitCommonConfig();
-    g_pMainWnd->initSlider();
+    //InitCommonConfig();
+    //g_pMainWnd->initSlider();
 	QWidget::showEvent(event) ;
 }
 
@@ -159,6 +159,7 @@ void InstrumentSettingWidget::InitCommonConfig()
     ui->SpinBoxCurrentIndexstart->setMaximum(fstop2 - fstep);
     ui->SpinBoxCurrentIndexstart->setMinimum(fstart2);
     ui->SpinBoxCurrentIndexstart->setSingleStep(fstep);
+    ui->SpinBoxCurrentScanPos->setEnabled(false);
     UpdateScanPos();
     SetItemInvalide();
 

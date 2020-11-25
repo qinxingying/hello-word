@@ -729,6 +729,7 @@ typedef struct _Group
 	int						bShowWeldPart;
     int                     measuregateType[setup_MAX_MEASURE_QTY]; //测量闸门类型，measureGateStatus为true时读取显示此
     bool                    measureGateStatus; //测量闸门状态，开启将测量值前三个换成B闸门
+    bool                    loadCurveData;
 
     //int						bShowGate;
     int                     bShowGateA;

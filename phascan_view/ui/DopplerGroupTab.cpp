@@ -436,9 +436,11 @@ void DopplerGroupTab::LoadStandardFormConifg()
     }
     int thinkness = CUR_RES.Thickness[m_nGroupId];
     _field->setCurrentIndex(thinkness);
-    CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
-    CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
-    CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+    if(!m_pGroup->loadCurveData){
+        CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
+        CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
+        CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+    }
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
@@ -880,6 +882,7 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
+    //qDebug()<<"885"<<CUR_RES.CurSS[m_nGroupId];
     ui->ValueScannerSensitivity->setValue(CUR_RES.CurSS[m_nGroupId]);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
