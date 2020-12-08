@@ -52,6 +52,7 @@ public:
     void setShowDefectStatus(bool status);
     void setCscanShowallChange();
     void setMeasureEnable(bool status);
+    void setShowGateB(bool status);
 protected:
     void SetWidgetInvalide();
     void CreateSettingView();

@@ -1932,7 +1932,13 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 			int _nLawNo = _group.afCursor[setup_CURSOR_LAW];
 			_pDfInfo->nLawNo = _nLawNo;
 			//---------------------------------------
-			int* _pMeasure = group[iGroupId_].aeMeasureType;
+            int* _pMeasure;
+            if(group[iGroupId_].measureGateStatus){
+                _pMeasure = group[iGroupId_].measuregateType;
+            }else{
+                _pMeasure = group[iGroupId_].aeMeasureType;
+            }
+            //int* _pMeasure = group[iGroupId_].aeMeasureType;
 			int _nQty = 0 ;
             for(int i = 0 ; i < setup_MAX_MEASURE_QTY; i++) {
 				strcpy(_pDfInfo->m_strMeasure[i], "-");

@@ -134,6 +134,7 @@ enum FEILD_VALUE_INDEX
     FEILD_SL,
     FEILD_EL,
     FEILD_CMA,              //CM-A%        耦合监控闸门峰值读数
+    FEILD_sMax,             //smax         当前z键保存的
     FEILD_VALUE_INDEX_MAX,
 };
 #endif // CONST_H

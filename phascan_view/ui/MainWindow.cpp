@@ -1897,11 +1897,18 @@ void MainWindow::slotCursorUChange(int groupId, int lawId, bool orientation)
     ProcessDisplay _proDispy;
     setup_LAW_TYPE	 lawType = _pConfig->group[groupId].law.eLawType;
     float tmp = _pProcess->CScanLineAngleToScanLineAngle(groupId, lawId);
-    int scanIndex = _pProcess->GetScanIndexPos();
-    PEAK_CONFIG _info[setup_GATE_MAX];
-    _pProcess->GetGatePeakInfos(groupId, scanIndex, lawId, _info);
-    float _fPos = _info[setup_GATE_A].fH;
-    float _pointx = _pProcess->SscanLawAndDepthMaptoPointx(groupId, lawId, _fPos);
+    //int scanIndex = _pProcess->GetScanIndexPos();
+    //PEAK_CONFIG _info[setup_GATE_MAX];
+    //_pProcess->GetGatePeakInfos(groupId, scanIndex, lawId, _info);
+    QPointF _point;
+    if(_pConfig->group[groupId].measureGateStatus){
+        _pProcess->SscanGetPeakPoint(groupId, lawId, setup_GATE_B, _point);
+    }else{
+        _pProcess->SscanGetPeakPoint(groupId, lawId, setup_GATE_A, _point);
+    }
+
+    float _fPos = _point.y();
+    float _pointx = _point.x();
     if(orientation){
         if(_pConfig->group[groupId].afCursor[setup_CURSOR_U_MES] == _fPos){
             return;
@@ -1970,6 +1977,7 @@ void MainWindow::slotMeasureGate(int groupId)
     }
     DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
     _pGroup->setMeasureEnable(!_group.measureGateStatus);
+    _pGroup->setShowGateB(_group.measureGateStatus);
     RunDrawThreadOnce(true);
 }
 

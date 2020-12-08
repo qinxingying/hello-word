@@ -2810,53 +2810,35 @@ bool ParameterProcess::SscanPointMaptoLawAndindex(int nGroupId_, QPointF point, 
     return true;
 }
 
-//通过lawid和s扫y轴坐标得到对应点的x轴坐标
-float ParameterProcess::SscanLawAndDepthMaptoPointx(int nGroupId_, int lawId, float depth)
+//获取闸门内峰值在S扫对应的坐标
+void ParameterProcess::SscanGetPeakPoint(int nGroupId_, int lawId, setup_GATE_NAME eGate_, QPointF &point)
 {
-    float pointx = 0;
     GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
-    TOPC_INFO& _TOPCInfo = _group.TopCInfo;
-    int _nPointQty = _group.nPointQty;
     float indexOffset = _group.fIndexOffset;
-    if(depth < _TOPCInfo.startY || depth > _TOPCInfo.stopY){
-        return pointx;
-    }
-    int index_y = (depth - _TOPCInfo.startY) / ( _TOPCInfo.stopY - _TOPCInfo.startY) * (_TOPCInfo.pixelHeigh - 1);
-    int offset_y = index_y * _TOPCInfo.pixelWidth;
-    int buff = 0;
-    bool first = true;
-    for(int i = 0; i < _TOPCInfo.pixelWidth; i++){
-        if(_TOPCInfo.pDataIndex[offset_y + i]){
-            if(first){
-                buff = i;
-                first = false;
-            }
-            int curId = _TOPCInfo.pDataIndex[offset_y + i] / _nPointQty;
-            if(curId == lawId){
-                buff = i;
-                break;
-            }
-        }
-    }
-    float pos_x = ( buff * ( _TOPCInfo.stopX - _TOPCInfo.startX) / (_TOPCInfo.pixelWidth - 1)) + _TOPCInfo.startX;
+    PEAK_CONFIG _info[setup_GATE_MAX];
+    int scanIndex = GetScanIndexPos();
+    GetGatePeakInfos(nGroupId_, scanIndex, lawId, _info);
+    float Posy = _info[eGate_].fH;
+    float posx = _info[eGate_].fL + GetBeamInsertPos( nGroupId_, lawId);
     switch (_group.eSkew) {
     case setup_PROBE_PART_SKEW_0:
-        pointx = pos_x;
+        posx = posx;
         break;
     case setup_PROBE_PART_SKEW_90:
-        pointx = pos_x + indexOffset;
+        posx += indexOffset;
         break;
     case setup_PROBE_PART_SKEW_180:
-        pointx = -pos_x;
+        posx = -posx;
         break;
     case setup_PROBE_PART_SKEW_270:
-        pointx = -pos_x + indexOffset;
+        posx = -posx + indexOffset;
         break;
     default:
-        pointx = pos_x;
+        posx = posx;
         break;
     }
-    return pointx;
+    point.setX(posx);
+    point.setY(Posy);
 }
 
 float ParameterProcess::CScanLineAngleToScanLineAngle(int nGroupId_, int _nPos)

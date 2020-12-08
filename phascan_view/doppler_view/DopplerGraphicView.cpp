@@ -736,6 +736,7 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
                 _pConfig->group[_iGroupId].storeScanLawId.status = true;
                 _pConfig->group[_iGroupId].storeScanLawId.lawId = _iLaw;
                 _pConfig->group[_iGroupId].storeScanLawId.scanPos = _pConfig->common.scanner.fScanPos;
+                g_pMainWnd->RunDrawThreadOnce(true);
                 break;
             }
             case QMessageBox::Cancel:

@@ -246,7 +246,7 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strGroup));
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strLaw));
 
-    for(int i = 0 ; i < 8; i++){
+    for(int i = 0 ; i < setup_MAX_MEASURE_QTY; i++){
         fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , _pDfInfo->m_strSzField[i] ,_pDfInfo->m_strSzFieldUnit[i]);
     }
 

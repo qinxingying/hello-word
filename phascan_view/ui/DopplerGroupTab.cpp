@@ -487,6 +487,28 @@ void DopplerGroupTab::setMeasureEnable(bool status)
     ui->ComField3->setEnabled(status);
 }
 
+//true 显示B闸门 false显示A闸门，B闸门隐藏
+void DopplerGroupTab::setShowGateB(bool status)
+{
+    if(status){
+        m_pGroup->bShowGateB = true;
+        ui->ComGateSelect->setCurrentIndex(1);
+        ui->ValueGateStart->setValue(m_pGroup->gate[1].fStart);
+        ui->ValueGateWidth->setValue(m_pGroup->gate[1].fWidth);
+        ui->ValueGateHeight->setValue(m_pGroup->gate[1].nThreshold);
+        ui->CheckGateShow->setCheckState(m_pGroup->bShowGateB ? Qt::Checked : Qt::Unchecked);
+    }else{
+        m_pGroup->bShowGateB = false;
+        ui->ComGateSelect->setCurrentIndex(0);
+        ui->ValueGateStart->setValue(m_pGroup->gate[0].fStart);
+        ui->ValueGateWidth->setValue(m_pGroup->gate[0].fWidth);
+        ui->ValueGateHeight->setValue(m_pGroup->gate[0].nThreshold);
+        ui->CheckGateShow->setCheckState(m_pGroup->bShowGateA ? Qt::Checked : Qt::Unchecked);
+    }
+    ProcessDisplay _display;
+    _display.UpdateAllViewOverlay();
+}
+
 /****************************************************************************
   Description: 当前角度选择控件更新
 *****************************************************************************/

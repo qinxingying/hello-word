@@ -60,7 +60,8 @@ const char* g_strMeasureFildName[][4] =
     {"RL    ", "None"},
     {"SL    ", "None"},
     {"EL    ", "None"},
-    {"CM-A% ", "Peak amplitude in gate coupleMonitoring"},    
+    {"CM-A% ", "Peak amplitude in gate coupleMonitoring"},
+    {"sMax  ", "Max defect scanPoint"},
 };
 
 const char* g_strMeasureFildUnit[][4] =
@@ -118,7 +119,8 @@ const char* g_strMeasureFildUnit[][4] =
     {"RL    " , "db"},
     {"SL    " , "db"},
     {"EL    " , "db"},
-    {"CM-A% " , "%"},    
+    {"CM-A% " , "%"},
+    {"sMax  " , "mm"},
 };
 
 const char* g_strThicknessStandard[] =

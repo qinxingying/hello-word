@@ -665,6 +665,14 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
     case FEILD_CMA :
         ret = _process->GetCoupleMonitoringData( nGroupId_, pResult_);
         break;
+    case FEILD_sMax:
+        if(config->storeScanLawId.status){
+            ret = 0;
+            *pResult_ = config->storeScanLawId.scanPos;
+        }else{
+           ret = -1;
+        }
+        break;
 	default:
 		break;
 	} ;
