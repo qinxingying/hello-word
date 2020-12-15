@@ -1304,8 +1304,10 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
     float _fCos    = cos(_fAngle);
     float _fIRadius, _fORadius, _fSstep, _fLstep;
     if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
-        _fSampleStart = config->fSampleStart;
-        _fSampleRange = config->fSampleRange;
+        //_fSampleStart = config->fSampleStart;
+        //_fSampleRange = config->fSampleRange;
+        _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
+        _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
         _fScale  = _nPointQty / _fSampleRange;
         _fIRadius = config->part.afSize[3] / 2 - _fThick;
         _fORadius = config->part.afSize[3] / 2;
@@ -1313,8 +1315,10 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
         _fLstep = ( asin( _fORadius * _fSin / _fIRadius) - _fAngle) * _fORadius;
 
     }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        _fSampleStart = config->fSampleStart;
-        _fSampleRange = config->fSampleRange;
+        //_fSampleStart = config->fSampleStart;
+        //_fSampleRange = config->fSampleRange;
+        _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
+        _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
         _fScale  = _nPointQty / _fSampleRange;
         _fIRadius = config->part.afSize[3] / 2;
         _fORadius = config->part.afSize[3] / 2 + _fThick;
@@ -1361,13 +1365,13 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_I].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_I].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
 	pInfo_[setup_GATE_I].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_I].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
 
-    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        pInfo_[setup_GATE_I].fGs   = _pGate->fStart * _fCos;
-        pInfo_[setup_GATE_I].fGw   = _pGate->fWidth * _fCos;
-    }else{
-        pInfo_[setup_GATE_I].fGs   = _pGate->fStart;
-        pInfo_[setup_GATE_I].fGw   = _pGate->fWidth;
-    }
+//    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
+//        pInfo_[setup_GATE_I].fGs   = _pGate->fStart * _fCos;
+//        pInfo_[setup_GATE_I].fGw   = _pGate->fWidth * _fCos;
+//    }else{
+        pInfo_[setup_GATE_I].fGs   = _fStart / _fScale + _fSampleStart;
+        pInfo_[setup_GATE_I].fGw   = _fWidth / _fScale;
+    //}
 	pInfo_[setup_GATE_I].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
 
 	_fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_I].iXEdge);
@@ -1502,13 +1506,13 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_A].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_A].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
 	pInfo_[setup_GATE_A].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_A].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
 
-    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        pInfo_[setup_GATE_A].fGs   = ( _fStart / _fScale + _fSampleStart) * _fCos;
-        pInfo_[setup_GATE_A].fGw   = _pGate->fWidth * _fCos;
-    }else{
+//    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
+//        pInfo_[setup_GATE_A].fGs   = ( _fStart / _fScale + _fSampleStart) * _fCos;
+//        pInfo_[setup_GATE_A].fGw   = _pGate->fWidth * _fCos;
+//    }else{
         pInfo_[setup_GATE_A].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
-        pInfo_[setup_GATE_A].fGw   = /*_fWidth / _fScale;//*/_pGate->fWidth;
-    }
+        pInfo_[setup_GATE_A].fGw   = /*_fWidth / _fScale;//*/_fWidth / _fScale;
+    //}
     pInfo_[setup_GATE_A].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
 
     _fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_A].iXEdge);
@@ -1645,13 +1649,13 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	pInfo_[setup_GATE_B].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_B].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
 	pInfo_[setup_GATE_B].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_B].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
 
-    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        pInfo_[setup_GATE_B].fGs   = ( _fStart / _fScale + _fSampleStart) * _fCos;
-        pInfo_[setup_GATE_B].fGw   = _pGate->fWidth * _fCos;
-    }else{
+//    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
+//        pInfo_[setup_GATE_B].fGs   = ( _fStart / _fScale + _fSampleStart) * _fCos;
+//        pInfo_[setup_GATE_B].fGw   = _pGate->fWidth * _fCos;
+//    }else{
         pInfo_[setup_GATE_B].fGs   = _fStart / _fScale + _fSampleStart;//_pGate->fStart;
-        pInfo_[setup_GATE_B].fGw   = /*_fWidth / _fScale;//*/_pGate->fWidth;
-    }
+        pInfo_[setup_GATE_B].fGw   = /*_fWidth / _fScale;//*/_fWidth / _fScale;
+    //}
 
 	pInfo_[setup_GATE_B].fGh   = GateHeight(_pGate->nThreshold, _nRectify);
 
