@@ -3,6 +3,8 @@
 /PhascanView/GeneratedFiles
 /PhascanView/data/DPL DEFECTS
 /PhascanView/data/Report
+/PhascanView/data/app/DPL DEFECTS
+/PhascanView/data/app/Report
 *.obj
 *.user
 *.autosave
@@ -13,3 +15,4 @@
 build-*
 
 /phascan_view/version.h
+/phascan_view/app/version.h
