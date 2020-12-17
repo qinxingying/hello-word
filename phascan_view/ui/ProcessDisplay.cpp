@@ -163,7 +163,7 @@ int ProcessDisplay::CreateViews(QWidget* parent_, int eType_)
 
 int ProcessDisplay::CreateViews2(QWidget* pWidget_)
 {
-	Doppler3DAll* glWidget = new Doppler3DAll;
+    Doppler3DAll* glWidget = new Doppler3DAll(m_nGroupId, pWidget_);
 
 	QScrollArea* glWidgetArea;
 	glWidgetArea = new QScrollArea;
@@ -186,7 +186,7 @@ int ProcessDisplay::CreateViews2(QWidget* pWidget_)
 	SetViewPara(_pView , m_nGroupId , 0 , setup_DISPLAY_MODE_A_H) ;
 	_pView->hide();
 	//------------------------------------------------
-	glWidget->SetGroupId(m_nGroupId);
+    //glWidget->SetGroupId(m_nGroupId);
 	pWidget_->setLayout(centralLayout);
 
 	return 0;
