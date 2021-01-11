@@ -1228,7 +1228,7 @@ void MainWindow::ReportAddOneItem()
     for(int i = 0; i < setup_MAX_MEASURE_QTY; i++)
     {
         if(_pMeasure[i]){
-            _value.szValue[_nQty] = CalcMeasurement::GetMeasureValue(_nGroup, _nLawId, (FEILD_VALUE_INDEX)_pMeasure[i]);
+            _value.szValue[_nQty] = CalcMeasurement::GetMeasureValueSimpleString(_nGroup, _nLawId, (FEILD_VALUE_INDEX)_pMeasure[i]);
             _value.szField[_nQty] = CalcMeasurement::GetMeasureString(_nGroup , (FEILD_VALUE_INDEX)_pMeasure[i]);
             _value.szFieldUnit[_nQty] = CalcMeasurement::GetMeasureUnit((FEILD_VALUE_INDEX)_pMeasure[i]) ;
             _nQty++;

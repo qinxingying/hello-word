@@ -673,6 +673,28 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
            ret = -1;
         }
         break;
+    case FEILD_ZA:
+    {
+        int rl = _process->GetDetermineThreshold( nGroupId_, setup_RL);
+        int sl = _process->GetDetermineThreshold( nGroupId_, setup_SL);
+        int el = _process->GetDetermineThreshold( nGroupId_, setup_EL);
+        if(rl == 0 || sl == 0 || el == 0){
+            ret = 1;
+            break;
+        }
+        int amp = pow(10.0, config->fRefGain/20.0)*g_PeakInfo[setup_GATE_A].fAmp;
+
+        if(amp >= rl){
+            *pResult_ = 3;
+        }else if(amp >= sl){
+            *pResult_ = 2;
+        }else if(amp >= el){
+            *pResult_ = 1;
+        }else{
+            ret = 1;
+        }
+        break;
+    }
 	default:
 		break;
 	} ;
@@ -767,14 +789,40 @@ const char* CalcMeasurement::GetMeasureContentString(int nGroupId_ , FEILD_VALUE
 	} ;
 }
 
+QString CalcMeasurement::GetZAValue(float _fValue)
+{
+    QString _str;
+    int tmp = (int)_fValue;
+    switch (tmp) {
+    case 1:
+        _str.sprintf("I");
+        break;
+    case 2:
+        _str.sprintf("II");
+        break;
+    case 3:
+        _str.sprintf("III");
+        break;
+    default:
+        _str.sprintf("NA");
+        break;
+    }
+    return _str;
+}
+
 QString CalcMeasurement::GetMeasureValueString (int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ )
 {
 	QString _str ; float _fValue ;
 	if( Calc(nGroupId_ , nLaw_ , eIndex_ , &_fValue))
 		_str.sprintf("%s: NA" , GetMeasureNameString(nGroupId_, eIndex_ ));
-	else
-		_str.sprintf("%s: %3.1f %s" , GetMeasureNameString(nGroupId_, eIndex_ ) , _fValue ,  g_strMeasureFildUnit[eIndex_][1]);
-
+    else{
+        if(eIndex_ == FEILD_ZA){
+            QString temp = GetZAValue(_fValue);
+            _str = "ZA    : " + temp;
+        }else{
+           _str.sprintf("%s: %3.1f %s" , GetMeasureNameString(nGroupId_, eIndex_ ) , _fValue ,  g_strMeasureFildUnit[eIndex_][1]);
+        }
+    }
 	return _str ;
 }
 
@@ -784,8 +832,13 @@ QString CalcMeasurement::GetMeasureValueSimpleString (int nGroupId_ , int nLaw_ 
 	float _fValue ;
 	if( Calc(nGroupId_ , nLaw_ , eIndex_ , &_fValue))
 		_str.sprintf("NA");
-	else
-		_str.sprintf("%3.1f" , _fValue);
+    else{
+        if(eIndex_ == FEILD_ZA){
+            _str = GetZAValue(_fValue);
+        }else{
+            _str.sprintf("%3.1f" , _fValue);
+        }
+    }
 	return _str ;
 }
 
@@ -803,14 +856,14 @@ QString CalcMeasurement::GetMeasureUnit(FEILD_VALUE_INDEX eIndex_ )
 	return _str ;
 }
 
-QString CalcMeasurement::GetMeasureValue(int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ )
-{
-	QString _str ; float _fValue ;
-	if( Calc(nGroupId_ , nLaw_ , eIndex_ , &_fValue))
-		_str.sprintf("NA");
-	else
-		_str.sprintf("%3.1f" , _fValue);
+//QString CalcMeasurement::GetMeasureValue(int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ )
+//{
+//	QString _str ; float _fValue ;
+//	if( Calc(nGroupId_ , nLaw_ , eIndex_ , &_fValue))
+//		_str.sprintf("NA");
+//	else
+//		_str.sprintf("%3.1f" , _fValue);
 
-	return _str ;
-}
+//	return _str ;
+//}
 

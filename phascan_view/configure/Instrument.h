@@ -675,6 +675,7 @@ typedef struct _Group
 	float					fGain;					/* 增益 0 - 80 db  _STEP 0.01dB */
 	float					fRefGain;
     float                   RefGain;
+
     int                     on_off_status;
     float					fSumGain ;                /* 总增益 */
 	int						bPointQtyAuto;

@@ -139,4 +139,6 @@
 
 #define ALARM_COUNT 3
 
+#define DEFAULT_REFAMP  70
+
 #endif // DEFAULT_SETTINGS_H

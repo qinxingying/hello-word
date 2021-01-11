@@ -17,13 +17,14 @@ class CalcMeasurement : public QObject
 public:
     explicit CalcMeasurement(QObject *parent = 0) ;
     static int Calc(int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ , float* pResult_);
+    static QString GetZAValue(float _fValue);
     static QString GetMeasureValueString(int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ );
 	static QString GetMeasureValueSimpleString (int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ );
     static const char* GetMeasureNameString(int nGroupId_ , FEILD_VALUE_INDEX eIndex_) ;
     static const char* GetMeasureContentString(int nGroupId_ , FEILD_VALUE_INDEX eIndex_) ;
     static QString GetMeasureString(int nGroupId_ , FEILD_VALUE_INDEX eIndex_);
     static QString GetMeasureUnit(FEILD_VALUE_INDEX eIndex_ ) ;
-    static QString GetMeasureValue(int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ );
+    //static QString GetMeasureValue(int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ );
 protected:
 #if 0
     static int CalGateAmp(int nGroupId_ , int nLaw_ , int nGate_ , float* pResult_ );

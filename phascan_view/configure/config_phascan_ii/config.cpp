@@ -221,6 +221,7 @@ void Config::unpack_sample(const QVariantMap &map)
     sample.m_maxGain       = map["MaxGain"].toUInt();
     sample.m_refGainStatus = map["RefGainStatus"].toUInt();
     sample.m_refGain       = map["RefGain"].toDouble();
+    sample.m_couplingGain  = map["CouplingGain"].toDouble();
     sample.m_pointQty      = map["PointQty"].toInt();
     sample.m_autoCalcPointQty= map["AutoCalcPointQty"].toBool();
 
@@ -228,6 +229,7 @@ void Config::unpack_sample(const QVariantMap &map)
              << " gain " << sample.m_gain
              << " refGainStatus " << sample.m_refGainStatus
              << " ref gain " << sample.m_refGain
+             << " coupling gain " << sample.m_couplingGain
              << " start " << sample.m_start
              << " range " << sample.m_range
              << " maxGain " << sample.m_maxGain

@@ -258,11 +258,17 @@
                     <height>20</height>
                    </size>
                   </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::WheelFocus</enum>
+                  </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
                   </property>
                   <property name="buttonSymbols">
                    <enum>QAbstractSpinBox::NoButtons</enum>
+                  </property>
+                  <property name="keyboardTracking">
+                   <bool>false</bool>
                   </property>
                   <property name="decimals">
                    <number>1</number>
@@ -820,6 +826,9 @@
                     <width>140</width>
                     <height>16777215</height>
                    </size>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::WheelFocus</enum>
                   </property>
                   <item>
                    <property name="text">

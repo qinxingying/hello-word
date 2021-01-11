@@ -74,11 +74,11 @@ struct DEFECT_INFO
 
 	float fUDepth;
 
-	float fUStart;
-	float fUStop;
+    float fUStart;   //起始深度
+    float fUStop;    //结束深度
 
-	float fSStart;
-	float fSStop;
+    float fSStart;  //起始位置
+    float fSStop;   //结束位置
 
 	float fIStart;
 	float fIStop;
@@ -91,7 +91,7 @@ struct DEFECT_INFO
     char  m_strSzField[setup_MAX_MEASURE_QTY][20];
     char  m_strSzFieldUnit[setup_MAX_MEASURE_QTY][20];
     char SL[20];
-    char Index_pos[20];
+    char Index_pos[20];  //步进位置
 };
 
 struct DEFECT_PARAM

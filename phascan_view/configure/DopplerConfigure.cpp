@@ -916,7 +916,7 @@ void DopplerConfigure::OldConfigureToConfigure(DopplerDataFileOperateor* pConf_)
 {
 	DRAW_INFO_PACK* _pack = pConf_->GetDrawInfo();
 	common.nGroupQty = _pack->nGroupNum ;
-    common.dataModeStatus = false;
+    common.dataModeStatus = true;
     common.scanner.fPrf  = pConf_->GetGroupInfo(0)->prf1 / 10.0;
     common.aidedAnalysis.aidedGroupId = 0;
     common.aidedAnalysis.aidedStatus  = false;

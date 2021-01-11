@@ -16,6 +16,7 @@ private:
     double m_gain;
     bool m_refGainStatus;
     double m_refGain;
+    double m_couplingGain;
     double m_start;
     double m_range;
     double m_maxGain;

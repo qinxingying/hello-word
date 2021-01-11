@@ -1704,7 +1704,7 @@ void DopplerGraphicView::creatActionAndMenu()
     m_dataMode = new QAction(tr("Data Mode"), this);
     //m_dataMode->setIcon(QIcon(":/file/resource/main_menu/dataMode.png"));
     m_dataMode->setCheckable( true);
-    m_dataMode->setChecked(false);
+    m_dataMode->setChecked(true);
     connect( m_dataMode, SIGNAL(toggled(bool)), this, SLOT(setDataMode(bool)));
 
     m_showCursor = new QAction(tr("Show Cursor"), this);
