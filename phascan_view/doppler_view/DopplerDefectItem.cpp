@@ -181,8 +181,8 @@ void DopplerDefectItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_
 		m_pDataView->GetDataViewConfigure(&_nGroup , &_nLaw , &_nDisp);
 		DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
 		char *_pInfo = _pConfig->GetDefectInfo(_nGroup, m_nId);
-
-		_str.sprintf("%d:%s", m_nId+1, _pInfo)  ;
+        int index_ = _pConfig->GetDefectIndex(_nGroup, m_nId);
+        _str.sprintf("%d:%s", index_, _pInfo);
     if(this->y()>30)
         painter->drawText(0 , -4 , _str );
     else if(this->y()+ m_nHeight <scene()->height() - 30)

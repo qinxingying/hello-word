@@ -633,15 +633,18 @@ void Config::unpack_weld(const QVariantMap &map)
     }
 }
 
-bool Config::getCurve_RL_EL_SL(int groupId)
+bool Config::getCurve_RL_EL_SL(int groupId, float &coupleGain)
 {
+    coupleGain = m_groups[groupId].m_sample.m_couplingGain;
     if(Paramters::Sizing::TCG == m_groups[groupId].m_sizing.m_type){
         Paramters::Curves &curves = m_groups[groupId].m_sizing.m_curves;
         if(curves.m_offsets.size() == 4){
-            CUR_RES.CurSS[groupId] = curves.m_offsets[0];
+            //CUR_RES.CurSS[groupId] = curves.m_offsets[0];
+            CUR_RES.CurSS[groupId] = m_groups[groupId].m_sample.m_gain;
             CUR_RES.CurRL[groupId] = curves.m_offsets[1];
             CUR_RES.CurSL[groupId] = curves.m_offsets[2];
             CUR_RES.CurEL[groupId] = curves.m_offsets[3];
+            CUR_RES.Ref_Amp[groupId] = curves.m_refAmp;
             return true;
         }
     }

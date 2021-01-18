@@ -230,10 +230,10 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 	fprintf(m_pFile,"</table>\n</table>\n\n");
 }
 
-void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_)
+void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_, DEFECT_INFO* _pDfInfo)
 {
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-	DEFECT_INFO*      _pDfInfo = _pConfig->GetDefectPointer(nGroupId_, index_);
+    //DEFECT_INFO*      _pDfInfo = _pConfig->GetDefectPointer(nGroupId_, index_);
 
     fprintf(m_pFile, "<br />\n");
     fprintf(m_pFile, "<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
@@ -357,23 +357,133 @@ void DopplerHtmlReport::BuildReport()
     // group info
     //枚举group，每一个group，都是一个独立的信息
     int _nGroupQty = _pConfig->common.nGroupQty;
-    for (int i = 0; i < _nGroupQty; ++i)
-    {
-        UpdateGroupConfig(i);
-        if(m_cInfo.eMode) SprintfGroupProbeConfig(i);
+    if(_pConfig->loadDefectVersion == 1){
+        DEFECT_INFO* _pDfInfo;
+        for (int i = 0; i < _nGroupQty; ++i)
+        {
+            UpdateGroupConfig(i);
+            if(m_cInfo.eMode) SprintfGroupProbeConfig(i);
 
-        GROUP_CONFIG&   _group = _pConfig->group[i];
-        if(_group.eTxRxMode == setup_TX_RX_MODE_TOFD && m_cInfo.eMode)
-            CreateTofdHeader(i);
+            GROUP_CONFIG&   _group = _pConfig->group[i];
+            if(_group.eTxRxMode == setup_TX_RX_MODE_TOFD && m_cInfo.eMode)
+                CreateTofdHeader(i);
 
-        int _nDfNO = _pConfig->GetDefectCnt(i);
-        if(_nDfNO > 0) {
-            CreateDefect(i);
-            for(int k = 0; k < _nDfNO; k++) {
-                CreateDefectCell(i, k);
+            int _nDfNO = _pConfig->GetDefectCnt(i);
+            if(_nDfNO > 0) {
+                CreateDefect(i);
+                for(int k = 0; k < _nDfNO; k++) {
+                    _pDfInfo = _pConfig->GetDefectPointer(i, k);
+                    CreateDefectCell(i, k, _pDfInfo);
+                }
             }
         }
+    }else{
+        for(int i = 0; i < _nGroupQty; ++i){
+            UpdateGroupConfig(i);
+            if(m_cInfo.eMode) SprintfGroupProbeConfig(i);
+
+            GROUP_CONFIG&   _group = _pConfig->group[i];
+            if(_group.eTxRxMode == setup_TX_RX_MODE_TOFD && m_cInfo.eMode)
+                CreateTofdHeader(i);
+        }
+        int defectNum = 0;
+        for(int i = 0; i < _nGroupQty; i++){
+            defectNum += _pConfig->GetDefectCnt(i);
+        }
+        if(defectNum){
+            DEFECT_INFO **sortBuff = (DEFECT_INFO **)malloc(sizeof(DEFECT_INFO *)* defectNum);
+            int index_ = 0;
+            for(int i = 0; i < _nGroupQty; i++){
+                DEFECT_INFO* _pDfInfo = _pConfig->m_dfParam[i].pDFHead;
+                while (_pDfInfo != NULL) {
+                    sortBuff[index_] = _pDfInfo;
+                    _pDfInfo = _pDfInfo->pNext;
+                    index_++;
+                }
+            }
+            DEFECT_INFO *temp;
+            for(int i = 0; i < defectNum - 1; i++){
+                for(int j = 0; j < defectNum - 1 - i; j++){
+                    if(sortBuff[j]->dIndex > sortBuff[j+1]->dIndex){
+                        temp = sortBuff[j];
+                        sortBuff[j] = sortBuff[j+1];
+                        sortBuff[j+1] = temp;
+                    }
+                }
+            }
+
+            fprintf(m_pFile , "<br />\n");
+            QString strDefect = QString(QObject::tr("Defect"));
+            QString defect[] =
+            {
+                QString(QObject::tr("Index")),
+                QString(QObject::tr("Position start")),
+                QString(QObject::tr("Length")),
+                QString(QObject::tr("Depth")),
+                QString(QObject::tr("Height")),
+                QString(QObject::tr("Zone"))
+            };
+            fprintf(m_pFile , "<th align=left>%s</th>\n", TOCHAR(strDefect));
+            fprintf(m_pFile,"<table %s frame=box>\n<tr><td><table %s>\n" ,tableWidth ,sonTableStyle);
+            fprintf(m_pFile,"<tr>\n");
+            int iMax = 6;
+            for(int i = 0; i < iMax; i++){
+                fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(defect[i]));
+            }
+            fprintf(m_pFile,"</tr>\n\n");
+            fprintf(m_pFile,"<tr>\n");
+            float  _fData = 0;
+            float _fStart;
+            for(int i = 0; i < defectNum; i++){
+                DEFECT_INFO* _pDfInfo = sortBuff[i];
+                fprintf(m_pFile,"<td %s>%d</td>\n" ,tableTdStyle, _pDfInfo->dIndex);
+                fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pDfInfo->fSStart);
+                _fData = _pDfInfo->fSStop - _pDfInfo->fSStart;
+                fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _fData);
+                fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pDfInfo->dDepth);
+                int groupId = _pDfInfo->dGroupId - 1;
+                int defectId = _pDfInfo->dIndex;
+                int _index = 0;
+                DEFECT_INFO* _DfInfo = _pConfig->m_dfParam[groupId].pDFHead;
+                while (_DfInfo != NULL) {
+                    if(_DfInfo->dIndex == defectId){
+                        break;
+                    }
+                    _DfInfo = _DfInfo->pNext;
+                    _index++;
+                }
+                _fData = _pConfig->DefectHeightValue(groupId, &_fStart, _index);
+                fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _fData);
+                QString buff;
+                switch (_pDfInfo->dZA) {
+                case 1:
+                    buff = "I";
+                    break;
+                case 2:
+                    buff = "II";
+                    break;
+                case 3:
+                    buff = "III";
+                    break;
+                default:
+                    buff = "NA";
+                    break;
+                }
+                fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle ,TOCHAR(buff));
+                fprintf(m_pFile,"</tr>\n\n");
+            }
+            fprintf(m_pFile,"</table>\n</table>\n\n");
+
+            for(int i = 0; i < defectNum; i++){
+                DEFECT_INFO* _pDfInfo = sortBuff[i];
+                int groupId = _pDfInfo->dGroupId - 1;
+                int indexId = _pDfInfo->dIndex - 1;
+                CreateDefectCell(groupId, indexId, _pDfInfo);
+            }
+            free(sortBuff);
+        }
     }
+
     //# table
     if(m_cInfo.eMode)  SprintfReportTable();
 

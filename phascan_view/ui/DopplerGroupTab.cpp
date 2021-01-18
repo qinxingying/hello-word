@@ -8,7 +8,6 @@
 //#include "dialog/DialogWeldPartLoad.h"
 #include "dialog/DialogDxfFileLoad.h"
 #include "dialog/dialogweldfixdataii.h"
-
 #include <QPushButton>
 
 const int MAX_ITEM_QTY = 50;
@@ -625,6 +624,7 @@ void DopplerGroupTab::SetWidgetInvalide()
 {
     ui->ValueGain->setDisabled(true);
     ui->ValueRefGain->setDisabled(true);
+    ui->ValueCoupleGain->setDisabled(true);
     ui->ValueStart->setDisabled(true);
     ui->ValueRange->setDisabled(true);
     ui->ValueWedgeDelay->setDisabled(true);
@@ -821,7 +821,8 @@ void DopplerGroupTab::UpdateDefectBox()
 
 		for(int i = 0 ; i < _iCnt ; i ++)
 		{
-			_str.sprintf("%d", i+1);
+            int index = _pConfig->GetDefectIndex(m_nGroupId, i);
+            _str.sprintf("%d", index);
 			_pBox->addItem(_str);
 		}
 		_pBox->setCurrentIndex(_index);
@@ -897,10 +898,11 @@ void DopplerGroupTab::UpdateGroupConfig()
     }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
     ui->ValueRefGain->setValue(m_pGroup->RefGain);
+    ui->ValueCoupleGain->setValue(m_pGroup->CoupleGain);
     ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
-    ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
+    ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);    
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
@@ -1000,6 +1002,12 @@ void DopplerGroupTab::UpdateGroupConfig()
 
         ui->ComTopcMergeStatus->setEnabled(false);
         ui->ComTopcMergeStatus->setCurrentIndex(0);
+    }
+
+    if(m_pGroup->loadCurveData) {
+        ui->ValueScannerSensitivity->setEnabled(false);
+    }else{
+        ui->ValueScannerSensitivity->setEnabled(true);
     }
 
     //  ********** geometry  ***************//
@@ -2468,7 +2476,8 @@ void DopplerGroupTab::on_ComDefectIndex_currentIndexChanged(int index)
     UpdateDefectValue();
     ProcessDisplay _display ;
     _display.ShowDefectInfo(m_nGroupId,index);
-    g_pMainWnd->RunDrawThreadOnce(true);
+    //g_pMainWnd->RunDrawThreadOnce(true);
+    g_pMainWnd->loadDefectPosition(m_nGroupId,index);
 }
 
 void DopplerGroupTab::on_lineEditReMark_textChanged(QString str)
@@ -2494,8 +2503,9 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 
 	_pConfig->DeleteDefect(m_nGroupId, _index);
 
-	UpdateDefectBox();
-	UpdateDefectValue() ;
+//	UpdateDefectBox();
+//	UpdateDefectValue() ;
+    g_pMainWnd->updateAllDefectBox();
 //  g_pMainWnd->RunDrawThreadOnce();
 	ProcessDisplay _display ;
     _display.ResetDefectInfo(m_nGroupId);

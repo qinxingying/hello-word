@@ -81,5 +81,6 @@
         <file>resource/main_menu/dataMode.png</file>
         <file>resource/main_menu/cursor.png</file>
         <file>resource/main_menu/defect.png</file>
+        <file>resource/Main/keyboardInstruction.jpg</file>
     </qresource>
 </RCC>

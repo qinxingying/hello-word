@@ -51,7 +51,7 @@ public:
 
     void CreateTofdHeader(int nGroupId_);
     void CreateDefect(int nGroupId_);
-	void CreateDefectCell(int nGroupId_, int index_);
+    void CreateDefectCell(int nGroupId_, int index_, DEFECT_INFO* _pDfInfo);
     void set_data_path(QString &str);
     void set_reportName(QString &str);
 

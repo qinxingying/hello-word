@@ -494,6 +494,7 @@ struct CURVE_RL_EL_SL
     int CurSS[setup_MAX_GROUP_QTY];      //保存扫查灵敏度
     int Standard[setup_MAX_GROUP_QTY];   //tcg曲线标准的index
     int Thickness[setup_MAX_GROUP_QTY];  //tcg曲线厚度
+    float Ref_Amp[setup_MAX_GROUP_QTY];  //二代数据加载标准后读取值，其它默认80
 };
 
 extern CURVE_RL_EL_SL CUR_RES;
@@ -654,9 +655,11 @@ struct RASTER_DATA
 
 struct STORE_SCAN_LAWID
 {
-    bool status;
+    bool  status;
     float scanPos;
-    int lawId;
+    float depth;
+    int   lawId;
+    int   ZA;
 };
 
 typedef struct _Group
@@ -675,6 +678,7 @@ typedef struct _Group
 	float					fGain;					/* 增益 0 - 80 db  _STEP 0.01dB */
 	float					fRefGain;
     float                   RefGain;
+    float                   CoupleGain;         //耦合补偿
 
     int                     on_off_status;
     float					fSumGain ;                /* 总增益 */

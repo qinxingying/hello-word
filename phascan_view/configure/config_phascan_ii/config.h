@@ -28,7 +28,7 @@ public:
 
     uint data_mark_length();
 
-    bool getCurve_RL_EL_SL(int groupId);
+    bool getCurve_RL_EL_SL(int groupId, float &coupleGain);
     void getWeldData( int groupId, WELD_II & weld);
     void getTOPCWidth( int groupId, double &topcWidth);
     void getApertureSec( int groupId, unsigned int * apertureData);

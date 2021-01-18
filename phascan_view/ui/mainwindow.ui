@@ -233,7 +233,7 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionMenu"/>
+    <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuReport">
@@ -398,9 +398,9 @@
     <string>Korean</string>
    </property>
   </action>
-  <action name="actionMenu">
+  <action name="actionHelp">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Help</string>

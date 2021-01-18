@@ -86,8 +86,50 @@ struct DEFECT_INFO
     float fVPAStart;
     float fVPAStop;
 
-	int   nLawNo;
-    char  m_strMeasure[setup_MAX_MEASURE_QTY][50]  ;
+    int   nLawNo;     //缺陷最高波lawID
+    char  m_strMeasure[setup_MAX_MEASURE_QTY][50];
+    char  m_strSzField[setup_MAX_MEASURE_QTY][20];
+    char  m_strSzFieldUnit[setup_MAX_MEASURE_QTY][20];
+    char  SL[20];
+    char  Index_pos[20];   //步进位置
+    int   dGroupId;        //组ID用于报告
+    int   dVersion;        //版本
+    int   dIndex;          //顺序
+    int   dZA;             //ZA
+    float dScanOffset;     //扫查偏置
+    float dIndexOffset;    //步进偏置
+    float dScanPos;        //缺陷最高波扫查位置
+    float dDepth;          //缺陷最高波深度
+    int   reserve[4];      //保留位，用于以后扩展
+};
+
+struct DEFECT_INFO_V1
+{
+    DEFECT_INFO_V1 *pPrev;
+    DEFECT_INFO_V1 *pNext;
+
+    char  srtInfo[256];
+    char  srtInfo2[256];
+    char  srtImageName[256];
+
+    bool  bValid;
+
+    float fUDepth;
+
+    float fUStart;   //起始深度
+    float fUStop;    //结束深度
+
+    float fSStart;  //起始位置
+    float fSStop;   //结束位置
+
+    float fIStart;
+    float fIStop;
+
+    float fVPAStart;
+    float fVPAStop;
+
+    int   nLawNo;
+    char  m_strMeasure[setup_MAX_MEASURE_QTY][50];
     char  m_strSzField[setup_MAX_MEASURE_QTY][20];
     char  m_strSzFieldUnit[setup_MAX_MEASURE_QTY][20];
     char SL[20];
@@ -146,12 +188,14 @@ public:
 	void FilePathPro(QString& path_);
 	// 
 	int DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_);
-	int AddDefectInfo(int iGroupId_, DEFECT_INFO dfInfo_);
+    int AddDefectInfo(int iGroupId_, DEFECT_INFO &dfInfo_);
+    int AddDefectInfo(int iGroupId_, DEFECT_INFO_V1 &dfInfo_);
 	int ClearDefectInfo(int iGroupId_);
 	int DeleteDefect(int iGroupId_, int index_);
 	int GetDefectCnt(int iGroupId_);
 	void ReleaseAllDefect();
 	void ReleaseDefect(int iGroupId_);
+    void ReorderDefect();
 	float DefectLengthValue(int iGroupId_, float* pStart_, int index_ = -1);
 	float DefectLengthPos(int iGroupId_, float* pStart_, int index_ = -1);
     float DefectVPAPos(int iGroupId_, float* pStart_, int index_ = -1);
@@ -166,6 +210,7 @@ public:
 	DEFECT_INFO* GetDefectPointer(int iGroupId_, int index_);
     DEFECT_INFO* SetDefectInfo(int iGroupId_, int index_, char* strInfo_,char* strInfo2);
 	char* GetDefectInfo(int iGroupId_, int index_);
+    int  GetDefectIndex(int iGroupId_, int index_);
 	void SetLastDate();
 	QDate GetLastDate();
 	//--------------------------------------------------
@@ -211,7 +256,7 @@ public:
     SYSTEM_ENVIRMENT	AppEvn;
 	DEFECT_PARAM		m_dfParam[setup_MAX_GROUP_QTY];
 	int					m_nCutBmpNo[setup_MAX_GROUP_QTY];
-
+    int                 loadDefectVersion;
 };
 
 #endif // DOPPLERCONFIGURE_H

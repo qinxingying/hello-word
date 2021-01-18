@@ -12,6 +12,7 @@
 #include "DopplerDataView.h"
 #include "aidedanalysis.h"
 #include "dialog/dialogdefectselect.h"
+#include "CalcMeasurement.h"
 #include <QDebug>
 #include <QPrintDialog>
 #include <QPrinter>
@@ -733,9 +734,22 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
             case QMessageBox::Ok:
             {
                 DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+                //ParameterProcess* _process = ParameterProcess::Instance();
                 _pConfig->group[_iGroupId].storeScanLawId.status = true;
                 _pConfig->group[_iGroupId].storeScanLawId.lawId = _iLaw;
                 _pConfig->group[_iGroupId].storeScanLawId.scanPos = _pConfig->common.scanner.fScanPos;
+                float pResult_ = 0;
+                if(_pConfig->group[_iGroupId].measureGateStatus){
+                    //_process->SscanGetPeakPoint(_iGroupId, _iLaw, setup_GATE_B, _point);
+                    CalcMeasurement::Calc(_iGroupId, _iLaw, FEILD_DB, &pResult_);
+                }else{
+                    //_process->SscanGetPeakPoint(_iGroupId, _iLaw, setup_GATE_A, _point);
+                    CalcMeasurement::Calc(_iGroupId, _iLaw, FEILD_DA, &pResult_);
+                }
+                _pConfig->group[_iGroupId].storeScanLawId.depth = pResult_;
+                pResult_ = 0;
+                CalcMeasurement::Calc(_iGroupId, _iLaw, FEILD_ZA, &pResult_);
+                _pConfig->group[_iGroupId].storeScanLawId.ZA = static_cast<int>(pResult_);
                 g_pMainWnd->RunDrawThreadOnce(true);
                 break;
             }

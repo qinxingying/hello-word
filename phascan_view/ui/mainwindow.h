@@ -76,6 +76,8 @@ public:
     void UpdateIndexSlider();
     void AidedAnalysisDone(bool);
     void setAllTopcWidht(double value);
+    void updateAllDefectBox();
+    void loadDefectPosition(int groupId, int index);
 
 protected:
     void CreateStatusBar();
@@ -170,6 +172,7 @@ private slots:
     void slotShowDefect(int groupId, bool status);
     void slotCsanShowallChange(int groupId);
     void slotMeasureGate(int groupId);
+
 protected slots:
   void on_actionNew_Config_triggered();
   void on_actionOpen_triggered();
@@ -202,6 +205,7 @@ protected slots:
   void slot_actionEnglish_triggered();
   void slot_actionChinese_triggered();
   void on_actionJapanese_triggered();
+  void on_actionHelp_triggered();
   void on_actionAbout_triggered();
   void on_actionAided_Analysis_triggered();
   void on_actionStop_Analysis_triggered();

@@ -30,6 +30,7 @@ Date     : 2016-12-06
 #include <QFileDialog>
 #include <QPixmap>
 #include "dialog/DialogAbouVersion.h"
+#include "dialog/dialogkeyboardhelp.h"
 #include "remote_monitoring/RemoteMonitoring.h"
 #include "remote_monitoring/assemblyremotesdialog.h"
 #include "version.h"
@@ -1308,6 +1309,19 @@ void MainWindow::TofdDataPro(TOFD_PRO_STATUS proSt_)
     RunDrawThreadOnce(false);
 }
 
+void MainWindow::updateAllDefectBox()
+{
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    DopplerGroupTab* _pLeftGroup;
+    for(int i = 0; i < _pConfig->common.nGroupQty; i++){
+        _pLeftGroup = qobject_cast<DopplerGroupTab*>(ui->TabWidget_parameter->widget(i));
+        if(_pLeftGroup){
+            _pLeftGroup->UpdateDefectBox();
+            _pLeftGroup->UpdateDefectValue();
+        }
+    }
+}
+
 void MainWindow::DefectSign(DEFECT_SIGN_TYPE signType_)
 {
     DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
@@ -1317,9 +1331,16 @@ void MainWindow::DefectSign(DEFECT_SIGN_TYPE signType_)
         if(_ret == 3) {
             ProcessDisplay _process;
             //GROUP_CONFIG* _pGroup = &_pConfig->group[m_iCurGroup];
-            DopplerGroupTab* _pLeftGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
-            _pLeftGroup->UpdateDefectBox();
-            _pLeftGroup->UpdateDefectValue();
+            //DopplerGroupTab* _pLeftGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+//            DopplerGroupTab* _pLeftGroup;
+//            for(int i = 0; i < _pConfig->common.nGroupQty; i++){
+//                _pLeftGroup = qobject_cast<DopplerGroupTab*>(ui->TabWidget_parameter->widget(i));
+//                if(_pLeftGroup){
+//                    _pLeftGroup->UpdateDefectBox();
+//                    _pLeftGroup->UpdateDefectValue();
+//                }
+//            }
+            updateAllDefectBox();
 
             int _index = _pConfig->m_dfParam[m_iCurGroup].index;
             //bool _bTmp = _pGroup->bShowDefect;
@@ -1883,8 +1904,8 @@ void MainWindow::slotCursorScanChange(int groupId, bool orientation)
     }
     DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
     _pGroup->UpdateCursorValue();
-    _pGroup->UpdateDefectValue();
-    _pGroup->UpdateTofdParam();
+    //_pGroup->UpdateDefectValue();
+    //_pGroup->UpdateTofdParam();
 
     _proDispy.UpdateAllViewCursorOfGroup(groupId);
     RunDrawThreadOnce(true);
@@ -1934,8 +1955,8 @@ void MainWindow::slotCursorUChange(int groupId, int lawId, bool orientation)
     }
     DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
     _pGroup->UpdateCursorValue();
-    _pGroup->UpdateDefectValue();
-    _pGroup->UpdateTofdParam();
+    //_pGroup->UpdateDefectValue();
+    //_pGroup->UpdateTofdParam();
 
     _proDispy.UpdateAllViewCursorOfGroup(groupId);
     RunDrawThreadOnce(true);
@@ -1979,6 +2000,36 @@ void MainWindow::slotMeasureGate(int groupId)
     _pGroup->setMeasureEnable(!_group.measureGateStatus);
     _pGroup->setShowGateB(_group.measureGateStatus);
     RunDrawThreadOnce(true);
+}
+
+void MainWindow::loadDefectPosition(int groupId, int index)
+{
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+
+    if(_pConfig->GetDefectCnt(groupId) == 0){
+        return;
+    }
+    if(_pConfig->loadDefectVersion == 1){
+        RunDrawThreadOnce(true);
+    }else{
+        ParameterProcess* _process = ParameterProcess::Instance();
+        DEFECT_INFO* _pDfInfo = _pConfig->GetDefectPointer(groupId, index);
+        GROUP_CONFIG& _group = _pConfig->group[groupId];
+        _group.afCursor[setup_CURSOR_S_REF] = _pDfInfo->fSStart + _pDfInfo->dScanOffset;
+        _group.afCursor[setup_CURSOR_S_MES] = _pDfInfo->fSStop + _pDfInfo->dScanOffset;
+        _group.afCursor[setup_CURSOR_U_REF] = _pDfInfo->fUStart;
+        _group.afCursor[setup_CURSOR_U_MES] = _pDfInfo->fUStop;
+        _group.afCursor[setup_CURSOR_I_REF] = _pDfInfo->fIStart;
+        _group.afCursor[setup_CURSOR_I_MES] = _pDfInfo->fIStop;
+        _group.afCursor[setup_CURSOR_VPA_REF] = _pDfInfo->fVPAStart;
+        _group.afCursor[setup_CURSOR_VPA_MES] = _pDfInfo->fVPAStop;
+        _group.fIndexOffset = _pDfInfo->dIndexOffset;
+        _group.fScanOffset  = _pDfInfo->dScanOffset;
+        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
+        _pGroup->UpdateCursorValue();
+        _process->SetupScanPos(_pDfInfo->dScanPos);
+        slotLawPosChange(groupId, _pDfInfo->nLawNo, 0);
+    }
 }
 
 void MainWindow::on_actionNew_Config_triggered()
@@ -2095,7 +2146,44 @@ void MainWindow::on_actionTOFD_Depth_Measurement_triggered()
 
 void MainWindow::on_actionSave_Defect_triggered()
 {
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[m_iCurGroup];
+    if(!_group.storeScanLawId.status){
+        QMessageBox msgBox;
+        msgBox.setText(tr("Set current position as defect position ?"));
+        msgBox.setInformativeText(tr("The defect postion is'nt store. If you want set current position as defect position, \
+                                  click 'ok' button. Otherwise click cancel button and use keyboard button 'Z' to store defect postion"));
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        int ret = msgBox.exec();
+        switch (ret) {
+        case QMessageBox::Ok:
+        {
+            //ParameterProcess* _process = ParameterProcess::Instance();
+            int _iLaw = _group.afCursor[setup_CURSOR_LAW];
+            _group.storeScanLawId.lawId = _iLaw;
+            _group.storeScanLawId.scanPos = _pConfig->common.scanner.fScanPos;
+            float pResult_ = 0;
+            if(_group.measureGateStatus){
+                CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_DB, &pResult_);
+            }else{
+                CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_DA, &pResult_);
+            }
+            _group.storeScanLawId.depth = pResult_;
+            pResult_ = 0;
+            CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_ZA, &pResult_);
+            _group.storeScanLawId.ZA = static_cast<int>(pResult_);
+            break;
+        }
+        case QMessageBox::Cancel:
+            return;
+        default:
+            break;
+        }
+
+    }
     DefectSign(DEFECT_SIGN_SAVE);
+    _group.storeScanLawId.status = false;
 }
 
 void MainWindow::on_actionLanguage_triggered()
@@ -2351,6 +2439,12 @@ void MainWindow::slotDataViewResized(DopplerDataView* pView_)
     _process.UpdateDataViewFrame(pView_);
     _process.UpdateDataViewOverlay(pView_);
     pView_->UpdateDrawing();
+}
+
+void MainWindow::on_actionHelp_triggered()
+{
+    DialogKeyboardHelp dialog(this);
+    dialog.exec();
 }
 
 void MainWindow::on_actionAbout_triggered()
