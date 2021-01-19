@@ -424,6 +424,96 @@
     </message>
 </context>
 <context>
+    <name>DialogKeyboardHelp</name>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="14"/>
+        <source>Keyboard Instruction</source>
+        <translation>键盘说明</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="27"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="34"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="47"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="62"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="73"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="88"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="99"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="114"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="125"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="140"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="155"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="170"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="181"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="196"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="222"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="237"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="244"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="259"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="266"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="281"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="288"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="302"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="317"/>
+        <source>TextLabel</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="295"/>
+        <source>+</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="12"/>
+        <source>Height start</source>
+        <translation>测高上沿</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="14"/>
+        <source>Height stop</source>
+        <translation>测高下沿</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="16"/>
+        <source>Position start</source>
+        <translation>测长起点</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="18"/>
+        <source>Position stop</source>
+        <translation>测长终点</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="20"/>
+        <source>Save maximum amplitude position</source>
+        <translation>保存最高波位置</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="22"/>
+        <source>Call maximum amplitude position</source>
+        <translation>调用最高波位置</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="24"/>
+        <source>On(Off) C/B scan showall</source>
+        <translation>开启（关闭）C/B全显示</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="26"/>
+        <source>Up(down) ajust law angle cursor</source>
+        <translation>向上（向下）调整角度光标</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="28"/>
+        <source>left(right) ajust scanpos cursor</source>
+        <translation>向左（向右）移动数据光标</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="31"/>
+        <source>left(right) fast ajust scanpos cursor</source>
+        <translation>向左（向右）快速移动数据光标</translation>
+    </message>
+</context>
+<context>
     <name>DialogMethodSelect</name>
     <message>
         <source>Dialog</source>
@@ -3738,151 +3828,151 @@
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="329"/>
+        <location filename="../ui/mainwindow.cpp" line="330"/>
         <source>Com Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="369"/>
+        <location filename="../ui/mainwindow.cpp" line="370"/>
         <source>Delete Current Display Table ?</source>
         <translation>要删除当前视图吗 ？</translation>
-    </message>
-    <message>
-        <location filename="../ui/mainwindow.cpp" line="370"/>
-        <location filename="../ui/mainwindow.cpp" line="414"/>
-        <location filename="../ui/mainwindow.cpp" line="1010"/>
-        <source>YES</source>
-        <translation>是</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="371"/>
         <location filename="../ui/mainwindow.cpp" line="415"/>
         <location filename="../ui/mainwindow.cpp" line="1011"/>
+        <source>YES</source>
+        <translation>是</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="372"/>
+        <location filename="../ui/mainwindow.cpp" line="416"/>
+        <location filename="../ui/mainwindow.cpp" line="1012"/>
         <source>NO</source>
         <translation>否</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="413"/>
+        <location filename="../ui/mainwindow.cpp" line="414"/>
         <source>Add One View ?</source>
         <translation>要添加新视图吗 ？</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="462"/>
-        <location filename="../ui/mainwindow.cpp" line="721"/>
+        <location filename="../ui/mainwindow.cpp" line="463"/>
+        <location filename="../ui/mainwindow.cpp" line="722"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1080"/>
+        <location filename="../ui/mainwindow.cpp" line="1081"/>
         <source>Illegal Datafile</source>
         <translation>非法数据</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1080"/>
+        <location filename="../ui/mainwindow.cpp" line="1081"/>
         <source>This is illegal datafile. Please Choose another one.</source>
         <translation>此数据无效，请选择其他数据。</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1355"/>
+        <location filename="../ui/mainwindow.cpp" line="1356"/>
         <source>The defect was saved failed!</source>
         <translation>缺陷保存失败！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1357"/>
+        <location filename="../ui/mainwindow.cpp" line="1358"/>
         <source>The defect was saved successfully!</source>
         <translation>缺陷保存成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2152"/>
+        <location filename="../ui/mainwindow.cpp" line="2153"/>
         <source>Set current position as defect position ?</source>
         <translation>设置当前位置为缺陷位置？</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2153"/>
+        <location filename="../ui/mainwindow.cpp" line="2154"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation>缺陷位置没有设置。如果你设置当前位置为缺陷位置，点击0k，否则点击取消并用Z键来设置缺陷位置</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2452"/>
+        <location filename="../ui/mainwindow.cpp" line="2459"/>
         <source>Wrong View</source>
         <translation>错误的视图</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2452"/>
+        <location filename="../ui/mainwindow.cpp" line="2459"/>
         <source>Please Choose a Group View</source>
         <translation>请选择一个组视图</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2458"/>
+        <location filename="../ui/mainwindow.cpp" line="2465"/>
         <source>Wrong GroupMode</source>
         <translation>错误的组模式</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2458"/>
+        <location filename="../ui/mainwindow.cpp" line="2465"/>
         <source>This is not PA Group</source>
         <translation>本组并不是PA组</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2462"/>
+        <location filename="../ui/mainwindow.cpp" line="2469"/>
         <source>TOPC not Open</source>
         <translation>TOPC未开启</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2462"/>
+        <location filename="../ui/mainwindow.cpp" line="2469"/>
         <source>Please Open TOPC Mode</source>
         <translation>请在闸门和曲线中将C扫模式选择投影</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2467"/>
+        <location filename="../ui/mainwindow.cpp" line="2474"/>
         <source>Worng View Mode</source>
         <translation>错误的显示模式</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2467"/>
+        <location filename="../ui/mainwindow.cpp" line="2474"/>
         <source>Please Choose a View Has S Scan And C Scan</source>
         <translation>显示模式中必须包含S扫和C扫</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1353"/>
+        <location filename="../ui/mainwindow.cpp" line="1354"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1353"/>
+        <location filename="../ui/mainwindow.cpp" line="1354"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1201"/>
-        <location filename="../ui/mainwindow.cpp" line="1249"/>
-        <location filename="../ui/mainwindow.cpp" line="1260"/>
-        <location filename="../ui/mainwindow.cpp" line="1355"/>
-        <location filename="../ui/mainwindow.cpp" line="1357"/>
+        <location filename="../ui/mainwindow.cpp" line="1202"/>
+        <location filename="../ui/mainwindow.cpp" line="1250"/>
+        <location filename="../ui/mainwindow.cpp" line="1261"/>
+        <location filename="../ui/mainwindow.cpp" line="1356"/>
+        <location filename="../ui/mainwindow.cpp" line="1358"/>
         <source>prompt</source>
         <translation>提示</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1009"/>
+        <location filename="../ui/mainwindow.cpp" line="1010"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1020"/>
+        <location filename="../ui/mainwindow.cpp" line="1021"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1201"/>
+        <location filename="../ui/mainwindow.cpp" line="1202"/>
         <source>save in </source>
         <translation>保存在 </translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1249"/>
+        <location filename="../ui/mainwindow.cpp" line="1250"/>
         <source>increase success!</source>
         <translation>增加成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1260"/>
+        <location filename="../ui/mainwindow.cpp" line="1261"/>
         <source>delete success!</source>
         <translation>删除成功！</translation>
     </message>
@@ -3958,7 +4048,7 @@
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="424"/>
         <source>Zone</source>
-        <translation type="unfinished"></translation>
+        <translation>所在区域</translation>
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="521"/>

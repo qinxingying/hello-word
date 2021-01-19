@@ -380,6 +380,96 @@
     </message>
 </context>
 <context>
+    <name>DialogKeyboardHelp</name>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="14"/>
+        <source>Keyboard Instruction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="27"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="34"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="47"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="62"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="73"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="88"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="99"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="114"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="125"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="140"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="155"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="170"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="181"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="196"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="222"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="237"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="244"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="259"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="266"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="281"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="288"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="302"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="317"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="295"/>
+        <source>+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="12"/>
+        <source>Height start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="14"/>
+        <source>Height stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="16"/>
+        <source>Position start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="18"/>
+        <source>Position stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="20"/>
+        <source>Save maximum amplitude position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="22"/>
+        <source>Call maximum amplitude position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="24"/>
+        <source>On(Off) C/B scan showall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="26"/>
+        <source>Up(down) ajust law angle cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="28"/>
+        <source>left(right) ajust scanpos cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="31"/>
+        <source>left(right) fast ajust scanpos cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DialogMethodSelect</name>
     <message>
         <source>Dialog</source>
@@ -3040,151 +3130,151 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="329"/>
+        <location filename="../ui/mainwindow.cpp" line="330"/>
         <source>Com Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="369"/>
-        <source>Delete Current Display Table ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/mainwindow.cpp" line="370"/>
-        <location filename="../ui/mainwindow.cpp" line="414"/>
-        <location filename="../ui/mainwindow.cpp" line="1010"/>
-        <source>YES</source>
+        <source>Delete Current Display Table ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="371"/>
         <location filename="../ui/mainwindow.cpp" line="415"/>
         <location filename="../ui/mainwindow.cpp" line="1011"/>
+        <source>YES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="372"/>
+        <location filename="../ui/mainwindow.cpp" line="416"/>
+        <location filename="../ui/mainwindow.cpp" line="1012"/>
         <source>NO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="413"/>
+        <location filename="../ui/mainwindow.cpp" line="414"/>
         <source>Add One View ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="462"/>
-        <location filename="../ui/mainwindow.cpp" line="721"/>
+        <location filename="../ui/mainwindow.cpp" line="463"/>
+        <location filename="../ui/mainwindow.cpp" line="722"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1080"/>
+        <location filename="../ui/mainwindow.cpp" line="1081"/>
         <source>Illegal Datafile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1080"/>
+        <location filename="../ui/mainwindow.cpp" line="1081"/>
         <source>This is illegal datafile. Please Choose another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1355"/>
+        <location filename="../ui/mainwindow.cpp" line="1356"/>
         <source>The defect was saved failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1357"/>
+        <location filename="../ui/mainwindow.cpp" line="1358"/>
         <source>The defect was saved successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2152"/>
+        <location filename="../ui/mainwindow.cpp" line="2153"/>
         <source>Set current position as defect position ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2153"/>
+        <location filename="../ui/mainwindow.cpp" line="2154"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2452"/>
+        <location filename="../ui/mainwindow.cpp" line="2459"/>
         <source>Wrong View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2452"/>
+        <location filename="../ui/mainwindow.cpp" line="2459"/>
         <source>Please Choose a Group View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2458"/>
+        <location filename="../ui/mainwindow.cpp" line="2465"/>
         <source>Wrong GroupMode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2458"/>
+        <location filename="../ui/mainwindow.cpp" line="2465"/>
         <source>This is not PA Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2462"/>
+        <location filename="../ui/mainwindow.cpp" line="2469"/>
         <source>TOPC not Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2462"/>
+        <location filename="../ui/mainwindow.cpp" line="2469"/>
         <source>Please Open TOPC Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2467"/>
+        <location filename="../ui/mainwindow.cpp" line="2474"/>
         <source>Worng View Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2467"/>
+        <location filename="../ui/mainwindow.cpp" line="2474"/>
         <source>Please Choose a View Has S Scan And C Scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1009"/>
+        <location filename="../ui/mainwindow.cpp" line="1010"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1020"/>
+        <location filename="../ui/mainwindow.cpp" line="1021"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1201"/>
+        <location filename="../ui/mainwindow.cpp" line="1202"/>
         <source>save in </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1249"/>
+        <location filename="../ui/mainwindow.cpp" line="1250"/>
         <source>increase success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1260"/>
+        <location filename="../ui/mainwindow.cpp" line="1261"/>
         <source>delete success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1353"/>
+        <location filename="../ui/mainwindow.cpp" line="1354"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1353"/>
+        <location filename="../ui/mainwindow.cpp" line="1354"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1201"/>
-        <location filename="../ui/mainwindow.cpp" line="1249"/>
-        <location filename="../ui/mainwindow.cpp" line="1260"/>
-        <location filename="../ui/mainwindow.cpp" line="1355"/>
-        <location filename="../ui/mainwindow.cpp" line="1357"/>
+        <location filename="../ui/mainwindow.cpp" line="1202"/>
+        <location filename="../ui/mainwindow.cpp" line="1250"/>
+        <location filename="../ui/mainwindow.cpp" line="1261"/>
+        <location filename="../ui/mainwindow.cpp" line="1356"/>
+        <location filename="../ui/mainwindow.cpp" line="1358"/>
         <source>prompt</source>
         <translation type="unfinished"></translation>
     </message>

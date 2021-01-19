@@ -1975,7 +1975,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 		ClearDefectInfo(iGroupId_);
 
 		if(_ret >= 0) {
-            ReorderDefect();
+
 			int _index = GetDefectCnt(iGroupId_)-1;
 			DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, _index);
 			//---------------------------------------
@@ -1992,7 +1992,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
                 _pDfInfo->dIndexOffset = _group.fIndexOffset;
                 _nLawNo = _group.storeScanLawId.lawId;
             }
-
+            ReorderDefect();
 			//---------------------------------------
             int* _pMeasure;
             if(group[iGroupId_].measureGateStatus){

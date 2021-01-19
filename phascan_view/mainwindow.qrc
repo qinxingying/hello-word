@@ -82,5 +82,17 @@
         <file>resource/main_menu/cursor.png</file>
         <file>resource/main_menu/defect.png</file>
         <file>resource/Main/keyboardInstruction.jpg</file>
+        <file>resource/Main/keyboard.png</file>
+        <file>resource/Main/w.png</file>
+        <file>resource/Main/s.png</file>
+        <file>resource/Main/a.png</file>
+        <file>resource/Main/d.png</file>
+        <file>resource/Main/z.png</file>
+        <file>resource/Main/c.png</file>
+        <file>resource/Main/0.png</file>
+        <file>resource/Main/up.png</file>
+        <file>resource/Main/left.png</file>
+        <file>resource/Main/shift.png</file>
+        <file>resource/Main/keyboardLogo.png</file>
     </qresource>
 </RCC>

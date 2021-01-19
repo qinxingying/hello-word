@@ -262,7 +262,7 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_, DEFECT_INFO*
 	fprintf(m_pFile ,"\t\t\t<th>%d</th>\n" , nGroupId_+1);
 	fprintf(m_pFile ,"\t\t\t<th>%d</th>\n" , _pDfInfo->nLawNo+1);
 
-    for(int i = 0; i < 8; i++) {
+    for(int i = 0; i < setup_MAX_MEASURE_QTY; i++) {
 		fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , _pDfInfo->m_strMeasure[i]);
 	}
 
@@ -437,7 +437,7 @@ void DopplerHtmlReport::BuildReport()
             for(int i = 0; i < defectNum; i++){
                 DEFECT_INFO* _pDfInfo = sortBuff[i];
                 fprintf(m_pFile,"<td %s>%d</td>\n" ,tableTdStyle, _pDfInfo->dIndex);
-                fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pDfInfo->fSStart);
+                fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pDfInfo->fSStart + _pDfInfo->dScanOffset);
                 _fData = _pDfInfo->fSStop - _pDfInfo->fSStart;
                 fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _fData);
                 fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pDfInfo->dDepth);
