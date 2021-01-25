@@ -735,7 +735,42 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
 
 void Config::getTOPCWidth( int groupId, double &topcWidth)
 {
-    topcWidth = m_groups[groupId].m_cScan.m_topCWidth;
+    if(m_groups[groupId].m_cScan.m_mode == Paramters::CScan::TOPC){
+        topcWidth = m_groups[groupId].m_cScan.m_topCWidth;
+    }else{
+        double buff = 10;
+        Paramters::Weld &weld = m_groups[groupId].m_specimen.m_weld;
+        switch (weld.m_type) {
+        case Paramters::Weld::I:
+            buff = weld.m_I.m_width;
+            break;
+        case Paramters::Weld::V:
+            buff = weld.m_V.m_width > weld.m_I.m_width ? weld.m_V.m_width : weld.m_I.m_width;
+            break;
+        case Paramters::Weld::U:
+            buff = weld.m_U.m_width > weld.m_I.m_width ? weld.m_U.m_width : weld.m_I.m_width;
+            break;
+        case Paramters::Weld::VY:
+            buff = weld.m_TopV.m_width > weld.m_MidV.m_width ? weld.m_TopV.m_width : weld.m_MidV.m_width;
+            buff = buff > weld.m_BtmI.m_width ? buff : weld.m_BtmI.m_width;
+            break;
+        case Paramters::Weld::VV:
+            buff = weld.m_TopV.m_width > weld.m_MidI.m_width ? weld.m_TopV.m_width : weld.m_MidI.m_width;
+            buff = buff > weld.m_BtmV.m_width ? buff : weld.m_BtmV.m_width;
+            break;
+        case Paramters::Weld::UU:
+            buff = weld.m_TopU.m_width > weld.m_MidI.m_width ? weld.m_TopU.m_width : weld.m_MidI.m_width;
+            buff = buff > weld.m_BtmU.m_width ? buff : weld.m_BtmU.m_width;
+            break;
+        case Paramters::Weld::UV:
+            buff = weld.m_U.m_width > weld.m_I.m_width ? weld.m_U.m_width : weld.m_I.m_width;
+            buff = buff > weld.m_V.m_width ? buff : weld.m_V.m_width;
+            break;
+        default:
+            break;
+        }
+        topcWidth = (buff + weld.HAZ) * 2;
+    }
 }
 
 void Config::getApertureSec( int groupId, unsigned int * apertureData)

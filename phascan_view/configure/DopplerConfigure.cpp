@@ -2018,7 +2018,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
                 }
                 strcpy(_pDfInfo->Index_pos,(char*)(qPrintable(Pa_Value)));
 				if(_pMeasure[i]) {
-					QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i] );
+                    QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i]);
 					strcpy(_pDfInfo->m_strMeasure[_nQty], (char*)(qPrintable(_str)));
                     _str = CalcMeasurement::GetMeasureString(iGroupId_ , (FEILD_VALUE_INDEX)_pMeasure[i]);
                     strcpy(_pDfInfo->m_strSzField[_nQty], (char*)(qPrintable(_str)));
