@@ -79,7 +79,6 @@ protected:
     QString    m_strFile      ;
     QString    m_szDataFile   ;
     QString    m_strFolder    ;
-    QString    m_strFolderDir ;
     QList<ReportValueItem>  m_cValueList ;
 
     QString m_probeModel;
