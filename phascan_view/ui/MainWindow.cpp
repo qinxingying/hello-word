@@ -74,7 +74,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     scanSpin = new QDoubleSpinBox(this);
     scanSpin->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    scanSpin->setFixedWidth(40);
+    scanSpin->setMinimumWidth(40);
+    scanSpin->setMaximumWidth(60);
+    //scanSpin->setFixedWidth(60);
     scanSpin->setDecimals(2);
     scanSpin->setEnabled(false);
     ui->toolBar->addWidget(scanSpin);
@@ -1098,7 +1100,8 @@ void MainWindow::OpenFilePro(QString strFileName_)
     _pReport->set_reportName(m_baseName);
     this->setWindowTitle(m_titleName + m_fileName);
 
-
+    ParameterProcess* _process = ParameterProcess::Instance();
+    //_process->testOutputSrcData(0, 50, 0);
 
 //    ParameterProcess* _process = ParameterProcess::Instance();
 //    WDATA *ppdata = _process->GetShadowDataPointer();

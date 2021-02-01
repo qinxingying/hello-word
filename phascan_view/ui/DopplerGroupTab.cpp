@@ -2680,27 +2680,31 @@ void DopplerGroupTab::on_ComThickness_currentIndexChanged(int index)
 void DopplerGroupTab::on_pushButton_clicked()
 {
     if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD) {
-        ui->ComField1->setCurrentIndex(FEILD_TofdLength);
-        ui->ComField2->setCurrentIndex(FEILD_TofdDepth1);
+        ui->ComField1->setCurrentIndex(FEILD_TofdDepth1);
+        ui->ComField2->setCurrentIndex(FEILD_TofdDepth2);
         ui->ComField3->setCurrentIndex(FEILD_TofdHeight);
-        ui->ComField4->setCurrentIndex(FEILD_TofdDepth2);
-        ui->ComField5->setCurrentIndex(FEILD_NONE);
-        ui->ComField6->setCurrentIndex(FEILD_NONE);
-        ui->ComField7->setCurrentIndex(FEILD_NONE);
-        ui->ComField8->setCurrentIndex(FEILD_A100);
-        ui->ComField9->setCurrentIndex(FEILD_NONE);
-        ui->ComField10->setCurrentIndex(FEILD_NONE);
-    } else {
-        ui->ComField1->setCurrentIndex(FEILD_A100);
-        ui->ComField2->setCurrentIndex(FEILD_DA);
-        ui->ComField3->setCurrentIndex(FEILD_Sr);
-        ui->ComField4->setCurrentIndex(FEILD_Smr);
-        ui->ComField5->setCurrentIndex(FEILD_Umr);
-        ui->ComField6->setCurrentIndex(FEILD_SL);
+        ui->ComField4->setCurrentIndex(FEILD_Sr);
+        ui->ComField5->setCurrentIndex(FEILD_Sm);
+        ui->ComField6->setCurrentIndex(FEILD_Smr);
         ui->ComField7->setCurrentIndex(FEILD_NONE);
         ui->ComField8->setCurrentIndex(FEILD_NONE);
         ui->ComField9->setCurrentIndex(FEILD_NONE);
         ui->ComField10->setCurrentIndex(FEILD_NONE);
+    } else {
+        if(m_pGroup->law.eLawType){//线扫，全聚焦
+
+        }else{//扇扫
+            ui->ComField1->setCurrentIndex(FEILD_A100);
+            ui->ComField2->setCurrentIndex(FEILD_DA);
+            ui->ComField3->setCurrentIndex(FEILD_ViA);
+            ui->ComField4->setCurrentIndex(FEILD_Umr);
+            ui->ComField5->setCurrentIndex(FEILD_Sr);
+            ui->ComField6->setCurrentIndex(FEILD_Sm);
+            ui->ComField7->setCurrentIndex(FEILD_Smr);
+            ui->ComField8->setCurrentIndex(FEILD_sMax);
+            ui->ComField9->setCurrentIndex(FEILD_SL);
+            ui->ComField10->setCurrentIndex(FEILD_ZA);
+        }
     }
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupMeasureData(m_nGroupId , 0 , ui->ComField1->currentIndex())  ;

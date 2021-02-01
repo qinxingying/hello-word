@@ -992,6 +992,25 @@ WDATA* ParameterProcess::GetDataAbsolutePosPointer(int nGroupId_, int nScanPos_,
 	return _pData;
 }
 
+//用于测试，打印出指定位置A扫数据
+void ParameterProcess::testOutputSrcData(int nGroupId_, int nScanPos_, int nLawId_)
+{
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
+    int _nPointQty = _group.nPointQty;
+    WDATA* _pData  = GetShadowDataPointer();
+    int _nFrameOffset = GetTotalDataSize();
+    int _nGroupOffset = GetGroupDataOffset(nGroupId_);
+    int   _nLawOffset = GetGroupLawDataOffset(nGroupId_ , nLawId_);
+    int	     _nOffset = _nGroupOffset + _nLawOffset;
+    int        _index = GetRealScanIndex(nGroupId_, nScanPos_);
+    _pData = _pData + _nOffset + _nFrameOffset * _index;
+    QVector<unsigned char> buff;
+    for(int i = 0; i < _nPointQty; i++){
+        buff.append(_pData[i]);
+    }
+    qDebug()<<"output"<<buff;
+}
+
 float ParameterProcess::GetSizingCurveRefAmp(int nGroupId_, int nBeamNo_,  int nPoint_)
 {
 	float _fRefAmp = -1;

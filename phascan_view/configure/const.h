@@ -122,10 +122,10 @@ enum FEILD_VALUE_INDEX
 	FEILD_VsB,				// "VsB^		闸门B内检测到的缺陷相对于扫查轴的体积定位",
 	FEILD_LA,				// "LA^			声波从探头到闸门A探测到的缺陷在材料中的路径改变次数",
 	FEILD_LB,				// "LB^			声波从探头到闸门B探测到的缺陷在材料中的路径改变次数",
-	FEILD_TofdDepth1 ,
-	FEILD_TofdDepth2 ,
-	FEILD_TofdLength ,
-	FEILD_TofdHeight ,
+    FEILD_TofdDepth1 ,      // T-D(r)
+    FEILD_TofdDepth2 ,      // T-D(m)
+    FEILD_TofdLength ,      // T-S(m-r)
+    FEILD_TofdHeight ,      // T-D(m-r)
     FEILD_APos_DEC_IPos,    //"A^-I^        闸门A峰值位置和闸门I峰值位置之差"
     FEILD_BPos_DEC_IPos,    //"B^-I^        闸门B峰值位置和闸门I峰值位置之差"
     FEILD_APos_DEC_BPos,    //"A^-B^        闸门A峰值位置和闸门B峰值位置之差"

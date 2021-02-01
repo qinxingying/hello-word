@@ -852,10 +852,10 @@ void DopplerConfigure::GroupModeChanged(int nGroupId_ , setup_GROUP_MODE eMode_)
 		memcpy((void*)&_group.wedge[1] , (void*)&DEFAULT_WEDGE_PA , sizeof(WEDGE_CONFIG))  ;
 		memcpy((void*)&_group.probe[0] , (void*)&DEFAULT_PROBE_PA , sizeof(PROBE_CONFIG))  ;
 		memcpy((void*)&_group.probe[1] , (void*)&DEFAULT_PROBE_PA , sizeof(PROBE_CONFIG))  ;
-		InitLawComfing(nGroupId_) ;
-		LAW_CONFIG& _law = _group.law  ;
-		_law.nElemQtyFir		= 1  ;
-		_law.nLastElemFir	   = 1  ;
+        InitLawComfing(nGroupId_);
+        LAW_CONFIG& _law  = _group.law;
+        _law.nElemQtyFir  = 1;
+        _law.nLastElemFir = 1;
 	}
 	else if(eMode_ == setup_GROUP_MODE_PA)
 	{
@@ -1441,16 +1441,34 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
         _group.part.weld_border = _process->GetWeldBorder(i);
 
-		DopplerColorIndex _color ;
+        if( Config::instance()->is_phascan_ii()){
+            QStringList palette = Config::instance()->getColorPalette();
+            DopplerColorIndex _color;
+            QString palettePath = QCoreApplication::applicationDirPath() + palette.at(0);
+            _color.LoadPallete(palettePath);
+            memcpy((void*)_group.color.Amp, _color.GetColorIndex(), 256 * 3);
 
-        _color.LoadPallete(g_strColorAmp);
-        memcpy((void*)_group.color.Amp, _color.GetColorIndex() , 256 * 3);
+            palettePath = QCoreApplication::applicationDirPath() + palette.at(1);
+            _color.LoadPallete(palettePath);
+            memcpy((void*)_group.color.Thickness, _color.GetColorIndex(), 256 * 3);
 
-        _color.LoadPallete(g_strColorThickness);
-		memcpy((void*)_group.color.Thickness , _color.GetColorIndex() , 256 * 3);
+            palettePath = QCoreApplication::applicationDirPath() + palette.at(2);
+            _color.LoadPallete(palettePath);
+            memcpy((void*)_group.color.Rf, _color.GetColorIndex(), 256 * 3);
+        }else{
+            DopplerColorIndex _color;
 
-        _color.LoadPallete(g_strColorRectifier);
-		memcpy((void*)_group.color.Rf ,_color.GetColorIndex() , 256 * 3);
+            _color.LoadPallete(g_strColorAmp);
+            memcpy((void*)_group.color.Amp, _color.GetColorIndex(), 256 * 3);
+
+            _color.LoadPallete(g_strColorThickness);
+            memcpy((void*)_group.color.Thickness, _color.GetColorIndex(), 256 * 3);
+
+            _color.LoadPallete(g_strColorRectifier);
+            memcpy((void*)_group.color.Rf, _color.GetColorIndex(), 256 * 3);
+        }
+
+
 		//##################################
 		UpdateTofdConfig(i) ;
 		//##################################
@@ -1518,15 +1536,6 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
 void  DopplerConfigure::InitTOPCMerge()
 {
-//    if( !Config::instance()->is_phascan_ii()){
-//        common.TOPCMergeValid = false;
-//        for(int i = 0; i < common.nGroupQty; i++){
-//            TOPC_INFO& _TOPCInfo  = group[i].TopCInfo;
-//            _TOPCInfo.TOPCMergeStatus = 0;
-//        }
-//        return;
-//    }
-
     int buff = 0;
     for(int i = 0; i < common.nGroupQty; i++){
         GROUP_CONFIG& _group  = group[i];

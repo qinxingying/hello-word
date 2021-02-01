@@ -1199,7 +1199,7 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="522"/>
         <source>Start:</source>
-        <translation>起      点：</translation>
+        <translation>起  点：</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="169"/>
@@ -1218,7 +1218,7 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="588"/>
         <source>Range:</source>
-        <translation>范        围：</translation>
+        <translation>范  围：</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="736"/>
@@ -1318,7 +1318,7 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1144"/>
         <source>TX RX mode:</source>
-        <translation>TX / RX模式：</translation>
+        <translation>TX/RX模式：</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1234"/>

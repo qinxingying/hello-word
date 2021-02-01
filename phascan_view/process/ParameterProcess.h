@@ -137,6 +137,7 @@ public:
 	WDATA* GetDataPointer() ;
     WDATA* GetShadowDataPointer();
     WDATA* GetDataAbsolutePosPointer(int nGroupId_, int nScanPos_, int nLawId_, WDATA* pSource_);
+    void testOutputSrcData(int nGroupId_, int nScanPos_, int nLawId_);
 	float GetSizingCurveRefAmp(int nGroupId_, int nBeamNo_, int nPoint);
     void PutRecDataToShadow(int nGroupId_);
 	void GroupDataMove(int nGroupId_, WDATA* pSource_, WDATA* pDest_, int nSourceOff, int nDestOff_);

@@ -34,6 +34,7 @@ public:
     void getApertureSec( int groupId, unsigned int * apertureData);
     void getTofdData( int groupId, float *PCS, float *RefPoint);
     void getTMFRange(int groupId, float *start, float *range, int *pointQty);
+    QStringList getColorPalette();
 
     void getScannerData( SCANNER &scanner);
     bool is_phascan_ii_file(QFile &file);

@@ -794,6 +794,44 @@ void Config::getTMFRange(int groupId, float *start, float *range, int *pointQty)
     *pointQty = m_groups[groupId].m_focallawer.m_scan.m_rowQty;
 }
 
+
+void filterPalette(QString &dst, QString filter)
+{
+    int index = filter.lastIndexOf('/');
+    filter = filter.mid(index+1);
+    filter = filter.trimmed();
+    if(filter == "alarm.pal"){
+        dst = "/init/palette/ONDT_Alarm.pal";
+    }else if(filter == "amplitude.pal"){
+        dst = "/init/palette/ONDT_Amplitude.pal";
+    }else if(filter == "corrosion.pal"){
+        dst = "/init/palette/ONDT_Corrosion.pal";
+    }else if(filter == "ONDT.pal"){
+        dst = "/init/palette/ONDT_ONDT.pal";
+    }else if(filter == "rf.pal"){
+        dst = "/init/palette/ONDT_RFrectified.pal";
+    }else if(filter == "rf_tofd.pal"){
+        dst = "/init/palette/ONDT_RFTOFD.pal";
+    }
+}
+
+QStringList Config::getColorPalette()
+{
+    QStringList palleteString;
+    QString temp = "/init/palette/ONDT_Amplitude.pal";
+    filterPalette(temp, m_global.m_display.m_ampPalette);
+    palleteString.append(temp);
+
+    temp = "/init/palette/ONDT_Corrosion.pal";
+    filterPalette(temp, m_global.m_display.m_depthPalette);
+    palleteString.append(temp);
+
+    temp = "/init/palette/ONDT_RFTOFD.pal";
+    filterPalette(temp, m_global.m_display.m_tofdPalette);
+    palleteString.append(temp);
+    return palleteString;
+}
+
 void Config::getScannerData( SCANNER &scanner)
 {
     scanner.eScanEncoderType = (setup_ENCODER_TYPE)m_global.m_scanner.m_scanAxis.m_driving;
@@ -950,7 +988,7 @@ void Config::unpack_gate(const QVariantMap &map, Paramters::Gate &gate)
 {
     gate.m_measureMode = static_cast<Paramters::Gate::MeasureMode> (map["MeasureMode"].toUInt());
     gate.m_gateMode    = static_cast<Paramters::Gate::GateMode> (map["Mode"].toUInt());
-    gate.m_synchroMode = static_cast<Paramters::Gate::SynchroMode> (map["SynchroMode"].toUInt());
+    gate.m_synchroMode = static_cast<Paramters::Gate::SynchroMode> (map["SyncMode"].toUInt());
     gate.m_visible     = map["Visible"].toBool();
     gate.m_start       = map["Start"].toDouble();
     gate.m_width       = map["Width"].toDouble();;
@@ -960,7 +998,7 @@ void Config::unpack_gate(const QVariantMap &map, Paramters::Gate &gate)
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " measureMode " << gate.m_measureMode
              << " gateMode " << gate.m_gateMode
-             << " synchroMode " << gate.m_synchroMode
+             << " SyncMode " << gate.m_synchroMode
              << " visible " << gate.m_visible
              << " start " << gate.m_start
              << " width " << gate.m_width

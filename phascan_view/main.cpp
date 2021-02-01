@@ -61,8 +61,8 @@ int main(int argc, char *argv[])
 {
     //qInstallMessageHandler(myMessageOutput);
     QApplication app(argc, argv);
-    app.setAttribute(Qt::AA_Use96Dpi);
-    //app.setAttribute(Qt::AA_EnableHighDpiScaling);
+    //app.setAttribute(Qt::AA_Use96Dpi);
+    app.setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QSettings::Format format = QSettings::registerFormat("cfg", &settings_read_msgpack, &settings_write_msgpack);
     QSettings::setDefaultFormat(format);
