@@ -35,7 +35,9 @@ typedef U8				WDATA;	//	定义波形数据位宽 8位
 
 #define setup_MAX_GROUP_QTY					8
 #define setup_MAX_ENCODER_QTY				2
-#define setup_MAX_MEASURE_QTY               10   //测量框的数据
+#define setup_MAX_MEASURE_QTY               14   //测量框的数据
+#define setup_MAX_MEASURE_QTY_V1            10   //一代数据缺陷测量
+#define setup_MAX_MEASURE_QTY_V2ADD         4    //二代追加数据缺陷测量
 #define setup_MAX_DISPLAY_QTY               4
 
 #define setup_MAX_CHANNEL_TRIGGER			32
@@ -136,6 +138,7 @@ enum FEILD_VALUE_INDEX
     FEILD_CMA,              //CM-A%        耦合监控闸门峰值读数
     FEILD_sMax,             //smax         当前z键保存的
     FEILD_ZA,               //ZA           缺陷评级
+    FEILD_F,                //F            缺陷面积
     FEILD_VALUE_INDEX_MAX,
 };
 #endif // CONST_H

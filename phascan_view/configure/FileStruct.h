@@ -56,7 +56,8 @@ struct SYSTEM_ENVIRMENT
     bool bShowThickness[ENV_MAX_GROUP_QTY];
     bool bShowLwBw[ENV_MAX_GROUP_QTY];
     bool bShowDefect[ENV_MAX_GROUP_QTY];
-    unsigned int  anMeasureSelection[2][10];
+    int  anMeasureType[ENV_MAX_GROUP_QTY];
+    unsigned int  anMeasureSelection[ENV_MAX_GROUP_QTY][setup_MAX_MEASURE_QTY];
     float	bCursor[ENV_MAX_GROUP_QTY][setup_CURSOR_MAX]; //保存参考线信息
     int bShowGateA[ENV_MAX_GROUP_QTY];    //表示A闸门可见性
     int bShowGateB[ENV_MAX_GROUP_QTY];    //表示B闸门可见性

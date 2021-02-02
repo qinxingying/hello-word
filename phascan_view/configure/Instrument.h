@@ -724,6 +724,7 @@ typedef struct _Group
 	unsigned int			anBeamDelay[setup_MAX_GROUP_LAW_QTY];
 	float					afBeamPos[setup_MAX_GROUP_LAW_QTY];
 
+    int                     aeMeasureIndex; //表示参数种类， 0 扇扫 1 线扫  2 tofd
     int						aeMeasureType[setup_MAX_MEASURE_QTY];
 	int						bShowMeasure;
     bool                    bShowAScanMeasure;

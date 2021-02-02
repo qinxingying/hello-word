@@ -72,6 +72,7 @@ public:
     int  SetupShowWeldPart(int nGroupId_ , int bShow_) ;
     int  SetupMeasureData(int nGroupId_ , int nField_ , int index_ ) ;
     int  SetupShowMeasure(int nGroupId_ , int bShow_) ;
+    void GetDefaultMeasure(int nGroupId_, int *defaultValue);
 
 	int  GetShowMeasureNumber(int nGroupId_);
 	int  SetupCursor(int nGroupId_ , setup_CURSOR_TYPE eType_ , float fValue_) ;

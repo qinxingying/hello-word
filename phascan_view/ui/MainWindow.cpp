@@ -1100,7 +1100,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
     _pReport->set_reportName(m_baseName);
     this->setWindowTitle(m_titleName + m_fileName);
 
-    ParameterProcess* _process = ParameterProcess::Instance();
+    //ParameterProcess* _process = ParameterProcess::Instance();
     //_process->testOutputSrcData(0, 50, 0);
 
 //    ParameterProcess* _process = ParameterProcess::Instance();
@@ -2263,16 +2263,20 @@ void MainWindow::on_actionSaveDisplay_triggered()
             buff.bShowBScanMeasure[i] = true;
             buff.bShowCScanMeasure[i] = true;
             buff.bShowSScanMeasure[i] = true;
-            buff.anMeasureSelection[i][0] = 1;
-            buff.anMeasureSelection[i][1] = 32;
-            buff.anMeasureSelection[i][2] = 34;
-            buff.anMeasureSelection[i][3] = 0;
-            buff.anMeasureSelection[i][4] = 0;
-            buff.anMeasureSelection[i][5] = 0;
-            buff.anMeasureSelection[i][6] = 0;
-            buff.anMeasureSelection[i][7] = 0;
-            buff.anMeasureSelection[i][8] = 0;
-            buff.anMeasureSelection[i][9] = 0;
+            buff.anMeasureSelection[i][0]  = FEILD_A100;
+            buff.anMeasureSelection[i][1]  = FEILD_DA;
+            buff.anMeasureSelection[i][2]  = FEILD_ViA;
+            buff.anMeasureSelection[i][3]  = FEILD_Umr;
+            buff.anMeasureSelection[i][4]  = FEILD_Sr;
+            buff.anMeasureSelection[i][5]  = FEILD_Sm;
+            buff.anMeasureSelection[i][6]  = FEILD_Smr;
+            buff.anMeasureSelection[i][7]  = FEILD_sMax;
+            buff.anMeasureSelection[i][8]  = FEILD_SL;
+            buff.anMeasureSelection[i][9]  = FEILD_ZA;
+            buff.anMeasureSelection[i][10] = FEILD_NONE;
+            buff.anMeasureSelection[i][11] = FEILD_NONE;
+            buff.anMeasureSelection[i][12] = FEILD_NONE;
+            buff.anMeasureSelection[i][13] = FEILD_NONE;
         }
 
         QFile file( strFileName);

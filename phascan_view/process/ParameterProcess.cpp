@@ -360,6 +360,63 @@ int  ParameterProcess::SetupShowMeasure(int nGroupId_ , int bShow_)
 	return 0 ;
 }
 
+void ParameterProcess::GetDefaultMeasure(int nGroupId_, int *defaultValue)
+{
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
+    if(_group.eTxRxMode == setup_TX_RX_MODE_TOFD){//tofd
+        defaultValue[0]  = FEILD_TofdDepth1;
+        defaultValue[1]  = FEILD_TofdDepth2;
+        defaultValue[2]  = FEILD_TofdHeight;
+        defaultValue[3]  = FEILD_Sr;
+        defaultValue[4]  = FEILD_Sm;
+        defaultValue[5]  = FEILD_Smr;
+        defaultValue[6]  = FEILD_NONE;
+        defaultValue[7]  = FEILD_NONE;
+        defaultValue[8]  = FEILD_NONE;
+        defaultValue[9]  = FEILD_NONE;
+        defaultValue[10] = FEILD_NONE;
+        defaultValue[11] = FEILD_NONE;
+        defaultValue[12] = FEILD_NONE;
+        defaultValue[13] = FEILD_NONE;
+    }else{
+        if(_group.law.eLawType){//线扫，全聚焦
+            defaultValue[0]  = FEILD_A100;
+            if(_group.gate[setup_GATE_A].eSynChro == setup_GATE_AYNC_I){
+                defaultValue[1]  = FEILD_APos_DEC_IPos;
+            }else{
+                defaultValue[1]  = FEILD_DA;
+            }
+            defaultValue[2]  = FEILD_Imr;
+            defaultValue[3]  = FEILD_Umr;
+            defaultValue[4]  = FEILD_Sr;
+            defaultValue[5]  = FEILD_Sm;
+            defaultValue[6]  = FEILD_Smr;
+            defaultValue[7]  = FEILD_F;
+            defaultValue[8]  = FEILD_NONE;
+            defaultValue[9]  = FEILD_NONE;
+            defaultValue[10] = FEILD_NONE;
+            defaultValue[11] = FEILD_NONE;
+            defaultValue[12] = FEILD_NONE;
+            defaultValue[13] = FEILD_NONE;
+        }else{//扇扫
+            defaultValue[0]  = FEILD_A100;
+            defaultValue[1]  = FEILD_DA;
+            defaultValue[2]  = FEILD_ViA;
+            defaultValue[3]  = FEILD_Umr;
+            defaultValue[4]  = FEILD_Sr;
+            defaultValue[5]  = FEILD_Sm;
+            defaultValue[6]  = FEILD_Smr;
+            defaultValue[7]  = FEILD_sMax;
+            defaultValue[8]  = FEILD_SL;
+            defaultValue[9]  = FEILD_ZA;
+            defaultValue[10] = FEILD_NONE;
+            defaultValue[11] = FEILD_NONE;
+            defaultValue[12] = FEILD_NONE;
+            defaultValue[13] = FEILD_NONE;
+        }
+    }
+}
+
 int  ParameterProcess::GetShowMeasureNumber(int nGroupId_)
 {
 	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;

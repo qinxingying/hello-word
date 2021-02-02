@@ -695,6 +695,14 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
         }
         break;
     }
+    case FEILD_F:
+    {
+        float smr, imr;
+        CalSMRCursor(nGroupId_, &smr);
+        CalIMRCursor(nGroupId_, &imr);
+        *pResult_ = abs(smr * imr);
+    }
+        break;
 	default:
 		break;
 	} ;

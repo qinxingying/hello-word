@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>5</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -5005,7 +5005,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-81</y>
+        <y>0</y>
         <width>318</width>
         <height>1160</height>
        </rect>
@@ -7097,7 +7097,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-81</y>
         <width>318</width>
         <height>850</height>
        </rect>
@@ -8139,13 +8139,13 @@
         <x>0</x>
         <y>0</y>
         <width>318</width>
-        <height>950</height>
+        <height>1040</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>950</height>
+        <height>1040</height>
        </size>
       </property>
       <attribute name="icon">
@@ -8191,16 +8191,16 @@
             <x>0</x>
             <y>0</y>
             <width>318</width>
-            <height>950</height>
+            <height>1040</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
             <width>300</width>
-            <height>900</height>
+            <height>910</height>
            </size>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_19" stretch="6,9,0">
+          <layout class="QVBoxLayout" name="verticalLayout_19" stretch="6,9,0,0">
            <property name="leftMargin">
             <number>6</number>
            </property>
@@ -8215,7 +8215,7 @@
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>330</height>
+               <height>400</height>
               </size>
              </property>
              <property name="title">
@@ -8304,11 +8304,20 @@
                 <property name="sizeConstraint">
                  <enum>QLayout::SetDefaultConstraint</enum>
                 </property>
+                <item row="12" column="1">
+                 <widget class="QComboBox" name="ComField13"/>
+                </item>
                 <item row="6" column="1">
                  <widget class="QComboBox" name="ComField7"/>
                 </item>
                 <item row="6" column="0">
                  <widget class="QLabel" name="label_17">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Field 7 :</string>
                   </property>
@@ -8319,6 +8328,12 @@
                 </item>
                 <item row="5" column="0">
                  <widget class="QLabel" name="LabelField6">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Field 6 :</string>
                   </property>
@@ -8335,7 +8350,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
-                    <height>25</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -8357,7 +8372,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
-                    <height>25</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -8379,7 +8394,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
-                    <height>25</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -8401,7 +8416,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
-                    <height>25</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -8423,7 +8438,7 @@
                   <property name="minimumSize">
                    <size>
                     <width>75</width>
-                    <height>25</height>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="text">
@@ -8439,6 +8454,12 @@
                 </item>
                 <item row="7" column="0">
                  <widget class="QLabel" name="label_25">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Field 8 :</string>
                   </property>
@@ -8446,6 +8467,12 @@
                 </item>
                 <item row="8" column="0">
                  <widget class="QLabel" name="label_14">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Field 9 :</string>
                   </property>
@@ -8459,10 +8486,65 @@
                 </item>
                 <item row="9" column="0">
                  <widget class="QLabel" name="label_29">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Field 10:</string>
                   </property>
                  </widget>
+                </item>
+                <item row="10" column="0">
+                 <widget class="QLabel" name="label_31">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Field 11:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="12" column="0">
+                 <widget class="QLabel" name="label_33">
+                  <property name="text">
+                   <string>Field 13:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="10" column="1">
+                 <widget class="QComboBox" name="ComField11"/>
+                </item>
+                <item row="11" column="1">
+                 <widget class="QComboBox" name="ComField12"/>
+                </item>
+                <item row="11" column="0">
+                 <widget class="QLabel" name="label_32">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Field 12:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="13" column="0">
+                 <widget class="QLabel" name="label_34">
+                  <property name="text">
+                   <string>Field 14:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="13" column="1">
+                 <widget class="QComboBox" name="ComField14"/>
                 </item>
                </layout>
               </item>
@@ -9537,6 +9619,19 @@
               </item>
              </layout>
             </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>

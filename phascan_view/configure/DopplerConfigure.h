@@ -87,11 +87,14 @@ struct DEFECT_INFO
     float fVPAStop;
 
     int   nLawNo;     //缺陷最高波lawID
-    char  m_strMeasure[setup_MAX_MEASURE_QTY][50];
-    char  m_strSzField[setup_MAX_MEASURE_QTY][20];
-    char  m_strSzFieldUnit[setup_MAX_MEASURE_QTY][20];
+    char  m_strMeasure[setup_MAX_MEASURE_QTY_V1][50];
+    char  m_strSzField[setup_MAX_MEASURE_QTY_V1][20];
+    char  m_strSzFieldUnit[setup_MAX_MEASURE_QTY_V1][20];
     char  SL[20];
     char  Index_pos[20];   //步进位置
+    char  m_strMeasure_V2[setup_MAX_MEASURE_QTY_V2ADD][50];
+    char  m_strSzField_V2[setup_MAX_MEASURE_QTY_V2ADD][20];
+    char  m_strSzFieldUnit_V2[setup_MAX_MEASURE_QTY_V2ADD][20];
     int   dGroupId;        //组ID用于报告
     int   dVersion;        //版本
     int   dIndex;          //顺序
@@ -129,9 +132,9 @@ struct DEFECT_INFO_V1
     float fVPAStop;
 
     int   nLawNo;
-    char  m_strMeasure[setup_MAX_MEASURE_QTY][50];
-    char  m_strSzField[setup_MAX_MEASURE_QTY][20];
-    char  m_strSzFieldUnit[setup_MAX_MEASURE_QTY][20];
+    char  m_strMeasure[setup_MAX_MEASURE_QTY_V1][50];
+    char  m_strSzField[setup_MAX_MEASURE_QTY_V1][20];
+    char  m_strSzFieldUnit[setup_MAX_MEASURE_QTY_V1][20];
     char SL[20];
     char Index_pos[20];  //步进位置
 };

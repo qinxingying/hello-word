@@ -178,26 +178,26 @@ void DopplerConfigure::OpenEvn()
         AppEvn.bShowSL = false;
         AppEvn.bShowEL = false;
 
-		AppEvn.anMeasureSelection[0][0] = 1  ;
-		AppEvn.anMeasureSelection[0][1] = 32 ;
-		AppEvn.anMeasureSelection[0][2] = 34 ;
-		AppEvn.anMeasureSelection[0][3] = 0  ;
-		AppEvn.anMeasureSelection[0][4] = 0  ;
-        AppEvn.anMeasureSelection[0][5] = 0  ;
-        AppEvn.anMeasureSelection[0][6] = 0  ;
-        AppEvn.anMeasureSelection[0][7] = 0  ;
-        AppEvn.anMeasureSelection[0][8] = 0  ;
-        AppEvn.anMeasureSelection[0][9] = 0  ;
-		AppEvn.anMeasureSelection[1][0] = 42 ;
-		AppEvn.anMeasureSelection[1][1] = 43 ;
-		AppEvn.anMeasureSelection[1][2] = 44 ;
-		AppEvn.anMeasureSelection[1][3] = 45 ;
-		AppEvn.anMeasureSelection[1][4] = 0  ;
-        AppEvn.anMeasureSelection[1][5] = 0  ;
-        AppEvn.anMeasureSelection[1][6] = 0  ;
-        AppEvn.anMeasureSelection[1][7] = 0  ;
-        AppEvn.anMeasureSelection[1][8] = 0  ;
-        AppEvn.anMeasureSelection[1][9] = 0  ;
+//		AppEvn.anMeasureSelection[0][0] = 1  ;
+//		AppEvn.anMeasureSelection[0][1] = 32 ;
+//		AppEvn.anMeasureSelection[0][2] = 34 ;
+//		AppEvn.anMeasureSelection[0][3] = 0  ;
+//		AppEvn.anMeasureSelection[0][4] = 0  ;
+//        AppEvn.anMeasureSelection[0][5] = 0  ;
+//        AppEvn.anMeasureSelection[0][6] = 0  ;
+//        AppEvn.anMeasureSelection[0][7] = 0  ;
+//        AppEvn.anMeasureSelection[0][8] = 0  ;
+//        AppEvn.anMeasureSelection[0][9] = 0  ;
+//		AppEvn.anMeasureSelection[1][0] = 42 ;
+//		AppEvn.anMeasureSelection[1][1] = 43 ;
+//		AppEvn.anMeasureSelection[1][2] = 44 ;
+//		AppEvn.anMeasureSelection[1][3] = 45 ;
+//		AppEvn.anMeasureSelection[1][4] = 0  ;
+//        AppEvn.anMeasureSelection[1][5] = 0  ;
+//        AppEvn.anMeasureSelection[1][6] = 0  ;
+//        AppEvn.anMeasureSelection[1][7] = 0  ;
+//        AppEvn.anMeasureSelection[1][8] = 0  ;
+//        AppEvn.anMeasureSelection[1][9] = 0  ;
 
         for(int i = 0 ; i < ENV_MAX_GROUP_QTY; i++)
 		{
@@ -221,6 +221,23 @@ void DopplerConfigure::OpenEvn()
             AppEvn.bShowBScanMeasure[i] = true;
             AppEvn.bShowCScanMeasure[i] = true;
             AppEvn.bShowSScanMeasure[i] = true;
+
+            AppEvn.anMeasureType[i] = 0;
+            AppEvn.anMeasureSelection[i][0]  = FEILD_A100;
+            AppEvn.anMeasureSelection[i][1]  = FEILD_DA;
+            AppEvn.anMeasureSelection[i][2]  = FEILD_ViA;
+            AppEvn.anMeasureSelection[i][3]  = FEILD_Umr;
+            AppEvn.anMeasureSelection[i][4]  = FEILD_Sr;
+            AppEvn.anMeasureSelection[i][5]  = FEILD_Sm;
+            AppEvn.anMeasureSelection[i][6]  = FEILD_Smr;
+            AppEvn.anMeasureSelection[i][7]  = FEILD_sMax;
+            AppEvn.anMeasureSelection[i][8]  = FEILD_SL;
+            AppEvn.anMeasureSelection[i][9]  = FEILD_ZA;
+            AppEvn.anMeasureSelection[i][10] = FEILD_NONE;
+            AppEvn.anMeasureSelection[i][11] = FEILD_NONE;
+            AppEvn.anMeasureSelection[i][12] = FEILD_NONE;
+            AppEvn.anMeasureSelection[i][13] = FEILD_NONE;
+
             AppEvn.bCursor[i][setup_CURSOR_LAW] = 0;
 
             AppEvn.bCursor[i][setup_CURSOR_A_REF] =
@@ -246,9 +263,9 @@ void DopplerConfigure::OpenEvn()
     for(int i = 0 ; i < ENV_MAX_GROUP_QTY; i++)
 	{
         for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
-            group[i].aeMeasureType[j] = AppEvn.anMeasureSelection[0][j];
+            group[i].aeMeasureType[j] = AppEvn.anMeasureSelection[i][j];
         }
-
+        group[i].aeMeasureIndex = AppEvn.anMeasureType[i];
 		group[i].bShowCursor	= AppEvn.bShowCursor[i] ;
         group[i].bShowThickness = AppEvn.bShowThickness[i];
         group[i].bShowWeldPart  = AppEvn.bShowWeld[i];
@@ -281,17 +298,21 @@ void DopplerConfigure::SaveEvn()
 {
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{
-		if(group[i].eGroupMode == setup_GROUP_MODE_PA )
-		{
-            for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
-                AppEvn.anMeasureSelection[0][j] = group[i].aeMeasureType[j];
-            }
-        }else{
-            for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
-                AppEvn.anMeasureSelection[1][j] = group[i].aeMeasureType[j];
-            }
-		}
+//		if(group[i].eGroupMode == setup_GROUP_MODE_PA )
+//		{
+//            for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
+//                AppEvn.anMeasureSelection[0][j] = group[i].aeMeasureType[j];
+//            }
+//        }else{
+//            for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
+//                AppEvn.anMeasureSelection[1][j] = group[i].aeMeasureType[j];
+//            }
+//		}
+        for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
+            AppEvn.anMeasureSelection[i][j] = group[i].aeMeasureType[j];
+        }
 
+        AppEvn.anMeasureType[i]     = group[i].aeMeasureIndex;
         AppEvn.bShowCursor[i]		= group[i].bShowCursor;
         AppEvn.bShowThickness[i]	= group[i].bShowThickness;
         AppEvn.bShowWeld[i]			= group[i].bShowWeldPart;
@@ -1473,18 +1494,35 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		UpdateTofdConfig(i) ;
 		//##################################
 
-		if(_group.eGroupMode == setup_GROUP_MODE_PA )
-		{
-            for( int i = 0; i < setup_MAX_MEASURE_QTY; i++){
-                _group.aeMeasureType[i]  = AppEvn.anMeasureSelection[0][i];
+//		if(_group.eGroupMode == setup_GROUP_MODE_PA )
+//		{
+//            for( int i = 0; i < setup_MAX_MEASURE_QTY; i++){
+//                _group.aeMeasureType[i]  = AppEvn.anMeasureSelection[0][i];
+//            }
+//		}
+//		else
+//		{
+//            for( int i = 0; i < setup_MAX_MEASURE_QTY; i++){
+//                _group.aeMeasureType[i]  = AppEvn.anMeasureSelection[1][i];
+//            }
+//		}
+        ParameterProcess* _process = ParameterProcess::Instance();
+        int buff = 0;
+        if(_group.eTxRxMode == setup_TX_RX_MODE_TOFD){
+            buff = 2;
+        }else{
+            if(_group.law.eLawType){
+                buff = 1;
+            }else{
+                buff = 0;
             }
-		}
-		else
-		{
-            for( int i = 0; i < setup_MAX_MEASURE_QTY; i++){
-                _group.aeMeasureType[i]  = AppEvn.anMeasureSelection[1][i];
-            }
-		}
+        }
+        if(buff != _group.aeMeasureIndex){
+            _process->GetDefaultMeasure(i, _group.aeMeasureType);
+            _group.aeMeasureIndex = buff;
+        }
+
+
         for(int i = 0; i < setup_MAX_MEASURE_QTY; i++){
             if((_group.aeMeasureType[i] < FEILD_NONE) || (_group.aeMeasureType[i] >= FEILD_VALUE_INDEX_MAX)){
                 _group.aeMeasureType[i] = FEILD_NONE;
@@ -1515,7 +1553,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         _group.storeScanLawId.scanPos = 0.0;
         _group.storeScanLawId.lawId = 0;
 
-		ParameterProcess* _process = ParameterProcess::Instance() ;
+
 		unsigned char*	  _pData = _process->GetLawDataPointer(i , 0) ;
 		if(_pData)
 		{
@@ -2011,23 +2049,13 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
             }
             //int* _pMeasure = group[iGroupId_].aeMeasureType;
 			int _nQty = 0 ;
-            for(int i = 0 ; i < setup_MAX_MEASURE_QTY; i++) {
+            for(int i = 0 ; i < setup_MAX_MEASURE_QTY_V1; i++) {
 				strcpy(_pDfInfo->m_strMeasure[i], "-");
                 strcpy(_pDfInfo->m_strSzField[i],"-");
                 strcpy(_pDfInfo->m_strSzFieldUnit[i],"-");
-                strcpy(_pDfInfo->SL,"NA");
-                QString SLstr = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, FEILD_SL );
-                strcpy(_pDfInfo->SL,(char*)(qPrintable(SLstr)));
-                strcpy(_pDfInfo->Index_pos,"NA");
-                QString Pa_Value = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, FEILD_PA );
-                if(QString::compare(Pa_Value,"NA"))
-                {
-                    double Index_pos = Pa_Value.toDouble()-fabs(group[iGroupId_].fIndexOffset);
-                    Pa_Value = QString::number(Index_pos,10,2);
-                }
-                strcpy(_pDfInfo->Index_pos,(char*)(qPrintable(Pa_Value)));
+
 				if(_pMeasure[i]) {
-                    QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_ , _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i]);
+                    QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_, _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i]);
 					strcpy(_pDfInfo->m_strMeasure[_nQty], (char*)(qPrintable(_str)));
                     _str = CalcMeasurement::GetMeasureString(iGroupId_ , (FEILD_VALUE_INDEX)_pMeasure[i]);
                     strcpy(_pDfInfo->m_strSzField[_nQty], (char*)(qPrintable(_str)));
@@ -2036,6 +2064,36 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 					_nQty++  ;
 				}
 			}
+            int index_ = 0;
+            _nQty = 0;
+            for(int i = setup_MAX_MEASURE_QTY_V1; i < setup_MAX_MEASURE_QTY; i++){
+                strcpy(_pDfInfo->m_strMeasure_V2[index_], "-");
+                strcpy(_pDfInfo->m_strSzField_V2[index_],"-");
+                strcpy(_pDfInfo->m_strSzFieldUnit_V2[index_],"-");
+                index_++;
+
+                if(_pMeasure[i]){
+                    QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_, _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i]);
+                    strcpy(_pDfInfo->m_strMeasure_V2[_nQty], (char*)(qPrintable(_str)));
+                    _str = CalcMeasurement::GetMeasureString(iGroupId_ , (FEILD_VALUE_INDEX)_pMeasure[i]);
+                    strcpy(_pDfInfo->m_strSzField_V2[_nQty], (char*)(qPrintable(_str)));
+                    _str = CalcMeasurement::GetMeasureUnit((FEILD_VALUE_INDEX)_pMeasure[i]);
+                    strcpy(_pDfInfo->m_strSzFieldUnit_V2[_nQty], (char*)(qPrintable(_str)));
+                    _nQty++;
+                }
+            }
+
+            strcpy(_pDfInfo->SL,"NA");
+            QString SLstr = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_, _nLawNo, FEILD_SL);
+            strcpy(_pDfInfo->SL,(char*)(qPrintable(SLstr)));
+            strcpy(_pDfInfo->Index_pos,"NA");
+            QString Pa_Value = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_, _nLawNo, FEILD_PA);
+            if(QString::compare(Pa_Value,"NA"))
+            {
+                double Index_pos = Pa_Value.toDouble()-fabs(group[iGroupId_].fIndexOffset);
+                Pa_Value = QString::number(Index_pos,10,2);
+            }
+            strcpy(_pDfInfo->Index_pos,(char*)(qPrintable(Pa_Value)));
 			//---------------------------------------
 			m_dfParam[iGroupId_].index = _index;
 

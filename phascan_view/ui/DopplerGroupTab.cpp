@@ -297,16 +297,20 @@ void DopplerGroupTab::slotMeasureBoxTipInfo(int nIndex_)
 void DopplerGroupTab::UpdateMeasureBox()
 {
     QComboBox* _field[setup_MAX_MEASURE_QTY] ;
-	_field[0] = ui->ComField1 ;
-	_field[1] = ui->ComField2 ;
-	_field[2] = ui->ComField3 ;
-	_field[3] = ui->ComField4 ;
-	_field[4] = ui->ComField5 ;
-    _field[5] = ui->ComField6 ;
-    _field[6] = ui->ComField7 ;
-    _field[7] = ui->ComField8 ;
-    _field[8] = ui->ComField9 ;
-    _field[9] = ui->ComField10;
+    _field[0]  = ui->ComField1 ;
+    _field[1]  = ui->ComField2 ;
+    _field[2]  = ui->ComField3 ;
+    _field[3]  = ui->ComField4 ;
+    _field[4]  = ui->ComField5 ;
+    _field[5]  = ui->ComField6 ;
+    _field[6]  = ui->ComField7 ;
+    _field[7]  = ui->ComField8 ;
+    _field[8]  = ui->ComField9 ;
+    _field[9]  = ui->ComField10;
+    _field[10] = ui->ComField11;
+    _field[11] = ui->ComField12;
+    _field[12] = ui->ComField13;
+    _field[13] = ui->ComField14;
 
     for(int i = 0 ; i < setup_MAX_MEASURE_QTY; i ++)
 	{
@@ -1063,6 +1067,10 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ComField8->setCurrentIndex(m_pGroup->aeMeasureType[7]);
     ui->ComField9->setCurrentIndex(m_pGroup->aeMeasureType[8]);
     ui->ComField10->setCurrentIndex(m_pGroup->aeMeasureType[9]);
+    ui->ComField11->setCurrentIndex(m_pGroup->aeMeasureType[10]);
+    ui->ComField12->setCurrentIndex(m_pGroup->aeMeasureType[11]);
+    ui->ComField13->setCurrentIndex(m_pGroup->aeMeasureType[12]);
+    ui->ComField14->setCurrentIndex(m_pGroup->aeMeasureType[13]);
 
 	//*********** measure
 	ui->CheckCursorShow->setCheckState(m_pGroup->bShowCursor ? Qt::Checked : Qt::Unchecked );
@@ -2192,6 +2200,38 @@ void DopplerGroupTab::on_ComField10_currentIndexChanged(int index)
     //}
 }
 
+void DopplerGroupTab::on_ComField11_currentIndexChanged(int index)
+{
+    if(!ui->ComField11->hasFocus()) return;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupMeasureData(m_nGroupId, 10, index);
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComField12_currentIndexChanged(int index)
+{
+    if(!ui->ComField12->hasFocus()) return;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupMeasureData(m_nGroupId, 11, index);
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComField13_currentIndexChanged(int index)
+{
+    if(!ui->ComField13->hasFocus()) return;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupMeasureData(m_nGroupId, 12, index);
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ComField14_currentIndexChanged(int index)
+{
+    if(!ui->ComField14->hasFocus()) return;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupMeasureData(m_nGroupId, 13, index);
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
 void DopplerGroupTab::on_CheckCursorShow_clicked(bool checked)
 {
 	m_pGroup->bShowCursor = checked ;
@@ -2679,34 +2719,25 @@ void DopplerGroupTab::on_ComThickness_currentIndexChanged(int index)
 
 void DopplerGroupTab::on_pushButton_clicked()
 {
-    if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD) {
-        ui->ComField1->setCurrentIndex(FEILD_TofdDepth1);
-        ui->ComField2->setCurrentIndex(FEILD_TofdDepth2);
-        ui->ComField3->setCurrentIndex(FEILD_TofdHeight);
-        ui->ComField4->setCurrentIndex(FEILD_Sr);
-        ui->ComField5->setCurrentIndex(FEILD_Sm);
-        ui->ComField6->setCurrentIndex(FEILD_Smr);
-        ui->ComField7->setCurrentIndex(FEILD_NONE);
-        ui->ComField8->setCurrentIndex(FEILD_NONE);
-        ui->ComField9->setCurrentIndex(FEILD_NONE);
-        ui->ComField10->setCurrentIndex(FEILD_NONE);
-    } else {
-        if(m_pGroup->law.eLawType){//线扫，全聚焦
-
-        }else{//扇扫
-            ui->ComField1->setCurrentIndex(FEILD_A100);
-            ui->ComField2->setCurrentIndex(FEILD_DA);
-            ui->ComField3->setCurrentIndex(FEILD_ViA);
-            ui->ComField4->setCurrentIndex(FEILD_Umr);
-            ui->ComField5->setCurrentIndex(FEILD_Sr);
-            ui->ComField6->setCurrentIndex(FEILD_Sm);
-            ui->ComField7->setCurrentIndex(FEILD_Smr);
-            ui->ComField8->setCurrentIndex(FEILD_sMax);
-            ui->ComField9->setCurrentIndex(FEILD_SL);
-            ui->ComField10->setCurrentIndex(FEILD_ZA);
-        }
-    }
     ParameterProcess* _process = ParameterProcess::Instance();
+    int buff[setup_MAX_MEASURE_QTY];
+    _process->GetDefaultMeasure(m_nGroupId, buff);
+
+    ui->ComField1->setCurrentIndex(buff[0]);
+    ui->ComField2->setCurrentIndex(buff[1]);
+    ui->ComField3->setCurrentIndex(buff[2]);
+    ui->ComField4->setCurrentIndex(buff[3]);
+    ui->ComField5->setCurrentIndex(buff[4]);
+    ui->ComField6->setCurrentIndex(buff[5]);
+    ui->ComField7->setCurrentIndex(buff[6]);
+    ui->ComField8->setCurrentIndex(buff[7]);
+    ui->ComField9->setCurrentIndex(buff[8]);
+    ui->ComField10->setCurrentIndex(buff[9]);
+    ui->ComField11->setCurrentIndex(buff[10]);
+    ui->ComField12->setCurrentIndex(buff[11]);
+    ui->ComField13->setCurrentIndex(buff[12]);
+    ui->ComField14->setCurrentIndex(buff[13]);
+
     _process->SetupMeasureData(m_nGroupId , 0 , ui->ComField1->currentIndex())  ;
     _process->SetupMeasureData(m_nGroupId , 1 , ui->ComField2->currentIndex())  ;
     _process->SetupMeasureData(m_nGroupId , 2 , ui->ComField3->currentIndex())  ;
@@ -2717,6 +2748,10 @@ void DopplerGroupTab::on_pushButton_clicked()
     _process->SetupMeasureData(m_nGroupId , 7 , ui->ComField8->currentIndex())  ;
     _process->SetupMeasureData(m_nGroupId , 8 , ui->ComField9->currentIndex())  ;
     _process->SetupMeasureData(m_nGroupId , 9 , ui->ComField10->currentIndex()) ;
+    _process->SetupMeasureData(m_nGroupId , 10, ui->ComField11->currentIndex()) ;
+    _process->SetupMeasureData(m_nGroupId , 11, ui->ComField12->currentIndex()) ;
+    _process->SetupMeasureData(m_nGroupId , 12, ui->ComField13->currentIndex()) ;
+    _process->SetupMeasureData(m_nGroupId , 13, ui->ComField14->currentIndex()) ;
     if(ui->CheckMeasureShow->checkState())
     {
          g_pMainWnd->RunDrawThreadOnce(true);

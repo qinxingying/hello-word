@@ -230,7 +230,7 @@ void DopplerHtmlReport::CreateDefect(int nGroupId_)
 	fprintf(m_pFile,"</table>\n</table>\n\n");
 }
 
-void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_, DEFECT_INFO* _pDfInfo)
+void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_, DEFECT_INFO* _pDfInfo, int defectVersion)
 {
 	DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
     //DEFECT_INFO*      _pDfInfo = _pConfig->GetDefectPointer(nGroupId_, index_);
@@ -242,29 +242,65 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_, DEFECT_INFO*
     QString strIndex = QString(QObject::tr("Index"));
     QString strGroup = QString(QObject::tr("Group"));
     QString strLaw = QString(QObject::tr("Law ID"));
-    fprintf(m_pFile,"<th %s>%s</th>\n", tableThStyle, TOCHAR(strIndex));
+    //fprintf(m_pFile,"<th %s>%s</th>\n", tableThStyle, TOCHAR(strIndex));
+    fprintf(m_pFile,"\t\t\t<th>%s</th>\n", TOCHAR(strIndex));
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strGroup));
     fprintf(m_pFile ,"\t\t\t<th>%s</th>\n", TOCHAR(strLaw));
 
-    for(int i = 0 ; i < setup_MAX_MEASURE_QTY; i++){
-        fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , _pDfInfo->m_strSzField[i] ,_pDfInfo->m_strSzFieldUnit[i]);
+    for(int i = 0 ; i < setup_MAX_MEASURE_QTY_V1; i++){
+        if(_pDfInfo->m_strSzField[i][0] == 45 && _pDfInfo->m_strSzField[i][1] == 0){
+
+        }else{
+            fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , _pDfInfo->m_strSzField[i] ,_pDfInfo->m_strSzFieldUnit[i]);
+        }
+
+    }
+    int max = setup_MAX_MEASURE_QTY - setup_MAX_MEASURE_QTY_V1;
+    if(defectVersion == 2){
+        for(int i = 0; i < max; i++){
+            if(_pDfInfo->m_strSzField_V2[i][0] == 45 && _pDfInfo->m_strSzField_V2[i][1] == 0){
+
+            }else{
+                fprintf(m_pFile ,"\t\t\t<th>%s<br>(%s)</th>\n" , _pDfInfo->m_strSzField_V2[i] ,_pDfInfo->m_strSzFieldUnit_V2[i]);
+            }
+        }
     }
 
 	fprintf(m_pFile,"</tr>\n\n");
 	fprintf(m_pFile,"<tr>\n");
 
     //int i = index_+1;
+//    if(strlen(_pDfInfo->srtInfo2) > 0) {
+//        fprintf(m_pFile,"<td %s>%d: %s</td>\n" ,tableTdStyle , index_+1, _pDfInfo->srtInfo2);
+//	} else {
+//		fprintf(m_pFile,"<td %s>%d</td>\n" ,tableTdStyle , index_+1);
+//	}
     if(strlen(_pDfInfo->srtInfo2) > 0) {
-        fprintf(m_pFile,"<td %s>%d: %s</td>\n" ,tableTdStyle , index_+1, _pDfInfo->srtInfo2);
-	} else {
-		fprintf(m_pFile,"<td %s>%d</td>\n" ,tableTdStyle , index_+1);
-	}
+        fprintf(m_pFile,"\t\t\t<th>%d: %s</th>\n", index_+1, _pDfInfo->srtInfo2);
+    } else {
+        fprintf(m_pFile,"\t\t\t<th>%d</th>\n", index_+1);
+    }
 	fprintf(m_pFile ,"\t\t\t<th>%d</th>\n" , nGroupId_+1);
 	fprintf(m_pFile ,"\t\t\t<th>%d</th>\n" , _pDfInfo->nLawNo+1);
 
-    for(int i = 0; i < setup_MAX_MEASURE_QTY; i++) {
-		fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , _pDfInfo->m_strMeasure[i]);
+    for(int i = 0; i < setup_MAX_MEASURE_QTY_V1; i++) {
+        if(_pDfInfo->m_strSzField[i][0] == 45 && _pDfInfo->m_strSzField[i][1] == 0){
+
+        }else{
+            fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , _pDfInfo->m_strMeasure[i]);
+        }
+
 	}
+    if(defectVersion == 2){
+        for(int i = 0; i < max; i++){
+            if(_pDfInfo->m_strSzField_V2[i][0] == 45 && _pDfInfo->m_strSzField_V2[i][1] == 0){
+
+            }else{
+                fprintf(m_pFile ,"\t\t\t<th>%s</th>\n" , _pDfInfo->m_strMeasure_V2[i]);
+            }
+
+        }
+    }
 
 	fprintf(m_pFile ,"\t\t\t<tr>\n");
 	fprintf(m_pFile,"</tr>\n\n");
@@ -374,7 +410,7 @@ void DopplerHtmlReport::BuildReport()
                 CreateDefect(i);
                 for(int k = 0; k < _nDfNO; k++) {
                     _pDfInfo = _pConfig->GetDefectPointer(i, k);
-                    CreateDefectCell(i, k, _pDfInfo);
+                    CreateDefectCell(i, k, _pDfInfo, 1);
                 }
             }
         }
@@ -479,7 +515,7 @@ void DopplerHtmlReport::BuildReport()
                 DEFECT_INFO* _pDfInfo = sortBuff[i];
                 int groupId = _pDfInfo->dGroupId - 1;
                 int indexId = _pDfInfo->dIndex - 1;
-                CreateDefectCell(groupId, indexId, _pDfInfo);
+                CreateDefectCell(groupId, indexId, _pDfInfo, 2);
             }
             free(sortBuff);
         }
