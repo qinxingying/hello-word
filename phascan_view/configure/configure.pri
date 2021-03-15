@@ -11,7 +11,8 @@ HEADERS += \
     $$PWD/DopplerConfigure.h \
     $$PWD/DopplerDataFileOperateor.h \
     $$PWD/DopplerXMLReader.h \
-    $$PWD/dopplermergedatafileoperateor.h
+    $$PWD/dopplermergedatafileoperateor.h \
+    $$PWD/defectidentify.h
 
 SOURCES += \
     $$PWD/const.cpp \
@@ -19,7 +20,8 @@ SOURCES += \
     $$PWD/DopplerConfigure.cpp \
     $$PWD/DopplerDataFileOperateor.cpp \
     $$PWD/DopplerXMLReader.cpp \
-	$$PWD/dopplermergedatafileoperateor.cpp
+	$$PWD/dopplermergedatafileoperateor.cpp \
+    $$PWD/defectidentify.cpp
 
 include(config_phascan_ii/config.pri)
 

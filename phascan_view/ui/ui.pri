@@ -25,7 +25,9 @@ HEADERS += \
     $$PWD/painter/weldshowdataiiwidget.h \
     $$PWD/dialog/dialogdefectselect.h \
     $$PWD/dialog/dialogmethodselect.h \
-    $$PWD/dialog/dialogkeyboardhelp.h
+    $$PWD/dialog/dialogkeyboardhelp.h \
+    $$PWD/measurewidget.h \
+    $$PWD/dialog/measuretypeselect.h
 
 
 SOURCES += \
@@ -53,7 +55,9 @@ SOURCES += \
     $$PWD/painter/weldshowdataiiwidget.cpp \
     $$PWD/dialog/dialogdefectselect.cpp \
     $$PWD/dialog/dialogmethodselect.cpp \
-    $$PWD/dialog/dialogkeyboardhelp.cpp
+    $$PWD/dialog/dialogkeyboardhelp.cpp \
+    $$PWD/measurewidget.cpp \
+    $$PWD/dialog/measuretypeselect.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
@@ -68,4 +72,5 @@ FORMS += \
     $$PWD/dialog/dialogweldfixdataii.ui \
     $$PWD/dialog/dialogdefectselect.ui \
     $$PWD/dialog/dialogmethodselect.ui \
-    $$PWD/dialog/dialogkeyboardhelp.ui
+    $$PWD/dialog/dialogkeyboardhelp.ui \
+    $$PWD/measurewidget.ui

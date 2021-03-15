@@ -178,27 +178,6 @@ void DopplerConfigure::OpenEvn()
         AppEvn.bShowSL = false;
         AppEvn.bShowEL = false;
 
-//		AppEvn.anMeasureSelection[0][0] = 1  ;
-//		AppEvn.anMeasureSelection[0][1] = 32 ;
-//		AppEvn.anMeasureSelection[0][2] = 34 ;
-//		AppEvn.anMeasureSelection[0][3] = 0  ;
-//		AppEvn.anMeasureSelection[0][4] = 0  ;
-//        AppEvn.anMeasureSelection[0][5] = 0  ;
-//        AppEvn.anMeasureSelection[0][6] = 0  ;
-//        AppEvn.anMeasureSelection[0][7] = 0  ;
-//        AppEvn.anMeasureSelection[0][8] = 0  ;
-//        AppEvn.anMeasureSelection[0][9] = 0  ;
-//		AppEvn.anMeasureSelection[1][0] = 42 ;
-//		AppEvn.anMeasureSelection[1][1] = 43 ;
-//		AppEvn.anMeasureSelection[1][2] = 44 ;
-//		AppEvn.anMeasureSelection[1][3] = 45 ;
-//		AppEvn.anMeasureSelection[1][4] = 0  ;
-//        AppEvn.anMeasureSelection[1][5] = 0  ;
-//        AppEvn.anMeasureSelection[1][6] = 0  ;
-//        AppEvn.anMeasureSelection[1][7] = 0  ;
-//        AppEvn.anMeasureSelection[1][8] = 0  ;
-//        AppEvn.anMeasureSelection[1][9] = 0  ;
-
         for(int i = 0 ; i < ENV_MAX_GROUP_QTY; i++)
 		{
             AppEvn.bShowCursor[i]	= true ;

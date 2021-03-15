@@ -132,9 +132,9 @@ enum FEILD_VALUE_INDEX
     FEILD_BPos_DEC_IPos,    //"B^-I^        闸门B峰值位置和闸门I峰值位置之差"
     FEILD_APos_DEC_BPos,    //"A^-B^        闸门A峰值位置和闸门B峰值位置之差"
     FEILD_BPos_DEC_APos,    //"B^-A^        闸门B峰值位置和闸门A峰值位置之差"
-    FEILD_RL,
-    FEILD_SL,
-    FEILD_EL,
+    FEILD_RL,               //RL
+    FEILD_SL,               //SL
+    FEILD_EL,               //EL
     FEILD_CMA,              //CM-A%        耦合监控闸门峰值读数
     FEILD_sMax,             //smax         当前z键保存的
     FEILD_ZA,               //ZA           缺陷评级

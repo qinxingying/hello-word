@@ -747,6 +747,15 @@ int ParameterProcess::correctionPdata( WDATA value)
     }
 }
 
+bool ParameterProcess::is200Data()
+{
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6){
+        return false;
+    }else{
+        return true;
+    }
+}
+
 WDATA ParameterProcess::GetRefGainScaleData(WDATA wData_, float fScale_, bool bRectify_)
 {
     int _iData = wData_;

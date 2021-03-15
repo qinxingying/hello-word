@@ -850,6 +850,22 @@ QString CalcMeasurement::GetMeasureValueSimpleString (int nGroupId_ , int nLaw_ 
 	return _str ;
 }
 
+QString CalcMeasurement::GetMeasureValueWithUnit(int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ )
+{
+    QString _str;
+    float _fValue;
+    if( Calc( nGroupId_, nLaw_, eIndex_, &_fValue)){
+        _str.sprintf("NA");
+    }else{
+        if(eIndex_ == FEILD_ZA){
+            _str = GetZAValue(_fValue);
+        }else{
+            _str.sprintf("%3.1f %s" , _fValue, g_strMeasureFildUnit[eIndex_][1]);
+        }
+    }
+    return _str;
+}
+
 QString CalcMeasurement::GetMeasureString(int nGroupId_ , FEILD_VALUE_INDEX eIndex_)
 {
 	QString _str ;

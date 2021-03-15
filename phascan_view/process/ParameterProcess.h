@@ -107,6 +107,7 @@ public:
 
     static int getWaveHalfValue();
     static int correctionPdata( WDATA value);
+    static bool is200Data();
 
     unsigned int* GetGroupBeamDelay(int nGroupId_) const;
     float         GetRefGainScale(int nGroupId_) ;

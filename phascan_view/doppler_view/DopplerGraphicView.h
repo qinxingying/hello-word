@@ -43,21 +43,21 @@ public:
 public:
     QMutex m_mutex;
 protected:
-    void   wheelEvent ( QWheelEvent * event ) ;
-    void   resizeEvent(QResizeEvent *event) ;
+    void   wheelEvent(QWheelEvent * event);
+    void   resizeEvent(QResizeEvent *event);
     void   mousePressEvent(QMouseEvent *event);
     void   mouseDoubleClickEvent(QMouseEvent *event);
     void   mouseReleaseEvent(QMouseEvent *event);
     void   mouseMoveEvent(QMouseEvent *event);
     void   keyPressEvent(QKeyEvent *event);
     void   paintEvent(QPaintEvent *event);
-    void   InitGraphicView(const QSize& cSize_); 
-    void mouseCursorPro(QMouseEvent *event);
+    void   InitGraphicView(const QSize& cSize_);
+    void   mouseCursorPro(QMouseEvent *event);
     int    tofdProAction();
-    void CScanZoomAction();
-	void   GeometryChanged() ;
+    void   CScanZoomAction();
+    void   GeometryChanged();
     void   DrawMeasureValue();
-    QRectF RangeTranslate(QRectF& rect_) ;
+    QRectF RangeTranslate(QRectF& rect_);
 
 
 private slots:

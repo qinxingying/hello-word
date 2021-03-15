@@ -109,6 +109,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(connect_remote_monitor()));
     connect(ui->ScanHardware, SIGNAL(topcMergeCompareViewShow(bool)), this, SLOT(slotTopcMergeCompareViewShow(bool)));
     indexSliderh->hide();
+    ui->measureWidget->hide();
     //indexSliderWidget->hide();
 }
 
@@ -544,6 +545,7 @@ void MainWindow::slotCurrentGroupChanged(int nIndex_)
 void MainWindow::SetCurGroup(int nGroupID_)
 {
     m_iCurGroup = nGroupID_;
+    //ui->measureWidget->loadViewList(nGroupID_);
     ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
 }
 
@@ -568,6 +570,7 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
                 currentgroup = m_iCurGroup;
                     if(ui->TabWidget_parameter->currentIndex() < _nGroupQty){
                         ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
+                        ui->measureWidget->loadViewList(m_iCurGroup);
                     }
                     InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
                     _pScanner->UpdateScanPos();
@@ -1078,7 +1081,11 @@ void MainWindow::OpenFilePro(QString strFileName_)
         indexSliderh->setValue(0);
         m_iCurGroup = 0;
         ui->actionAided_Analysis->setEnabled(true);
-
+//        if(ui->measureWidget->isHidden()){
+//            ui->measureWidget->show();
+//        }
+//        ui->measureWidget->setFlashFlag();
+//        ui->measureWidget->loadViewList(0);
     }else{
         QMessageBox::warning(this, tr("Illegal Datafile"), tr("This is illegal datafile. Please Choose another one."));
         return;

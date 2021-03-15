@@ -20,6 +20,7 @@ public:
     static QString GetZAValue(float _fValue);
     static QString GetMeasureValueString(int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ );
 	static QString GetMeasureValueSimpleString (int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ );
+    static QString GetMeasureValueWithUnit(int nGroupId_ , int nLaw_ , FEILD_VALUE_INDEX eIndex_ );
     static const char* GetMeasureNameString(int nGroupId_ , FEILD_VALUE_INDEX eIndex_) ;
     static const char* GetMeasureContentString(int nGroupId_ , FEILD_VALUE_INDEX eIndex_) ;
     static QString GetMeasureString(int nGroupId_ , FEILD_VALUE_INDEX eIndex_);
