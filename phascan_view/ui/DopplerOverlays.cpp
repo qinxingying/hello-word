@@ -624,6 +624,8 @@ void DopplerOverlays::CreateOverlaysSS()
 	_pItemGroup->EnableItems(OVERLAYS_LAW_MARKER);
 	_pItemGroup->EnableMarkerQty(m_pView->GetLawIdentify() + 1);
 
+    _pItemGroup->EnableItems(OVERLAYS_NEWDEFECT);
+
 	QVector<QLineF> _line ;
 	GetCurrentLawMarkerPos(&_line);
 	_pItemGroup->SetupMarkersVector(&_line);

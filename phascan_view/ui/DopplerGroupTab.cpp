@@ -352,31 +352,34 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
         _field->addItem(g_strThicknessStandard[6]);
         _field->addItem(g_strThicknessStandard[7]);
         _field->addItem(g_strThicknessStandard[8]);
+        _field->addItem(g_strThicknessStandard[9]);
+        _field->addItem(g_strThicknessStandard[10]);
     }
     else if(selectID == 3)
     {
         _field->clear();
-        _field->addItem(g_strThicknessStandard[9]);
-        _field->addItem(g_strThicknessStandard[10]);
+        _field->addItem(g_strThicknessStandard[11]);
+        _field->addItem(g_strThicknessStandard[12]);
     }
     else if(selectID == 4)
     {
         _field->clear();
-        _field->addItem(g_strThicknessStandard[11]);
+        _field->addItem(g_strThicknessStandard[13]);
     }
     else if(selectID == 5)
     {
         _field->clear();
-        _field->addItem(g_strThicknessStandard[12]);
-        _field->addItem(g_strThicknessStandard[13]);
+        _field->addItem(g_strThicknessStandard[14]);
+        _field->addItem(g_strThicknessStandard[15]);
     }
     else if(selectID == 6)
     {
         _field->clear();
-        _field->addItem(g_strThicknessStandard[14]);
+        _field->addItem(g_strThicknessStandard[16]);
     }
     }
     _field->setCurrentIndex(m_pGroup->ThicknessType[m_nGroupId]);
+    int index = _field->currentIndex();
     CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
     CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
     CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
@@ -385,6 +388,16 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
+    if(selectID == 2 && (index == 3 || index == 4)){
+
+        ui->labelRLaperture->setText(QString::fromLocal8Bit("φ6"));
+        ui->labelSLaperture->setText(QString::fromLocal8Bit("φ6"));
+        ui->labelELaperture->setText(QString::fromLocal8Bit("φ6"));
+    }else{
+        ui->labelRLaperture->setText(QString::fromLocal8Bit("φ2"));
+        ui->labelSLaperture->setText(QString::fromLocal8Bit("φ2"));
+        ui->labelELaperture->setText(QString::fromLocal8Bit("φ2"));
+    }
 }
 
 void DopplerGroupTab::LoadStandardFormConifg()
@@ -414,31 +427,34 @@ void DopplerGroupTab::LoadStandardFormConifg()
         _field->addItem(g_strThicknessStandard[6]);
         _field->addItem(g_strThicknessStandard[7]);
         _field->addItem(g_strThicknessStandard[8]);
+        _field->addItem(g_strThicknessStandard[9]);
+        _field->addItem(g_strThicknessStandard[10]);
     }
     else if(selectID == 3)
     {
         _field->clear();
-        _field->addItem(g_strThicknessStandard[9]);
-        _field->addItem(g_strThicknessStandard[10]);
+        _field->addItem(g_strThicknessStandard[11]);
+        _field->addItem(g_strThicknessStandard[12]);
     }
     else if(selectID == 4)
     {
         _field->clear();
-        _field->addItem(g_strThicknessStandard[11]);
+        _field->addItem(g_strThicknessStandard[13]);
     }
     else if(selectID == 5)
     {
         _field->clear();
-        _field->addItem(g_strThicknessStandard[12]);
-        _field->addItem(g_strThicknessStandard[13]);
+        _field->addItem(g_strThicknessStandard[14]);
+        _field->addItem(g_strThicknessStandard[15]);
     }
     else if(selectID == 6)
     {
         _field->clear();
-        _field->addItem(g_strThicknessStandard[14]);
+        _field->addItem(g_strThicknessStandard[16]);
     }
     int thinkness = CUR_RES.Thickness[m_nGroupId];
     _field->setCurrentIndex(thinkness);
+    int index = _field->currentIndex();
     if(!m_pGroup->loadCurveData){
         CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
         CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
@@ -447,6 +463,16 @@ void DopplerGroupTab::LoadStandardFormConifg()
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
+    if(selectID == 2 && (index == 3 || index == 4)){
+
+        ui->labelRLaperture->setText(QString::fromLocal8Bit("φ6"));
+        ui->labelSLaperture->setText(QString::fromLocal8Bit("φ6"));
+        ui->labelELaperture->setText(QString::fromLocal8Bit("φ6"));
+    }else{
+        ui->labelRLaperture->setText(QString::fromLocal8Bit("φ2"));
+        ui->labelSLaperture->setText(QString::fromLocal8Bit("φ2"));
+        ui->labelELaperture->setText(QString::fromLocal8Bit("φ2"));
+    }
 }
 
 void DopplerGroupTab::setTopcWidthValue(double value)

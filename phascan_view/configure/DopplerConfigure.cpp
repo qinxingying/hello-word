@@ -12,6 +12,7 @@
 #include <report/DopplerHtmlReport.h>
 #include <process/ParameterProcess.h>
 #include "config_phascan_ii/config.h"
+#include "defectidentify.h"
 
 extern int Cscan_range,Csrc_start,Bscan_range,Bsrc_start;
 extern double RL_EL_SL[5];
@@ -91,6 +92,7 @@ DopplerConfigure::DopplerConfigure(QObject *parent) :
 	QObject(parent)
 {
     memset(group, 0x00, sizeof(group)*(setup_MAX_GROUP_QTY+1));
+    memset(m_defect, 0, sizeof(void *)*setup_MAX_GROUP_QTY);
 
 	m_pData = NULL;
 	m_pDataShadow = NULL;   
@@ -1547,7 +1549,10 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         memset( &_group.RasterData, 0x00, sizeof(RASTER_DATA));
 
 		_process->TofdCursorCalibration(i);
-
+//        if(m_defect[i] == NULL){
+//            m_defect[i] = new DefectIdentify(i);
+//        }
+//        m_defect[i]->analysisData();
 	}
 }
 

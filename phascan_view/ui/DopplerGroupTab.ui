@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>3</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -5843,6 +5843,13 @@
                     </widget>
                    </item>
                    <item>
+                    <widget class="QLabel" name="labelRLaperture">
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
                     <widget class="QDoubleSpinBox" name="ValueRL">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -5932,6 +5939,13 @@
                     </widget>
                    </item>
                    <item>
+                    <widget class="QLabel" name="labelSLaperture">
+                     <property name="text">
+                      <string/>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
                     <widget class="QDoubleSpinBox" name="ValueSL">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -6017,6 +6031,13 @@
                      </property>
                      <property name="text">
                       <string>Show</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="labelELaperture">
+                     <property name="text">
+                      <string/>
                      </property>
                     </widget>
                    </item>
@@ -7097,7 +7118,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-81</y>
+        <y>0</y>
         <width>318</width>
         <height>850</height>
        </rect>

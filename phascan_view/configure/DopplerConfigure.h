@@ -21,6 +21,7 @@
 #include <QVector>
 
 class DopplerHtmlReport ;
+class DefectIdentify;
 enum PALETTE_NAME
 {
     PALETTE_AMP = 0 ,
@@ -240,7 +241,7 @@ public:
 
     QList<coupleCScanGroupInfo> coupleCScanData;
     QVector<double> rasterOffset; //保存栅格扫查每个步进分辨率上的偏置,单位mm
-
+    DefectIdentify *m_defect[setup_MAX_GROUP_QTY];
 private:
 	WDATA*				m_pData ;
 	WDATA*				m_pDataShadow ;
