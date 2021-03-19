@@ -12,7 +12,7 @@ public:
     explicit DefectIdentify(int groupId, QObject *parent = 0);
     ~DefectIdentify();
     bool analysisData();
-    //void getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect);
+    void getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect);
 private:
     struct beamAmp{
         int lawId;

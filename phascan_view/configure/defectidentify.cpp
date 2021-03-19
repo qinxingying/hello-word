@@ -1,4 +1,5 @@
 #include "defectidentify.h"
+#include "gHeader.h"
 
 DefectIdentify::DefectIdentify(int groupId, QObject *parent) :
     QObject(parent), m_groupId(groupId), m_identifyDone(false)
@@ -59,35 +60,69 @@ bool DefectIdentify::analysisData()
             WDATA* lawData = _pData;
             QMap<int, QVector<beamData> > beamAss;
             for(int j = 0; j < lawQty; j++){
-                int _fStart = Scale[j] * ( start - SampleStart[j]);
-                int _fWidth = Scale[j] * width;
+                int _fStart, _fWidth;
+//                if(start < SampleStart[j]){
+//                    _fStart = 0;
+//                }else{
+                    _fStart = Scale[j] * ( start - SampleStart[j]);
+//                }
+
+//                if(start + width > SampleStart[i] + SampleRange[i]){
+//                    _fWidth = Scale[j] * (SampleStart[i] + SampleRange[i] - start) - 1;
+//                }else{
+                    _fWidth = Scale[j] * width;
+//                }
 
                 captureBeamAmps(_pData, j, _fStart, _fWidth, threshold, _beamdis, beamAss);
                 _pData += _nLawSize;
             }
+
             captrueFrameAmps( i, _beamdis, beamAss, lawData);
         }
     }
+    qDebug()<<"m_frameDefects"<<m_frameDefects.size();
     return true;
 }
 
-//void DefectIdentify::getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect)
-//{
-//    QVector<defectRect> &buff = m_frameDefects.value(scanPos);
-//    if(!buff.size()){
-//        return;
-//    }
-//    QVector<defectRect>::const_iterator i;
-//    for(i = buff.begin(); i != buff.end(); ++i){
-//        QPointF points[3];
-//        for(int i = 0; i < 3; i++){
-//            int lawId = i->_rect[i].lawId;
-//            int dataIndex = i->rect[i].dataIndex;
+//通过scanPos取得缺陷的特征点集合，为单帧的集合，用于显示在S扫中，包含合计的外框和集合的极值点
+void DefectIdentify::getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect)
+{
+    const QVector<defectRect> &buff = m_frameDefects.value(scanPos);
+    if(!buff.size()){
+        return;
+    }
+    QVector<defectRect>::const_iterator i;
+    for(i = buff.begin(); i != buff.end(); ++i){
+        QPointF points[3];
+        for(int j = 0; j < 3; j++){
+            int lawId = i->_rect[j].lawId;
+            int dataIndex = i->_rect[j].dataIndex;
+            transformPolarToCartesian(lawId, dataIndex, points[j]);
+        }
+        MaxPoint.append(points[0]);
+        qreal left, right, top, bottom;
+        if(points[1].x() > points[2].x()){
+            left = points[2].x();
+            right = points[1].x();
+        }else{
+            left = points[1].x();
+            right = points[2].x();
+        }
 
-//        }
+        if(points[1].y() > points[2].y()){
+            top = points[2].y();
+            bottom = points[1].y();
+        }else{
+            top = points[1].y();
+            bottom = points[2].y();
+        }
 
-//    }
-//}
+        QPointF topLeft( left, top);
+        QPointF bottomRight( right, bottom);
+        QRectF _rect(topLeft, bottomRight);
+        rect.append(_rect);
+    }
+}
 
 //找出每条beam的特征点
 void DefectIdentify::captureBeamAmps( WDATA* Data, int lawId, int start, int width, int height, int beamdis, QMap<int, QVector<beamData> > &beamAmps)
@@ -98,7 +133,11 @@ void DefectIdentify::captureBeamAmps( WDATA* Data, int lawId, int start, int wid
     QVector<beamData> buff;
     QVector<beamData> setbeam;
     //找出超过闸门阈值的特征点
-    for(int i = start; i < start + width; i++){
+    int end = start + width;
+    if(end > m_pointQty){
+        end = m_pointQty;
+    }
+    for(int i = start; i < end; i++){
         if(i >= 0){
             if(Data[i] >= height){
                 if(inset){
@@ -140,35 +179,45 @@ void DefectIdentify::captureBeamAmps( WDATA* Data, int lawId, int start, int wid
 
     //合并距离太近的特征点
     int size = setbeam.size();
+    QVector<beamData> mergebeam;
     if(size){
+
         beamData data;
         data.dataIndex = -100;
         QVector<beamData>::Iterator i = setbeam.begin();
         while(i != setbeam.end()){
             if(abs(i->dataIndex - data.dataIndex) < beamdis){
                 if(data.value > i->value){
-                    i = setbeam.erase(i);
+                    //i = setbeam.erase(i);
+                    ++i;
                 }else{
                     data = *i;
-                    --i;
-                    i = setbeam.erase(i);
+                    //--i;
+                    //i = setbeam.erase(i);
+                    mergebeam.removeLast();
+                    mergebeam.append(*i);
+                    ++i;
                 }
             }else{
                 data = *i;
+                mergebeam.append(*i);
                 ++i;
             }
         }
+        //qDebug()<<"siez"<<size<<mergebeam.size();
     }
-    if(setbeam.size()){
-        beamAmps.insert(lawId, setbeam);
+    if(mergebeam.size()){
+        beamAmps.insert(lawId, mergebeam);
     }
 
 }
 
+//计算出一帧数据的特征点集合，合并每条beam与邻近beam距离很近的点，并找出这些点的集合的边界
 void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVector<beamData> > &beamAmps, WDATA* Data)
 {
     int size = beamAmps.size();
     if(size){
+        //qDebug()<<"captrueFrameAmps"<<size;
         QMap<int, QVector<beamData> >::const_iterator i = beamAmps.constBegin();
         int lastLaw = -2;
         QList<QVector<beamData> > temp;
@@ -196,7 +245,7 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
                         if(listValue.lawId == lastLaw && abs(data.dataIndex - listValue.dataIndex) < beamdis){
                             (*index).append(data);
                             insert = true;
-                            return;
+                            break;
                         }
                     }
                     if(!insert){
@@ -209,6 +258,42 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
                 ++i;
             }
         }
+//        int lastLaw = -2;
+//        for(int i = 0; i < m_lawQty; i++){
+//            const QVector<beamData> value = beamAmps.value(i);
+//            if( value.size()){
+//                if(lastLaw != i - 1){
+//                    lastLaw = i;
+//                    QVector<beamData>::Iterator j;
+//                    for(j = value.begin(); j != value.end(); ++j){
+//                        QVector<beamData> buff;
+//                        buff.append(*j);
+//                        temp.append(buff);
+//                    }
+//                }else{
+//                    QVector<beamData>::Iterator j;
+//                    for(j = value.begin(); j != value.end(); ++j){
+//                        beamData data = *j;
+//                        bool insert = false;
+//                        QList<QVector<beamData> >::iterator index;
+//                        for(index = temp.begin(); index != temp.end(); ++index){
+//                            beamData listValue = (*index).last();
+//                            if(listValue.lawId == lastLaw && abs(data.dataIndex - listValue.dataIndex) < beamdis){
+//                                (*index).append(data);
+//                                insert = true;
+//                                break;
+//                            }
+//                        }
+//                        if(!insert){
+//                            QVector<beamData> buff;
+//                            buff.append(data);
+//                            temp.append(buff);
+//                        }
+//                    }
+//                    lastLaw = i;
+//                }
+//            }
+//        }
         size = temp.size();
         if(size){
             QVector<defectRect> defectrect(size);
@@ -227,6 +312,7 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
     }
 }
 
+//找出集合里面的极值点
 DefectIdentify::beamData DefectIdentify::filterValue(const QVector<beamData> &beamDatas, int maxValue)
 {
     int size = beamDatas.size();
@@ -258,6 +344,7 @@ DefectIdentify::beamData DefectIdentify::filterValue(const QVector<beamData> &be
     return data;
 }
 
+//查找集合里面的最大值，以此为此集合的极值点
 int DefectIdentify::findMaxValue(const QVector<beamData> &beamDatas)
 {
     int maxValue = 0;
@@ -270,6 +357,7 @@ int DefectIdentify::findMaxValue(const QVector<beamData> &beamDatas)
     return maxValue;
 }
 
+//找出特种点群的外边沿，方法是此区域峰值一半的点为外边沿，查找方法是在两端寻找sa在1mm范围内点的最大值是否等于-6dB,
 void DefectIdentify::findRectBorder( WDATA* Data, int maxValue, int beamdis, beamAmp *borders, const QVector<beamData> &data)
 {
     int borderValue = maxValue / 2;
@@ -359,6 +447,7 @@ void DefectIdentify::findRectBorder( WDATA* Data, int maxValue, int beamdis, bea
     }
 }
 
+//找出给定范围的同一beam下的幅值最大值的值和点位置
 void DefectIdentify::findMaxValueAndPos( WDATA* Data, int start, int end, int &value, int &postion)
 {
     value = 0;
@@ -371,7 +460,34 @@ void DefectIdentify::findMaxValueAndPos( WDATA* Data, int start, int end, int &v
     }
 }
 
+//将极坐标转换为直角坐标，lawId:beam编号， dataIndex：数据位于beam上的点位置
 void DefectIdentify::transformPolarToCartesian(int lawId, int dataIndex, QPointF &postion)
 {
-
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    ParameterProcess* _process = ParameterProcess::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[m_groupId];
+    float indexOffset = _group.fIndexOffset;
+    float _fDist = _process->DistDotPosToMm( m_groupId, dataIndex);
+    float _fAngle  = DEGREE_TO_ARCH(_process->GetLawAngle( m_groupId, lawId));
+    float Posy = _fDist * cos(_fAngle);
+    float posx = _fDist * sin(_fAngle) + _process->GetBeamInsertPos( m_groupId, lawId);
+    switch (_group.eSkew) {
+    case setup_PROBE_PART_SKEW_0:
+        posx = posx;
+        break;
+    case setup_PROBE_PART_SKEW_90:
+        posx += indexOffset;
+        break;
+    case setup_PROBE_PART_SKEW_180:
+        posx = -posx;
+        break;
+    case setup_PROBE_PART_SKEW_270:
+        posx = -posx + indexOffset;
+        break;
+    default:
+        posx = posx;
+        break;
+    }
+    postion.setX(posx);
+    postion.setY(Posy);
 }

@@ -456,6 +456,9 @@
    </property>
   </action>
   <action name="actionNew">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../mainwindow.qrc">
      <normaloff>:/file/resource/toolbar/0-01.png</normaloff>:/file/resource/toolbar/0-01.png</iconset>

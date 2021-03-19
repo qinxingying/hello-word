@@ -34,6 +34,7 @@ Date     : 2016-12-06
 #include "remote_monitoring/RemoteMonitoring.h"
 #include "remote_monitoring/assemblyremotesdialog.h"
 #include "version.h"
+#include "defectidentify.h"
 
 int lastgroup = 0;
 int currentgroup = 0; //-1表示全部组的那个tab
@@ -1070,6 +1071,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
     if(!_ret)
     {
         _pConfig->ResetShadowData();
+        //_pConfig->m_defect[0]->analysisData();
         _pConfig->initScanPos();
         UpdateTableParameter();
         UpdateStatusBarInfo();
@@ -2076,7 +2078,13 @@ void MainWindow::on_actionSaveReport_triggered()
 
 void MainWindow::on_actionNew_triggered()
 {
-    NewConfigure();
+//    ParameterProcess* _process = ParameterProcess::Instance();
+//    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+//    int index = _process->GetScanIndexPos();
+//    QVector<QPointF> MaxPoint;
+//    QVector<QRectF> rect;
+//    _pConfig->m_defect[0]->getDefectInfo(index, MaxPoint, rect);
+//    qDebug()<<MaxPoint.size()<<MaxPoint<<rect;
 }
 
 void MainWindow::on_actionOpenFile_triggered()
