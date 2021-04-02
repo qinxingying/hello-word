@@ -8,6 +8,7 @@ Date     : 2016-12-06
 
 #include "dialog/DialogAddOneGroup.h"
 #include "dialog/dialogmethodselect.h"
+#include "dialog/dialogdefectmethodselect.h"
 #include "threads/DataRefreshThread.h"
 #include "InstrumentSettingWidget.h"
 #include "DopplerConfigure.h"
@@ -72,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     sliderh->setParent(SliderWidget);
     ui->toolBar->addWidget(SliderWidget);
     ui->actionAided_Analysis->setEnabled(false);
+    ui->actionNew->setEnabled(false);
 
     scanSpin = new QDoubleSpinBox(this);
     scanSpin->setButtonSymbols(QAbstractSpinBox::NoButtons);
@@ -142,7 +144,7 @@ void MainWindow::init_ui()
     ui->TabWidget_display->SetHideAble(false);
     ui->actionNew_Config->setDisabled(true);
     ui->actionSave->setDisabled(true);
-    ui->actionNew->setDisabled(true);
+    //ui->actionNew->setDisabled(true);
     ui->actionSaveFile->setDisabled(true);
     ui->actionSaveDisplay->setDisabled(true);
     ui->actionLoadDisplay->setDisabled(true);
@@ -1071,7 +1073,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
     if(!_ret)
     {
         _pConfig->ResetShadowData();
-        //_pConfig->m_defect[0]->analysisData();
+//        _pConfig->m_defect[0]->analysisData();
         _pConfig->initScanPos();
         UpdateTableParameter();
         UpdateStatusBarInfo();
@@ -1083,6 +1085,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
         indexSliderh->setValue(0);
         m_iCurGroup = 0;
         ui->actionAided_Analysis->setEnabled(true);
+        ui->actionNew->setEnabled(true);
 //        if(ui->measureWidget->isHidden()){
 //            ui->measureWidget->show();
 //        }
@@ -2014,6 +2017,36 @@ void MainWindow::slotMeasureGate(int groupId)
     RunDrawThreadOnce(true);
 }
 
+/**
+ * @brief MainWindow::slotMarkDefect 框出当前组识别出来的缺陷
+ */
+void MainWindow::slotMarkDefect()
+{
+//    qDebug("%s:[%s](%d)", __FILE__,__FUNCTION__,__LINE__);
+    ParameterProcess* _process = ParameterProcess::Instance();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int index = _process->GetScanIndexPos();
+    QVector<QPointF> MaxPoint;
+    QVector<QRectF> rect;
+    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(index, MaxPoint, rect);
+
+    if (rect.count()) {
+        m_iCurDefectIndex ++;
+        if (m_iCurDefectIndex >= rect.count()) m_iCurDefectIndex = 0;
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rect[m_iCurDefectIndex].y();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rect[m_iCurDefectIndex].y() + rect[m_iCurDefectIndex].height();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rect[m_iCurDefectIndex].x();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rect[m_iCurDefectIndex].x() + rect[m_iCurDefectIndex].width();
+        ProcessDisplay _process;
+        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
+
+        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+        _pGroup->UpdateCursorValue();
+
+        RunDrawThreadOnce(true);
+    }
+}
+
 void MainWindow::loadDefectPosition(int groupId, int index)
 {
     DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
@@ -2078,13 +2111,35 @@ void MainWindow::on_actionSaveReport_triggered()
 
 void MainWindow::on_actionNew_triggered()
 {
-//    ParameterProcess* _process = ParameterProcess::Instance();
-//    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-//    int index = _process->GetScanIndexPos();
-//    QVector<QPointF> MaxPoint;
-//    QVector<QRectF> rect;
-//    _pConfig->m_defect[0]->getDefectInfo(index, MaxPoint, rect);
-//    qDebug()<<MaxPoint.size()<<MaxPoint<<rect;
+    DialogDefectMethodSelect defectMethodNew(this);
+    defectMethodNew.exec();
+    int heightMethodId = defectMethodNew.getHeightMeasureMethodId();
+    int lengthMethodId = defectMethodNew.getLengthMeasureMethodId();
+
+    ParameterProcess* _process = ParameterProcess::Instance();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int index = _process->GetScanIndexPos();
+    QVector<QPointF> MaxPoint;
+    QVector<QRectF> rect;
+    _pConfig->m_defect[m_iCurGroup]->setHeightMeasureMethod(heightMethodId);
+    _pConfig->m_defect[m_iCurGroup]->setLengthMeasureMethod(lengthMethodId);
+    _pConfig->m_defect[m_iCurGroup]->analysisData();
+
+    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(index, MaxPoint, rect);
+    m_iCurDefectIndex = 0;
+    if (rect.count()) {
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rect[0].y();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rect[0].y() + rect[0].height();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rect[0].x();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rect[0].x() + rect[0].width();
+        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+        _pGroup->UpdateCursorValue();
+        ProcessDisplay _process;
+        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
+
+        RunDrawThreadOnce(true);
+    }
+    qDebug()<<MaxPoint.size()<<MaxPoint<<rect;
 }
 
 void MainWindow::on_actionOpenFile_triggered()

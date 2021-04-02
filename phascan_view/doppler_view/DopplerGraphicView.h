@@ -114,6 +114,7 @@ signals:
     void signalShowDefect(int groupId, bool status);
     void signalCscanShowallChange(int groupId);
     void signalMeasureGate(int groupId);
+    void signalMarkNextDefect();
 public slots:
     void slotResetView();
     void slotPrint();

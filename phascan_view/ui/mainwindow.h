@@ -143,6 +143,8 @@ private:
     bool m_bDefectBackMode;
     setup_LANG m_currentLang;
 
+    int m_iCurDefectIndex; // 当前是第几个缺陷
+
 signals:
     void setPixmap(QPixmap pixmap);
 
@@ -172,6 +174,7 @@ private slots:
     void slotShowDefect(int groupId, bool status);
     void slotCsanShowallChange(int groupId);
     void slotMeasureGate(int groupId);
+    void slotMarkDefect();
 
 protected slots:
   void on_actionNew_Config_triggered();

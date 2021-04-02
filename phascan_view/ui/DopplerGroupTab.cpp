@@ -9,6 +9,7 @@
 #include "dialog/DialogDxfFileLoad.h"
 #include "dialog/dialogweldfixdataii.h"
 #include <QPushButton>
+#include "defectidentify.h"
 
 const int MAX_ITEM_QTY = 50;
 extern int bHideCursor;
@@ -1671,7 +1672,7 @@ void DopplerGroupTab::on_CheckGateShow_clicked(bool checked)
 
 void DopplerGroupTab::GatePro()
 {
-	GATE_CONFIG _gate ;
+    GATE_CONFIG _gate ;
 	_gate.fStart = ui->ValueGateStart->value() ;
 	_gate.fWidth = ui->ValueGateWidth->value() ;
 	_gate.nThreshold = ui->ValueGateHeight->value();
@@ -1680,6 +1681,9 @@ void DopplerGroupTab::GatePro()
     _gate.gTravelMode = (setup_GATE_TRAVEL_MODE)ui->ComGateMode->currentIndex();
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->SetupGateInfo(m_nGroupId , (setup_GATE_NAME)ui->ComGateSelect->currentIndex() , &_gate) ;
+
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->m_defect[m_nGroupId]->analysisData();
 
 	ProcessDisplay _display ;
     _display.UpdateAllViewOverlay();

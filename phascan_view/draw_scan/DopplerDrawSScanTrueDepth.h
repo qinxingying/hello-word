@@ -25,7 +25,7 @@ struct FAN_SCAN_INFO
 
     float   fSampleStart ;
     float   fSampleRange ;
-    float*   pExitPoint   ;
+    float*   pExitPoint   ;     // beam入射点的位置
     int      nPointQty    ;
     int      width ;
     int      height ;

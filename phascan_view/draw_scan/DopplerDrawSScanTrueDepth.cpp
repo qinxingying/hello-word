@@ -569,8 +569,8 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 		return;
 	}
 
-    U8* _pImageBits = pImage_->bits();
-    int _nWidthStep = pImage_->bytesPerLine();
+    U8* _pImageBits = pImage_->bits();  // 获取图像的首地址 https://blog.csdn.net/lengyuezuixue/article/details/80656358
+    int _nWidthStep = pImage_->bytesPerLine();  // 获取图像每行字节数
 
 	ParameterProcess* _process = ParameterProcess::Instance();
     int _nLawSize;

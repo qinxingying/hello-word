@@ -23,6 +23,7 @@
 #include <gHeader.h>
 #include <QObject>
 #include <QMutex>
+#include "defectidentify.h"
 
 static const QSize FIXED_SCENE_SIZE( 480 , 360);
 
@@ -220,6 +221,7 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
     connect(this, SIGNAL(signalShowDefect(int,bool)), g_pMainWnd, SLOT(slotShowDefect(int,bool)));
     connect(this, SIGNAL(signalCscanShowallChange(int)), g_pMainWnd, SLOT(slotCsanShowallChange(int)));
     connect(this, SIGNAL(signalMeasureGate(int)), g_pMainWnd, SLOT(slotMeasureGate(int)));
+    connect(this, SIGNAL(signalMarkNextDefect()), g_pMainWnd, SLOT(slotMarkDefect()));
 	// pass the drop event to father widget
 	setAcceptDrops(false);
 	// use openGL to render drawing
@@ -759,6 +761,10 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
                 break;
             }
         //}
+        break;
+    }
+    case Qt::Key_Equal: {
+        emit signalMarkNextDefect();
         break;
     }
     default:

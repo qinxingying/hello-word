@@ -142,7 +142,7 @@ void DopplerViewItems::UpdateItems()
 	UpdateItemsLwBw();
 	UpdateItemsGate();
 	UpdateItemsCursor() ;
-	UpdateItemsLawMarker() ;
+    UpdateItemsLawMarker() ;
     UpdateItemsLawMarkerCScan();
 	UpdateItemsThickness() ;
     UpdateItemsWeldBorder();

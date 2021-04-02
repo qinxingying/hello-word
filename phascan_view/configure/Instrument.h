@@ -78,19 +78,19 @@ typedef struct
 	int iY;
 	int iXEdge;
 	int iYEdge;
-	float fGs;
-	float fGw;
-	float fGh;
+    float fGs;  // gate start ?
+    float fGw;  // gate width ?
+    float fGh;  // gate height ?
 
 	float fSEdge ;
 	float fHEdge ;
 	float fLEdge ;
 	float fDEdge ;
 
-	float fS ;
-	float fH ;
-	float fL ;
-	float fD ;
+    float fS ;  // 峰值点沿半声程方向的值,等于sa
+    float fH ;  // 表示峰值垂直方向位置值
+    float fL ;  // 峰值点水平方向的位置值
+    float fD ;  // 峰值点深度值, 通过fH和工件厚度确定
 
 	float fAmp;
 	float fXdXA; // AdBA / BdBB
@@ -676,8 +676,8 @@ typedef struct _Group
 	int						nPointQty;				/* 点个数(采样深度) */
 	float					fVelocity;				/* 声速 单位 m/s*/
 	float					fGain;					/* 增益 0 - 80 db  _STEP 0.01dB */
-	float					fRefGain;
-    float                   RefGain;
+    float					fRefGain;               // 调节增益增加，判定线不动
+    float                   RefGain;                // 调节增益增加,判定线增加
     float                   CoupleGain;         //耦合补偿
 
     int                     on_off_status;
@@ -722,7 +722,7 @@ typedef struct _Group
 
 	float					afGainOffset[setup_MAX_GROUP_LAW_QTY];
 	unsigned int			anBeamDelay[setup_MAX_GROUP_LAW_QTY];
-	float					afBeamPos[setup_MAX_GROUP_LAW_QTY];
+    float					afBeamPos[setup_MAX_GROUP_LAW_QTY];     // beam入射点的位置
 
     int                     aeMeasureIndex; //表示参数种类， 0 扇扫 1 线扫  2 tofd
     int						aeMeasureType[setup_MAX_MEASURE_QTY];
@@ -924,8 +924,8 @@ struct COMMON_CONFIG
 	int					nRecMax;
 	int					nDataSize;
 	int					nScanOffMax;
-	int					nScanOff[setup_MAX_GROUP_QTY];
-	U8					nRecMark[setup_MAX_REC_LEN];
+    int					nScanOff[setup_MAX_GROUP_QTY];//每组的扫查偏置
+    U8					nRecMark[setup_MAX_REC_LEN];//保存帧数据的标志位，标志位非零表示该帧数据有效，值为0表示该帧数据无效，用于绘制C扫或者查找最近的有效帧
     bool                TOPCMergeValid;          //是否支持topc融合
     int                 TOPCMergeQty;            //topc融合的组总数，等于PA组数
     int                 TOPCMergeGroupId[setup_MAX_GROUP_QTY]; //可以融合的组的Id

@@ -27,7 +27,8 @@ HEADERS += \
     $$PWD/dialog/dialogmethodselect.h \
     $$PWD/dialog/dialogkeyboardhelp.h \
     $$PWD/measurewidget.h \
-    $$PWD/dialog/measuretypeselect.h
+    $$PWD/dialog/measuretypeselect.h \
+    $$PWD/dialog/dialogdefectmethodselect.h
 
 
 SOURCES += \
@@ -57,7 +58,8 @@ SOURCES += \
     $$PWD/dialog/dialogmethodselect.cpp \
     $$PWD/dialog/dialogkeyboardhelp.cpp \
     $$PWD/measurewidget.cpp \
-    $$PWD/dialog/measuretypeselect.cpp
+    $$PWD/dialog/measuretypeselect.cpp \
+    $$PWD/dialog/dialogdefectmethodselect.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
@@ -73,4 +75,5 @@ FORMS += \
     $$PWD/dialog/dialogdefectselect.ui \
     $$PWD/dialog/dialogmethodselect.ui \
     $$PWD/dialog/dialogkeyboardhelp.ui \
-    $$PWD/measurewidget.ui
+    $$PWD/measurewidget.ui \
+    $$PWD/dialog/dialogdefectmethodselect.ui
