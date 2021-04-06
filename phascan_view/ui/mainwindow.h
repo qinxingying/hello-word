@@ -173,6 +173,8 @@ private slots:
     void slotCsanShowallChange(int groupId);
     void slotMeasureGate(int groupId);
 
+    void on_actionFile_Properties_triggered();
+
 protected slots:
   void on_actionNew_Config_triggered();
   void on_actionOpen_triggered();
