@@ -686,6 +686,7 @@ typedef struct _Group
 	int						bSumGainAuto;
     bool                    coupleMonitoringState;     /* 耦合监控状态 true 开启  false 关闭 */
     int                     coupleMonitoringVelocity;  /* 耦合监控声速 单位 m/s*/
+    bool                    bShowCoupleInAScan;        // A扫中显示耦合监控曲线
 	/* 发射接收 */
     unsigned int			nTrigeStart;			/* 1~128 - elem_qty(聚焦阵元数最大为32) + 1 指定发射阵元与机器配置
                                                     相关我们是128阵元最大,值与connect P 一样 */

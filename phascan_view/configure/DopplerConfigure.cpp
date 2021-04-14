@@ -1549,6 +1549,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         memset( &_group.RasterData, 0x00, sizeof(RASTER_DATA));
 
 		_process->TofdCursorCalibration(i);
+
+        _group.bShowCoupleInAScan = false;
 //        if(m_defect[i] == NULL){
 //            m_defect[i] = new DefectIdentify(i);
 //        }

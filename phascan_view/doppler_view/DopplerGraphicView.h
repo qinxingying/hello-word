@@ -65,6 +65,7 @@ private slots:
     void setDataMode(bool status);
     void setShowCursor(bool status);
     void setShowDefect(bool status);
+    void showCoupleInScanA(bool status);
 private:
     void backNoZoom();
     void creatActionAndMenu();
@@ -95,6 +96,7 @@ private:
     QAction *m_dataMode;
     QAction *m_showCursor;
     QAction *m_showDefect;
+    QAction *m_showCouple;
     QMenu *m_contextMenu;
 signals:
     void signalViewChanged(QRectF rect)  ;

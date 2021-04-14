@@ -542,7 +542,7 @@ void DopplerGraphicView::resizeEvent(QResizeEvent *event)
 		{
 			QRectF _rect = _item->GetItemGeometryReal() ;
 			_pParent->SetItemGeometry(_item, _rect);
-		}
+        }
 	}
 	_pParent->GetItemGroup()->UpdateItemsLawMarker();
 	//***重绘画图区*********
@@ -561,24 +561,32 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
         int _iGroupId, _iLaw, _iDisplay;
         _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
         DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-        bool dataModeStatus, cursorStatus, defectStatus;
+        bool dataModeStatus, cursorStatus, defectStatus, showCoupleStatus;
         dataModeStatus = _pConfig->common.dataModeStatus;
         cursorStatus = _pConfig->group[_iGroupId].bShowCursor;
-        defectStatus = _pConfig->group[_iGroupId].bShowDefect;        
+        defectStatus = _pConfig->group[_iGroupId].bShowDefect;
+        showCoupleStatus = _pConfig->group[_iGroupId].bShowCoupleInAScan;
         m_dataMode->blockSignals(true);
         m_showCursor->blockSignals(true);
         m_showDefect->blockSignals(true);
+        m_showCouple->blockSignals(true);
         m_dataMode->setChecked( dataModeStatus);
         m_showCursor->setChecked( cursorStatus);
         m_showDefect->setChecked( defectStatus);
+        m_showCouple->setChecked( showCoupleStatus);
         m_dataMode->blockSignals(false);
         m_showCursor->blockSignals(false);
         m_showDefect->blockSignals(false);
+        m_showCouple->blockSignals(false);
 
         if(m_flashMenu){
             m_contextMenu->addAction(m_scaleRecover);
             if(_iDisplay > 1){
                 m_contextMenu->addAction(m_dataMode);
+            } else {
+                if (_pConfig->group[_iGroupId].coupleMonitoringState) {
+                    m_contextMenu->addAction(m_showCouple);
+                }
             }
             m_contextMenu->addAction(m_showCursor);
             m_contextMenu->addAction(m_showDefect);
@@ -1636,6 +1644,21 @@ void DopplerGraphicView::setShowDefect(bool status)
     signalShowDefect(_iGroupId, status);
 }
 
+/**
+ * @brief DopplerGraphicView::showCoupleInScanA 在A扫中显示耦合监控曲线
+ * @param status
+ */
+void DopplerGraphicView::showCoupleInScanA(bool status)
+{
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId, _iLaw, _iDisplay;
+    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->group[_iGroupId].bShowCoupleInAScan = status;
+    this->UpdateDrawing();
+}
+
 void DopplerGraphicView::backNoZoom()
 {
     DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
@@ -1732,6 +1755,11 @@ void DopplerGraphicView::creatActionAndMenu()
     m_showDefect->setCheckable( true);
     m_showDefect->setChecked( true);
     connect( m_showDefect, SIGNAL(toggled(bool)), this, SLOT(setShowDefect(bool)));
+
+    m_showCouple = new QAction(tr("Show Couple"), this);
+    m_showCouple->setCheckable( true);
+    m_showCouple->setChecked( false);
+    connect(m_showCouple, &QAction::toggled, this, &DopplerGraphicView::showCoupleInScanA);
 
 //    m_contextMenu->addAction(m_scaleRecover);
 //    m_contextMenu->addAction(m_dataMode);
