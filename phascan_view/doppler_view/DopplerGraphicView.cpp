@@ -579,6 +579,11 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
         m_showDefect->blockSignals(false);
         m_showCouple->blockSignals(false);
 
+        m_scaleRecover->setText(tr("Scale Recover"));
+        m_dataMode->setText(tr("Data Mode"));
+        m_showCursor->setText(tr("Show Cursor"));
+        m_showDefect->setText(tr("Show Defect"));
+        m_showCouple->setText(tr("Show Couple"));
         if(m_flashMenu){
             m_contextMenu->addAction(m_scaleRecover);
             if(_iDisplay > 1){
@@ -1734,7 +1739,7 @@ void DopplerGraphicView::creatActionAndMenu()
 
     m_contextMenu = new QMenu;
 
-    m_scaleRecover = new QAction(tr("Scale Recover"), this);
+    m_scaleRecover = new QAction(this);
     m_scaleRecover->setIcon(QIcon(":/file/resource/main_menu/recover.png"));
     connect( m_scaleRecover, SIGNAL(triggered()), this, SLOT(scaleRecover()));
 
