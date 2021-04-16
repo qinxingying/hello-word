@@ -781,7 +781,10 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
         {
             DopplerConfigure* _pConfig = DopplerConfigure::Instance();
             DopplerDrawCScanH* _cHDraw = dynamic_cast<DopplerDrawCScanH*>(m_pDrawScan);
-            if(_pConfig->common.aidedAnalysis.aidedStatus && _cHDraw){
+            if (_pConfig->common.bDefectIdentifyStatus && _cHDraw) {
+                qDebug("%s:[%s](%d)", __FILE__,__FUNCTION__,__LINE__);
+            }
+            else if(_pConfig->common.aidedAnalysis.aidedStatus && _cHDraw){
                 if(FLOAT_EQ(m_nScaleH , 1) && FLOAT_EQ(m_nScaleV , 1)){
                     m_cPosStop = event->pos();
                     QRectF _rect = this->geometry();

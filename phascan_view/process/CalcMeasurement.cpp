@@ -209,7 +209,7 @@ int CalViDist(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_ ,  float* pResu
 {
 	int ret = 0;
 	ret = CalPDist(nGroupId_ ,nLaw_ ,  eGate_ , pResult_ ) ;
-	if(ret)  return ret;
+    if(ret)  return ret;
 
 	ParameterProcess* _process = ParameterProcess::Instance() ;
 	setup_PROBE_ANGLE _eSkew = _process->GetGroupSkewType(nGroupId_)  ;
@@ -706,7 +706,7 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
 	default:
 		break;
 	} ;
-	return ret ;
+    return ret ;
 }
 
 

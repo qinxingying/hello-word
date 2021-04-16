@@ -80,7 +80,7 @@ private:
     QRect             m_cZoomRect     ;
     QPoint            m_cPosStart     ;
     QPoint            m_cPosStop      ;
-    bool              m_bItemSelected ;
+    bool              m_bItemSelected ;     // 是否选中光标
 	QString           m_strMeasure[MAX_MEASURE_DATA_DISPLAY]  ;
     int               m_nMeasureQty  ;
 	//int               m_nTimerId     ;

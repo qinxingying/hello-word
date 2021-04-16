@@ -1,6 +1,7 @@
 #include "defectidentify.h"
 #include "gHeader.h"
 #include <cmath>
+#include "process/CalcMeasurement.h"
 
 DefectIdentify::DefectIdentify(int groupId, QObject *parent) :
     QObject(parent), m_groupId(groupId), m_identifyDone(false)
@@ -13,7 +14,7 @@ DefectIdentify::~DefectIdentify()
 
 }
 
-//分析数据
+//分析数据，得到每一帧的缺陷
 bool DefectIdentify::analysisData()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -85,6 +86,147 @@ bool DefectIdentify::analysisData()
     return true;
 }
 
+bool DefectIdentify::analysisDefect()
+{
+    bool ret;
+    ret = analysisData();
+
+    if (ret) {
+        m_defectsRectL.clear();
+        m_defectsRectH.clear();
+        m_scanIds.clear();
+        m_lawIds.clear();
+        m_defectsBetweenFrames.clear();
+        QMap<int, QVector<QRectF>> _Rects;  // key: 帧， value：帧上所有缺陷矩形
+        QMap<int, QVector<defectRect>> _DefectRects;
+        QList<int> keys = m_frameDefects.keys();
+        for (int i = 0; i < keys.count(); ++i) {
+            QVector<QPointF> MaxPoint;
+            QVector<QRectF> rect;
+            QVector<defectRect> defectRects;
+            getDefectInfo(keys[i], MaxPoint, rect, defectRects);
+            _Rects.insert(keys[i], rect);
+            _DefectRects.insert(keys[i], defectRects);
+        }
+
+        for (int i = 0; i < keys.count() - 1; ++i) { // 遍历所有帧, i 帧索引
+            QVector<QRectF> rectsCurrentFrame = _Rects.value(keys[i]);
+            for (int j = 0; j < rectsCurrentFrame.count(); ++j) { // 遍历当前帧所有的缺陷， j 缺陷索引
+                if (_DefectRects[keys[i]][j].bMergeStatus) {
+                    continue;// 若已经合并，无需继续比较
+                }
+                defectRect maxDefectRect = _DefectRects[keys[i]][j];
+                float maxArea            = getRectFArea(rectsCurrentFrame[j]);
+                QRectF maxRect           = rectsCurrentFrame[j];
+                int scanIdEnd            = keys[i];
+                int scanIdStart          = keys[i];
+                int scanId               = keys[i];
+                int maxValue             = maxDefectRect.valueMax;
+                defectRect specialRect   = _DefectRects[keys[i]][j];
+                QRectF rect              = rectsCurrentFrame[j];
+                QVector<specialDefect> specials;
+
+                specialDefect tmp;
+                tmp.valueMax    = maxValue;
+                tmp.specialRect = specialRect;
+                tmp.scanId      = scanId;
+                tmp.rect        = rect;
+                specials.append(tmp);
+
+                for (int k = i + 1; k < keys.count(); ++k) { // 每一个缺陷与后面所有连续帧的所有缺陷比较, k 帧索引
+                    QVector<QRectF> rectsNextFrame = _Rects.value(keys[k]);
+
+                    if (keys[k-1] != keys[k] - 1) { // 帧不连续，跳出循环，先记下这个特征点，后边再根据情况合并
+                        break;
+                    }
+
+                    for (int index = 0; index < rectsNextFrame.count(); ++index) {
+                        if (_DefectRects[keys[k]][index].bMergeStatus) {
+                            continue;// 若已经合并，无需继续比较
+                        }
+                        QRectF intersectedRect = maxRect.intersected(rectsNextFrame[index]);
+                        float areaNext = getRectFArea(rectsNextFrame[index]);
+                        float minArea  = qMin(maxArea, areaNext);
+
+                        if (getRectFArea(intersectedRect) > minArea * m_scale) {
+                            _DefectRects[keys[k]][index].bMergeStatus = true;
+                            maxRect = rectsNextFrame[index];
+                            maxArea = areaNext;
+                            if (maxValue < _DefectRects[keys[k]][index].valueMax) {
+                                maxValue    = _DefectRects[keys[k]][index].valueMax;
+                            }
+                            specialDefect tmp;
+                            tmp.valueMax    = _DefectRects[keys[k]][index].valueMax;
+                            tmp.specialRect = _DefectRects[keys[k]][index];
+                            tmp.scanId      = keys[k];
+                            tmp.rect        = rectsNextFrame[index];
+                            specials.append(tmp);
+                            scanIdEnd = keys[k];
+                        }
+                    }
+                }
+
+                if (specials.count()) {
+                    specialDefect _out;
+                    findMaxSpecialDefect(maxValue, specials, _out);
+                    defectsBetweenFrames defects;
+                    defects.scanIdStart   = scanIdStart;
+                    defects.scanIdEnd     = scanIdEnd;
+                    defects.length        = scanIdEnd - scanIdStart;
+                    defects.special       = _out;
+                    defects.bMergedStatus = false;
+                    m_defectsBetweenFrames.append(defects);
+                }
+            }
+        }
+    }
+
+    measureLength();
+    mergeDefects();
+    calDefectRect();
+    return ret;
+}
+
+void DefectIdentify::getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect, QVector<defectRect> &defectRects)
+{
+    const QVector<defectRect> &buff = m_frameDefects.value(scanPos);
+    defectRects = buff;
+    if(!buff.size()){
+        return;
+    }
+    QVector<defectRect>::const_iterator i;
+    for(i = buff.begin(); i != buff.end(); ++i){
+        QPointF points[3];
+        for(int j = 0; j < 3; j++){
+            int lawId = i->_rect[j].lawId;
+            int dataIndex = i->_rect[j].dataIndex;
+            transformPolarToCartesian(lawId, dataIndex, points[j]);
+        }
+        MaxPoint.append(points[0]);
+        qreal left, right, top, bottom;
+        if(points[1].x() > points[2].x()){
+            left = points[2].x();
+            right = points[1].x();
+        }else{
+            left = points[1].x();
+            right = points[2].x();
+        }
+
+        if(points[1].y() > points[2].y()){
+            top = points[2].y();
+            bottom = points[1].y();
+        }else{
+            top = points[1].y();
+            bottom = points[2].y();
+        }
+
+        QPointF topLeft( left, top);
+        QPointF bottomRight( right, bottom);
+        QRectF _rect(topLeft, bottomRight);
+        rect.append(_rect);
+    }
+}
+
 //通过scanPos取得缺陷的特征点集合，为单帧的集合，用于显示在S扫中，包含合计的外框和集合的极值点
 void DefectIdentify::getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect)
 {
@@ -123,6 +265,14 @@ void DefectIdentify::getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVec
         QRectF _rect(topLeft, bottomRight);
         rect.append(_rect);
     }
+}
+
+void DefectIdentify::getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId)
+{
+    rectL  = m_defectsRectL;
+    rectH  = m_defectsRectH;
+    scanId = m_scanIds;
+    lawId  = m_lawIds;
 }
 
 //找出每条beam的特征点
@@ -260,53 +410,21 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
                 ++i;
             }
         }
-//        int lastLaw = -2;
-//        for(int i = 0; i < m_lawQty; i++){
-//            const QVector<beamData> value = beamAmps.value(i);
-//            if( value.size()){
-//                if(lastLaw != i - 1){
-//                    lastLaw = i;
-//                    QVector<beamData>::Iterator j;
-//                    for(j = value.begin(); j != value.end(); ++j){
-//                        QVector<beamData> buff;
-//                        buff.append(*j);
-//                        temp.append(buff);
-//                    }
-//                }else{
-//                    QVector<beamData>::Iterator j;
-//                    for(j = value.begin(); j != value.end(); ++j){
-//                        beamData data = *j;
-//                        bool insert = false;
-//                        QList<QVector<beamData> >::iterator index;
-//                        for(index = temp.begin(); index != temp.end(); ++index){
-//                            beamData listValue = (*index).last();
-//                            if(listValue.lawId == lastLaw && abs(data.dataIndex - listValue.dataIndex) < beamdis){
-//                                (*index).append(data);
-//                                insert = true;
-//                                break;
-//                            }
-//                        }
-//                        if(!insert){
-//                            QVector<beamData> buff;
-//                            buff.append(data);
-//                            temp.append(buff);
-//                        }
-//                    }
-//                    lastLaw = i;
-//                }
-//            }
-//        }
+
         size = temp.size();
         if(size){
             QVector<defectRect> defectrect(size);
             for(int i = 0; i < size; ++i){
                 int maxValue = findMaxValue(temp.at(i));
-                beamData _data = filterValue( temp.at(i), maxValue);
+                int maxValueCnt = 0;
+                beamData _data = filterValue( temp.at(i), maxValue, &maxValueCnt);
                 //defectRect &defect = defectrect.at(i);
                 defectrect[i].valueMax = maxValue;
                 defectrect[i]._rect[0].dataIndex = _data.dataIndex;
                 defectrect[i]._rect[0].lawId = _data.lawId;
                 defectrect[i]._rect[0].value = _data.value;
+                defectrect[i].valueMaxCount = maxValueCnt;
+                defectrect[i].bMergeStatus = false;
 
                 QVector<beamData> peakDatas;
                 if (m_heightMeasureMethod == HalfWave) { // 6db 法
@@ -318,14 +436,27 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
                     peakDatas = temp[i];
                 }
                 findRectBorder(Data, maxValue, beamdis, &defectrect[i]._rect[1], peakDatas);
+//                calViA(scanId, defectrect[i]._rect[1].lawId, &defectrect[i]._ViARange[0]);
+//                calDA(scanId, defectrect[i]._rect[1].lawId, &defectrect[i]._DARange[0]);
+//                calViA(scanId, defectrect[i]._rect[2].lawId, &defectrect[i]._ViARange[1]);
+//                calDA(scanId, defectrect[i]._rect[2].lawId, &defectrect[i]._DARange[1]);
+
+//                // 重新排列DA
+//                if (defectrect[i]._DARange[0] > defectrect[i]._DARange[1]) {
+//                    float tmp = defectrect[i]._DARange[0];
+//                    defectrect[i]._DARange[0] = defectrect[i]._DARange[1];
+//                    defectrect[i]._DARange[1] = tmp;
+//                }
             }
+//            QVector<defectRect> _rect;
+//            filterSameDefect(defectrect, _rect);
             m_frameDefects.insert(scanId, defectrect);
         }
     }
 }
 
 //找出集合里面的极值点
-DefectIdentify::beamData DefectIdentify::filterValue(const QVector<beamData> &beamDatas, int maxValue)
+DefectIdentify::beamData DefectIdentify::filterValue(const QVector<beamData> &beamDatas, int maxValue, int *maxValueCount)
 {
     int size = beamDatas.size();
     beamData data;
@@ -337,6 +468,9 @@ DefectIdentify::beamData DefectIdentify::filterValue(const QVector<beamData> &be
         }
     }
     size = buff.size();
+    if (maxValueCount != nullptr) {
+        *maxValueCount = size;
+    }
     if(size == 0){
         data.dataIndex = -1;
     }else if(size%2 == 1){
@@ -545,3 +679,325 @@ void DefectIdentify::transformPolarToCartesian(int lawId, int dataIndex, QPointF
     postion.setX(posx);
     postion.setY(Posy);
 }
+
+void DefectIdentify::calViA( int scanId, int lawId, float *pResult)
+{
+    PEAK_CONFIG peakInfo[setup_GATE_MAX];
+    DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG* config = &(m_pConfig->group[m_groupId]);
+
+    ParameterProcess* _process = ParameterProcess::Instance() ;
+    _process->GetGatePeakInfos(m_groupId, scanId, lawId, peakInfo);
+//    GATE_CONFIG* A_pGate = _process->GetGateInfo(m_groupId , setup_GATE_A ) ;
+//    ret = CalViDist(nGroupId_ , nLaw_ , setup_GATE_A , pResult_) ;
+    int ret = 0;
+//	ret = CalPDist(m_groupId ,lawId ,  setup_GATE_A , _fViA1 ) ;
+    float _nHeight = peakInfo[setup_GATE_A].fGh ;
+    float _fAmp    = peakInfo[setup_GATE_A].fAmp;
+
+    _fAmp = fabs(_fAmp);
+    if(_nHeight < 1) _nHeight = 1  ;
+
+    if(_nHeight > _fAmp)
+        ret  =  -1 ;
+
+    if(_process->GetGateInfo(m_groupId , setup_GATE_A)->eMeasure){
+        *pResult = peakInfo[setup_GATE_A].fLEdge + _process->GetBeamInsertPos(m_groupId  , lawId);
+    }else{
+        *pResult = peakInfo[setup_GATE_A].fL + _process->GetBeamInsertPos(m_groupId  , lawId);
+    }
+
+    setup_PROBE_ANGLE _eSkew = _process->GetGroupSkewType(m_groupId)  ;
+    float  _fIndexOffset ;
+    _process->GetWedgePosition( m_groupId , NULL , &_fIndexOffset );
+    if(setup_PROBE_PART_SKEW_90 == _eSkew)
+    {
+        *pResult +=_fIndexOffset ;
+    }
+    else if(setup_PROBE_PART_SKEW_270  == _eSkew )
+    {
+        *pResult =_fIndexOffset - *pResult ;
+    }
+}
+
+void DefectIdentify::calDA(int scanId, int lawId, float *pResult)
+{
+    PEAK_CONFIG peakInfo[setup_GATE_MAX];
+    DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG* config = &(m_pConfig->group[m_groupId]);
+
+    ParameterProcess* _process = ParameterProcess::Instance() ;
+    _process->GetGatePeakInfos(m_groupId, scanId, lawId, peakInfo);
+    GATE_CONFIG* A_pGate = _process->GetGateInfo(m_groupId , setup_GATE_A ) ;
+
+    if(A_pGate->eMeasure){
+        *pResult = peakInfo[setup_GATE_A].fDEdge;
+    }else{
+        *pResult = peakInfo[setup_GATE_A].fD;
+    }
+}
+
+void DefectIdentify::findMaxSpecialDefect(int maxValue, const QVector<DefectIdentify::specialDefect> &specils, specialDefect &_out)
+{
+    QVector<DefectIdentify::specialDefect> _buff;
+    for (int i = 0; i < specils.count(); ++i) {
+        if (maxValue == specils.at(i).valueMax) {
+            _buff.append(specils.at(i));
+        }
+    }
+
+    int valueCntMax = 0;
+    for (auto &i : _buff){
+        if(i.specialRect.valueMaxCount > valueCntMax){
+            valueCntMax = i.specialRect.valueMaxCount;
+        }
+    }
+
+    QVector<DefectIdentify::specialDefect> buff;
+    for (auto &i : _buff) {
+        if (i.specialRect.valueMaxCount == valueCntMax) {
+            buff.append(i);
+        }
+    }
+    _buff.clear();
+
+    int count = buff.count();
+    if (count == 0) {
+        return;
+    }
+    if (count % 2 == 1) {
+        int index = (count - 1) / 2;
+        _out = buff.at(index);
+    } else {
+        int indexLeft = count / 2 - 1;
+        int indexRight = count / 2;
+        int leftDataIndex = buff.at(indexLeft).specialRect._rect[0].dataIndex;
+        int rightDataIndex = buff.at(indexRight).specialRect._rect[0].dataIndex;
+        int leftScanId = buff.at(indexLeft).scanId;
+        int rightScanId = buff.at(indexRight).scanId;
+        int leftLawId = buff.at(indexLeft).specialRect._rect[0].lawId;
+        int rightLawId = buff.at(indexRight).specialRect._rect[0].lawId;
+
+        ParameterProcess* _process = ParameterProcess::Instance();
+        WDATA* _pData = _process->GetShadowDataPointer();
+        WDATA* lawData = _process->GetDataAbsolutePosPointer(m_groupId, leftScanId - 1, leftLawId, _pData);
+        int leftData1 = lawData[leftDataIndex];
+        lawData = _process->GetDataAbsolutePosPointer(m_groupId, leftScanId + 1, leftLawId, _pData);
+        int leftData2 = lawData[leftDataIndex];
+
+        lawData = _process->GetDataAbsolutePosPointer(m_groupId, rightScanId - 1, rightLawId, _pData);
+        int rightData1 = lawData[rightDataIndex];
+        lawData = _process->GetDataAbsolutePosPointer(m_groupId, rightScanId + 1, rightLawId, _pData);
+        int rightData2 = lawData[rightDataIndex];
+
+        int sumLeft = leftData1 + leftData2;
+        int sumRight = rightData1 + rightData2;
+
+        if(sumLeft >= sumRight){
+            _out = buff[indexLeft];
+        }else{
+            _out = buff[indexRight];
+        }
+    }
+}
+
+/**
+ * @brief DefectIdentify::measureLength 对每个特征点进行测长
+ */
+void DefectIdentify::measureLength()
+{
+    if (m_lengthMeasureMethod == HalfWave) { // 6db 法
+
+    } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
+
+    } else {
+        // 绝对灵敏度法
+
+    }
+}
+
+void DefectIdentify::mergeDefects()
+{
+    if (m_defectsBetweenFrames.count() == 0) return;
+
+    auto pHead = m_defectsBetweenFrames.begin();
+    auto end = m_defectsBetweenFrames.end();
+    while (pHead < end) {
+        if ((*pHead).bMergedStatus) {
+            ++pHead;
+            continue;
+        }
+        auto pNext                = pHead + 1;
+        while (pNext != end) {
+            if ((*pNext).bMergedStatus) {
+                ++pNext;
+                continue;
+            }
+            QRectF headRect        = (*pHead).special.rect;
+            QRectF nextRect        = (*pNext).special.rect;
+            QRectF intersectedRect = headRect.intersected(nextRect);
+            float areaInter        = getRectFArea(intersectedRect);
+            float areaHead         = getRectFArea(headRect);
+            float areaNext         = getRectFArea(nextRect);
+
+            if (areaInter > qMin(areaHead, areaNext) * m_scale) {
+                int headLength     = (*pHead).scanIdEnd   - (*pHead).scanIdStart;
+                int nextLength     = (*pNext).scanIdEnd   - (*pNext).scanIdStart;
+                int distLength     = 0;
+                if ((*pHead).scanIdStart < (*pNext).scanIdStart) {
+                    distLength     = (*pNext).scanIdStart - (*pHead).scanIdEnd;
+                } else {
+                    distLength     = (*pHead).scanIdStart - (*pNext).scanIdEnd;
+                }
+                if (distLength <= qMin(nextLength,headLength)) { // 合并
+                    int maxValueHead = (*pHead).special.valueMax;
+                    int maxValueNext = (*pNext).special.valueMax;
+                    if ((maxValueHead > maxValueNext) || ((maxValueHead == maxValueNext) && (areaHead >= areaNext))) {
+                        (*pHead).scanIdStart   = qMin((*pHead).scanIdStart, (*pNext).scanIdStart);
+                        (*pHead).scanIdEnd     = qMax((*pHead).scanIdEnd, (*pNext).scanIdEnd);
+                        (*pHead).length       += (*pNext).length;
+                        (*pNext).bMergedStatus = true;
+                    } else if ((maxValueHead < maxValueNext) || ((maxValueHead == maxValueNext) && (areaHead < areaNext))) {
+                        (*pNext).scanIdStart   = qMin((*pHead).scanIdStart, (*pNext).scanIdStart);
+                        (*pNext).scanIdEnd     = qMax((*pHead).scanIdEnd, (*pNext).scanIdEnd);
+                        (*pNext).length       += (*pHead).length;
+                        (*pHead).bMergedStatus = true;
+                    }
+                }
+            }
+            ++pNext;
+        }
+        ++pHead;
+    }
+}
+
+void DefectIdentify::calDefectRect()
+{
+    if (m_defectsBetweenFrames.count() == 0) return;
+
+    auto pHead = m_defectsBetweenFrames.begin();
+    auto end = m_defectsBetweenFrames.end();
+    while(pHead != end) {
+        if (!pHead->bMergedStatus) {
+            pHead->_rect.setLeft(pHead->scanIdStart);
+            pHead->_rect.setRight(pHead->scanIdEnd);
+            auto defect = pHead->special;
+            int id = defect.specialRect._rect[1].lawId;
+            pHead->_rect.setTop(id);
+            id = defect.specialRect._rect[2].lawId;
+            pHead->_rect.setBottom(id);
+            m_defectsRectL.append(pHead->_rect);
+            m_defectsRectH.append(defect.rect);
+            m_scanIds.append(defect.scanId);
+            m_lawIds.append(defect.specialRect._rect[0].lawId);
+        }
+        ++pHead;
+    }
+}
+
+
+/**
+ * @brief DefectIdentify::filterSameDefect 一个圆形缺陷，一次波和二次波可能测出来两个缺陷，此时两个缺陷的ViA和DA范围是非常接近的，据此过滤掉一个缺陷
+ *          留下特征点较大的那个缺陷，若两个特征点一样大，留下面积较大的
+ */
+//void DefectIdentify::filterSameDefect(QVector<defectRect> &defectRects,QVector<defectRect> &_Rects )
+//{
+//    float scale = 0.5;  // 重叠区域要大于等于 50%
+//    QVector<defectRect> needRemoveRects; // 保存需要剔除的
+//    needRemoveRects.clear();
+//    for (int i = 0; i < defectRects.count() - 1; ++i) {
+//        for (int k = 0; k < needRemoveRects.count(); k++) { // 已经找出需要剔除的特征点不再参与下面的比较
+//            if (defectRects[i]._rect[0].dataIndex == needRemoveRects[k]._rect[0].dataIndex &&
+//                    defectRects[i]._rect[0].lawId == needRemoveRects[k]._rect[0].lawId) {
+//                continue;
+//            }
+//        }
+//        for (int j = i + 1; j < defectRects.count(); j++) {
+//            for (int k = 0; k < needRemoveRects.count(); k++) { // 已经找出需要剔除的特征点不再参与下面的比较
+//                if (defectRects[j]._rect[0].dataIndex == needRemoveRects[k]._rect[0].dataIndex &&
+//                        defectRects[j]._rect[0].lawId == needRemoveRects[k]._rect[0].lawId) {
+//                    continue;
+//                }
+//            }
+
+//            float disViA1 = abs(defectRects[i]._ViARange[1] - defectRects[i]._ViARange[0]);
+//            float disDA1 = abs(defectRects[i]._DARange[1] - defectRects[i]._DARange[0]);
+//            float disViA2 = abs(defectRects[j]._ViARange[1] - defectRects[j]._ViARange[0]);
+//            float disDA2 = abs(defectRects[j]._DARange[1] - defectRects[j]._DARange[0]);
+
+//            float disViAMin = qMin(disViA1, disViA2);
+//            float disDAMin = qMin(disDA1, disDA2);
+//            float disViATmp = 0.0;
+//            float disDATmp = 0.0;
+//            if (defectRects[i]._ViARange[0] <= defectRects[j]._ViARange[0]) {
+//                if (defectRects[i]._ViARange[1] <= defectRects[j]._ViARange[0]){ // ViA 无交集
+//                    continue;
+//                } else {
+//                    disViATmp = defectRects[i]._ViARange[1] - defectRects[j]._ViARange[0];
+//                    if (disViATmp < disViAMin * scale) {
+//                        continue;
+//                    }
+//                }
+//            } else {
+//                if (defectRects[i]._ViARange[0] > defectRects[j]._ViARange[1]) {
+//                    continue;
+//                } else {
+//                    disViATmp = defectRects[j]._ViARange[1] - defectRects[i]._ViARange[0];
+//                    if (disViATmp < disViAMin * scale) {
+//                        continue;
+//                    }
+//                }
+//            }
+//            // Via 和 DA 需要同时重叠 50% 以上
+//            if(defectRects[i]._DARange[0] <=  defectRects[j]._DARange[0]) {
+//                if (defectRects[i]._DARange[1] <=  defectRects[j]._DARange[0]) {
+//                    continue;
+//                } else {
+//                    disDATmp = defectRects[i]._DARange[1] - defectRects[j]._DARange[0];
+//                    if (disDATmp < disDAMin * scale) {
+//                        continue;
+//                    }
+//                }
+//            } else {
+//                if (defectRects[i]._DARange[0] >  defectRects[j]._DARange[1]) {
+//                    continue;
+//                } else {
+//                    disDATmp = defectRects[i]._DARange[0] - defectRects[j]._DARange[1];
+//                    if (disDATmp < disDAMin * scale) {
+//                        continue;
+//                    }
+//                }
+//            }
+
+//            // 此时 ViA 和 DA 同时满足重叠 50% 以上，应将这个两个缺陷合并为一个
+//            if (defectRects[i].valueMax > defectRects[j].valueMax) {
+//                needRemoveRects.append(defectRects[j]);
+//            } else if (defectRects[i].valueMax < defectRects[j].valueMax) {
+//                needRemoveRects.append(defectRects[i]);
+//            } else {
+//                float area1 = (defectRects[i]._ViARange[1] - defectRects[i]._ViARange[0]) * (defectRects[i]._DARange[1] - defectRects[i]._DARange[0]);
+//                float area2 = (defectRects[j]._ViARange[1] - defectRects[j]._ViARange[0]) * (defectRects[j]._DARange[1] - defectRects[j]._DARange[0]);
+//                if (area1 < area2) {
+//                    needRemoveRects.append(defectRects[i]);
+//                } else {
+//                    needRemoveRects.append(defectRects[j]);
+//                }
+//            }
+//        }
+//    }
+
+//    for (int i = 0; i < defectRects.count(); i++) {
+//        bool insert = true;
+//        for (int k = 0; k < needRemoveRects.count(); k++) {
+//            if (defectRects[i]._rect[0].dataIndex == needRemoveRects[k]._rect[0].dataIndex &&
+//                    defectRects[i]._rect[0].lawId == needRemoveRects[k]._rect[0].lawId) {
+//                insert = false;
+//                break;
+//            }
+//        }
+//        if (insert) {
+//            _Rects.append(defectRects[i]);
+//        }
+//    }
+
+//}

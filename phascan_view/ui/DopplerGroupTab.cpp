@@ -1682,8 +1682,8 @@ void DopplerGroupTab::GatePro()
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->SetupGateInfo(m_nGroupId , (setup_GATE_NAME)ui->ComGateSelect->currentIndex() , &_gate) ;
 
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    _pConfig->m_defect[m_nGroupId]->analysisData();
+//    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+//    _pConfig->m_defect[m_nGroupId]->analysisData();
 
 	ProcessDisplay _display ;
     _display.UpdateAllViewOverlay();

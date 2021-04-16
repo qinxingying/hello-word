@@ -921,15 +921,16 @@ struct COMMON_CONFIG
 	ALARM_CONFIG		alarm   ;
 	SCANNER				scanner ;
 	//----------------------------
-	int					nRecMax;
+    int					nRecMax;    // 最大帧数 ?
 	int					nDataSize;
-	int					nScanOffMax;
+    int					nScanOffMax; // 最大扫查偏置 ?
     int					nScanOff[setup_MAX_GROUP_QTY];//每组的扫查偏置
     U8					nRecMark[setup_MAX_REC_LEN];//保存帧数据的标志位，标志位非零表示该帧数据有效，值为0表示该帧数据无效，用于绘制C扫或者查找最近的有效帧
     bool                TOPCMergeValid;          //是否支持topc融合
     int                 TOPCMergeQty;            //topc融合的组总数，等于PA组数
     int                 TOPCMergeGroupId[setup_MAX_GROUP_QTY]; //可以融合的组的Id
     AIDED_ANALYSIS      aidedAnalysis;
+    bool                bDefectIdentifyStatus;
 } ;
 
 struct DISPLAY_CONFIG

@@ -17,7 +17,7 @@ Config *Config::instance()
 }
 
 bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
-{   
+{
     m_pDataFile = dataFile;
 
     QFile file(filename);
@@ -1616,7 +1616,7 @@ void Config::convert_other_to_phascan_config()
     /* Global */
     for(int i = 0; i < m_pDataFile->m_cDrawInfoPack.nGroupNum; ++i) {
         m_pDataFile->m_cGroupInfo[i].prf1 = m_global.m_scanner.m_rate * 10;
-    }  
+    }
 }
 
 bool Config::is_phascan_ii_file(QFile &file)

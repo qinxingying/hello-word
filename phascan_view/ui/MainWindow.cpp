@@ -2025,26 +2025,62 @@ void MainWindow::slotMarkDefect()
 //    qDebug("%s:[%s](%d)", __FILE__,__FUNCTION__,__LINE__);
     ParameterProcess* _process = ParameterProcess::Instance();
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    int index = _process->GetScanIndexPos();
-    QVector<QPointF> MaxPoint;
-    QVector<QRectF> rect;
-    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(index, MaxPoint, rect);
+//    int index = _process->GetScanIndexPos();
+//    QVector<QPointF> MaxPoint;
+    QVector<QRectF> rectL;
+    QVector<int> maxScanId;
+    QVector<int> maxLawIds;
+    QVector<QRectF> rectH;
 
-    if (rect.count()) {
+    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
+    if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
         m_iCurDefectIndex ++;
-        if (m_iCurDefectIndex >= rect.count()) m_iCurDefectIndex = 0;
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rect[m_iCurDefectIndex].y();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rect[m_iCurDefectIndex].y() + rect[m_iCurDefectIndex].height();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rect[m_iCurDefectIndex].x();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rect[m_iCurDefectIndex].x() + rect[m_iCurDefectIndex].width();
-        ProcessDisplay _process;
-        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
+        if (m_iCurDefectIndex >= rectL.count()) m_iCurDefectIndex = 0;
 
-        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
-        _pGroup->UpdateCursorValue();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[m_iCurDefectIndex].y();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[m_iCurDefectIndex].y() + rectH[m_iCurDefectIndex].height();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[m_iCurDefectIndex].x();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[m_iCurDefectIndex].x() + rectH[m_iCurDefectIndex].width();
 
-        RunDrawThreadOnce(true);
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[m_iCurDefectIndex].left();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[m_iCurDefectIndex].right() - 1;
+
+        int lawId1 = rectL[m_iCurDefectIndex].top();
+        int lawId2 = rectL[m_iCurDefectIndex].bottom() - 1;
+        float tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId1);
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = tmp;
+        tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId2);
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = tmp;
+
+
+        updateCurLawPos( m_iCurGroup, maxLawIds[m_iCurDefectIndex], 0);
+        sliderh->setValue(maxScanId[m_iCurDefectIndex]);
+
+//        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+//        _pGroup->UpdateCursorValue();
+//        ProcessDisplay _process;
+//        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
+
+//        RunDrawThreadOnce(true);
     }
+
+//    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(index, MaxPoint, rect);
+
+//    if (rect.count()) {
+//        m_iCurDefectIndex ++;
+//        if (m_iCurDefectIndex >= rect.count()) m_iCurDefectIndex = 0;
+//        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rect[m_iCurDefectIndex].y();
+//        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rect[m_iCurDefectIndex].y() + rect[m_iCurDefectIndex].height();
+//        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rect[m_iCurDefectIndex].x();
+//        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rect[m_iCurDefectIndex].x() + rect[m_iCurDefectIndex].width();
+//        ProcessDisplay _process;
+//        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
+
+//        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+//        _pGroup->UpdateCursorValue();
+
+//        RunDrawThreadOnce(true);
+//    }
 }
 
 void MainWindow::loadDefectPosition(int groupId, int index)
@@ -2112,34 +2148,76 @@ void MainWindow::on_actionSaveReport_triggered()
 void MainWindow::on_actionNew_triggered()
 {
     DialogDefectMethodSelect defectMethodNew(this);
-    defectMethodNew.exec();
+    int ret = defectMethodNew.exec();
+    if (ret == QDialog::Rejected) {
+        return;
+    }
+    menuBar()->setEnabled(false);
+    ui->TabWidget_parameter->setEnabled(false);
+    set_ToolBarStatus(false);
+
     int heightMethodId = defectMethodNew.getHeightMeasureMethodId();
     int lengthMethodId = defectMethodNew.getLengthMeasureMethodId();
 
     ParameterProcess* _process = ParameterProcess::Instance();
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    int index = _process->GetScanIndexPos();
-    QVector<QPointF> MaxPoint;
-    QVector<QRectF> rect;
+//    int index = _process->GetScanIndexPos();
+//    QVector<QPointF> MaxPoint;
+    QVector<QRectF> rectL;
+    QVector<int> maxScanId;
+    QVector<int> maxLawIds;
+    QVector<QRectF> rectH;
+
     _pConfig->m_defect[m_iCurGroup]->setHeightMeasureMethod(heightMethodId);
     _pConfig->m_defect[m_iCurGroup]->setLengthMeasureMethod(lengthMethodId);
-    _pConfig->m_defect[m_iCurGroup]->analysisData();
+//    _pConfig->m_defect[m_iCurGroup]->analysisData();
+    _pConfig->m_defect[m_iCurGroup]->analysisDefect();
 
-    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(index, MaxPoint, rect);
+//    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(index, MaxPoint, rect);
+    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
+    _pConfig->common.bDefectIdentifyStatus = true;
     m_iCurDefectIndex = 0;
-    if (rect.count()) {
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rect[0].y();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rect[0].y() + rect[0].height();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rect[0].x();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rect[0].x() + rect[0].width();
-        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
-        _pGroup->UpdateCursorValue();
-        ProcessDisplay _process;
-        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
 
-        RunDrawThreadOnce(true);
+    if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[0].y();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[0].y() + rectH[0].height();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[0].x();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[0].x() + rectH[0].width();
+
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[0].left();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[0].right() - 1;
+
+        // slotCursorUChange
+//        QPointF _point1,  _point2;
+        int lawId1 = rectL[0].top();
+        int lawId2 = rectL[0].bottom() - 1;
+//        if(_pConfig->group[m_iCurGroup].measureGateStatus){
+//            _process->SscanGetPeakPoint(m_iCurGroup, lawId1, setup_GATE_B, _point1);
+//            _process->SscanGetPeakPoint(m_iCurGroup, lawId2, setup_GATE_B, _point2);
+//        }else{
+//            _process->SscanGetPeakPoint(m_iCurGroup, lawId1, setup_GATE_A, _point1);
+//            _process->SscanGetPeakPoint(m_iCurGroup, lawId2, setup_GATE_A, _point2);
+//        }
+        float tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId1);
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = tmp;
+        tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId2);
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = tmp;
+
+        updateCurLawPos( m_iCurGroup, maxLawIds[0], 0);
+        sliderh->setValue(maxScanId[0]);
+
+//        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+//        _pGroup->UpdateCursorValue();
+//        ProcessDisplay _process;
+//        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
+
+//        RunDrawThreadOnce(true);
     }
-    qDebug()<<MaxPoint.size()<<MaxPoint<<rect;
+    for (int i  = 0; i < rectL.size(); ++i) {
+        qDebug() << "left:" << rectL[i].left() << ", right:" << rectL[i].right() - 1
+                 << ", top:" << rectL[i].top() << ", bottom:" << rectL[i].bottom() - 1;
+    }
+//    qDebug()<<rect.size() << rect;
 }
 
 void MainWindow::on_actionOpenFile_triggered()
@@ -2573,6 +2651,7 @@ void MainWindow::on_actionStop_Analysis_triggered()
     menuBar()->setEnabled(true);
     set_ToolBarStatus(true);
     ui->TabWidget_parameter->setEnabled(true);
+    _pConfig->common.bDefectIdentifyStatus = false;
 }
 
 void MainWindow::set_ToolBarStatus( bool status)
