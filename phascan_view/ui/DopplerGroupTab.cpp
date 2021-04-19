@@ -656,6 +656,7 @@ void DopplerGroupTab::SetWidgetInvalide()
     ui->ValueGain->setDisabled(true);
     ui->ValueRefGain->setDisabled(true);
     ui->ValueCoupleGain->setDisabled(true);
+    ui->ValueCouplingGain->setDisabled(true);
     ui->ValueStart->setDisabled(true);
     ui->ValueRange->setDisabled(true);
     ui->ValueWedgeDelay->setDisabled(true);
@@ -930,10 +931,13 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
     ui->ValueRefGain->setValue(m_pGroup->RefGain);
     ui->ValueCoupleGain->setValue(m_pGroup->CoupleGain);
+    ui->ValueCouplingGain->setValue(m_pGroup->CoupleGain);
+    ui->ValueCouplingGainCom->setMinimum(0 - m_pGroup->fGain - m_pGroup->RefGain - CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
-    ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);    
+    ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
+    ui->ValueCouplingGainCom->setValue(CUR_RES.Couple_Com_Gain[m_nGroupId]);
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
@@ -2792,5 +2796,17 @@ void DopplerGroupTab::on_checkDefectBg_clicked(bool checked)
 {
     if(!ui->checkDefectBg->hasFocus()) return ;
     g_pMainWnd->SetDefectBackMode(checked) ;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueCouplingGainCom_valueChanged(double arg1)
+{
+    if(!ui->ValueCouplingGainCom->hasFocus())  return ;
+    CUR_RES.Couple_Com_Gain[m_nGroupId] = arg1;
+//    ui->ValueCouplingGainCom->setMinimum(0 - m_pGroup->fGain - m_pGroup->RefGain - CUR_RES.Couple_Com_Gain[m_nGroupId]);
+//    ParameterProcess* _process = ParameterProcess::Instance();
+//    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.REF_Gain[m_nGroupId]) ;
+    ProcessDisplay _display ;
+    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }

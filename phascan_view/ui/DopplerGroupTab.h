@@ -242,6 +242,8 @@ private slots:
 
     void on_checkDefectBg_clicked(bool checked);
 
+    void on_ValueCouplingGainCom_valueChanged(double arg1);
+
 private:
     Ui::DopplerGroupTab *ui;
 };
