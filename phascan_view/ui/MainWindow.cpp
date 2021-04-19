@@ -32,6 +32,8 @@ Date     : 2016-12-06
 #include <QPixmap>
 #include "dialog/DialogAbouVersion.h"
 #include "dialog/dialogkeyboardhelp.h"
+#include "dialog/dialogaboutfileproperties.h"
+#include "config_phascan_ii/config.h"
 #include "remote_monitoring/RemoteMonitoring.h"
 #include "remote_monitoring/assemblyremotesdialog.h"
 #include "version.h"
@@ -1085,7 +1087,15 @@ void MainWindow::OpenFilePro(QString strFileName_)
         indexSliderh->setValue(0);
         m_iCurGroup = 0;
         ui->actionAided_Analysis->setEnabled(true);
+
         ui->actionNew->setEnabled(true);
+
+        if(Config::instance()->is_phascan_ii()) {
+            ui->actionFile_Properties->setEnabled(true);
+        } else {
+            ui->actionFile_Properties->setEnabled(false);
+        }
+
 //        if(ui->measureWidget->isHidden()){
 //            ui->measureWidget->show();
 //        }
@@ -2719,4 +2729,10 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
         }
     }
     RunDrawThreadOnce(true);
+}
+
+void MainWindow::on_actionFile_Properties_triggered()
+{
+    DialogAboutFileProperties filePropertiesDlg;
+    filePropertiesDlg.exec();
 }

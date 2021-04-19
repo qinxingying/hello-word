@@ -69,8 +69,13 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 	if(!pImage_)  return ;
     unsigned char* Image_pData = pImage_->bits() ;
     memset(Image_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
 	ParameterProcess* _process = ParameterProcess::Instance();
     WDATA* _pData = _process->GetLawDataPointer( m_cInfo.nGroupId, m_cInfo.nBeamId);
+    if (_pConfig->group[m_cInfo.nGroupId].coupleMonitoringState && _pConfig->group[m_cInfo.nGroupId].bShowCoupleInAScan) {
+        DrawCoupleCurve(pImage_);
+        return;
+    }
 	if(!_pData)  return ;
 
 	int  _nPointQty = m_AScanInfo.nPointQty ;
@@ -562,7 +567,84 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
         }
 
     }
-	//------------------------------------------
+    //------------------------------------------
+}
+
+void DopplerDrawAScanH::DrawCoupleCurve(QImage* pImage_)
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+//    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+    WDATA*              _pData = _process->GetCoupleDataPointer(m_cInfo.nGroupId);
+    float coupleStart = m_pConfig->group[m_cInfo.nGroupId].coupleMonitoringVelocity * m_pConfig->group[m_cInfo.nGroupId].nTimeStart/2000000.0;
+    float coupleDepth = m_pConfig->group[m_cInfo.nGroupId].coupleMonitoringVelocity * m_pConfig->group[m_cInfo.nGroupId].nTimeRange/2000000.0;
+    if(coupleDepth <= 0)
+    {
+        return;
+    }
+    int  _nPointQty = m_AScanInfo.nPointQty ;
+    m_nWidth  = pImage_->width();
+    m_nHeight = pImage_->height();
+    double _nHeight = (double)m_nHeight;
+    double  _nWidth = (double)m_nWidth ;
+
+    QPainter painter(pImage_) ;
+
+    ClearAll(&painter);
+
+    float  _fScale = 1;//_process->GetRefGainScale(m_cInfo.nGroupId) ;
+    bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;
+
+    double _fX , _fY;
+    double _fXRatio = _nWidth / (_nPointQty -1)  ;
+    double _fYRatio = _nHeight / 255;
+    //---------------
+    float _fS, _fE;
+    int start = 0;
+    float maxDepth = 0.0;
+    int loopQty = 0;
+    if(0 ==_process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fS ,  &_fE))
+    {
+        maxDepth = _fE - _fS;
+        if( maxDepth <= 0 || coupleStart + coupleDepth < _fS || coupleStart > _fE){
+            return;
+        }
+        //开始处截断
+        if( _fS > coupleStart){
+            start = ( _fS - coupleStart ) / coupleDepth * _nPointQty;
+            coupleDepth = coupleDepth - ( _fS - coupleStart);
+        } else {
+            start = ( coupleStart - _fS) / maxDepth * _nWidth;
+            _nWidth -= start;
+            maxDepth = maxDepth - ( coupleStart - _fS);
+        }
+
+        //尾部截断
+        if( maxDepth > coupleDepth){
+            loopQty = _nPointQty;
+            _nWidth = coupleDepth / maxDepth * _nWidth;
+        } else {
+            loopQty  = _nPointQty * maxDepth / coupleDepth;
+        }
+    }
+
+    if(_process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_HALF_PATH ||
+            _process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_TIME){
+        start = 0;
+    }
+    //---------------
+    _fXRatio = _nWidth / (loopQty - 1) ;
+
+    int i  ;
+    for(i = 0 ; i < loopQty ; i++)
+    {
+        _fX = i * _fXRatio + start;
+        _fY = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
+        _fY = _nHeight - _fY * _fYRatio ;
+
+        Lines<<QPointF(_fX , _fY) ;
+    }
+    painter.setPen(QPen(color[0]));
+    painter.drawPolyline(Lines);
 }
 
 void DopplerDrawAScanH::DrawPointRectangle(QPainter *painter_, float x_, float y_, QColor color_)
@@ -629,7 +711,12 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
     unsigned char* Image_pData = pImage_->bits() ;
     memset(Image_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
 	ParameterProcess* _process = ParameterProcess::Instance();
-	WDATA*			  _pData = _process->GetLawDataPointer(m_cInfo.nGroupId , m_cInfo.nBeamId)  ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+    WDATA*			  _pData = _process->GetLawDataPointer(m_cInfo.nGroupId , m_cInfo.nBeamId)  ;
+    if (_pConfig->group[m_cInfo.nGroupId].coupleMonitoringState && _pConfig->group[m_cInfo.nGroupId].bShowCoupleInAScan) {
+        DrawCoupleCurve(pImage_);
+        return;
+    }
 	if(!_pData)  return ;
 
 	int  _nPointQty = m_AScanInfo.nPointQty ;
@@ -1106,5 +1193,82 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
         }
 
     }
-	//------------------------------------------
+    //------------------------------------------
+}
+
+void DopplerDrawAScanV::DrawCoupleCurve(QImage *pImage_)
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+//    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+    WDATA*              _pData = _process->GetCoupleDataPointer(m_cInfo.nGroupId);
+    float coupleStart = m_pConfig->group[m_cInfo.nGroupId].coupleMonitoringVelocity * m_pConfig->group[m_cInfo.nGroupId].nTimeStart/2000000.0;
+    float coupleDepth = m_pConfig->group[m_cInfo.nGroupId].coupleMonitoringVelocity * m_pConfig->group[m_cInfo.nGroupId].nTimeRange/2000000.0;
+    if(coupleDepth <= 0)
+    {
+        return;
+    }
+    int  _nPointQty = m_AScanInfo.nPointQty ;
+    m_nWidth  = pImage_->width();
+    m_nHeight = pImage_->height();
+    double _nHeight = (double)m_nHeight;
+    double  _nWidth = (double)m_nWidth ;
+
+    QPainter painter(pImage_) ;
+
+    ClearAll(&painter);
+
+    float  _fScale = 1;//_process->GetRefGainScale(m_cInfo.nGroupId) ;
+    bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;
+
+    double _fX , _fY;
+    double _fXRatio = _nWidth / 255  ;
+    double _fYRatio = _nHeight / (_nPointQty -1) ;
+    //---------------
+    float _fS, _fE;
+    int start = 0;
+    float maxDepth = 0.0;
+    int loopQty = 0;
+    if(0 ==_process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fS ,  &_fE))
+    {
+        maxDepth = _fE - _fS;
+        if( maxDepth <= 0 || coupleStart + coupleDepth < _fS || coupleStart > _fE){
+            return;
+        }
+        //开始处截断
+        if( _fS > coupleStart){
+            start = ( _fS - coupleStart ) / coupleDepth * _nPointQty;
+            coupleDepth = coupleDepth - ( _fS - coupleStart);
+        } else {
+            start = ( coupleStart - _fS) / maxDepth * _nHeight;
+            _nHeight -= start;
+            maxDepth = maxDepth - ( coupleStart - _fS);
+        }
+
+        //尾部截断
+        if( maxDepth > coupleDepth){
+            loopQty = _nPointQty;
+            _nHeight = coupleDepth / maxDepth * _nHeight;
+        } else {
+            loopQty  = _nPointQty * maxDepth / coupleDepth;
+        }
+    }
+
+    if(_process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_HALF_PATH ||
+            _process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_TIME){
+        start = 0;
+    }
+    //---------------
+    _fYRatio = _nHeight / (loopQty - 1) ;
+
+    int i  ;
+    for(i = 0 ; i < loopQty ; i++)
+    {
+        _fY = i * _fYRatio + start;
+        _fX = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
+        _fX = _fX * _fXRatio ;
+
+        Lines<<QPointF(_fX , _fY) ;
+    }
+    painter.setPen(QPen(color[0]));
+    painter.drawPolyline(Lines);
 }

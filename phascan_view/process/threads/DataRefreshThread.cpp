@@ -89,6 +89,9 @@ void DataRefreshThread::RunOnce(THREAD_RUN_MODE eMode_)
         UpdateAllWidgetDrawing() ;
     else
     {
+        while (isRunning()) {
+
+        }
         if(m_nRunOnce)
             m_nRunOnce = 1 ;
         else

@@ -212,6 +212,7 @@ protected slots:
   void on_actionAbout_triggered();
   void on_actionAided_Analysis_triggered();
   void on_actionStop_Analysis_triggered();
+  void on_actionFile_Properties_triggered();
 };
 
 extern MainWindow* g_pMainWnd;
