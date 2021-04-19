@@ -232,6 +232,7 @@
     <addaction name="actionNew_Config"/>
     <addaction name="actionOpen"/>
     <addaction name="separator"/>
+    <addaction name="actionFile_Properties"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -722,6 +723,14 @@
    </property>
    <property name="toolTip">
     <string>Stop Analysis</string>
+   </property>
+  </action>
+  <action name="actionFile_Properties">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>File Properties</string>
    </property>
   </action>
  </widget>

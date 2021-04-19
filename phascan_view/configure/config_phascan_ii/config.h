@@ -23,6 +23,9 @@ public:
     void set_is_phascan_ii(bool flag);
     bool is_phascan_ii();
     int getPhascanVersion();
+    QString getFpgaCpuVersion() {return m_global.m_version.m_FpgaCpuVersion;}
+    QString getFpgaPaVersion() {return m_global.m_version.m_FpgaPaVersion;}
+    QString getVersion() {return m_global.m_version.m_phascanVersion;}
 
     char *data_mark();
 
