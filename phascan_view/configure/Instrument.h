@@ -491,6 +491,7 @@ struct CURVE_RL_EL_SL
     int bShowSL;
     float REF_Gain[setup_MAX_GROUP_QTY];
     float Com_Gain[setup_MAX_GROUP_QTY];
+    float Couple_Com_Gain[setup_MAX_GROUP_QTY]; // 耦合监控增益补偿
     int CurSS[setup_MAX_GROUP_QTY];      //保存扫查灵敏度
     int Standard[setup_MAX_GROUP_QTY];   //tcg曲线标准的index
     int Thickness[setup_MAX_GROUP_QTY];  //tcg曲线厚度

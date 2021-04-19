@@ -591,7 +591,7 @@ void DopplerDrawAScanH::DrawCoupleCurve(QImage* pImage_)
 
     ClearAll(&painter);
 
-    float  _fScale = 1;//_process->GetRefGainScale(m_cInfo.nGroupId) ;
+    float  _fScale =  pow(10.0,(m_pConfig->group[m_cInfo.nGroupId].CoupleGain + CUR_RES.Couple_Com_Gain[m_cInfo.nGroupId])/20.0);
     bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;
 
     double _fX , _fY;
@@ -1217,7 +1217,7 @@ void DopplerDrawAScanV::DrawCoupleCurve(QImage *pImage_)
 
     ClearAll(&painter);
 
-    float  _fScale = 1;//_process->GetRefGainScale(m_cInfo.nGroupId) ;
+    float  _fScale = pow(10.0,(m_pConfig->group[m_cInfo.nGroupId].CoupleGain + CUR_RES.Couple_Com_Gain[m_cInfo.nGroupId])/20.0);
     bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;
 
     double _fX , _fY;
