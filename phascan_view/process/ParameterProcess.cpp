@@ -1914,7 +1914,8 @@ int ParameterProcess::GetCoupleMonitoringData(int nGroupId_, float* pResult_)
     QVector<WDATA> buff = GetCoupleCScanData(nGroupId_);
     //WDATA data = buff[_index];
     int cbuff = correctionPdata(buff[_index]);
-    *pResult_  = CalculatePeakAmp( cbuff, _nRectify);
+    float  _fScale =  pow(10.0,(m_pConfig->group[nGroupId_].CoupleGain + CUR_RES.Couple_Com_Gain[nGroupId_])/20.0);
+    *pResult_  = CalculatePeakAmp( cbuff, _nRectify) * _fScale;
     return ret;
 }
 

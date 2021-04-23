@@ -929,7 +929,7 @@ void DopplerGroupTab::UpdateGroupConfig()
     }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
     ui->ValueRefGain->setValue(m_pGroup->RefGain);
-    ui->ValueCoupleGain->setValue(m_pGroup->CoupleGain);
+    ui->ValueCoupleGain->setValue(0);
     ui->ValueCouplingGain->setValue(m_pGroup->CoupleGain);
     ui->ValueCouplingGainCom->setMinimum(0 - m_pGroup->fGain - m_pGroup->RefGain - CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);

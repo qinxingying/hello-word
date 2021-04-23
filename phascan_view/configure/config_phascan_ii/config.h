@@ -41,6 +41,7 @@ public:
 
     void getScannerData( SCANNER &scanner);
     bool is_phascan_ii_file(QFile &file);
+    double getCoupleGain(int groupId);
 
 protected:
     void unpack_group(int groupId);

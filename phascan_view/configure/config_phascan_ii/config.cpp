@@ -1747,3 +1747,8 @@ uint Config::data_mark_length()
 {
     return m_dataMark.count();
 }
+
+double Config::getCoupleGain(int groupId)
+{
+    return m_groups[groupId].m_sample.m_couplingGain;
+}
