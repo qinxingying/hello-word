@@ -199,7 +199,7 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
                 }
                 for(int i = startIndex; i <= _nHeight; i++)
                 {
-                    _nColor = _process->correctionPdata(buff[(int)((i - startIndex)*step + 0.5)]);
+                    _nColor = _process->correctionPdata(buff[(int)((i - startIndex)*step + 0.5)]) * _fScale;
                     if( _nColor > WAVE_MAX){
                         _nColor = WAVE_MAX;
                     }
@@ -217,7 +217,7 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
                 }
                 for(int i = startIndex; i <= _nWidth; i++)
                 {
-                    _nColor = _process->correctionPdata(buff[(int)((i - startIndex)*step + 0.5)]);
+                    _nColor = _process->correctionPdata(buff[(int)((i - startIndex)*step + 0.5)]) * _fScale;
                     if( _nColor > WAVE_MAX){
                         _nColor = WAVE_MAX;
                     }
@@ -239,7 +239,7 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
                 }
                 for(int i = startIndex; i < endIndex; i++)
                 {
-                    _nColor = _process->correctionPdata(buff[(int)((i - startIndex)*step + 0.5)]);
+                    _nColor = _process->correctionPdata(buff[(int)((i - startIndex)*step + 0.5)]) * _fScale;
                     if( _nColor > WAVE_MAX){
                         _nColor = WAVE_MAX;
                     }
@@ -263,7 +263,7 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
                 }
                 for(int i = startIndex; i < endIndex; i++)
                 {
-                    _nColor = _process->correctionPdata(buff[(int)((i - startIndex)*step + 0.5)]);
+                    _nColor = _process->correctionPdata(buff[(int)((i - startIndex)*step + 0.5)]) * _fScale;
                     if( _nColor > WAVE_MAX){
                         _nColor = WAVE_MAX;
                     }
