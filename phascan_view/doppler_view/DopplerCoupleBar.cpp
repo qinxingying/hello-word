@@ -83,7 +83,7 @@ void DopplerCoupleSScanBar::paintEvent(QPaintEvent *)
 
     QPainter _painter( this);
     int _nColor;
-    float  _fScale = pow(10.0,(m_pConfig->group[nGroupId].CoupleGain + CUR_RES.Couple_Com_Gain[nGroupId])/20.0);
+    float  _fScale = pow(10.0, CUR_RES.Couple_Com_Gain[nGroupId]/20.0);
     for( int i = start, j = 0; i < loopQty + start; i++, j++){
         _nColor = _process->correctionPdata(_pData[(int)(j*step)]) * _fScale;
         if(_nColor > WAVE_MAX){
@@ -168,7 +168,7 @@ void DopplerCoupleCScanBar::paintEvent(QPaintEvent *)
     QPainter _painter( this);
     float step;
     int _nColor;
-    float  _fScale = pow(10.0,(_group.CoupleGain + CUR_RES.Couple_Com_Gain[nGroupId])/20.0);
+    float  _fScale = pow(10.0, CUR_RES.Couple_Com_Gain[nGroupId]/20.0);
     if( start < scanStart){
         //全白
         if(end <= scanStart){
