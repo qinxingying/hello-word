@@ -80,6 +80,9 @@ public:
     void loadDefectPosition(int groupId, int index);
     void setDefectIdentifyCScanArea(double scanStart, double scanStop, double beamStart, double beamStop);
     void setDefectIdentifySScanArea(QRectF _rect);
+    void setSelectSscanAreaValid(bool _isValid);
+    int selectDefectMeasureMethod();
+    void startDefectIdentify();
 
 protected:
     void CreateStatusBar();

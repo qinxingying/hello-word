@@ -57,6 +57,7 @@ protected:
     void   CScanZoomAction();
     void   GeometryChanged();
     void   DrawMeasureValue();
+    void   DrawSelectArea();
     QRectF RangeTranslate(QRectF& rect_);
 
 
@@ -97,7 +98,12 @@ private:
     QAction *m_showCursor;
     QAction *m_showDefect;
     QAction *m_showCouple;
+    QAction *m_startAnalysis;
+    QAction *m_selectMeasureMethod;
     QMenu *m_contextMenu;
+
+    QRect m_selectedArea;
+    bool m_isDrawSelectArea {false};
 signals:
     void signalViewChanged(QRectF rect)  ;
     void signalUpdateDrawing();

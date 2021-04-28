@@ -84,7 +84,7 @@ bool DefectIdentify::analysisData(int scanStart, int scanStop, int beamStart, in
         }
     }
 //    qDebug()<<"m_frameDefects"<<m_frameDefects.size();
-    m_bSscanRangeIsSet = false;
+
     return true;
 }
 
@@ -293,6 +293,11 @@ void DefectIdentify::setSscanRange(QRectF _recet)
 {
     m_rectSscan = _recet;
     m_bSscanRangeIsSet = true;
+}
+
+void DefectIdentify::setSscanRangeValid(bool _isValid)
+{
+    m_bSscanRangeIsSet = _isValid;
 }
 
 //找出每条beam的特征点

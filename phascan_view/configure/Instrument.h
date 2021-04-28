@@ -932,7 +932,8 @@ struct COMMON_CONFIG
     int                 TOPCMergeQty;            //topc融合的组总数，等于PA组数
     int                 TOPCMergeGroupId[setup_MAX_GROUP_QTY]; //可以融合的组的Id
     AIDED_ANALYSIS      aidedAnalysis;
-    bool                bDefectIdentifyStatus;
+    bool                bDefectIdentifyStatus;      // 在分析状态
+    bool                bDefectIdentifyStatusDone;  // 分析完成
 } ;
 
 struct DISPLAY_CONFIG

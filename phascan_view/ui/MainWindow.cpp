@@ -1088,8 +1088,6 @@ void MainWindow::OpenFilePro(QString strFileName_)
         m_iCurGroup = 0;
         ui->actionAided_Analysis->setEnabled(true);
 
-        ui->actionNew->setEnabled(true);
-
         if(Config::instance()->is_phascan_ii()) {
             ui->actionFile_Properties->setEnabled(true);
         } else {
@@ -2133,13 +2131,78 @@ void MainWindow::setDefectIdentifyCScanArea(double scanStart, double scanStop, d
     int beamPixelStop  = _process->SCanAngleToCScanLineAngle(m_iCurGroup, beamStop);
     _pConfig->m_defect[m_iCurGroup]->setRange(scanPixelStart, scanPixelStop, beamPixelStart, beamPixelStop);
 //    _pConfig->m_defect[m_iCurGroup]->analysisDefect();
-    on_actionNew_triggered();
+//    on_actionNew_triggered();
 }
 
 void MainWindow::setDefectIdentifySScanArea(QRectF _rect)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-     _pConfig->m_defect[m_iCurGroup]->setSscanRange(_rect);
+    _pConfig->m_defect[m_iCurGroup]->setSscanRange(_rect);
+}
+
+void MainWindow::setSelectSscanAreaValid(bool _isValid)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->m_defect[m_iCurGroup]->setSscanRangeValid(_isValid);
+}
+
+int MainWindow::selectDefectMeasureMethod()
+{
+    DialogDefectMethodSelect defectMethodNew(this);
+    if (!defectMethodNew.exec()) {
+        return 1;
+    }
+
+    int heightMethodId = defectMethodNew.getHeightMeasureMethodId();
+    int lengthMethodId = defectMethodNew.getLengthMeasureMethodId();
+
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
+    _pConfig->m_defect[m_iCurGroup]->setHeightMeasureMethod(heightMethodId);
+    _pConfig->m_defect[m_iCurGroup]->setLengthMeasureMethod(lengthMethodId);
+    return 0;
+}
+
+void MainWindow::startDefectIdentify()
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
+    QVector<QRectF> rectL;
+    QVector<int> maxScanId;
+    QVector<int> maxLawIds;
+    QVector<QRectF> rectH;
+
+
+    _pConfig->m_defect[m_iCurGroup]->analysisDefect();
+
+    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
+    m_iCurDefectIndex = 0;
+
+    if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[0].y();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[0].y() + rectH[0].height();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[0].x();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[0].x() + rectH[0].width();
+
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[0].left();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[0].right() - 1;
+
+        int lawId1 = rectL[0].top();
+        int lawId2 = rectL[0].bottom() - 1;
+
+        float tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId1);
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = tmp;
+        tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId2);
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = tmp;
+
+        updateCurLawPos( m_iCurGroup, maxLawIds[0], 0);
+        sliderh->setValue(maxScanId[0]);
+    }
+    for (int i  = 0; i < rectL.size(); ++i) {
+        qDebug() << "left:" << rectL[i].left() << ", right:" << rectL[i].right() - 1
+                 << ", top:" << rectL[i].top() << ", bottom:" << rectL[i].bottom() - 1;
+    }
 }
 
 void MainWindow::on_actionNew_Config_triggered()
@@ -2176,77 +2239,7 @@ void MainWindow::on_actionSaveReport_triggered()
 
 void MainWindow::on_actionNew_triggered()
 {
-    DialogDefectMethodSelect defectMethodNew(this);
-    int ret = defectMethodNew.exec();
-    if (ret == QDialog::Rejected) {
-        return;
-    }
-    menuBar()->setEnabled(false);
-    ui->TabWidget_parameter->setEnabled(false);
-    set_ToolBarStatus(false);
 
-    int heightMethodId = defectMethodNew.getHeightMeasureMethodId();
-    int lengthMethodId = defectMethodNew.getLengthMeasureMethodId();
-
-    ParameterProcess* _process = ParameterProcess::Instance();
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-//    int index = _process->GetScanIndexPos();
-//    QVector<QPointF> MaxPoint;
-    QVector<QRectF> rectL;
-    QVector<int> maxScanId;
-    QVector<int> maxLawIds;
-    QVector<QRectF> rectH;
-
-    _pConfig->m_defect[m_iCurGroup]->setHeightMeasureMethod(heightMethodId);
-    _pConfig->m_defect[m_iCurGroup]->setLengthMeasureMethod(lengthMethodId);
-//    _pConfig->m_defect[m_iCurGroup]->analysisData();
-    _pConfig->m_defect[m_iCurGroup]->analysisDefect();
-
-//    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(index, MaxPoint, rect);
-    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
-    _pConfig->common.bDefectIdentifyStatus = true;
-    m_iCurDefectIndex = 0;
-
-    if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[0].y();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[0].y() + rectH[0].height();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[0].x();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[0].x() + rectH[0].width();
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[0].left();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[0].right() - 1;
-
-        // slotCursorUChange
-//        QPointF _point1,  _point2;
-        int lawId1 = rectL[0].top();
-        int lawId2 = rectL[0].bottom() - 1;
-//        if(_pConfig->group[m_iCurGroup].measureGateStatus){
-//            _process->SscanGetPeakPoint(m_iCurGroup, lawId1, setup_GATE_B, _point1);
-//            _process->SscanGetPeakPoint(m_iCurGroup, lawId2, setup_GATE_B, _point2);
-//        }else{
-//            _process->SscanGetPeakPoint(m_iCurGroup, lawId1, setup_GATE_A, _point1);
-//            _process->SscanGetPeakPoint(m_iCurGroup, lawId2, setup_GATE_A, _point2);
-//        }
-        float tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId1);
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = tmp;
-        tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId2);
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = tmp;
-
-        updateCurLawPos( m_iCurGroup, maxLawIds[0], 0);
-        sliderh->setValue(maxScanId[0]);
-
-//        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
-//        _pGroup->UpdateCursorValue();
-//        ProcessDisplay _process;
-//        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
-
-//        RunDrawThreadOnce(true);
-    }
-    for (int i  = 0; i < rectL.size(); ++i) {
-        qDebug() << "left:" << rectL[i].left() << ", right:" << rectL[i].right() - 1
-                 << ", top:" << rectL[i].top() << ", bottom:" << rectL[i].bottom() - 1;
-    }
-//    qDebug()<<rect.size() << rect;
 }
 
 void MainWindow::on_actionOpenFile_triggered()
@@ -2639,33 +2632,11 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionAided_Analysis_triggered()
 {
-    if(currentgroup == -1){
-        QMessageBox::warning(this, tr("Wrong View"), tr("Please Choose a Group View"));
-        return;
-    }
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    GROUP_CONFIG& group = _pConfig->group[currentgroup];
-    if(group.eGroupMode != setup_GROUP_MODE_PA){
-        QMessageBox::warning(this, tr("Wrong GroupMode"), tr("This is not PA Group"));
-        return;
-    }
-    if(!group.TopCInfo.TOPCStatus){
-        QMessageBox::warning(this, tr("TOPC not Open"), tr("Please Open TOPC Mode"));
-        return;
-    }
-    int _displayIndex = group.DisplayMode;
-    if(_displayIndex < 16 || _displayIndex > 24){
-        QMessageBox::warning(this, tr("Worng View Mode"), tr("Please Choose a View Has S Scan And C Scan"));
-        return;
-    }
-    int methodId = _pConfig->common.aidedAnalysis.aidedMethodId;
-    DialogMethodSelect defectView( methodId, this);
-    defectView.exec();
-    methodId = defectView.getMethodId();
-    //qDebug()<<"methodId"<<methodId;
-    _pConfig->common.aidedAnalysis.aidedGroupId = currentgroup;
-    _pConfig->common.aidedAnalysis.aidedStatus  = true;
-    _pConfig->common.aidedAnalysis.aidedMethodId = methodId;
+    _pConfig->common.bDefectIdentifyStatus = true;
+    _pConfig->common.bDefectIdentifyStatusDone = false;
+    if (selectDefectMeasureMethod())    return;
+
     menuBar()->setEnabled(false);
     //ui->toolBar->setEnabled(false);
     set_ToolBarStatus(false);
@@ -2675,12 +2646,13 @@ void MainWindow::on_actionAided_Analysis_triggered()
 void MainWindow::on_actionStop_Analysis_triggered()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    _pConfig->common.aidedAnalysis.aidedStatus  = false;
+//    _pConfig->common.aidedAnalysis.aidedStatus  = false;
     //int _nGroupId = _pConfig->common.aidedAnalysis.aidedGroupId;
     menuBar()->setEnabled(true);
     set_ToolBarStatus(true);
     ui->TabWidget_parameter->setEnabled(true);
     _pConfig->common.bDefectIdentifyStatus = false;
+    _pConfig->common.bDefectIdentifyStatusDone = true;
 }
 
 void MainWindow::set_ToolBarStatus( bool status)

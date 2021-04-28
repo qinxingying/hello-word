@@ -25,6 +25,7 @@ public:
     void getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId);
     void setRange(int scanStart, int scanStop, int beamStart, int beamStop);
     void setSscanRange(QRectF _recet);
+    void setSscanRangeValid(bool _isValid);
 private:
     struct beamAmp{
         int lawId;
