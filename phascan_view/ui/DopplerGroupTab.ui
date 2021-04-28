@@ -588,10 +588,10 @@
                    <number>1</number>
                   </property>
                   <property name="minimum">
-                   <double>-40.000000000000000</double>
+                   <double>-80.000000000000000</double>
                   </property>
                   <property name="maximum">
-                   <double>40.000000000000000</double>
+                   <double>110.000000000000000</double>
                   </property>
                  </widget>
                 </item>

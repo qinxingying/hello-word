@@ -1056,7 +1056,6 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.fRefGain	      = 0;
             _group.RefGain        = _pGroupInfo->gain / 100.0 - _pGroupInfo->gainr / 100.0;
         }
-        _group.CoupleGain = 0;
 
         CUR_RES.REF_Gain[i]      = 0;
         CUR_RES.Com_Gain[i]      = 0;
@@ -1230,6 +1229,10 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
         if(Config::instance()->is_phascan_ii()){
             Config::instance()->getApertureSec( i, &_LawConfig.nElemQtySec);
+            _group.CoupleGain = Config::instance()->getCoupleGain(i);
+        } else {
+            int lawQty = _process->GetGroupLawQty(i);
+            _group.CoupleGain = _pGroupInfo->gain_offset[lawQty] / 10;
         }
 
 		if(_group.eGroupMode <= setup_GROUP_MODE_PA)
