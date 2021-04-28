@@ -17,12 +17,14 @@ public:
 
     explicit DefectIdentify(int groupId, QObject *parent = 0);
     ~DefectIdentify();
-    bool analysisData();
+    bool analysisData(int scanStart, int scanStop, int beamStart, int beamStop);
     bool analysisDefect();
     void getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect);
     void setLengthMeasureMethod(int methodId) {m_lengthMeasureMethod = methodId;}
     void setHeightMeasureMethod(int methodId) {m_heightMeasureMethod = methodId;}
     void getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId);
+    void setRange(int scanStart, int scanStop, int beamStart, int beamStop);
+    void setSscanRange(QRectF _recet);
 private:
     struct beamAmp{
         int lawId;
@@ -93,6 +95,13 @@ private:
     QVector<QRectF> m_defectsRectH;
     QVector<int> m_scanIds; // 特征點所在幀
     QVector<int> m_lawIds; // 特征點所在beam
+
+    int m_scanStart {0};
+    int m_scanStop  {0};
+    int m_beamStart {0};
+    int m_beamStop  {0};
+    QRectF m_rectSscan;
+    bool m_bSscanRangeIsSet {false};
 };
 
 #endif // DEFECTIDENTIFY_H

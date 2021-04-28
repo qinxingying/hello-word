@@ -2123,6 +2123,25 @@ void MainWindow::loadDefectPosition(int groupId, int index)
     }
 }
 
+void MainWindow::setDefectIdentifyCScanArea(double scanStart, double scanStop, double beamStart, double beamStop)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    ParameterProcess* _process = ParameterProcess::Instance();
+    int scanPixelStart = _process->SAxisDistToIndex(scanStart);
+    int scanPixelStop  = _process->SAxisDistToIndex(scanStop);
+    int beamPixelStart = _process->SCanAngleToCScanLineAngle(m_iCurGroup, beamStart);
+    int beamPixelStop  = _process->SCanAngleToCScanLineAngle(m_iCurGroup, beamStop);
+    _pConfig->m_defect[m_iCurGroup]->setRange(scanPixelStart, scanPixelStop, beamPixelStart, beamPixelStop);
+//    _pConfig->m_defect[m_iCurGroup]->analysisDefect();
+    on_actionNew_triggered();
+}
+
+void MainWindow::setDefectIdentifySScanArea(QRectF _rect)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+     _pConfig->m_defect[m_iCurGroup]->setSscanRange(_rect);
+}
+
 void MainWindow::on_actionNew_Config_triggered()
 {
     ui->actionNew_Config->setCheckable(true);

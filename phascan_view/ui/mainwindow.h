@@ -78,6 +78,8 @@ public:
     void setAllTopcWidht(double value);
     void updateAllDefectBox();
     void loadDefectPosition(int groupId, int index);
+    void setDefectIdentifyCScanArea(double scanStart, double scanStop, double beamStart, double beamStop);
+    void setDefectIdentifySScanArea(QRectF _rect);
 
 protected:
     void CreateStatusBar();

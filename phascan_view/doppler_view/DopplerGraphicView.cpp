@@ -794,8 +794,87 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
         {
             DopplerConfigure* _pConfig = DopplerConfigure::Instance();
             DopplerDrawCScanH* _cHDraw = dynamic_cast<DopplerDrawCScanH*>(m_pDrawScan);
-            if (_pConfig->common.bDefectIdentifyStatus && _cHDraw) {
+            if (_pConfig->common.bDefectIdentifyStatus) {
                 qDebug("%s:[%s](%d)", __FILE__,__FUNCTION__,__LINE__);
+                m_cPosStop = event->pos();
+                QRectF _rect = this->geometry();
+                if(_rect.contains(m_cPosStop)){
+                    QPoint leftTop, rightBottom;
+                    if( m_cPosStart.x() < m_cPosStop.x()){
+                        leftTop.setX( m_cPosStart.x());
+                        rightBottom.setX( m_cPosStop.x());
+                    }else{
+                        leftTop.setX( m_cPosStop.x());
+                        rightBottom.setX( m_cPosStart.x());
+                    }
+
+                    if( m_cPosStart.y() < m_cPosStop.y()){
+                        leftTop.setY( m_cPosStart.y());
+                        rightBottom.setY( m_cPosStop.y());
+                    }else{
+                        leftTop.setY( m_cPosStop.y());
+                        rightBottom.setY( m_cPosStart.y());
+                    }
+                    QRect rect( leftTop, rightBottom);
+                    if(abs(rect.height()) > 20 && abs(rect.width()) > 20){
+    //                    VIEW_ORIENT dirction = ORIENT_HORIZONTAL;
+    //                    if(dynamic_cast<DopplerDrawCScanV*>(m_pDrawScan)){
+    //                        dirction = ORIENT_VERTICAL;
+    //                    }
+
+                        DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+                        int _iGroupId, _iLaw, _iDisplay;
+                        _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+                        double _fScanStart , _fScanStop , _fSliderStart, _fSliderStop;
+                        double _nScaleX1,_nScaleX2,_nScaleY1,_nScaleY2;
+                        double scanstart , scanstop;
+                        double lawstart, lawstop;
+                        QSize _size;
+                        _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+                        qDebug()<<"ScanStart"<<_fScanStart<<"ScanStop"<<_fScanStop;
+                        _size = size();
+                        _nScaleX1 = ((double)leftTop.x()) / _size.width();
+                        _nScaleY1 = ((double)leftTop.y()) / _size.height();
+                        _nScaleX2 = ((double)rightBottom.x()) / _size.width();
+                        _nScaleY2 = ((double)rightBottom.y()) / _size.height();
+                        scanstart =_fScanStart + _nScaleX1 * (_fScanStop - _fScanStart);
+                        scanstop = _fScanStart + _nScaleX2 * (_fScanStop - _fScanStart);
+                        _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
+                        qDebug()<<"indexStart"<<_fScanStart<<"indexStop"<<_fScanStop;
+                        lawstart = _fScanStart + _nScaleY1 * (_fScanStop - _fScanStart);
+                        lawstop = _fScanStart + _nScaleY2 * (_fScanStop - _fScanStart);
+                        qDebug()<<"scanstart"<<scanstart<<"scanstop"<<scanstop<<"lawstart"<<lawstart<<"lawstop"<<lawstop;
+
+                        setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
+
+                        switch(_eMode){
+                        case setup_DISPLAY_MODE_S_ATHUMIZ:
+                        case setup_DISPLAY_MODE_S_LINEAR: {
+                            QPointF topL(scanstart, lawstart);
+                            QPointF bottomR(scanstop, lawstop);
+                            QRectF rect(topL, bottomR);
+                            g_pMainWnd->setDefectIdentifySScanArea(rect);
+                            break;
+                        }
+                        case setup_DISPLAY_MODE_C_H:
+                        case setup_DISPLAY_MODE_CC_H: {
+                            g_pMainWnd->setDefectIdentifyCScanArea(scanstart, scanstop, lawstart, lawstop);
+                            break;
+                        }
+                        case setup_DISPLAY_MODE_C_V:
+                        case setup_DISPLAY_MODE_CC_V:
+                            break;
+                        case setup_DISPLAY_MODE_B_H:
+                            break;
+
+                        case setup_DISPLAY_MODE_B_V:
+                            break;
+                        }
+                    } else if (m_cPosStart != m_cPosStop){
+                        QMessageBox::warning(this, tr("Range too Small"), tr("Please Selected More Wider Range"));
+                    }
+                }
+
             }
             else if(_pConfig->common.aidedAnalysis.aidedStatus && _cHDraw){
                 if(FLOAT_EQ(m_nScaleH , 1) && FLOAT_EQ(m_nScaleV , 1)){
