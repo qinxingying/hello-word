@@ -884,6 +884,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                         }
                         case setup_DISPLAY_MODE_C_V:
                         case setup_DISPLAY_MODE_CC_V:
+                            g_pMainWnd->setDefectIdentifyCScanArea(lawstop, lawstart, scanstart, scanstop);
                             break;
                         case setup_DISPLAY_MODE_B_H:
                             break;
