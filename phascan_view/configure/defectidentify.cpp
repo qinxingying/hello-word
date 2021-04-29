@@ -176,6 +176,7 @@ bool DefectIdentify::analysisDefect()
                     defects.scanIdEnd     = scanIdEnd;
                     defects.length        = scanIdEnd - scanIdStart;
                     defects.special       = _out;
+                    defects.allSpecial    = specials;
                     defects.bMergedStatus = false;
                     m_defectsBetweenFrames.append(defects);
                 }
@@ -183,7 +184,6 @@ bool DefectIdentify::analysisDefect()
         }
     }
 
-    measureLength();
     mergeDefects();
     calDefectRect();
     return ret;
@@ -837,15 +837,18 @@ void DefectIdentify::findMaxSpecialDefect(int maxValue, const QVector<DefectIden
 /**
  * @brief DefectIdentify::measureLength 对每个特征点进行测长
  */
-void DefectIdentify::measureLength()
+void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
 {
     if (m_lengthMeasureMethod == HalfWave) { // 6db 法
+        // 查找左边界
 
+        // 查找右边界
     } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
 
     } else {
         // 绝对灵敏度法
-
+        _defect._rect.setLeft(_defect.scanIdStart);
+        _defect._rect.setRight(_defect.scanIdEnd);
     }
 }
 
@@ -872,7 +875,7 @@ void DefectIdentify::mergeDefects()
             float areaInter        = getRectFArea(intersectedRect);
             float areaHead         = getRectFArea(headRect);
             float areaNext         = getRectFArea(nextRect);
-
+            // 面积有重叠且间距少于两个缺陷中最小的，进行合并处理
             if (areaInter > qMin(areaHead, areaNext) * m_scale) {
                 int headLength     = (*pHead).scanIdEnd   - (*pHead).scanIdStart;
                 int nextLength     = (*pNext).scanIdEnd   - (*pNext).scanIdStart;
@@ -882,18 +885,20 @@ void DefectIdentify::mergeDefects()
                 } else {
                     distLength     = (*pHead).scanIdStart - (*pNext).scanIdEnd;
                 }
-                if (distLength <= qMin(nextLength,headLength)) { // 合并
+                if (distLength <= qMin(nextLength,headLength)) { // 合并,取特征值较大的作为合并之后的特征值
                     int maxValueHead = (*pHead).special.valueMax;
                     int maxValueNext = (*pNext).special.valueMax;
                     if ((maxValueHead > maxValueNext) || ((maxValueHead == maxValueNext) && (areaHead >= areaNext))) {
                         (*pHead).scanIdStart   = qMin((*pHead).scanIdStart, (*pNext).scanIdStart);
                         (*pHead).scanIdEnd     = qMax((*pHead).scanIdEnd, (*pNext).scanIdEnd);
                         (*pHead).length       += (*pNext).length;
+                        (*pHead).allSpecial.append((*pNext).allSpecial);
                         (*pNext).bMergedStatus = true;
                     } else if ((maxValueHead < maxValueNext) || ((maxValueHead == maxValueNext) && (areaHead < areaNext))) {
                         (*pNext).scanIdStart   = qMin((*pHead).scanIdStart, (*pNext).scanIdStart);
                         (*pNext).scanIdEnd     = qMax((*pHead).scanIdEnd, (*pNext).scanIdEnd);
                         (*pNext).length       += (*pHead).length;
+                        (*pNext).allSpecial.append((*pHead).allSpecial);
                         (*pHead).bMergedStatus = true;
                     }
                 }
@@ -912,8 +917,7 @@ void DefectIdentify::calDefectRect()
     auto end = m_defectsBetweenFrames.end();
     while(pHead != end) {
         if (!pHead->bMergedStatus) {
-            pHead->_rect.setLeft(pHead->scanIdStart);
-            pHead->_rect.setRight(pHead->scanIdEnd);
+            measureLength(*pHead);
             auto defect = pHead->special;
             int id = defect.specialRect._rect[1].lawId;
             pHead->_rect.setTop(id);

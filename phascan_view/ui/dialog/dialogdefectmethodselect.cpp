@@ -8,10 +8,21 @@ DialogDefectMethodSelect::DialogDefectMethodSelect(QWidget *parent) :
     ui->setupUi(this);
     if (m_lengthMeasureMethod == 0) {
         ui->halfWaveRadioL->setChecked(true);
+    } else if (m_lengthMeasureMethod == 1){
+        ui->endHalfWaveRadioL->setChecked(true);
+    } else {
+        ui->sensitivityRadioL->setChecked(true);
     }
+
     if (m_heightMeasureMethod == 0) {
         ui->halfWaveRadioH->setChecked(true);
+    } else if (m_heightMeasureMethod == 1){
+        ui->endHalfWaveRadioH->setChecked(true);
+    } else {
+        ui->sensitivityRadioH->setChecked(true);
     }
+
+    ui->scaleDoubleSpinBox->setValue(m_scale);
 }
 
 DialogDefectMethodSelect::~DialogDefectMethodSelect()
@@ -52,4 +63,9 @@ void DialogDefectMethodSelect::on_sensitivityRadioH_clicked()
 void DialogDefectMethodSelect::on_pushButton_clicked()
 {
     accept();
+}
+
+void DialogDefectMethodSelect::on_doubleSpinBox_valueChanged(double arg1)
+{
+    m_scale = arg1;
 }

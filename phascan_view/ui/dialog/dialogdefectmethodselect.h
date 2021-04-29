@@ -19,6 +19,8 @@ public:
 
     int getHeightMeasureMethodId() {return m_heightMeasureMethod;}
 
+    double getScale() {return m_scale;}
+
 private slots:
     void on_halfWaveRadioL_clicked();
 
@@ -34,11 +36,14 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_doubleSpinBox_valueChanged(double arg1);
+
 private:
     Ui::DialogDefectMethodSelect *ui;
 
     int m_lengthMeasureMethod {0};
     int m_heightMeasureMethod {0};
+    double m_scale {50.0};
 };
 
 #endif // DIALOGDEFECTMETHODSELECT_H

@@ -8,7 +8,6 @@ Date     : 2016-12-06
 
 #include "dialog/DialogAddOneGroup.h"
 #include "dialog/dialogmethodselect.h"
-#include "dialog/dialogdefectmethodselect.h"
 #include "threads/DataRefreshThread.h"
 #include "InstrumentSettingWidget.h"
 #include "DopplerConfigure.h"
@@ -2148,18 +2147,19 @@ void MainWindow::setSelectSscanAreaValid(bool _isValid)
 
 int MainWindow::selectDefectMeasureMethod()
 {
-    DialogDefectMethodSelect defectMethodNew(this);
     if (!defectMethodNew.exec()) {
         return 1;
     }
 
     int heightMethodId = defectMethodNew.getHeightMeasureMethodId();
     int lengthMethodId = defectMethodNew.getLengthMeasureMethodId();
+    double scale       = defectMethodNew.getScale();
 
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
     _pConfig->m_defect[m_iCurGroup]->setHeightMeasureMethod(heightMethodId);
     _pConfig->m_defect[m_iCurGroup]->setLengthMeasureMethod(lengthMethodId);
+    _pConfig->m_defect[m_iCurGroup]->setScale(scale);
     return 0;
 }
 

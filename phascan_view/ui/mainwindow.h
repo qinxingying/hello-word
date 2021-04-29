@@ -13,6 +13,7 @@
 #include <QMainWindow>
 #include <QTranslator>
 #include <QDoubleSpinBox>
+#include "dialog/dialogdefectmethodselect.h"
 
 #define MAX_LIST_QTY     10
 class DataRefreshThread;
@@ -132,6 +133,7 @@ private:
     QString m_titleName;
     QString m_fileName;
     QString m_baseName;
+    DialogDefectMethodSelect defectMethodNew;
 
     QList<DopplerGroupTab*> m_pGroupList;
     //RemoteMonitoring *m_remoteMonitoring;

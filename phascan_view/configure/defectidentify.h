@@ -22,6 +22,7 @@ public:
     void getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect);
     void setLengthMeasureMethod(int methodId) {m_lengthMeasureMethod = methodId;}
     void setHeightMeasureMethod(int methodId) {m_heightMeasureMethod = methodId;}
+    void setScale(double _scale) {m_scale = _scale / 100.0;}
     void getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId);
     void setRange(int scanStart, int scanStop, int beamStart, int beamStop);
     void setSscanRange(QRectF _recet);
@@ -60,7 +61,8 @@ private:
         int scanIdEnd;
         int length;                 // 缺陷长度
         QRect _rect;                // 缺陷范围
-        specialDefect special;
+        specialDefect special;      // 缺陷内所有特征点集合中最大的特征点
+        QVector<specialDefect> allSpecial; // 缺陷内所有特征点集合
         bool bMergedStatus;         // 若为true 表示被合并了，不需再考虑这个缺陷
     };
 
@@ -78,7 +80,7 @@ private:
     float getRectFArea(QRectF &rect) { return rect.width() * rect.height();}
     void getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect, QVector<defectRect> &defectRects);
     void findMaxSpecialDefect(int maxValue, const QVector<specialDefect> &specils, specialDefect &_out);
-    void measureLength();
+    void measureLength(defectsBetweenFrames &_defect);
     void mergeDefects();
     void calDefectRect();
 
