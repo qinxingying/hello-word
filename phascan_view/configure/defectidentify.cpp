@@ -770,6 +770,7 @@ void DefectIdentify::calDA(int scanId, int lawId, float *pResult)
     }
 }
 
+// 找出最特殊的那个缺陷作为该集群的特征点
 void DefectIdentify::findMaxSpecialDefect(int maxValue, const QVector<DefectIdentify::specialDefect> &specils, specialDefect &_out)
 {
     QVector<DefectIdentify::specialDefect> _buff;
@@ -840,15 +841,112 @@ void DefectIdentify::findMaxSpecialDefect(int maxValue, const QVector<DefectIden
 void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
 {
     if (m_lengthMeasureMethod == HalfWave) { // 6db 法
-        // 查找左边界
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        ParameterProcess* _process = ParameterProcess::Instance();
+        GROUP_CONFIG& group = _pConfig->group[m_groupId];
+        int beamdis = group.nPointQty / group.fSampleRange * BEAMDIS;
+        WDATA* _pData = _process->GetShadowDataPointer();
+        int count = _defect.allSpecial.count();
+        QVector<int> borders;
+        //找出每一个角度的beam上最高点
+        QVector<specialDefect> tmpDefects;
+        QMap<int, QVector<specialDefect>> beamIdValues;// 该缺陷范围内所有的beamId上对应的所有特征点
+        for (int i = 0; i < count; ++i) {
+            beamIdValues[_defect.allSpecial[i].specialRect._rect[0].lawId].append(_defect.allSpecial[i]);
+        }
 
-        // 查找右边界
+        for (int j : beamIdValues.keys()) {
+            QVector<specialDefect> tmp = beamIdValues.value(j);
+            int max = 0;
+            specialDefect defectMax;
+            for (int k = 0; k < tmp.count(); ++k) {
+                if (tmp[k].valueMax > max) {
+                    max = tmp[k].valueMax;
+                    defectMax = tmp[k];
+                }
+            }
+            tmpDefects.append(defectMax);
+        }
+        //
+        for (int i = 0; i < tmpDefects.count(); ++i) {
+            int curDataIndex   = tmpDefects[i].specialRect._rect[0].dataIndex;
+            int scanId         = tmpDefects[i].scanId;
+            int lawId          = tmpDefects[i].specialRect._rect[0].lawId;
+            int borderValue    = tmpDefects[i].valueMax / 2;
+            int curValue       = borderValue;
+            // 查找左边界
+            for (int j = scanId - 1; j >= m_scanStart; --j) {
+                int rangeLeft = curDataIndex - (beamdis/2);
+                int rangeRight = curDataIndex + (beamdis/2);
+                if(rangeLeft < 0){
+                    rangeLeft = 0;
+                }
+                if(rangeRight >= m_pointQty){
+                    rangeRight = m_pointQty - 1;
+                }
+
+                WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, lawId, _pData);
+                int value, postion;
+                findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
+
+                if (value <= borderValue) {
+                    float diff1 = log10((curValue * 1.0) / borderValue);
+                    float diff2 = log10((borderValue * 1.0) / value);
+                    if(diff1 > diff2){ // 取与borderValue接近的点
+                        borders.append(j);
+                    } else {
+                        borders.append(j + 1);
+                    }
+                    break;
+                } else if (j == m_scanStart) {
+                    borders.append(j);
+                } else {
+                    curDataIndex = postion;
+                    curValue = value;
+                }
+            }
+
+            // 查找右边界
+            for (int j = scanId + 1; j <= m_scanStop; ++j) {
+                int rangeLeft = curDataIndex - (beamdis/2);
+                int rangeRight = curDataIndex + (beamdis/2);
+                if(rangeLeft < 0){
+                    rangeLeft = 0;
+                }
+                if(rangeRight >= m_pointQty){
+                    rangeRight = m_pointQty - 1;
+                }
+
+                WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, lawId, _pData);
+                int value, postion;
+                findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
+
+                if (value <= borderValue) {
+                    float diff1 = log10((curValue * 1.0) / borderValue);
+                    float diff2 = log10((borderValue * 1.0) / value);
+                    if(diff1 > diff2){ // 取与borderValue接近的点
+                        borders.append(j);
+                    } else {
+                        borders.append(j - 1);
+                    }
+                    break;
+                } else if (j == m_scanStop) {
+                    borders.append(j);
+                } else {
+                    curDataIndex = postion;
+                    curValue = value;
+                }
+            }
+        }
+        qSort(borders.begin(), borders.end());
+
+        _defect.scanIdStart = borders.first();
+        _defect.scanIdEnd   = borders.last();
     } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
 
     } else {
         // 绝对灵敏度法
-        _defect._rect.setLeft(_defect.scanIdStart);
-        _defect._rect.setRight(_defect.scanIdEnd);
+
     }
 }
 
@@ -919,6 +1017,8 @@ void DefectIdentify::calDefectRect()
     while(pHead != end) {
         if (!pHead->bMergedStatus) {
             measureLength(*pHead);
+            pHead->_rect.setLeft(pHead->scanIdStart);
+            pHead->_rect.setRight(pHead->scanIdEnd);
             auto defect = pHead->special;
             int id = defect.specialRect._rect[1].lawId;
             float tmp = _process->CScanLineAngleToScanLineAngle(m_groupId, id);

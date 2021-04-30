@@ -858,8 +858,8 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                         _nScaleY1 = ((double)leftTop.y()) / _size.height();
                         _nScaleX2 = ((double)rightBottom.x()) / _size.width();
                         _nScaleY2 = ((double)rightBottom.y()) / _size.height();
-                        scanstart =_fScanStart + _nScaleX1 * (_fScanStop - _fScanStart);
-                        scanstop = _fScanStart + _nScaleX2 * (_fScanStop - _fScanStart);
+                        scanstart = ceil(_fScanStart + _nScaleX1 * (_fScanStop - _fScanStart));
+                        scanstop  = floor(_fScanStart + _nScaleX2 * (_fScanStop - _fScanStart));
                         _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
                         qDebug()<<"indexStart"<<_fScanStart<<"indexStop"<<_fScanStop;
                         lawstart = _fScanStart + _nScaleY1 * (_fScanStop - _fScanStart);
