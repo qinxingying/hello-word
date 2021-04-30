@@ -2052,42 +2052,12 @@ void MainWindow::slotMarkDefect()
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[m_iCurDefectIndex].left();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[m_iCurDefectIndex].right() - 1;
 
-        int lawId1 = rectL[m_iCurDefectIndex].top();
-        int lawId2 = rectL[m_iCurDefectIndex].bottom() - 1;
-        float tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId1);
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = tmp;
-        tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId2);
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = tmp;
-
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[m_iCurDefectIndex].top();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[m_iCurDefectIndex].bottom() - 1;
 
         updateCurLawPos( m_iCurGroup, maxLawIds[m_iCurDefectIndex], 0);
         sliderh->setValue(maxScanId[m_iCurDefectIndex]);
-
-//        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
-//        _pGroup->UpdateCursorValue();
-//        ProcessDisplay _process;
-//        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
-
-//        RunDrawThreadOnce(true);
     }
-
-//    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(index, MaxPoint, rect);
-
-//    if (rect.count()) {
-//        m_iCurDefectIndex ++;
-//        if (m_iCurDefectIndex >= rect.count()) m_iCurDefectIndex = 0;
-//        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rect[m_iCurDefectIndex].y();
-//        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rect[m_iCurDefectIndex].y() + rect[m_iCurDefectIndex].height();
-//        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rect[m_iCurDefectIndex].x();
-//        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rect[m_iCurDefectIndex].x() + rect[m_iCurDefectIndex].width();
-//        ProcessDisplay _process;
-//        _process.UpdateAllViewOverlayOfGroup(m_iCurGroup);
-
-//        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
-//        _pGroup->UpdateCursorValue();
-
-//        RunDrawThreadOnce(true);
-//    }
 }
 
 void MainWindow::loadDefectPosition(int groupId, int index)
@@ -2188,13 +2158,8 @@ void MainWindow::startDefectIdentify()
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[0].left();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[0].right() - 1;
 
-        int lawId1 = rectL[0].top();
-        int lawId2 = rectL[0].bottom() - 1;
-
-        float tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId1);
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = tmp;
-        tmp = _process->CScanLineAngleToScanLineAngle(m_iCurGroup, lawId2);
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = tmp;
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[0].top();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[0].bottom() - 1;
 
         updateCurLawPos( m_iCurGroup, maxLawIds[0], 0);
         sliderh->setValue(maxScanId[0]);

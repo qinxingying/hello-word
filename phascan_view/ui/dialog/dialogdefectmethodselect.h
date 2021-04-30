@@ -36,7 +36,7 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_doubleSpinBox_valueChanged(double arg1);
+    void on_scaleDoubleSpinBox_valueChanged(double arg1);
 
 private:
     Ui::DialogDefectMethodSelect *ui;

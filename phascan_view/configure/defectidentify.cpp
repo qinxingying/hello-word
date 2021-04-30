@@ -150,7 +150,7 @@ bool DefectIdentify::analysisDefect()
                         float areaNext = getRectFArea(rectsNextFrame[index]);
                         float minArea  = qMin(maxArea, areaNext);
 
-                        if (getRectFArea(intersectedRect) > minArea * m_scale) {
+                        if (getRectFArea(intersectedRect) >= minArea * m_scale) {
                             _DefectRects[keys[k]][index].bMergeStatus = true;
                             maxRect = rectsNextFrame[index];
                             maxArea = areaNext;
@@ -876,7 +876,7 @@ void DefectIdentify::mergeDefects()
             float areaHead         = getRectFArea(headRect);
             float areaNext         = getRectFArea(nextRect);
             // 面积有重叠且间距少于两个缺陷中最小的，进行合并处理
-            if (areaInter > qMin(areaHead, areaNext) * m_scale) {
+            if (areaInter >= qMin(areaHead, areaNext) * m_scale) {
                 int headLength     = (*pHead).scanIdEnd   - (*pHead).scanIdStart;
                 int nextLength     = (*pNext).scanIdEnd   - (*pNext).scanIdStart;
                 int distLength     = 0;
@@ -885,7 +885,7 @@ void DefectIdentify::mergeDefects()
                 } else {
                     distLength     = (*pHead).scanIdStart - (*pNext).scanIdEnd;
                 }
-                if (distLength <= qMin(nextLength,headLength)) { // 合并,取特征值较大的作为合并之后的特征值
+                if ((distLength <= qMin(nextLength,headLength)) || qFuzzyIsNull(m_scale)) { // 合并,取特征值较大的作为合并之后的特征值
                     int maxValueHead = (*pHead).special.valueMax;
                     int maxValueNext = (*pNext).special.valueMax;
                     if ((maxValueHead > maxValueNext) || ((maxValueHead == maxValueNext) && (areaHead >= areaNext))) {
@@ -913,6 +913,7 @@ void DefectIdentify::calDefectRect()
 {
     if (m_defectsBetweenFrames.count() == 0) return;
 
+    ParameterProcess* _process = ParameterProcess::Instance();
     auto pHead = m_defectsBetweenFrames.begin();
     auto end = m_defectsBetweenFrames.end();
     while(pHead != end) {
@@ -920,9 +921,11 @@ void DefectIdentify::calDefectRect()
             measureLength(*pHead);
             auto defect = pHead->special;
             int id = defect.specialRect._rect[1].lawId;
-            pHead->_rect.setTop(id);
+            float tmp = _process->CScanLineAngleToScanLineAngle(m_groupId, id);
+            pHead->_rect.setTop(tmp);
             id = defect.specialRect._rect[2].lawId;
-            pHead->_rect.setBottom(id);
+            tmp = _process->CScanLineAngleToScanLineAngle(m_groupId, id);
+            pHead->_rect.setBottom(tmp);
             m_defectsRectL.append(pHead->_rect);
             m_defectsRectH.append(defect.rect);
             m_scanIds.append(defect.scanId);

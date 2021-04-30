@@ -65,7 +65,7 @@ void DialogDefectMethodSelect::on_pushButton_clicked()
     accept();
 }
 
-void DialogDefectMethodSelect::on_doubleSpinBox_valueChanged(double arg1)
+void DialogDefectMethodSelect::on_scaleDoubleSpinBox_valueChanged(double arg1)
 {
     m_scale = arg1;
 }
