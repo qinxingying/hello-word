@@ -21,6 +21,8 @@ public:
 
     double getScale() {return m_scale;}
 
+    void retranslateUi();
+
 private slots:
     void on_halfWaveRadioL_clicked();
 

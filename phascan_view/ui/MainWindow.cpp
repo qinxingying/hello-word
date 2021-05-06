@@ -2532,6 +2532,7 @@ void MainWindow::slot_actionEnglish_triggered()
         m_pGroupList.at(i)->UpdateGroupConfig();
     }
 
+    defectMethodNew.retranslateUi();
     ui->retranslateUi(this);
     this->setWindowTitle(m_titleName + m_fileName);
 }
@@ -2557,6 +2558,7 @@ void MainWindow::slot_actionChinese_triggered()
         m_pGroupList.at(i)->UpdateGroupConfig();
     }
 
+    defectMethodNew.retranslateUi();
     ui->retranslateUi(this);
     this->setWindowTitle(m_titleName + m_fileName);
 }

@@ -30,6 +30,11 @@ DialogDefectMethodSelect::~DialogDefectMethodSelect()
     delete ui;
 }
 
+void DialogDefectMethodSelect::retranslateUi()
+{
+    ui->retranslateUi(this);
+}
+
 void DialogDefectMethodSelect::on_halfWaveRadioL_clicked()
 {
     m_lengthMeasureMethod = 0;
