@@ -2286,7 +2286,21 @@ void MainWindow::on_actionSave_Defect_triggered()
 {
     DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
     GROUP_CONFIG& _group = _pConfig->group[m_iCurGroup];
-    if(!_group.storeScanLawId.status){
+    if (_pConfig->common.bDefectIdentifyStatus) {
+        int _iLaw = _group.afCursor[setup_CURSOR_LAW];
+        _group.storeScanLawId.lawId = _iLaw;
+        _group.storeScanLawId.scanPos = _pConfig->common.scanner.fScanPos;
+        float pResult_ = 0;
+        if(_group.measureGateStatus){
+            CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_DB, &pResult_);
+        }else{
+            CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_DA, &pResult_);
+        }
+        _group.storeScanLawId.depth = pResult_;
+        pResult_ = 0;
+        CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_ZA, &pResult_);
+        _group.storeScanLawId.ZA = static_cast<int>(pResult_);
+    } else if(!_group.storeScanLawId.status){
         QMessageBox msgBox;
         msgBox.setText(tr("Set current position as defect position ?"));
         msgBox.setInformativeText(tr("The defect postion is'nt store. If you want set current position as defect position, \

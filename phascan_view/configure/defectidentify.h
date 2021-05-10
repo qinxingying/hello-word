@@ -83,6 +83,7 @@ private:
     void measureLength(defectsBetweenFrames &_defect);
     void mergeDefects();
     void calDefectRect();
+    void forceMerge();
 
     int m_groupId;
     int m_pointQty;
@@ -94,8 +95,8 @@ private:
     int m_lengthMeasureMethod {0};
     int m_heightMeasureMethod {0};
     float m_scale {0.5};
-    QVector<QRectF> m_defectsRectL;
-    QVector<QRectF> m_defectsRectH;
+    QVector<QRectF> m_defectsRectL; // 长度方向，表现在C扫上
+    QVector<QRectF> m_defectsRectH; // 高度方向，表现在S扫上
     QVector<int> m_scanIds; // 特征點所在幀
     QVector<int> m_lawIds; // 特征點所在beam
 

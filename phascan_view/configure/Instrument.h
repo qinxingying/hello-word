@@ -74,25 +74,25 @@ typedef struct
 
 typedef struct
 {
-	int iX;
-	int iY;
-	int iXEdge;
-	int iYEdge;
-    float fGs;  // gate start ?
-    float fGw;  // gate width ?
-    float fGh;  // gate height ?
+    int iX; // 闸门峰值beam上相应的点的位置，第几个点 ?
+    int iY; // 闸门峰值
+    int iXEdge; // 闸门前沿beam上相应的点的位置，第几个点 ?
+    int iYEdge; // 前沿
+    float fGs;  // gate start ? mm
+    float fGw;  // gate width ? mm
+    float fGh;  // gate height ? mm
 
-	float fSEdge ;
-	float fHEdge ;
-	float fLEdge ;
-	float fDEdge ;
+    float fSEdge ; // 前沿iXEdge dot pos to mm， DistDotPosToMm
+    float fHEdge ; // fSEdge * Cos
+    float fLEdge ; // fSEdge * Sin
+    float fDEdge ; // GetDepth
 
     float fS ;  // 峰值点沿半声程方向的值,等于sa
     float fH ;  // 表示峰值垂直方向位置值
     float fL ;  // 峰值点水平方向的位置值
     float fD ;  // 峰值点深度值, 通过fH和工件厚度确定
 
-	float fAmp;
+    float fAmp; // CalPeakAmp
 	float fXdXA; // AdBA / BdBB
 } PEAK_CONFIG;
 

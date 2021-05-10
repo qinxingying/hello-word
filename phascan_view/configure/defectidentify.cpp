@@ -186,6 +186,7 @@ bool DefectIdentify::analysisDefect()
 
     mergeDefects();
     calDefectRect();
+    forceMerge();
     return ret;
 }
 
@@ -1146,6 +1147,86 @@ void DefectIdentify::calDefectRect()
             m_lawIds.append(defect.specialRect._rect[0].lawId);
         }
         ++pHead;
+    }
+}
+
+/**
+ * @brief DefectIdentify::forceMerge 对培训班来说，选中的区域内所有缺陷都合并为一个缺陷
+ */
+void DefectIdentify::forceMerge()
+{
+    if (m_defectsBetweenFrames.count() == 0 || m_defectsRectL.count() == 0)
+        return;
+
+    int maxValue    = 0;
+    int scanStart   = m_defectsRectL.first().left();
+    int scanEnd     = m_defectsRectL.last().right() - 1;
+    int angleStart  = m_defectsRectL.last().top();
+    int angleEnd    = m_defectsRectL.first().bottom()  - 1;
+
+    m_defectsRectL.clear();
+    m_defectsRectH.clear();
+    m_scanIds.clear();
+    m_lawIds.clear();
+
+    auto pHead = m_defectsBetweenFrames.begin();
+    auto end = m_defectsBetweenFrames.end();
+    defectsBetweenFrames maxDefect;
+    while(pHead != end) {
+        if (!pHead->bMergedStatus) {
+            if (pHead->special.valueMax > maxValue) {
+                maxValue   = pHead->special.valueMax;
+            }
+            if (pHead->_rect.left() < scanStart ) {
+                scanStart = pHead->_rect.left();
+            }
+            if (pHead->_rect.right() - 1 > scanEnd) {
+                scanEnd = pHead->_rect.right() - 1;
+            }
+            if (pHead->_rect.top() < angleStart) {
+                angleStart = pHead->_rect.top();
+            }
+            if (pHead->_rect.bottom() - 1 > angleEnd) {
+                angleEnd = pHead->_rect.bottom() - 1;
+            }
+        }
+        ++pHead;
+    }
+
+    QRect rectL;
+    rectL.setLeft(scanStart);
+    rectL.setRight(scanEnd);
+    rectL.setTop(angleStart);
+    rectL.setBottom(angleEnd);
+    m_defectsRectL.append(rectL);
+
+    pHead = m_defectsBetweenFrames.begin();
+    QVector<defectsBetweenFrames> tmp;
+    while(pHead != end) {
+        if (!pHead->bMergedStatus) {
+            if (pHead->special.valueMax == maxValue) {
+                tmp.append(*pHead);
+            }
+        }
+        ++pHead;
+    }
+
+    if (tmp.count() == 0) return;
+    m_defectsRectH.append(tmp.at(0).special.rect);
+    m_scanIds.append(tmp.at(0).special.scanId);
+    m_lawIds.append(tmp.at(0).special.specialRect._rect[0].lawId);
+    int len = tmp.at(0).scanIdEnd - tmp.at(0).scanIdStart;
+    for (int i = 1; i < tmp.count(); ++i) {
+        int lenTmp = tmp.at(i).scanIdEnd - tmp.at(i).scanIdStart;
+        if (lenTmp > len) {
+            m_defectsRectH.clear();
+            m_scanIds.clear();
+            m_lawIds.clear();
+
+            m_defectsRectH.append(tmp.at(i).special.rect);
+            m_scanIds.append(tmp.at(i).special.scanId);
+            m_lawIds.append(tmp.at(i).special.specialRect._rect[0].lawId);
+        }
     }
 }
 
