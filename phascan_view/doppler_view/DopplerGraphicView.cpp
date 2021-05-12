@@ -840,7 +840,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                         rightBottom.setY( m_cPosStart.y());
                     }
                     QRect rect( leftTop, rightBottom);
-                    if(abs(rect.height()) > 20 && abs(rect.width()) > 20){
+                    if(abs(rect.height()) > 5 && abs(rect.width()) > 5){
                         m_selectedArea = rect;
 
                         DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
