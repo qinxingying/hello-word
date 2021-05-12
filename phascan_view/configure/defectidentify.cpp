@@ -57,8 +57,10 @@ bool DefectIdentify::analysisData(int scanStart, int scanStop, int beamStart, in
     for(int i = scanStart; i < scanStop; i++){
         if(_pConfig->common.nRecMark[i]){
             WDATA* _pData = _process->GetShadowDataPointer();
-            int _nFrameOffset = _nFrameSize * i;
+            int _index = _process->GetRealScanIndex(m_groupId, i);
+            int _nFrameOffset = _nFrameSize * _index;
             _pData += _nFrameOffset + _nGroupOffset;
+
             WDATA* lawData = _pData;
             QMap<int, QVector<beamData> > beamAss; // key:帧索引，value:帧上所有beam上的峰值集合
             _pData += beamStart * _nLawSize;
@@ -127,7 +129,7 @@ bool DefectIdentify::analysisDefect()
                 defectRect specialRect   = _DefectRects[keys[i]][j];
                 QRectF rect              = rectsCurrentFrame[j];
                 QVector<specialDefect> specials;
-
+                _DefectRects[keys[i]][j].bMergeStatus = true;
                 specialDefect tmp;
                 tmp.valueMax    = maxValue;
                 tmp.specialRect = specialRect;
@@ -886,6 +888,9 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
             int borderValue    = tmpDefects[i].valueMax / 2;
             int curValue       = borderValue;
             // 查找左边界
+            if (scanId == m_scanStart) {
+                borders.append(scanId);
+            }
             for (int j = scanId - 1; j >= m_scanStart; --j) {
                 int rangeLeft = curDataIndex - (beamdis/2);
                 int rangeRight = curDataIndex + (beamdis/2);
@@ -918,6 +923,9 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
             }
 
             // 查找右边界
+            if (scanId == m_scanStop) {
+                borders.append(scanId);
+            }
             for (int j = scanId + 1; j <= m_scanStop; ++j) {
                 int rangeLeft = curDataIndex - (beamdis/2);
                 int rangeRight = curDataIndex + (beamdis/2);
@@ -989,6 +997,9 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
             int lawId          = defectLeft.specialRect._rect[0].lawId;
             int borderValue    = defectLeft.valueMax / 2;
             int curValue       = borderValue;
+            if (scanId == m_scanStart) {
+                borders.append(scanId);
+            }
             for (int j = scanId - 1; j >= m_scanStart; --j) {
                 int rangeLeft = curDataIndex - (beamdis/2);
                 int rangeRight = curDataIndex + (beamdis/2);
@@ -1026,6 +1037,9 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
             lawId          = defectRight.specialRect._rect[0].lawId;
             borderValue    = defectRight.valueMax / 2;
             curValue       = borderValue;
+            if (scanId == m_scanStop) {
+                borders.append(scanId);
+            }
             for (int j = scanId + 1; j <= m_scanStop; ++j) {
                 int rangeLeft = curDataIndex - (beamdis/2);
                 int rangeRight = curDataIndex + (beamdis/2);
@@ -1132,8 +1146,8 @@ void DefectIdentify::calDefectRect()
     while(pHead != end) {
         if (!pHead->bMergedStatus) {
             measureLength(*pHead);
-            pHead->_rect.setLeft(pHead->scanIdStart);
-            pHead->_rect.setRight(pHead->scanIdEnd);
+            pHead->_rect.setLeft(_process->SAxisIndexToDist(pHead->scanIdStart));
+            pHead->_rect.setRight(_process->SAxisIndexToDist(pHead->scanIdEnd));
             auto defect = pHead->special;
             int id = defect.specialRect._rect[1].lawId;
             float tmp = _process->CScanLineAngleToScanLineAngle(m_groupId, id);

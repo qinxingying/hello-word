@@ -60,7 +60,7 @@ private:
         int scanIdStart;            // 需要测长方法确定
         int scanIdEnd;
         int length;                 // 缺陷长度
-        QRect _rect;                // 缺陷范围
+        QRectF _rect;                // 缺陷范围
         specialDefect special;      // 缺陷内所有特征点集合中最大的特征点
         QVector<specialDefect> allSpecial; // 缺陷内所有特征点集合
         bool bMergedStatus;         // 若为true 表示被合并了，不需再考虑这个缺陷

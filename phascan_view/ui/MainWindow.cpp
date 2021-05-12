@@ -2050,10 +2050,10 @@ void MainWindow::slotMarkDefect()
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[m_iCurDefectIndex].x() + rectH[m_iCurDefectIndex].width();
 
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[m_iCurDefectIndex].left();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[m_iCurDefectIndex].right() - 1;
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[m_iCurDefectIndex].right();
 
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[m_iCurDefectIndex].top();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[m_iCurDefectIndex].bottom() - 1;
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[m_iCurDefectIndex].bottom();
 
         updateCurLawPos( m_iCurGroup, maxLawIds[m_iCurDefectIndex], 0);
         sliderh->setValue(maxScanId[m_iCurDefectIndex]);
@@ -2094,8 +2094,50 @@ void MainWindow::setDefectIdentifyCScanArea(double scanStart, double scanStop, d
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     ParameterProcess* _process = ParameterProcess::Instance();
-    int scanPixelStart = _process->SAxisDistToIndex(scanStart);
-    int scanPixelStop  = _process->SAxisDistToIndex(scanStop);
+    SCANNER& _scaner = _pConfig->common.scanner ;
+    int scanPixelStart;
+    if(_scaner.eScanEncoderType) {
+        if(scanStart < _scaner.fScanStart)
+        {
+            scanStart = _scaner.fScanStart;
+        }
+        if(scanStart > _scaner.fScanStop)
+        {
+            scanStart = _scaner.fScanStop;
+        }
+        scanPixelStart = ceil((scanStart - _scaner.fScanStart) / _scaner.fScanStep) ;
+    } else {
+        if( scanStart < _scaner.fScanStart2)
+        {
+            scanStart = _scaner.fScanStart2;
+        }
+        if( scanStart > _scaner.fScanend){
+            scanStart = _scaner.fScanend;
+        }
+        scanPixelStart =  ceil((scanStart * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep);
+    }
+
+    int scanPixelStop;
+    if(_scaner.eScanEncoderType) {
+        if(scanStop < _scaner.fScanStart)
+        {
+            scanStop = _scaner.fScanStart;
+        }
+        if(scanStop > _scaner.fScanStop)
+        {
+            scanStop = _scaner.fScanStop;
+        }
+        scanPixelStop = floor((scanStop - _scaner.fScanStart) / _scaner.fScanStep) ;
+    } else {
+        if( scanStop < _scaner.fScanStart2)
+        {
+            scanStop = _scaner.fScanStart2;
+        }
+        if( scanStop > _scaner.fScanend){
+            scanStop = _scaner.fScanend;
+        }
+        scanPixelStop =  floor((scanStop * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep);
+    }
     int beamPixelStart = _process->SCanAngleToCScanLineAngle(m_iCurGroup, beamStart);
     int beamPixelStop  = _process->SCanAngleToCScanLineAngle(m_iCurGroup, beamStop);
     _pConfig->m_defect[m_iCurGroup]->setRange(scanPixelStart, scanPixelStop, beamPixelStart, beamPixelStop);
@@ -2127,6 +2169,9 @@ int MainWindow::selectDefectMeasureMethod()
 
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
+    _pConfig->common.bDefectIdentifyStatus = true;
+    _pConfig->common.bDefectIdentifyStatusDone = false;
+
     _pConfig->m_defect[m_iCurGroup]->setHeightMeasureMethod(heightMethodId);
     _pConfig->m_defect[m_iCurGroup]->setLengthMeasureMethod(lengthMethodId);
     _pConfig->m_defect[m_iCurGroup]->setScale(scale);
@@ -2156,17 +2201,17 @@ void MainWindow::startDefectIdentify()
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[0].x() + rectH[0].width();
 
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[0].left();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[0].right() - 1;
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[0].right();
 
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[0].top();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[0].bottom() - 1;
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[0].bottom();
 
         updateCurLawPos( m_iCurGroup, maxLawIds[0], 0);
         sliderh->setValue(maxScanId[0]);
     }
     for (int i  = 0; i < rectL.size(); ++i) {
-        qDebug() << "left:" << rectL[i].left() << ", right:" << rectL[i].right() - 1
-                 << ", top:" << rectL[i].top() << ", bottom:" << rectL[i].bottom() - 1;
+        qDebug() << "left:" << rectL[i].left() << ", right:" << rectL[i].right()
+                 << ", top:" << rectL[i].top() << ", bottom:" << rectL[i].bottom();
     }
 }
 
@@ -2613,9 +2658,6 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionAided_Analysis_triggered()
 {
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    _pConfig->common.bDefectIdentifyStatus = true;
-    _pConfig->common.bDefectIdentifyStatusDone = false;
     if (selectDefectMeasureMethod())    return;
 
     menuBar()->setEnabled(false);
