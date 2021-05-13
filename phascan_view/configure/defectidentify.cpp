@@ -92,6 +92,11 @@ bool DefectIdentify::analysisData(int scanStart, int scanStop, int beamStart, in
 
 bool DefectIdentify::analysisDefect()
 {
+    ParameterProcess* _process = ParameterProcess::Instance();
+    if (m_scanStart == 0 && m_scanStop == 0 && m_beamStart == 0 && m_beamStop == 0) {
+        m_scanStop  = _process->GetScanMax();
+        m_beamStop  = _process->GetGroupLawQty(m_groupId);
+    }
     bool ret;
     ret = analysisData(m_scanStart, m_scanStop, m_beamStart, m_beamStop);
 
@@ -188,7 +193,7 @@ bool DefectIdentify::analysisDefect()
 
     mergeDefects();
     calDefectRect();
-    forceMerge();
+//    forceMerge();
     return ret;
 }
 
@@ -301,6 +306,17 @@ void DefectIdentify::setSscanRange(QRectF _recet)
 void DefectIdentify::setSscanRangeValid(bool _isValid)
 {
     m_bSscanRangeIsSet = _isValid;
+}
+
+void DefectIdentify::setIdentifyStatus(bool status)
+{
+    m_identifyDone = status;
+    if (m_identifyDone) {
+        m_scanStart = 0;
+        m_scanStop  = 0;
+        m_beamStart = 0;
+        m_beamStop  = 0;
+    }
 }
 
 //找出每条beam的特征点
@@ -885,7 +901,7 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
                 if (value <= borderValue) {
                     float diff1 = log10((curValue * 1.0) / borderValue);
                     float diff2 = log10((borderValue * 1.0) / value);
-                    if(diff1 > diff2){ // 取与borderValue接近的点
+                    if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
                         borders.append(j);
                     } else {
                         borders.append(j + 1);
@@ -920,7 +936,7 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
                 if (value <= borderValue) {
                     float diff1 = log10((curValue * 1.0) / borderValue);
                     float diff2 = log10((borderValue * 1.0) / value);
-                    if(diff1 > diff2){ // 取与borderValue接近的点
+                    if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
                         borders.append(j);
                     } else {
                         borders.append(j - 1);
@@ -1001,7 +1017,7 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
                 if (value <= borderValue) {
                     float diff1 = log10((curValue * 1.0) / borderValue);
                     float diff2 = log10((borderValue * 1.0) / value);
-                    if(diff1 > diff2){ // 取与borderValue接近的点
+                    if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
                         borders.append(j);
                     } else {
                         borders.append(j + 1);
@@ -1041,7 +1057,7 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
                 if (value <= borderValue) {
                     float diff1 = log10((curValue * 1.0) / borderValue);
                     float diff2 = log10((borderValue * 1.0) / value);
-                    if(diff1 > diff2){ // 取与borderValue接近的点
+                    if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
                         borders.append(j);
                     } else {
                         borders.append(j - 1);
@@ -1109,7 +1125,9 @@ void DefectIdentify::mergeDefects()
                         (*pNext).scanIdStart   = qMin((*pHead).scanIdStart, (*pNext).scanIdStart);
                         (*pNext).scanIdEnd     = qMax((*pHead).scanIdEnd, (*pNext).scanIdEnd);
                         (*pNext).length       += (*pHead).length;
-                        (*pNext).allSpecial.append((*pHead).allSpecial);
+                        QVector<specialDefect> tmp = (*pHead).allSpecial;
+                        tmp.append((*pNext).allSpecial);
+                        (*pNext).allSpecial    = tmp;
                         (*pHead).bMergedStatus = true;
                     }
                 }

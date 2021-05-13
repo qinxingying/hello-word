@@ -27,6 +27,7 @@ public:
     void setRange(int scanStart, int scanStop, int beamStart, int beamStop);
     void setSscanRange(QRectF _recet);
     void setSscanRangeValid(bool _isValid);
+    void setIdentifyStatus(bool status);
 private:
     struct beamAmp{
         int lawId;

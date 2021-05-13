@@ -2676,6 +2676,8 @@ void MainWindow::on_actionStop_Analysis_triggered()
     ui->TabWidget_parameter->setEnabled(true);
     _pConfig->common.bDefectIdentifyStatus = false;
     _pConfig->common.bDefectIdentifyStatusDone = true;
+    _pConfig->m_defect[m_iCurGroup]->setIdentifyStatus(true);
+
 }
 
 void MainWindow::set_ToolBarStatus( bool status)
