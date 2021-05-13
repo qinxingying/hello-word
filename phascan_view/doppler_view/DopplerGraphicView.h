@@ -123,6 +123,7 @@ signals:
     void signalCscanShowallChange(int groupId);
     void signalMeasureGate(int groupId);
     void signalMarkNextDefect();
+    void signalMarkPreviousDefect();
 public slots:
     void slotResetView();
     void slotPrint();

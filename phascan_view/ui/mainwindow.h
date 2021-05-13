@@ -181,7 +181,8 @@ private slots:
     void slotShowDefect(int groupId, bool status);
     void slotCsanShowallChange(int groupId);
     void slotMeasureGate(int groupId);
-    void slotMarkDefect();
+    void slotMarkNextDefect();
+    void slotMarkPreviousDefect();
 
 protected slots:
   void on_actionNew_Config_triggered();

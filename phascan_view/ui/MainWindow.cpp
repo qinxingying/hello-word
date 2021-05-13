@@ -2024,13 +2024,42 @@ void MainWindow::slotMeasureGate(int groupId)
     RunDrawThreadOnce(true);
 }
 
+void MainWindow::slotMarkPreviousDefect()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    QVector<QRectF> rectL;
+    QVector<int> maxScanId;
+    QVector<int> maxLawIds;
+    QVector<QRectF> rectH;
+
+    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
+    if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
+        m_iCurDefectIndex --;
+        if (m_iCurDefectIndex < 0) m_iCurDefectIndex = rectL.count() - 1;
+
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[m_iCurDefectIndex].y();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[m_iCurDefectIndex].y() + rectH[m_iCurDefectIndex].height();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[m_iCurDefectIndex].x();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[m_iCurDefectIndex].x() + rectH[m_iCurDefectIndex].width();
+
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[m_iCurDefectIndex].left();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[m_iCurDefectIndex].right();
+
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[m_iCurDefectIndex].top();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[m_iCurDefectIndex].bottom();
+
+        updateCurLawPos( m_iCurGroup, maxLawIds[m_iCurDefectIndex], 0);
+        sliderh->setValue(maxScanId[m_iCurDefectIndex]);
+    }
+}
+
 /**
  * @brief MainWindow::slotMarkDefect 框出当前组识别出来的缺陷
  */
-void MainWindow::slotMarkDefect()
+void MainWindow::slotMarkNextDefect()
 {
 //    qDebug("%s:[%s](%d)", __FILE__,__FUNCTION__,__LINE__);
-    ParameterProcess* _process = ParameterProcess::Instance();
+//    ParameterProcess* _process = ParameterProcess::Instance();
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 //    int index = _process->GetScanIndexPos();
 //    QVector<QPointF> MaxPoint;
