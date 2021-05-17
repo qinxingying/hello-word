@@ -67,6 +67,12 @@ private:
         bool bMergedStatus;         // 若为true 表示被合并了，不需再考虑这个缺陷
     };
 
+    struct _Amp {
+        int lawId;
+        int scanId;
+        float value;
+    };
+
     void captureBeamAmps( WDATA* Data, int lawId, int start, int width, int height, int beamdis, QMap<int, QVector<beamData> > &beamAmps);
 //    void filterSameDefect(QVector<defectRect> &defectRects, QVector<defectRect> &_Rects);
     void captrueFrameAmps( int scanId, int beamdis, QMap<int, QVector<beamData> > &beamAmps, WDATA* Data);
