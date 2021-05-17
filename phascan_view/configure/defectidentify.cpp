@@ -931,7 +931,11 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
             for (int j = _defect.scanIdStart; j <= _defect.scanIdEnd; ++j) {
                 _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
                 float _amp = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
-                if (_amp >= peakInfo[setup_GATE_A].fGh) {
+
+                float methodThreshold = _process->GetDetermineThreshold(m_groupId, setup_SL);
+                //float max = methodThreshold * 255 / 100 - 1;
+                float height = qFuzzyIsNull(methodThreshold) ? peakInfo[setup_GATE_A].fGh : methodThreshold;
+                if (_amp >= height) {
                     _Amp tmp;
                     tmp.lawId  = i;
                     tmp.scanId = j;
@@ -989,31 +993,7 @@ void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
                             }
                         }
                     }
-            }
-//            for (int m = 0; m < cnt; ++m) {
-//                if (cnt == 1) {
-//                    peakAmps.append(tmp[0]);
-//                } else if (cnt == 2) {
-//                    if (tmp[0].value > tmp[1].value) {
-//                        peakAmps.append(tmp[0]);
-//                    } else {
-//                        peakAmps.append(tmp[1]);
-//                    }
-//                } else {
-//                    if (tmp[0].value > tmp[1].value) {
-//                        peakAmps.append(tmp.at(0));
-//                    }
-
-//                    for (int k = 1; k < cnt - 1; ++k) {
-//                        if (tmp.at(k).value >= tmp.at(k-1).value && tmp.at(k).value > tmp.at(k+1).value) {
-//                            peakAmps.append(tmp.at(k));
-//                        } else if (k == cnt - 2) {
-//                            if (tmp.at(k).value <= tmp.at(k+1).value) {
-//                                peakAmps.append(tmp.at(k + 1));
-//                            }
-//                        }
-//                    }
-//                }
+                }
                 if (peakAmps.count() == 0) continue;
                 _Amp defectLeft  = peakAmps.first();
                 _Amp defectRight = peakAmps.last();
