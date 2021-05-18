@@ -194,7 +194,7 @@ bool DefectIdentify::analysisDefect()
     measureLength();
     mergeDefects();// 测长之后再次合并缺陷
     calDefectRect();
-    forceMerge();
+//    forceMerge();
     return ret;
 }
 
@@ -1078,7 +1078,7 @@ void DefectIdentify::measureLength()
 
 void DefectIdentify::mergeDefects()
 {
-    if (m_defectsBetweenFrames.count() == 0) return;
+    if (m_defectsBetweenFrames.count() <= 0) return;
 
     auto pHead = m_defectsBetweenFrames.begin();
     auto end = m_defectsBetweenFrames.end();
@@ -1167,7 +1167,7 @@ void DefectIdentify::calDefectRect()
  */
 void DefectIdentify::forceMerge()
 {
-    if (m_defectsBetweenFrames.count() == 0 || m_defectsRectL.count() == 0)
+    if (m_defectsBetweenFrames.count() <= 1 || m_defectsRectL.count() == 0)
         return;
 
     int maxValue    = 0;
