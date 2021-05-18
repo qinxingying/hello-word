@@ -191,8 +191,10 @@ bool DefectIdentify::analysisDefect()
     }
 
     mergeDefects();
+    measureLength();
+    mergeDefects();// 测长之后再次合并缺陷
     calDefectRect();
-//    forceMerge();
+    forceMerge();
     return ret;
 }
 
@@ -860,206 +862,219 @@ void DefectIdentify::findMaxSpecialDefect(int maxValue, const QVector<DefectIden
 /**
  * @brief DefectIdentify::measureLength 对每个特征点进行测长
  */
-void DefectIdentify::measureLength(defectsBetweenFrames &_defect)
+void DefectIdentify::measureLength()
 {
-     if (m_lengthMeasureMethod == AbsoluteSensitivity) {
-        // 绝对灵敏度法不需要再做处理
-         return;
-    }
+    if (m_defectsBetweenFrames.count() == 0) return;
 
-    PEAK_CONFIG peakInfo[setup_GATE_MAX];
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     ParameterProcess* _process = ParameterProcess::Instance();
     GROUP_CONFIG& group = _pConfig->group[m_groupId];
-    QVector<int> borders;
-    if (m_lengthMeasureMethod == HalfWave) { // 6db 法
-        int scanId           = _defect.special.scanId;
-        _process->GetGatePeakInfos(m_groupId, scanId, _defect.special.specialRect._rect[0].lawId, peakInfo);
-        float borderValue    = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp / 2.0;
-        float curValue       = borderValue;
-        for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
-            // 查找左边界
-            if (scanId == m_scanStart) {
-                borders.append(scanId);
-            }
-            for (int j = scanId - 1; j >= m_scanStart; --j) {
-                _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
-                float value = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
 
-                if (value <= borderValue) {
-                    float diff1 = log10((curValue * 1.0) / borderValue);
-                    float diff2 = log10((borderValue * 1.0) / value);
-                    if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
-                        borders.append(j);
-                    } else {
-                        borders.append(j + 1);
-                    }
-                    break;
-                } else if (j == m_scanStart) {
-                    borders.append(j);
-                } else {
-                    curValue = value;
-                }
-            }
-
-            // 查找右边界
-            if (scanId == m_scanStop) {
-                borders.append(scanId);
-            }
-            for (int j = scanId + 1; j <= m_scanStop; ++j) {
-                _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
-                float value = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
-                if (value <= borderValue) {
-                    float diff1 = log10((curValue * 1.0) / borderValue);
-                    float diff2 = log10((borderValue * 1.0) / value);
-                    if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
-                        borders.append(j);
-                    } else {
-                        borders.append(j - 1);
-                    }
-                    break;
-                } else if (j == m_scanStop) {
-                    borders.append(j);
-                } else {
-                    curValue = value;
-                }
-            }
-        }
-    } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
-        QMap<int, QVector<_Amp>> beamIdValues;// 该缺陷范围内所有的beamId上对应的所有特征点
-        for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
-            for (int j = _defect.scanIdStart; j <= _defect.scanIdEnd; ++j) {
-                _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
-                float _amp = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
-
-                float methodThreshold = _process->GetDetermineThreshold(m_groupId, setup_SL);
-                //float max = methodThreshold * 255 / 100 - 1;
-                float height = qFuzzyIsNull(methodThreshold) ? peakInfo[setup_GATE_A].fGh : methodThreshold;
-                if (_amp >= height) {
-                    _Amp tmp;
-                    tmp.lawId  = i;
-                    tmp.scanId = j;
-                    tmp.value  = _amp;
-                    beamIdValues[i].append(tmp);
-                }
-            }
-        }
-
-        for (int b : beamIdValues.keys()) {
-
-            QVector<_Amp> beamAmps = beamIdValues.value(b);
-            int cnt = beamAmps.count();
-            QVector<_Amp> peakAmps;
-            QVector<QVector<_Amp>> peakValues;
-            if (cnt == 0) {
+    auto pHead = m_defectsBetweenFrames.begin();
+    auto end = m_defectsBetweenFrames.end();
+    while(pHead != end) {
+        if (!pHead->bMergedStatus) {
+            defectsBetweenFrames &_defect = *pHead;
+            if (m_lengthMeasureMethod == AbsoluteSensitivity) {
+               // 绝对灵敏度法不需要再做处理
                 continue;
-            }
+           }
 
-            QVector<_Amp> continuousPeaks;
-            continuousPeaks.append(beamAmps[0]);
-            for (int n = 1; n < cnt; ++n) {
-                if (beamAmps[n].scanId - 1 != beamAmps[n-1].scanId) {
-                    peakValues.append(continuousPeaks);
-                    continuousPeaks.clear();
-                }
-                continuousPeaks.append(beamAmps[n]);
-            }
-            peakValues.append(continuousPeaks);
+           PEAK_CONFIG peakInfo[setup_GATE_MAX];
+           QVector<int> borders;
+           borders.clear();
+           if (m_lengthMeasureMethod == HalfWave) { // 6db 法
+               int scanId           = _defect.special.scanId;
+               _process->GetGatePeakInfos(m_groupId, scanId, _defect.special.specialRect._rect[0].lawId, peakInfo);
+               float borderValue    = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp / 2.0;
+               float curValue       = borderValue;
+               for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
+                   // 查找左边界
+                   if (scanId == m_scanStart) {
+                       borders.append(scanId);
+                   }
+                   for (int j = scanId - 1; j >= m_scanStart; --j) {
+                       _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
+                       float value = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
 
-            for (int p = 0; p < peakValues.count(); ++p) {
-                QVector<_Amp> tmp = peakValues[p];
-                int count = tmp.count();
-                for (int m = 0; m < count; ++m) {
-                    if (count == 1) {
-                        peakAmps.append(tmp[0]);
-                    } else if (count == 2) {
-                        if (tmp[0].value > tmp[1].value) {
-                            peakAmps.append(tmp[0]);
-                        } else {
-                            peakAmps.append(tmp[1]);
-                        }
-                    } else {
-                        if (tmp[0].value > tmp[1].value) {
-                            peakAmps.append(tmp.at(0));
-                        }
+                       if (value <= borderValue) {
+                           float diff1 = log10((curValue * 1.0) / borderValue);
+                           float diff2 = log10((borderValue * 1.0) / value);
+                           if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
+                               borders.append(j);
+                           } else {
+                               borders.append(j + 1);
+                           }
+                           break;
+                       } else if (j == m_scanStart) {
+                           borders.append(j);
+                       } else {
+                           curValue = value;
+                       }
+                   }
 
-                        for (int k = 1; k < count - 1; ++k) {
-                            if (tmp.at(k).value >= tmp.at(k-1).value && tmp.at(k).value > tmp.at(k+1).value) {
-                                peakAmps.append(tmp.at(k));
-                            } else if (k == count - 2) {
-                                if (tmp.at(k).value <= tmp.at(k+1).value) {
-                                    peakAmps.append(tmp.at(k + 1));
-                                }
-                            }
-                        }
-                    }
-                }
-                if (peakAmps.count() == 0) continue;
-                _Amp defectLeft  = peakAmps.first();
-                _Amp defectRight = peakAmps.last();
-                // 查找左边界
-                int scanId         = defectLeft.scanId;
-                int lawId          = defectLeft.lawId;
-                float borderValue    = defectLeft.value / 2;
-                float curValue       = borderValue;
-                if (scanId == m_scanStart) {
-                    borders.append(scanId);
-                }
-                for (int j = scanId - 1; j >= m_scanStart; --j) {
-                    _process->GetGatePeakInfos(m_groupId, j, lawId, peakInfo);
-                    float value = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
-                    if (value <= borderValue) {
-                        float diff1 = log10((curValue * 1.0) / borderValue);
-                        float diff2 = log10((borderValue * 1.0) / value);
-                        if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
-                            borders.append(j);
-                        } else {
-                            borders.append(j + 1);
-                        }
-                        break;
-                    } else if (j == m_scanStart) {
-                        borders.append(j);
-                    } else {
-                        curValue = value;
-                    }
-                }
+                   // 查找右边界
+                   if (scanId == m_scanStop) {
+                       borders.append(scanId);
+                   }
+                   for (int j = scanId + 1; j <= m_scanStop; ++j) {
+                       _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
+                       float value = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
+                       if (value <= borderValue) {
+                           float diff1 = log10((curValue * 1.0) / borderValue);
+                           float diff2 = log10((borderValue * 1.0) / value);
+                           if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
+                               borders.append(j);
+                           } else {
+                               borders.append(j - 1);
+                           }
+                           break;
+                       } else if (j == m_scanStop) {
+                           borders.append(j);
+                       } else {
+                           curValue = value;
+                       }
+                   }
+               }
+           } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
+               QMap<int, QVector<_Amp>> beamIdValues;// 该缺陷范围内所有的beamId上对应的所有特征点
+               for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
+                   for (int j = _defect.scanIdStart; j <= _defect.scanIdEnd; ++j) {
+                       _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
+                       float _amp = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
 
-                // 查找右边界
-                scanId         = defectRight.scanId;
-                lawId          = defectRight.lawId;
-                borderValue    = defectRight.value / 2;
-                curValue       = borderValue;
-                if (scanId == m_scanStop) {
-                    borders.append(scanId);
-                }
-                for (int j = scanId + 1; j <= m_scanStop; ++j) {
-                    _process->GetGatePeakInfos(m_groupId, j, lawId, peakInfo);
-                    float value = peakInfo[setup_GATE_A].fAmp;
+                       float methodThreshold = _process->GetDetermineThreshold(m_groupId, setup_SL);
+                       //float max = methodThreshold * 255 / 100 - 1;
+                       float height = qFuzzyIsNull(methodThreshold) ? peakInfo[setup_GATE_A].fGh : methodThreshold;
+                       if (_amp >= height) {
+                           _Amp tmp;
+                           tmp.lawId  = i;
+                           tmp.scanId = j;
+                           tmp.value  = _amp;
+                           beamIdValues[i].append(tmp);
+                       }
+                   }
+               }
 
-                    if (value <= borderValue) {
-                        float diff1 = log10((curValue * 1.0) / borderValue);
-                        float diff2 = log10((borderValue * 1.0) / value);
-                        if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
-                            borders.append(j);
-                        } else {
-                            borders.append(j - 1);
-                        }
-                        break;
-                    } else if (j == m_scanStop) {
-                        borders.append(j);
-                    } else {
-                        curValue = value;
-                    }
-                }
-            }
+               for (int b : beamIdValues.keys()) {
+
+                   QVector<_Amp> beamAmps = beamIdValues.value(b);
+                   int cnt = beamAmps.count();
+                   QVector<_Amp> peakAmps;
+                   QVector<QVector<_Amp>> peakValues;
+                   if (cnt == 0) {
+                       continue;
+                   }
+
+                   QVector<_Amp> continuousPeaks;
+                   continuousPeaks.append(beamAmps[0]);
+                   for (int n = 1; n < cnt; ++n) {
+                       if (beamAmps[n].scanId - 1 != beamAmps[n-1].scanId) {
+                           peakValues.append(continuousPeaks);
+                           continuousPeaks.clear();
+                       }
+                       continuousPeaks.append(beamAmps[n]);
+                   }
+                   peakValues.append(continuousPeaks);
+
+                   for (int p = 0; p < peakValues.count(); ++p) {
+                       QVector<_Amp> tmp = peakValues[p];
+                       int count = tmp.count();
+                       for (int m = 0; m < count; ++m) {
+                           if (count == 1) {
+                               peakAmps.append(tmp[0]);
+                           } else if (count == 2) {
+                               if (tmp[0].value > tmp[1].value) {
+                                   peakAmps.append(tmp[0]);
+                               } else {
+                                   peakAmps.append(tmp[1]);
+                               }
+                           } else {
+                               if (tmp[0].value > tmp[1].value) {
+                                   peakAmps.append(tmp.at(0));
+                               }
+
+                               for (int k = 1; k < count - 1; ++k) {
+                                   if (tmp.at(k).value >= tmp.at(k-1).value && tmp.at(k).value > tmp.at(k+1).value) {
+                                       peakAmps.append(tmp.at(k));
+                                   } else if (k == count - 2) {
+                                       if (tmp.at(k).value <= tmp.at(k+1).value) {
+                                           peakAmps.append(tmp.at(k + 1));
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                       if (peakAmps.count() == 0) continue;
+                       _Amp defectLeft  = peakAmps.first();
+                       _Amp defectRight = peakAmps.last();
+                       // 查找左边界
+                       int scanId         = defectLeft.scanId;
+                       int lawId          = defectLeft.lawId;
+                       float borderValue    = defectLeft.value / 2;
+                       float curValue       = borderValue;
+                       if (scanId == m_scanStart) {
+                           borders.append(scanId);
+                       }
+                       for (int j = scanId - 1; j >= m_scanStart; --j) {
+                           _process->GetGatePeakInfos(m_groupId, j, lawId, peakInfo);
+                           float value = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
+                           if (value <= borderValue) {
+                               float diff1 = log10((curValue * 1.0) / borderValue);
+                               float diff2 = log10((borderValue * 1.0) / value);
+                               if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
+                                   borders.append(j);
+                               } else {
+                                   borders.append(j + 1);
+                               }
+                               break;
+                           } else if (j == m_scanStart) {
+                               borders.append(j);
+                           } else {
+                               curValue = value;
+                           }
+                       }
+
+                       // 查找右边界
+                       scanId         = defectRight.scanId;
+                       lawId          = defectRight.lawId;
+                       borderValue    = defectRight.value / 2;
+                       curValue       = borderValue;
+                       if (scanId == m_scanStop) {
+                           borders.append(scanId);
+                       }
+                       for (int j = scanId + 1; j <= m_scanStop; ++j) {
+                           _process->GetGatePeakInfos(m_groupId, j, lawId, peakInfo);
+                           float value = peakInfo[setup_GATE_A].fAmp;
+
+                           if (value <= borderValue) {
+                               float diff1 = log10((curValue * 1.0) / borderValue);
+                               float diff2 = log10((borderValue * 1.0) / value);
+                               if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
+                                   borders.append(j);
+                               } else {
+                                   borders.append(j - 1);
+                               }
+                               break;
+                           } else if (j == m_scanStop) {
+                               borders.append(j);
+                           } else {
+                               curValue = value;
+                           }
+                       }
+                   }
+               }
+           }
+
+           if (borders.count()) {
+               qSort(borders.begin(), borders.end());
+
+               _defect.scanIdStart = borders.first();
+               _defect.scanIdEnd   = borders.last();
+               _defect.length      = _defect.scanIdEnd - _defect.scanIdStart;
+           }
         }
-    }
-
-    if (borders.count()) {
-        qSort(borders.begin(), borders.end());
-
-        _defect.scanIdStart = borders.first();
-        _defect.scanIdEnd   = borders.last();
+        ++pHead;
     }
 }
 
@@ -1131,7 +1146,6 @@ void DefectIdentify::calDefectRect()
     auto end = m_defectsBetweenFrames.end();
     while(pHead != end) {
         if (!pHead->bMergedStatus) {
-            measureLength(*pHead);
             pHead->_rect.setLeft(_process->SAxisIndexToDist(pHead->scanIdStart));
             pHead->_rect.setRight(_process->SAxisIndexToDist(pHead->scanIdEnd));
             auto defect = pHead->special;
@@ -1200,6 +1214,7 @@ void DefectIdentify::forceMerge()
     rectL.setBottom(angleEnd);
     m_defectsRectL.append(rectL);
 
+    // 取特征点最大的为新的特征点，若存在多个最大值，取长度较长的
     pHead = m_defectsBetweenFrames.begin();
     QVector<defectsBetweenFrames> tmp;
     while(pHead != end) {

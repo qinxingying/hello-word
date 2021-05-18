@@ -87,7 +87,7 @@ private:
     float getRectFArea(QRectF &rect) { return rect.width() * rect.height();}
     void getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVector<QRectF> &rect, QVector<defectRect> &defectRects);
     void findMaxSpecialDefect(int maxValue, const QVector<specialDefect> &specils, specialDefect &_out);
-    void measureLength(defectsBetweenFrames &_defect);
+    void measureLength();
     void mergeDefects();
     void calDefectRect();
     void forceMerge();
