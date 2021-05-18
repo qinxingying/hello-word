@@ -737,6 +737,38 @@ void DefectIdentify::transformPolarToCartesian(int lawId, int dataIndex, QPointF
     postion.setY(Posy);
 }
 
+float DefectIdentify::transformCartesianToPolar(int lawId, float _xPos)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    ParameterProcess* _process = ParameterProcess::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[m_groupId];
+    float indexOffset = _group.fIndexOffset;
+
+    switch (_group.eSkew) {
+    case setup_PROBE_PART_SKEW_0:
+        _xPos = _xPos;
+        break;
+    case setup_PROBE_PART_SKEW_90:
+        _xPos -= indexOffset;
+        break;
+    case setup_PROBE_PART_SKEW_180:
+        _xPos = -_xPos;
+        break;
+    case setup_PROBE_PART_SKEW_270:
+        _xPos = -_xPos + indexOffset;
+        break;
+    default:
+        _xPos = _xPos;
+        break;
+    }
+
+    float _fAngle  = DEGREE_TO_ARCH(_process->GetLawAngle( m_groupId, lawId));
+    float s        = qFuzzyIsNull(sin(_fAngle)) ? 1 : sin(_fAngle);
+    float _fDist = (_xPos - _process->GetBeamInsertPos( m_groupId, lawId)) / s;
+
+    return _fDist;
+}
+
 void DefectIdentify::calViA( int scanId, int lawId, float *pResult)
 {
     PEAK_CONFIG peakInfo[setup_GATE_MAX];
@@ -1147,6 +1179,7 @@ void DefectIdentify::calDefectRect()
             pHead->_rect.setLeft(_process->SAxisIndexToDist(pHead->scanIdStart));
             pHead->_rect.setRight(_process->SAxisIndexToDist(pHead->scanIdEnd));
             auto defect = pHead->special;
+            tipDiffractionMeasureHeight(defect);
             int id = defect.specialRect._rect[1].lawId;
             float tmp = _process->CScanLineAngleToScanLineAngle(m_groupId, id);
             pHead->_rect.setTop(tmp);
@@ -1241,6 +1274,85 @@ void DefectIdentify::forceMerge()
             m_lawIds.append(tmp.at(i).special.specialRect._rect[0].lawId);
         }
     }
+}
+
+/**
+ * @brief DefectIdentify::tipDiffractionMeasureHeight 端点衍射法对特征缺陷重新测量高度，特别版本
+ * @param _defect
+ */
+void DefectIdentify::tipDiffractionMeasureHeight(specialDefect &_defect)
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+    WDATA* _pData = _process->GetShadowDataPointer();
+
+    int borderValue = _defect.valueMax / 5;// 经验值，暂定为最大值的五分之一
+    int scanId      = _defect.scanId;
+
+    QPointF point;
+    transformPolarToCartesian(_defect.specialRect._rect[0].lawId, _defect.specialRect._rect[0].dataIndex, point);
+    float _via = point.x();
+    // 在via +-2 mm范围内寻找
+    float _distStart = _via - 2;
+    float _distEnd   = _via + 2;
+
+    QVector<beamData> beamDatas;
+    int startBeamId = qMax(_defect.specialRect._rect[2].lawId, m_beamStart);
+    for (int i = startBeamId + 1; i < m_lawQty; ++i) {
+        int	  _indexStart = transformDistMmToDotPos(transformCartesianToPolar(i, _distStart));
+        int	  _indexEnd   = transformDistMmToDotPos(transformCartesianToPolar(i, _distEnd));
+
+        if(_indexStart < 0 || _indexStart >= m_pointQty || _indexEnd < 0 || _indexEnd >= m_pointQty) {
+            continue ;
+        }
+
+        WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, scanId, i, _pData);
+        int value, postion;
+        findMaxValueAndPos(lawData, _indexStart, _indexEnd, value, postion);
+        if (value >= borderValue) {
+            beamData _data;
+            _data.dataIndex = postion;
+            _data.lawId     = i;
+            _data.value     = value;
+
+            QPointF point;
+            if (m_bSscanRangeIsSet) {
+                transformPolarToCartesian(_data.lawId, _data.dataIndex, point);
+                if (!m_rectSscan.contains(point)) {
+                    continue;
+                }
+            }
+            if (beamDatas.count()) {
+                if (beamDatas.last().lawId + 1 != i) { // 不连续，清除之前的
+                    beamDatas.clear();
+                }
+            }
+            beamDatas.append(_data);
+        }
+    }
+    QVector<beamData> peakDatas;
+    findAllPeakDatas(beamDatas, peakDatas);
+    float top = _defect.rect.top();
+    for (int i = 0; i < peakDatas.count(); ++i) {
+        QPointF point;
+        transformPolarToCartesian(peakDatas[i].lawId, peakDatas[i].dataIndex, point);
+        if (point.y() < top) {
+            top = point.y();
+            _defect.specialRect._rect[2].lawId = peakDatas[i].lawId;
+        }
+    }
+    _defect.rect.setTop(top);
+}
+
+int DefectIdentify::transformDistMmToDotPos(float fDist_)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& group = _pConfig->group[m_groupId];
+    float _fSampleStart = group.fSampleStart;
+    float _fSampleRange = group.fSampleRange;
+
+    int _iDot = m_pointQty * (fDist_ - _fSampleStart) / _fSampleRange;
+
+    return _iDot;
 }
 
 

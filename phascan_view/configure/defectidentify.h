@@ -82,6 +82,7 @@ private:
     void findRectBorder( WDATA* Data, int maxValue, int beamdis, beamAmp *borders, const QVector<beamData> &data);
     void findMaxValueAndPos( WDATA* Data, int start, int end, int &value, int &postion);
     void transformPolarToCartesian(int lawId, int dataIndex, QPointF &postion);
+    float transformCartesianToPolar(int lawId, float _xPos);
     void calViA( int scanId, int lawId, float *pResult);
     void calDA( int scanId, int lawId, float *pResult);
     float getRectFArea(QRectF &rect) { return rect.width() * rect.height();}
@@ -91,6 +92,8 @@ private:
     void mergeDefects();
     void calDefectRect();
     void forceMerge();
+    void tipDiffractionMeasureHeight(specialDefect &_defect);
+    int transformDistMmToDotPos(float fDist_);
 
     int m_groupId;
     int m_pointQty;
