@@ -943,7 +943,7 @@ void DefectIdentify::measureLength()
                        _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
                        float _amp = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
 
-                       float methodThreshold = _process->GetDetermineThreshold(m_groupId, setup_SL);
+                       float methodThreshold = 0.0;// _process->GetDetermineThreshold(m_groupId, setup_SL);
                        //float max = methodThreshold * 255 / 100 - 1;
                        float height = qFuzzyIsNull(methodThreshold) ? peakInfo[setup_GATE_A].fGh : methodThreshold;
                        if (_amp >= height) {
@@ -980,27 +980,25 @@ void DefectIdentify::measureLength()
                    for (int p = 0; p < peakValues.count(); ++p) {
                        QVector<_Amp> tmp = peakValues[p];
                        int count = tmp.count();
-                       for (int m = 0; m < count; ++m) {
-                           if (count == 1) {
+                       if (count == 1) {
+                           peakAmps.append(tmp[0]);
+                       } else if (count == 2) {
+                           if (tmp[0].value > tmp[1].value) {
                                peakAmps.append(tmp[0]);
-                           } else if (count == 2) {
-                               if (tmp[0].value > tmp[1].value) {
-                                   peakAmps.append(tmp[0]);
-                               } else {
-                                   peakAmps.append(tmp[1]);
-                               }
                            } else {
-                               if (tmp[0].value > tmp[1].value) {
-                                   peakAmps.append(tmp.at(0));
-                               }
+                               peakAmps.append(tmp[1]);
+                           }
+                       } else {
+                           if (tmp[0].value > tmp[1].value) {
+                               peakAmps.append(tmp.at(0));
+                           }
 
-                               for (int k = 1; k < count - 1; ++k) {
-                                   if (tmp.at(k).value >= tmp.at(k-1).value && tmp.at(k).value > tmp.at(k+1).value) {
-                                       peakAmps.append(tmp.at(k));
-                                   } else if (k == count - 2) {
-                                       if (tmp.at(k).value <= tmp.at(k+1).value) {
-                                           peakAmps.append(tmp.at(k + 1));
-                                       }
+                           for (int k = 1; k < count - 1; ++k) {
+                               if (tmp.at(k).value >= tmp.at(k-1).value && tmp.at(k).value > tmp.at(k+1).value) {
+                                   peakAmps.append(tmp.at(k));
+                               } else if (k == count - 2) {
+                                   if (tmp.at(k).value <= tmp.at(k+1).value) {
+                                       peakAmps.append(tmp.at(k + 1));
                                    }
                                }
                            }
@@ -1173,10 +1171,10 @@ void DefectIdentify::forceMerge()
         return;
 
     int maxValue    = 0;
-    int scanStart   = m_defectsRectL.first().left();
-    int scanEnd     = m_defectsRectL.last().right() - 1;
+    float scanStart   = m_defectsRectL.first().left();
+    float scanEnd     = m_defectsRectL.last().right();
     int angleStart  = m_defectsRectL.last().top();
-    int angleEnd    = m_defectsRectL.first().bottom()  - 1;
+    int angleEnd    = m_defectsRectL.first().bottom();
 
     m_defectsRectL.clear();
     m_defectsRectH.clear();
@@ -1207,7 +1205,7 @@ void DefectIdentify::forceMerge()
         ++pHead;
     }
 
-    QRect rectL;
+    QRectF rectL;
     rectL.setLeft(scanStart);
     rectL.setRight(scanEnd);
     rectL.setTop(angleStart);
@@ -1230,9 +1228,9 @@ void DefectIdentify::forceMerge()
     m_defectsRectH.append(tmp.at(0).special.rect);
     m_scanIds.append(tmp.at(0).special.scanId);
     m_lawIds.append(tmp.at(0).special.specialRect._rect[0].lawId);
-    int len = tmp.at(0).scanIdEnd - tmp.at(0).scanIdStart;
+    float len = tmp.at(0).scanIdEnd - tmp.at(0).scanIdStart;
     for (int i = 1; i < tmp.count(); ++i) {
-        int lenTmp = tmp.at(i).scanIdEnd - tmp.at(i).scanIdStart;
+        float lenTmp = tmp.at(i).scanIdEnd - tmp.at(i).scanIdStart;
         if (lenTmp > len) {
             m_defectsRectH.clear();
             m_scanIds.clear();
