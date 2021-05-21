@@ -140,35 +140,45 @@
         <translation>测长方法</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="30"/>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="64"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="28"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="58"/>
         <source>Half Wave Height Method</source>
         <translation>6db法</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="37"/>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="71"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="35"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="65"/>
         <source>End point Half Wave Height Method</source>
         <translation>端点6db法</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="44"/>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="78"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="42"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="72"/>
         <source>Absolute Sensitivity Method</source>
         <translation>绝对灵敏度法</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="56"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="52"/>
         <source>Height measuring methods</source>
         <translation>测高方法</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="96"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="79"/>
+        <source>TipDiffraction Method</source>
+        <translation>端点衍射法</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="95"/>
         <source>Scale: </source>
         <translation>比例：</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="134"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="111"/>
+        <source>AutoMerge</source>
+        <translation>自动合并</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="143"/>
         <source>OK</source>
         <translation>确认</translation>
     </message>
@@ -1125,77 +1135,77 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="769"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="770"/>
         <source>Store Current LawId and ScanPos ?</source>
         <translation>保存当前角度轴位置和扫查轴位置？</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="964"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="972"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="986"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="969"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="977"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="991"/>
         <source>No Defect Found</source>
         <translation>未发现缺陷</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="897"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="991"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="902"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="996"/>
         <source>Range too Small</source>
         <translation>范围太小</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="589"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1909"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="590"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1914"/>
         <source>Select Method</source>
         <translation>选择测量方法</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="590"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1903"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="591"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1908"/>
         <source>Start Analysis</source>
         <translation>开始分析</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="897"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="991"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="902"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="996"/>
         <source>Please Selected More Wider Range</source>
         <translation>请扩大选择范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="995"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1000"/>
         <source>Out of Range</source>
         <translation>超过范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="995"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1000"/>
         <source>Please Selected in C Scan View</source>
         <translation>请不要超过C扫视图</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="584"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="585"/>
         <source>Scale Recover</source>
         <translation>缩放复原</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="585"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1880"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="586"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1885"/>
         <source>Data Mode</source>
         <translation>数据模式</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="586"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1886"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="587"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1891"/>
         <source>Show Cursor</source>
         <translation>测量光标</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="587"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1892"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="588"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1897"/>
         <source>Show Defect</source>
         <translation>缺陷显示</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="588"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1898"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="589"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1903"/>
         <source>Show Couple</source>
         <translation>耦合监控</translation>
     </message>
@@ -4012,12 +4022,12 @@
         <translation>缺陷保存成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2291"/>
+        <location filename="../ui/mainwindow.cpp" line="2381"/>
         <source>Set current position as defect position ?</source>
         <translation>设置当前位置为缺陷位置？</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2292"/>
+        <location filename="../ui/mainwindow.cpp" line="2382"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation>缺陷位置没有设置。如果你设置当前位置为缺陷位置，点击0k，否则点击取消并用Z键来设置缺陷位置</translation>
     </message>

@@ -136,35 +136,45 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="30"/>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="64"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="28"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="58"/>
         <source>Half Wave Height Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="37"/>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="71"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="35"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="65"/>
         <source>End point Half Wave Height Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="44"/>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="78"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="42"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="72"/>
         <source>Absolute Sensitivity Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="56"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="52"/>
         <source>Height measuring methods</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="96"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="79"/>
+        <source>TipDiffraction Method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="95"/>
         <source>Scale: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="134"/>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="111"/>
+        <source>AutoMerge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogdefectmethodselect.ui" line="143"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -902,77 +912,77 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="769"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="770"/>
         <source>Store Current LawId and ScanPos ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="964"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="972"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="986"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="969"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="977"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="991"/>
         <source>No Defect Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="897"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="991"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="902"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="996"/>
         <source>Range too Small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="589"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1909"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="590"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1914"/>
         <source>Select Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="590"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1903"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="591"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1908"/>
         <source>Start Analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="897"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="991"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="902"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="996"/>
         <source>Please Selected More Wider Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="995"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1000"/>
         <source>Out of Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="995"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1000"/>
         <source>Please Selected in C Scan View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="584"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="585"/>
         <source>Scale Recover</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="585"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1880"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="586"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1885"/>
         <source>Data Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="586"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1886"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="587"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1891"/>
         <source>Show Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="587"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1892"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="588"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1897"/>
         <source>Show Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="588"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1898"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="589"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1903"/>
         <source>Show Couple</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3290,12 +3300,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2291"/>
+        <location filename="../ui/mainwindow.cpp" line="2381"/>
         <source>Set current position as defect position ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2292"/>
+        <location filename="../ui/mainwindow.cpp" line="2382"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation type="unfinished"></translation>
     </message>

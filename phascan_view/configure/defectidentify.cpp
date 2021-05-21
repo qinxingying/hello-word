@@ -904,6 +904,11 @@ void DefectIdentify::measureLength()
 {
     if (m_defectsBetweenFrames.count() == 0) return;
 
+    if (m_lengthMeasureMethod == AbsoluteSensitivity) {
+       // 绝对灵敏度法不需要再做处理
+        return;
+    }
+
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     ParameterProcess* _process = ParameterProcess::Instance();
     GROUP_CONFIG& group = _pConfig->group[m_groupId];
@@ -912,12 +917,7 @@ void DefectIdentify::measureLength()
     auto end = m_defectsBetweenFrames.end();
     while(pHead != end) {
         if (!pHead->bMergedStatus) {
-            defectsBetweenFrames &_defect = *pHead;
-            if (m_lengthMeasureMethod == AbsoluteSensitivity) {
-               // 绝对灵敏度法不需要再做处理
-                continue;
-           }
-
+           defectsBetweenFrames &_defect = *pHead;
            PEAK_CONFIG peakInfo[setup_GATE_MAX];
            QVector<int> borders;
            borders.clear();
