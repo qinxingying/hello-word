@@ -2198,6 +2198,7 @@ int DopplerConfigure::DeleteDefect(int iGroupId_, int index_)
 			m_dfParam[iGroupId_].pDFEnd = _pDf1;
 
 			delete _pDfInfo ;
+            break;
 		}
 		_pDfInfo = _pDfInfo->pNext;
 	}
