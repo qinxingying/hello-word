@@ -21,6 +21,8 @@ public:
 
     double getScale() {return m_scale;}
 
+    bool isAutoMerged() {return m_autoMerge;}
+
     void retranslateUi();
 
 private slots:
@@ -40,11 +42,16 @@ private slots:
 
     void on_scaleDoubleSpinBox_valueChanged(double arg1);
 
+    void on_tipDiffractionH_clicked();
+
+    void on_autoMerge_clicked();
+
 private:
     Ui::DialogDefectMethodSelect *ui;
 
     int m_lengthMeasureMethod {0};
     int m_heightMeasureMethod {0};
+    bool m_autoMerge {false};
     double m_scale {50.0};
 };
 

@@ -74,3 +74,13 @@ void DialogDefectMethodSelect::on_scaleDoubleSpinBox_valueChanged(double arg1)
 {
     m_scale = arg1;
 }
+
+void DialogDefectMethodSelect::on_tipDiffractionH_clicked()
+{
+    m_heightMeasureMethod = 3;
+}
+
+void DialogDefectMethodSelect::on_autoMerge_clicked()
+{
+    m_autoMerge = ui->autoMerge->isChecked();
+}

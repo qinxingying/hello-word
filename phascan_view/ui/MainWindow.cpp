@@ -2195,6 +2195,7 @@ int MainWindow::selectDefectMeasureMethod()
     int heightMethodId = defectMethodNew.getHeightMeasureMethodId();
     int lengthMethodId = defectMethodNew.getLengthMeasureMethodId();
     double scale       = defectMethodNew.getScale();
+    bool autoMerged    = defectMethodNew.isAutoMerged();
 
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
@@ -2204,6 +2205,7 @@ int MainWindow::selectDefectMeasureMethod()
     _pConfig->m_defect[m_iCurGroup]->setHeightMeasureMethod(heightMethodId);
     _pConfig->m_defect[m_iCurGroup]->setLengthMeasureMethod(lengthMethodId);
     _pConfig->m_defect[m_iCurGroup]->setScale(scale);
+    _pConfig->m_defect[m_iCurGroup]->setAutoMerge(autoMerged);
     return 0;
 }
 

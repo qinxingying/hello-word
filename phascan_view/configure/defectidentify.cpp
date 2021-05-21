@@ -192,7 +192,13 @@ bool DefectIdentify::analysisDefect()
 
     mergeDefects();
     measureLength();
-    mergeDefects();// 测长之后再次合并缺陷
+    if (m_bAutoMerge) {
+        mergeDefects();// 测长之后再次合并缺陷，长度方向
+    }
+    if (m_heightMeasureMethod == TipDiffraction) {
+        // 高度方向做合并
+        mergeDefectsTipDiffraction();
+    }
     calDefectRect();
 //    forceMerge();
     return ret;
@@ -479,7 +485,7 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
                 defect.bMergeStatus = false;
 
                 QVector<beamData> peakDatas;
-                if (m_heightMeasureMethod == HalfWave) { // 6db 法
+                if (m_heightMeasureMethod == HalfWave || m_heightMeasureMethod == TipDiffraction) { // 6db 法 。端点衍射法默认用6db测每一帧缺陷的大小
                     peakDatas.append(_data);
                 } else if (m_heightMeasureMethod == EndPointHalfWave){ // 端点6db 法
                     findAllPeakDatas(temp.at(i), peakDatas);
@@ -1179,7 +1185,9 @@ void DefectIdentify::calDefectRect()
             pHead->_rect.setLeft(_process->SAxisIndexToDist(pHead->scanIdStart));
             pHead->_rect.setRight(_process->SAxisIndexToDist(pHead->scanIdEnd));
             auto defect = pHead->special;
-            tipDiffractionMeasureHeight(defect);
+            if (m_heightMeasureMethod == TipDiffraction) {
+                tipDiffractionMeasureHeight(defect);
+            }
             int id = defect.specialRect._rect[1].lawId;
             float tmp = _process->CScanLineAngleToScanLineAngle(m_groupId, id);
             pHead->_rect.setTop(tmp);
@@ -1285,7 +1293,7 @@ void DefectIdentify::tipDiffractionMeasureHeight(specialDefect &_defect)
     ParameterProcess* _process = ParameterProcess::Instance();
     WDATA* _pData = _process->GetShadowDataPointer();
 
-    int borderValue = _defect.valueMax / 5;// 经验值，暂定为最大值的五分之一
+    int borderValue = _defect.valueMax / 7;// 经验值，暂定为最大值的七分之一
     int scanId      = _defect.scanId;
 
     QPointF point;
@@ -1353,6 +1361,46 @@ int DefectIdentify::transformDistMmToDotPos(float fDist_)
     int _iDot = m_pointQty * (fDist_ - _fSampleStart) / _fSampleRange;
 
     return _iDot;
+}
+
+void DefectIdentify::mergeDefectsTipDiffraction()
+{
+    if (m_defectsBetweenFrames.count() <= 1) return;
+
+    auto pHead = m_defectsBetweenFrames.begin();
+    auto end = m_defectsBetweenFrames.end();
+    while (pHead < end) {
+        if (pHead->bMergedStatus) {
+            ++pHead;
+            continue;
+        }
+        auto pNext                = pHead + 1;
+        while (pNext != end) {
+            if (pNext->bMergedStatus) {
+                ++pNext;
+                continue;
+            }
+
+            if (((pHead->scanIdStart <= pNext->scanIdStart) && (pHead->scanIdEnd >= pNext->scanIdStart)) ||
+                  ((pHead->scanIdStart <= pNext->scanIdEnd) && (pHead->scanIdEnd >= pNext->scanIdEnd)) ||
+                    ((pHead->scanIdStart >= pNext->scanIdStart) && (pHead->scanIdEnd <= pNext->scanIdEnd))) {
+                if (pHead->special.valueMax > pNext->special.valueMax) {
+                    pNext->bMergedStatus = true;
+                } else if (pHead->special.valueMax < pNext->special.valueMax) {
+                    pHead->bMergedStatus = true;
+                } else {
+                    if (pHead->length >= pNext->length) {
+                        pNext->bMergedStatus = true;
+                    } else {
+                        pHead->bMergedStatus = true;
+                    }
+                }
+            }
+
+            ++pNext;
+        }
+        ++pHead;
+    }
 }
 
 

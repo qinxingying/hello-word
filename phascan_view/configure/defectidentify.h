@@ -12,7 +12,8 @@ public:
     enum {
         HalfWave = 0,
         EndPointHalfWave,
-        AbsoluteSensitivity
+        AbsoluteSensitivity,
+        TipDiffraction  // 端点衍射法
     };
 
     explicit DefectIdentify(int groupId, QObject *parent = 0);
@@ -28,6 +29,7 @@ public:
     void setSscanRange(QRectF _recet);
     void setSscanRangeValid(bool _isValid);
     void setIdentifyStatus(bool status);
+    void setAutoMerge(bool _merge) {m_bAutoMerge = _merge;}
 private:
     struct beamAmp{
         int lawId;
@@ -94,6 +96,7 @@ private:
     void forceMerge();
     void tipDiffractionMeasureHeight(specialDefect &_defect);
     int transformDistMmToDotPos(float fDist_);
+    void mergeDefectsTipDiffraction();
 
     int m_groupId;
     int m_pointQty;
@@ -105,6 +108,7 @@ private:
     int m_lengthMeasureMethod {0};
     int m_heightMeasureMethod {0};
     float m_scale {0.5};
+    bool m_bAutoMerge {false};
     QVector<QRectF> m_defectsRectL; // 长度方向，表现在C扫上
     QVector<QRectF> m_defectsRectH; // 高度方向，表现在S扫上
     QVector<int> m_scanIds; // 特征點所在幀
