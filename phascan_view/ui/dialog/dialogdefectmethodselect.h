@@ -51,7 +51,7 @@ private:
 
     int m_lengthMeasureMethod {0};
     int m_heightMeasureMethod {0};
-    bool m_autoMerge {false};
+    bool m_autoMerge {true};
     double m_scale {50.0};
 };
 

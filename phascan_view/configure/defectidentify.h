@@ -108,7 +108,7 @@ private:
     int m_lengthMeasureMethod {0};
     int m_heightMeasureMethod {0};
     float m_scale {0.5};
-    bool m_bAutoMerge {false};
+    bool m_bAutoMerge {true};
     QVector<QRectF> m_defectsRectL; // 长度方向，表现在C扫上
     QVector<QRectF> m_defectsRectH; // 高度方向，表现在S扫上
     QVector<int> m_scanIds; // 特征點所在幀
