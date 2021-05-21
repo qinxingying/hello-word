@@ -202,7 +202,7 @@ bool DefectIdentify::analysisDefect()
         mergeDefectsTipDiffraction();
     }
     calDefectRect();
-//    forceMerge();
+    forceMerge();
     return ret;
 }
 
@@ -1186,7 +1186,7 @@ void DefectIdentify::calDefectRect()
         if (!pHead->bMergedStatus) {
             pHead->_rect.setLeft(_process->SAxisIndexToDist(pHead->scanIdStart));
             pHead->_rect.setRight(_process->SAxisIndexToDist(pHead->scanIdEnd));
-            auto defect = pHead->special;
+            specialDefect& defect = pHead->special;
             if (m_heightMeasureMethod == TipDiffraction) {
                 tipDiffractionMeasureHeight(defect);
             }
