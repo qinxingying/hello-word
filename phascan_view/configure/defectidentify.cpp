@@ -42,6 +42,7 @@ bool DefectIdentify::analysisData(int scanStart, int scanStop, int beamStart, in
     }else{
         threshold = ceil(threshold*255.0/100);
     }
+    m_threshold = threshold;
 
     QVector<float> SampleStart(lawQty);
     QVector<float> SampleRange(lawQty);
@@ -914,6 +915,8 @@ void DefectIdentify::measureLength()
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     ParameterProcess* _process = ParameterProcess::Instance();
     GROUP_CONFIG& group = _pConfig->group[m_groupId];
+    int beamdis = group.nPointQty / group.fSampleRange * BEAMDIS;
+    WDATA* _pData = _process->GetShadowDataPointer();
 
     auto pHead = m_defectsBetweenFrames.begin();
     auto end = m_defectsBetweenFrames.end();
@@ -925,17 +928,28 @@ void DefectIdentify::measureLength()
            borders.clear();
            if (m_lengthMeasureMethod == HalfWave) { // 6db 法
                int scanId           = _defect.special.scanId;
-               _process->GetGatePeakInfos(m_groupId, scanId, _defect.special.specialRect._rect[0].lawId, peakInfo);
-               float borderValue    = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp / 2.0;
+//               _process->GetGatePeakInfos(m_groupId, scanId, _defect.special.specialRect._rect[0].lawId, peakInfo);
+               float borderValue    = _defect.special.valueMax / 2;;
                float curValue       = borderValue;
                for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
+                   int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
                    // 查找左边界
                    if (scanId == m_scanStart) {
                        borders.append(scanId);
                    }
                    for (int j = scanId - 1; j >= m_scanStart; --j) {
-                       _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
-                       float value = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
+                       int rangeLeft = curDataIndex - (beamdis/2);
+                       int rangeRight = curDataIndex + (beamdis/2);
+                       if(rangeLeft < 0){
+                           rangeLeft = 0;
+                       }
+                       if(rangeRight >= m_pointQty){
+                           rangeRight = m_pointQty - 1;
+                       }
+
+                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, i, _pData);
+                       int value, postion;
+                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
 
                        if (value <= borderValue) {
                            float diff1 = log10((curValue * 1.0) / borderValue);
@@ -949,17 +963,29 @@ void DefectIdentify::measureLength()
                        } else if (j == m_scanStart) {
                            borders.append(j);
                        } else {
+                           curDataIndex = postion;
                            curValue = value;
                        }
                    }
 
                    // 查找右边界
+                   curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
                    if (scanId == m_scanStop) {
                        borders.append(scanId);
                    }
                    for (int j = scanId + 1; j <= m_scanStop; ++j) {
-                       _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
-                       float value = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
+                       int rangeLeft = curDataIndex - (beamdis/2);
+                       int rangeRight = curDataIndex + (beamdis/2);
+                       if(rangeLeft < 0){
+                           rangeLeft = 0;
+                       }
+                       if(rangeRight >= m_pointQty){
+                           rangeRight = m_pointQty - 1;
+                       }
+
+                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, i, _pData);
+                       int value, postion;
+                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
                        if (value <= borderValue) {
                            float diff1 = log10((curValue * 1.0) / borderValue);
                            float diff2 = log10((borderValue * 1.0) / value);
@@ -972,6 +998,7 @@ void DefectIdentify::measureLength()
                        } else if (j == m_scanStop) {
                            borders.append(j);
                        } else {
+                           curDataIndex = postion;
                            curValue = value;
                        }
                    }
@@ -979,19 +1006,33 @@ void DefectIdentify::measureLength()
            } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
                QMap<int, QVector<_Amp>> beamIdValues;// 该缺陷范围内所有的beamId上对应的所有特征点
                for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
-                   for (int j = _defect.scanIdStart; j <= _defect.scanIdEnd; ++j) {
-                       _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
-                       float _amp = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
+                   int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
+                   for (int j = _defect.scanIdStart; j <= _defect.scanIdEnd; ++j) {                      
+                       int rangeLeft = curDataIndex - (beamdis/2);
+                       int rangeRight = curDataIndex + (beamdis/2);
+                       if(rangeLeft < 0){
+                           rangeLeft = 0;
+                       }
+                       if(rangeRight >= m_pointQty){
+                           rangeRight = m_pointQty - 1;
+                       }
+                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, i, _pData);
+                       int _amp, postion;
+                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, _amp, postion);
+                       float height = m_threshold;
+//                       _process->GetGatePeakInfos(m_groupId, j, i, peakInfo);
+//                       float _amp = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
 
-                       float methodThreshold = 0.0;// _process->GetDetermineThreshold(m_groupId, setup_SL);
-                       //float max = methodThreshold * 255 / 100 - 1;
-                       float height = qFuzzyIsNull(methodThreshold) ? peakInfo[setup_GATE_A].fGh : methodThreshold;
+//                       float methodThreshold = 0.0;// _process->GetDetermineThreshold(m_groupId, setup_SL);
+//                       //float max = methodThreshold * 255 / 100 - 1;
+//                       float height = qFuzzyIsNull(methodThreshold) ? peakInfo[setup_GATE_A].fGh : methodThreshold;
                        if (_amp >= height) {
                            _Amp tmp;
                            tmp.lawId  = i;
                            tmp.scanId = j;
                            tmp.value  = _amp;
                            beamIdValues[i].append(tmp);
+                           curDataIndex = postion;
                        }
                    }
                }
@@ -1054,9 +1095,20 @@ void DefectIdentify::measureLength()
                        if (scanId == m_scanStart) {
                            borders.append(scanId);
                        }
-                       for (int j = scanId - 1; j >= m_scanStart; --j) {
-                           _process->GetGatePeakInfos(m_groupId, j, lawId, peakInfo);
-                           float value = pow(10.0, group.fRefGain / 20.0) * peakInfo[setup_GATE_A].fAmp;
+                       int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
+                       for (int j = scanId - 1; j >= m_scanStart; --j) {       
+                           int rangeLeft = curDataIndex - (beamdis/2);
+                           int rangeRight = curDataIndex + (beamdis/2);
+                           if(rangeLeft < 0){
+                               rangeLeft = 0;
+                           }
+                           if(rangeRight >= m_pointQty){
+                               rangeRight = m_pointQty - 1;
+                           }
+                           WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, lawId, _pData);
+                           int value, postion;
+                           findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
+
                            if (value <= borderValue) {
                                float diff1 = log10((curValue * 1.0) / borderValue);
                                float diff2 = log10((borderValue * 1.0) / value);
@@ -1070,6 +1122,7 @@ void DefectIdentify::measureLength()
                                borders.append(j);
                            } else {
                                curValue = value;
+                               curDataIndex = postion;
                            }
                        }
 
@@ -1081,9 +1134,19 @@ void DefectIdentify::measureLength()
                        if (scanId == m_scanStop) {
                            borders.append(scanId);
                        }
+                       curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
                        for (int j = scanId + 1; j <= m_scanStop; ++j) {
-                           _process->GetGatePeakInfos(m_groupId, j, lawId, peakInfo);
-                           float value = peakInfo[setup_GATE_A].fAmp;
+                           int rangeLeft = curDataIndex - (beamdis/2);
+                           int rangeRight = curDataIndex + (beamdis/2);
+                           if(rangeLeft < 0){
+                               rangeLeft = 0;
+                           }
+                           if(rangeRight >= m_pointQty){
+                               rangeRight = m_pointQty - 1;
+                           }
+                           WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, lawId, _pData);
+                           int value, postion;
+                           findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
 
                            if (value <= borderValue) {
                                float diff1 = log10((curValue * 1.0) / borderValue);
@@ -1098,6 +1161,7 @@ void DefectIdentify::measureLength()
                                borders.append(j);
                            } else {
                                curValue = value;
+                               curDataIndex = postion;
                            }
                        }
                    }

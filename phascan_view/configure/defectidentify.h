@@ -101,6 +101,7 @@ private:
     int m_groupId;
     int m_pointQty;
     int m_lawQty;
+    int m_threshold {0};
     bool m_identifyDone;
     QMap<int, QVector<defectRect> > m_frameDefects;
     QVector<defectsBetweenFrames> m_defectsBetweenFrames;
