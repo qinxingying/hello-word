@@ -203,7 +203,7 @@ bool DefectIdentify::analysisDefect()
         mergeDefectsTipDiffraction();
     }
     calDefectRect();
-//    forceMerge();
+    forceMerge();
     return ret;
 }
 
