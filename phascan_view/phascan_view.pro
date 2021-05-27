@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui opengl printsupport
+QT       += core gui opengl printsupport axcontainer
 CONFIG += C++11
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

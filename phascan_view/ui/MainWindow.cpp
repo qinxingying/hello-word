@@ -37,6 +37,7 @@ Date     : 2016-12-06
 #include "remote_monitoring/assemblyremotesdialog.h"
 #include "version.h"
 #include "defectidentify.h"
+#include "DopplerExcelBase.h"
 
 int lastgroup = 0;
 int currentgroup = 0; //-1表示全部组的那个tab
@@ -115,6 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
     indexSliderh->hide();
     ui->measureWidget->hide();
     //indexSliderWidget->hide();
+    connect(ui->actionSave_Data, &QAction::triggered, this, &MainWindow::slot_actionSaveCSacnData_triggered);
 }
 
 MainWindow::~MainWindow()
@@ -150,6 +152,7 @@ void MainWindow::init_ui()
     ui->actionSaveDisplay->setDisabled(true);
     ui->actionLoadDisplay->setDisabled(true);
     ui->actionStop_Analysis->setDisabled(true);
+    ui->actionSave_Data->setDisabled(true);
     // init display widget list
     for(int i = 0 ; i < MAX_LIST_QTY ; i++)
     {
@@ -1093,6 +1096,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
             ui->actionFile_Properties->setEnabled(false);
         }
 
+        ui->actionSave_Data->setEnabled(true);
 //        if(ui->measureWidget->isHidden()){
 //            ui->measureWidget->show();
 //        }
@@ -2782,4 +2786,76 @@ void MainWindow::on_actionFile_Properties_triggered()
 {
     DialogAboutFileProperties filePropertiesDlg;
     filePropertiesDlg.exec();
+}
+
+void MainWindow::slot_actionSaveCSacnData_triggered()
+{
+    qDebug("%s:[%s](%d)", __FILE__,__FUNCTION__,__LINE__);
+    DopplerConfigure* pConfig = DopplerConfigure::Instance();
+    //SCANNER& _scanner = _pConfig->common.scanner ;
+    ParameterProcess* process = ParameterProcess::Instance();
+    int scanOff = process->GetScanOff(m_iCurGroup);
+    int scanMax = process->GetRealScanMax() + scanOff;
+    int lawstart  = process->GetLawStart();
+    int lawstop   = process->GetLawStop();
+    //U8* pMarker = process->GetScanMarker(m_iCurGroup);
+    int disp_mode = pConfig->group[m_iCurGroup].DisplayMode;
+    if(disp_mode < 0){
+        disp_mode = (int)ProcessDisplay::DISP_S_AV;
+    }
+
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save CSacn Data"), "CScanData",
+            "Microsoft Excel(*.xls)");
+    if (!filePath.isEmpty())
+    {
+        ParameterProcess* _process = ParameterProcess::Instance();
+        WDATA* data = _process->GetCScanData();
+        QList< QList<QVariant> > m_datas;
+        if (data != nullptr) {
+            for (int j = -1; j < scanMax; ++j) {
+                QList<QVariant> rows;
+                if (j == -1) {
+                    rows.append("");
+                    for (int i = 1; i <= lawstop; ++i) {
+                        rows.append(QString("Beam%1").arg(i));
+                    }
+                    m_datas.append(rows);
+                    continue;
+                }
+                rows.append(QString("Pos%1").arg(j));
+                for (int i = lawstart + 1; i <= lawstop; ++i) {
+                    switch (disp_mode) {
+                    case ProcessDisplay::DISP_S_AV_BH_CH:
+                    case ProcessDisplay::DISP_S_AH_BH_CH:
+                    case ProcessDisplay::DISP_S_AV_CH:
+                    case ProcessDisplay::DISP_S_AV_CH_CH:
+                    case ProcessDisplay::DISP_S_AV_CH_BH:
+                    case ProcessDisplay::DISP_S_AV_CH_N:
+                    case ProcessDisplay::DISP_S_AV_BH_CHH:
+                        rows.append(data[(j + 1)*2048 + i]);
+                        break;
+                    case ProcessDisplay::DISP_S_AH_BH_CV:
+                    case ProcessDisplay::DISP_S_AH_CV:
+                    case ProcessDisplay::DISP_S_AH_CV_CV:
+                        rows.append(data[(scanMax - j - 1) + i * 2048]);
+                        break;
+                    default:
+                        break;
+                    }
+
+                }
+
+                m_datas.append(rows);
+            }
+            ExcelBase xls;
+            xls.create(filePath);
+            xls.setCurrentSheet(1);
+            QElapsedTimer timer;
+            timer.start();
+            xls.writeCurrentSheet(m_datas);
+            qDebug() << "write cost:"<< timer.elapsed()<< "ms";
+            xls.save();
+            xls.close();
+        }
+    }
 }

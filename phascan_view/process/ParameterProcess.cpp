@@ -3932,3 +3932,15 @@ WDATA* ParameterProcess::GetRasterData(int nGroupId_, setup_CSCAN_SOURCE_MODE so
 
 }
 
+WDATA CScanData[2048][2048];
+void ParameterProcess::SetCScanData(WDATA data[2048][2048])
+{
+    memset(CScanData,0x00,sizeof(CScanData));
+    memcpy(CScanData, data, sizeof(CScanData));
+}
+
+WDATA *ParameterProcess::GetCScanData()
+{
+    return CScanData[0];
+}
+
