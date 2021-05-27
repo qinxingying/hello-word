@@ -254,6 +254,8 @@ public:
     WDATA* GetRasterData(int nGroupId_, setup_CSCAN_SOURCE_MODE source_mode);
     void   SetCScanData(WDATA data[2048][2048]);
     WDATA* GetCScanData();
+    void   SetBScanData(WDATA data[2048][2048]);
+    WDATA* GetBScanData();
 protected:
     explicit ParameterProcess(QObject *parent = 0);
     DopplerConfigure* m_pConfig;

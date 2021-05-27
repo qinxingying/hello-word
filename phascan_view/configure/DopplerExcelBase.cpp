@@ -169,8 +169,7 @@ void ExcelBase::saveAs(const QString& filename)
         QString strPath = d->filename;
         strPath = strPath.replace('/','\\');
         qDebug()<<strPath;
-        d->book->dynamicCall("SaveAs(const QString&,int,const QString&,const QString&,bool,bool)", strPath
-                             ,56,QString(""),QString(""),false,false);
+        d->book->dynamicCall("SaveAs(const QString&,int,const QString&,const QString&,bool,bool)", strPath);
     }
 #else
     Q_UNUSED(filename)

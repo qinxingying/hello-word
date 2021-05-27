@@ -222,6 +222,7 @@ protected slots:
   void on_actionStop_Analysis_triggered();
   void on_actionFile_Properties_triggered();
   void slot_actionSaveCSacnData_triggered();
+  void slot_actionSaveBSacnData_triggered();
 };
 
 extern MainWindow* g_pMainWnd;
