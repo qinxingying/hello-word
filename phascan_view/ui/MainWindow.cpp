@@ -2807,7 +2807,7 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
     }
 
     QString filePath = QFileDialog::getSaveFileName(this, tr("Save CSacn Data"), "CScanData",
-            "Microsoft Excel(*.xlsx *.xls)");
+            "Microsoft Excel(*.xlsx)");
     if (!filePath.isEmpty())
     {
         WDATA* data = process->GetCScanData();
@@ -2876,7 +2876,7 @@ void MainWindow::slot_actionSaveBSacnData_triggered()
     }
 
     QString filePath = QFileDialog::getSaveFileName(this, tr("Save BSacn Data"), "BScanData",
-            "Microsoft Excel(*.xlsx *.xls)");
+            "Microsoft Excel(*.xlsx)");
     if (!filePath.isEmpty())
     {
         WDATA* data = process->GetBScanData();
