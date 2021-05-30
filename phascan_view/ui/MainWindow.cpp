@@ -38,6 +38,7 @@ Date     : 2016-12-06
 #include "version.h"
 #include "defectidentify.h"
 #include "DopplerExcelBase.h"
+#include <QProgressDialog>
 
 int lastgroup = 0;
 int currentgroup = 0; //-1表示全部组的那个tab
@@ -1381,10 +1382,16 @@ void MainWindow::DefectSign(DEFECT_SIGN_TYPE signType_)
 
             DEFECT_INFO* _pDfInfo = _pConfig->GetDefectPointer(m_iCurGroup, _index);
             QString _strPath = _pConfig->m_szDefectPathName + QString(tr("/")) + QString(tr(_pDfInfo->srtImageName)) + QString(tr(".png"));
-            if(0 == SaveCurScreenshot(_strPath))
-                QMessageBox::information(this,tr("prompt"),tr("The defect was saved failed!"));
-            else
-                QMessageBox::information(this,tr("prompt"),tr("The defect was saved successfully!"));
+            if(0 == SaveCurScreenshot(_strPath)) {
+                if (!_pConfig->common.bDefectIdentifyStatus) {
+                    QMessageBox::information(this,tr("prompt"),tr("The defect was saved failed!"));
+                }
+            }
+            else {
+                if (!_pConfig->common.bDefectIdentifyStatus) {
+                   QMessageBox::information(this,tr("prompt"),tr("The defect was saved successfully!"));
+                }
+            }
             sleep(200);
             //_pGroup->bShowDefect = _bTmp;
             _pConfig->m_nCutBmpNo[m_iCurGroup] = 0;
@@ -2232,6 +2239,34 @@ void MainWindow::startDefectIdentify()
     _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
     m_iCurDefectIndex = 0;
 
+    QProgressDialog progress(this);
+    progress.setRange(0, rectL.size());
+    progress.setLabelText(tr("Saving defects..."));
+    progress.setCancelButton(nullptr);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setValue(0);
+    for (int i  = 0; i < rectL.size(); ++i) {
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[i].y();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[i].y() + rectH[i].height();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[i].x();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[i].x() + rectH[i].width();
+
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[i].left();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[i].right();
+
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[i].top();
+        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[i].bottom();
+
+        updateCurLawPos( m_iCurGroup, maxLawIds[i], 0);
+        sliderh->setValue(maxScanId[i]);
+
+        sleep(2);
+        on_actionSave_Defect_triggered();
+
+        progress.setValue(i+1);
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+    }
+
     if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[0].y();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[0].y() + rectH[0].height();
@@ -2246,10 +2281,6 @@ void MainWindow::startDefectIdentify()
 
         updateCurLawPos( m_iCurGroup, maxLawIds[0], 0);
         sliderh->setValue(maxScanId[0]);
-    }
-    for (int i  = 0; i < rectL.size(); ++i) {
-        qDebug() << "left:" << rectL[i].left() << ", right:" << rectL[i].right()
-                 << ", top:" << rectL[i].top() << ", bottom:" << rectL[i].bottom();
     }
 }
 
@@ -2734,7 +2765,7 @@ void MainWindow::set_ToolBarStatus( bool status)
     ui->actionTOFD_Length_Measurement->setEnabled(status);
     ui->actionTOFD_Height_Measurement->setEnabled(status);
     ui->actionTOFD_Depth_Measurement->setEnabled(status);
-    //ui->actionSave_Defect->setEnabled(status);
+    ui->actionSave_Defect->setEnabled(status);
     ui->actionLanguage->setEnabled(status);
     ui->actionScreenShot->setEnabled(status);
     ui->actionAided_Analysis->setEnabled(status);
@@ -2771,7 +2802,7 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
         if((_nDisplay < 4) && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
             if(_nId == _pView->GetLawIdentify()) {
                 _pView->SetDataViewConfigure(_nCurGroup,  lawPos,  _nDisplay);
-                _proDispy.UpdateAll(_pView, false);
+                _proDispy.UpdateAll(_pView, true);
             }
         } else if( (_nDisplay >= 4 && _nDisplay < 8) && _nGroupId == _nCurGroup) {
         //} else if( (_nDisplay >= 4 ) && _nGroupId == _nCurGroup) {
