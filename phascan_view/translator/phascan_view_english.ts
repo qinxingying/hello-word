@@ -1088,7 +1088,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="9677"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10203"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10257"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1221"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1222"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1322,8 +1322,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1827"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="189"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="221"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="190"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="222"/>
         <source>PA</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1700,7 +1700,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5397"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7570"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9670"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1294"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1295"/>
         <source>Width:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1827,8 +1827,8 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7070"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7121"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7172"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1190"/>
         <location filename="../ui/DopplerGroupTab.cpp" line="1191"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1192"/>
         <source>Ref Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1851,7 +1851,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7210"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8759"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8822"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1206"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1207"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1909,8 +1909,8 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="7510"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9402"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1293"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1298"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1294"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1299"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2047,8 +2047,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="778"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="182"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="214"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="183"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="215"/>
         <source>Wedge Delay:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2543,7 +2543,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="9971"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1292"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1293"/>
         <source>Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2647,47 +2647,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="181"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="213"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="182"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="214"/>
         <source>Reference Point:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="196"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="228"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="197"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="229"/>
         <source>NORMAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="198"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="230"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="199"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="231"/>
         <source>INVERSE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="211"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="212"/>
         <source>UT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="729"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2592"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="730"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2604"/>
         <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1187"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1188"/>
         <source>Mat. Atten:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1188"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1189"/>
         <source>Delay:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1220"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1221"/>
         <source>dB/mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2580"/>
+        <source>Number %1 defect will be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2581"/>
+        <source>Are you sure to delete this defect?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2584"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2585"/>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2695,17 +2715,17 @@
         <location filename="../ui/DopplerGroupTab.ui" line="367"/>
         <location filename="../ui/DopplerGroupTab.ui" line="496"/>
         <location filename="../ui/DopplerGroupTab.ui" line="601"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1232"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1233"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1296"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1297"/>
         <source>Inner Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1297"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1298"/>
         <source>Outer Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3279,121 +3299,126 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="342"/>
+        <location filename="../ui/mainwindow.cpp" line="343"/>
         <source>Com Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="382"/>
-        <source>Delete Current Display Table ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/mainwindow.cpp" line="383"/>
-        <location filename="../ui/mainwindow.cpp" line="427"/>
-        <location filename="../ui/mainwindow.cpp" line="1025"/>
-        <source>YES</source>
+        <source>Delete Current Display Table ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="384"/>
         <location filename="../ui/mainwindow.cpp" line="428"/>
         <location filename="../ui/mainwindow.cpp" line="1026"/>
+        <source>YES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="385"/>
+        <location filename="../ui/mainwindow.cpp" line="429"/>
+        <location filename="../ui/mainwindow.cpp" line="1027"/>
         <source>NO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="426"/>
+        <location filename="../ui/mainwindow.cpp" line="427"/>
         <source>Add One View ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="475"/>
-        <location filename="../ui/mainwindow.cpp" line="736"/>
+        <location filename="../ui/mainwindow.cpp" line="476"/>
+        <location filename="../ui/mainwindow.cpp" line="737"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1109"/>
+        <location filename="../ui/mainwindow.cpp" line="1110"/>
         <source>Illegal Datafile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1109"/>
+        <location filename="../ui/mainwindow.cpp" line="1110"/>
         <source>This is illegal datafile. Please Choose another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1385"/>
+        <location filename="../ui/mainwindow.cpp" line="1387"/>
         <source>The defect was saved failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1387"/>
+        <location filename="../ui/mainwindow.cpp" line="1392"/>
         <source>The defect was saved successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2388"/>
+        <location filename="../ui/mainwindow.cpp" line="2244"/>
+        <source>Saving defects...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="2419"/>
         <source>Set current position as defect position ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2389"/>
+        <location filename="../ui/mainwindow.cpp" line="2420"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2809"/>
+        <location filename="../ui/mainwindow.cpp" line="2840"/>
         <source>Save CSacn Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2878"/>
+        <location filename="../ui/mainwindow.cpp" line="2909"/>
         <source>Save BSacn Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1024"/>
+        <location filename="../ui/mainwindow.cpp" line="1025"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1035"/>
+        <location filename="../ui/mainwindow.cpp" line="1036"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1231"/>
+        <location filename="../ui/mainwindow.cpp" line="1232"/>
         <source>save in </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1279"/>
+        <location filename="../ui/mainwindow.cpp" line="1280"/>
         <source>increase success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1290"/>
+        <location filename="../ui/mainwindow.cpp" line="1291"/>
         <source>delete success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1383"/>
+        <location filename="../ui/mainwindow.cpp" line="1384"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1383"/>
+        <location filename="../ui/mainwindow.cpp" line="1384"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1231"/>
-        <location filename="../ui/mainwindow.cpp" line="1279"/>
-        <location filename="../ui/mainwindow.cpp" line="1290"/>
-        <location filename="../ui/mainwindow.cpp" line="1385"/>
+        <location filename="../ui/mainwindow.cpp" line="1232"/>
+        <location filename="../ui/mainwindow.cpp" line="1280"/>
+        <location filename="../ui/mainwindow.cpp" line="1291"/>
         <location filename="../ui/mainwindow.cpp" line="1387"/>
+        <location filename="../ui/mainwindow.cpp" line="1392"/>
         <source>prompt</source>
         <translation type="unfinished"></translation>
     </message>

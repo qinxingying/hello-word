@@ -10,6 +10,7 @@
 #include "dialog/dialogweldfixdataii.h"
 #include <QPushButton>
 #include "defectidentify.h"
+#include <QMessageBox>
 
 const int MAX_ITEM_QTY = 50;
 extern int bHideCursor;
@@ -2574,8 +2575,19 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 {
 	DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
 	int _index = _pConfig->m_dfParam[m_nGroupId].index;
-
-	_pConfig->DeleteDefect(m_nGroupId, _index);
+    if (_index >= 0) {
+        QMessageBox msgBox;
+        msgBox.setText(QString(tr("Number %1 defect will be deleted.").arg(_index + 1)));
+        msgBox.setInformativeText(tr("Are you sure to delete this defect?"));
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.button(QMessageBox::Ok)->setText(tr("Ok"));
+        msgBox.button(QMessageBox::Cancel)->setText(tr("Cancel"));
+        int ret = msgBox.exec();
+        if (ret == QMessageBox::Ok) {
+            _pConfig->DeleteDefect(m_nGroupId, _index);
+        }
+    }
 
 //	UpdateDefectBox();
 //	UpdateDefectValue() ;
