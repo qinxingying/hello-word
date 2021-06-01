@@ -1308,10 +1308,10 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_wedge.nWedgeDelay = _Wedge.Probe_delay  ;
 
         _group.part.eGeometry  = (setup_PART_GEOMETRY)_pGroupInfo->part.Geometry;
-		_group.part.afSize[0]  = _pGroupInfo->part.Thickness / 1000.0 ;
-        _group.part.afSize[1]  = 100;
-        _group.part.afSize[2]  = 100;
-        _group.part.afSize[3]  = _pGroupInfo->part.Diameter / 1000.0;
+        _group.part.afSize[0]  = _pGroupInfo->part.Thickness / 1000.0 ;//thickness
+        _group.part.afSize[1]  = 100;//length
+        _group.part.afSize[2]  = 100;//outRadius or  width
+        _group.part.afSize[3]  = _pGroupInfo->part.Diameter / 1000.0;// outRadius
         if(common.scanner.eScanEncoderType)
         {
             if(Phascan_Version == 1)
@@ -1402,6 +1402,9 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
         if( Config::instance()->is_phascan_ii())
         {
+            if (_pGroupInfo->part.Geometry == setup_PART_GEOMETRY_OD || _pGroupInfo->part.Geometry == setup_PART_GEOMETRY_ID) {
+                _group.part.weld_ii.eWeldDir = static_cast<Cylinder_WeldDir> (Config::instance()->getCylinderWeldOrientation(i));
+            }
             _group.part.weldFormat = PHASCAN_II_FORMAT;
             Config::instance()->getWeldData(i, _group.part.weld_ii);
             Config::instance()->getTOPCWidth(i, _group.TopCInfo.TOPCWidth);

@@ -551,6 +551,8 @@ void Config::unpack_geometry_cylinder(const QVariantMap &map, Paramters::Cylinde
     cylinder.m_outside = map.value("Outside", DEFAULT_CYLINDER_OUTSIDE).toDouble();
     cylinder.m_angle   = map.value("Angle", DEFAULT_CYLINDER_ANGLE).toDouble();
     cylinder.m_length  = map.value("Length", DEFAULT_CYLINDER_LENGHT).toDouble();
+    cylinder.m_weldDir  = static_cast<Paramters::Cylinder::WeldOrientation> (
+                map.value("WeldDir", DEFAULT_CYLINDER_LENGHT).toInt());
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " probePos " << cylinder.m_probePos
              << " inside " << cylinder.m_inside
@@ -1427,6 +1429,11 @@ void Config::convert_to_phascan_config(int groupId)
     } else if(Paramters::Specimen::CYLINDER == currentSpecimen.m_shape) {
         targetGroup.part.Thickness    = (currentSpecimen.m_geometry.m_cylinder.m_outside -
                                          currentSpecimen.m_geometry.m_cylinder.m_inside) * 1000.0;
+        if (currentSpecimen.m_geometry.m_cylinder.m_probePos == Paramters::Cylinder::COD) {
+            targetGroup.part.Diameter  = currentSpecimen.m_geometry.m_cylinder.m_outside * 2 * 1000.0;
+        } else {
+            targetGroup.part.Diameter  = currentSpecimen.m_geometry.m_cylinder.m_inside * 2 * 1000.0;
+        }
     } else if(Paramters::Specimen::NOZZLE == currentSpecimen.m_shape) {
         targetGroup.part.Thickness    = (currentSpecimen.m_geometry.m_nozzle.m_outside -
                                          currentSpecimen.m_geometry.m_nozzle.m_inside) * 1000.0;
@@ -1751,4 +1758,9 @@ uint Config::data_mark_length()
 double Config::getCoupleGain(int groupId)
 {
     return m_groups[groupId].m_sample.m_couplingGain;
+}
+
+int Config::getCylinderWeldOrientation(int groupId)
+{
+    return m_groups[groupId].m_specimen.m_geometry.m_cylinder.m_weldDir;
 }

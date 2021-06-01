@@ -2,8 +2,8 @@
 <Package>
     <DisplayName>The root component</DisplayName>
     <Description>Install this component.</Description>
-    <Version>1.1.5</Version>
-    <ReleaseDate>2017-04-17</ReleaseDate>
+    <Version>1.2.1</Version>
+    <ReleaseDate>2021-05-24</ReleaseDate>
     <Default>true</Default>
     <Script>installscript.qs</Script>
 	<Translations>

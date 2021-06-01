@@ -1,4 +1,4 @@
-#ifndef __CONFIG_H__
+﻿#ifndef __CONFIG_H__
 #define __CONFIG_H__
 
 #include <QFile>
@@ -42,6 +42,7 @@ public:
     void getScannerData( SCANNER &scanner);
     bool is_phascan_ii_file(QFile &file);
     double getCoupleGain(int groupId);
+    int getCylinderWeldOrientation(int groupId);
 
 protected:
     void unpack_group(int groupId);

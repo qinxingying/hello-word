@@ -1294,9 +1294,12 @@ void DopplerGroupTab::UpdateGeometryState()
         ui->LabelPartSize2->setText(QString(tr("Length:")));
         ui->LabelPartSize3->setText(QString(tr("Width:")));
     }else{
-        ui->LabelPartSize1->setText(QString(tr("Inner Diameter:")));
-        ui->LabelPartSize2->setText(QString(tr("Outer Diameter:")));
-        ui->LabelPartSize3->setText(QString(tr("Length:")));
+        ui->LabelPartSize1->setText(QString(tr("Thickness:")));
+        ui->LabelPartSize2->setText(QString(tr("Length:")));
+        ui->LabelPartSize3->setText(QString(tr("Outer Diameter:")));
+        ui->LabelPartSize3->hide();
+        ui->ValuePartSize3->hide();
+        ui->LabelPartSizeUnit3->hide();
 	}
 
 	ui->ValuePartSize1->setValue(m_pGroup->part.afSize[0]);

@@ -309,6 +309,11 @@ enum KTY_ProbePosition {
     KTY_WING_4
 };
 
+enum Cylinder_WeldDir {
+    AXIAL,
+    CIRC
+};
+
 struct WELD_II
 {
     setup_WELD_TYPE_II       eType;		  /* 焊缝 */
@@ -318,6 +323,7 @@ struct WELD_II
     double eTopThinkness;                //TKY腹板厚度
     double eBottomThinkness;             //TKY翼板厚度
     double eHAZ;                         //焊缝热影响区
+    Cylinder_WeldDir eWeldDir;          // 管道焊缝方向
     union{
         WELD_FORMAT_I  I;
         WELD_FORMAT_V  V;

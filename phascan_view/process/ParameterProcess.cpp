@@ -1389,26 +1389,34 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
     float _fCos    = cos(_fAngle);
     float _fIRadius, _fORadius, _fSstep, _fLstep;
     if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
-        //_fSampleStart = config->fSampleStart;
-        //_fSampleRange = config->fSampleRange;
-        _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
-        _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
-        _fScale  = _nPointQty / _fSampleRange;
-        _fIRadius = config->part.afSize[3] / 2 - _fThick;
-        _fORadius = config->part.afSize[3] / 2;
-        _fSstep = _fORadius * _fCos + sqrt( _fIRadius * _fIRadius - _fORadius * _fORadius * _fSin * _fSin);
-        _fLstep = ( asin( _fORadius * _fSin / _fIRadius) - _fAngle) * _fORadius;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
+            _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
+            _fScale  = _nPointQty / _fSampleRange;
+        } else {
+            _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
+            _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
+            _fScale  = _nPointQty / _fSampleRange;
+            _fIRadius = config->part.afSize[3] / 2 - _fThick;
+            _fORadius = config->part.afSize[3] / 2;
+            _fSstep = _fORadius * _fCos - sqrt( _fIRadius * _fIRadius - _fORadius * _fORadius * _fSin * _fSin);
+            _fLstep = ( asin( _fORadius * _fSin / _fIRadius) - _fAngle) * _fORadius;
+        }
 
     }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        //_fSampleStart = config->fSampleStart;
-        //_fSampleRange = config->fSampleRange;
-        _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
-        _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
-        _fScale  = _nPointQty / _fSampleRange;
-        _fIRadius = config->part.afSize[3] / 2;
-        _fORadius = config->part.afSize[3] / 2 + _fThick;
-        _fSstep = sqrt( _fORadius * _fORadius - _fIRadius * _fIRadius * _fSin * _fSin) - _fIRadius * _fCos;
-        _fLstep = ( _fAngle - asin( _fIRadius * _fSin / _fORadius)) * _fORadius;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
+            _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
+            _fScale  = _nPointQty / _fSampleRange;
+        } else {
+            _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
+            _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
+            _fScale  = _nPointQty / _fSampleRange;
+            _fIRadius = config->part.afSize[3] / 2;
+            _fORadius = config->part.afSize[3] / 2 + _fThick;
+            _fSstep = sqrt( _fORadius * _fORadius - _fIRadius * _fIRadius * _fSin * _fSin) - _fIRadius * _fCos;
+            _fLstep = ( _fAngle - asin( _fIRadius * _fSin / _fORadius)) * _fORadius;
+        }
     }else{
         _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
         _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
@@ -1462,41 +1470,55 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	_fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_I].iXEdge);
 	pInfo_[setup_GATE_I].fSEdge = _fEdge;
     if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
-        int cycle = _fEdge / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
-        }else{
-            calSEdge = _fEdge - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_I].fHEdge = _fEdge * _fCos;
+            pInfo_[setup_GATE_I].fLEdge = _fEdge * _fSin;
+            pInfo_[setup_GATE_I].fDEdge = GetDepth(pInfo_[setup_GATE_I].fHEdge, _fThick);
+        } else {
+            int cycle = _fEdge / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+            }else{
+                calSEdge = _fEdge - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_I].fDEdge = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+    //        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_I].fDEdge = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_I].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_I].fLEdge = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_I].fHEdge = _fEdge;
         }
-//        pInfo_[setup_GATE_I].fDEdge = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
-//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_I].fDEdge = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_I].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_I].fLEdge = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_I].fHEdge = _fEdge;
+
     }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        int cycle = _fEdge / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
-        }else{
-            calSEdge = _fEdge - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_I].fHEdge = _fEdge * _fCos;
+            pInfo_[setup_GATE_I].fLEdge = _fEdge * _fSin;
+            pInfo_[setup_GATE_I].fDEdge = GetDepth(pInfo_[setup_GATE_I].fHEdge, _fThick);
+        } else {
+            int cycle = _fEdge / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+            }else{
+                calSEdge = _fEdge - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_I].fDEdge = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+    //        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_I].fDEdge = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_I].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_I].fLEdge = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_I].fHEdge = _fEdge;
         }
-//        pInfo_[setup_GATE_I].fDEdge = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
-//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_I].fDEdge = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_I].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_I].fLEdge = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_I].fHEdge = _fEdge;
+
     }else{
         pInfo_[setup_GATE_I].fHEdge = _fEdge * _fCos;
         pInfo_[setup_GATE_I].fLEdge = _fEdge * _fSin;
@@ -1506,41 +1528,55 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	_fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_I].iX);
 	pInfo_[setup_GATE_I].fS     = _fDist;
     if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
-        int cycle = _fDist / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fDist;
-        }else{
-            calSEdge = _fDist - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_I].fH     = _fDist * _fCos;
+            pInfo_[setup_GATE_I].fL     = _fDist * _fSin;
+            pInfo_[setup_GATE_I].fD     = GetDepth(pInfo_[setup_GATE_I].fH, _fThick);
+        } else {
+            int cycle = _fDist / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fDist;
+            }else{
+                calSEdge = _fDist - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_I].fD = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+    //        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_I].fD = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_I].fL = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_I].fL = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_I].fH = _fDist;
         }
-//        pInfo_[setup_GATE_I].fD = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
-//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_I].fD = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_I].fL = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_I].fL = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_I].fH = _fDist;
+
     }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        int cycle = _fDist / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fDist;
-        }else{
-            calSEdge = _fDist - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_I].fH     = _fDist * _fCos;
+            pInfo_[setup_GATE_I].fL     = _fDist * _fSin;
+            pInfo_[setup_GATE_I].fD     = GetDepth(pInfo_[setup_GATE_I].fH, _fThick);
+        } else {
+            int cycle = _fDist / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fDist;
+            }else{
+                calSEdge = _fDist - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_I].fD = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+    //        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_I].fD = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_I].fL = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_I].fL = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_I].fH = _fDist;
         }
-//        pInfo_[setup_GATE_I].fD = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
-//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_I].fD = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_I].fL = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_I].fL = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_I].fH = _fDist;
+
     }else{
         pInfo_[setup_GATE_I].fH     = _fDist * _fCos;
         pInfo_[setup_GATE_I].fL     = _fDist * _fSin;
@@ -1603,41 +1639,55 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
     _fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_A].iXEdge);
 	pInfo_[setup_GATE_A].fSEdge = _fEdge;
     if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
-        int cycle = _fEdge / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
-        }else{
-            calSEdge = _fEdge - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_A].fHEdge = _fEdge * _fCos;
+            pInfo_[setup_GATE_A].fLEdge = _fEdge * _fSin;
+            pInfo_[setup_GATE_A].fDEdge = GetDepth(pInfo_[setup_GATE_A].fHEdge, _fThick);
+        } else {
+            int cycle = _fEdge / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+            }else{
+                calSEdge = _fEdge - cycle * _fSstep;
+            }
+            //pInfo_[setup_GATE_A].fDEdge = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+            //float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_A].fDEdge = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_A].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_A].fLEdge = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_A].fHEdge = _fEdge;
         }
-        //pInfo_[setup_GATE_A].fDEdge = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
-        //float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_A].fDEdge = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_A].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_A].fLEdge = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_A].fHEdge = _fEdge;
+
     }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        int cycle = _fEdge / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
-        }else{
-            calSEdge = _fEdge - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_A].fHEdge = _fEdge * _fCos;
+            pInfo_[setup_GATE_A].fLEdge = _fEdge * _fSin;
+            pInfo_[setup_GATE_A].fDEdge = GetDepth(pInfo_[setup_GATE_A].fHEdge, _fThick);
+        } else {
+            int cycle = _fEdge / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+            }else{
+                calSEdge = _fEdge - cycle * _fSstep;
+            }
+            //pInfo_[setup_GATE_A].fDEdge = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+            //float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_A].fDEdge = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_A].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_A].fLEdge = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_A].fHEdge = _fEdge;
         }
-        //pInfo_[setup_GATE_A].fDEdge = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
-        //float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_A].fDEdge = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_A].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_A].fLEdge = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_A].fHEdge = _fEdge;
+
     }else{
         pInfo_[setup_GATE_A].fHEdge = _fEdge * _fCos;
         pInfo_[setup_GATE_A].fLEdge = _fEdge * _fSin;
@@ -1646,41 +1696,55 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
     _fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_A].iX);
 	pInfo_[setup_GATE_A].fS     = _fDist;
     if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
-        int cycle = _fDist / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fDist;
-        }else{
-            calSEdge = _fDist - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
+            pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
+            pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
+        } else {
+            int cycle = _fDist / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fDist;
+            }else{
+                calSEdge = _fDist - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_A].fD = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+    //        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_A].fD = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_A].fL = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_A].fL = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_A].fH = _fDist;
         }
-//        pInfo_[setup_GATE_A].fD = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
-//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_A].fD = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_A].fL = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_A].fL = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_A].fH = _fDist;
+
     }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        int cycle = _fDist / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fDist;
-        }else{
-            calSEdge = _fDist - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
+            pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
+            pInfo_[setup_GATE_A].fD     = GetDepth(pInfo_[setup_GATE_A].fH, _fThick);
+        } else {
+            int cycle = _fDist / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fDist;
+            }else{
+                calSEdge = _fDist - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_A].fD = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+    //        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_A].fD = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_A].fL = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_A].fL = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_A].fH = _fDist;
         }
-//        pInfo_[setup_GATE_A].fD = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
-//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_A].fD = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_A].fL = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_A].fL = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_A].fH = _fDist;
+
     }else{
         pInfo_[setup_GATE_A].fH     = _fDist * _fCos;
         pInfo_[setup_GATE_A].fL     = _fDist * _fSin;
@@ -1747,41 +1811,55 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
     _fEdge = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_B].iXEdge);
     pInfo_[setup_GATE_B].fSEdge = _fEdge;
     if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
-        int cycle = _fEdge / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
-        }else{
-            calSEdge = _fEdge - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_B].fHEdge = _fEdge * _fCos;
+            pInfo_[setup_GATE_B].fLEdge = _fEdge * _fSin;
+            pInfo_[setup_GATE_B].fDEdge = GetDepth(pInfo_[setup_GATE_B].fHEdge, _fThick);
+        } else {
+            int cycle = _fEdge / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+            }else{
+                calSEdge = _fEdge - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_B].fDEdge = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+    //        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_B].fDEdge = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_B].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_B].fLEdge = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_B].fHEdge = _fEdge;
         }
-//        pInfo_[setup_GATE_B].fDEdge = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
-//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_B].fDEdge = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_B].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_B].fLEdge = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_B].fHEdge = _fEdge;
+
     }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        int cycle = _fEdge / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fEdge;
-        }else{
-            calSEdge = _fEdge - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_B].fHEdge = _fEdge * _fCos;
+            pInfo_[setup_GATE_B].fLEdge = _fEdge * _fSin;
+            pInfo_[setup_GATE_B].fDEdge = GetDepth(pInfo_[setup_GATE_B].fHEdge, _fThick);
+        } else {
+            int cycle = _fEdge / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fEdge;
+            }else{
+                calSEdge = _fEdge - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_B].fDEdge = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+    //        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_B].fDEdge = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_B].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_B].fLEdge = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_B].fHEdge = _fEdge;
         }
-//        pInfo_[setup_GATE_B].fDEdge = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
-//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_B].fDEdge = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_B].fLEdge = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_B].fLEdge = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_B].fHEdge = _fEdge;
+
     }else{
         pInfo_[setup_GATE_B].fHEdge = _fEdge * _fCos;
         pInfo_[setup_GATE_B].fLEdge = _fEdge * _fSin;
@@ -1791,41 +1869,55 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	_fDist = DistDotPosToMm(nGroupId_ , pInfo_[setup_GATE_B].iX);
 	pInfo_[setup_GATE_B].fS     = _fDist;
     if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
-        int cycle = _fDist / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fDist;
-        }else{
-            calSEdge = _fDist - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_B].fH     = _fDist * _fCos;
+            pInfo_[setup_GATE_B].fL     = _fDist * _fSin;
+            pInfo_[setup_GATE_B].fD     = GetDepth(pInfo_[setup_GATE_B].fH, _fThick);
+        } else {
+            int cycle = _fDist / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fDist;
+            }else{
+                calSEdge = _fDist - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_B].fD = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
+    //        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_B].fD = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_B].fL = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_B].fL = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_B].fH = _fDist;
         }
-//        pInfo_[setup_GATE_B].fD = _fORadius - sqrt( calSEdge * calSEdge + _fORadius * _fORadius - 2 * _fORadius * _fCos);
-//        float calLEdge = atan( _fSin * calSEdge / ( _fORadius - _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_B].fD = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_B].fL = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_B].fL = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_B].fH = _fDist;
+
     }else if( config->part.eGeometry == setup_PART_GEOMETRY_ID){
-        int cycle = _fDist / _fSstep;
-        float calSEdge;
-        if( cycle & 0x1){
-            calSEdge = ( cycle + 1) * _fSstep - _fDist;
-        }else{
-            calSEdge = _fDist - cycle * _fSstep;
+        if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
+            pInfo_[setup_GATE_B].fH     = _fDist * _fCos;
+            pInfo_[setup_GATE_B].fL     = _fDist * _fSin;
+            pInfo_[setup_GATE_B].fD     = GetDepth(pInfo_[setup_GATE_B].fH, _fThick);
+        } else {
+            int cycle = _fDist / _fSstep;
+            float calSEdge;
+            if( cycle & 0x1){
+                calSEdge = ( cycle + 1) * _fSstep - _fDist;
+            }else{
+                calSEdge = _fDist - cycle * _fSstep;
+            }
+    //        pInfo_[setup_GATE_B].fD = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
+    //        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
+            pInfo_[setup_GATE_B].fD = calSEdge / _fSstep * _fThick;
+            float calLEdge = calSEdge / _fSstep * _fLstep;
+            if(cycle & 0x1){
+                pInfo_[setup_GATE_B].fL = ( cycle + 1) * _fLstep - calLEdge;
+            }else{
+                pInfo_[setup_GATE_B].fL = cycle * _fLstep + calLEdge;
+            }
+            pInfo_[setup_GATE_B].fH = _fDist;
         }
-//        pInfo_[setup_GATE_B].fD = sqrt( calSEdge * calSEdge + _fIRadius * _fIRadius + 2 * _fIRadius * _fCos) - _fIRadius;
-//        float calLEdge = asin( _fSin * calSEdge / ( _fIRadius + _fCos * calSEdge)) * _fORadius;
-        pInfo_[setup_GATE_B].fD = calSEdge / _fSstep * _fThick;
-        float calLEdge = calSEdge / _fSstep * _fLstep;
-        if(cycle & 0x1){
-            pInfo_[setup_GATE_B].fL = ( cycle + 1) * _fLstep - calLEdge;
-        }else{
-            pInfo_[setup_GATE_B].fL = cycle * _fLstep + calLEdge;
-        }
-        pInfo_[setup_GATE_B].fH = _fDist;
+
     }else{
         pInfo_[setup_GATE_B].fH     = _fDist * _fCos;
         pInfo_[setup_GATE_B].fL     = _fDist * _fSin;
