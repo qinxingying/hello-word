@@ -1,4 +1,4 @@
-#include "defectidentify.h"
+﻿#include "defectidentify.h"
 #include "gHeader.h"
 #include <cmath>
 #include "process/CalcMeasurement.h"
@@ -145,7 +145,7 @@ bool DefectIdentify::analysisDefect()
                 for (int k = i + 1; k < keys.count(); ++k) { // 每一个缺陷与后面所有连续帧的所有缺陷比较, k 帧索引
                     QVector<QRectF> rectsNextFrame = _Rects.value(keys[k]);
 
-                    if (keys[k-1] != keys[k] - 1) { // 帧不连续，跳出循环，先记下这个特征点，后边再根据情况合并
+                    if (scanIdEnd != keys[k] - 1) { // 帧不连续，跳出循环，先记下这个特征点，后边再根据情况合并
                         break;
                     }
 
@@ -203,7 +203,7 @@ bool DefectIdentify::analysisDefect()
         mergeDefectsTipDiffraction();
     }
     calDefectRect();
-    forceMerge();
+//    forceMerge();
     return ret;
 }
 
