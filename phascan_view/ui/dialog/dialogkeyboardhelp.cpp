@@ -1,4 +1,4 @@
-#include "dialogkeyboardhelp.h"
+﻿#include "dialogkeyboardhelp.h"
 #include "ui_dialogkeyboardhelp.h"
 
 DialogKeyboardHelp::DialogKeyboardHelp(QWidget *parent) :
@@ -29,9 +29,21 @@ DialogKeyboardHelp::DialogKeyboardHelp(QWidget *parent) :
     ui->labelShift->setPixmap(QPixmap(":/file/resource/Main/shift.png"));
     ui->labelShiftimage->setPixmap(QPixmap(":/file/resource/Main/left.png"));
     ui->labelShifttext->setText(tr("left(right) fast ajust scanpos cursor"));
+
+    ui->labelLogo_analysis->setPixmap(QPixmap(":/file/resource/report_logo/logo.png"));
+    ui->labelKeyboard_analysis->setPixmap(QPixmap(":/file/resource/Main/keyboardInstruction.jpg"));
 }
 
 DialogKeyboardHelp::~DialogKeyboardHelp()
 {
     delete ui;
+}
+
+void DialogKeyboardHelp::setLanguage(setup_LANG lang)
+{
+    if (lang == setup_LANG_CHINESE) {
+
+    } else {
+
+    }
 }

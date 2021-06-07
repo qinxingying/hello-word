@@ -224,6 +224,7 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
     connect(this, SIGNAL(signalMarkNextDefect()), g_pMainWnd, SLOT(slotMarkNextDefect()));
     connect(this, SIGNAL(signalMarkPreviousDefect()), g_pMainWnd, SLOT(slotMarkPreviousDefect()));
     connect(this, SIGNAL(signalStartAnalysis()), g_pMainWnd, SLOT(on_actionAided_Analysis_triggered()));
+    connect(this, SIGNAL(signalStopAnalysis()), g_pMainWnd, SLOT(on_actionStop_Analysis_triggered()));
 	// pass the drop event to father widget
 	setAcceptDrops(false);
 	// use openGL to render drawing
@@ -812,7 +813,14 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
         break;
     }
     case Qt::Key_Control: {
-        emit signalStartAnalysis();
+        DopplerConfigure* pConfig = DopplerConfigure::Instance();
+        if (!pConfig->common.bDefectIdentifyStatus) {
+            emit signalStartAnalysis();
+        } else {
+            int ret = QMessageBox::warning(this, tr("Stop Analysis"), tr("Do you want to stop analysis?"), QMessageBox::Ok | QMessageBox::No);
+            if (ret == QMessageBox::Ok)
+                emit signalStopAnalysis();
+        }
         break;
     }
     default:

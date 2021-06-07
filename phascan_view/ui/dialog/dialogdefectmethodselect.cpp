@@ -1,4 +1,4 @@
-#include "dialogdefectmethodselect.h"
+﻿#include "dialogdefectmethodselect.h"
 #include "ui_dialogdefectmethodselect.h"
 
 DialogDefectMethodSelect::DialogDefectMethodSelect(QWidget *parent) :
@@ -33,6 +33,17 @@ DialogDefectMethodSelect::~DialogDefectMethodSelect()
 void DialogDefectMethodSelect::retranslateUi()
 {
     ui->retranslateUi(this);
+}
+
+void DialogDefectMethodSelect::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case Qt::Key_Control:
+        on_pushButton_clicked();
+        break;
+    default:
+        break;
+    }
 }
 
 void DialogDefectMethodSelect::on_halfWaveRadioL_clicked()

@@ -1,4 +1,4 @@
-#ifndef DIALOGDEFECTMETHODSELECT_H
+﻿#ifndef DIALOGDEFECTMETHODSELECT_H
 #define DIALOGDEFECTMETHODSELECT_H
 
 #include <QDialog>
@@ -24,6 +24,9 @@ public:
     bool isAutoMerged() {return m_autoMerge;}
 
     void retranslateUi();
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
 
 private slots:
     void on_halfWaveRadioL_clicked();
