@@ -1091,7 +1091,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
         scanSpin->setValue(scanSpin->minimum());
         indexSliderh->setValue(0);
         m_iCurGroup = 0;
-        ui->actionAided_Analysis->setEnabled(true);
+//        ui->actionAided_Analysis->setEnabled(true);
 
         if(Config::instance()->is_phascan_ii()) {
             ui->actionFile_Properties->setEnabled(true);
