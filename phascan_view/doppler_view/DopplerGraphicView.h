@@ -1,4 +1,4 @@
-#ifndef DOPPLER_GRAPHICVIEW_H
+﻿#ifndef DOPPLER_GRAPHICVIEW_H
 #define DOPPLER_GRAPHICVIEW_H
 
 #include <QGraphicsView>
@@ -124,6 +124,7 @@ signals:
     void signalMeasureGate(int groupId);
     void signalMarkNextDefect();
     void signalMarkPreviousDefect();
+    void signalStartAnalysis();
 public slots:
     void slotResetView();
     void slotPrint();

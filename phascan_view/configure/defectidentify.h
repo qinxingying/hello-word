@@ -1,10 +1,10 @@
-#ifndef DEFECTIDENTIFY_H
+﻿#ifndef DEFECTIDENTIFY_H
 #define DEFECTIDENTIFY_H
 
 #include <QObject>
 #include "ParameterProcess.h"
 #include <QMap>
-#define BEAMDIS 1   // 判断两个点是否相关的阈值，单位mm
+#define BEAMDIS 2   // 判断两个点是否相关的阈值，单位mm
 class DefectIdentify : public QObject
 {
     Q_OBJECT

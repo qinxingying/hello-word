@@ -223,6 +223,7 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
     connect(this, SIGNAL(signalMeasureGate(int)), g_pMainWnd, SLOT(slotMeasureGate(int)));
     connect(this, SIGNAL(signalMarkNextDefect()), g_pMainWnd, SLOT(slotMarkNextDefect()));
     connect(this, SIGNAL(signalMarkPreviousDefect()), g_pMainWnd, SLOT(slotMarkPreviousDefect()));
+    connect(this, SIGNAL(signalStartAnalysis()), g_pMainWnd, SLOT(on_actionAided_Analysis_triggered()));
 	// pass the drop event to father widget
 	setAcceptDrops(false);
 	// use openGL to render drawing
@@ -808,6 +809,10 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
     }
     case Qt::Key_Minus:{
         emit signalMarkPreviousDefect();
+        break;
+    }
+    case Qt::Key_Control: {
+        emit signalStartAnalysis();
         break;
     }
     default:

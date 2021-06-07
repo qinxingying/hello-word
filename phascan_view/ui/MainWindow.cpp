@@ -2239,12 +2239,12 @@ void MainWindow::startDefectIdentify()
     _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
     m_iCurDefectIndex = 0;
 
-    QProgressDialog progress(this);
-    progress.setRange(0, rectL.size());
-    progress.setLabelText(tr("Saving defects..."));
-    progress.setCancelButton(nullptr);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.setValue(0);
+//    QProgressDialog progress(this);
+//    progress.setRange(0, rectL.size());
+//    progress.setLabelText(tr("Saving defects..."));
+//    progress.setCancelButton(nullptr);
+//    progress.setWindowModality(Qt::WindowModal);
+//    progress.setValue(0);
     for (int i  = 0; i < rectL.size(); ++i) {
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[i].y();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[i].y() + rectH[i].height();
@@ -2260,11 +2260,11 @@ void MainWindow::startDefectIdentify()
         updateCurLawPos( m_iCurGroup, maxLawIds[i], 0);
         sliderh->setValue(maxScanId[i]);
 
-        sleep(2);
-        on_actionSave_Defect_triggered();
+//        sleep(2);
+//        on_actionSave_Defect_triggered();
 
-        progress.setValue(i+1);
-        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+//        progress.setValue(i+1);
+//        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
 
     if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {

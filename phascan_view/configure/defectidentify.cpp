@@ -1004,46 +1004,46 @@ void DefectIdentify::measureLength()
                    }
                }
            } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
+//               int scanId = _defect.special.scanId;
+               int startS = _defect.scanIdStart;
+               int startE = _defect.scanIdEnd;
                QMap<int, QVector<_Amp>> beamIdValues;// 该缺陷范围内所有的beamId上对应的所有特征点
                for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
                    int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
-                   int scanId = _defect.special.scanId;
-                   int startS = _defect.scanIdStart;
-                   int startE = _defect.scanIdEnd;
-                   for (int s = scanId; s >= m_scanStart; --s) {
-                       int rangeLeft = curDataIndex - (beamdis/2);
-                       int rangeRight = curDataIndex + (beamdis/2);
-                       if(rangeLeft < 0){
-                           rangeLeft = 0;
-                       }
-                       if(rangeRight >= m_pointQty){
-                           rangeRight = m_pointQty - 1;
-                       }
-                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, s, i, _pData);
-                       int _amp, postion;
-                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, _amp, postion);
-                       if (_amp <= m_threshold / 2.0) {
-                           startS = s;
-                          break;
-                       }
-                   }
-                   for (int s = scanId; s <= m_scanStop; ++s) {
-                       int rangeLeft = curDataIndex - (beamdis/2);
-                       int rangeRight = curDataIndex + (beamdis/2);
-                       if(rangeLeft < 0){
-                           rangeLeft = 0;
-                       }
-                       if(rangeRight >= m_pointQty){
-                           rangeRight = m_pointQty - 1;
-                       }
-                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, s, i, _pData);
-                       int _amp, postion;
-                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, _amp, postion);
-                       if (_amp <= m_threshold / 2.0) {
-                           startE = s;
-                          break;
-                       }
-                   }
+//                   for (int s = scanId; s >= m_scanStart; --s) {
+//                       int rangeLeft = curDataIndex - (beamdis/2);
+//                       int rangeRight = curDataIndex + (beamdis/2);
+//                       if(rangeLeft < 0){
+//                           rangeLeft = 0;
+//                       }
+//                       if(rangeRight >= m_pointQty){
+//                           rangeRight = m_pointQty - 1;
+//                       }
+//                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, s, i, _pData);
+//                       int _amp, postion;
+//                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, _amp, postion);
+//                       if (_amp <= m_threshold / 2.0) {
+//                           startS = s;
+//                          break;
+//                       }
+//                   }
+//                   for (int s = scanId; s <= m_scanStop; ++s) {
+//                       int rangeLeft = curDataIndex - (beamdis/2);
+//                       int rangeRight = curDataIndex + (beamdis/2);
+//                       if(rangeLeft < 0){
+//                           rangeLeft = 0;
+//                       }
+//                       if(rangeRight >= m_pointQty){
+//                           rangeRight = m_pointQty - 1;
+//                       }
+//                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, s, i, _pData);
+//                       int _amp, postion;
+//                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, _amp, postion);
+//                       if (_amp <= m_threshold / 2.0) {
+//                           startE = s;
+//                          break;
+//                       }
+//                   }
 
                    for (int j = startS; j <= startE; ++j) {
                        int rangeLeft = curDataIndex - (beamdis/2);
@@ -1124,11 +1124,11 @@ void DefectIdentify::measureLength()
                        int lawId          = defectLeft.lawId;
                        float borderValue    = defectLeft.value / 2;
                        float curValue       = borderValue;
-                       if (scanId == m_scanStart) {
+                       if (scanId == startS) {
                            borders.append(scanId);
                        }
                        int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
-                       for (int j = scanId - 1; j >= m_scanStart; --j) {       
+                       for (int j = scanId - 1; j >= startS; --j) {
                            int rangeLeft = curDataIndex - (beamdis/2);
                            int rangeRight = curDataIndex + (beamdis/2);
                            if(rangeLeft < 0){
@@ -1150,7 +1150,7 @@ void DefectIdentify::measureLength()
                                    borders.append(j + 1);
                                }
                                break;
-                           } else if (j == m_scanStart) {
+                           } else if (j == startS) {
                                borders.append(j);
                            } else {
                                curValue = value;
@@ -1163,11 +1163,11 @@ void DefectIdentify::measureLength()
                        lawId          = defectRight.lawId;
                        borderValue    = defectRight.value / 2;
                        curValue       = borderValue;
-                       if (scanId == m_scanStop) {
+                       if (scanId == startE) {
                            borders.append(scanId);
                        }
                        curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
-                       for (int j = scanId + 1; j <= m_scanStop; ++j) {
+                       for (int j = scanId + 1; j <= startE; ++j) {
                            int rangeLeft = curDataIndex - (beamdis/2);
                            int rangeRight = curDataIndex + (beamdis/2);
                            if(rangeLeft < 0){
@@ -1189,7 +1189,7 @@ void DefectIdentify::measureLength()
                                    borders.append(j - 1);
                                }
                                break;
-                           } else if (j == m_scanStop) {
+                           } else if (j == startE) {
                                borders.append(j);
                            } else {
                                curValue = value;
