@@ -7,7 +7,7 @@ DialogKeyboardHelp::DialogKeyboardHelp(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->labelLogo->setPixmap(QPixmap(":/file/resource/report_logo/logo.png"));
-    ui->labelKeyboard->setPixmap(QPixmap(":/file/resource/Main/keyboard.png"));
+    ui->labelKeyboard->setPixmap(QPixmap(":/file/resource/Main/M.jpg"));
     ui->labelWimage->setPixmap(QPixmap(":/file/resource/Main/w.png"));
     ui->labelWtext->setText(tr("Height start"));
     ui->labelSimage->setPixmap(QPixmap(":/file/resource/Main/s.png"));
@@ -30,8 +30,31 @@ DialogKeyboardHelp::DialogKeyboardHelp(QWidget *parent) :
     ui->labelShiftimage->setPixmap(QPixmap(":/file/resource/Main/left.png"));
     ui->labelShifttext->setText(tr("left(right) fast ajust scanpos cursor"));
 
+    ui->labelWimage->hide();
+    ui->labelWtext->hide();
+    ui->labelSimage->hide();
+    ui->labelStext->hide();
+    ui->labelAimage->hide();
+    ui->labelAtext->hide();
+    ui->labelDimage->hide();
+    ui->labelDtext->hide();
+    ui->labelZimage->hide();
+    ui->labelZtext->hide();
+    ui->labelCimage->hide();
+    ui->labelCtext->hide();
+    ui->label0image->hide();
+    ui->label0text->hide();
+    ui->labelUpimage->hide();
+    ui->labelUptext->hide();
+    ui->labelLeftimage->hide();
+    ui->labelLefttext->hide();
+    ui->labelShift->hide();
+    ui->labelShiftimage->hide();
+    ui->labelShifttext->hide();
+    ui->label_2->hide();
+
     ui->labelLogo_analysis->setPixmap(QPixmap(":/file/resource/report_logo/logo.png"));
-    ui->labelKeyboard_analysis->setPixmap(QPixmap(":/file/resource/Main/keyboardInstruction.jpg"));
+    ui->labelKeyboard_analysis->setPixmap(QPixmap(":/file/resource/Main/A.jpg"));
 }
 
 DialogKeyboardHelp::~DialogKeyboardHelp()

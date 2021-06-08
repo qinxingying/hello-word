@@ -515,36 +515,48 @@
         <translation>键盘说明</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="27"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="34"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="47"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="62"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="73"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="88"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="99"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="114"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="125"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="140"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="155"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="170"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="181"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="196"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="222"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="237"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="41"/>
+        <source>Analysis M</source>
+        <translation>手动分析</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="49"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="56"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="69"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="84"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="95"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="110"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="121"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="136"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="147"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="162"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="177"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="192"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="203"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="218"/>
         <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="244"/>
         <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="259"/>
         <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="266"/>
         <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="281"/>
         <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="288"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="302"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="317"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="303"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="310"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="324"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="339"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="359"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="366"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="295"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="317"/>
         <source>+</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="353"/>
+        <source>Analysis A</source>
+        <translation>自动分析</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogkeyboardhelp.cpp" line="12"/>
@@ -1111,23 +1123,23 @@
         <translation type="vanished">普通钢</translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1802"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1855"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1805"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1858"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1902"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1905"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2177"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2180"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2177"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2180"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1135,77 +1147,82 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="770"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="772"/>
         <source>Store Current LawId and ScanPos ?</source>
         <translation>保存当前角度轴位置和扫查轴位置？</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="969"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="977"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="991"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="982"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="990"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1004"/>
         <source>No Defect Found</source>
         <translation>未发现缺陷</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="902"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="996"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="915"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1009"/>
         <source>Range too Small</source>
         <translation>范围太小</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="590"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1914"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="592"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1927"/>
         <source>Select Method</source>
         <translation>选择测量方法</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="591"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1908"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="593"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1921"/>
         <source>Start Analysis</source>
         <translation>开始分析</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="902"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="996"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="820"/>
+        <source>Exit automatic analysing?</source>
+        <translation>是否退出自动分析模式？</translation>
+    </message>
+    <message>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="915"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1009"/>
         <source>Please Selected More Wider Range</source>
         <translation>请扩大选择范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1000"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1013"/>
         <source>Out of Range</source>
         <translation>超过范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1000"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1013"/>
         <source>Please Selected in C Scan View</source>
         <translation>请不要超过C扫视图</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="585"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="587"/>
         <source>Scale Recover</source>
         <translation>缩放复原</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="586"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1885"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="588"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1898"/>
         <source>Data Mode</source>
         <translation>数据模式</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="587"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1891"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="589"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1904"/>
         <source>Show Cursor</source>
         <translation>测量光标</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="588"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1897"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="590"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1910"/>
         <source>Show Defect</source>
         <translation>缺陷显示</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="589"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1903"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="591"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1916"/>
         <source>Show Couple</source>
         <translation>耦合监控</translation>
     </message>
@@ -2048,7 +2065,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7510"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9402"/>
         <location filename="../ui/DopplerGroupTab.cpp" line="1294"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1299"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1298"/>
         <source>Length:</source>
         <translation>长        度：</translation>
     </message>
@@ -2815,6 +2832,7 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="9971"/>
         <location filename="../ui/DopplerGroupTab.cpp" line="1293"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1297"/>
         <source>Thickness:</source>
         <translation>厚        度：</translation>
     </message>
@@ -2941,22 +2959,22 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2580"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2583"/>
         <source>Number %1 defect will be deleted.</source>
         <translation> %1 号缺陷将被删除。</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2581"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2584"/>
         <source>Are you sure to delete this defect?</source>
         <translation>确定删除这个缺陷吗？</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2584"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2587"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2585"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2588"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -2966,7 +2984,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.cpp" line="730"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2604"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2607"/>
         <source>Display Mode</source>
         <translation>显示模式</translation>
     </message>
@@ -2995,12 +3013,11 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1297"/>
         <source>Inner Diameter:</source>
-        <translation>内部直径:</translation>
+        <translation type="vanished">内部直径:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1298"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1299"/>
         <source>Outer Diameter:</source>
         <translation>外部直径:</translation>
     </message>
@@ -3703,7 +3720,6 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="251"/>
-        <location filename="../ui/mainwindow.ui" line="423"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
@@ -3761,6 +3777,11 @@
         <location filename="../ui/mainwindow.ui" line="415"/>
         <source>Korean</source>
         <translation>韩语</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="423"/>
+        <source>Keyboard Guide</source>
+        <translation>键位说明</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="455"/>
@@ -4052,9 +4073,8 @@
         <translation>缺陷保存成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2244"/>
         <source>Saving defects...</source>
-        <translation>正在保存缺陷...</translation>
+        <translation type="vanished">正在保存缺陷...</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="2419"/>

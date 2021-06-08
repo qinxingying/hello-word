@@ -29,7 +29,7 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="normal">
       <property name="font">
@@ -38,7 +38,7 @@
        </font>
       </property>
       <attribute name="title">
-       <string>Manual</string>
+       <string>Analysis M</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
@@ -350,7 +350,7 @@
      </widget>
      <widget class="QWidget" name="analysis">
       <attribute name="title">
-       <string>Auto</string>
+       <string>Analysis A</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>

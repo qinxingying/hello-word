@@ -817,7 +817,7 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
         if (!pConfig->common.bDefectIdentifyStatus) {
             emit signalStartAnalysis();
         } else {
-            int ret = QMessageBox::warning(this, tr("Stop Analysis"), tr("Do you want to stop analysis?"), QMessageBox::Ok | QMessageBox::No);
+            int ret = QMessageBox::information(this, tr(""), tr("Exit automatic analysing?"), QMessageBox::Ok | QMessageBox::No);
             if (ret == QMessageBox::Ok)
                 emit signalStopAnalysis();
         }
