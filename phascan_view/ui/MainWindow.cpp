@@ -567,6 +567,13 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     int _nGroupQty = _pConfig->common.nGroupQty;
 
+    if (m_nAlloff && nIndex_ == 0) {
+        ui->actionSave_Data->setDisabled(true);
+        ui->actionSave_B_Scan_Data->setDisabled(true);
+    } else {
+        ui->actionSave_Data->setDisabled(false);
+        ui->actionSave_B_Scan_Data->setDisabled(false);
+    }
     if(_nGroupQty > m_nAlloff){
         if(nIndex_ > 0){
             QList<QWidget*>* _list = m_pViewList[nIndex_];
@@ -1079,6 +1086,9 @@ void MainWindow::OpenFilePro(QString strFileName_)
 
     if(!_ret)
     {
+        ui->actionSave_Data->setEnabled(true);
+        ui->actionSave_B_Scan_Data->setEnabled(true);
+
         _pConfig->ResetShadowData();
 //        _pConfig->m_defect[0]->analysisData();
         _pConfig->initScanPos();
@@ -1099,8 +1109,6 @@ void MainWindow::OpenFilePro(QString strFileName_)
             ui->actionFile_Properties->setEnabled(false);
         }
 
-        ui->actionSave_Data->setEnabled(true);
-        ui->actionSave_B_Scan_Data->setEnabled(true);
 //        if(ui->measureWidget->isHidden()){
 //            ui->measureWidget->show();
 //        }
@@ -2825,13 +2833,10 @@ void MainWindow::on_actionFile_Properties_triggered()
 void MainWindow::slot_actionSaveCSacnData_triggered()
 {
     DopplerConfigure* pConfig = DopplerConfigure::Instance();
-    //SCANNER& _scanner = _pConfig->common.scanner ;
     ParameterProcess* process = ParameterProcess::Instance();
-    int scanOff = process->GetScanOff(m_iCurGroup);
-    int scanMax = process->GetRealScanMax() + scanOff;
+    int scanMax    = process->SAxisstoptoIndex(process->GetScanend());
     int lawstart  = process->GetLawStart();
     int lawstop   = process->GetLawStop();
-    //U8* pMarker = process->GetScanMarker(m_iCurGroup);
     int disp_mode = pConfig->group[m_iCurGroup].DisplayMode;
     if(disp_mode < 0){
         disp_mode = (int)ProcessDisplay::DISP_S_AV;
@@ -2844,7 +2849,7 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
         WDATA* data = process->GetCScanData();
         QList< QList<QVariant> > m_datas;
         if (data != nullptr) {
-            for (int j = -1; j < scanMax; ++j) {
+            for (int j = -1; j <= scanMax; ++j) {
                 QList<QVariant> rows;
                 if (j == -1) {
                     rows.append("");
@@ -2869,7 +2874,7 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
                     case ProcessDisplay::DISP_S_AH_BH_CV:
                     case ProcessDisplay::DISP_S_AH_CV:
                     case ProcessDisplay::DISP_S_AH_CV_CV:
-                        rows.append(data[(scanMax - j - 1) + i * 2048]);
+                        rows.append(data[(scanMax - j) + i * 2048]);
                         break;
                     default:
                         break;
@@ -2895,12 +2900,9 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
 void MainWindow::slot_actionSaveBSacnData_triggered()
 {
     DopplerConfigure* pConfig = DopplerConfigure::Instance();
-    //SCANNER& _scanner = _pConfig->common.scanner ;
     ParameterProcess* process = ParameterProcess::Instance();
-    int scanOff = process->GetScanOff(m_iCurGroup);
-    int scanMax = process->GetRealScanMax() + scanOff;
+    int scanMax    = process->SAxisstoptoIndex(process->GetScanend());
     int pointQty  = process->GetGroupPointQty(m_iCurGroup);
-    //U8* pMarker = process->GetScanMarker(m_iCurGroup);
     int dispMode = pConfig->group[m_iCurGroup].DisplayMode;
     if(dispMode < 0){
         dispMode = (int)ProcessDisplay::DISP_S_AV;
@@ -2913,7 +2915,7 @@ void MainWindow::slot_actionSaveBSacnData_triggered()
         WDATA* data = process->GetBScanData();
         QList< QList<QVariant> > m_datas;
         if (data != nullptr) {
-            for (int j = -1; j < scanMax; ++j) {
+            for (int j = -1; j <= scanMax; ++j) {
                 QList<QVariant> rows;
                 if (j == -1) {
                     rows.append("");
@@ -2938,7 +2940,7 @@ void MainWindow::slot_actionSaveBSacnData_triggered()
                     case ProcessDisplay::DISP_S_AH_BH_CH:
                     case ProcessDisplay::DISP_S_AV_BH:
                     case ProcessDisplay::DISP_S_AH_BH_CV:
-                        rows.append(data[(scanMax - j) + i * 2048]);
+                        rows.append(data[(scanMax - j + 1) + i * 2048]);
                         break;
                     default:
                         break;
