@@ -616,7 +616,8 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
         {
             m_cPosStart = event->pos() ;
         }
-
+        DopplerConfigure* pConfig = DopplerConfigure::Instance();
+        if (pConfig->common.bDefectIdentifyStatus)
         {
             m_isDrawSelectArea = false;
             DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
@@ -627,8 +628,13 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
             case setup_DISPLAY_MODE_S_ATHUMIZ:
             case setup_DISPLAY_MODE_S_LINEAR: {
 
-                g_pMainWnd->setSelectSscanAreaValid(m_isDrawSelectArea);
+                g_pMainWnd->setSelectSscanAreaValid(false);
                 break;
+            case setup_DISPLAY_MODE_C_H:
+            case setup_DISPLAY_MODE_CC_H:
+            case setup_DISPLAY_MODE_C_V:
+            case setup_DISPLAY_MODE_CC_V:
+                g_pMainWnd->setDefectIdentifyCScanArea(0, 0, 0, 0);
             default:
                     break;
             }

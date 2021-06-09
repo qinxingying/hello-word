@@ -307,9 +307,9 @@ void DefectIdentify::setRange(int scanStart, int scanStop, int beamStart, int be
  * @brief DefectIdentify::setSscanRange 设置S扫检测区域
  * @param _recet
  */
-void DefectIdentify::setSscanRange(QRectF _recet)
+void DefectIdentify::setSscanRange(QRectF _rect)
 {
-    m_rectSscan = _recet;
+    m_rectSscan = _rect;
     m_bSscanRangeIsSet = true;
 }
 
@@ -473,7 +473,7 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
                 int maxValueCnt = 0;
                 beamData _data = filterValue( temp.at(i), maxValue, &maxValueCnt);
                 QPointF point;
-                if (m_bSscanRangeIsSet) {
+                if (m_bSscanRangeIsSet && !m_rectSscan.isEmpty()) {
                     transformPolarToCartesian(_data.lawId, _data.dataIndex, point);
                     if (!m_rectSscan.contains(point)) {
                         continue;

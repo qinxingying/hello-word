@@ -26,7 +26,7 @@ public:
     void setScale(double _scale) {m_scale = _scale / 100.0;}
     void getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId);
     void setRange(int scanStart, int scanStop, int beamStart, int beamStop);
-    void setSscanRange(QRectF _recet);
+    void setSscanRange(QRectF _rect);
     void setSscanRangeValid(bool _isValid);
     void setIdentifyStatus(bool status);
     void setAutoMerge(bool _merge) {m_bAutoMerge = _merge;}
