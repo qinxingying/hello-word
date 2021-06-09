@@ -57,7 +57,7 @@ protected:
     void   CScanZoomAction();
     void   GeometryChanged();
     void   DrawMeasureValue();
-    void   DrawSelectArea();
+    void   DrawSelectArea(QRect &_rect);
     QRectF RangeTranslate(QRectF& rect_);
 
 
@@ -104,6 +104,9 @@ private:
 
     QRect m_selectedArea;
     bool m_isDrawSelectArea {false};
+    QVector<QRect> m_selectedNotToAnalysisAreas;  // 选择不识别缺陷区域
+    QVector<QRectF> m_transformedNotToAnalysisAreas;  // 转换坐标后的不识别缺陷区域
+    bool m_isDrawSelectNotToAnalysisAreas {false};
 signals:
     void signalViewChanged(QRectF rect)  ;
     void signalUpdateDrawing();

@@ -27,6 +27,7 @@ public:
     void getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId);
     void setRange(int scanStart, int scanStop, int beamStart, int beamStop);
     void setSscanRange(QRectF _rect);
+    void setSscanNotIdentifyArea(const QVector<QRectF> &_rects);
     void setSscanRangeValid(bool _isValid);
     void setIdentifyStatus(bool status);
     void setAutoMerge(bool _merge) {m_bAutoMerge = _merge;}
@@ -121,6 +122,7 @@ private:
     int m_beamStop  {0};
     QRectF m_rectSscan;
     bool m_bSscanRangeIsSet {false};
+    QVector<QRectF> m_sScanNotIdentifyAreas;// S扫不进行识别的区域
 };
 
 #endif // DEFECTIDENTIFY_H

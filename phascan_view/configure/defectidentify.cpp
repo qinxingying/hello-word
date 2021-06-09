@@ -310,6 +310,11 @@ void DefectIdentify::setSscanRange(QRectF _rect)
     m_bSscanRangeIsSet = true;
 }
 
+void DefectIdentify::setSscanNotIdentifyArea(const QVector<QRectF> &_rects)
+{
+    m_sScanNotIdentifyAreas = _rects;
+}
+
 void DefectIdentify::setSscanRangeValid(bool _isValid)
 {
     m_bSscanRangeIsSet = _isValid;
@@ -470,12 +475,21 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
                 int maxValueCnt = 0;
                 beamData _data = filterValue( temp.at(i), maxValue, &maxValueCnt);
                 QPointF point;
-                if (m_bSscanRangeIsSet && !m_rectSscan.isEmpty()) {
-                    transformPolarToCartesian(_data.lawId, _data.dataIndex, point);
+                transformPolarToCartesian(_data.lawId, _data.dataIndex, point);
+                if (m_bSscanRangeIsSet && !m_rectSscan.isEmpty()) {                    
                     if (!m_rectSscan.contains(point)) {
                         continue;
                     }
                 }
+                bool bIsValid = true;
+                for(auto &rect: m_sScanNotIdentifyAreas) {
+                    if (rect.contains(point)) {
+                        bIsValid = false;
+                        break;
+                    }
+                }
+                if (!bIsValid) continue;
+
                 defectRect defect;
                 defect.valueMax = maxValue;
                 defect._rect[0].dataIndex = _data.dataIndex;
