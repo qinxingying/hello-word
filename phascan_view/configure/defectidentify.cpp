@@ -191,9 +191,6 @@ bool DefectIdentify::analysisDefect()
         }
     }
 
-    if (m_bAutoMerge) {
-        mergeDefects();
-    }
     measureLength();
     if (m_bAutoMerge) {
         mergeDefects();// 测长之后再次合并缺陷，长度方向
