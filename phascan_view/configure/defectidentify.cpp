@@ -1272,6 +1272,15 @@ void DefectIdentify::calDefectRect()
 {
     if (m_defectsBetweenFrames.count() == 0) return;
 
+    for (int i = 0; i < m_defectsBetweenFrames.count(); i++) {
+        if (m_defectsBetweenFrames[i].bMergedStatus) {
+            m_defectsBetweenFrames.removeAt(i);
+        }
+    }
+    qSort(m_defectsBetweenFrames.begin(),m_defectsBetweenFrames.end(),[=](defectsBetweenFrames &_A, defectsBetweenFrames &_B){
+        return _A.scanIdStart < _B.scanIdStart;
+    });
+
     ParameterProcess* _process = ParameterProcess::Instance();
     auto pHead = m_defectsBetweenFrames.begin();
     auto end = m_defectsBetweenFrames.end();
