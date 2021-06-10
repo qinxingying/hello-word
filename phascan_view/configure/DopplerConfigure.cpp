@@ -1892,7 +1892,57 @@ void DopplerConfigure::SaveDefectFile(QString& path_)
             }
         }
     }
-	file.close();
+    file.close();
+}
+
+void DopplerConfigure::OpenNoDefectAreaFile(QString &path_)
+{
+    for(int iGroup = 0; iGroup < common.nGroupQty; iGroup++) {
+        m_selectedNotToAnalysisAreas[iGroup].clear();
+        m_transformedNotToAnalysisAreas[iGroup].clear();
+    }
+
+    QString _strName = path_ + QString(tr("/defectArea"));
+    QFile file(_strName);
+    if(!file.open (QIODevice::ReadOnly)){
+        return;
+    }
+    QDataStream reader(&file);
+    int _nGroupQty;
+    reader.readRawData((char*)&_nGroupQty , sizeof(int));
+    for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+        QVector<QRect> tmp1;
+        QVector<QRectF> tmp2;
+        reader >> tmp1 >> tmp2;
+        m_selectedNotToAnalysisAreas[iGroup].append(tmp1);
+        m_transformedNotToAnalysisAreas[iGroup].append(tmp2);
+    }
+
+    file.close();
+}
+
+void DopplerConfigure::SaveNoDefectAreaFile()
+{
+    QDir *_tmp = new QDir;
+    if(!_tmp->exists(m_szDefectPathName)) {
+        _tmp->mkdir(m_szDefectPathName);
+    }
+
+    QString _strName = m_szDefectPathName + QString(tr("/defectArea"));
+    QFile file(_strName);
+    file.open (QIODevice::WriteOnly);
+    QDataStream write(&file);
+
+    int _nGroupQty = common.nGroupQty;
+    write.writeRawData((char*)&_nGroupQty , sizeof(int));
+
+    for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+        QVector<QRect> tmp1 = m_selectedNotToAnalysisAreas[iGroup];
+        QVector<QRectF> tmp2 = m_transformedNotToAnalysisAreas[iGroup];
+        write << tmp1 << tmp2;
+    }
+
+    file.close();
 }
 
 #include <QDir.h>
@@ -1918,6 +1968,7 @@ void DopplerConfigure::FilePathPro(QString& path_)
 
 	m_szDefectPathName = _strDefectPath + _name;
 	OpenDefectFile(m_szDefectPathName);
+    OpenNoDefectAreaFile(m_szDefectPathName);
 }
 
 int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)

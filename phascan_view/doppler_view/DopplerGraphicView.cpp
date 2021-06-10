@@ -561,22 +561,20 @@ void DopplerGraphicView::SetDrawOperation(DopplerDrawScan* pDrawScan_)
 
 void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
 {
-    DopplerConfigure* pConfig = DopplerConfigure::Instance();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     if(Qt::RightButton == event->button()){
-        if (pConfig->common.bMarkDefectNotIdentifyArea) {
-            for (int i = 0; i < m_selectedNotToAnalysisAreas.count(); ++i) {
-                if (m_selectedNotToAnalysisAreas[i].contains(event->pos())) {
-                    m_selectedNotToAnalysisAreas.removeAt(i);
-                    m_transformedNotToAnalysisAreas.removeAt(i);
-                    g_pMainWnd->setDefectNotIdentifySScanArea(m_transformedNotToAnalysisAreas);
+        DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+        int _iGroupId, _iLaw, _iDisplay;
+        _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+        if (_pConfig->common.bMarkDefectNotIdentifyArea && !_pConfig->common.bDefectIdentifyStatus) {
+            for (int i = 0; i < _pConfig->m_selectedNotToAnalysisAreas[_iGroupId].count(); ++i) {
+                if (_pConfig->m_selectedNotToAnalysisAreas[_iGroupId][i].contains(event->pos())) {
+                    _pConfig->m_selectedNotToAnalysisAreas[_iGroupId].removeAt(i);
+                    _pConfig->m_transformedNotToAnalysisAreas[_iGroupId].removeAt(i);
                     break;
                 }
             }
-        } else {
-            DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
-            int _iGroupId, _iLaw, _iDisplay;
-            _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
-            DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        } else {          
             bool dataModeStatus, cursorStatus, defectStatus, showCoupleStatus;
             dataModeStatus = _pConfig->common.dataModeStatus;
             cursorStatus = _pConfig->group[_iGroupId].bShowCursor;
@@ -629,7 +627,7 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
             m_cPosStart = event->pos() ;
         }
 
-        if (pConfig->common.bDefectIdentifyStatus)
+        if (_pConfig->common.bDefectIdentifyStatus)
         {
             m_isDrawSelectArea = false;
             DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
@@ -984,13 +982,11 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                         switch(_eMode){
                         case setup_DISPLAY_MODE_S_ATHUMIZ:
                         case setup_DISPLAY_MODE_S_LINEAR: {
-                            m_selectedNotToAnalysisAreas.append(rect);
+                            _pConfig->m_selectedNotToAnalysisAreas[_iGroupId].append(rect);
                             QPointF topL(scanstart, lawstart);
                             QPointF bottomR(scanstop, lawstop);
                             QRectF transformedRect(topL, bottomR);
-                            m_transformedNotToAnalysisAreas.append(transformedRect);
-                            g_pMainWnd->setDefectNotIdentifySScanArea(m_transformedNotToAnalysisAreas);
-                            m_isDrawSelectNotToAnalysisAreas = true;
+                            _pConfig->m_transformedNotToAnalysisAreas[_iGroupId].append(transformedRect);
                             break;
                         }
                         default:
@@ -1484,14 +1480,27 @@ void DopplerGraphicView::paintEvent(QPaintEvent *event)
 {
     QGraphicsView::paintEvent(event);
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId, _iLaw, _iDisplay;
+    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
     if (_pConfig->common.bDefectIdentifyStatus && m_isDrawSelectArea) {
-        DrawSelectArea(m_selectedArea);
+        DrawSelectArea(m_selectedArea, QColor(18,133,240));
     } else {
         m_isDrawSelectArea = false;
     }
-    if (_pConfig->common.bMarkDefectNotIdentifyArea && m_isDrawSelectNotToAnalysisAreas) {
-        for (auto &rect : m_selectedNotToAnalysisAreas) {
-            DrawSelectArea(rect);
+    if (_pConfig->common.bMarkDefectNotIdentifyArea) {
+        setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
+
+        switch(_eMode){
+        case setup_DISPLAY_MODE_S_ATHUMIZ:
+        case setup_DISPLAY_MODE_S_LINEAR: {
+            for (auto &rect : _pConfig->m_selectedNotToAnalysisAreas[_iGroupId]) {
+                DrawSelectArea(rect, QColor(255,0,0));
+            }
+            break;
+        }
+        default:
+            break;
         }
     }
     DrawMeasureValue();
@@ -1664,17 +1673,18 @@ void DopplerGraphicView::DrawMeasureValue()
     _painter.end();
 }
 
-void DopplerGraphicView::DrawSelectArea(QRect &_rect)
+void DopplerGraphicView::DrawSelectArea(QRect &_rect, QColor _color)
 {
     QMutexLocker locker(&m_mutex);
     QWidget* _pViewPort = (QWidget*)this->viewport();
     QPainter _painter(_pViewPort) ;
-    _painter.setPen(QPen(QColor(18,133,240)));
+    _painter.setPen(QPen(_color));
 
     QBrush _brush(QColor(0,0,0));
     _painter.setBackground(_brush);
 
-    _brush.setColor(QColor(18,133,240,40));
+    _color.setAlpha(40);
+    _brush.setColor(_color);
     _painter.setBrush(_brush);
     _painter.drawRect(_rect);
 

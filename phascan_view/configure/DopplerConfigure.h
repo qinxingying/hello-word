@@ -189,6 +189,8 @@ public:
 	DopplerHtmlReport* GetReportOpp() ;
 	void OpenDefectFile(QString& path_);
 	void SaveDefectFile(QString& path_);
+    void OpenNoDefectAreaFile(QString& path_);
+    void SaveNoDefectAreaFile();
 	void FilePathPro(QString& path_);
 	// 
 	int DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_);
@@ -261,6 +263,8 @@ public:
 	DEFECT_PARAM		m_dfParam[setup_MAX_GROUP_QTY];
 	int					m_nCutBmpNo[setup_MAX_GROUP_QTY];
     int                 loadDefectVersion;
+    QVector<QRect>      m_selectedNotToAnalysisAreas[setup_MAX_GROUP_QTY];    // 选择不识别缺陷区域,将画在S扫上
+    QVector<QRectF>     m_transformedNotToAnalysisAreas[setup_MAX_GROUP_QTY];// 转换坐标后的不识别缺陷区域
 };
 
 #endif // DOPPLERCONFIGURE_H

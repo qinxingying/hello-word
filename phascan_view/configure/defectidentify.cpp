@@ -310,11 +310,6 @@ void DefectIdentify::setSscanRange(QRectF _rect)
     m_bSscanRangeIsSet = true;
 }
 
-void DefectIdentify::setSscanNotIdentifyArea(const QVector<QRectF> &_rects)
-{
-    m_sScanNotIdentifyAreas = _rects;
-}
-
 void DefectIdentify::setSscanRangeValid(bool _isValid)
 {
     m_bSscanRangeIsSet = _isValid;
@@ -469,6 +464,7 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
 
         size = temp.size();
         if(size){
+            DopplerConfigure* _pConfig = DopplerConfigure::Instance();
             QVector<defectRect> defectrect;
             for(int i = 0; i < size; ++i){
                 int maxValue = findMaxValue(temp.at(i));
@@ -482,7 +478,7 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
                     }
                 }
                 bool bIsValid = true;
-                for(auto &rect: m_sScanNotIdentifyAreas) {
+                for(auto &rect: _pConfig->m_transformedNotToAnalysisAreas[m_groupId]) {
                     if (rect.contains(point)) {
                         bIsValid = false;
                         break;

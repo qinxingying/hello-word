@@ -2196,12 +2196,6 @@ void MainWindow::setDefectIdentifySScanArea(QRectF _rect)
     _pConfig->m_defect[m_iCurGroup]->setSscanRange(_rect);
 }
 
-void MainWindow::setDefectNotIdentifySScanArea(const QVector<QRectF> &_rects)
-{
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    _pConfig->m_defect[m_iCurGroup]->setSscanNotIdentifyArea(_rects);
-}
-
 void MainWindow::setSelectSscanAreaValid(bool _isValid)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -2328,26 +2322,31 @@ void MainWindow::on_actionNew_triggered()
 {
     DopplerConfigure* pConfig = DopplerConfigure::Instance();
     pConfig->common.bMarkDefectNotIdentifyArea = !pConfig->common.bMarkDefectNotIdentifyArea;
+    if (!pConfig->common.bDefectIdentifyStatus) {
+        bool status = !pConfig->common.bMarkDefectNotIdentifyArea;
+        ui->actionOpenFile->setEnabled(status);
+        ui->actionReport_Add_One_Item->setEnabled(status);
+        ui->actionReport_Del_One_Item->setEnabled(status);
+        ui->actionReport_Setting->setEnabled(status);
+        ui->actionSave_Report->setEnabled(status);
+        ui->actionTOFD_LW_Straitening->setEnabled(status);
+        ui->actionTOFD_BW_Straitening->setEnabled(status);
+        ui->actionTOFD_LW_Removal->setEnabled(status);
+        ui->actionTOFD_SAFT->setEnabled(status);
+        ui->actionTOFD_Repeal->setEnabled(status);
+        ui->actionTOFD_Redo->setEnabled(status);
+        ui->actionTOFD_Length_Measurement->setEnabled(status);
+        ui->actionTOFD_Height_Measurement->setEnabled(status);
+        ui->actionTOFD_Depth_Measurement->setEnabled(status);
+        ui->actionSave_Defect->setEnabled(status);
+        ui->actionLanguage->setEnabled(status);
+        ui->actionScreenShot->setEnabled(status);
+        ui->actionAided_Analysis->setEnabled(status);
 
-    bool status = !pConfig->common.bMarkDefectNotIdentifyArea;
-    ui->actionOpenFile->setEnabled(status);
-    ui->actionReport_Add_One_Item->setEnabled(status);
-    ui->actionReport_Del_One_Item->setEnabled(status);
-    ui->actionReport_Setting->setEnabled(status);
-    ui->actionSave_Report->setEnabled(status);
-    ui->actionTOFD_LW_Straitening->setEnabled(status);
-    ui->actionTOFD_BW_Straitening->setEnabled(status);
-    ui->actionTOFD_LW_Removal->setEnabled(status);
-    ui->actionTOFD_SAFT->setEnabled(status);
-    ui->actionTOFD_Repeal->setEnabled(status);
-    ui->actionTOFD_Redo->setEnabled(status);
-    ui->actionTOFD_Length_Measurement->setEnabled(status);
-    ui->actionTOFD_Height_Measurement->setEnabled(status);
-    ui->actionTOFD_Depth_Measurement->setEnabled(status);
-    ui->actionSave_Defect->setEnabled(status);
-    ui->actionLanguage->setEnabled(status);
-    ui->actionScreenShot->setEnabled(status);
-    ui->actionAided_Analysis->setEnabled(status);
+        if (!pConfig->common.bMarkDefectNotIdentifyArea) {
+            pConfig->SaveNoDefectAreaFile();
+        }
+    }
 }
 
 void MainWindow::on_actionOpenFile_triggered()
@@ -2799,7 +2798,7 @@ void MainWindow::set_ToolBarStatus( bool status)
     ui->actionScreenShot->setEnabled(status);
     ui->actionAided_Analysis->setEnabled(status);
     ui->actionStop_Analysis->setEnabled(!status);
-     ui->actionNew->setEnabled(status);
+    //ui->actionNew->setEnabled(status);
     //sliderh->setEnabled(status);
 }
 
