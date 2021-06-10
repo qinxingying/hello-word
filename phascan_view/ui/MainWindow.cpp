@@ -2243,14 +2243,21 @@ void MainWindow::startDefectIdentify()
 
     QProgressDialog progress(this);
     progress.setRange(0, rectL.size());
+    progress.setAutoReset(false);
+    progress.setMinimumDuration(0);
     progress.setLabelText(tr("Saving defects..."));
     progress.setCancelButton(nullptr);
     progress.setWindowModality(Qt::WindowModal);
     progress.setValue(0);
+    QElapsedTimer timer;
+    timer.start();
     for (int i  = 0; i < rectL.size(); ++i) {
         if (progress.wasCanceled()) {
             break;
         }
+        progress.setValue(i+1);
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[i].y();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[i].y() + rectH[i].height();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[i].x();
@@ -2267,9 +2274,11 @@ void MainWindow::startDefectIdentify()
 
         sleep(2);
         on_actionSave_Defect_triggered();
-
-        progress.setValue(i+1);
-        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+    }
+    int timeCost = timer.elapsed();
+    qDebug() << "save cost:"<< timeCost << "ms";
+    if (timeCost < 1000) {
+        sleep(500);
     }
 
     if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {

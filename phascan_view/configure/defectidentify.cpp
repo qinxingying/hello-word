@@ -1012,8 +1012,8 @@ void DefectIdentify::measureLength()
                }
            } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
 //               int scanId = _defect.special.scanId;
-               int startS = _defect.scanIdStart - 3;    // 多找3帧
-               int startE = _defect.scanIdEnd + 3;
+               int startS = qMax(_defect.scanIdStart - 3, m_scanStart);    // 多找3帧
+               int startE = qMin(_defect.scanIdEnd + 3, m_scanStop - 1);
                QMap<int, QVector<_Amp>> beamIdValues;// 该缺陷范围内所有的beamId上对应的所有特征点
                for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
                    int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
@@ -1088,85 +1088,85 @@ void DefectIdentify::measureLength()
                                }
                            }
                        }
-                       if (peakAmps.count() == 0) continue;
-                       _Amp defectLeft  = peakAmps.first();
-                       _Amp defectRight = peakAmps.last();
-                       // 查找左边界
-                       int scanId         = defectLeft.scanId;
-                       int lawId          = defectLeft.lawId;
-                       float borderValue    = defectLeft.value / 2;
-                       float curValue       = borderValue;
-                       if (scanId == startS) {
-                           borders.append(scanId);
+                       if (peakAmps.count() == 0) continue;                       
+                   }
+                   _Amp defectLeft = peakAmps.first();
+                   _Amp defectRight = peakAmps.last();
+                   // 查找左边界
+                   int scanId         = defectLeft.scanId;
+                   int lawId          = defectLeft.lawId;
+                   float borderValue    = defectLeft.value / 2;
+                   float curValue       = borderValue;
+                   if (scanId == startS) {
+                       borders.append(scanId);
+                   }
+                   int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
+                   for (int j = scanId - 1; j >= startS; --j) {
+                       int rangeLeft = curDataIndex - (beamdis/2);
+                       int rangeRight = curDataIndex + (beamdis/2);
+                       if(rangeLeft < 0){
+                           rangeLeft = 0;
                        }
-                       int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
-                       for (int j = scanId - 1; j >= startS; --j) {
-                           int rangeLeft = curDataIndex - (beamdis/2);
-                           int rangeRight = curDataIndex + (beamdis/2);
-                           if(rangeLeft < 0){
-                               rangeLeft = 0;
-                           }
-                           if(rangeRight >= m_pointQty){
-                               rangeRight = m_pointQty - 1;
-                           }
-                           WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, lawId, _pData);
-                           int value, postion;
-                           findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
+                       if(rangeRight >= m_pointQty){
+                           rangeRight = m_pointQty - 1;
+                       }
+                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, lawId, _pData);
+                       int value, postion;
+                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
 
-                           if (value <= borderValue) {
-                               float diff1 = log10((curValue * 1.0) / borderValue);
-                               float diff2 = log10((borderValue * 1.0) / value);
-                               if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
-                                   borders.append(j);
-                               } else {
-                                   borders.append(j + 1);
-                               }
-                               break;
-                           } else if (j == startS) {
+                       if (value <= borderValue) {
+                           float diff1 = log10((curValue * 1.0) / borderValue);
+                           float diff2 = log10((borderValue * 1.0) / value);
+                           if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
                                borders.append(j);
                            } else {
-                               curValue = value;
-                               curDataIndex = postion;
+                               borders.append(j + 1);
                            }
+                           break;
+                       } else if (j == startS) {
+                           borders.append(j);
+                       } else {
+                           curValue = value;
+                           curDataIndex = postion;
                        }
+                   }
 
-                       // 查找右边界
-                       scanId         = defectRight.scanId;
-                       lawId          = defectRight.lawId;
-                       borderValue    = defectRight.value / 2;
-                       curValue       = borderValue;
-                       if (scanId == startE) {
-                           borders.append(scanId);
+                   // 查找右边界
+                   scanId         = defectRight.scanId;
+                   lawId          = defectRight.lawId;
+                   borderValue    = defectRight.value / 2;
+                   curValue       = borderValue;
+                   if (scanId == startE) {
+                       borders.append(scanId);
+                   }
+                   curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
+                   for (int j = scanId + 1; j <= startE; ++j) {
+                       int rangeLeft = curDataIndex - (beamdis/2);
+                       int rangeRight = curDataIndex + (beamdis/2);
+                       if(rangeLeft < 0){
+                           rangeLeft = 0;
                        }
-                       curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
-                       for (int j = scanId + 1; j <= startE; ++j) {
-                           int rangeLeft = curDataIndex - (beamdis/2);
-                           int rangeRight = curDataIndex + (beamdis/2);
-                           if(rangeLeft < 0){
-                               rangeLeft = 0;
-                           }
-                           if(rangeRight >= m_pointQty){
-                               rangeRight = m_pointQty - 1;
-                           }
-                           WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, lawId, _pData);
-                           int value, postion;
-                           findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
+                       if(rangeRight >= m_pointQty){
+                           rangeRight = m_pointQty - 1;
+                       }
+                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, j, lawId, _pData);
+                       int value, postion;
+                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, value, postion);
 
-                           if (value <= borderValue) {
-                               float diff1 = log10((curValue * 1.0) / borderValue);
-                               float diff2 = log10((borderValue * 1.0) / value);
-                               if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
-                                   borders.append(j);
-                               } else {
-                                   borders.append(j - 1);
-                               }
-                               break;
-                           } else if (j == startE) {
+                       if (value <= borderValue) {
+                           float diff1 = log10((curValue * 1.0) / borderValue);
+                           float diff2 = log10((borderValue * 1.0) / value);
+                           if((diff1 > diff2) || qFuzzyIsNull(diff1)){ // 取与borderValue接近的点
                                borders.append(j);
                            } else {
-                               curValue = value;
-                               curDataIndex = postion;
+                               borders.append(j - 1);
                            }
+                           break;
+                       } else if (j == startE) {
+                           borders.append(j);
+                       } else {
+                           curValue = value;
+                           curDataIndex = postion;
                        }
                    }
                }
