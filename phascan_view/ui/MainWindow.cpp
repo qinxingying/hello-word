@@ -2248,6 +2248,9 @@ void MainWindow::startDefectIdentify()
     progress.setWindowModality(Qt::WindowModal);
     progress.setValue(0);
     for (int i  = 0; i < rectL.size(); ++i) {
+        if (progress.wasCanceled()) {
+            break;
+        }
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[i].y();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[i].y() + rectH[i].height();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[i].x();
