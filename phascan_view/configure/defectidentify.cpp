@@ -1012,46 +1012,11 @@ void DefectIdentify::measureLength()
                }
            } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
 //               int scanId = _defect.special.scanId;
-               int startS = _defect.scanIdStart;
-               int startE = _defect.scanIdEnd;
+               int startS = _defect.scanIdStart - 3;    // 多找3帧
+               int startE = _defect.scanIdEnd + 3;
                QMap<int, QVector<_Amp>> beamIdValues;// 该缺陷范围内所有的beamId上对应的所有特征点
                for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
                    int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
-//                   for (int s = scanId; s >= m_scanStart; --s) {
-//                       int rangeLeft = curDataIndex - (beamdis/2);
-//                       int rangeRight = curDataIndex + (beamdis/2);
-//                       if(rangeLeft < 0){
-//                           rangeLeft = 0;
-//                       }
-//                       if(rangeRight >= m_pointQty){
-//                           rangeRight = m_pointQty - 1;
-//                       }
-//                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, s, i, _pData);
-//                       int _amp, postion;
-//                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, _amp, postion);
-//                       if (_amp <= m_threshold / 2.0) {
-//                           startS = s;
-//                          break;
-//                       }
-//                   }
-//                   for (int s = scanId; s <= m_scanStop; ++s) {
-//                       int rangeLeft = curDataIndex - (beamdis/2);
-//                       int rangeRight = curDataIndex + (beamdis/2);
-//                       if(rangeLeft < 0){
-//                           rangeLeft = 0;
-//                       }
-//                       if(rangeRight >= m_pointQty){
-//                           rangeRight = m_pointQty - 1;
-//                       }
-//                       WDATA* lawData  = _process->GetDataAbsolutePosPointer(m_groupId, s, i, _pData);
-//                       int _amp, postion;
-//                       findMaxValueAndPos(lawData, rangeLeft, rangeRight, _amp, postion);
-//                       if (_amp <= m_threshold / 2.0) {
-//                           startE = s;
-//                          break;
-//                       }
-//                   }
-
                    for (int j = startS; j <= startE; ++j) {
                        int rangeLeft = curDataIndex - (beamdis/2);
                        int rangeRight = curDataIndex + (beamdis/2);
