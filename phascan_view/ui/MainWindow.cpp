@@ -2241,6 +2241,7 @@ void MainWindow::startDefectIdentify()
     _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
     m_iCurDefectIndex = 0;
 
+    _pConfig->loadDefectVersion = 1;
     QProgressDialog progress(this);
     progress.setRange(0, rectL.size());
     progress.setAutoReset(false);
