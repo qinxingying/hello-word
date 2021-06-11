@@ -1,4 +1,4 @@
-#ifndef DOPPLERDRAWSSCANAZIMUTHAL_H
+﻿#ifndef DOPPLERDRAWSSCANAZIMUTHAL_H
 #define DOPPLERDRAWSSCANAZIMUTHAL_H
 
 #include <configure/const.h>
@@ -70,6 +70,7 @@ protected:
     U8*  m_pColRate;
     int* m_pDataNo;
     bool m_bClear;
+    bool m_bWeldRemainingHeightAffect {false};
 };
 
 #endif // DOPPLERDRAWSSCANAZIMUTHAL_H

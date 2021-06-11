@@ -2825,3 +2825,9 @@ void DopplerGroupTab::on_ValueCouplingGainCom_valueChanged(double arg1)
     _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
+
+void DopplerGroupTab::on_ComWeldRemianingHeight_activated(int index)
+{
+    m_pGroup->bWeldRemainingHeight = index;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}

@@ -1562,6 +1562,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         //m_defect[i]->analysisData();
 
         _group.bShowCoupleInAScan = false;
+        _group.bWeldRemainingHeight = false;
 	}
 }
 

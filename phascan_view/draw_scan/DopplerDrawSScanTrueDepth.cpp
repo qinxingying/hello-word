@@ -62,10 +62,11 @@ void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
     int _nHeight	  = pImage_->height();
     int _nWidth	   = pImage_->width();
 
-    if((m_nWidth !=  _nWidth) || (m_nHeight != _nHeight))
+    if((m_nWidth !=  _nWidth) || (m_nHeight != _nHeight) || (m_bWeldRemainingHeightAffect != m_pGroup->bWeldRemainingHeight))
     {
         m_nWidth  =  _nWidth ;
         m_nHeight =  _nHeight ;
+        m_bWeldRemainingHeightAffect = m_pGroup->bWeldRemainingHeight;
         UpdateDrawInfo() ;
     }
 
@@ -239,6 +240,166 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
     int i, j, k, t, _index, _indexBuff;
     float _fX, _fY, _nTmp, _nbuff;
 
+    // weld remaining height
+    float thickness = m_pGroup->part.afSize[0];
+    int reflectCount = _nStopY / thickness;
+    float weldBottomWidth = _width;
+    float weldTopWidth = _width;
+    bool bWeldLeft = false;
+    bool bWeldRight = false;
+    if (m_pGroup->part.weldFormat) { // 二代
+        if (m_pGroup->part.weld_ii.eSymmetry == setup_WELD_LEFT) {
+            bWeldLeft = true;
+        } else if (m_pGroup->part.weld_ii.eSymmetry == setup_WELD_RIGHT) {
+            bWeldRight = true;
+        }
+        switch (m_pGroup->part.weld_ii.eType){
+        case I:
+            weldBottomWidth = m_pGroup->part.weld_ii.I.w;
+            weldTopWidth = m_pGroup->part.weld_ii.I.w;;
+            break;
+        case V:
+            weldBottomWidth = m_pGroup->part.weld_ii.V.w1;
+            weldTopWidth = m_pGroup->part.weld_ii.V.w2;;
+            break;
+        case U:
+            weldBottomWidth = m_pGroup->part.weld_ii.U.w1;
+            weldTopWidth = m_pGroup->part.weld_ii.U.w2;;
+            break;
+        case VY:
+            weldBottomWidth = m_pGroup->part.weld_ii.VY.w1;
+            weldTopWidth = m_pGroup->part.weld_ii.VY.w3;
+            break;
+        case VV:
+            weldBottomWidth = m_pGroup->part.weld_ii.VV.w1;
+            weldTopWidth = m_pGroup->part.weld_ii.VV.w3;
+            break;
+        case UU:
+            weldBottomWidth = m_pGroup->part.weld_ii.UU.w1;
+            weldTopWidth = m_pGroup->part.weld_ii.UU.w3;
+            break;
+        case UV:
+            weldBottomWidth = m_pGroup->part.weld_ii.UV.w1;
+            weldTopWidth = m_pGroup->part.weld_ii.UV.w3;
+            break;
+        case TKY:
+
+            break;
+        case DXF:
+
+            break;
+        default:
+
+            break;
+        }
+    } else {
+        if (m_pGroup->part.weld.eSymmetry == setup_WELD_LEFT) {
+            bWeldLeft = true;
+        } else if (m_pGroup->part.weld.eSymmetry == setup_WELD_RIGHT) {
+            bWeldRight = true;
+        }
+        switch (m_pGroup->part.weld.eType)
+        {
+        case setup_WELD_I :
+            weldBottomWidth = m_pGroup->part.weld.weland_offset;
+            weldTopWidth = m_pGroup->part.weld.weland_offset;
+            break;
+        case setup_WELD_V :
+            weldBottomWidth = m_pGroup->part.weld.weland_offset;
+            weldTopWidth = m_pGroup->part.weld.weland_offset + tan(DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_angle)) * m_pGroup->part.weld.fizone_height;
+            break;
+        case setup_WELD_DV :
+            weldTopWidth = m_pGroup->part.weld.weland_offset + tan(DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_angle)) * m_pGroup->part.weld.fizone_height;
+            weldBottomWidth = weldTopWidth;
+            break;
+        case setup_WELD_U : {
+            float fFizoneAngle = DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_angle) ;
+            float nTmpY2 = sin(fFizoneAngle) * m_pGroup->part.weld.fizone_radius  ;
+            float nTmpY1 = sqrt(m_pGroup->part.weld.fizone_radius * m_pGroup->part.weld.fizone_radius - m_pGroup->part.weld.weland_offset * m_pGroup->part.weld.weland_offset );
+            if(nTmpY2 > nTmpY1)
+            {
+                weldBottomWidth = m_pGroup->part.weld.weland_offset;
+                weldTopWidth = m_pGroup->part.weld.weland_offset + tan(DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_angle)) * m_pGroup->part.weld.fizone_height;
+            } else {
+                float fPosX = cos(fFizoneAngle) * m_pGroup->part.weld.fizone_radius;
+                double fPosY = m_pGroup->part.weld.fizone_height - nTmpY1 + nTmpY2;
+                weldTopWidth = fPosX + tan(fFizoneAngle) * fPosY;
+                weldBottomWidth = m_pGroup->part.weld.weland_offset;
+            }
+            break;
+        }
+        case setup_WELD_DIFF_DV:
+            weldBottomWidth = m_pGroup->part.weld.weland_offset + tan(DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_down_angle)) * m_pGroup->part.weld.fizone_down_height;
+            weldTopWidth = m_pGroup->part.weld.weland_offset + tan(DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_angle)) * m_pGroup->part.weld.fizone_height;
+            break;
+        case setup_WELD_J: {
+            float fFizoneAngle = DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_angle) ;
+            float nTmpY2 = sin(fFizoneAngle) * m_pGroup->part.weld.fizone_radius  ;
+            float nTmpY1 = sqrt(m_pGroup->part.weld.fizone_radius * m_pGroup->part.weld.fizone_radius - m_pGroup->part.weld.weland_offset * m_pGroup->part.weld.weland_offset );
+            if(nTmpY2 > nTmpY1)
+            {
+                weldBottomWidth = m_pGroup->part.weld.weland_offset;
+                weldTopWidth = m_pGroup->part.weld.weland_offset + tan(DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_angle)) * m_pGroup->part.weld.fizone_height;
+            } else {
+                float fPosX = cos(fFizoneAngle) * m_pGroup->part.weld.fizone_radius;
+                double fPosY = m_pGroup->part.weld.fizone_height - nTmpY1 + nTmpY2;
+                weldTopWidth = fPosX + tan(fFizoneAngle) * fPosY;
+                weldBottomWidth = m_pGroup->part.weld.weland_offset + tan(DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_down_angle)) * m_pGroup->part.weld.fizone_down_height;
+            }
+        }
+        case setup_WELD_VY:
+            weldBottomWidth = m_pGroup->part.weld.weland_offset;
+            weldTopWidth = m_pGroup->part.weld.weland_offset + tan(DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_angle)) * m_pGroup->part.weld.fizone_height
+                    + tan(DEGREE_TO_ARCH(m_pGroup->part.weld.fizone_down_angle)) * m_pGroup->part.weld.fizone_down_height;
+            break;
+        case setup_WELD_TKY:
+
+            break;
+        case setup_WELD_DXF:
+
+            break;
+        default:
+            break;
+        }
+
+    }
+
+    int lawIdStart[10] = {0};
+    int lawIdStop[10] = {0};
+    for (int index = 0; index < reflectCount; ++index) {
+        float height = thickness * (index + 1);
+        float width  = 0.0;
+        if (index % 2 == 0) {
+            width = weldBottomWidth;
+        } else {
+            width = weldTopWidth;
+        }
+//        float preXValue  = width;
+        float leftBoder  =  -width;
+        float rightBoder = width;
+        if (bWeldLeft) {
+            rightBoder = 0;
+        } else if(bWeldRight) {
+            leftBoder = 0;
+        }
+        lawIdStart[index] = -2;
+        lawIdStop[index]  = -2;
+        for(int i = 0 ; i < _nBeamQty ; i++)
+        {
+            float angle = _nAngleStart + i * _nAngleStep ;
+            float x = tan(angle) * height + _pExitPoint[i] + m_pGroup->fIndexOffset;
+            if (x >= leftBoder && lawIdStart[index] == -2) {
+                lawIdStart[index] = i - 1;
+//                lawIdStart[index] = fabs(x - leftBoder) > fabs(preXValue - leftBoder) ? (i - 1) : i;
+            }
+            if (x >= rightBoder && lawIdStop[index] == -2) {
+                lawIdStop[index] = i;
+//                lawIdStop[index] = fabs(x - rightBoder) > fabs(preXValue - rightBoder) ? (i - 1) : i;
+            }
+//            preXValue = x;
+        }
+    } // end
+
 	for(j = 0 ; j < _height ; j++)
 	{
 		_fY = _nStartY + j * _nStepY ;	// current y position
@@ -252,14 +413,28 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
 		for(i = 0 ; i < _width ; i++)
 		{
 			_fX = _nStartX + _nStepX * i ;	// get current pixel position in real coordinate
+
 			for( ; t < _nBeamQty - 1; t++)
 			{// if current position is less than minimun or bigger than maximum  get out
 				if(_fX > _nPosJunction[_nBeamQty - 1] || _fX < _nPosJunction[0] )
 				{
 					break;
 				}
+
 				if(_fX >= _nPosJunction[t] && _fX <= _nPosJunction[t+1] )
 				{
+                    // 焊缝余高
+                    if (m_bWeldRemainingHeightAffect) {
+                        bool bDraw = true;
+                        for (int index = 0; index < reflectCount; ++index) {
+                            float h = thickness * (index + 1);
+                            if ((_fY > h) && (t >= lawIdStart[index] && t < lawIdStop[index])) {
+                                bDraw = false;
+                                break;
+                            }
+                        }
+                        if (!bDraw) break;
+                    } // end of 焊缝余高
 					if(_nDirection)
 					{// if draw direction is inverse , transfer the x coordinate
 						_index = _width - i + j * _width  ;

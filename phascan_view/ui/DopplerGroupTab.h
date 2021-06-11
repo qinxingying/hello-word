@@ -1,4 +1,4 @@
-/***************************
+﻿/***************************
   Name:  DopplerGroupTab
   Date : 2013-08-26
 ************************************/
@@ -243,6 +243,8 @@ private slots:
     void on_checkDefectBg_clicked(bool checked);
 
     void on_ValueCouplingGainCom_valueChanged(double arg1);
+
+    void on_ComWeldRemianingHeight_activated(int index);
 
 private:
     Ui::DopplerGroupTab *ui;
