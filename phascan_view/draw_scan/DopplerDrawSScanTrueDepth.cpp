@@ -259,28 +259,28 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
             weldTopWidth = m_pGroup->part.weld_ii.I.w;;
             break;
         case V:
-            weldBottomWidth = m_pGroup->part.weld_ii.V.w1;
-            weldTopWidth = m_pGroup->part.weld_ii.V.w2;;
+            weldTopWidth = m_pGroup->part.weld_ii.V.w1;
+            weldBottomWidth = m_pGroup->part.weld_ii.V.w2;;
             break;
         case U:
-            weldBottomWidth = m_pGroup->part.weld_ii.U.w1;
-            weldTopWidth = m_pGroup->part.weld_ii.U.w2;;
+            weldTopWidth = m_pGroup->part.weld_ii.U.w1;
+            weldBottomWidth = m_pGroup->part.weld_ii.U.w2;;
             break;
         case VY:
-            weldBottomWidth = m_pGroup->part.weld_ii.VY.w1;
-            weldTopWidth = m_pGroup->part.weld_ii.VY.w3;
+            weldTopWidth = m_pGroup->part.weld_ii.VY.w1;
+            weldBottomWidth = m_pGroup->part.weld_ii.VY.w3;
             break;
         case VV:
-            weldBottomWidth = m_pGroup->part.weld_ii.VV.w1;
-            weldTopWidth = m_pGroup->part.weld_ii.VV.w3;
+            weldTopWidth = m_pGroup->part.weld_ii.VV.w1;
+            weldBottomWidth = m_pGroup->part.weld_ii.VV.w3;
             break;
         case UU:
-            weldBottomWidth = m_pGroup->part.weld_ii.UU.w1;
-            weldTopWidth = m_pGroup->part.weld_ii.UU.w3;
+            weldTopWidth = m_pGroup->part.weld_ii.UU.w1;
+            weldBottomWidth = m_pGroup->part.weld_ii.UU.w3;
             break;
         case UV:
-            weldBottomWidth = m_pGroup->part.weld_ii.UV.w1;
-            weldTopWidth = m_pGroup->part.weld_ii.UV.w3;
+            weldTopWidth = m_pGroup->part.weld_ii.UV.w1;
+            weldBottomWidth = m_pGroup->part.weld_ii.UV.w3;
             break;
         case TKY:
 
@@ -374,7 +374,6 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
         } else {
             width = weldTopWidth;
         }
-//        float preXValue  = width;
         float leftBoder  =  -width;
         float rightBoder = width;
         if (bWeldLeft) {
@@ -389,14 +388,11 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
             float angle = _nAngleStart + i * _nAngleStep ;
             float x = tan(angle) * height + _pExitPoint[i] + m_pGroup->fIndexOffset;
             if (x >= leftBoder && lawIdStart[index] == -2) {
-                lawIdStart[index] = i - 1;
-//                lawIdStart[index] = fabs(x - leftBoder) > fabs(preXValue - leftBoder) ? (i - 1) : i;
+                lawIdStart[index] = i;
             }
             if (x >= rightBoder && lawIdStop[index] == -2) {
-                lawIdStop[index] = i;
-//                lawIdStop[index] = fabs(x - rightBoder) > fabs(preXValue - rightBoder) ? (i - 1) : i;
+                lawIdStop[index] = i - 1;
             }
-//            preXValue = x;
         }
     } // end
 
