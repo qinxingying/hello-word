@@ -2042,31 +2042,17 @@ void MainWindow::slotMeasureGate(int groupId)
 
 void MainWindow::slotMarkPreviousDefect()
 {
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    QVector<QRectF> rectL;
-    QVector<int> maxScanId;
-    QVector<int> maxLawIds;
-    QVector<QRectF> rectH;
+    DopplerConfigure* pConfig =  DopplerConfigure::Instance();
+    pConfig->m_dfParam[m_iCurGroup].index --;
+    int iCnt = pConfig->GetDefectCnt(m_iCurGroup);
+    if (pConfig->m_dfParam[m_iCurGroup].index < 0) pConfig->m_dfParam[m_iCurGroup].index = iCnt - 1;
 
-    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
-    if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
-        m_iCurDefectIndex --;
-        if (m_iCurDefectIndex < 0) m_iCurDefectIndex = rectL.count() - 1;
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[m_iCurDefectIndex].y();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[m_iCurDefectIndex].y() + rectH[m_iCurDefectIndex].height();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[m_iCurDefectIndex].x();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[m_iCurDefectIndex].x() + rectH[m_iCurDefectIndex].width();
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[m_iCurDefectIndex].left();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[m_iCurDefectIndex].right();
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[m_iCurDefectIndex].top();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[m_iCurDefectIndex].bottom();
-
-        updateCurLawPos( m_iCurGroup, maxLawIds[m_iCurDefectIndex], 0);
-        sliderh->setValue(maxScanId[m_iCurDefectIndex]);
-    }
+    DopplerGroupTab* pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+    pGroupTab->UpdateDefectValue();
+    pGroupTab->UpdateDefectBox();
+    ProcessDisplay display ;
+    display.ShowDefectInfo(m_iCurGroup,pConfig->m_dfParam[m_iCurGroup].index);
+    loadDefectPosition(m_iCurGroup,pConfig->m_dfParam[m_iCurGroup].index);
 }
 
 /**
@@ -2074,35 +2060,17 @@ void MainWindow::slotMarkPreviousDefect()
  */
 void MainWindow::slotMarkNextDefect()
 {
-//    qDebug("%s:[%s](%d)", __FILE__,__FUNCTION__,__LINE__);
-//    ParameterProcess* _process = ParameterProcess::Instance();
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-//    int index = _process->GetScanIndexPos();
-//    QVector<QPointF> MaxPoint;
-    QVector<QRectF> rectL;
-    QVector<int> maxScanId;
-    QVector<int> maxLawIds;
-    QVector<QRectF> rectH;
+    DopplerConfigure* pConfig =  DopplerConfigure::Instance();
+    pConfig->m_dfParam[m_iCurGroup].index ++;
+    int iCnt = pConfig->GetDefectCnt(m_iCurGroup);
+    if (pConfig->m_dfParam[m_iCurGroup].index >= iCnt) pConfig->m_dfParam[m_iCurGroup].index = 0;
 
-    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
-    if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
-        m_iCurDefectIndex ++;
-        if (m_iCurDefectIndex >= rectL.count()) m_iCurDefectIndex = 0;
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[m_iCurDefectIndex].y();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[m_iCurDefectIndex].y() + rectH[m_iCurDefectIndex].height();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[m_iCurDefectIndex].x();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[m_iCurDefectIndex].x() + rectH[m_iCurDefectIndex].width();
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[m_iCurDefectIndex].left();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[m_iCurDefectIndex].right();
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[m_iCurDefectIndex].top();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[m_iCurDefectIndex].bottom();
-
-        updateCurLawPos( m_iCurGroup, maxLawIds[m_iCurDefectIndex], 0);
-        sliderh->setValue(maxScanId[m_iCurDefectIndex]);
-    }
+    DopplerGroupTab* pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+    pGroupTab->UpdateDefectValue();
+    pGroupTab->UpdateDefectBox();
+    ProcessDisplay display ;
+    display.ShowDefectInfo(m_iCurGroup,pConfig->m_dfParam[m_iCurGroup].index);
+    loadDefectPosition(m_iCurGroup,pConfig->m_dfParam[m_iCurGroup].index);
 }
 
 void MainWindow::loadDefectPosition(int groupId, int index)
@@ -2227,7 +2195,6 @@ int MainWindow::selectDefectMeasureMethod()
 
 void MainWindow::startDefectIdentify()
 {
-    ParameterProcess* _process = ParameterProcess::Instance();
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
     QVector<QRectF> rectL;
@@ -2239,9 +2206,7 @@ void MainWindow::startDefectIdentify()
     _pConfig->m_defect[m_iCurGroup]->analysisDefect();
 
     _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
-    m_iCurDefectIndex = 0;
 
-    _pConfig->loadDefectVersion = 1;
     QProgressDialog progress(this);
     progress.setRange(0, rectL.size());
     progress.setAutoReset(false);
@@ -2283,19 +2248,7 @@ void MainWindow::startDefectIdentify()
     }
 
     if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[0].y();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[0].y() + rectH[0].height();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[0].x();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[0].x() + rectH[0].width();
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[0].left();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[0].right();
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[0].top();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[0].bottom();
-
-        updateCurLawPos( m_iCurGroup, maxLawIds[0], 0);
-        sliderh->setValue(maxScanId[0]);
+        loadDefectPosition(m_iCurGroup, 0);
     }
 }
 

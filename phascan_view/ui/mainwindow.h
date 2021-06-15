@@ -150,8 +150,6 @@ private:
     bool m_bDefectBackMode;
     setup_LANG m_currentLang;
 
-    int m_iCurDefectIndex; // 当前是第几个缺陷
-
 signals:
     void setPixmap(QPixmap pixmap);
 
