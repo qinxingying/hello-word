@@ -2343,7 +2343,7 @@ void DopplerConfigure::ReorderDefect()
         DEFECT_INFO *temp;
         for(int i = 0; i < defectNum - 1; i++){
             for(int j = 0; j < defectNum - 1 - i; j++){
-                if(sortBuff[j]->dScanPos > sortBuff[j+1]->dScanPos){
+                if(sortBuff[j]->fSStart > sortBuff[j+1]->fSStart){
                     temp = sortBuff[j];
                     sortBuff[j] = sortBuff[j+1];
                     sortBuff[j+1] = temp;

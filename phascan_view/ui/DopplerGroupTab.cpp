@@ -2596,6 +2596,7 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 //	UpdateDefectValue() ;
     g_pMainWnd->updateAllDefectBox();
 //  g_pMainWnd->RunDrawThreadOnce();
+    g_pMainWnd->loadDefectPosition(m_nGroupId, _index);
 	ProcessDisplay _display ;
     _display.ResetDefectInfo(m_nGroupId);
 	_display.UpdateAllViewOverlay();
