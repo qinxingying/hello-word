@@ -976,10 +976,10 @@ void DefectIdentify::measureLength()
 
                    // 查找右边界
                    curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
-                   if (scanId == m_scanStop) {
+                   if (scanId == m_scanStop - 1) {
                        borders.append(scanId);
                    }
-                   for (int j = scanId + 1; j <= m_scanStop; ++j) {
+                   for (int j = scanId + 1; j < m_scanStop; ++j) {
                        int rangeLeft = curDataIndex - (beamdis/2);
                        int rangeRight = curDataIndex + (beamdis/2);
                        if(rangeLeft < 0){
@@ -1001,7 +1001,7 @@ void DefectIdentify::measureLength()
                                borders.append(j - 1);
                            }
                            break;
-                       } else if (j == m_scanStop) {
+                       } else if (j == m_scanStop - 1) {
                            borders.append(j);
                        } else {
                            curDataIndex = postion;
