@@ -2798,7 +2798,7 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
         if((_nDisplay < 4) && _nGroupId == _nCurGroup) {  // A SCAN  & B SCAN
             if(_nId == _pView->GetLawIdentify()) {
                 _pView->SetDataViewConfigure(_nCurGroup,  lawPos,  _nDisplay);
-                _proDispy.UpdateAll(_pView, true);
+                _proDispy.UpdateAll(_pView, false);
             }
         } else if( (_nDisplay >= 4 && _nDisplay < 8) && _nGroupId == _nCurGroup) {
         //} else if( (_nDisplay >= 4 ) && _nGroupId == _nCurGroup) {
