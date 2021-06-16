@@ -930,7 +930,6 @@ void DefectIdentify::measureLength()
     while(pHead != end) {
         if (!pHead->bMergedStatus) {
            defectsBetweenFrames &_defect = *pHead;
-//           PEAK_CONFIG peakInfo[setup_GATE_MAX];
            QVector<int> borders;
            borders.clear();
            if (m_lengthMeasureMethod == HalfWave) { // 6db 法
@@ -1011,9 +1010,22 @@ void DefectIdentify::measureLength()
                    }
                }
            } else if (m_lengthMeasureMethod == EndPointHalfWave){ // 端点6db 法
-//               int scanId = _defect.special.scanId;
-               int startS = qMax(_defect.scanIdStart - 3, m_scanStart);    // 多找3帧
-               int startE = qMin(_defect.scanIdEnd + 3, m_scanStop - 1);
+               int startS = _defect.scanIdStart;    // 多找3帧
+               for(int s = startS; s >= _defect.scanIdStart - 3; --s) {
+                   if (!_pConfig->common.nRecMark[s] || s < m_scanStart) {
+                        break;
+                   } else {
+                       startS = s;
+                   }
+               }
+               int startE = _defect.scanIdEnd;
+               for(int s = startE; s <= _defect.scanIdEnd + 3; ++s) {
+                   if (!_pConfig->common.nRecMark[s] || s >= m_scanStop) {
+                       break;
+                   } else {
+                       startE = s;
+                   }
+               }
                QMap<int, QVector<_Amp>> beamIdValues;// 该缺陷范围内所有的beamId上对应的所有特征点
                for (int i = _defect.special.specialRect._rect[1].lawId; i <= _defect.special.specialRect._rect[2].lawId; ++i) {
                    int curDataIndex   =_defect.special.specialRect._rect[0].dataIndex;
