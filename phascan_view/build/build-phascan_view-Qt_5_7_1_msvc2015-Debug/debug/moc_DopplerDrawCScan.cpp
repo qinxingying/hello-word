@@ -1,0 +1,157 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'DopplerDrawCScan.h'
+**
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.7.1)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include "../../../draw_scan/DopplerDrawCScan.h"
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'DopplerDrawCScan.h' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.7.1. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+struct qt_meta_stringdata_DopplerDrawCScanH_t {
+    QByteArrayData data[1];
+    char stringdata0[18];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_DopplerDrawCScanH_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_DopplerDrawCScanH_t qt_meta_stringdata_DopplerDrawCScanH = {
+    {
+QT_MOC_LITERAL(0, 0, 17) // "DopplerDrawCScanH"
+
+    },
+    "DopplerDrawCScanH"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_DopplerDrawCScanH[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+void DopplerDrawCScanH::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
+}
+
+const QMetaObject DopplerDrawCScanH::staticMetaObject = {
+    { &DopplerDrawScan::staticMetaObject, qt_meta_stringdata_DopplerDrawCScanH.data,
+      qt_meta_data_DopplerDrawCScanH,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+};
+
+
+const QMetaObject *DopplerDrawCScanH::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *DopplerDrawCScanH::qt_metacast(const char *_clname)
+{
+    if (!_clname) return Q_NULLPTR;
+    if (!strcmp(_clname, qt_meta_stringdata_DopplerDrawCScanH.stringdata0))
+        return static_cast<void*>(const_cast< DopplerDrawCScanH*>(this));
+    return DopplerDrawScan::qt_metacast(_clname);
+}
+
+int DopplerDrawCScanH::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = DopplerDrawScan::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    return _id;
+}
+struct qt_meta_stringdata_DopplerDrawCScanV_t {
+    QByteArrayData data[1];
+    char stringdata0[18];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_DopplerDrawCScanV_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_DopplerDrawCScanV_t qt_meta_stringdata_DopplerDrawCScanV = {
+    {
+QT_MOC_LITERAL(0, 0, 17) // "DopplerDrawCScanV"
+
+    },
+    "DopplerDrawCScanV"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_DopplerDrawCScanV[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+void DopplerDrawCScanV::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    Q_UNUSED(_o);
+    Q_UNUSED(_id);
+    Q_UNUSED(_c);
+    Q_UNUSED(_a);
+}
+
+const QMetaObject DopplerDrawCScanV::staticMetaObject = {
+    { &DopplerDrawCScanH::staticMetaObject, qt_meta_stringdata_DopplerDrawCScanV.data,
+      qt_meta_data_DopplerDrawCScanV,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+};
+
+
+const QMetaObject *DopplerDrawCScanV::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *DopplerDrawCScanV::qt_metacast(const char *_clname)
+{
+    if (!_clname) return Q_NULLPTR;
+    if (!strcmp(_clname, qt_meta_stringdata_DopplerDrawCScanV.stringdata0))
+        return static_cast<void*>(const_cast< DopplerDrawCScanV*>(this));
+    return DopplerDrawCScanH::qt_metacast(_clname);
+}
+
+int DopplerDrawCScanV::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = DopplerDrawCScanH::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    return _id;
+}
+QT_END_MOC_NAMESPACE
