@@ -2361,44 +2361,45 @@ void DopplerConfigure::ReorderDefect()
     // reorder list
     for(int i = 0; i < common.nGroupQty; i++){
         DEFECT_INFO* pHead = m_dfParam[i].pDFHead;
+        if (pHead != NULL) {
+            while(pHead->pNext != NULL) {
+                int min = pHead->dIndex;
+                DEFECT_INFO* tmpHead = pHead->pNext;
+                DEFECT_INFO* next = pHead->pNext;
+                while (next != NULL) {
+                    DEFECT_INFO* tmpNext = next->pNext;
+                    if (min > next->dIndex) {
+                        min = next->dIndex;
 
-        while(pHead->pNext != NULL) {
-            int min = pHead->dIndex;
-            DEFECT_INFO* tmpHead = pHead->pNext;
-            DEFECT_INFO* next = pHead->pNext;
-            while (next != NULL) {
-                DEFECT_INFO* tmpNext = next->pNext;
-                if (min > next->dIndex) {
-                    min = next->dIndex;
+                        next->pNext          = pHead->pNext;
+                        pHead->pNext->pPrev  = next;
+                        if (tmpNext) {
+                            next->pNext->pPrev   = pHead;
+                            pHead->pNext         = tmpNext->pNext;
+                        } else {
+                            pHead->pNext         = NULL;
+                        }
 
-                    next->pNext          = pHead->pNext;
-                    pHead->pNext->pPrev  = next;
-                    if (tmpNext) {
-                        next->pNext->pPrev   = pHead;
-                        pHead->pNext         = tmpNext->pNext;
-                    } else {
-                        pHead->pNext         = NULL;
+                        if (pHead->pPrev != NULL) {
+                            pHead->pPrev->pNext = next;
+                        }
+                        DEFECT_INFO* prev    = pHead->pPrev;
+                        pHead->pPrev         = next->pPrev;
+                        next->pPrev->pNext   = pHead;
+
+                        next->pPrev          = prev;
                     }
-
-                    if (pHead->pPrev != NULL) {
-                        pHead->pPrev->pNext = next;
-                    }
-                    DEFECT_INFO* prev    = pHead->pPrev;
-                    pHead->pPrev         = next->pPrev;
-                    next->pPrev->pNext   = pHead;
-
-                    next->pPrev          = prev;
+                    next = tmpNext;
                 }
-                next = tmpNext;
-            }
 
-            pHead = tmpHead;
+                pHead = tmpHead;
+            }
+            pHead = m_dfParam[i].pDFHead;
+            while(pHead->pNext != NULL) {
+                pHead = pHead->pNext;
+            }
+            m_dfParam[i].pDFEnd = pHead;
         }
-        pHead = m_dfParam[i].pDFHead;
-        while(pHead->pNext != NULL) {
-            pHead = pHead->pNext;
-        }
-        m_dfParam[i].pDFEnd = pHead;
     }
 }
 
