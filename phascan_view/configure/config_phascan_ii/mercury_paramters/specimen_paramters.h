@@ -1,4 +1,4 @@
-#ifndef SPECIMEN_H
+﻿#ifndef SPECIMEN_H
 #define SPECIMEN_H
 
 #include <QObject>
@@ -15,7 +15,8 @@ class Specimen : public QObject
         PLANE,
         CYLINDER,
         NOZZLE,
-        FILLET
+        FILLET,
+        ASYMMETRIC_PLANE
     };
 
     enum Material {

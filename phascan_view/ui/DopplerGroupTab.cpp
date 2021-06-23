@@ -1911,7 +1911,7 @@ void DopplerGroupTab::on_BtnLoadDxfFile_clicked()
     DopplerConfigure* Configure = DopplerConfigure::Instance();
     ParameterProcess* _process = ParameterProcess::Instance();
     GROUP_CONFIG& group = Configure->group[m_nGroupId];
-    if( group.part.weldFormat)
+    if(group.part.weldFormat)
     {
         DialogWeldFixDataII dataIIDialog(this, m_nGroupId);
         if(dataIIDialog.exec())

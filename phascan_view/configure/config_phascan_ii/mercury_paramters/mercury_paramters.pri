@@ -1,5 +1,6 @@
 
 HEADERS += \
+    $$PWD/asymmetric_plane_paramters.h \
     $$PWD/group_paramters.h \
     $$PWD/sample_paramters.h \
     $$PWD/transceiver_paramters.h \
@@ -16,6 +17,7 @@ HEADERS += \
     $$PWD/thickness_paramters.h \
     $$PWD/sizing_paramters.h \
     $$PWD/geometry_paramters.h \
+    $$PWD/weld_asy_paramters.h \
     $$PWD/weld_paramters.h \
     $$PWD/weld_i_paramters.h \
     $$PWD/weld_v_paramters.h \
@@ -39,6 +41,7 @@ HEADERS += \
     $$PWD/fillet_paramters.h
 
 SOURCES += \
+    $$PWD/asymmetric_plane_paramters.cpp \
     $$PWD/group_paramters.cpp \
     $$PWD/sample_paramters.cpp \
     $$PWD/transceiver_paramters.cpp \
@@ -55,6 +58,7 @@ SOURCES += \
     $$PWD/thickness_paramters.cpp \
     $$PWD/sizing_paramters.cpp \
     $$PWD/geometry_paramters.cpp \
+    $$PWD/weld_asy_paramters.cpp \
     $$PWD/weld_paramters.cpp \
     $$PWD/weld_i_paramters.cpp \
     $$PWD/weld_v_paramters.cpp \

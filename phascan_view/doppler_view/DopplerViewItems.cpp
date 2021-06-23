@@ -1,7 +1,7 @@
-#include "DopplerViewItems.h"
+﻿#include "DopplerViewItems.h"
 //#include "painter/DopplerPart.h"
 #include "painter/DrawDxf.h"
-
+#include <QDebug>
 #include <QColor>
 #include <gHeader.h>
 #include <process/ParameterProcess.h>
@@ -1088,6 +1088,14 @@ void  DopplerViewItems::DrawWeld(QPainterPath& path, QPainterPath& HAZpath, bool
             brushHAZ = false;
             DrawWeldDxf(path);
             break;
+
+        case ASYMMETRIC: //不等厚焊缝
+
+           DrawWeldASYDataII(path);
+           //brushHAZ = false;
+           qDebug()<<"123345";
+           break;
+
         default:
             brushHAZ = false;
             DrawWeldNoneDataII( path);
@@ -4490,6 +4498,292 @@ void  DopplerViewItems::DrawWeldTKYDataII(QPainterPath& path)
         break;
     }
 }
+
+void DopplerViewItems::DrawWeldASYDataII(QPainterPath &path)
+{
+    QPointF _pos[11] ;
+    double _fStartV , _fStopV , _fSliderStartV, _fSliderStopV;
+    double _fStartV2 , _fStopV2 , _fSliderStartV2, _fSliderStopV2;
+    double W1= m_cPart.weld_ii.ASY.W1;
+
+    double H1= m_cPart.weld_ii.ASY.H1;
+    double W2 = m_cPart.weld_ii.ASY.W2;
+    double H2 = m_cPart.weld_ii.ASY.H2;
+    double W3=  m_cPart.weld_ii.ASY.W3;
+
+    double T1=m_cPart.weld_ii.ASY.M_thickness;
+    double T2=m_cPart.weld_ii.ASY.S_thickness;
+
+    double l1=m_cPart.weld_ii.l1;
+    double l2=m_cPart.weld_ii.l2;
+    double h1=m_cPart.weld_ii.h1;
+    double h2=m_cPart.weld_ii.h2;
+    qDebug()<<"" << __LINE__ << "";
+    m_pDataView->GetRulerRange(&_fStartV , &_fStopV , &_fSliderStartV, &_fSliderStopV, DopplerDataView::DATA_VIEW_RULER_LEFT ) ;
+    qDebug()<<"" << __LINE__ << "";
+    _pos[0].setX(0);
+    _pos[0].setY(_fStartV);
+    _pos[1].setX(0);
+    _pos[1].setY(_fStopV);
+    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]) ;
+    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]) ;
+    path.moveTo(_pos[0]);
+    path.lineTo(_pos[1]);
+    m_pDataView->GetRulerRange(&_fStartV2 , &_fStopV2 , &_fSliderStartV2, &_fSliderStopV2, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
+
+
+
+
+            if(setup_PLANE_TOP==m_cPart.weld_ii.Align)
+              {
+
+                  // 厚板3个点
+                  _pos[0].setX(-W1-W3/2);
+                  _pos[0].setY(h1-h1/l1*W1);
+                  _pos[1].setX(-W3/2);
+                  _pos[1].setY(h1-h1/l1*W1+H1);
+                  _pos[2].setX(-W3/2);
+                  _pos[2].setY(T1-h2);
+
+                    //薄板3个点
+                  _pos[3].setX(W2+W3/2);
+                  _pos[3].setY(0);
+
+                  _pos[4].setX(W3/2);
+                  _pos[4].setY(H2);
+                  _pos[5].setX(W3/2);
+                  _pos[5].setY(T2);
+
+                  //厚板的削边起点
+                  _pos[6].setX(-W3/2-l1);
+                  _pos[6].setY(0);
+
+                  //厚板的左下端点
+                  _pos[7].setX(_fStartV2);
+                  _pos[7].setY(T1);
+
+                  //厚板的下削边下端点
+                  _pos[10].setX(-W3/2-l2);
+                  _pos[10].setY(T1);
+
+                  //薄板的右上边框端点
+                  _pos[8].setX(_fStopV2);
+                  _pos[8].setY(0);
+
+                  //薄板的右下边框端点
+                  _pos[9].setX(_fStopV2);
+                  _pos[9].setY(T2);
+
+                      _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                      _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                      _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                      _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                      _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                      _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
+                      _pos[6] = m_pDataView->TranslateToScenePlan(&_pos[6]);
+                      _pos[7] = m_pDataView->TranslateToScenePlan(&_pos[7]);
+                      _pos[8] = m_pDataView->TranslateToScenePlan(&_pos[8]);
+                      _pos[9] = m_pDataView->TranslateToScenePlan(&_pos[9]);
+                      _pos[10] = m_pDataView->TranslateToScenePlan(&_pos[10]);
+
+                      path.moveTo(_pos[0]);
+                      path.lineTo(_pos[1]);
+                      path.lineTo(_pos[2]);
+                      path.lineTo(_pos[5]);
+                      path.lineTo(_pos[4]);
+                      path.lineTo(_pos[3]);
+                      path.lineTo(_pos[0]);
+
+                      //厚板上边框
+                      path.moveTo(_pos[0]);
+                      path.lineTo(_pos[6]);
+
+                      //厚板下削边
+                      path.moveTo(_pos[2]);
+                      path.lineTo(_pos[10]);
+
+                      //厚板下边框
+                      path.moveTo(_pos[10]);
+                      path.lineTo(_pos[7]);
+
+                      //薄板上边框
+                      path.moveTo(_pos[3]);
+                      path.lineTo(_pos[8]);
+
+                      //薄板下边框
+                      path.moveTo(_pos[5]);
+                      path.lineTo(_pos[9]);
+
+            }else if(setup_PLANE_CENTER==m_cPart.weld_ii.Align)
+            {
+
+                // 厚板3个点
+                _pos[0].setX(-W1-W3/2);
+                _pos[0].setY(h1-h1/l1*W1);
+                _pos[1].setX(-W3/2);
+                _pos[1].setY( h1-h1/l1*W1+H1);
+                _pos[2].setX(-W3/2);
+                _pos[2].setY(T1-h2);//厚板的厚度
+
+                  //薄板3个点
+                _pos[3].setX(W2+W3/2);
+                _pos[3].setY(T1/2-T2/2);
+
+                _pos[4].setX(W3/2);
+                _pos[4].setY(T1/2-T2/2+H2);
+                _pos[5].setX(W3/2);
+                _pos[5].setY(T1/2-T2/2+T2);
+
+                //厚板的削边起点
+                _pos[6].setX(-W3/2-l1);
+                _pos[6].setY(0);
+
+                //厚板的左下端点
+                _pos[7].setX(_fStartV2);
+                _pos[7].setY(T1);
+
+                //厚板的下削边下端点
+                _pos[10].setX(-W3/2-l2);
+                _pos[10].setY(T1);
+
+                //薄板的上边框端点
+                _pos[8].setX(_fStopV2);
+                _pos[8].setY(T1/2-T2/2);
+
+                //薄板的右边框端点
+                _pos[9].setX(_fStopV2);
+                _pos[9].setY(T1/2-T2/2+T2);
+
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
+                    _pos[6] = m_pDataView->TranslateToScenePlan(&_pos[6]);
+                    _pos[7] = m_pDataView->TranslateToScenePlan(&_pos[7]);
+                    _pos[8] = m_pDataView->TranslateToScenePlan(&_pos[8]);
+                    _pos[9] = m_pDataView->TranslateToScenePlan(&_pos[9]);
+                    _pos[10] = m_pDataView->TranslateToScenePlan(&_pos[10]);
+
+                    //焊缝
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[5]);
+                    path.lineTo(_pos[4]);
+                    path.lineTo(_pos[3]);
+                    path.lineTo(_pos[0]);
+
+                    //厚板上边框
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[6]);
+
+                    //厚板下边框
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[10]);
+
+
+                    path.moveTo(_pos[10]);
+                    path.lineTo(_pos[7]);
+
+                    //薄板上边框
+                    path.moveTo(_pos[3]);
+                    path.lineTo(_pos[8]);
+
+                    //薄板下边框
+                    path.moveTo(_pos[5]);
+                    path.lineTo(_pos[9]);
+
+
+            }else
+            {
+
+                // 厚板3个点
+                _pos[0].setX(-W1-W3/2);
+                _pos[0].setY(h1-h1/l1*W1);
+                _pos[1].setX(-W3/2);
+                _pos[1].setY( h1-h1/l1*W1+H1);
+                _pos[2].setX(-W3/2);
+                _pos[2].setY(T1-h2);
+
+                  //薄板3个点
+                _pos[3].setX(W2+W3/2);
+                _pos[3].setY(T1-T2);
+
+                _pos[4].setX(W3/2);
+                _pos[4].setY(T1-T2+H2);
+                _pos[5].setX(W3/2);
+                _pos[5].setY(T1);
+
+                //厚板的削边起点
+                _pos[6].setX(-W3/2-l1);
+                _pos[6].setY(0);
+
+                //厚板的左下端点
+                _pos[7].setX(_fStartV2);
+                _pos[7].setY(T1);
+
+                //厚板的下削边下端点
+                _pos[10].setX(-W3/2-l2);
+                _pos[10].setY(T1);
+
+                //薄板的上边框端点
+                _pos[8].setX(_fStopV2);
+                _pos[8].setY(T1-T2);
+
+                //薄板的右边框端点
+                _pos[9].setX(_fStopV2);
+                _pos[9].setY(T1);
+
+                    _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
+                    _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);
+                    _pos[2] = m_pDataView->TranslateToScenePlan(&_pos[2]);
+                    _pos[3] = m_pDataView->TranslateToScenePlan(&_pos[3]);
+                    _pos[4] = m_pDataView->TranslateToScenePlan(&_pos[4]);
+                    _pos[5] = m_pDataView->TranslateToScenePlan(&_pos[5]);
+                    _pos[6] = m_pDataView->TranslateToScenePlan(&_pos[6]);
+                    _pos[7] = m_pDataView->TranslateToScenePlan(&_pos[7]);
+                    _pos[8] = m_pDataView->TranslateToScenePlan(&_pos[8]);
+                    _pos[9] = m_pDataView->TranslateToScenePlan(&_pos[9]);
+                    _pos[10] = m_pDataView->TranslateToScenePlan(&_pos[10]);
+
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[1]);
+                    path.lineTo(_pos[2]);
+                    path.lineTo(_pos[5]);
+                    path.lineTo(_pos[4]);
+                    path.lineTo(_pos[3]);
+                    path.lineTo(_pos[0]);
+
+                    //厚板上边框
+                    path.moveTo(_pos[0]);
+                    path.lineTo(_pos[6]);
+
+                    //厚板下边框
+                    path.moveTo(_pos[2]);
+                    path.lineTo(_pos[10]);
+
+
+                    path.moveTo(_pos[10]);
+                    path.lineTo(_pos[7]);
+
+
+
+                    //薄板上边框
+                    path.moveTo(_pos[3]);
+                    path.lineTo(_pos[8]);
+
+                    //薄板下边框
+                    path.moveTo(_pos[5]);
+                    path.lineTo(_pos[9]);
+
+            }
+
+
+
+}
+
 
 void DopplerViewItems::DrawWeldTKYPlain(double startH, double stopH, double startV, double thinkness, QPainterPath& path)
 {

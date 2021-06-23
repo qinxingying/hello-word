@@ -1,4 +1,4 @@
-#ifndef DOPPLERVIEWITEMS_H
+﻿#ifndef DOPPLERVIEWITEMS_H
 #define DOPPLERVIEWITEMS_H
 
 #include <QObject>
@@ -112,6 +112,7 @@ protected:
     void  DrawWeldUUDataII(QPainterPath& path, QPainterPath& HAZpath);
     void  DrawWeldUVDataII(QPainterPath& path, QPainterPath& HAZpath);
     void  DrawWeldTKYDataII(QPainterPath& path);
+    void  DrawWeldASYDataII(QPainterPath& path);
     void  DrawWeldTKYPlain(double startH, double stopH, double startV, double thinkness, QPainterPath& path);
     void  DrawWeld90degTKY(double w1, double w2, double h1, double h2, double a1, double a2, double startV, double stopV,
                            QPainterPath& path);

@@ -202,6 +202,7 @@ enum setup_WELD_TYPE_II
     UU,
     UV,
     TKY,
+    ASYMMETRIC,
     DXF
 };
 
@@ -211,6 +212,14 @@ enum setup_WELD_SYMMETRY_TYPE
     setup_WELD_RIGHT ,
     setup_WELD_LEFT
 } ;
+
+enum setup_PLANE_ALIGN_TYPE//板的对齐方式
+{
+    setup_PLANE_TOP=0,
+    setup_PLANE_CENTER,
+    setup_PLANE_BOTTOM,
+};
+
 
 struct WELD
 {
@@ -226,7 +235,7 @@ struct WELD
     float   fizone_down_height;
     float	fizone_down_angle ;
     float   Diameter;
-} ;
+};
 
 struct WELD_FORMAT_I
 {
@@ -300,6 +309,21 @@ struct WELD_FORMAT_TKY
     double a2;
 };
 
+//二代数据不等厚焊缝数据
+struct WELD_FORMAT_ASY
+{
+
+    bool m_symmetry;
+    double W1;
+    double H1;
+    double W2;
+    double H2;
+    double W3;
+    double M_thickness;
+    double S_thickness;
+
+};
+
 enum KTY_ProbePosition {
     KTY_WED_1,
     KTY_WED_2,
@@ -324,6 +348,13 @@ struct WELD_II
     double eBottomThinkness;             //TKY翼板厚度
     double eHAZ;                         //焊缝热影响区
     Cylinder_WeldDir eWeldDir;          // 管道焊缝方向
+
+    double l1;                          // 不等厚焊缝削边信息
+    double h1;
+    double l2;
+    double h2;
+    setup_PLANE_ALIGN_TYPE Align;  //不等厚板对齐
+
     union{
         WELD_FORMAT_I  I;
         WELD_FORMAT_V  V;
@@ -333,6 +364,8 @@ struct WELD_II
         WELD_FORMAT_UU UU;
         WELD_FORMAT_UV UV;
         WELD_FORMAT_TKY TKY;
+        WELD_FORMAT_ASY ASY;
+
     };
 };
 

@@ -83,6 +83,8 @@ protected:
 
     void unpack_geometry_fillet(const QVariantMap &map);
 
+     void unpack_geometry_asymmetric_plan(const QVariantMap &map);
+
     void unpack_weld(const QVariantMap &map);
 
     void unpack_I_weld(const QVariantMap &map, Paramters::WeldI &I);
