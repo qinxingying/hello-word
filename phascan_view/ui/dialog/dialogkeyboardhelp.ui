@@ -25,7 +25,8 @@
     <widget class="QTabWidget" name="tabWidget">
      <property name="font">
       <font>
-       <pointsize>14</pointsize>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="currentIndex">

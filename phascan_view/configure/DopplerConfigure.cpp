@@ -2061,15 +2061,15 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 		} else {
 			if(m_dfParam[iGroupId_].dfInfo.fSStart < -10000)
 			break;
-		}
-		_ret = AddDefectInfo(iGroupId_, m_dfParam[iGroupId_].dfInfo);
-		ClearDefectInfo(iGroupId_);
+        }
+        _ret = AddDefectInfo(iGroupId_, m_dfParam[iGroupId_].dfInfo);
+        ClearDefectInfo(iGroupId_);
 
-		if(_ret >= 0) {
+        if(_ret >= 0) {
 
-			int _index = GetDefectCnt(iGroupId_)-1;
-			DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, _index);
-			//---------------------------------------
+            int _index = GetDefectCnt(iGroupId_)-1;
+            DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, _index);
+            //---------------------------------------
             int _nLawNo;
             if(loadDefectVersion == 1){
                 _nLawNo = _group.afCursor[setup_CURSOR_LAW];
@@ -2079,12 +2079,13 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
                 _pDfInfo->dZA          = _group.storeScanLawId.ZA;
                 _pDfInfo->dScanPos     = _group.storeScanLawId.scanPos;
                 _pDfInfo->dDepth       = _group.storeScanLawId.depth;
+                _pDfInfo->reserve[0]   = _group.storeScanLawId.maxValue;
                 _pDfInfo->dScanOffset  = _group.fScanOffset;
                 _pDfInfo->dIndexOffset = _group.fIndexOffset;
                 _nLawNo = _group.storeScanLawId.lawId;
             }
             ReorderDefect();
-			//---------------------------------------
+            //---------------------------------------
             int* _pMeasure;
             if(group[iGroupId_].measureGateStatus){
                 _pMeasure = group[iGroupId_].measuregateType;
@@ -2092,22 +2093,22 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
                 _pMeasure = group[iGroupId_].aeMeasureType;
             }
             //int* _pMeasure = group[iGroupId_].aeMeasureType;
-			int _nQty = 0 ;
+            int _nQty = 0 ;
             for(int i = 0 ; i < setup_MAX_MEASURE_QTY_V1; i++) {
-				strcpy(_pDfInfo->m_strMeasure[i], "-");
+                strcpy(_pDfInfo->m_strMeasure[i], "-");
                 strcpy(_pDfInfo->m_strSzField[i],"-");
                 strcpy(_pDfInfo->m_strSzFieldUnit[i],"-");
 
-				if(_pMeasure[i]) {
+                if(_pMeasure[i]) {
                     QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_, _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i]);
-					strcpy(_pDfInfo->m_strMeasure[_nQty], (char*)(qPrintable(_str)));
+                    strcpy(_pDfInfo->m_strMeasure[_nQty], (char*)(qPrintable(_str)));
                     _str = CalcMeasurement::GetMeasureString(iGroupId_ , (FEILD_VALUE_INDEX)_pMeasure[i]);
                     strcpy(_pDfInfo->m_strSzField[_nQty], (char*)(qPrintable(_str)));
                     _str = CalcMeasurement::GetMeasureUnit((FEILD_VALUE_INDEX)_pMeasure[i]) ;
                     strcpy(_pDfInfo->m_strSzFieldUnit[_nQty], (char*)(qPrintable(_str)));
-					_nQty++  ;
-				}
-			}
+                    _nQty++  ;
+                }
+            }
             int index_ = 0;
             _nQty = 0;
             for(int i = setup_MAX_MEASURE_QTY_V1; i < setup_MAX_MEASURE_QTY; i++){
@@ -2138,22 +2139,22 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
                 Pa_Value = QString::number(Index_pos,10,2);
             }
             strcpy(_pDfInfo->Index_pos,(char*)(qPrintable(Pa_Value)));
-			//---------------------------------------
-			m_dfParam[iGroupId_].index = _index;
+            //---------------------------------------
+            m_dfParam[iGroupId_].index = _pDfInfo->dIndex - 1;
 
-			QDateTime time = QDateTime::currentDateTime();
-			memset(_pDfInfo->srtInfo, 0x00, 256);
+            QDateTime time = QDateTime::currentDateTime();
+            memset(_pDfInfo->srtInfo, 0x00, 256);
 
-			QString str1, str2;
-			str1.sprintf("GR%d ", iGroupId_+1);
-			str2 = time.toString("yyyy-MM-dd hh mm ss");
+            QString str1, str2;
+            str1.sprintf("GR%d ", iGroupId_+1);
+            str2 = time.toString("yyyy-MM-dd hh mm ss");
 
-			QString str3 = str1 + str2;
-			strcpy(_pDfInfo->srtImageName, (char*)(qPrintable(str3)));
-			//---------------------------------------
-			SaveDefectFile(m_szDefectPathName);
-			_ret = 3;
-		}
+            QString str3 = str1 + str2;
+            strcpy(_pDfInfo->srtImageName, (char*)(qPrintable(str3)));
+            //---------------------------------------
+            SaveDefectFile(m_szDefectPathName);
+            _ret = 3;
+        }
 		break;
 	default:
 		_ret = -1;
@@ -2184,15 +2185,15 @@ int DopplerConfigure::AddDefectInfo(int iGroupId_, DEFECT_INFO &dfInfo_)
 	_pDfInfo->pNext = NULL;
 
 	if(m_dfParam[iGroupId_].pDFHead == NULL) {
-		m_dfParam[iGroupId_].pDFHead = _pDfInfo;
+        m_dfParam[iGroupId_].pDFHead = _pDfInfo;
 	}
 
-	if(m_dfParam[iGroupId_].pDFEnd) {
-		_pDfInfo->pPrev = m_dfParam[iGroupId_].pDFEnd;
-		m_dfParam[iGroupId_].pDFEnd->pNext = _pDfInfo;
-	}
+    if(m_dfParam[iGroupId_].pDFEnd) {
+        _pDfInfo->pPrev = m_dfParam[iGroupId_].pDFEnd;
+        m_dfParam[iGroupId_].pDFEnd->pNext = _pDfInfo;
+    }
 
-	m_dfParam[iGroupId_].pDFEnd = _pDfInfo;
+    m_dfParam[iGroupId_].pDFEnd = _pDfInfo;
 	return 0;
 }
 
@@ -2252,6 +2253,7 @@ int DopplerConfigure::DeleteDefect(int iGroupId_, int index_)
 			m_dfParam[iGroupId_].pDFEnd = _pDf1;
 
 			delete _pDfInfo ;
+            _pDfInfo = NULL;
             break;
 		}
 		_pDfInfo = _pDfInfo->pNext;
@@ -2354,6 +2356,49 @@ void DopplerConfigure::ReorderDefect()
             sortBuff[i]->dIndex = i + 1;
         }
         free(sortBuff);
+    }
+
+    // reorder list
+    for(int i = 0; i < common.nGroupQty; i++){
+        DEFECT_INFO* pHead = m_dfParam[i].pDFHead;
+
+        while(pHead->pNext != NULL) {
+            int min = pHead->dIndex;
+            DEFECT_INFO* tmpHead = pHead->pNext;
+            DEFECT_INFO* next = pHead->pNext;
+            while (next != NULL) {
+                DEFECT_INFO* tmpNext = next->pNext;
+                if (min > next->dIndex) {
+                    min = next->dIndex;
+
+                    next->pNext          = pHead->pNext;
+                    pHead->pNext->pPrev  = next;
+                    if (tmpNext) {
+                        next->pNext->pPrev   = pHead;
+                        pHead->pNext         = tmpNext->pNext;
+                    } else {
+                        pHead->pNext         = NULL;
+                    }
+
+                    if (pHead->pPrev != NULL) {
+                        pHead->pPrev->pNext = next;
+                    }
+                    DEFECT_INFO* prev    = pHead->pPrev;
+                    pHead->pPrev         = next->pPrev;
+                    next->pPrev->pNext   = pHead;
+
+                    next->pPrev          = prev;
+                }
+                next = tmpNext;
+            }
+
+            pHead = tmpHead;
+        }
+        pHead = m_dfParam[i].pDFHead;
+        while(pHead->pNext != NULL) {
+            pHead = pHead->pNext;
+        }
+        m_dfParam[i].pDFEnd = pHead;
     }
 }
 
@@ -2490,7 +2535,7 @@ DEFECT_INFO* DopplerConfigure::GetDefectPointer(int iGroupId_, int index_)
 		_pDfInfo = &m_dfParam[iGroupId_].dfInfo;
 	} else {
 		for(int i = 1; i <= index_; i++) {
-			if(_pDfInfo->pNext == NULL)
+            if(_pDfInfo->pNext == NULL)
 			break;
 			_pDfInfo = _pDfInfo->pNext;
 		}

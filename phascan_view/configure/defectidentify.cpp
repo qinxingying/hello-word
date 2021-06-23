@@ -284,12 +284,13 @@ void DefectIdentify::getDefectInfo(int scanPos, QVector<QPointF> &MaxPoint, QVec
     }
 }
 
-void DefectIdentify::getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId)
+void DefectIdentify::getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId, QVector<int> &maxValue)
 {
     rectL  = m_defectsRectL;
     rectH  = m_defectsRectH;
     scanId = m_scanIds;
     lawId  = m_lawIds;
+    maxValue = m_maxValues;
 }
 
 void DefectIdentify::setRange(int scanStart, int scanStop, int beamStart, int beamStop)
@@ -1289,6 +1290,7 @@ void DefectIdentify::calDefectRect()
             m_defectsRectH.append(defect.rect);
             m_scanIds.append(defect.scanId);
             m_lawIds.append(defect.specialRect._rect[0].lawId);
+            m_maxValues.append(defect.valueMax);
         }
         ++pHead;
     }
@@ -1312,6 +1314,7 @@ void DefectIdentify::forceMerge()
     m_defectsRectH.clear();
     m_scanIds.clear();
     m_lawIds.clear();
+    m_maxValues.clear();
 
     auto pHead = m_defectsBetweenFrames.begin();
     auto end = m_defectsBetweenFrames.end();
@@ -1357,6 +1360,7 @@ void DefectIdentify::forceMerge()
     }
 
     if (tmp.count() == 0) return;
+    m_maxValues.append(maxValue);
     m_defectsRectH.append(tmp.at(0).special.rect);
     m_scanIds.append(tmp.at(0).special.scanId);
     m_lawIds.append(tmp.at(0).special.specialRect._rect[0].lawId);

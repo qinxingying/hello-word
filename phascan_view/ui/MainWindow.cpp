@@ -119,6 +119,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //indexSliderWidget->hide();
     connect(ui->actionSave_Data, &QAction::triggered, this, &MainWindow::slot_actionSaveCSacnData_triggered);
     connect(ui->actionSave_B_Scan_Data, &QAction::triggered, this, &MainWindow::slot_actionSaveBSacnData_triggered);
+
+    connect(ui->IndicationTable, &IndicationTableWidget::merged, this, &MainWindow::on_actionSave_Defect_triggered);
 }
 
 MainWindow::~MainWindow()
@@ -497,8 +499,8 @@ void MainWindow::slotCurrentGroupChanged(int nIndex_)
 {
     //qDebug()<<"index"<<nIndex_;
     static int _nOldIndex = 0;
-    if(nIndex_ + 2 >= ui->TabWidget_parameter->count())  return;
-    if(ui->TabWidget_parameter->count() < 4)  return;
+    if(nIndex_ + 3 >= ui->TabWidget_parameter->count())  return;
+    if(ui->TabWidget_parameter->count() < 5)  return;
 
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     int _nGroupQty = _pConfig->common.nGroupQty;
@@ -556,7 +558,14 @@ void MainWindow::SetCurGroup(int nGroupID_)
 {
     m_iCurGroup = nGroupID_;
     //ui->measureWidget->loadViewList(nGroupID_);
-    ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
+    if (ui->TabWidget_parameter->currentIndex() != ui->TabWidget_parameter->count() - 2) {
+        ui->TabWidget_parameter->setCurrentIndex(m_iCurGroup);
+    } else {
+        if (m_nAlloff) {
+            ui->TabWidget_display->setCurrentIndex(nGroupID_ + 1);
+        }
+    }
+    ui->IndicationTable->setGroupId(m_iCurGroup);
 }
 
 void MainWindow::slotCurrentDispChanged(int nIndex_)
@@ -599,6 +608,7 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
         else
             currentgroup = -1;
     }
+    ui->IndicationTable->setGroupId(m_iCurGroup);
     //------------------------------------------------------
     RunDrawThreadOnce(true);
 
@@ -718,7 +728,7 @@ void MainWindow::UpdateTableParameter()
     int _nGroupQty = _pConfig->common.nGroupQty;
     int _nTabQty   = ui->TabWidget_parameter->count();
 
-    while(_nTabQty > 2)
+    while(_nTabQty > 3)
     {
      //   QWidget* _pWidget = ui->TabWidget_parameter->widget(0);
         ui->TabWidget_parameter->removeTab(0);
@@ -744,6 +754,7 @@ void MainWindow::UpdateTableParameter()
         m_pGroupList.append(_pGroup);
     }
     ui->ScanHardware->InitCommonConfig();
+    ui->IndicationTable->updateConfig();
     ui->TabWidget_parameter->setCurrentIndex(0);
     connect(ui->TabWidget_parameter, SIGNAL(currentChanged(int)), this, SLOT(slotCurrentGroupChanged(int)));
 }
@@ -753,7 +764,7 @@ void MainWindow::SetWndName()
     int _nQty = ui->TabWidget_parameter->count();
     if(_nQty < 3)  return;
 
-    for(int i = 0; i< _nQty - 2; i++)
+    for(int i = 0; i< _nQty - 3; i++)
     {
         DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(i);
         _pGroup->SetWndName();
@@ -1103,6 +1114,8 @@ void MainWindow::OpenFilePro(QString strFileName_)
         ui->actionSave_B_Scan_Data->setEnabled(true);
         ui->actionNew->setEnabled(true);
         _pConfig->common.bMarkDefectNotIdentifyArea = false;
+
+        ui->IndicationTable->setEnabled(false);
 //        if(ui->measureWidget->isHidden()){
 //            ui->measureWidget->show();
 //        }
@@ -2080,6 +2093,7 @@ void MainWindow::loadDefectPosition(int groupId, int index)
     if(_pConfig->GetDefectCnt(groupId) == 0){
         return;
     }
+    _pConfig->m_dfParam[m_iCurGroup].index = index;
     if(_pConfig->loadDefectVersion == 1){
         RunDrawThreadOnce(true);
     }else{
@@ -2201,11 +2215,12 @@ void MainWindow::startDefectIdentify()
     QVector<int> maxScanId;
     QVector<int> maxLawIds;
     QVector<QRectF> rectH;
+    QVector<int> maxValues;
 
 
     _pConfig->m_defect[m_iCurGroup]->analysisDefect();
 
-    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds);
+    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds, maxValues);
     _pConfig->loadDefectVersion = 2;
     QProgressDialog progress(this);
     progress.setRange(0, rectL.size());
@@ -2237,6 +2252,7 @@ void MainWindow::startDefectIdentify()
 
         updateCurLawPos( m_iCurGroup, maxLawIds[i], 0);
         sliderh->setValue(maxScanId[i]);
+        m_iCurDefectMaxValue = maxValues[i];
 
         sleep(2);
         on_actionSave_Defect_triggered();
@@ -2247,7 +2263,9 @@ void MainWindow::startDefectIdentify()
         sleep(500);
     }
 
+    ui->IndicationTable->updateDefectTable();
     if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
+        _pConfig->m_dfParam[m_iCurGroup].index = 0;
         loadDefectPosition(m_iCurGroup, 0);
     }
 }
@@ -2408,6 +2426,7 @@ void MainWindow::on_actionSave_Defect_triggered()
         pResult_ = 0;
         CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_ZA, &pResult_);
         _group.storeScanLawId.ZA = static_cast<int>(pResult_);
+        _group.storeScanLawId.maxValue = m_iCurDefectMaxValue;
     } else if(!_group.storeScanLawId.status){
         QMessageBox msgBox;
         msgBox.setText(tr("Set current position as defect position ?"));
@@ -2444,6 +2463,7 @@ void MainWindow::on_actionSave_Defect_triggered()
     }
     DefectSign(DEFECT_SIGN_SAVE);
     _group.storeScanLawId.status = false;
+    ui->IndicationTable->updateDefectTable();
 }
 
 void MainWindow::on_actionLanguage_triggered()
@@ -2725,8 +2745,12 @@ void MainWindow::on_actionAided_Analysis_triggered()
 
     menuBar()->setEnabled(false);
     //ui->toolBar->setEnabled(false);
-    set_ToolBarStatus(false);
-    ui->TabWidget_parameter->setEnabled(false);
+    set_ToolBarStatus(false);  
+    for (int i = 0; i < ui->TabWidget_parameter->count(); ++i) {
+        ui->TabWidget_parameter->setTabEnabled(i, false);
+    }
+    ui->TabWidget_parameter->setTabEnabled(ui->TabWidget_parameter->indexOf(ui->IndicationTable), true);
+    ui->TabWidget_parameter->setCurrentWidget(ui->IndicationTable);
 }
 
 void MainWindow::on_actionStop_Analysis_triggered()
@@ -2737,7 +2761,11 @@ void MainWindow::on_actionStop_Analysis_triggered()
     menuBar()->setEnabled(true);
     set_ToolBarStatus(true);
     _pConfig->common.bMarkDefectNotIdentifyArea = false;
-    ui->TabWidget_parameter->setEnabled(true);
+    for (int i = 0; i < ui->TabWidget_parameter->count(); ++i) {
+        ui->TabWidget_parameter->setTabEnabled(i, true);
+    }
+    ui->IndicationTable->setEnabled(false);
+
     _pConfig->common.bDefectIdentifyStatus = false;
     _pConfig->common.bDefectIdentifyStatusDone = true;
     _pConfig->m_defect[m_iCurGroup]->setIdentifyStatus(true);

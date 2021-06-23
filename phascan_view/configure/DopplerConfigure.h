@@ -104,7 +104,7 @@ struct DEFECT_INFO
     float dIndexOffset;    //步进偏置
     float dScanPos;        //缺陷最高波扫查位置
     float dDepth;          //缺陷最高波深度
-    int   reserve[4];      //保留位，用于以后扩展
+    int   reserve[4];      //保留位，用于以后扩展, 0 保留缺陷最大值
 };
 
 struct DEFECT_INFO_V1

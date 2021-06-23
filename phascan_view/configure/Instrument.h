@@ -667,6 +667,7 @@ struct STORE_SCAN_LAWID
     float depth;
     int   lawId;
     int   ZA;
+    int   maxValue; // 当前缺陷在beam上的最高点值
 };
 
 typedef struct _Group

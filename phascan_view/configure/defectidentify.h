@@ -24,7 +24,7 @@ public:
     void setLengthMeasureMethod(int methodId) {m_lengthMeasureMethod = methodId;}
     void setHeightMeasureMethod(int methodId) {m_heightMeasureMethod = methodId;}
     void setScale(double _scale) {m_scale = _scale / 100.0;}
-    void getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId);
+    void getDefectInfo(QVector<QRectF> &rectL, QVector<QRectF> &rectH, QVector<int> &scanId, QVector<int> &lawId, QVector<int> &maxValue);
     void setRange(int scanStart, int scanStop, int beamStart, int beamStop);
     void setSscanRange(QRectF _rect);
     void setSscanRangeValid(bool _isValid);
@@ -114,6 +114,7 @@ private:
     QVector<QRectF> m_defectsRectH; // 高度方向，表现在S扫上
     QVector<int> m_scanIds; // 特征點所在幀
     QVector<int> m_lawIds; // 特征點所在beam
+    QVector<int> m_maxValues; // 特征點最大值
 
     int m_scanStart {0};
     int m_scanStop  {0};

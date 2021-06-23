@@ -142,6 +142,7 @@ private:
     void init_ui();
 
     int  m_iCurGroup;
+    int  m_iCurDefectMaxValue {0};  // 当前缺陷最大值
     //int  m_nLawIdSel;
     int  m_nTBCnt;
     int  m_nAlloff;  //0值时表示只有一个组
