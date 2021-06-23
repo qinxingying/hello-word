@@ -21,7 +21,7 @@ public:
     void updateConfig();
     void updateDefectTable();
     void createItemsARow(int _rowNo, int _id, QString _amp, QString _lengthRange, QString _depthRange, QString _horizontalRange);
-
+    void retranslateUi();
 signals:
     void merged();
 private slots:

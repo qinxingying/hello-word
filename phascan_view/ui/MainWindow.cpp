@@ -2667,6 +2667,7 @@ void MainWindow::slot_actionEnglish_triggered()
     translator->load(":/file/translator/phascan_view_english.qm");
 
     ui->ScanHardware->retranslateUi();
+    ui->IndicationTable->retranslateUi();
 
     int _nGroupQty = _pConfig->common.nGroupQty;
     for(int i = 0; i < _nGroupQty; i++){
@@ -2693,6 +2694,7 @@ void MainWindow::slot_actionChinese_triggered()
     translator->load(":/file/translator/phascan_view_chinese.qm");
 
     ui->ScanHardware->retranslateUi();
+    ui->IndicationTable->retranslateUi();
 
     int _nGroupQty = _pConfig->common.nGroupQty;
     for(int i = 0; i < _nGroupQty; i++){

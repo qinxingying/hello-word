@@ -68,7 +68,7 @@ void IndicationTableWidget::updateConfig()
     ui->groupComboBox->clear();
     ui->tableWidget->clearContents();
     for (int i = 0; i < groupQty; ++i) {
-        ui->groupComboBox->addItem(QString("Group %1").arg(i+1));
+        ui->groupComboBox->addItem(QString(tr("Group %1")).arg(i+1));
     }
     updateDefectTable();
 }
@@ -125,6 +125,11 @@ void IndicationTableWidget::createItemsARow(int _rowNo, int _id, QString _amp, Q
     item->setTextAlignment(Qt::AlignCenter);
     item->setFont(font);
     ui->tableWidget->setItem(_rowNo, 4, item);
+}
+
+void IndicationTableWidget::retranslateUi()
+{
+    ui->retranslateUi(this);
 }
 
 void IndicationTableWidget::on_tableWidget_customContextMenuRequested(const QPoint &pos)

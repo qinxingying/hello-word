@@ -467,46 +467,46 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="41"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="42"/>
         <source>Analysis M</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="49"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="56"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="69"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="84"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="95"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="110"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="121"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="136"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="147"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="162"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="177"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="192"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="203"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="218"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="244"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="259"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="266"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="281"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="288"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="303"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="310"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="324"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="339"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="359"/>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="366"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="50"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="57"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="70"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="85"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="96"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="111"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="122"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="137"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="148"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="163"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="178"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="193"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="204"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="219"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="245"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="260"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="267"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="282"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="289"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="304"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="311"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="325"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="340"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="360"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="367"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="317"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="318"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="353"/>
+        <location filename="../ui/dialog/dialogkeyboardhelp.ui" line="354"/>
         <source>Analysis A</source>
         <translation type="unfinished"></translation>
     </message>
@@ -907,16 +907,22 @@
     </message>
     <message>
         <location filename="../configure/DopplerConfigure.cpp" line="1905"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1931"/>
+        <source>/defectArea</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configure/DopplerConfigure.cpp" line="1955"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2180"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2232"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2180"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2232"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -924,82 +930,84 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="772"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="787"/>
         <source>Store Current LawId and ScanPos ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="982"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="990"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1004"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1064"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1072"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1086"/>
         <source>No Defect Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="915"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1009"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="930"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="997"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1091"/>
         <source>Range too Small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="592"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1927"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="601"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2028"/>
         <source>Select Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="593"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1921"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="602"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2022"/>
         <source>Start Analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="820"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="835"/>
         <source>Exit automatic analysing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="915"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1009"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="930"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="997"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1091"/>
         <source>Please Selected More Wider Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1013"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1095"/>
         <source>Out of Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1013"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1095"/>
         <source>Please Selected in C Scan View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="587"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="596"/>
         <source>Scale Recover</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="588"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1898"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="597"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1999"/>
         <source>Data Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="589"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1904"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="598"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2005"/>
         <source>Show Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="590"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1910"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="599"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2011"/>
         <source>Show Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="591"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1916"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="600"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2017"/>
         <source>Show Couple</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2677,7 +2685,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.cpp" line="730"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2607"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2608"/>
         <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2741,6 +2749,44 @@
     <message>
         <location filename="../ui/DopplerViewFrame.cpp" line="92"/>
         <source>Current Widget size is too small!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>IndicationTableWidget</name>
+    <message>
+        <location filename="../ui/indicationtablewidget.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.ui" line="37"/>
+        <source>Indication Table</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="71"/>
+        <source>Group %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="134"/>
+        <source>Merge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="137"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="155"/>
+        <source>Delete Defect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="156"/>
+        <source>Please Select Defect</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3002,411 +3048,421 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="230"/>
+        <location filename="../ui/mainwindow.ui" line="198"/>
+        <source>IndicationTable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="235"/>
         <source>File</source>
         <translation>ファイル</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="244"/>
-        <location filename="../ui/mainwindow.ui" line="671"/>
+        <location filename="../ui/mainwindow.ui" line="249"/>
+        <location filename="../ui/mainwindow.ui" line="676"/>
         <source>Language</source>
         <translation>言語</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="251"/>
+        <location filename="../ui/mainwindow.ui" line="256"/>
         <source>Help</source>
         <translation>助ける</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="258"/>
+        <location filename="../ui/mainwindow.ui" line="263"/>
         <source>Report</source>
         <translation>報告</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="265"/>
+        <location filename="../ui/mainwindow.ui" line="270"/>
         <source>Remote Monitor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="271"/>
+        <location filename="../ui/mainwindow.ui" line="276"/>
         <source>Display Config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="302"/>
+        <location filename="../ui/mainwindow.ui" line="307"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="346"/>
+        <location filename="../ui/mainwindow.ui" line="351"/>
         <source>New File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="354"/>
+        <location filename="../ui/mainwindow.ui" line="359"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="362"/>
+        <location filename="../ui/mainwindow.ui" line="367"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="367"/>
+        <location filename="../ui/mainwindow.ui" line="372"/>
         <source>Close File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="372"/>
+        <location filename="../ui/mainwindow.ui" line="377"/>
         <source>Open Scan Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="380"/>
+        <location filename="../ui/mainwindow.ui" line="385"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="388"/>
+        <location filename="../ui/mainwindow.ui" line="393"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="396"/>
+        <location filename="../ui/mainwindow.ui" line="401"/>
         <source>Chinese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="404"/>
+        <location filename="../ui/mainwindow.ui" line="409"/>
         <source>Japanese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="415"/>
+        <location filename="../ui/mainwindow.ui" line="420"/>
         <source>Korean</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="423"/>
+        <location filename="../ui/mainwindow.ui" line="428"/>
         <source>Keyboard Guide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="431"/>
+        <location filename="../ui/mainwindow.ui" line="436"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="436"/>
+        <location filename="../ui/mainwindow.ui" line="441"/>
         <source>Report Format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="441"/>
+        <location filename="../ui/mainwindow.ui" line="446"/>
         <source>Report PreView</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="446"/>
+        <location filename="../ui/mainwindow.ui" line="451"/>
         <source>Save </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="455"/>
+        <location filename="../ui/mainwindow.ui" line="460"/>
         <source>OpenFile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="458"/>
+        <location filename="../ui/mainwindow.ui" line="463"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="470"/>
-        <location filename="../ui/mainwindow.ui" line="473"/>
+        <location filename="../ui/mainwindow.ui" line="475"/>
+        <location filename="../ui/mainwindow.ui" line="478"/>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="482"/>
+        <location filename="../ui/mainwindow.ui" line="487"/>
         <source>SaveFile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="485"/>
+        <location filename="../ui/mainwindow.ui" line="490"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="494"/>
-        <location filename="../ui/mainwindow.ui" line="497"/>
-        <location filename="../ui/mainwindow.ui" line="500"/>
+        <location filename="../ui/mainwindow.ui" line="499"/>
+        <location filename="../ui/mainwindow.ui" line="502"/>
+        <location filename="../ui/mainwindow.ui" line="505"/>
         <source>Report Add One Item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="509"/>
-        <location filename="../ui/mainwindow.ui" line="512"/>
-        <location filename="../ui/mainwindow.ui" line="515"/>
+        <location filename="../ui/mainwindow.ui" line="514"/>
+        <location filename="../ui/mainwindow.ui" line="517"/>
+        <location filename="../ui/mainwindow.ui" line="520"/>
         <source>Report Del One Item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="524"/>
-        <location filename="../ui/mainwindow.ui" line="527"/>
-        <location filename="../ui/mainwindow.ui" line="530"/>
+        <location filename="../ui/mainwindow.ui" line="529"/>
+        <location filename="../ui/mainwindow.ui" line="532"/>
+        <location filename="../ui/mainwindow.ui" line="535"/>
         <source>Report Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="539"/>
-        <location filename="../ui/mainwindow.ui" line="542"/>
+        <location filename="../ui/mainwindow.ui" line="544"/>
+        <location filename="../ui/mainwindow.ui" line="547"/>
         <source>Save Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="551"/>
-        <location filename="../ui/mainwindow.ui" line="554"/>
+        <location filename="../ui/mainwindow.ui" line="556"/>
+        <location filename="../ui/mainwindow.ui" line="559"/>
         <source>TOFD LW Straitening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="563"/>
-        <location filename="../ui/mainwindow.ui" line="566"/>
+        <location filename="../ui/mainwindow.ui" line="568"/>
+        <location filename="../ui/mainwindow.ui" line="571"/>
         <source>TOFD BW Straitening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="575"/>
-        <location filename="../ui/mainwindow.ui" line="578"/>
+        <location filename="../ui/mainwindow.ui" line="580"/>
+        <location filename="../ui/mainwindow.ui" line="583"/>
         <source>TOFD LW Removal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="587"/>
-        <location filename="../ui/mainwindow.ui" line="590"/>
+        <location filename="../ui/mainwindow.ui" line="592"/>
+        <location filename="../ui/mainwindow.ui" line="595"/>
         <source>TOFD SAFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="599"/>
-        <location filename="../ui/mainwindow.ui" line="602"/>
+        <location filename="../ui/mainwindow.ui" line="604"/>
+        <location filename="../ui/mainwindow.ui" line="607"/>
         <source>TOFD Repeal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="611"/>
-        <location filename="../ui/mainwindow.ui" line="614"/>
+        <location filename="../ui/mainwindow.ui" line="616"/>
+        <location filename="../ui/mainwindow.ui" line="619"/>
         <source>TOFD Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="623"/>
-        <location filename="../ui/mainwindow.ui" line="626"/>
+        <location filename="../ui/mainwindow.ui" line="628"/>
+        <location filename="../ui/mainwindow.ui" line="631"/>
         <source>TOFD Length Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="635"/>
-        <location filename="../ui/mainwindow.ui" line="638"/>
+        <location filename="../ui/mainwindow.ui" line="640"/>
+        <location filename="../ui/mainwindow.ui" line="643"/>
         <source>TOFD Height Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="647"/>
-        <location filename="../ui/mainwindow.ui" line="650"/>
+        <location filename="../ui/mainwindow.ui" line="652"/>
+        <location filename="../ui/mainwindow.ui" line="655"/>
         <source>TOFD Depth Measurement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="659"/>
-        <location filename="../ui/mainwindow.ui" line="662"/>
+        <location filename="../ui/mainwindow.ui" line="664"/>
+        <location filename="../ui/mainwindow.ui" line="667"/>
         <source>Save Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="674"/>
+        <location filename="../ui/mainwindow.ui" line="679"/>
         <source>CH/EN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="683"/>
-        <location filename="../ui/mainwindow.ui" line="686"/>
+        <location filename="../ui/mainwindow.ui" line="688"/>
+        <location filename="../ui/mainwindow.ui" line="691"/>
         <source>ScreenShot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="691"/>
+        <location filename="../ui/mainwindow.ui" line="696"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="696"/>
+        <location filename="../ui/mainwindow.ui" line="701"/>
         <source>Disconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="701"/>
+        <location filename="../ui/mainwindow.ui" line="706"/>
         <source>Save Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="706"/>
+        <location filename="../ui/mainwindow.ui" line="711"/>
         <source>Load Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="715"/>
+        <location filename="../ui/mainwindow.ui" line="720"/>
         <source>Aided Analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="718"/>
+        <location filename="../ui/mainwindow.ui" line="723"/>
         <source>Aided Analysis Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="727"/>
+        <location filename="../ui/mainwindow.ui" line="732"/>
         <source>actionStop_Analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="730"/>
+        <location filename="../ui/mainwindow.ui" line="735"/>
         <source>Stop Analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="738"/>
+        <location filename="../ui/mainwindow.ui" line="743"/>
         <source>File Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="743"/>
+        <location filename="../ui/mainwindow.ui" line="748"/>
         <source>Save C Scan Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="748"/>
+        <location filename="../ui/mainwindow.ui" line="753"/>
         <source>Save B Scan Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="343"/>
+        <location filename="../ui/mainwindow.cpp" line="345"/>
         <source>Com Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="383"/>
+        <location filename="../ui/mainwindow.cpp" line="385"/>
         <source>Delete Current Display Table ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="384"/>
-        <location filename="../ui/mainwindow.cpp" line="428"/>
-        <location filename="../ui/mainwindow.cpp" line="1026"/>
+        <location filename="../ui/mainwindow.cpp" line="386"/>
+        <location filename="../ui/mainwindow.cpp" line="430"/>
+        <location filename="../ui/mainwindow.cpp" line="1037"/>
         <source>YES</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="385"/>
-        <location filename="../ui/mainwindow.cpp" line="429"/>
-        <location filename="../ui/mainwindow.cpp" line="1027"/>
+        <location filename="../ui/mainwindow.cpp" line="387"/>
+        <location filename="../ui/mainwindow.cpp" line="431"/>
+        <location filename="../ui/mainwindow.cpp" line="1038"/>
         <source>NO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="427"/>
+        <location filename="../ui/mainwindow.cpp" line="429"/>
         <source>Add One View ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="476"/>
-        <location filename="../ui/mainwindow.cpp" line="737"/>
+        <location filename="../ui/mainwindow.cpp" line="478"/>
+        <location filename="../ui/mainwindow.cpp" line="747"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1110"/>
+        <location filename="../ui/mainwindow.cpp" line="1125"/>
         <source>Illegal Datafile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1110"/>
+        <location filename="../ui/mainwindow.cpp" line="1125"/>
         <source>This is illegal datafile. Please Choose another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1387"/>
+        <location filename="../ui/mainwindow.cpp" line="1402"/>
         <source>The defect was saved failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1392"/>
+        <location filename="../ui/mainwindow.cpp" line="1407"/>
         <source>The defect was saved successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2419"/>
+        <location filename="../ui/mainwindow.cpp" line="2229"/>
+        <source>Saving defects...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="2432"/>
         <source>Set current position as defect position ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2420"/>
+        <location filename="../ui/mainwindow.cpp" line="2433"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2840"/>
+        <location filename="../ui/mainwindow.cpp" line="2864"/>
         <source>Save CSacn Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2909"/>
+        <location filename="../ui/mainwindow.cpp" line="2933"/>
         <source>Save BSacn Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1025"/>
+        <location filename="../ui/mainwindow.cpp" line="1036"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1036"/>
+        <location filename="../ui/mainwindow.cpp" line="1047"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1232"/>
+        <location filename="../ui/mainwindow.cpp" line="1247"/>
         <source>save in </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1280"/>
+        <location filename="../ui/mainwindow.cpp" line="1295"/>
         <source>increase success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1291"/>
+        <location filename="../ui/mainwindow.cpp" line="1306"/>
         <source>delete success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1384"/>
+        <location filename="../ui/mainwindow.cpp" line="1399"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1384"/>
+        <location filename="../ui/mainwindow.cpp" line="1399"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1232"/>
-        <location filename="../ui/mainwindow.cpp" line="1280"/>
-        <location filename="../ui/mainwindow.cpp" line="1291"/>
-        <location filename="../ui/mainwindow.cpp" line="1387"/>
-        <location filename="../ui/mainwindow.cpp" line="1392"/>
+        <location filename="../ui/mainwindow.cpp" line="1247"/>
+        <location filename="../ui/mainwindow.cpp" line="1295"/>
+        <location filename="../ui/mainwindow.cpp" line="1306"/>
+        <location filename="../ui/mainwindow.cpp" line="1402"/>
+        <location filename="../ui/mainwindow.cpp" line="1407"/>
         <source>prompt</source>
         <translation type="unfinished"></translation>
     </message>
