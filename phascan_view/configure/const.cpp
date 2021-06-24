@@ -3,8 +3,8 @@
 
 #include <string.h>
 #include <QCoreApplication>
-#include <stdio.h>
 
+#include <stdio.h>
 const char* g_strMeasureFildName[][4] =
 {
 	{"None  "  , "None"} ,
