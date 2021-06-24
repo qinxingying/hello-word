@@ -22,10 +22,10 @@ signals:
 
 
  private:
-    Plane m_MainPlane;
-    Plane m_SlavePlane;
-    bool m_EdgeEnabled; //消边
-    Asymmetric_Plane::Align m_Align;//对齐方式
+    Plane m_mainplane;
+    Plane m_slaveplane;
+    bool m_edgeenabled; //消边
+    Asymmetric_Plane::Align m_align;//对齐方式
  //   double t1;//
  //   double t2;//在板子参数中（高度）
       double m_l1;

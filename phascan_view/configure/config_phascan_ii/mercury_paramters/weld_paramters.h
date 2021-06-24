@@ -58,11 +58,11 @@ private:
     WeldV m_TopV;
     WeldTKY m_TKY;
 
-    WeldASY m_ASY;
-    WeldI m_Main_I;
-    WeldI m_Slave_I;
-    WeldV m_Main_V;
-    WeldV m_Slave_V;
+    WeldASY m_asy;
+    WeldI m_main_I;
+    WeldI m_slave_I;
+    WeldV m_main_V;
+    WeldV m_slave_V;
     friend class Config;
 };
 

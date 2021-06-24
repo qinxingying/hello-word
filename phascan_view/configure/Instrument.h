@@ -319,8 +319,8 @@ struct WELD_FORMAT_ASY
     double W2;
     double H2;
     double W3;
-    double M_thickness;
-    double S_thickness;
+    double m_thickness;//主板厚度
+    double s_thickness;
 
 };
 
@@ -353,7 +353,7 @@ struct WELD_II
     double h1;
     double l2;
     double h2;
-    setup_PLANE_ALIGN_TYPE Align;  //不等厚板对齐
+    setup_PLANE_ALIGN_TYPE align;  //不等厚板对齐
 
     union{
         WELD_FORMAT_I  I;
