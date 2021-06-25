@@ -182,6 +182,7 @@ private slots:
     void slotMeasureGate(int groupId);
     void slotMarkNextDefect();
     void slotMarkPreviousDefect();
+    void slotDeleteDefect();
 
 protected slots:
   void on_actionNew_Config_triggered();

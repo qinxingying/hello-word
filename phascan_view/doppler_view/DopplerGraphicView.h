@@ -126,6 +126,7 @@ signals:
     void signalMarkPreviousDefect();
     void signalStartAnalysis();
     void signalStopAnalysis();
+    void signalDeleteDefect();
 public slots:
     void slotResetView();
     void slotPrint();

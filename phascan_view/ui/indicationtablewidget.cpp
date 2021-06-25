@@ -44,7 +44,7 @@ IndicationTableWidget::IndicationTableWidget(QWidget *parent) :
 
     connect(ui->tableWidget, &QAbstractItemView::customContextMenuRequested, this, &IndicationTableWidget::on_tableWidget_customContextMenuRequested);
     connect(ui->tableWidget, &QAbstractItemView::clicked, this, &IndicationTableWidget::on_tableWidget_Item_Clicked);
-
+    connect(ui->tableWidget, &QTableWidget::currentCellChanged, this, &IndicationTableWidget::on_tableWidget_current_cell_changed);
     m_nGroupId = 0;
     m_pConfig = DopplerConfigure::Instance();
     m_pGroup  = &m_pConfig->group[m_nGroupId];
@@ -130,6 +130,28 @@ void IndicationTableWidget::createItemsARow(int _rowNo, int _id, QString _amp, Q
 void IndicationTableWidget::retranslateUi()
 {
     ui->retranslateUi(this);
+}
+
+void IndicationTableWidget::setSelectedDefect(int _index)
+{
+    ui->tableWidget->selectRow(_index);
+}
+
+void IndicationTableWidget::deleteDefect(int _index)
+{
+    ui->tableWidget->selectRow(_index);
+    on_del_tableWidget_item();
+}
+
+void IndicationTableWidget::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case Qt::Key_Delete:
+        on_del_tableWidget_item();
+        break;
+    default:
+        break;
+    }
 }
 
 void IndicationTableWidget::on_tableWidget_customContextMenuRequested(const QPoint &pos)
@@ -282,6 +304,12 @@ void IndicationTableWidget::on_merge_tableWidget_item()
 
     emit merged();
     ui->tableWidget->setCurrentItem(nullptr);
+}
+
+void IndicationTableWidget::on_tableWidget_current_cell_changed(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    if (currentRow < 0) return;
+    g_pMainWnd->loadDefectPosition(m_nGroupId, currentRow);
 }
 
 void IndicationTableWidget::on_groupComboBox_currentIndexChanged(int index)

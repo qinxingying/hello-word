@@ -2068,6 +2068,12 @@ void MainWindow::slotMarkPreviousDefect()
     loadDefectPosition(m_iCurGroup,pConfig->m_dfParam[m_iCurGroup].index);
 }
 
+void MainWindow::slotDeleteDefect()
+{
+    DopplerConfigure* pConfig =  DopplerConfigure::Instance();
+    ui->IndicationTable->deleteDefect(pConfig->m_dfParam[m_iCurGroup].index);
+}
+
 /**
  * @brief MainWindow::slotMarkDefect 框出当前组识别出来的缺陷
  */
