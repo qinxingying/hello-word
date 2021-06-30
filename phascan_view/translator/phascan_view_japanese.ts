@@ -917,12 +917,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2232"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2234"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2232"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2234"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -930,84 +930,84 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="787"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="788"/>
         <source>Store Current LawId and ScanPos ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1064"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1072"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1086"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1069"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1077"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1091"/>
         <source>No Defect Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="930"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="997"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1091"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="935"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1002"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1096"/>
         <source>Range too Small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="601"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2028"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="602"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2033"/>
         <source>Select Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="602"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2022"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="603"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2027"/>
         <source>Start Analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="835"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="836"/>
         <source>Exit automatic analysing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="930"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="997"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1091"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="935"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1002"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1096"/>
         <source>Please Selected More Wider Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1095"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1100"/>
         <source>Out of Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1095"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1100"/>
         <source>Please Selected in C Scan View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="596"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="597"/>
         <source>Scale Recover</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="597"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1999"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="598"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2004"/>
         <source>Data Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="598"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2005"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="599"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2010"/>
         <source>Show Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="599"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2011"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="600"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2016"/>
         <source>Show Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="600"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2017"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="601"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2022"/>
         <source>Show Couple</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2765,27 +2765,74 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="71"/>
+        <location filename="../ui/indicationtablewidget.ui" line="77"/>
+        <source>Modify</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.ui" line="84"/>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.ui" line="109"/>
+        <source>Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.ui" line="118"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="77"/>
         <source>Group %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="134"/>
+        <location filename="../ui/indicationtablewidget.ui" line="95"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="167"/>
         <source>Merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="137"/>
+        <location filename="../ui/indicationtablewidget.ui" line="102"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="170"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="155"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <source>A%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <source>Sr~Sm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <source>Ur~Um</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <source>Ir~Im</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="189"/>
         <source>Delete Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="156"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="190"/>
         <source>Please Select Defect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3343,126 +3390,128 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="345"/>
+        <location filename="../ui/mainwindow.cpp" line="346"/>
         <source>Com Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="385"/>
-        <source>Delete Current Display Table ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/mainwindow.cpp" line="386"/>
-        <location filename="../ui/mainwindow.cpp" line="430"/>
-        <location filename="../ui/mainwindow.cpp" line="1037"/>
-        <source>YES</source>
+        <source>Delete Current Display Table ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="387"/>
         <location filename="../ui/mainwindow.cpp" line="431"/>
         <location filename="../ui/mainwindow.cpp" line="1038"/>
+        <source>YES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="388"/>
+        <location filename="../ui/mainwindow.cpp" line="432"/>
+        <location filename="../ui/mainwindow.cpp" line="1039"/>
         <source>NO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="429"/>
+        <location filename="../ui/mainwindow.cpp" line="430"/>
         <source>Add One View ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="478"/>
-        <location filename="../ui/mainwindow.cpp" line="747"/>
+        <location filename="../ui/mainwindow.cpp" line="479"/>
+        <location filename="../ui/mainwindow.cpp" line="748"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1125"/>
+        <location filename="../ui/mainwindow.cpp" line="1126"/>
         <source>Illegal Datafile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1125"/>
+        <location filename="../ui/mainwindow.cpp" line="1126"/>
         <source>This is illegal datafile. Please Choose another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1402"/>
+        <location filename="../ui/mainwindow.cpp" line="1403"/>
         <source>The defect was saved failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1407"/>
+        <location filename="../ui/mainwindow.cpp" line="1408"/>
         <source>The defect was saved successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2229"/>
+        <location filename="../ui/mainwindow.cpp" line="2089"/>
         <source>Saving defects...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2432"/>
+        <location filename="../ui/mainwindow.cpp" line="2500"/>
         <source>Set current position as defect position ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2433"/>
+        <location filename="../ui/mainwindow.cpp" line="2501"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2864"/>
+        <location filename="../ui/mainwindow.cpp" line="2934"/>
         <source>Save CSacn Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2933"/>
+        <location filename="../ui/mainwindow.cpp" line="3003"/>
         <source>Save BSacn Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1036"/>
+        <location filename="../ui/mainwindow.cpp" line="1037"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1047"/>
+        <location filename="../ui/mainwindow.cpp" line="1048"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1247"/>
+        <location filename="../ui/mainwindow.cpp" line="1248"/>
         <source>save in </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1295"/>
+        <location filename="../ui/mainwindow.cpp" line="1296"/>
         <source>increase success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1306"/>
+        <location filename="../ui/mainwindow.cpp" line="1307"/>
         <source>delete success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1399"/>
+        <location filename="../ui/mainwindow.cpp" line="1400"/>
+        <location filename="../ui/mainwindow.cpp" line="2105"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1399"/>
+        <location filename="../ui/mainwindow.cpp" line="1400"/>
+        <location filename="../ui/mainwindow.cpp" line="2105"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1247"/>
-        <location filename="../ui/mainwindow.cpp" line="1295"/>
-        <location filename="../ui/mainwindow.cpp" line="1306"/>
-        <location filename="../ui/mainwindow.cpp" line="1402"/>
-        <location filename="../ui/mainwindow.cpp" line="1407"/>
+        <location filename="../ui/mainwindow.cpp" line="1248"/>
+        <location filename="../ui/mainwindow.cpp" line="1296"/>
+        <location filename="../ui/mainwindow.cpp" line="1307"/>
+        <location filename="../ui/mainwindow.cpp" line="1403"/>
+        <location filename="../ui/mainwindow.cpp" line="1408"/>
         <source>prompt</source>
         <translation type="unfinished"></translation>
     </message>
