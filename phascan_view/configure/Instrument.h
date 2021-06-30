@@ -686,6 +686,7 @@ typedef struct _Group
     float					fRefGain;               // 调节增益增加，判定线不动
     float                   RefGain;                // 调节增益增加,判定线增加
     float                   CoupleGain;         //耦合补偿
+    float                   CoupleMonitoringGain;         //耦合监控补偿
 
     int                     on_off_status;
     float					fSumGain ;                /* 总增益 */

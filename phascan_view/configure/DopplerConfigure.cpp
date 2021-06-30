@@ -1230,6 +1230,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         if(Config::instance()->is_phascan_ii()){
             Config::instance()->getApertureSec( i, &_LawConfig.nElemQtySec);
             _group.CoupleGain = Config::instance()->getCoupleGain(i);
+            _group.CoupleMonitoringGain = Config::instance()->getCoupleMonitoringGain(i);
         } else {
             int lawQty = _process->GetGroupLawQty(i);
             _group.CoupleGain = _pGroupInfo->gain_offset[lawQty] / 10;

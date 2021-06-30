@@ -302,6 +302,8 @@ void Config::unpack_focallawer(const QVariantMap &map)
     unpack_fields(map["Fields"].toList());
 
     unpack_gains(map["Gains"].toList());
+
+    m_groups[m_currentGroupID].m_focallawer.m_coupleMonitoringGain = map["CouplingGain"].toDouble();
 }
 
 void Config::unpack_scan(const QVariantMap &map)
@@ -1758,6 +1760,11 @@ uint Config::data_mark_length()
 double Config::getCoupleGain(int groupId)
 {
     return m_groups[groupId].m_sample.m_couplingGain;
+}
+
+double Config::getCoupleMonitoringGain(int groupId)
+{
+    return m_groups[groupId].m_focallawer.m_coupleMonitoringGain;
 }
 
 int Config::getCylinderWeldOrientation(int groupId)
