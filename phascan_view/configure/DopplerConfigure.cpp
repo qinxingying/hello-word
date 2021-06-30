@@ -1233,7 +1233,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.CoupleMonitoringGain = Config::instance()->getCoupleMonitoringGain(i);
         } else {
             int lawQty = _process->GetGroupLawQty(i);
-            _group.CoupleGain = _pGroupInfo->gain_offset[lawQty] / 10;
+            _group.CoupleGain = 0;
+            _group.CoupleMonitoringGain = _pGroupInfo->gain_offset[lawQty] / 10;
         }
 
 		if(_group.eGroupMode <= setup_GROUP_MODE_PA)
