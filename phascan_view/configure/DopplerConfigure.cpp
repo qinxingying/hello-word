@@ -258,7 +258,7 @@ void DopplerConfigure::OpenEvn()
         group[i].bShowGateI     = AppEvn.bShowGateI[i];
         group[i].DisplayMode    = AppEvn.DisplayMode[i];
         group[i].bShowCurve     = AppEvn.bShowCurve[i];
-        CUR_RES.CurSS[i]        = AppEvn.CurSS[i];
+        //CUR_RES.CurSS[i]        = AppEvn.CurSS[i];
         CUR_RES.Standard[i]     = AppEvn.Standard[i];
         CUR_RES.Thickness[i]    = AppEvn.Thickness[i];
         group[i].bShowAScanMeasure = AppEvn.bShowAScanMeasure[i];
@@ -307,7 +307,7 @@ void DopplerConfigure::SaveEvn()
         AppEvn.CScanSource[i][1]    = (int)group[i].eCScanSource[1];
         AppEvn.DisplayMode[i]       = group[i].DisplayMode;
         AppEvn.bShowCurve[i]        = group[i].bShowCurve;
-        AppEvn.CurSS[i]             = CUR_RES.CurSS[i];
+        //AppEvn.CurSS[i]             = CUR_RES.CurSS[i];
         AppEvn.Standard[i]          = CUR_RES.Standard[i];
         AppEvn.Thickness[i]         = CUR_RES.Thickness[i];
         AppEvn.bShowAScanMeasure[i] = group[i].bShowAScanMeasure;
@@ -1063,7 +1063,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         CUR_RES.CurEL[i]         = -18;
         CUR_RES.CurSL[i]         = -12;
         CUR_RES.Ref_Amp[i]       = 80;
-//        CUR_RES.CurSS[i]         = AppEvn.CurSS[i];
+        CUR_RES.CurSS[i]         = _group.RefGain;
 //        CUR_RES.Standard[i]      = AppEvn.Standard[i];
 //        CUR_RES.Thickness[i]     = AppEvn.Thickness[i];
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
