@@ -6,6 +6,7 @@
 #include "ParameterProcess.h"
 #include "Instrument.h"
 #include "DopplerConfigure.h"
+#include <QStack>
 
 namespace Ui {
 class IndicationTableWidget;
@@ -29,8 +30,17 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 signals:
     void merged();
+    void save();
 private slots:
     void on_groupComboBox_currentIndexChanged(int index);
+
+    void on_modifyBtn_clicked();
+
+    void on_restoreBtn_clicked();
+
+    void on_saveBtn_clicked();
+
+    void on_undoBtn_clicked();
 
 private:
     void on_tableWidget_customContextMenuRequested(const QPoint &pos);
@@ -45,6 +55,14 @@ private:
     DopplerConfigure* m_pConfig;
     GROUP_CONFIG* m_pGroup;
     int  m_nGroupId;
+
+    enum Command {
+        Delete,
+        Merge,
+        Modify
+    };
+    QStack<Command> m_commandStack;
+    QStack<QVector<DEFECT_INFO>> m_undoStack;
 };
 
 #endif // INDICATIONTABLEWIDGET_H

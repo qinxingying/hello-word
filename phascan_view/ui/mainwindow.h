@@ -79,6 +79,7 @@ public:
     void setAllTopcWidht(double value);
     void updateAllDefectBox();
     void loadDefectPosition(int groupId, int index);
+    void loadDefectPositionAndSave(int groupId, DEFECT_INFO &defect);
     void setDefectIdentifyCScanArea(double scanStart, double scanStop, double beamStart, double beamStop);
     void setDefectIdentifySScanArea(QRectF _rect);
     void setSelectSscanAreaValid(bool _isValid);
@@ -183,6 +184,7 @@ private slots:
     void slotMarkNextDefect();
     void slotMarkPreviousDefect();
     void slotDeleteDefect();
+    void slotSaveDefect();
 
 protected slots:
   void on_actionNew_Config_triggered();

@@ -121,6 +121,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave_B_Scan_Data, &QAction::triggered, this, &MainWindow::slot_actionSaveBSacnData_triggered);
 
     connect(ui->IndicationTable, &IndicationTableWidget::merged, this, &MainWindow::on_actionSave_Defect_triggered);
+    connect(ui->IndicationTable, &IndicationTableWidget::save, this, &MainWindow::slotSaveDefect);
 }
 
 MainWindow::~MainWindow()
@@ -1372,7 +1373,7 @@ void MainWindow::DefectSign(DEFECT_SIGN_TYPE signType_)
     DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
     int _ret = _pConfig->DefectSign(m_iCurGroup, signType_);
 
-    if(_ret >= 0) {
+    if(_ret >= 0 && !_pConfig->common.bDefectIdentifyStatus) {
         if(_ret == 3) {
             ProcessDisplay _process;
             //GROUP_CONFIG* _pGroup = &_pConfig->group[m_iCurGroup];
@@ -2074,6 +2075,56 @@ void MainWindow::slotDeleteDefect()
     ui->IndicationTable->deleteDefect(pConfig->m_dfParam[m_iCurGroup].index);
 }
 
+void MainWindow::slotSaveDefect()
+{
+    DopplerConfigure* pConfig = DopplerConfigure::Instance();
+    ProcessDisplay process;
+    int cnt = pConfig->GetDefectCnt(m_iCurGroup);
+    bool bSaved = false;
+
+    QProgressDialog progress(this);
+    progress.setRange(0, cnt);
+    progress.setAutoReset(false);
+    progress.setMinimumDuration(0);
+    progress.setLabelText(tr("Saving defects..."));
+    progress.setCancelButton(nullptr);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setValue(0);
+    QElapsedTimer timer;
+    timer.start();
+
+    for (int i = 0; i < cnt; ++i) {
+        if (progress.wasCanceled()) {
+            break;
+        }
+        progress.setValue(i+1);
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+
+        loadDefectPosition(m_iCurGroup, i);
+        DEFECT_INFO* pDfInfo = pConfig->GetDefectPointer(m_iCurGroup, i);
+        QString strPath = pConfig->m_szDefectPathName + QString(tr("/")) + QString(tr(pDfInfo->srtImageName)) + QString(tr(".png"));
+
+        pConfig->m_nCutBmpNo[m_iCurGroup] = i+1;
+        process.UpdateAllViewCursorOfGroup(m_iCurGroup);
+//        sleep(400);
+        pConfig->SaveDefectFile(pConfig->m_szDefectPathName);
+        bSaved = true;
+
+        SaveCurScreenshot(strPath);
+    }
+    pConfig->m_nCutBmpNo[m_iCurGroup] = 0;
+    process.UpdateAllViewCursorOfGroup(m_iCurGroup);
+
+    if (!bSaved)
+        pConfig->SaveDefectFile(pConfig->m_szDefectPathName);
+
+    int timeCost = timer.elapsed();
+    qDebug() << "save cost:"<< timeCost << "ms";
+    if (timeCost < 1000) {
+        sleep(500);
+    }
+}
+
 /**
  * @brief MainWindow::slotMarkDefect 框出当前组识别出来的缺陷
  */
@@ -2116,11 +2167,39 @@ void MainWindow::loadDefectPosition(int groupId, int index)
         _group.afCursor[setup_CURSOR_VPA_MES] = _pDfInfo->fVPAStop;
         _group.fIndexOffset = _pDfInfo->dIndexOffset;
         _group.fScanOffset  = _pDfInfo->dScanOffset;
+        m_iCurDefectMaxValue = _pDfInfo->reserve[0];
         DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
         _pGroup->UpdateCursorValue();
         _process->SetupScanPos(_pDfInfo->dScanPos);
         slotLawPosChange(groupId, _pDfInfo->nLawNo, 0);
     }
+}
+
+void MainWindow::loadDefectPositionAndSave(int groupId, DEFECT_INFO &defect)
+{
+    DopplerConfigure* pConfig =  DopplerConfigure::Instance();
+    ParameterProcess* process = ParameterProcess::Instance();
+
+    GROUP_CONFIG& group = pConfig->group[groupId];
+    group.afCursor[setup_CURSOR_S_REF]   = defect.fSStart + defect.dScanOffset;
+    group.afCursor[setup_CURSOR_S_MES]   = defect.fSStop + defect.dScanOffset;
+    group.afCursor[setup_CURSOR_U_REF]   = defect.fUStart;
+    group.afCursor[setup_CURSOR_U_MES]   = defect.fUStop;
+    group.afCursor[setup_CURSOR_I_REF]   = defect.fIStart;
+    group.afCursor[setup_CURSOR_I_MES]   = defect.fIStop;
+    group.afCursor[setup_CURSOR_VPA_REF] = defect.fVPAStart;
+    group.afCursor[setup_CURSOR_VPA_MES] = defect.fVPAStop;
+    group.fIndexOffset   = defect.dIndexOffset;
+    group.fScanOffset    = defect.dScanOffset;
+    m_iCurDefectMaxValue = defect.reserve[0];
+    DopplerGroupTab* pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
+    pGroup->UpdateCursorValue();
+    process->SetupScanPos(defect.dScanPos);
+    slotLawPosChange(groupId, defect.nLawNo, 0);
+
+    on_actionSave_Defect_triggered();
+    ProcessDisplay display;
+    display.UpdateAllViewCursorOfGroup(m_iCurGroup);
 }
 
 void MainWindow::setDefectIdentifyCScanArea(double scanStart, double scanStop, double beamStart, double beamStop)
@@ -2223,28 +2302,17 @@ void MainWindow::startDefectIdentify()
     QVector<QRectF> rectH;
     QVector<int> maxValues;
 
+    _pConfig->ReleaseAllDefect();
+    ProcessDisplay _display ;
+    _display.ResetDefectInfo(m_iCurGroup);
+    _display.UpdateAllViewOverlay();
 
     _pConfig->m_defect[m_iCurGroup]->analysisDefect();
 
     _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds, maxValues);
     _pConfig->loadDefectVersion = 2;
-    QProgressDialog progress(this);
-    progress.setRange(0, rectL.size());
-    progress.setAutoReset(false);
-    progress.setMinimumDuration(0);
-    progress.setLabelText(tr("Saving defects..."));
-    progress.setCancelButton(nullptr);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.setValue(0);
-    QElapsedTimer timer;
-    timer.start();
-    for (int i  = 0; i < rectL.size(); ++i) {
-        if (progress.wasCanceled()) {
-            break;
-        }
-        progress.setValue(i+1);
-        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
+    for (int i  = 0; i < rectL.size(); ++i) {
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[i].y();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[i].y() + rectH[i].height();
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[i].x();
@@ -2260,13 +2328,7 @@ void MainWindow::startDefectIdentify()
         sliderh->setValue(maxScanId[i]);
         m_iCurDefectMaxValue = maxValues[i];
 
-        sleep(2);
         on_actionSave_Defect_triggered();
-    }
-    int timeCost = timer.elapsed();
-    qDebug() << "save cost:"<< timeCost << "ms";
-    if (timeCost < 1000) {
-        sleep(500);
     }
 
     ui->IndicationTable->updateDefectTable();

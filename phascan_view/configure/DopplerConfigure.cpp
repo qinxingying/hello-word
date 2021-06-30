@@ -2147,12 +2147,14 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 
             QString str1, str2;
             str1.sprintf("GR%d ", iGroupId_+1);
-            str2 = time.toString("yyyy-MM-dd hh mm ss");
+            str2 = time.toString("yyyy-MM-dd hh mm ss zzz");
 
             QString str3 = str1 + str2;
             strcpy(_pDfInfo->srtImageName, (char*)(qPrintable(str3)));
             //---------------------------------------
-            SaveDefectFile(m_szDefectPathName);
+            if (!common.bDefectIdentifyStatus) {
+                SaveDefectFile(m_szDefectPathName);
+            }
             _ret = 3;
         }
 		break;
@@ -2265,7 +2267,9 @@ int DopplerConfigure::DeleteDefect(int iGroupId_, int index_)
 		m_dfParam[iGroupId_].index = _iMax - 1;
 	}
     ReorderDefect();
-	SaveDefectFile(m_szDefectPathName);
+    if (!common.bDefectIdentifyStatus) {
+        SaveDefectFile(m_szDefectPathName);
+    }
 	return 0;
 }
 
@@ -2388,12 +2392,16 @@ void DopplerConfigure::ReorderDefect()
                         next->pPrev->pNext   = pHead;
 
                         next->pPrev          = prev;
+                        if (!next->pPrev) {
+                            m_dfParam[i].pDFHead = next;
+                        }
                     }
                     next = tmpNext;
                 }
 
                 pHead = tmpHead;
             }
+
             pHead = m_dfParam[i].pDFHead;
             while(pHead->pNext != NULL) {
                 pHead = pHead->pNext;
