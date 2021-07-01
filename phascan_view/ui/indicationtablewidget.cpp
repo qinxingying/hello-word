@@ -43,9 +43,11 @@ IndicationTableWidget::IndicationTableWidget(QWidget *parent) :
 
     ui->tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    ui->tableWidget->installEventFilter(this);
+
     connect(ui->tableWidget, &QAbstractItemView::customContextMenuRequested, this, &IndicationTableWidget::on_tableWidget_customContextMenuRequested);
     connect(ui->tableWidget, &QAbstractItemView::clicked, this, &IndicationTableWidget::on_tableWidget_Item_Clicked);
-    connect(ui->tableWidget, &QTableWidget::currentCellChanged, this, &IndicationTableWidget::on_tableWidget_current_cell_changed);
+    //connect(ui->tableWidget, &QTableWidget::currentCellChanged, this, &IndicationTableWidget::on_tableWidget_current_cell_changed);
     connect(ui->mergeBtn,    &QPushButton::clicked, this, &IndicationTableWidget::on_merge_tableWidget_item);
     connect(ui->deleteBtn,   &QPushButton::clicked, this, &IndicationTableWidget::on_del_tableWidget_item);
 
@@ -99,6 +101,7 @@ void IndicationTableWidget::updateDefectTable()
         QString horizontalRange(QString("%1~%2").arg(Ir).arg(Im));
         createItemsARow(i, pDfInfo->dIndex, amp, lengthRange, depthRange, horizontalRange);
     }
+    ui->tableWidget->selectRow(m_pConfig->m_dfParam[m_nGroupId].index);
 }
 
 void IndicationTableWidget::createItemsARow(int _rowNo, int _id, QString _amp, QString _lengthRange, QString _depthRange, QString _horizontalRange)
@@ -146,13 +149,19 @@ void IndicationTableWidget::retranslateUi()
 
 void IndicationTableWidget::setSelectedDefect(int _index)
 {
-    ui->tableWidget->selectRow(_index);
+    ui->tableWidget->selectRow(_index);  
 }
 
 void IndicationTableWidget::deleteDefect(int _index)
 {
     ui->tableWidget->selectRow(_index);
     on_del_tableWidget_item();
+}
+
+void IndicationTableWidget::clearStack()
+{
+    m_undoStack.clear();
+    m_commandStack.clear();
 }
 
 void IndicationTableWidget::keyPressEvent(QKeyEvent *event)
@@ -164,6 +173,36 @@ void IndicationTableWidget::keyPressEvent(QKeyEvent *event)
     default:
         break;
     }
+}
+
+bool IndicationTableWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    if( watched == ui->tableWidget )
+    {
+        if( event->type() == QEvent::KeyPress )
+        {
+            QKeyEvent *ke = (QKeyEvent *) event;
+            if( ke->key() == Qt::Key_Equal )
+            {
+                int row = ui->tableWidget->currentRow() + 1;
+                if (row == ui->tableWidget->rowCount()) {
+                    row = 0;
+                }
+                setSelectedDefect(row);
+                g_pMainWnd->loadDefectPosition(m_nGroupId, row);
+                return true;
+            } else if (ke->key() == Qt::Key_Minus ) {
+                int row = ui->tableWidget->currentRow() - 1;
+                if (row == -1) {
+                    row = ui->tableWidget->rowCount() - 1;
+                }
+                setSelectedDefect(row);
+                g_pMainWnd->loadDefectPosition(m_nGroupId, row);
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void IndicationTableWidget::on_tableWidget_customContextMenuRequested(const QPoint &pos)
@@ -222,13 +261,16 @@ void IndicationTableWidget::on_del_tableWidget_item()
         ui->undoBtn->setEnabled(true);
 
         g_pMainWnd->updateAllDefectBox();
+        if (id >= ui->tableWidget->rowCount()) {
+            id = ui->tableWidget->rowCount() - 1;
+        }
         g_pMainWnd->loadDefectPosition(m_nGroupId, id);
         ProcessDisplay _display ;
         _display.ResetDefectInfo(m_nGroupId);
         _display.UpdateAllViewOverlay();
 
         updateDefectTable();
-        ui->tableWidget->setCurrentItem(nullptr);
+        //ui->tableWidget->setCurrentItem(nullptr);
 }
 
 void IndicationTableWidget::on_merge_tableWidget_item()
@@ -327,7 +369,7 @@ void IndicationTableWidget::on_merge_tableWidget_item()
     ui->undoBtn->setEnabled(true);
 
     emit merged();
-    ui->tableWidget->setCurrentItem(nullptr);
+    //ui->tableWidget->setCurrentItem(nullptr);
 }
 
 void IndicationTableWidget::on_tableWidget_current_cell_changed(int currentRow, int currentColumn, int previousRow, int previousColumn)
@@ -377,7 +419,9 @@ void IndicationTableWidget::on_modifyBtn_clicked()
 
 void IndicationTableWidget::on_restoreBtn_clicked()
 {
+    clearStack();
     g_pMainWnd->reloadDefect();
+    ui->undoBtn->setEnabled(false);
 }
 
 void IndicationTableWidget::on_saveBtn_clicked()

@@ -148,6 +148,7 @@ signals:
     void signalDataViewResized(DopplerDataView*);
     void signalMouseDoubleClicked(DopplerDataView* , QPointF pos_);
     void signalNotifyOtherView(QPoint startPos, QPoint endPos, bool zoomStatus);
+    void signalSelectDefect(int _id);
 public slots:
 	void slotZoomAction(QRectF rect) ;
     void slotRespondView(QPoint startPos, QPoint endPos, bool zoomStatus);

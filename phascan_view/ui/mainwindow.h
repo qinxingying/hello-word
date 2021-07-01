@@ -86,6 +86,7 @@ public:
     int selectDefectMeasureMethod();
     void startDefectIdentify();
     void reloadDefect();
+    void slotSelectDefect(int _id);
 
 protected:
     void CreateStatusBar();

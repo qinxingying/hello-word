@@ -26,8 +26,10 @@ public:
     void retranslateUi();
     void setSelectedDefect(int _index);
     void deleteDefect(int _index);
+    void clearStack();
 protected:
     void keyPressEvent(QKeyEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event);
 signals:
     void merged();
     void save();

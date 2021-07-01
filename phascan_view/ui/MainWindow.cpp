@@ -2067,6 +2067,8 @@ void MainWindow::slotMarkPreviousDefect()
     ProcessDisplay display ;
     display.ShowDefectInfo(m_iCurGroup,pConfig->m_dfParam[m_iCurGroup].index);
     loadDefectPosition(m_iCurGroup,pConfig->m_dfParam[m_iCurGroup].index);
+
+    ui->IndicationTable->setSelectedDefect(pConfig->m_dfParam[m_iCurGroup].index);
 }
 
 void MainWindow::slotDeleteDefect()
@@ -2141,6 +2143,8 @@ void MainWindow::slotMarkNextDefect()
     ProcessDisplay display ;
     display.ShowDefectInfo(m_iCurGroup,pConfig->m_dfParam[m_iCurGroup].index);
     loadDefectPosition(m_iCurGroup,pConfig->m_dfParam[m_iCurGroup].index);
+
+    ui->IndicationTable->setSelectedDefect(pConfig->m_dfParam[m_iCurGroup].index);
 }
 
 void MainWindow::loadDefectPosition(int groupId, int index)
@@ -2303,6 +2307,7 @@ void MainWindow::startDefectIdentify()
     QVector<int> maxValues;
 
     _pConfig->ReleaseAllDefect();
+    ui->IndicationTable->clearStack();
     ProcessDisplay _display ;
     _display.ResetDefectInfo(m_iCurGroup);
     _display.UpdateAllViewOverlay();
@@ -2331,11 +2336,12 @@ void MainWindow::startDefectIdentify()
         on_actionSave_Defect_triggered();
     }
 
-    ui->IndicationTable->updateDefectTable();
     if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
         _pConfig->m_dfParam[m_iCurGroup].index = 0;
         loadDefectPosition(m_iCurGroup, 0);
     }
+
+    ui->IndicationTable->updateDefectTable();
 }
 
 void MainWindow::reloadDefect()
@@ -2375,11 +2381,17 @@ void MainWindow::reloadDefect()
         on_actionSave_Defect_triggered();
     }
 
-    ui->IndicationTable->updateDefectTable();
     if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
         _pConfig->m_dfParam[m_iCurGroup].index = 0;
         loadDefectPosition(m_iCurGroup, 0);
     }
+    ui->IndicationTable->updateDefectTable();
+}
+
+void MainWindow::slotSelectDefect(int _id)
+{
+    loadDefectPosition(m_iCurGroup, _id);
+    ui->IndicationTable->setSelectedDefect(_id);
 }
 
 void MainWindow::on_actionNew_Config_triggered()

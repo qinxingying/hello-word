@@ -644,6 +644,8 @@ void DopplerDataView::CreateComponent()
 	connect(m_pGraphicView , SIGNAL(signalTofdDragProAction(QPointF, QPointF)) , SLOT(slotTofdDragProAction(QPointF, QPointF))) ;
     connect(m_pGraphicView, SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), this, SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)));
 
+    connect(this, &DopplerDataView::signalSelectDefect, g_pMainWnd,&MainWindow::slotSelectDefect);
+
 	setLayout(m_pLayout);
 }
 
@@ -1027,6 +1029,7 @@ void DopplerDataView::slotItemPressed(DopplerGraphicsItem* item_)
             ((DopplerDefectItem*)item_)->IsSelected = item_->GetItemId();
         }
         id = item_->GetItemId();
+        emit signalSelectDefect(id);
     }
 }
 
