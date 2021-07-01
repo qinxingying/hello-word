@@ -33,6 +33,7 @@ IndicationTableWidget::IndicationTableWidget(QWidget *parent) :
         ui->tableWidget->setHorizontalHeaderItem(i,headerItem);
     }
 
+    ui->tableWidget->setStyleSheet("selection-background-color:dodgerblue;");
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed); /*设置 tablewidget 等高*/
