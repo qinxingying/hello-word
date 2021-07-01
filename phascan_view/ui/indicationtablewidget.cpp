@@ -383,6 +383,9 @@ void IndicationTableWidget::on_tableWidget_current_cell_changed(int currentRow, 
 
 void IndicationTableWidget::on_groupComboBox_currentIndexChanged(int index)
 {
+    if (index < 0) {
+        return;
+    }
     m_nGroupId = index;
     updateDefectTable();
     g_pMainWnd->SetCurGroup(index);
