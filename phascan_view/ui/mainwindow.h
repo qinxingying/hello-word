@@ -85,6 +85,7 @@ public:
     void setSelectSscanAreaValid(bool _isValid);
     int selectDefectMeasureMethod();
     void startDefectIdentify();
+    void reloadDefect();
 
 protected:
     void CreateStatusBar();

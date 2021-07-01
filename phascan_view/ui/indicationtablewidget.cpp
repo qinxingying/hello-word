@@ -373,7 +373,7 @@ void IndicationTableWidget::on_modifyBtn_clicked()
 
 void IndicationTableWidget::on_restoreBtn_clicked()
 {
-
+    g_pMainWnd->reloadDefect();
 }
 
 void IndicationTableWidget::on_saveBtn_clicked()
