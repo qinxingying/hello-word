@@ -136,6 +136,11 @@ void IndicationTableWidget::createItemsARow(int _rowNo, int _id, QString _amp, Q
 void IndicationTableWidget::retranslateUi()
 {
     ui->retranslateUi(this);
+    QStringList headerText;
+    headerText << tr("ID") << tr("A%") << tr("Sr~Sm") << tr("Ur~Um") << tr("Ir~Im");
+    for (int i = 0; i < ui->tableWidget->columnCount(); i++) {
+        ui->tableWidget->horizontalHeaderItem(i)->setText(headerText[i]);
+    }
 }
 
 void IndicationTableWidget::setSelectedDefect(int _index)

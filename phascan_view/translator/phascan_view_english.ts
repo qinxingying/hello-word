@@ -2803,48 +2803,53 @@
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.ui" line="95"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="167"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="172"/>
         <source>Merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.ui" line="102"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="170"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="175"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
-        <source>ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
         <source>A%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
         <source>Sr~Sm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
         <source>Ur~Um</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
         <source>Ir~Im</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="189"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/indicationtablewidget.cpp" line="194"/>
         <source>Delete Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="190"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="195"/>
         <source>Please Select Defect</source>
         <translation type="unfinished"></translation>
     </message>

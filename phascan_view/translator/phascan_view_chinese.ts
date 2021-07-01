@@ -3491,13 +3491,13 @@
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.ui" line="95"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="167"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="172"/>
         <source>Merge</source>
         <translation>合并</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.ui" line="102"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="170"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="175"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -3513,36 +3513,41 @@
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
         <source>ID</source>
         <translation>序号</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
         <source>A%</source>
         <translation>波高</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
         <source>Sr~Sm</source>
         <translation>长度范围</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
         <source>Ur~Um</source>
         <translation>深度范围</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
         <source>Ir~Im</source>
         <translation>水平范围</translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="189"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="194"/>
         <source>Delete Defect</source>
         <translation>删除缺陷</translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="190"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="195"/>
         <source>Please Select Defect</source>
         <translation>请选择要删除的缺陷</translation>
     </message>
@@ -4960,6 +4965,10 @@
     <message>
         <source>Steel common</source>
         <translation type="vanished">普通钢</translation>
+    </message>
+    <message>
+        <source>Id</source>
+        <translation type="obsolete">序号</translation>
     </message>
 </context>
 <context>
