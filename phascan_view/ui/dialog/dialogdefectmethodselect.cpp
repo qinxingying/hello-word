@@ -38,7 +38,7 @@ void DialogDefectMethodSelect::retranslateUi()
 void DialogDefectMethodSelect::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
-    case Qt::Key_Control:
+    case Qt::Key_QuoteLeft:
         on_pushButton_clicked();
         break;
     default:

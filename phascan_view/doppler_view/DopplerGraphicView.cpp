@@ -828,7 +828,7 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
         emit signalMarkPreviousDefect();
         break;
     }
-    case Qt::Key_Control: {
+    case Qt::Key_QuoteLeft: {//Key_AsciiTilde
         DopplerConfigure* pConfig = DopplerConfigure::Instance();
         if (!pConfig->common.bDefectIdentifyStatus) {
             emit signalStartAnalysis();
