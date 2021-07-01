@@ -2309,8 +2309,11 @@ void MainWindow::startDefectIdentify()
     while(_pConfig->GetDefectCnt(m_iCurGroup)) {
         _pConfig->DeleteDefect(m_iCurGroup, _pConfig->GetDefectCnt(m_iCurGroup) - 1);
     }
-
+    _pConfig->ReleaseAllDefect();
     ui->IndicationTable->clearStack();
+    ProcessDisplay _display ;
+    _display.ResetDefectInfo(m_iCurGroup);
+    _display.UpdateAllViewOverlay();
 
     _pConfig->m_defect[m_iCurGroup]->analysisDefect();
 
@@ -2341,49 +2344,6 @@ void MainWindow::startDefectIdentify()
         loadDefectPosition(m_iCurGroup, 0);
     }
 
-    ui->IndicationTable->updateDefectTable();
-}
-
-void MainWindow::reloadDefect()
-{
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-
-    QVector<QRectF> rectL;
-    QVector<int> maxScanId;
-    QVector<int> maxLawIds;
-    QVector<QRectF> rectH;
-    QVector<int> maxValues;
-
-    while(_pConfig->GetDefectCnt(m_iCurGroup)) {
-        _pConfig->DeleteDefect(m_iCurGroup, _pConfig->GetDefectCnt(m_iCurGroup) - 1);
-    }
-
-    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds, maxValues);
-    _pConfig->loadDefectVersion = 2;
-
-    for (int i  = 0; i < rectL.size(); ++i) {
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[i].y();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_MES] = rectH[i].y() + rectH[i].height();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_REF] = rectH[i].x();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_I_MES] = rectH[i].x() + rectH[i].width();
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_REF] = rectL[i].left();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_S_MES] = rectL[i].right();
-
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_REF] = rectL[i].top();
-        _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_VPA_MES] = rectL[i].bottom();
-
-        updateCurLawPos( m_iCurGroup, maxLawIds[i], 0);
-        sliderh->setValue(maxScanId[i]);
-        m_iCurDefectMaxValue = maxValues[i];
-
-        on_actionSave_Defect_triggered();
-    }
-
-    if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
-        _pConfig->m_dfParam[m_iCurGroup].index = 0;
-        loadDefectPosition(m_iCurGroup, 0);
-    }
     ui->IndicationTable->updateDefectTable();
 }
 

@@ -422,8 +422,9 @@ void IndicationTableWidget::on_modifyBtn_clicked()
 
 void IndicationTableWidget::on_restoreBtn_clicked()
 {
-    clearStack();
-    g_pMainWnd->reloadDefect();
+    while(!m_undoStack.isEmpty()) {
+        on_undoBtn_clicked();
+    }
 }
 
 void IndicationTableWidget::on_saveBtn_clicked()
