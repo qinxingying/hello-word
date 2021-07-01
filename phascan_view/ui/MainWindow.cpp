@@ -2306,11 +2306,11 @@ void MainWindow::startDefectIdentify()
     QVector<QRectF> rectH;
     QVector<int> maxValues;
 
-    _pConfig->ReleaseAllDefect();
+    while(_pConfig->GetDefectCnt(m_iCurGroup)) {
+        _pConfig->DeleteDefect(m_iCurGroup, _pConfig->GetDefectCnt(m_iCurGroup) - 1);
+    }
+
     ui->IndicationTable->clearStack();
-    ProcessDisplay _display ;
-    _display.ResetDefectInfo(m_iCurGroup);
-    _display.UpdateAllViewOverlay();
 
     _pConfig->m_defect[m_iCurGroup]->analysisDefect();
 
@@ -2354,10 +2354,9 @@ void MainWindow::reloadDefect()
     QVector<QRectF> rectH;
     QVector<int> maxValues;
 
-    _pConfig->ReleaseAllDefect();
-    ProcessDisplay _display ;
-    _display.ResetDefectInfo(m_iCurGroup);
-    _display.UpdateAllViewOverlay();
+    while(_pConfig->GetDefectCnt(m_iCurGroup)) {
+        _pConfig->DeleteDefect(m_iCurGroup, _pConfig->GetDefectCnt(m_iCurGroup) - 1);
+    }
 
     _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds, maxValues);
     _pConfig->loadDefectVersion = 2;

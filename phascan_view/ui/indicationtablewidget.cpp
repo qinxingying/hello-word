@@ -102,6 +102,7 @@ void IndicationTableWidget::updateDefectTable()
         createItemsARow(i, pDfInfo->dIndex, amp, lengthRange, depthRange, horizontalRange);
     }
     ui->tableWidget->selectRow(m_pConfig->m_dfParam[m_nGroupId].index);
+    g_pMainWnd->loadDefectPosition(m_nGroupId, m_pConfig->m_dfParam[m_nGroupId].index);
 }
 
 void IndicationTableWidget::createItemsARow(int _rowNo, int _id, QString _amp, QString _lengthRange, QString _depthRange, QString _horizontalRange)
@@ -150,6 +151,7 @@ void IndicationTableWidget::retranslateUi()
 void IndicationTableWidget::setSelectedDefect(int _index)
 {
     ui->tableWidget->selectRow(_index);  
+    ui->modifyBtn->setEnabled(true);
 }
 
 void IndicationTableWidget::deleteDefect(int _index)
@@ -162,6 +164,7 @@ void IndicationTableWidget::clearStack()
 {
     m_undoStack.clear();
     m_commandStack.clear();
+    ui->undoBtn->setEnabled(false);
 }
 
 void IndicationTableWidget::keyPressEvent(QKeyEvent *event)
@@ -421,7 +424,6 @@ void IndicationTableWidget::on_restoreBtn_clicked()
 {
     clearStack();
     g_pMainWnd->reloadDefect();
-    ui->undoBtn->setEnabled(false);
 }
 
 void IndicationTableWidget::on_saveBtn_clicked()
