@@ -346,6 +346,9 @@ void IndicationTableWidget::on_groupComboBox_currentIndexChanged(int index)
 void IndicationTableWidget::on_modifyBtn_clicked()
 {
     int row = ui->tableWidget->currentRow();
+    if (row == -1) {
+        return;
+    }
     DEFECT_INFO* pDfInfo = m_pConfig->GetDefectPointer(m_nGroupId, row);
     DEFECT_INFO tmp;
     memcpy(&tmp, pDfInfo, sizeof(DEFECT_INFO));
