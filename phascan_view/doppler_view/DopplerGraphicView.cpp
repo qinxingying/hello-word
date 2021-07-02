@@ -226,6 +226,7 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
     connect(this, SIGNAL(signalStartAnalysis()), g_pMainWnd, SLOT(on_actionAided_Analysis_triggered()));
     connect(this, SIGNAL(signalStopAnalysis()), g_pMainWnd, SLOT(on_actionStop_Analysis_triggered()));
     connect(this, SIGNAL(signalDeleteDefect()), g_pMainWnd, SLOT(slotDeleteDefect()));
+
 	// pass the drop event to father widget
 	setAcceptDrops(false);
 	// use openGL to render drawing
