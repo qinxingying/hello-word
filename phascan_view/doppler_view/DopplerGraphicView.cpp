@@ -601,12 +601,37 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
             m_showCouple->setText(tr("Show Couple"));
             m_selectMeasureMethod->setText(tr("Select Method"));
             m_startAnalysis->setText(tr("Start Analysis"));
+            m_showCurrentDefect->setText(tr("Show Current Defect"));
             m_contextMenu->clear();
+            m_defectMenu->clear();
+
+            DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+            int _iGroupId, _iLaw, _iDisplay;
+            _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+            setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
+
+            switch(_eMode){
+            case setup_DISPLAY_MODE_S_ATHUMIZ:
+            case setup_DISPLAY_MODE_S_LINEAR: {
+                m_defectMenu->setTitle(tr("Show Defect"));
+                m_showDefect->setText(tr("Show All Defect"));
+                m_defectMenu->addAction(m_showDefect);
+                m_defectMenu->addAction(m_showCurrentDefect);
+                break;
+            }
+            default:
+                break;
+            }
+
             if (_pConfig->common.bDefectIdentifyStatus) {
                 m_contextMenu->addAction(m_startAnalysis);
                 m_contextMenu->addAction(m_selectMeasureMethod);
                 m_contextMenu->addAction(m_showCursor);
-                m_contextMenu->addAction(m_showDefect);
+                if (m_defectMenu->isEmpty()) {
+                    m_contextMenu->addAction(m_showDefect);
+                } else {
+                    m_contextMenu->addMenu(m_defectMenu);
+                }
             } else {
                 m_contextMenu->addAction(m_scaleRecover);
                 if(_iDisplay > 1){
@@ -617,7 +642,11 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
                     }
                 }
                 m_contextMenu->addAction(m_showCursor);
-                m_contextMenu->addAction(m_showDefect);
+                if (m_defectMenu->isEmpty()) {
+                    m_contextMenu->addAction(m_showDefect);
+                } else {
+                    m_contextMenu->addMenu(m_defectMenu);
+                }
             }
 
             m_contextMenu->exec(event->globalPos());
@@ -1987,15 +2016,16 @@ void DopplerGraphicView::backNoZoom()
 
 void DopplerGraphicView::creatActionAndMenu()
 {
-//    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
-//    int _iGroupId, _iLaw, _iDisplay;
-//    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId, _iLaw, _iDisplay;
+    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
 //    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 //    bool cursorStatus, defectStatus;
 //    cursorStatus = _pConfig->group[_iGroupId].bShowCursor;
 //    defectStatus = _pConfig->group[_iGroupId].bShowDefect;
 
     m_contextMenu = new QMenu;
+    m_defectMenu = new QMenu;
 
     m_scaleRecover = new QAction(this);
     m_scaleRecover->setIcon(QIcon(":/file/resource/main_menu/recover.png"));
@@ -2018,6 +2048,15 @@ void DopplerGraphicView::creatActionAndMenu()
     m_showDefect->setCheckable( true);
     m_showDefect->setChecked( true);
     connect( m_showDefect, SIGNAL(toggled(bool)), this, SLOT(setShowDefect(bool)));
+
+    m_showCurrentDefect = new QAction(tr("Show Current Defect"), this);
+    m_showCurrentDefect->setCheckable( true);
+    m_showCurrentDefect->setChecked( false);
+    connect( m_showCurrentDefect, &QAction::toggled, this, [=](bool status) {
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        _pConfig->group[_iGroupId].bShowCurrentDefect = status;
+        g_pMainWnd->UpdateAllDisplay();
+    });
 
     m_showCouple = new QAction(tr("Show Couple"), this);
     m_showCouple->setCheckable( true);

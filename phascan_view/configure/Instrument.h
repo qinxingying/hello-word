@@ -753,7 +753,8 @@ typedef struct _Group
 	int						bShowThickness;
 	int						bShowCurve;
 	int						bShowLwBw;
-	int						bShowDefect;    
+    int						bShowDefect;
+    bool                    bShowCurrentDefect;
 
 	LAW_CONFIG				law;
 	GATE_CONFIG				gate[setup_GATE_MAX] ;

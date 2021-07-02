@@ -97,10 +97,12 @@ private:
     QAction *m_dataMode;
     QAction *m_showCursor;
     QAction *m_showDefect;
+    QAction *m_showCurrentDefect;
     QAction *m_showCouple;
     QAction *m_startAnalysis;
     QAction *m_selectMeasureMethod;
     QMenu *m_contextMenu;
+    QMenu *m_defectMenu;
 
     QRect m_selectedArea;
     bool m_isDrawSelectArea {false};
