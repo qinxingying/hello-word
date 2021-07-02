@@ -1153,55 +1153,67 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="788"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="817"/>
         <source>Store Current LawId and ScanPos ?</source>
         <translation>保存当前角度轴位置和扫查轴位置？</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1069"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1077"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1091"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1098"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1106"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1120"/>
         <source>No Defect Found</source>
         <translation>未发现缺陷</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="935"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1002"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1096"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="964"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1031"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1125"/>
         <source>Range too Small</source>
         <translation>范围太小</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="602"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2033"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2082"/>
         <source>Select Method</source>
         <translation>选择测量方法</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="603"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2027"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2076"/>
         <source>Start Analysis</source>
         <translation>开始分析</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="836"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="604"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2062"/>
+        <source>Show Current Defect</source>
+        <translation>显示当前缺陷</translation>
+    </message>
+    <message>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="605"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2053"/>
+        <source>Show All Defect</source>
+        <translation>显示所有缺陷</translation>
+    </message>
+    <message>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="865"/>
         <source>Exit automatic analysing?</source>
         <translation>是否退出自动分析模式？</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="935"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1002"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1096"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="964"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1031"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1125"/>
         <source>Please Selected More Wider Range</source>
         <translation>请扩大选择范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1100"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1129"/>
         <source>Out of Range</source>
         <translation>超过范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1100"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1129"/>
         <source>Please Selected in C Scan View</source>
         <translation>请不要超过C扫视图</translation>
     </message>
@@ -1212,25 +1224,26 @@
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="598"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2004"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2035"/>
         <source>Data Mode</source>
         <translation>数据模式</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="599"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2010"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2041"/>
         <source>Show Cursor</source>
         <translation>测量光标</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="600"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2016"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="617"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2047"/>
         <source>Show Defect</source>
         <translation>缺陷显示</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="601"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2022"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2071"/>
         <source>Show Couple</source>
         <translation>耦合监控</translation>
     </message>
@@ -3475,7 +3488,7 @@
         <translation>缺陷记录表</translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="77"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="80"/>
         <source>Group %1</source>
         <translation>第 %1 组</translation>
     </message>
@@ -3491,13 +3504,13 @@
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.ui" line="95"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="172"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="215"/>
         <source>Merge</source>
         <translation>合并</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.ui" line="102"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="175"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="218"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
@@ -3513,41 +3526,41 @@
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="145"/>
         <source>ID</source>
         <translation>序号</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="145"/>
         <source>A%</source>
         <translation>波高</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="145"/>
         <source>Sr~Sm</source>
         <translation>长度范围</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="145"/>
         <source>Ur~Um</source>
         <translation>深度范围</translation>
     </message>
     <message>
         <location filename="../ui/indicationtablewidget.cpp" line="15"/>
-        <location filename="../ui/indicationtablewidget.cpp" line="140"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="145"/>
         <source>Ir~Im</source>
         <translation>水平范围</translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="194"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="237"/>
         <source>Delete Defect</source>
         <translation>删除缺陷</translation>
     </message>
     <message>
-        <location filename="../ui/indicationtablewidget.cpp" line="195"/>
+        <location filename="../ui/indicationtablewidget.cpp" line="238"/>
         <source>Please Select Defect</source>
         <translation>请选择要删除的缺陷</translation>
     </message>
@@ -3814,8 +3827,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="198"/>
         <source>IndicationTable</source>
+        <translation type="vanished">缺陷记录表</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="198"/>
+        <source>Indication Table</source>
         <translation>缺陷记录表</translation>
     </message>
     <message>
@@ -4184,27 +4201,32 @@
         <translation>缺陷保存成功！</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2089"/>
+        <location filename="../ui/mainwindow.cpp" line="2091"/>
         <source>Saving defects...</source>
         <translation>正在保存缺陷...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2500"/>
+        <location filename="../ui/mainwindow.cpp" line="2323"/>
+        <source>Analysis defects...</source>
+        <translation>缺陷识别中...</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="2533"/>
         <source>Set current position as defect position ?</source>
         <translation>设置当前位置为缺陷位置？</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2501"/>
+        <location filename="../ui/mainwindow.cpp" line="2534"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation>缺陷位置没有设置。如果你设置当前位置为缺陷位置，点击0k，否则点击取消并用Z键来设置缺陷位置</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2934"/>
+        <location filename="../ui/mainwindow.cpp" line="2967"/>
         <source>Save CSacn Data</source>
         <translation>保存C扫数据</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="3003"/>
+        <location filename="../ui/mainwindow.cpp" line="3036"/>
         <source>Save BSacn Data</source>
         <translation>保存B扫数据</translation>
     </message>
@@ -4242,13 +4264,13 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="1400"/>
-        <location filename="../ui/mainwindow.cpp" line="2105"/>
+        <location filename="../ui/mainwindow.cpp" line="2107"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="1400"/>
-        <location filename="../ui/mainwindow.cpp" line="2105"/>
+        <location filename="../ui/mainwindow.cpp" line="2107"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
