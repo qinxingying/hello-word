@@ -2315,7 +2315,18 @@ void MainWindow::startDefectIdentify()
     _display.ResetDefectInfo(m_iCurGroup);
     _display.UpdateAllViewOverlay();
 
+    QProgressDialog progress(this);
+    int pValue = 20;
+    progress.setRange(0, 100);
+    //progress.setAutoReset(true);
+    progress.setMinimumDuration(0);
+    progress.setLabelText(tr("Analysis defects..."));
+    progress.setCancelButton(nullptr);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.setValue(pValue);
     _pConfig->m_defect[m_iCurGroup]->analysisDefect();
+    pValue = 50;
+    progress.setValue(pValue);
 
     _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds, maxValues);
     _pConfig->loadDefectVersion = 2;
@@ -2337,14 +2348,21 @@ void MainWindow::startDefectIdentify()
         m_iCurDefectMaxValue = maxValues[i];
 
         on_actionSave_Defect_triggered();
-    }
 
+//        pValue++;
+//        if (pValue >= 100) pValue = 99;
+//        progress.setValue(pValue);
+    }
+//    if (pValue >= 100)
+        pValue = 90;
+    progress.setValue(pValue);
     if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
         _pConfig->m_dfParam[m_iCurGroup].index = 0;
         loadDefectPosition(m_iCurGroup, 0);
     }
 
     ui->IndicationTable->updateDefectTable();
+    progress.setValue(100);
 }
 
 void MainWindow::slotSelectDefect(int _id)
