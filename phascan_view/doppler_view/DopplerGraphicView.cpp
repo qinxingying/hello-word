@@ -602,6 +602,7 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
             m_selectMeasureMethod->setText(tr("Select Method"));
             m_startAnalysis->setText(tr("Start Analysis"));
             m_showCurrentDefect->setText(tr("Show Current Defect"));
+            m_showAllDefect->setText(tr("Show All Defect"));
             m_contextMenu->clear();
             m_defectMenu->clear();
 
@@ -614,9 +615,8 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
             case setup_DISPLAY_MODE_S_ATHUMIZ:
             case setup_DISPLAY_MODE_S_LINEAR: {
                 m_defectMenu->setTitle(tr("Show Defect"));
-                m_showDefect->setText(tr("Show All Defect"));
-                m_defectMenu->addAction(m_showDefect);
-                m_defectMenu->addAction(m_showCurrentDefect);
+                m_defectMenu->addAction(m_defectActions->addAction(m_showAllDefect));
+                m_defectMenu->addAction(m_defectActions->addAction(m_showCurrentDefect));
                 break;
             }
             default:
@@ -2026,6 +2026,7 @@ void DopplerGraphicView::creatActionAndMenu()
 
     m_contextMenu = new QMenu;
     m_defectMenu = new QMenu;
+    m_defectActions = new QActionGroup(this);
 
     m_scaleRecover = new QAction(this);
     m_scaleRecover->setIcon(QIcon(":/file/resource/main_menu/recover.png"));
@@ -2049,12 +2050,21 @@ void DopplerGraphicView::creatActionAndMenu()
     m_showDefect->setChecked( true);
     connect( m_showDefect, SIGNAL(toggled(bool)), this, SLOT(setShowDefect(bool)));
 
+    m_showAllDefect = new QAction(tr("Show All Defect"), this);
+    m_showAllDefect->setCheckable( true);
+    m_showAllDefect->setChecked( true);
+    connect( m_showAllDefect, &QAction::toggled, this, [=](bool status) {
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        _pConfig->group[_iGroupId].bShowCurrentDefect = false;
+        g_pMainWnd->UpdateAllDisplay();
+    });
+
     m_showCurrentDefect = new QAction(tr("Show Current Defect"), this);
     m_showCurrentDefect->setCheckable( true);
     m_showCurrentDefect->setChecked( false);
     connect( m_showCurrentDefect, &QAction::toggled, this, [=](bool status) {
         DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-        _pConfig->group[_iGroupId].bShowCurrentDefect = status;
+        _pConfig->group[_iGroupId].bShowCurrentDefect = true;
         g_pMainWnd->UpdateAllDisplay();
     });
 
