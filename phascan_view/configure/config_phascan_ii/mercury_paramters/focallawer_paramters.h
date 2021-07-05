@@ -46,6 +46,7 @@ private:
     QList<float> m_delays;
     QList<float> m_fieldDistance;
     QList<float> m_gains;
+    float m_coupleMonitoringGain;
 
     friend class Config;
 };

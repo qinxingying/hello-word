@@ -42,6 +42,7 @@ public:
     void getScannerData( SCANNER &scanner);
     bool is_phascan_ii_file(QFile &file);
     double getCoupleGain(int groupId);
+    double getCoupleMonitoringGain(int groupId);
     int getCylinderWeldOrientation(int groupId);
 
 protected:
