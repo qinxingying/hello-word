@@ -1,4 +1,4 @@
-#ifndef WELD_H
+﻿#ifndef WELD_H
 #define WELD_H
 
 #include <QObject>
@@ -45,6 +45,10 @@ private:
     Symmetry m_isSymmetry;
     WeldOrientation m_orientation;
     double HAZ;    //焊缝热影响区
+    float m_bottomCapHeight {0};
+    float m_bottomCapOverlap {0};
+    float m_topCapHeight {0};
+    float m_topCapOverlap {0};
     WeldI m_I;
     WeldV m_V;
     WeldU m_U;

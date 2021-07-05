@@ -323,6 +323,10 @@ struct WELD_II
     double eTopThinkness;                //TKY腹板厚度
     double eBottomThinkness;             //TKY翼板厚度
     double eHAZ;                         //焊缝热影响区
+    float bottomCapHeight;
+    float bottomCapOverlap;
+    float topCapHeight;
+    float topCapOverlap;
     Cylinder_WeldDir eWeldDir;          // 管道焊缝方向
     union{
         WELD_FORMAT_I  I;

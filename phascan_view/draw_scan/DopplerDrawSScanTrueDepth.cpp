@@ -255,32 +255,32 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
         }
         switch (m_pGroup->part.weld_ii.eType){
         case I:
-            weldBottomWidth = m_pGroup->part.weld_ii.I.w;
-            weldTopWidth = m_pGroup->part.weld_ii.I.w;;
+            weldBottomWidth = m_pGroup->part.weld_ii.I.w + m_pGroup->part.weld_ii.bottomCapOverlap;
+            weldTopWidth = m_pGroup->part.weld_ii.I.w + m_pGroup->part.weld_ii.topCapOverlap;
             break;
         case V:
-            weldTopWidth = m_pGroup->part.weld_ii.V.w1;
-            weldBottomWidth = m_pGroup->part.weld_ii.V.w2;;
+            weldTopWidth = m_pGroup->part.weld_ii.V.w1 + m_pGroup->part.weld_ii.topCapOverlap;
+            weldBottomWidth = m_pGroup->part.weld_ii.V.w2 + m_pGroup->part.weld_ii.bottomCapOverlap;
             break;
         case U:
-            weldTopWidth = m_pGroup->part.weld_ii.U.w1;
-            weldBottomWidth = m_pGroup->part.weld_ii.U.w2;;
+            weldTopWidth = m_pGroup->part.weld_ii.U.w1 + m_pGroup->part.weld_ii.topCapOverlap;
+            weldBottomWidth = m_pGroup->part.weld_ii.U.w2 + m_pGroup->part.weld_ii.bottomCapOverlap;
             break;
         case VY:
-            weldTopWidth = m_pGroup->part.weld_ii.VY.w1;
-            weldBottomWidth = m_pGroup->part.weld_ii.VY.w3;
+            weldTopWidth = m_pGroup->part.weld_ii.VY.w1 + m_pGroup->part.weld_ii.topCapOverlap;
+            weldBottomWidth = m_pGroup->part.weld_ii.VY.w3 + m_pGroup->part.weld_ii.bottomCapOverlap;
             break;
         case VV:
-            weldTopWidth = m_pGroup->part.weld_ii.VV.w1;
-            weldBottomWidth = m_pGroup->part.weld_ii.VV.w3;
+            weldTopWidth = m_pGroup->part.weld_ii.VV.w1 + m_pGroup->part.weld_ii.topCapOverlap;
+            weldBottomWidth = m_pGroup->part.weld_ii.VV.w3 + m_pGroup->part.weld_ii.bottomCapOverlap;
             break;
         case UU:
-            weldTopWidth = m_pGroup->part.weld_ii.UU.w1;
-            weldBottomWidth = m_pGroup->part.weld_ii.UU.w3;
+            weldTopWidth = m_pGroup->part.weld_ii.UU.w1 + m_pGroup->part.weld_ii.topCapOverlap;
+            weldBottomWidth = m_pGroup->part.weld_ii.UU.w3 + m_pGroup->part.weld_ii.bottomCapOverlap;
             break;
         case UV:
-            weldTopWidth = m_pGroup->part.weld_ii.UV.w1;
-            weldBottomWidth = m_pGroup->part.weld_ii.UV.w3;
+            weldTopWidth = m_pGroup->part.weld_ii.UV.w1 + m_pGroup->part.weld_ii.topCapOverlap;
+            weldBottomWidth = m_pGroup->part.weld_ii.UV.w3 + m_pGroup->part.weld_ii.bottomCapOverlap;
             break;
         case TKY:
 

@@ -589,10 +589,14 @@ void Config::unpack_weld(const QVariantMap &map)
     if(m_groups[m_currentGroupID].m_specimen.m_weldType == Paramters::Weld::NONE_TYPE) {
         return;
     }
-
+//BottomCapHeight, BottomCapOverlap, TopCapHeight, TopCapOverlap,
     weld.m_orientation = static_cast<Paramters::Weld::WeldOrientation> (map.value("Orientation", DEFAULT_WELD_ORIENTATION).toUInt());
     weld.m_isSymmetry  = static_cast<Paramters::Weld::Symmetry> (map.value("Symmetry", DEFAULT_WELD_SYMMETRY).toUInt());
     weld.HAZ = map.value("HAZ", DEFAULT_WELD_HAZ).toDouble();
+    weld.m_bottomCapHeight = map.value("BottomCapHeight").toDouble();
+    weld.m_bottomCapOverlap = map.value("BottomCapOverlap").toDouble();
+    weld.m_topCapHeight = map.value("TopCapHeight").toDouble();
+    weld.m_topCapOverlap = map.value("TopCapOverlap").toDouble();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " orientation " << weld.m_orientation
@@ -660,6 +664,10 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
     weld_ii.eType = static_cast<setup_WELD_TYPE_II>(weld.m_type);
     weld_ii.eSymmetry = static_cast<setup_WELD_SYMMETRY_TYPE>(weld.m_isSymmetry);
     weld_ii.eHAZ = weld.HAZ;
+    weld_ii.bottomCapHeight = weld.m_bottomCapHeight;
+    weld_ii.bottomCapOverlap = weld.m_bottomCapOverlap;
+    weld_ii.topCapHeight = weld.m_topCapHeight;
+    weld_ii.topCapOverlap = weld.m_topCapOverlap;
     //if(Paramters::Weld::I == weld.m_type)
     switch (weld.m_type) {
     case Paramters::Weld::I:
