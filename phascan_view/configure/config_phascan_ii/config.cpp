@@ -600,7 +600,7 @@ void Config::unpack_weld(const QVariantMap &map)
              << " HAZ " << weld.HAZ;
 
     if(Paramters::Weld::I == weld.m_type) {
-        unpack_I_weld(map.value("I").toMap(), weld.m_I);
+        unpack_I_weld(map, weld.m_I);
     } else if(Paramters::Weld::V == weld.m_type) {
         unpack_I_weld(map.value("I").toMap(), weld.m_I);
         unpack_V_weld(map.value("V").toMap(), weld.m_V);
