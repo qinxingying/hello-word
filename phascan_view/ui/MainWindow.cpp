@@ -2350,6 +2350,11 @@ void MainWindow::startDefectIdentify()
     QVector<int> maxLawIds;
     QVector<QRectF> rectH;
     QVector<int> maxValues;
+    rectL.clear();
+    maxScanId.clear();
+    maxLawIds.clear();
+    rectH.clear();
+    maxValues.clear();
 
     _pConfig->common.bDefectIdentifyStatusDone = false;
     while(_pConfig->GetDefectCnt(m_iCurGroup)) {

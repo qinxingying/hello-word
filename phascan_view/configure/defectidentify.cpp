@@ -105,6 +105,7 @@ bool DefectIdentify::analysisDefect()
         m_defectsRectH.clear();
         m_scanIds.clear();
         m_lawIds.clear();
+        m_maxValues.clear();
         m_defectsBetweenFrames.clear();
         QMap<int, QVector<QRectF>> _Rects;  // key: 帧， value：帧上所有缺陷矩形
         QMap<int, QVector<defectRect>> _DefectRects;
