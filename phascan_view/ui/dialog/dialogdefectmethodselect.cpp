@@ -41,6 +41,10 @@ void DialogDefectMethodSelect::keyPressEvent(QKeyEvent *event)
     case Qt::Key_QuoteLeft:
         on_pushButton_clicked();
         break;
+    case Qt::Key_Return:
+    case Qt::Key_Enter:
+        accept();
+        break;
     default:
         break;
     }
