@@ -607,6 +607,12 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
             m_contextMenu->clear();
             m_defectMenu->clear();
 
+            if (!m_showDefect->isChecked()) {
+                m_defectMenu->setEnabled(false);
+            } else {
+                m_defectMenu->setEnabled(true);
+            }
+
             DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
             int _iGroupId, _iLaw, _iDisplay;
             _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
