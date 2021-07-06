@@ -2361,21 +2361,22 @@ void MainWindow::startDefectIdentify()
     _display.ResetDefectInfo(m_iCurGroup);
     _display.UpdateAllViewOverlay();
 
+    QElapsedTimer timer;
+    timer.start();
+
+    _pConfig->m_defect[m_iCurGroup]->analysisDefect();
+
+    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds, maxValues);
+    _pConfig->loadDefectVersion = 2;
+
     QProgressDialog progress(this);
-    int pValue = 20;
-    progress.setRange(0, 100);
-    //progress.setAutoReset(true);
+    progress.setRange(0, rectL.count());
+    progress.setAutoReset(false);
     progress.setMinimumDuration(0);
     progress.setLabelText(tr("Analysis defects..."));
     progress.setCancelButton(nullptr);
     progress.setWindowModality(Qt::WindowModal);
-    progress.setValue(pValue);
-    _pConfig->m_defect[m_iCurGroup]->analysisDefect();
-    pValue = 50;
-    progress.setValue(pValue);
-
-    _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds, maxValues);
-    _pConfig->loadDefectVersion = 2;
+    progress.setValue(0);
 
     for (int i  = 0; i < rectL.size(); ++i) {
         _pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_U_REF] = rectH[i].y();
@@ -2395,13 +2396,13 @@ void MainWindow::startDefectIdentify()
 
         on_actionSave_Defect_triggered();
 
-//        pValue++;
-//        if (pValue >= 100) pValue = 99;
-//        progress.setValue(pValue);
+        if (progress.wasCanceled()) {
+            break;
+        }
+        progress.setValue(i+1);
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
-//    if (pValue >= 100)
-        pValue = 90;
-    progress.setValue(pValue);
+
     if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
         _pConfig->m_dfParam[m_iCurGroup].index = 0;
         loadDefectPosition(m_iCurGroup, 0);
@@ -2409,7 +2410,9 @@ void MainWindow::startDefectIdentify()
 
     ui->IndicationTable->updateDefectTable();
     _pConfig->common.bDefectIdentifyStatusDone = true;
-    progress.setValue(100);
+
+    int timeCost = timer.elapsed();
+    qDebug() << "save cost:"<< timeCost << "ms";
 }
 
 void MainWindow::slotSelectDefect(int _id)
