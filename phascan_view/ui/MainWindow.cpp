@@ -2132,6 +2132,38 @@ void MainWindow::slotSaveDefect()
     }
 }
 
+void MainWindow::slotModifyDefect(int groupId, DEFECT_INFO &defect)
+{
+    DopplerConfigure* pConfig =  DopplerConfigure::Instance();
+
+    GROUP_CONFIG& group = pConfig->group[groupId];
+    if (!group.storeScanLawId.status) {
+        group.storeScanLawId.lawId       = defect.nLawNo;
+        group.storeScanLawId.ZA          = defect.dZA;
+        group.storeScanLawId.scanPos     = defect.dScanPos;
+        group.storeScanLawId.depth       = defect.dDepth;
+        group.storeScanLawId.maxValue    = defect.reserve[0];
+    } else {
+        int iLaw = group.afCursor[setup_CURSOR_LAW];
+        group.storeScanLawId.lawId = iLaw;
+        group.storeScanLawId.scanPos = pConfig->common.scanner.fScanPos;
+        float pResult_ = 0;
+        if(group.measureGateStatus){
+            CalcMeasurement::Calc(m_iCurGroup, iLaw, FEILD_DB, &pResult_);
+        }else{
+            CalcMeasurement::Calc(m_iCurGroup, iLaw, FEILD_DA, &pResult_);
+        }
+        group.storeScanLawId.depth = pResult_;
+        pResult_ = 0;
+        CalcMeasurement::Calc(m_iCurGroup, iLaw, FEILD_ZA, &pResult_);
+        group.storeScanLawId.ZA = static_cast<int>(pResult_);
+        group.storeScanLawId.maxValue = m_iCurDefectMaxValue;
+    }
+    DefectSign(DEFECT_SIGN_SAVE);
+    group.storeScanLawId.status = false;
+    ui->IndicationTable->updateDefectTable();
+}
+
 /**
  * @brief MainWindow::slotMarkDefect 框出当前组识别出来的缺陷
  */
@@ -2176,6 +2208,14 @@ void MainWindow::loadDefectPosition(int groupId, int index)
         _group.afCursor[setup_CURSOR_VPA_MES] = _pDfInfo->fVPAStop;
         _group.fIndexOffset = _pDfInfo->dIndexOffset;
         _group.fScanOffset  = _pDfInfo->dScanOffset;
+
+        //_group.storeScanLawId.status      = true;
+        _group.storeScanLawId.lawId       = _pDfInfo->nLawNo;
+        _group.storeScanLawId.ZA          = _pDfInfo->dZA;
+        _group.storeScanLawId.scanPos     = _pDfInfo->dScanPos;
+        _group.storeScanLawId.depth       = _pDfInfo->dDepth;
+        _group.storeScanLawId.maxValue    = _pDfInfo->reserve[0];
+
         m_iCurDefectMaxValue = _pDfInfo->reserve[0];
         DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(groupId);
         _pGroup->UpdateCursorValue();
@@ -2311,6 +2351,7 @@ void MainWindow::startDefectIdentify()
     QVector<QRectF> rectH;
     QVector<int> maxValues;
 
+    _pConfig->common.bDefectIdentifyStatusDone = false;
     while(_pConfig->GetDefectCnt(m_iCurGroup)) {
         _pConfig->DeleteDefect(m_iCurGroup, _pConfig->GetDefectCnt(m_iCurGroup) - 1);
     }
@@ -2367,6 +2408,7 @@ void MainWindow::startDefectIdentify()
     }
 
     ui->IndicationTable->updateDefectTable();
+    _pConfig->common.bDefectIdentifyStatusDone = true;
     progress.setValue(100);
 }
 

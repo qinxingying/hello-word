@@ -404,7 +404,7 @@ void IndicationTableWidget::on_modifyBtn_clicked()
     defects.append(tmp);
 
     m_pConfig->DeleteDefect(m_nGroupId, row);
-    emit merged();
+    g_pMainWnd->slotModifyDefect(m_nGroupId, tmp);
 
     ui->tableWidget->removeRow(row);
     updateDefectTable();

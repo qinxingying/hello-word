@@ -782,7 +782,7 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
         //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
             DopplerConfigure* _pConfig = DopplerConfigure::Instance();
             ParameterProcess* _process = ParameterProcess::Instance();
-            if(_pConfig->group[_iGroupId].storeScanLawId.status){
+            if(_pConfig->group[_iGroupId].storeScanLawId.status || (_pConfig->common.bDefectIdentifyStatus && _pConfig->common.bDefectIdentifyStatusDone)){
                 float scanPos = _pConfig->group[_iGroupId].storeScanLawId.scanPos;
                 _process->SetupScanPos(scanPos);
                 int lawId = _pConfig->group[_iGroupId].storeScanLawId.lawId;
