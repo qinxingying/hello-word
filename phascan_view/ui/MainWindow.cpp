@@ -2314,7 +2314,7 @@ void MainWindow::startDefectIdentify()
     while(_pConfig->GetDefectCnt(m_iCurGroup)) {
         _pConfig->DeleteDefect(m_iCurGroup, _pConfig->GetDefectCnt(m_iCurGroup) - 1);
     }
-    _pConfig->ReleaseAllDefect();
+    _pConfig->ReleaseDefect(m_iCurGroup);
     ui->IndicationTable->clearStack();
     ProcessDisplay _display ;
     _display.ResetDefectInfo(m_iCurGroup);
