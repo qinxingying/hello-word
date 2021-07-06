@@ -2056,6 +2056,8 @@ void DopplerGraphicView::creatActionAndMenu()
     m_showAllDefect->setChecked( true);
     connect( m_showAllDefect, &QAction::toggled, this, [=](bool status) {
         DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        int _iGroupId, _iLaw, _iDisplay;
+        _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
         _pConfig->group[_iGroupId].bShowCurrentDefect = false;
         g_pMainWnd->UpdateAllDisplay();
     });
@@ -2065,6 +2067,8 @@ void DopplerGraphicView::creatActionAndMenu()
     m_showCurrentDefect->setChecked( false);
     connect( m_showCurrentDefect, &QAction::toggled, this, [=](bool status) {
         DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        int _iGroupId, _iLaw, _iDisplay;
+        _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
         _pConfig->group[_iGroupId].bShowCurrentDefect = true;
         g_pMainWnd->UpdateAllDisplay();
     });
