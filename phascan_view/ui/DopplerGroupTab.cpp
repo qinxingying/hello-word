@@ -1,6 +1,6 @@
 ﻿#include "DopplerGroupTab.h"
 #include "ui_DopplerGroupTab.h"
-
+#include "Instrument.h"
 #include "const.h"
 #include "gHeader.h"
 #include "ProcessDisplay.h"
@@ -11,7 +11,7 @@
 #include <QPushButton>
 #include "defectidentify.h"
 #include <QMessageBox>
-
+#include "DopplerDrawSScanTrueDepth.h"
 const int MAX_ITEM_QTY = 50;
 extern int bHideCursor;
 //  Description: 所有显示窗口类型
@@ -1882,13 +1882,15 @@ void DopplerGroupTab::on_ComMaterial_currentIndexChanged(int index)
 void DopplerGroupTab::on_ComSkewAngle_currentIndexChanged(int index)
 {
 	if(!ui->ComSkewAngle->hasFocus())  return  ;
+
 	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->SetupWedgeSkewAngle(m_nGroupId , (setup_PROBE_ANGLE)index)  ;
+    _process->SetupWedgeSkewAngle(m_nGroupId , (setup_PROBE_ANGLE)index);
 
 	ProcessDisplay _display ;
 	_display.UpdateAllView();
 	_display.UpdateAllViewOfGroup(m_nGroupId);
 	g_pMainWnd->RunDrawThreadOnce(true);
+
 }
 
 //void DopplerGroupTab::on_BtnLoadPartFile_clicked()
@@ -2486,6 +2488,21 @@ void DopplerGroupTab::on_ComCScanShowAll_currentIndexChanged(int index)
     g_pMainWnd->RunDrawThreadOnce();
 }
 
+void DopplerGroupTab::on_ComSscanReflect_currentIndexChanged(int index)
+{
+    if(!ui->ComSscanReflect->hasFocus()) return;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupReflectType(m_nGroupId,(setup_REFLECT_TYPE)index);
+
+    ProcessDisplay _display ;
+    _display.UpdateAllView();
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+    g_pMainWnd->RunDrawThreadOnce(true);
+
+    return ;
+}
+
+
 void DopplerGroupTab::ComDispPro(int index, int iGroup)
 {
 	QComboBox* _comboxTab[4];
@@ -2831,3 +2848,5 @@ void DopplerGroupTab::on_ComWeldRemianingHeight_activated(int index)
     m_pGroup->bWeldRemainingHeight = index;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
+
+

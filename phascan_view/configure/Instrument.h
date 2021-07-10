@@ -598,6 +598,17 @@ enum setup_PROBE_ANGLE
 	setup_PROBE_PART_SKEW_270
 };
 
+//S扫反射类型显示
+enum setup_REFLECT_TYPE
+{
+    CLOSE = 0,
+    FIRST   ,
+    LAST    ,
+    OVERLAY ,
+
+};
+
+
 enum setup_CURSOR_TYPE
 {
 	setup_CURSOR_LAW = 0 , /* 参考光标当前聚焦法则*/
@@ -756,6 +767,8 @@ typedef struct _Group
 	float					fIndexOffset;		/*mm*/
     setup_PROBE_ANGLE		eSkew;              /* 探头角度 */
 
+    setup_REFLECT_TYPE      m_Retype; //S扫反射类型
+
 	/*  校准状态  */
 	int						bVelocityCalib;
 	int						bWedgeDelayCalib;
@@ -801,6 +814,8 @@ typedef struct _Group
     TOPC_DATA               TopCData;
     RASTER_DATA             RasterData;
     STORE_SCAN_LAWID        storeScanLawId;
+
+
 }GROUP_CONFIG;
 //####################################################################################
 //#################				 COMMON DATA			 ######################

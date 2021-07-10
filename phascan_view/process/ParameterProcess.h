@@ -74,6 +74,9 @@ public:
     int  SetupShowMeasure(int nGroupId_ , int bShow_) ;
     void GetDefaultMeasure(int nGroupId_, int *defaultValue);
 
+    // 设置S扫反射类型显示
+    int  SetupReflectType(int nGroupId_ , setup_REFLECT_TYPE index) ;
+
 	int  GetShowMeasureNumber(int nGroupId_);
 	int  SetupCursor(int nGroupId_ , setup_CURSOR_TYPE eType_ , float fValue_) ;
     int  SetupShowCursor(int nGroupId_ , int bShow_) ;

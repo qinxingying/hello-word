@@ -1891,6 +1891,7 @@ void MainWindow::allThicknessChange(double thickness)
     for(int i = 0; i < _pConfig->common.nGroupQty; i ++) {
          _proDisplay.UpdateAllViewOverlayOfGroup(i);
     }
+
     RunDrawThreadOnce(true);
 }
 

@@ -4,10 +4,10 @@
 #include <QString>
 #include <gHeader.h>
 #include "../configure/config_phascan_ii/config.h"
+#include "DopplerDrawSScanTrueDepth.h"
 
 extern int currentgroup;
 extern int lastgroup;
-
 double FreScale = 400/511.0;
 double NFreScale = 200/511.0;
 extern int Phascan_Version;
@@ -332,6 +332,16 @@ int ParameterProcess::SetupWedgeSkewAngle(int nGroupId_ , setup_PROBE_ANGLE eAng
 	_group.eSkew  = eAngle_  ;
 	return 0 ;
 }
+
+
+//设置S扫反射类型
+int ParameterProcess::SetupReflectType(int nGroupId_,setup_REFLECT_TYPE index)
+{
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
+    _group.m_Retype  = index  ;
+    return 0 ;
+}
+
 
 int ParameterProcess::GetShowWeldPart(int nGroupId_)
 {
@@ -2802,11 +2812,32 @@ int  ParameterProcess::GetSImageVerticalRange(int nGroupId_ , float* fStart_ , f
 		float _pos4 = _fSampleStop * cos(DEGREE_TO_ARCH(_fAngleStop))  ;
 
 		*fStart_  = _pos1 > _pos2 ? _pos2 : _pos1 ;
+        if(!_group.m_Retype)
+        {
+          *fStart_=*fStart_;
+        }else
+            {
+           *fStart_=*fStart_-OFFSET_Y;
+
+            }
+
 		if(_fAngleStart * _fAngleStop < 0)
 			*fStop_ = _fSampleStop ;
 		else
 			*fStop_   = _pos3 > _pos4 ? _pos3 : _pos4 ;
+
+        if(!_group.m_Retype)
+        {
+          *fStop_=*fStop_;
+        }else
+        {
+            *fStop_=*fStop_-OFFSET_Y;
+        }
+
+
 	}
+
+
 	else
 	{
 		*fStart_ = _fSampleStart * cos(DEGREE_TO_ARCH(_fAngleStart))  ;

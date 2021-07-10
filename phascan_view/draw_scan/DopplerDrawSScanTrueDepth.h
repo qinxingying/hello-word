@@ -12,6 +12,8 @@
 //#define BUFF_MAX_HEIGHT  2048
 //#define BUFF_MAX_SIZE   (BUFF_MAX_WIDTH * BUFF_MAX_HEIGHT)
 
+ const int OFFSET_Y=15;
+//#define OFFSET_Y 25
 struct FAN_SCAN_INFO
 {
     int      nStartElement ;
@@ -62,7 +64,8 @@ protected:
     int m_nFrameOffset ;
 
     FAN_SCAN_INFO m_SScaninfo  ;
-
+    float _nStepX , _nStepY;
+    float thickness;
     int m_nWidth , m_nHeight ;
     U8*  m_pAngleZoom;
     U8*  m_pDraw;
