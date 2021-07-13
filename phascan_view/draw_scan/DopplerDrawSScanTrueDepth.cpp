@@ -74,14 +74,14 @@ void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
     GROUP_CONFIG& _group = _pConfig->group[m_cInfo.nGroupId];
     float m_thickness;
     thickness=_group.part.afSize[0];
+    /***********工件厚度更改后刷新图像*************/
     if(thickness!=m_thickness)
     {
       m_bClear=true;
 
     }
      m_thickness=thickness;
-
-
+   /***********工件厚度更改后刷新图像*************/
     if(m_bClear)
     {
         m_bClear = false ;
@@ -247,6 +247,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
 	// get real step of each pixel
 	int  _width = pInfo_->width  ;	//  图像 宽	单位 像素
 	int _height = pInfo_->height ;	//  图像 高	单位 像素
+
 	_nStepX  = (_nStopX - _nStartX) / (_width - 1) ;
 	_nStepY  = (_nStopY - _nStartY) / (_height - 1) ;
 	//-----------------------------------------------------------------------------
@@ -771,7 +772,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 
     U8* _pImageBits = pImage_->bits();  // 获取图像的首地址 https://blog.csdn.net/lengyuezuixue/article/details/80656358
 
-
     int _nWidthStep = pImage_->bytesPerLine();  // 获取图像每行字节数
 
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -817,8 +817,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
     }
 
 	float  _fScale = _process->GetRefGainScale(m_cInfo.nGroupId) ;
-
-
 	bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;
     {
 
@@ -827,21 +825,17 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
         QVector < QVector < U8*> > Img2; //记录存储一次波位置数据
         QVector < QVector < int> > tempdata;//记录存储一次波数据颜色索引
 
-         Img2.resize(m_nHeight);//行-高
+         Img2.resize(m_nHeight);//设置向量行-高
          for(int j=0;j<Img2.size();j++)
          {
-             Img2[j].resize(m_nWidth);//列-宽
+             Img2[j].resize(m_nWidth);//设置向量列-宽
          }
-         qDebug()<<Img2.size()<<Img2[0].size();
-
 
           tempdata.resize(m_nHeight);//行-高
           for(int j=0;j<tempdata.size();j++)
           {
               tempdata[j].resize(m_nWidth);//列-宽
           }
-          qDebug()<<tempdata.size()<<tempdata[0].size();
-
 
 
          int m_Offsety=OFFSET_Y/_nStepY; //坐标偏移
@@ -871,9 +865,8 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                  }
              }
          }else{
-
          //显示和记录一次波数据
-        for(i = m_Offsety; i<((OFFSET_Y+thickness)/_nStepY); i++)
+        for(i = m_Offsety; i<((OFFSET_Y+thickness)/_nStepY)&&i<m_nHeight; i++)
         {
             _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
             for(j = 0; j < m_nWidth; j++)
@@ -897,34 +890,21 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                 }
             }
         }
-
         //翻转二次波(底波)图像-处理重叠部分
-        int A=(thickness/_nStepY+OFFSET_Y/_nStepY)*2; //翻转基准
-        int a=m_nHeight+m_Offsety; //颜色数据偏移后高度
-
-        /***********Add*************/
-
-        qDebug()<<"*******ying*******"<<endl;
-        qDebug()<<" A "<<A <<"a"<<a<<endl;
-        qDebug()<<" m_nHeight "<<m_nHeight<<endl;
-         qDebug()<<" (OFFSET_Y+thickness)/_nStepY "<<(OFFSET_Y+thickness)/_nStepY<<endl;
-
-        qDebug()<<"*******ying*******"<<endl;
-
-        /***********Add*************/
-
-        for(i = (OFFSET_Y+thickness)/_nStepY; i<A; i++)//此处是a而不是m_nHeight相当有功夫-底波范围
+        int m_AxisHeight=(thickness/_nStepY+OFFSET_Y/_nStepY)*2; //翻转轴高度
+        int m_DateOffset=m_nHeight+m_Offsety; //颜色数据偏移后高度
+        for(i = (OFFSET_Y+thickness)/_nStepY; i<m_AxisHeight&&i<m_DateOffset;i++)//底波范围
         {
 
-            _pImg1 = _pImageBits + _nWidthStep * (A-i);//每行数据的起点位置
 
+            _pImg1 = _pImageBits + _nWidthStep * (m_AxisHeight-i);//每行数据的起点位置
             for(j = 0; j < m_nWidth; j++)
             {
-                _idx1 = (i-m_Offsety) * m_nWidth + j ; //图像每个像素点位置
 
+                _idx1 = (i-m_Offsety) * m_nWidth + j ; //图像每个像素点位置
                 if(m_pDraw[_idx1] != 0)
                 {
-                    //当前一共多少个采样点？
+                    //当前一共多少个采样点
                     _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
 
                     _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) * m_pColRate[_idx1] +
@@ -937,9 +917,9 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 
                     if(_group.m_Retype==FIRST) //一次波优先
                     {
-                        if(_pImg2==Img2[A-i][j])
+                        if(_pImg2==Img2[m_AxisHeight-i][j])
                          {
-                           memcpy(_pImg2, &m_pColor[tempdata[A-i][j]], 3); //将数据拷贝到图像地址中
+                           memcpy(_pImg2, &m_pColor[tempdata[m_AxisHeight-i][j]], 3); //将数据拷贝到图像地址中
                            continue;
                         }
                         _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
@@ -954,12 +934,10 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 
                     if(_group.m_Retype==OVERLAY)//叠加
                     {
-
-
                         _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
-                        if(_pImg2==Img2[A-i][j])
+                        if(_pImg2==Img2[m_AxisHeight-i][j])
                          {
-                           _iData= _iData>tempdata[A-i][j]?_iData:tempdata[A-i][j];
+                           _iData= _iData>tempdata[m_AxisHeight-i][j]?_iData:tempdata[m_AxisHeight-i][j];
                         }
                      memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
 

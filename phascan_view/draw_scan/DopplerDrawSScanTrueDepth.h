@@ -65,6 +65,7 @@ protected:
 
     FAN_SCAN_INFO m_SScaninfo  ;
     float _nStepX , _nStepY;
+
     float thickness;
     int m_nWidth , m_nHeight ;
     U8*  m_pAngleZoom;

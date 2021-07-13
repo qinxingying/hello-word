@@ -1,6 +1,7 @@
-#include "DopplerOverlays.h"
+﻿#include "DopplerOverlays.h"
 #include "DopplerConfigure.h"
 #include "DopplerViewItems.h"
+
 extern int bHideCursor;
 extern int HideMode;
 DopplerOverlays::DopplerOverlays(QObject *parent) :
@@ -872,29 +873,85 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 			float*   _pBeamPos = _group.afBeamPos	   ;
 			int       _nLawQty = m_pProcess->GetGroupLawQty(m_nGroup) ;
 
+            float thickness=_group.part.afSize[0];
+
+
 			float _fAngleTmp ;
-			float _fPos1 , _fPos2 , _fPos3 , _fPos4 , _fTmp1;
+            float _fPos1 , _fPos2 , _fPos3 , _fPos4 , _fTmp1,_fPos5,_fPos6;
 			setup_PROBE_ANGLE _eAngle = m_pProcess->GetProbeAngle(m_nGroup);
 
 			if(_eAngle == setup_PROBE_PART_SKEW_0 )
 			{
 				float _fScanOffset = _group.fScanOffset ;
-				for(int i = 0 ; i < _nLawQty ; i++)
-				{
-					_fTmp1 = _fScanOffset + _pBeamPos[i]  ;
-					_fAngleTmp = _fAngleStart + i * _fAngleStep  ;
-					_fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart;
-					_fPos3 = _fTmp1 + sin(_fAngleTmp) * _fStop;
-					_fPos2 = cos(_fAngleTmp) * _fStart  ;
-					_fPos4 = cos(_fAngleTmp) * _fStop   ;
+//				for(int i = 0 ; i < _nLawQty ; i++)
+//				{
+//					_fTmp1 = _fScanOffset + _pBeamPos[i]  ;
+//					_fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+//					_fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart;
+//					_fPos3 = _fTmp1 + sin(_fAngleTmp) * _fStop;
+//					_fPos2 = cos(_fAngleTmp) * _fStart  ;
+//					_fPos4 = cos(_fAngleTmp) * _fStop   ;
 
-					QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
-					_pVector->append(_line);
-				}
+//					QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+//					_pVector->append(_line);
+//				}
+
+                if(!_group.m_Retype)
+                {
+                 for(int i = 0 ; i < _nLawQty ; i++)
+                 {
+                     _fTmp1 = _fScanOffset + _pBeamPos[i]  ;
+                     _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+                     _fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart;
+                     _fPos3 = _fTmp1 + sin(_fAngleTmp) * _fStop;
+                     _fPos2 = cos(_fAngleTmp) * _fStart  ;
+                     _fPos4 = cos(_fAngleTmp) * _fStop   ;
+
+                     QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+                     _pVector->append(_line);
+                 }
+                }else{
+
+                    for(int j=0; j<2; j++)
+                    {
+                    for(int i = 0 ; i < _nLawQty ; i++)
+                    {
+                        _fTmp1 = _fAngleStart + _pBeamPos[i] ;
+                        _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+
+                         //-x
+                        _fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart; // 起点横坐标
+                        _fPos3 = _fTmp1 + tan(_fAngleTmp) * thickness;// 中间点横坐标
+                        _fPos5 = _fTmp1 + sin(_fAngleTmp) * _fStop;// 终点横坐标
+
+                         //-y
+                         _fPos2 = cos(_fAngleTmp) * _fStart ;// 起点纵坐标
+                         _fPos4 = thickness ;//中间点纵坐标
+                         _fPos6 = -((cos(_fAngleTmp) * _fStop)-2*thickness);// 终点纵坐标 mm(关于厚度对称)
+                        if(j==0)
+                        {
+                        /***********扫查轴前半段*************/
+                        QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+                        _pVector->append(_line);
+                        }else{
+
+                       /***********扫查轴后半段*************/
+                       QLineF _line2( _fPos3 , _fPos4 , _fPos5 , _fPos6);
+                      _pVector->append(_line2);
+
+                        }
+                    }
+                   }
+
+                     }
+
 			}
 			else if(_eAngle == setup_PROBE_PART_SKEW_90 )
 			{
-				float _fIndexOffset = _group.fIndexOffset ;
+               float _fIndexOffset = _group.fIndexOffset ;
+
+               if(!_group.m_Retype)
+               {
 				for(int i = 0 ; i < _nLawQty ; i++)
 				{
 					_fTmp1 = _fIndexOffset + _pBeamPos[i]  ;
@@ -907,38 +964,173 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 					QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
 					_pVector->append(_line);
 				}
+               }else{
+
+                   for(int j=0; j<2; j++)
+                   {
+                   for(int i = 0 ; i < _nLawQty ; i++)
+                   {
+                       _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
+                       _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+
+                        //-x
+                       _fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart; // 起点横坐标
+                       _fPos3 = _fTmp1 + tan(_fAngleTmp) * thickness;// 中间点横坐标
+                       _fPos5 = _fTmp1 + sin(_fAngleTmp) * _fStop;// 终点横坐标
+
+                        //-y
+                        _fPos2 = cos(_fAngleTmp) * _fStart ;// 起点纵坐标
+                        _fPos4 = thickness ;//中间点纵坐标
+                        _fPos6 = -((cos(_fAngleTmp) * _fStop)-2*thickness);// 终点纵坐标 mm(关于厚度对称)
+                       if(j==0)
+                       {
+                       /***********扫查轴前半段*************/
+                       QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+                       _pVector->append(_line);
+                       }else{
+
+                      /***********扫查轴后半段*************/
+                      QLineF _line2( _fPos3 , _fPos4 , _fPos5 , _fPos6);
+                     _pVector->append(_line2);
+
+                       }
+                   }
+                  }
+
+                    }
+
 			}
 			else if(_eAngle == setup_PROBE_PART_SKEW_180 )
 			{
 				float _fScanOffset = _group.fScanOffset ;
-				for(int i = 0 ; i < _nLawQty ; i++)
-				{
-					_fTmp1 = _fScanOffset - _pBeamPos[i]  ;
-					_fAngleTmp = _fAngleStart + i * _fAngleStep  ;
-					_fPos1 = _fTmp1 - sin(_fAngleTmp) * _fStart;
-					_fPos3 = _fTmp1 - sin(_fAngleTmp) * _fStop;
-					_fPos2 = cos(_fAngleTmp) * _fStart  ;
-					_fPos4 = cos(_fAngleTmp) * _fStop   ;
+//				for(int i = 0 ; i < _nLawQty ; i++)
+//				{
+//					_fTmp1 = _fScanOffset - _pBeamPos[i]  ;
+//					_fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+//					_fPos1 = _fTmp1 - sin(_fAngleTmp) * _fStart;
+//					_fPos3 = _fTmp1 - sin(_fAngleTmp) * _fStop;
+//					_fPos2 = cos(_fAngleTmp) * _fStart  ;
+//					_fPos4 = cos(_fAngleTmp) * _fStop   ;
 
-					QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
-					_pVector->append(_line);
-				}
+//					QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+//					_pVector->append(_line);
+//				}
+
+                if(!_group.m_Retype)
+                {
+                 for(int i = 0 ; i < _nLawQty ; i++)
+                 {
+                     _fTmp1 = _fScanOffset + _pBeamPos[i]  ;
+                     _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+                     _fPos1 = _fTmp1 - sin(_fAngleTmp) * _fStart;
+                     _fPos3 = _fTmp1 - sin(_fAngleTmp) * _fStop;
+                     _fPos2 = cos(_fAngleTmp) * _fStart  ;
+                     _fPos4 = cos(_fAngleTmp) * _fStop   ;
+
+                     QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+                     _pVector->append(_line);
+                 }
+                }else{
+
+                    for(int j=0; j<2; j++)
+                    {
+                    for(int i = 0 ; i < _nLawQty ; i++)
+                    {
+                        _fTmp1 = _fScanOffset + _pBeamPos[i] ;
+                        _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+
+                         //-x
+                        _fPos1 = _fTmp1 - sin(_fAngleTmp) * _fStart; // 起点横坐标
+                        _fPos3 = _fTmp1 - tan(_fAngleTmp) * thickness;// 中间点横坐标
+                        _fPos5 = _fTmp1 - sin(_fAngleTmp) * _fStop;// 终点横坐标
+
+                         //-y
+                         _fPos2 = cos(_fAngleTmp) * _fStart ;// 起点纵坐标
+                         _fPos4 = thickness ;//中间点纵坐标
+                         _fPos6 = -((cos(_fAngleTmp) * _fStop)-2*thickness);// 终点纵坐标 mm(关于厚度对称)
+                        if(j==0)
+                        {
+                        /***********扫查轴前半段*************/
+                        QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+                        _pVector->append(_line);
+                        }else{
+
+                       /***********扫查轴后半段*************/
+                       QLineF _line2( _fPos3 , _fPos4 , _fPos5 , _fPos6);
+                      _pVector->append(_line2);
+
+                        }
+                    }
+                   }
+
+                     }
+
 			}
 			else if(_eAngle == setup_PROBE_PART_SKEW_270 )
 			{
 				float _fIndexOffset = _group.fIndexOffset ;
-				for(int i = 0 ; i < _nLawQty ; i++)
-				{
-					_fTmp1 = _fIndexOffset - _pBeamPos[i]  ;
-					_fAngleTmp = _fAngleStart + i * _fAngleStep  ;
-					_fPos1 = _fTmp1 - sin(_fAngleTmp) * _fStart;
-					_fPos3 = _fTmp1 - sin(_fAngleTmp) * _fStop;
-					_fPos2 = cos(_fAngleTmp) * _fStart  ;
-					_fPos4 = cos(_fAngleTmp) * _fStop   ;
+//				for(int i = 0 ; i < _nLawQty ; i++)
+//				{
+//					_fTmp1 = _fIndexOffset - _pBeamPos[i]  ;
+//					_fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+//					_fPos1 = _fTmp1 - sin(_fAngleTmp) * _fStart;
+//					_fPos3 = _fTmp1 - sin(_fAngleTmp) * _fStop;
+//					_fPos2 = cos(_fAngleTmp) * _fStart  ;
+//					_fPos4 = cos(_fAngleTmp) * _fStop   ;
 
-					QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
-					_pVector->append(_line);
-				}
+//					QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+//					_pVector->append(_line);
+//				}
+
+                if(!_group.m_Retype)
+                {
+                 for(int i = 0 ; i < _nLawQty ; i++)
+                 {
+                     _fTmp1 = _fIndexOffset + _pBeamPos[i]  ;
+                     _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+                     _fPos1 = _fTmp1 - sin(_fAngleTmp) * _fStart;
+                     _fPos3 = _fTmp1 - sin(_fAngleTmp) * _fStop;
+                     _fPos2 = cos(_fAngleTmp) * _fStart  ;
+                     _fPos4 = cos(_fAngleTmp) * _fStop   ;
+
+                     QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+                     _pVector->append(_line);
+                 }
+                }else{
+
+                    for(int j=0; j<2; j++)
+                    {
+                    for(int i = 0 ; i < _nLawQty ; i++)
+                    {
+                        _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
+                        _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+
+                         //-x
+                        _fPos1 = _fTmp1 - sin(_fAngleTmp) * _fStart; // 起点横坐标
+                        _fPos3 = _fTmp1 - tan(_fAngleTmp) * thickness;// 中间点横坐标
+                        _fPos5 = _fTmp1 - sin(_fAngleTmp) * _fStop;// 终点横坐标
+
+                         //-y
+                         _fPos2 = cos(_fAngleTmp) * _fStart ;// 起点纵坐标
+                         _fPos4 = thickness ;//中间点纵坐标
+                         _fPos6 = -((cos(_fAngleTmp) * _fStop)-2*thickness);// 终点纵坐标 mm(关于厚度对称)
+                        if(j==0)
+                        {
+                        /***********扫查轴前半段*************/
+                        QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
+                        _pVector->append(_line);
+                        }else{
+
+                       /***********扫查轴后半段*************/
+                       QLineF _line2( _fPos3 , _fPos4 , _fPos5 , _fPos6);
+                      _pVector->append(_line2);
+
+                        }
+                    }
+                   }
+
+                     }
+
 			}
 		}
 		break;

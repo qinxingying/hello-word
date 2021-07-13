@@ -30,6 +30,23 @@ DopplerLawMarker::DopplerLawMarker()
 
     m_eDirection = VERTICAL  ;
     m_bShowWeld  = false     ;
+
+    if( parentWidget())
+    {
+        m_pView = (DopplerDataView*) parentWidget() ;
+        m_pView->GetDataViewConfigure(&m_nGroup , &m_nLaw , &m_eDisp) ;
+    }
+    else
+    {
+        m_pView   = 0 ;
+        m_nGroup  = 0 ;
+        m_nLaw	= 0 ;
+        m_eDisp   = 0 ;
+    }
+
+    m_pConfigure = DopplerConfigure::Instance();
+    m_pProcess   = ParameterProcess::Instance();
+
 }
 
 QVector<QLineF>* DopplerLawMarker::GetMarkerVector()
@@ -139,6 +156,8 @@ QPainterPath DopplerLawMarker::shape () const
 
 void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* /*item*/, QWidget* /*widget*/)
 {
+
+
     QPen _pen;
     _pen.setWidth(0);
     QPen _NewPen;
@@ -146,6 +165,10 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
     QVector<qreal> dashes;
     dashes << 1 << 4 << 1 <<4 ;
     _NewPen.setDashPattern(dashes);
+    GROUP_CONFIG& _group = m_pConfigure->group[m_nGroup];
+    int  _nLawQty = m_pProcess->GetGroupLawQty(m_nGroup) ;
+
+
     for(int i = 0 ; i < m_nMarkerQty ; i++)
     {
         if(i == m_nSelectedMarker)
@@ -165,7 +188,27 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
            }
            else
                painter->drawLine(dotLine);
+
+           /********m_Retype不为零***扫查轴翻转*************/
+           if(_group.m_Retype)
+           {
+
+               _pen.setColor(_color);
+               painter->setPen(_pen);
+               QLineF _line2 = m_cMarkers.at(m_anMarkerId[i]+_nLawQty);
+               if(m_eDirection == HORIZENTAL)  _line2 = QLineF(0 , _line2.y1() , m_nWidth, _line2.y1());
+               painter->drawLine(_line2);
+
+               _NewPen.setColor(_color);
+               painter->setPen(_NewPen);
+               painter->drawLine(_line2);
+
+           }
+           /******m_Retype不为零*****扫查轴翻转*************/
+
         }
+
+
         else
         {
            QColor _color = m_aColor[i]  ;
@@ -177,7 +220,23 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
            _NewPen.setColor(_color);
            painter->setPen(_NewPen);
            painter->drawLine(_line);
+
+           /***********扫查轴翻转*************/
+           if(_group.m_Retype)
+           {
+           _pen.setColor(_color);
+           painter->setPen(_pen);
+           QLineF _line2 = m_cMarkers.at(m_anMarkerId[i]+_nLawQty);
+           if(m_eDirection == HORIZENTAL)   _line = QLineF(0 , _line.y1() , m_nWidth, _line.y1());
+           painter->drawLine(_line2);
+
+           _NewPen.setColor(_color);
+           painter->setPen(_NewPen);
+           painter->drawLine(_line2);
+           }
+           /***********扫查轴翻转*************/
         }
+
         DrawLabel(painter , i) ;
     }
     if(m_bShowWeld)
@@ -261,6 +320,17 @@ void DopplerLawMarker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     int _nZoom;
     float _fScale ;
     GetCurrentLineIndex(event->pos() , &_nPos , &_nZoom , &_fScale);
+    int  _nLawQty = m_pProcess->GetGroupLawQty(m_nGroup) ;
+    if(_nPos>=_nLawQty-1)
+    {
+     _nPos=_nLawQty-1 ;
+
+    }
+    if(_nZoom>=_nLawQty-1)
+    {
+     _nZoom=_nLawQty-2 ; // GetCurrentPosLine 函数中有 +1操作，所以最大为29
+
+    }
     m_anMarkerId[m_nSelectedMarker] = _nPos ;
     dotLine = GetCurrentPosLine( _nZoom , _fScale);
     update();

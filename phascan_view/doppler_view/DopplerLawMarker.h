@@ -1,4 +1,4 @@
-#ifndef DOPPLERLAWMARKER_H
+﻿#ifndef DOPPLERLAWMARKER_H
 #define DOPPLERLAWMARKER_H
 #include <QObject>
 #include <QColor>
@@ -8,7 +8,9 @@
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
 #include "DopplerGraphicsItem.h"
-
+#include "DopplerDrawSScanTrueDepth.h"
+#include "DopplerDataView.h"
+#include "ParameterProcess.h"
 #define MAX_MARKER_QTY   3
 
 class DopplerLawMarker :public QObject, public DopplerGraphicsItem
@@ -64,6 +66,17 @@ protected:
     bool   m_brushHAZ;
     QPainterPath weld      ;
     QPainterPath HAZBrush  ;
+
+    DopplerDataView*	m_pView ;
+    DopplerConfigure*	m_pConfigure;
+    ParameterProcess*	m_pProcess;
+    int m_nGroup ;
+    int m_nLaw   ;
+    int m_eDisp  ;
+
+
+
+
 public slots:
     void SlotChangeLinePos(int nNewLineIndex);
 
