@@ -217,6 +217,7 @@ public:
     DEFECT_INFO* SetDefectInfo(int iGroupId_, int index_, char* strInfo_,char* strInfo2);
 	char* GetDefectInfo(int iGroupId_, int index_);
     int  GetDefectIndex(int iGroupId_, int index_);
+    int  GetDefectId(int iGroupId_, int index_);
 	void SetLastDate();
 	QDate GetLastDate();
 	//--------------------------------------------------

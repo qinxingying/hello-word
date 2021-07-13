@@ -162,9 +162,10 @@ void IndicationTableWidget::deleteDefect(int _index)
 
 void IndicationTableWidget::clearStack()
 {
-    m_undoStack.clear();
-    m_commandStack.clear();
-    ui->undoBtn->setEnabled(false);
+    m_undoStack[m_nGroupId].clear();
+    m_commandStack[m_nGroupId].clear();
+    if (m_commandStack[m_nGroupId].isEmpty())
+        ui->undoBtn->setEnabled(false);
 }
 
 void IndicationTableWidget::keyPressEvent(QKeyEvent *event)
@@ -259,9 +260,10 @@ void IndicationTableWidget::on_del_tableWidget_item()
             }
         }
 
-        m_commandStack.push(Delete);
-        m_undoStack.push(removedDefects);
-        ui->undoBtn->setEnabled(true);
+        m_commandStack[m_nGroupId].push(Delete);
+        m_undoStack[m_nGroupId].push(removedDefects);
+        if (!m_commandStack[m_nGroupId].isEmpty())
+            ui->undoBtn->setEnabled(true);
 
         g_pMainWnd->updateAllDefectBox();
         if (id >= ui->tableWidget->rowCount()) {
@@ -285,8 +287,7 @@ void IndicationTableWidget::on_merge_tableWidget_item()
     QVector<int> ids;
     for(int i = 0; i < cnt; i++)
     {
-        int id = list.at(i * 5)->data(0).toInt() - 1;
-        ids << id;
+        ids << list.at(i * 5)->row();
     }
     qSort(ids.begin(), ids.end());
     float max = 0.0;
@@ -318,12 +319,12 @@ void IndicationTableWidget::on_merge_tableWidget_item()
         }
     }
     if (tmp.count() == 0) return;
-    int specialId = tmp[0]->dIndex - 1;
+    int specialId = m_pConfig->GetDefectId(m_nGroupId, tmp[0]->dIndex);
     float len = tmp[0]->fSStop - tmp[0]->fSStart;
     for (int i = 1; i < tmp.count(); ++i) {
         float lenTmp = tmp[i]->fSStop - tmp[i]->fSStart;
         if (lenTmp > len) {
-            specialId = tmp[i]->dIndex - 1;
+            specialId = m_pConfig->GetDefectId(m_nGroupId, tmp[i]->dIndex);
         }
     }
 
@@ -333,22 +334,27 @@ void IndicationTableWidget::on_merge_tableWidget_item()
     for(int i = 0; i < cnt; i++)
     {
         int row = ui->tableWidget->row(list.at(i * 5));
-        if (list.at(i * 5)->data(0).toInt() - 1 == specialId) {
-            continue;
-        }
         if(row!=-1)
         {
+            DEFECT_INFO* pDf = m_pConfig->GetDefectPointer(m_nGroupId, row);
+            if (m_pConfig->GetDefectId(m_nGroupId, pDf->dIndex) == specialId) {
+                continue;
+            }
             ui->tableWidget->removeRow(row);
 
-            DEFECT_INFO* pDf = m_pConfig->GetDefectPointer(m_nGroupId, row);
             DEFECT_INFO tmp;
             memcpy(&tmp, pDf, sizeof(DEFECT_INFO));
             removedDefects.append(tmp);
 
+            if (m_pConfig->GetDefectId(m_nGroupId, pDf->dIndex) < specialId) {
+                    specialId--;// 经过重新排序，id会改变
+            }
             m_pConfig->DeleteDefect(m_nGroupId, row);
+
         }
     }
 
+    specialId = m_pConfig->GetDefectId(m_nGroupId, pDfInfo->dIndex);
     DEFECT_INFO def1;
     memcpy(&def1, pDfInfo, sizeof(DEFECT_INFO));
     removedDefects.append(def1);
@@ -359,17 +365,20 @@ void IndicationTableWidget::on_merge_tableWidget_item()
     pDfInfo->fVPAStop  = fVPAStop;
 
     m_pConfig->ReorderDefect();
-    g_pMainWnd->loadDefectPosition(m_nGroupId, pDfInfo->dIndex - 1);
+    specialId = m_pConfig->GetDefectId(m_nGroupId, pDfInfo->dIndex);
+    g_pMainWnd->loadDefectPosition(m_nGroupId, specialId);
+
 
     DEFECT_INFO def2;
     memcpy(&def2, pDfInfo, sizeof(DEFECT_INFO));
     removedDefects.append(def2);
 
-    m_pConfig->DeleteDefect(m_nGroupId, pDfInfo->dIndex - 1);
+    m_pConfig->DeleteDefect(m_nGroupId, specialId);
 
-    m_commandStack.push(Merge);
-    m_undoStack.push(removedDefects);
-    ui->undoBtn->setEnabled(true);
+    m_commandStack[m_nGroupId].push(Merge);
+    m_undoStack[m_nGroupId].push(removedDefects);
+    if (!m_commandStack[m_nGroupId].isEmpty())
+        ui->undoBtn->setEnabled(true);
 
     emit merged();
     //ui->tableWidget->setCurrentItem(nullptr);
@@ -389,6 +398,10 @@ void IndicationTableWidget::on_groupComboBox_currentIndexChanged(int index)
     m_nGroupId = index;
     updateDefectTable();
     g_pMainWnd->SetCurGroup(index);
+
+    ui->undoBtn->setEnabled(true);
+    if (m_commandStack[m_nGroupId].isEmpty())
+        ui->undoBtn->setEnabled(false);
 }
 
 void IndicationTableWidget::on_modifyBtn_clicked()
@@ -417,15 +430,16 @@ void IndicationTableWidget::on_modifyBtn_clicked()
     memcpy(&tmp, pDfInfo, sizeof(DEFECT_INFO));
     defects.append(tmp);
 
-    m_undoStack.append(defects);
-    m_commandStack.push(Modify);
+    m_undoStack[m_nGroupId].append(defects);
+    m_commandStack[m_nGroupId].push(Modify);
 
-    ui->undoBtn->setEnabled(true);
+    if (!m_commandStack[m_nGroupId].isEmpty())
+        ui->undoBtn->setEnabled(true);
 }
 
 void IndicationTableWidget::on_restoreBtn_clicked()
 {
-    while(!m_undoStack.isEmpty()) {
+    while(!m_undoStack[m_nGroupId].isEmpty()) {
         on_undoBtn_clicked();
     }
 }
@@ -437,9 +451,9 @@ void IndicationTableWidget::on_saveBtn_clicked()
 
 void IndicationTableWidget::on_undoBtn_clicked()
 {
-    if(!m_undoStack.isEmpty() && !m_commandStack.isEmpty()) {
-        Command cmd = m_commandStack.pop();
-        QVector<DEFECT_INFO> defects = m_undoStack.pop();
+    if(!m_undoStack[m_nGroupId].isEmpty() && !m_commandStack[m_nGroupId].isEmpty()) {
+        Command cmd = m_commandStack[m_nGroupId].pop();
+        QVector<DEFECT_INFO> defects = m_undoStack[m_nGroupId].pop();
         switch (cmd) {
         case Delete:
             for (int i = 0; i < defects.count(); ++i) {
@@ -447,20 +461,20 @@ void IndicationTableWidget::on_undoBtn_clicked()
             }
             break;
         case Merge:
-            m_pConfig->DeleteDefect(m_nGroupId, defects.last().dIndex - 1);
+            m_pConfig->DeleteDefect(m_nGroupId, m_pConfig->GetDefectId(m_nGroupId, defects.last().dIndex));
             for (int i = 0; i < defects.count() - 1; ++i) {
                 g_pMainWnd->loadDefectPositionAndSave(m_nGroupId, defects[i]);
             }
             break;
         case Modify:
-            m_pConfig->DeleteDefect(m_nGroupId, defects.last().dIndex - 1);
+            m_pConfig->DeleteDefect(m_nGroupId, m_pConfig->GetDefectId(m_nGroupId, defects.last().dIndex));
             g_pMainWnd->loadDefectPositionAndSave(m_nGroupId, defects.first());
             break;
         default:
             break;
         }
     }
-    if(m_undoStack.isEmpty() || m_commandStack.isEmpty()) {
+    if(m_undoStack[m_nGroupId].isEmpty() || m_commandStack[m_nGroupId].isEmpty()) {
         ui->undoBtn->setEnabled(false);
     }
 }

@@ -63,8 +63,8 @@ private:
         Merge,
         Modify
     };
-    QStack<Command> m_commandStack;
-    QStack<QVector<DEFECT_INFO>> m_undoStack;
+    QMap<int, QStack<Command>> m_commandStack;
+    QMap<int, QStack<QVector<DEFECT_INFO>>> m_undoStack;
 };
 
 #endif // INDICATIONTABLEWIDGET_H

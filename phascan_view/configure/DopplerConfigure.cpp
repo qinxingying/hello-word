@@ -2142,7 +2142,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
             }
             strcpy(_pDfInfo->Index_pos,(char*)(qPrintable(Pa_Value)));
             //---------------------------------------
-            m_dfParam[iGroupId_].index = _pDfInfo->dIndex - 1;
+            m_dfParam[iGroupId_].index = m_pConfig->GetDefectId(iGroupId_, _pDfInfo->dIndex);
 
             QDateTime time = QDateTime::currentDateTime();
             memset(_pDfInfo->srtInfo, 0x00, 256);
@@ -2573,6 +2573,25 @@ int DopplerConfigure::GetDefectIndex(int iGroupId_, int index_)
 {
     DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
     return _pDfInfo->dIndex;
+}
+
+/**
+ * @brief DopplerConfigure::GetDefectId 获取当前组内，此缺陷在链表中的位置
+ * @param iGroupId_
+ * @param index_
+ * @return
+ */
+int DopplerConfigure::GetDefectId(int iGroupId_, int index_)
+{
+    int id = 0;
+    DEFECT_INFO* pDfInfo = GetDefectPointer(iGroupId_, id);
+    while (pDfInfo) {
+        if (pDfInfo->dIndex == index_)
+            break;
+        id++;
+        pDfInfo = pDfInfo->pNext;
+    }
+    return id;
 }
 
 void DopplerConfigure::SetLastDate()
