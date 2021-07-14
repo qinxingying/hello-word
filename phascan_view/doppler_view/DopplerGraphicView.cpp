@@ -1535,8 +1535,9 @@ void DopplerGraphicView::paintEvent(QPaintEvent *event)
         switch(_eMode){
         case setup_DISPLAY_MODE_S_ATHUMIZ:
         case setup_DISPLAY_MODE_S_LINEAR: {
-            for (auto &rect : _pConfig->m_selectedNotToAnalysisAreas[_iGroupId]) {
-                DrawSelectArea(rect, QColor(255,0,0));
+             for (int i = 0; i < _pConfig->m_selectedNotToAnalysisAreas[_iGroupId].count(); ++i) {
+                _pConfig->m_selectedNotToAnalysisAreas[_iGroupId][i] = transformRectToPolar(_pConfig->m_transformedNotToAnalysisAreas[_iGroupId][i]);
+                DrawSelectArea(_pConfig->m_selectedNotToAnalysisAreas[_iGroupId][i], QColor(255,0,0));
             }
             break;
         }
@@ -2101,6 +2102,39 @@ void DopplerGraphicView::creatActionAndMenu()
 //    m_contextMenu->addAction(m_showCursor);
 //    m_contextMenu->addAction(m_showDefect);
 
+}
+
+QRect DopplerGraphicView::transformRectToPolar(QRectF &_rect)
+{
+    DopplerDataView* pParent = (DopplerDataView*)parentWidget();
+    int iGroupId, iLaw, iDisplay;
+    pParent->GetDataViewConfigure(&iGroupId, &iLaw, &iDisplay);
+    double fScanStart , fScanStop , fSliderStart, fSliderStop;
+    QSize s = size();;
+    pParent->GetRulerRange(&fScanStart , &fScanStop , &fSliderStart, &fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+
+    QPoint leftTop, rightBottom;
+
+    float scanstart = _rect.left();
+    float scanstop  = _rect.right();
+
+    int x1 = ((scanstart - fScanStart) / (fScanStop - fScanStart)) * s.width() + 1;
+    int x2 = ((scanstop - fScanStart) / (fScanStop - fScanStart)) * s.width();
+    leftTop.setX(x1);
+    rightBottom.setX(x2);
+
+    pParent->GetRulerRange(&fScanStart , &fScanStop , &fSliderStart, &fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
+
+    float lawstart = _rect.top();
+    float lawstop  = _rect.bottom();
+    int y1 = ((lawstart - fScanStart) / (fScanStop - fScanStart)) * s.height() + 1;
+    int y2 = ((lawstop - fScanStart) / (fScanStop - fScanStart)) * s.height() + 1;
+
+    leftTop.setY(y1);
+    rightBottom.setY(y2);
+
+    QRect rect(leftTop, rightBottom);
+    return rect;
 }
 
 void DopplerGraphicView::AddOverlayItems(QGraphicsItem* item_)

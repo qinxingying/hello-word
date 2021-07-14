@@ -70,6 +70,7 @@ private slots:
 private:
     void backNoZoom();
     void creatActionAndMenu();
+    QRect transformRectToPolar(QRectF& _rect);
     QGraphicsScene*   m_pScene        ;
     GraphicsViewBase* m_pBackGround   ;
     DopplerDrawScan*  m_pDrawScan     ;
