@@ -822,8 +822,22 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 
         int _idx1, _idx2, _iData, i , j ;
         U8* _pImg1, *_pImg2;
+        int m_width;
         QVector < QVector < U8*> > Img2; //记录存储一次波位置数据
         QVector < QVector < int> > tempdata;//记录存储一次波数据颜色索引
+
+        /*****************1:1比例显示*************/
+        bool ZOOM=true;
+        float zoomFactor=m_nWidth/(float)m_nHeight;
+        if(ZOOM==true)
+        {
+            m_width=m_nHeight;
+        }
+        else{
+             zoomFactor =1;
+            m_width=m_nWidth;
+        }
+       /*****************1:1比例显示*************/
 
          Img2.resize(m_nHeight);//设置向量行-高
          for(int j=0;j<Img2.size();j++)
@@ -841,13 +855,13 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
          int m_Offsety=OFFSET_Y/_nStepY; //坐标偏移
          if(!_group.m_Retype)//不翻转
          {
-
              for(i = 0; i< m_nHeight; i++)
              {
                  _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
-                 for(j = 0; j < m_nWidth; j++)
+
+                 for(j = 0; j < m_width; j++)
                  {
-                     _idx1 = i * m_nWidth + j ; //图像每个像素点位置(颜色索引)
+                     _idx1 = i * m_nWidth + j*zoomFactor ; //图像每个像素点位置(颜色索引)
                      if(m_pDraw[_idx1] != 0)
                      {
                          //当前一共多少个采样点？
@@ -861,6 +875,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                          _pImg2 = _pImg1 + j * 3 ;
                          _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
                          memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
+
                      }
                  }
              }
@@ -869,9 +884,9 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
         for(i = m_Offsety; i<((OFFSET_Y+thickness)/_nStepY)&&i<m_nHeight; i++)
         {
             _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
-            for(j = 0; j < m_nWidth; j++)
+            for(j = 0; j < m_width; j++)
             {
-                _idx1 = (i-m_Offsety) * m_nWidth + j ; //图像每个像素点位置(颜色索引)
+                _idx1 = (i-m_Offsety) * m_nWidth + j*zoomFactor ; //图像每个像素点位置(颜色索引)
                 if(m_pDraw[_idx1] != 0)
                 {
                     //当前一共多少个采样点
@@ -898,10 +913,10 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 
 
             _pImg1 = _pImageBits + _nWidthStep * (m_AxisHeight-i);//每行数据的起点位置
-            for(j = 0; j < m_nWidth; j++)
+            for(j = 0; j < m_width; j++)
             {
 
-                _idx1 = (i-m_Offsety) * m_nWidth + j ; //图像每个像素点位置
+                _idx1 = (i-m_Offsety) * m_nWidth + j*zoomFactor ; //图像每个像素点位置
                 if(m_pDraw[_idx1] != 0)
                 {
                     //当前一共多少个采样点

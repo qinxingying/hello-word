@@ -901,11 +901,13 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                  for(int i = 0 ; i < _nLawQty ; i++)
                  {
                      _fTmp1 = _fScanOffset + _pBeamPos[i]  ;
-                     _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
+                     _fAngleTmp = _fAngleStart + i * _fAngleStep;
                      _fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart;
                      _fPos3 = _fTmp1 + sin(_fAngleTmp) * _fStop;
-                     _fPos2 = cos(_fAngleTmp) * _fStart  ;
+                     _fPos2 = cos(_fAngleTmp) * _fStart ;
                      _fPos4 = cos(_fAngleTmp) * _fStop   ;
+
+
 
                      QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
                      _pVector->append(_line);
@@ -956,10 +958,11 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 				{
 					_fTmp1 = _fIndexOffset + _pBeamPos[i]  ;
 					_fAngleTmp = _fAngleStart + i * _fAngleStep  ;
-					_fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart;
-					_fPos3 = _fTmp1 + sin(_fAngleTmp) * _fStop;
+                    _fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart
+                            ;
+                    _fPos3 = _fTmp1 + sin(_fAngleTmp) * _fStop-20;//减去20的原因？
 					_fPos2 = cos(_fAngleTmp) * _fStart  ;
-					_fPos4 = cos(_fAngleTmp) * _fStop   ;
+                    _fPos4 = cos(_fAngleTmp) * _fStop   ;
 
 					QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
 					_pVector->append(_line);
