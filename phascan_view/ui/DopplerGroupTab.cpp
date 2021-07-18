@@ -2488,6 +2488,7 @@ void DopplerGroupTab::on_ComCScanShowAll_currentIndexChanged(int index)
     g_pMainWnd->RunDrawThreadOnce();
 }
 
+
 void DopplerGroupTab::on_ComSscanReflect_currentIndexChanged(int index)
 {
     if(!ui->ComSscanReflect->hasFocus()) return;
@@ -2501,6 +2502,24 @@ void DopplerGroupTab::on_ComSscanReflect_currentIndexChanged(int index)
 
     return ;
 }
+
+
+void DopplerGroupTab::on_ComOneToOneShows_currentIndexChanged(int index)
+{
+    if(!ui->ComOneToOneShows->hasFocus()) return;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupReflectShows(m_nGroupId,(setup_REFLECT_SHOWS)index);
+
+    ProcessDisplay _display ;
+    _display.UpdateAllView();
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+    g_pMainWnd->RunDrawThreadOnce(true);
+
+    return ;
+
+
+}
+
 
 
 void DopplerGroupTab::ComDispPro(int index, int iGroup)
@@ -2848,5 +2867,7 @@ void DopplerGroupTab::on_ComWeldRemianingHeight_activated(int index)
     m_pGroup->bWeldRemainingHeight = index;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
+
+
 
 

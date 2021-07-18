@@ -76,6 +76,8 @@ public:
 
     // 设置S扫反射类型显示
     int  SetupReflectType(int nGroupId_ , setup_REFLECT_TYPE index) ;
+    // 设置S扫1:1显示
+    int SetupReflectShows(int nGroupId_,setup_REFLECT_SHOWS index);
 
 	int  GetShowMeasureNumber(int nGroupId_);
 	int  SetupCursor(int nGroupId_ , setup_CURSOR_TYPE eType_ , float fValue_) ;

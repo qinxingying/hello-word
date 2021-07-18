@@ -13,6 +13,7 @@
 //#define BUFF_MAX_SIZE   (BUFF_MAX_WIDTH * BUFF_MAX_HEIGHT)
 
  const int OFFSET_Y=15;
+ extern int m_nWidth , m_nHeight ;
 //#define OFFSET_Y 25
 struct FAN_SCAN_INFO
 {
@@ -40,12 +41,14 @@ struct FAN_SCAN_INFO
 
 class DopplerDrawSScanTrueDepth : public DopplerDrawScan
 {
+
     Q_OBJECT
 public:
     explicit DopplerDrawSScanTrueDepth();
     ~DopplerDrawSScanTrueDepth();
     void UpdateDrawInfo() ;
     virtual void Draw (QImage *pImage_) ;
+
 
 
 protected:
@@ -67,7 +70,7 @@ protected:
     float _nStepX , _nStepY;
 
     float thickness;
-    int m_nWidth , m_nHeight ;
+
     U8*  m_pAngleZoom;
     U8*  m_pDraw;
     U8*  m_pDrawRate;
@@ -75,6 +78,9 @@ protected:
     int* m_pDataNo;
     bool m_bClear;
     bool m_bWeldRemainingHeightAffect {false};
+
+     friend class DopplerOverlays;
+
 };
 
 #endif // DOPPLERDRAWSSCANAZIMUTHAL_H

@@ -342,6 +342,14 @@ int ParameterProcess::SetupReflectType(int nGroupId_,setup_REFLECT_TYPE index)
     return 0 ;
 }
 
+//设置S扫1:1显示
+int ParameterProcess::SetupReflectShows(int nGroupId_,setup_REFLECT_SHOWS index)
+{
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
+    _group.m_Shows  = index  ;
+
+    return 0 ;
+}
 
 int ParameterProcess::GetShowWeldPart(int nGroupId_)
 {

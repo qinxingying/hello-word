@@ -604,7 +604,15 @@ enum setup_REFLECT_TYPE
     CLOSE = 0,
     FIRST   ,
     LAST    ,
-    OVERLAY ,
+    OVERLAY
+
+};
+
+//S扫1:1显示
+enum setup_REFLECT_SHOWS
+{
+    OFF = 0,
+    ON
 
 };
 
@@ -768,6 +776,7 @@ typedef struct _Group
     setup_PROBE_ANGLE		eSkew;              /* 探头角度 */
 
     setup_REFLECT_TYPE      m_Retype; //S扫反射类型
+    setup_REFLECT_SHOWS     m_Shows; //S扫1:1显示
 
 	/*  校准状态  */
 	int						bVelocityCalib;

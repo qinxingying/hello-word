@@ -22,6 +22,7 @@ DopplerDrawSScanTrueDepth::~DopplerDrawSScanTrueDepth ()
     //m_hMutex.unlock();
 }
 
+
 void DopplerDrawSScanTrueDepth::UpdateDrawInfo()
 {
 	m_hMutex.lock();
@@ -827,9 +828,10 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
         QVector < QVector < int> > tempdata;//记录存储一次波数据颜色索引
 
         /*****************1:1比例显示*************/
-        bool ZOOM=true;
+
         float zoomFactor=m_nWidth/(float)m_nHeight;
-        if(ZOOM==true)
+
+        if(_group.m_Shows==ON)
         {
             m_width=m_nHeight;
         }
@@ -838,6 +840,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
             m_width=m_nWidth;
         }
        /*****************1:1比例显示*************/
+
 
          Img2.resize(m_nHeight);//设置向量行-高
          for(int j=0;j<Img2.size();j++)
@@ -850,7 +853,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
           {
               tempdata[j].resize(m_nWidth);//列-宽
           }
-
 
          int m_Offsety=OFFSET_Y/_nStepY; //坐标偏移
          if(!_group.m_Retype)//不翻转
