@@ -12,7 +12,7 @@
 *.orig
 *.dxf
 *.data
-build-*
+build*
 
 /phascan_view/version.h
 /phascan_view/app/version.h

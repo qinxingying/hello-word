@@ -527,7 +527,10 @@ void Config::unpack_geometry(const QVariantMap &map)
         unpack_geometry_nozzle(map);
     } else if(Paramters::Specimen::FILLET == m_groups[m_currentGroupID].m_specimen.m_shape) {
         unpack_geometry_fillet(map);
-    } else {
+    } else if(Paramters::Specimen::ASYMMETRIC_PLANE == m_groups[m_currentGroupID].m_specimen.m_shape) {
+        unpack_geometry_asymmetric_plan(map);
+    }
+    else {
         qWarning("%s(%s[%d]): unimplement", __FILE__, __func__, __LINE__);
     }
 }
@@ -584,6 +587,33 @@ void Config::unpack_geometry_fillet(const QVariantMap &map)
     unpack_geometry_plane(map.value("TopPlane").toMap(), fillet.m_topPlane);
 }
 
+
+void Config::unpack_geometry_asymmetric_plan(const QVariantMap &map)
+{
+
+  Paramters::Asymmetric_Plane &asymmetric_Plane = m_groups[m_currentGroupID].m_specimen.m_geometry.m_Asymmetric_Plane;
+
+    //对齐方式
+    asymmetric_Plane.m_align=static_cast<Paramters::Asymmetric_Plane::Align>(map.value("Align",DEFAULT_FILLET_ANGLE).toUInt());
+
+    //是否削边
+    asymmetric_Plane.m_edgeenabled=map.value("EdgeEnabled",DEFAULT_ASYMMETRIC_EDGE).toBool();
+
+    asymmetric_Plane.m_h1=map.value("h1",DEFAULT_ASYMMETRIC_H1).toDouble();
+    asymmetric_Plane.m_h2=map.value("h2",DEFAULT_ASYMMETRIC_H2).toDouble();
+    asymmetric_Plane.m_l1=map.value("l1",DEFAULT_ASYMMETRIC_L1).toDouble();
+    asymmetric_Plane.m_l2=map.value("l2",DEFAULT_ASYMMETRIC_L2).toDouble();
+
+//    Asymmetric_Plane.m_mainplane.m_height=map.value("Height",DEFAULT_ASYMMETRIC_H).toDouble();
+
+    unpack_geometry_plane(map.value("Main").toMap(), asymmetric_Plane.m_mainplane);
+    unpack_geometry_plane(map.value("Slave").toMap(), asymmetric_Plane.m_slaveplane);
+}
+
+
+
+
+
 void Config::unpack_weld(const QVariantMap &map)
 {
     Paramters::Weld &weld = m_groups[m_currentGroupID].m_specimen.m_weld;
@@ -636,7 +666,18 @@ void Config::unpack_weld(const QVariantMap &map)
         weld.m_TKY.m_h2 = map.value("h2").toDouble();
         weld.m_TKY.m_l1 = map.value("l1").toDouble();
         weld.m_TKY.m_l2 = map.value("l2").toDouble();
-    } else {
+    }else if(Paramters::Weld::ASYMMETRIC == weld.m_type) {
+
+        QVariantMap main=map.value("Main").toMap();
+        QVariantMap slave=map.value("Slave").toMap();
+        unpack_I_weld(main.value("I").toMap(), weld.m_main_I);
+        unpack_V_weld(main.value("V").toMap(), weld.m_main_V);
+
+        unpack_I_weld(slave.value("I").toMap(), weld.m_slave_I);
+        unpack_V_weld(slave.value("V").toMap(), weld.m_slave_V);
+
+    }
+    else {
         qWarning("%s(%s[%d]): unimplement", __FILE__, __func__, __LINE__);
     }
 }
@@ -662,6 +703,7 @@ bool Config::getCurve_RL_EL_SL(int groupId, float &coupleGain)
 void Config::getWeldData( int groupId, WELD_II & weld_ii)
 {
     Paramters::Weld &weld = m_groups[groupId].m_specimen.m_weld;
+    Paramters::Asymmetric_Plane &asymmetric_Plane=m_groups[groupId].m_specimen.m_geometry.m_Asymmetric_Plane;//不等厚板形状
     Paramters::Fillet &fillet = m_groups[groupId].m_specimen.m_geometry.m_fillet;
     weld_ii.eType = static_cast<setup_WELD_TYPE_II>(weld.m_type);
     weld_ii.eSymmetry = static_cast<setup_WELD_SYMMETRY_TYPE>(weld.m_isSymmetry);
@@ -724,6 +766,23 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
         weld_ii.TKY.h2 = weld.m_TKY.m_h2;
         weld_ii.TKY.a1 = weld.m_TKY.m_a1;
         weld_ii.TKY.a2 = weld.m_TKY.m_a2;
+        break;
+
+    case Paramters::Weld::ASYMMETRIC://不等厚焊缝数据 解析到了I和V焊缝数据
+        //焊缝开跛口信息(数据转移到 Instrument.h 二代数据)
+        weld_ii.ASY.W1=weld.m_main_V.m_width;
+        weld_ii.ASY.H1=weld.m_main_V.m_height;
+        weld_ii.ASY.W2=weld.m_slave_V.m_width;
+        weld_ii.ASY.H2=weld.m_slave_V.m_height;
+        weld_ii.ASY.W3=weld.m_main_I.m_width;
+        weld_ii.ASY.m_thickness=asymmetric_Plane.m_mainplane.m_height;//主板的厚度
+        weld_ii.ASY.s_thickness=asymmetric_Plane.m_slaveplane.m_height;//从板的厚度
+        //消边信息
+        weld_ii.l1=asymmetric_Plane.m_l1;
+        weld_ii.h1=asymmetric_Plane.m_h1;
+        weld_ii.l2=asymmetric_Plane.m_l2;
+        weld_ii.h2=asymmetric_Plane.m_h2;
+        weld_ii.align=static_cast<setup_PLANE_ALIGN_TYPE>(asymmetric_Plane.m_align);
         break;
     default:
         break;
