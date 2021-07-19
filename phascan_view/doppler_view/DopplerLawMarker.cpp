@@ -33,7 +33,7 @@ DopplerLawMarker::DopplerLawMarker()
 
     if( parentWidget())
     {
-        m_pView = (DopplerDataView*) parentWidget() ;
+//        m_pView = (DopplerDataView*) parentWidget() ;
         m_pView->GetDataViewConfigure(&m_nGroup , &m_nLaw , &m_eDisp) ;
     }
     else
@@ -62,9 +62,7 @@ void DopplerLawMarker::SetupMarkers(QVector<QLineF>* pLines_)
     {
         m_cMarkers.append(pLines_->at(i));
         if(FLOAT_EQ((pLines_->at(i).y1() - pLines_->at(i).y2()) , 0))  m_eDirection = HORIZENTAL  ;
-
     }
-
     m_anMarkerId[0] = m_anMarkerId[0] < pLines_->count()  ? m_anMarkerId[0] : 0;
     m_anMarkerId[1] = m_anMarkerId[1] < pLines_->count()  ? m_anMarkerId[1] : 0;
     m_anMarkerId[2] = m_anMarkerId[2] < pLines_->count()  ? m_anMarkerId[2] : 0;

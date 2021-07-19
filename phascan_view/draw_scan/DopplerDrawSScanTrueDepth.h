@@ -38,18 +38,14 @@ struct FAN_SCAN_INFO
     int eType ;
 }  ;
 
-
 class DopplerDrawSScanTrueDepth : public DopplerDrawScan
 {
-
     Q_OBJECT
 public:
     explicit DopplerDrawSScanTrueDepth();
     ~DopplerDrawSScanTrueDepth();
     void UpdateDrawInfo() ;
     virtual void Draw (QImage *pImage_) ;
-
-
 
 protected:
     void CalcMatrix();

@@ -27,7 +27,6 @@
 
 static const QSize FIXED_SCENE_SIZE( 480 , 360);
 
-
 #define DPL_BASE_IMAGE_FORMATE	 (QImage::Format_RGB888)  //存入格式为R, G, B 对应 0,1,2
 
 class GraphicsViewBase:public QGraphicsWidget
@@ -48,7 +47,7 @@ public:
         m_transferY = 0;
         ParameterProcess* _process = ParameterProcess::Instance();
         m_scanIndex = _process->GetScanIndexNum();
-		ClearImage() ;
+        ClearImage();
 		setZValue(1);
 		//m_hMutex.unlock();
 		setAcceptDrops(true);
@@ -1966,7 +1965,7 @@ void DopplerGraphicView::UpdateDrawing()
         QMutexLocker locker(&m_pBackGround->m_hMutex);
         //m_pBackGround->m_hMutex.lock();
 
-            m_pDrawScan->Draw (m_pBackGround->GetBaseImage());
+            m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
 
         //m_pBackGround->m_hMutex.unlock();
 	}
