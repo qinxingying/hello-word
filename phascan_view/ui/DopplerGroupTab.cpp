@@ -2044,8 +2044,8 @@ void DopplerGroupTab::on_BtnDepthCal_clicked()
 	_display.UpdateAllViewOfGroup(m_nGroupId);
 	g_pMainWnd->RunDrawThreadOnce(true);
 
-	_process->GetTofdDepth(m_nGroupId, 2, &_tofd->fDepthCal);
-	ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
+    _process->GetTofdDepth(m_nGroupId, 1, &_tofd->fDepthCal);
+    ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
 
 	ui->SpinBoxZeroOff->setValue(_tofd->fZeroOff);
 }
