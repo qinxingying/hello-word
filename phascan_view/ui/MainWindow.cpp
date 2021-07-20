@@ -2326,6 +2326,10 @@ int MainWindow::selectDefectMeasureMethod()
 
     int heightMethodId = defectMethodNew.getHeightMeasureMethodId();
     int lengthMethodId = defectMethodNew.getLengthMeasureMethodId();
+    if (defectMethodNew.isAutoIdentify()) {
+        heightMethodId = 0; // 6db
+        lengthMethodId = 1; // 端点6db
+    }
     double scale       = defectMethodNew.getScale();
     bool autoMerged    = defectMethodNew.isAutoMerged();
 

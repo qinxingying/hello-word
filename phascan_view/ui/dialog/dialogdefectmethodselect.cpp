@@ -6,6 +6,26 @@ DialogDefectMethodSelect::DialogDefectMethodSelect(QWidget *parent) :
     ui(new Ui::DialogDefectMethodSelect)
 {
     ui->setupUi(this);
+    init_ui();
+
+    ui->scaleDoubleSpinBox->setValue(m_scale);
+
+    ui->autoH->hide();
+    ui->autoL->hide();
+}
+
+DialogDefectMethodSelect::~DialogDefectMethodSelect()
+{
+    delete ui;
+}
+
+void DialogDefectMethodSelect::retranslateUi()
+{
+    ui->retranslateUi(this);
+}
+
+void DialogDefectMethodSelect::init_ui()
+{
     if (m_lengthMeasureMethod == 0) {
         ui->halfWaveRadioL->setChecked(true);
     } else if (m_lengthMeasureMethod == 1){
@@ -21,18 +41,6 @@ DialogDefectMethodSelect::DialogDefectMethodSelect(QWidget *parent) :
     } else {
         ui->sensitivityRadioH->setChecked(true);
     }
-
-    ui->scaleDoubleSpinBox->setValue(m_scale);
-}
-
-DialogDefectMethodSelect::~DialogDefectMethodSelect()
-{
-    delete ui;
-}
-
-void DialogDefectMethodSelect::retranslateUi()
-{
-    ui->retranslateUi(this);
 }
 
 void DialogDefectMethodSelect::keyPressEvent(QKeyEvent *event)
@@ -98,4 +106,34 @@ void DialogDefectMethodSelect::on_tipDiffractionH_clicked()
 void DialogDefectMethodSelect::on_autoMerge_clicked()
 {
     m_autoMerge = ui->autoMerge->isChecked();
+}
+
+void DialogDefectMethodSelect::on_autoIdentify_clicked()
+{
+    m_autoIdentify =  ui->autoIdentify->isChecked();
+    if (m_autoIdentify) {
+        ui->autoL->setChecked(true);
+        ui->autoH->setChecked(true);
+
+        ui->halfWaveRadioL->setEnabled(false);
+        ui->endHalfWaveRadioL->setEnabled(false);
+        ui->sensitivityRadioL->setEnabled(false);
+
+        ui->halfWaveRadioH->setEnabled(false);
+        ui->endHalfWaveRadioH->setEnabled(false);
+        ui->sensitivityRadioH->setEnabled(false);
+        ui->tipDiffractionH->setEnabled(false);
+
+    } else {
+        ui->halfWaveRadioL->setEnabled(true);
+        ui->endHalfWaveRadioL->setEnabled(true);
+        ui->sensitivityRadioL->setEnabled(true);
+
+        ui->halfWaveRadioH->setEnabled(true);
+        ui->endHalfWaveRadioH->setEnabled(true);
+        ui->sensitivityRadioH->setEnabled(true);
+        ui->tipDiffractionH->setEnabled(true);
+
+        init_ui();
+    }
 }

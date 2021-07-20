@@ -19,12 +19,15 @@ public:
 
     int getHeightMeasureMethodId() {return m_heightMeasureMethod;}
 
+    bool isAutoIdentify() {return m_autoIdentify;}
+
     double getScale() {return m_scale;}
 
     bool isAutoMerged() {return m_autoMerge;}
 
     void retranslateUi();
-
+private:
+    void init_ui();
 protected:
     void keyPressEvent(QKeyEvent *event);
 
@@ -49,12 +52,15 @@ private slots:
 
     void on_autoMerge_clicked();
 
+    void on_autoIdentify_clicked();
+
 private:
     Ui::DialogDefectMethodSelect *ui;
 
     int m_lengthMeasureMethod {0};
     int m_heightMeasureMethod {0};
     bool m_autoMerge {true};
+    bool m_autoIdentify {false};
     double m_scale {50.0};
 };
 
