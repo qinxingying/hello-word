@@ -2,6 +2,7 @@
 #include "gHeader.h"
 #include <cmath>
 #include "process/CalcMeasurement.h"
+#include <QMessageBox>
 
 DefectIdentify::DefectIdentify(int groupId, QObject *parent) :
     QObject(parent), m_groupId(groupId), m_identifyDone(false)
@@ -94,8 +95,10 @@ bool DefectIdentify::analysisDefect()
 {
     ParameterProcess* _process = ParameterProcess::Instance();
     if (m_scanStart == 0 && m_scanStop == 0 && m_beamStart == 0 && m_beamStop == 0) {
-        m_scanStop  = _process->GetScanMax();
-        m_beamStop  = _process->GetGroupLawQty(m_groupId);
+        QMessageBox::warning(NULL, tr("Warnning"),tr("Please select identify area!"),QMessageBox::Ok);
+        return false;
+        //m_scanStop  = _process->GetScanMax();
+        //m_beamStop  = _process->GetGroupLawQty(m_groupId);
     }
     bool ret;
     ret = analysisData(m_scanStart, m_scanStop, m_beamStart, m_beamStop);

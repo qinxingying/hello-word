@@ -2357,6 +2357,14 @@ void MainWindow::startDefectIdentify()
     maxValues.clear();
 
     _pConfig->common.bDefectIdentifyStatusDone = false;
+
+    QElapsedTimer timer;
+    timer.start();
+
+    if (!_pConfig->m_defect[m_iCurGroup]->analysisDefect()) {
+        return;
+    }
+
     DEFECT_INFO* _pDfInfo = _pConfig->m_dfParam[m_iCurGroup].pDFHead;
     DEFECT_INFO* _pNext;
     while(_pDfInfo)
@@ -2373,11 +2381,6 @@ void MainWindow::startDefectIdentify()
     ProcessDisplay _display ;
     _display.ResetDefectInfo(m_iCurGroup);
     _display.UpdateAllViewOverlay();
-
-    QElapsedTimer timer;
-    timer.start();
-
-    _pConfig->m_defect[m_iCurGroup]->analysisDefect();
 
     _pConfig->m_defect[m_iCurGroup]->getDefectInfo(rectL,rectH,maxScanId, maxLawIds, maxValues);
     _pConfig->loadDefectVersion = 2;
