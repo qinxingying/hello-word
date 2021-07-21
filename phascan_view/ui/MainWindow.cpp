@@ -1123,7 +1123,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
 
         ui->actionSave_Data->setEnabled(true);
         ui->actionSave_B_Scan_Data->setEnabled(true);
-        ui->actionNew->setEnabled(true);
+        //ui->actionNew->setEnabled(true);
         _pConfig->common.bMarkDefectNotIdentifyArea = false;
 
         ui->IndicationTable->setEnabled(false);
