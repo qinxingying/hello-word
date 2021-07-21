@@ -933,7 +933,7 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueRefGain->setValue(m_pGroup->RefGain);
     ui->ValueCoupleGain->setValue(m_pGroup->CoupleGain);
     ui->ValueCouplingGain->setValue(m_pGroup->CoupleMonitoringGain);
-    ui->ValueCouplingGainCom->setMinimum(0 - m_pGroup->CoupleGain);
+    ui->ValueCouplingGainCom->setMinimum(0 - m_pGroup->CoupleMonitoringGain);
     ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
@@ -2044,8 +2044,8 @@ void DopplerGroupTab::on_BtnDepthCal_clicked()
 	_display.UpdateAllViewOfGroup(m_nGroupId);
 	g_pMainWnd->RunDrawThreadOnce(true);
 
-	_process->GetTofdDepth(m_nGroupId, 2, &_tofd->fDepthCal);
-	ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
+    _process->GetTofdDepth(m_nGroupId, 1, &_tofd->fDepthCal);
+    ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
 
 	ui->SpinBoxZeroOff->setValue(_tofd->fZeroOff);
 }
