@@ -95,7 +95,7 @@ bool DefectIdentify::analysisDefect()
 {
     ParameterProcess* _process = ParameterProcess::Instance();
     if (m_scanStart == 0 && m_scanStop == 0 && m_beamStart == 0 && m_beamStop == 0) {
-        QMessageBox::warning(NULL, tr("Warnning"),tr("Please select identify area!"),QMessageBox::Ok);
+        QMessageBox::information(NULL, tr("Information"),tr("Please select identify area!"),QMessageBox::Ok);
         return false;
         //m_scanStop  = _process->GetScanMax();
         //m_beamStop  = _process->GetGroupLawQty(m_groupId);

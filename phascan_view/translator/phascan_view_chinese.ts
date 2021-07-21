@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh_CN">
 <context>
+    <name>DefectIdentify</name>
+    <message>
+        <location filename="../configure/defectidentify.cpp" line="98"/>
+        <source>Please select identify area!</source>
+        <translation>请选择缺陷识别区域！</translation>
+    </message>
+    <message>
+        <location filename="../configure/defectidentify.cpp" line="98"/>
+        <source>Information</source>
+        <translation>提示</translation>
+    </message>
+</context>
+<context>
     <name>DialogAboutFileProperties</name>
     <message>
         <location filename="../ui/dialog/dialogaboutfileproperties.ui" line="14"/>
@@ -1149,23 +1162,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1907"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="1933"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1909"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1935"/>
         <source>/defectArea</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="1957"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="1959"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2236"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2238"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2236"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2238"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4226,27 +4239,27 @@
         <translation>正在保存缺陷...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2385"/>
+        <location filename="../ui/mainwindow.cpp" line="2392"/>
         <source>Analysis defects...</source>
         <translation>缺陷识别中...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2592"/>
+        <location filename="../ui/mainwindow.cpp" line="2594"/>
         <source>Set current position as defect position ?</source>
         <translation>设置当前位置为缺陷位置？</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2593"/>
+        <location filename="../ui/mainwindow.cpp" line="2595"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation>缺陷位置没有设置。如果你设置当前位置为缺陷位置，点击0k，否则点击取消并用Z键来设置缺陷位置</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="3025"/>
+        <location filename="../ui/mainwindow.cpp" line="3027"/>
         <source>Save CSacn Data</source>
         <translation>保存C扫数据</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="3091"/>
+        <location filename="../ui/mainwindow.cpp" line="3093"/>
         <source>Save BSacn Data</source>
         <translation>保存B扫数据</translation>
     </message>
@@ -4284,13 +4297,13 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="1405"/>
-        <location filename="../ui/mainwindow.cpp" line="2112"/>
+        <location filename="../ui/mainwindow.cpp" line="2116"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.cpp" line="1405"/>
-        <location filename="../ui/mainwindow.cpp" line="2112"/>
+        <location filename="../ui/mainwindow.cpp" line="2116"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
