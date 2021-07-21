@@ -1874,6 +1874,7 @@ void DopplerConfigure::SaveDefectFile(QString& path_)
 
             for(int i = 0; i < _iDefectN; i++) {
                 DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroup, i);
+                _pDfInfo->bValid = true;
                 write.writeRawData((char*)_pDfInfo, sizeof(DEFECT_INFO_V1));
             }
         }
@@ -1890,6 +1891,7 @@ void DopplerConfigure::SaveDefectFile(QString& path_)
 
             for(int i = 0; i < _iDefectN; i++) {
                 DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroup, i);
+                _pDfInfo->bValid = true;
                 write.writeRawData((char*)_pDfInfo, sizeof(DEFECT_INFO));
             }
         }
@@ -2051,7 +2053,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
             m_dfParam[iGroupId_].dfInfo.fVPAStop  = _fRef > _fMes ? _fRef : _fMes;
 
 			m_dfParam[iGroupId_].dfInfo.fUDepth = m_dfParam[iGroupId_].dfInfo.fUStart;
-			m_dfParam[iGroupId_].dfInfo.bValid = true;
+            m_dfParam[iGroupId_].dfInfo.bValid = false;
 
             m_dfParam[iGroupId_].dfInfo.dGroupId = iGroupId_ + 1;
 
@@ -2426,12 +2428,12 @@ float DopplerConfigure::DefectLengthPos(int iGroupId_, float* pStart_, int index
 
 
 	float _fLength = -1;
-	if(_pDfInfo->bValid) {
-		if(_pDfInfo->fSStart > -10000) {
-			_fLength = _pDfInfo->fSStop - _pDfInfo->fSStart;
-            *pStart_ = _pDfInfo->fSStart;
-		}
-	}
+
+    if(_pDfInfo->fSStart > -10000) {
+        _fLength = _pDfInfo->fSStop - _pDfInfo->fSStart;
+        *pStart_ = _pDfInfo->fSStart;
+    }
+
 	*pStart_ += _fScanOff;
 	return _fLength;
  }
@@ -2444,12 +2446,12 @@ float DopplerConfigure::DefectVPAPos(int iGroupId_, float* pStart_, int index_)
 
 
     float _fLength = -1;
-    if(_pDfInfo->bValid) {
-        if(_pDfInfo->fVPAStart > -10000) {
-            _fLength = _pDfInfo->fVPAStop - _pDfInfo->fVPAStart;
-            *pStart_ = _pDfInfo->fVPAStart;
-        }
+
+    if(_pDfInfo->fVPAStart > -10000) {
+        _fLength = _pDfInfo->fVPAStop - _pDfInfo->fVPAStart;
+        *pStart_ = _pDfInfo->fVPAStart;
     }
+
     return _fLength;
  }
 
@@ -2483,12 +2485,12 @@ float DopplerConfigure::DefectHeightPos(int iGroupId_, float* pStart_, int index
 	DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
 
 	float _fHeight = -1;
-	if(_pDfInfo->bValid) {
-		if(_pDfInfo->fUStart > -10000) {
-			_fHeight = _pDfInfo->fUStop - _pDfInfo->fUStart;
-			*pStart_ =_pDfInfo->fUStart;
-		}
-	}
+
+    if(_pDfInfo->fUStart > -10000) {
+        _fHeight = _pDfInfo->fUStop - _pDfInfo->fUStart;
+        *pStart_ =_pDfInfo->fUStart;
+    }
+
 	return _fHeight;
 }
 
@@ -2502,12 +2504,12 @@ float DopplerConfigure::DefectWidthPos(int iGroupId_, float* pStart_, int index_
 	DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
 
 	float _fWidth = -1;
-	if(_pDfInfo->bValid) {
-		if(_pDfInfo->fIStart > -10000) {
-			_fWidth  = _pDfInfo->fIStop - _pDfInfo->fIStart;
-			*pStart_ =_pDfInfo->fIStart;
-		}
-	}
+
+    if(_pDfInfo->fIStart > -10000) {
+        _fWidth  = _pDfInfo->fIStop - _pDfInfo->fIStart;
+        *pStart_ =_pDfInfo->fIStart;
+    }
+
 	return _fWidth;
 }
 
@@ -2530,11 +2532,11 @@ float DopplerConfigure::DefectDepthPos(int iGroupId_, int index_)
 	DEFECT_INFO* _pDfInfo = &m_dfParam[iGroupId_].dfInfo;
 
 	float _fDepth = -1;
-	if(_pDfInfo->bValid) {
-		if(_pDfInfo->fUDepth > -10000) {
-			_fDepth = _pDfInfo->fUDepth;
-		}
-	}
+
+    if(_pDfInfo->fUDepth > -10000) {
+        _fDepth = _pDfInfo->fUDepth;
+    }
+
 	return _fDepth;
 }
 

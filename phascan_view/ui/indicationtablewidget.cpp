@@ -446,6 +446,7 @@ void IndicationTableWidget::on_restoreBtn_clicked()
 
 void IndicationTableWidget::on_saveBtn_clicked()
 {
+    clearStack();
     emit save();
 }
 

@@ -2082,12 +2082,12 @@ void MainWindow::slotDeleteDefect()
     ui->IndicationTable->deleteDefect(pConfig->m_dfParam[m_iCurGroup].index);
 }
 
+// 保存缺陷截图
 void MainWindow::slotSaveDefect()
 {
     DopplerConfigure* pConfig = DopplerConfigure::Instance();
     ProcessDisplay process;
     int cnt = pConfig->GetDefectCnt(m_iCurGroup);
-    bool bSaved = false;
 
     QProgressDialog progress(this);
     progress.setRange(0, cnt);
@@ -2107,29 +2107,25 @@ void MainWindow::slotSaveDefect()
         progress.setValue(i+1);
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
-        loadDefectPosition(m_iCurGroup, i);
         DEFECT_INFO* pDfInfo = pConfig->GetDefectPointer(m_iCurGroup, i);
+
+        if (pDfInfo->bValid)
+            continue;
+
+        loadDefectPosition(m_iCurGroup, i);
         QString strPath = pConfig->m_szDefectPathName + QString(tr("/")) + QString(tr(pDfInfo->srtImageName)) + QString(tr(".png"));
 
         pConfig->m_nCutBmpNo[m_iCurGroup] = i+1;
         process.UpdateAllViewCursorOfGroup(m_iCurGroup);
-//        sleep(400);
-        pConfig->SaveDefectFile(pConfig->m_szDefectPathName);
-        bSaved = true;
 
         SaveCurScreenshot(strPath);
     }
     pConfig->m_nCutBmpNo[m_iCurGroup] = 0;
-    process.UpdateAllViewCursorOfGroup(m_iCurGroup);
 
-    if (!bSaved)
-        pConfig->SaveDefectFile(pConfig->m_szDefectPathName);
+    pConfig->SaveDefectFile(pConfig->m_szDefectPathName);
 
     int timeCost = timer.elapsed();
     qDebug() << "save cost:"<< timeCost << "ms";
-    if (timeCost < 1000) {
-        sleep(500);
-    }
 }
 
 void MainWindow::slotModifyDefect(int groupId, DEFECT_INFO &defect)
@@ -2361,10 +2357,18 @@ void MainWindow::startDefectIdentify()
     maxValues.clear();
 
     _pConfig->common.bDefectIdentifyStatusDone = false;
-    while(_pConfig->GetDefectCnt(m_iCurGroup)) {
-        _pConfig->DeleteDefect(m_iCurGroup, _pConfig->GetDefectCnt(m_iCurGroup) - 1);
+    DEFECT_INFO* _pDfInfo = _pConfig->m_dfParam[m_iCurGroup].pDFHead;
+    DEFECT_INFO* _pNext;
+    while(_pDfInfo)
+    {
+        _pNext = _pDfInfo->pNext;
+        if(!_pDfInfo->bValid)
+        {
+            _pConfig->DeleteDefect(m_iCurGroup, _pDfInfo->dIndex - 1);
+        }
+        _pDfInfo = _pNext;
     }
-    _pConfig->ReleaseDefect(m_iCurGroup);
+
     ui->IndicationTable->clearStack();
     ProcessDisplay _display ;
     _display.ResetDefectInfo(m_iCurGroup);
@@ -2410,11 +2414,6 @@ void MainWindow::startDefectIdentify()
         }
         progress.setValue(i+1);
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-    }
-
-    if (rectL.count() && rectH.count() && maxScanId.count() && maxLawIds.count()) {
-        _pConfig->m_dfParam[m_iCurGroup].index = 0;
-        loadDefectPosition(m_iCurGroup, 0);
     }
 
     ui->IndicationTable->updateDefectTable();
