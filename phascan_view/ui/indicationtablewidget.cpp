@@ -295,6 +295,10 @@ void IndicationTableWidget::on_merge_tableWidget_item()
     float fSStop    = 0.0;
     float fVPAStart = 0.0;
     float fVPAStop  = 0.0;
+    float fIStart = 0.0;
+    float fIStop = 0.0;
+    float fUStart = 0.0;
+    float fUStop = 0.0;
 
     for (auto i : ids) {
         DEFECT_INFO* pDfInfo = m_pConfig->GetDefectPointer(m_nGroupId, i);
@@ -304,11 +308,19 @@ void IndicationTableWidget::on_merge_tableWidget_item()
             fSStop      = pDfInfo->fSStop;
             fVPAStart   = pDfInfo->fVPAStart;
             fVPAStop    = pDfInfo->fVPAStop;
+            fIStart     = pDfInfo->fIStart;
+            fIStop      = pDfInfo->fIStop;
+            fUStart     = pDfInfo->fUStart;
+            fUStop      = pDfInfo->fUStop;
         } else {
             fSStart     = pDfInfo->fSStart < fSStart ? pDfInfo->fSStart : fSStart;
             fSStop      = pDfInfo->fSStop > fSStop ? pDfInfo->fSStop : fSStop;
             fVPAStart   = pDfInfo->fVPAStart < fVPAStart ? pDfInfo->fVPAStart : fVPAStart;
             fVPAStop    = pDfInfo->fVPAStop > fVPAStop ? pDfInfo->fVPAStop : fVPAStop;
+            fIStart     = pDfInfo->fIStart < fIStart ? pDfInfo->fIStart : fIStart;
+            fIStop      = pDfInfo->fIStop > fIStop ? pDfInfo->fIStop : fIStop;
+            fUStart     = pDfInfo->fUStart < fUStart ? pDfInfo->fUStart : fUStart;
+            fUStop      = pDfInfo->fUStop > fUStop ? pDfInfo->fUStop : fUStop;
         }
     }
     QVector<DEFECT_INFO *> tmp;
@@ -363,6 +375,10 @@ void IndicationTableWidget::on_merge_tableWidget_item()
     pDfInfo->fSStop    = fSStop;
     pDfInfo->fVPAStart = fVPAStart;
     pDfInfo->fVPAStop  = fVPAStop;
+    pDfInfo->fIStart   = fIStart;
+    pDfInfo->fIStop    = fIStop;
+    pDfInfo->fUStart   = fUStart;
+    pDfInfo->fUStop    = fUStop;
 
     m_pConfig->ReorderDefect();
     specialId = m_pConfig->GetDefectId(m_nGroupId, pDfInfo->dIndex);
