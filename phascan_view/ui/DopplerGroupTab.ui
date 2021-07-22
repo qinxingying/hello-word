@@ -1716,7 +1716,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>318</width>
+        <width>315</width>
         <height>786</height>
        </rect>
       </property>
@@ -5114,7 +5114,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>318</width>
+        <width>315</width>
         <height>1160</height>
        </rect>
       </property>
@@ -5172,8 +5172,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>309</width>
-            <height>1159</height>
+            <width>306</width>
+            <height>1142</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -7227,7 +7227,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>318</width>
+        <width>315</width>
         <height>850</height>
        </rect>
       </property>
@@ -7297,7 +7297,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>318</width>
+            <width>315</width>
             <height>850</height>
            </rect>
           </property>
@@ -8267,7 +8267,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>318</width>
+        <width>315</width>
         <height>1040</height>
        </rect>
       </property>
@@ -8319,7 +8319,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>318</width>
+            <width>315</width>
             <height>1040</height>
            </rect>
           </property>
@@ -10103,6 +10103,27 @@
                   </item>
                  </widget>
                 </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="LabelCScanShowAll">
+                  <property name="text">
+                   <string>C Scan Show All:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QComboBox" name="ComCScanShowAll">
+                  <item>
+                   <property name="text">
+                    <string>OFF</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>ON</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
                 <item row="3" column="0">
                  <widget class="QLabel" name="LabelCScanThickness">
                   <property name="sizePolicy">
@@ -10122,15 +10143,46 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="LabelCScanShowAll">
+                <item row="4" column="0">
+                 <widget class="QLabel" name="LabelSscanReflect">
                   <property name="text">
-                   <string>C Scan Show All:</string>
+                   <string>S Scan Reflect:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
-                 <widget class="QComboBox" name="ComCScanShowAll">
+                <item row="4" column="1">
+                 <widget class="QComboBox" name="ComSscanReflect">
+                  <item>
+                   <property name="text">
+                    <string>Close</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>First</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Last</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Overlay</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="LabeloneToOneShows">
+                  <property name="text">
+                   <string>S Scanf one to one shows:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QComboBox" name="ComOneToOneShows">
                   <item>
                    <property name="text">
                     <string>OFF</string>
@@ -10513,8 +10565,6 @@
     </widget>
    </item>
   </layout>
-  <zorder>toolBox</zorder>
-  <zorder>groupBox</zorder>
  </widget>
  <customwidgets>
   <customwidget>

@@ -1,4 +1,4 @@
-#include "DopplerDrawScan.h"
+﻿#include "DopplerDrawScan.h"
 #include "string.h"
 #include <QImage>
 #include <QPainter>
@@ -6,6 +6,7 @@
 #include <QPointF>
 #include <assert.h>
 #include <qmath.h>
+#include <QDebug>
 DopplerDrawScan::DopplerDrawScan(QObject *parent) :
     QObject(parent)
 {
@@ -139,3 +140,13 @@ void DopplerDrawScan::UpdateIndexRange(int nType_, int nRangle_ , int nPos_)
     }
     emit signalIndexRangeMove( nType_, 0, m_indexStartIndex, m_indexStopIndex);
 }
+
+
+
+
+
+
+
+
+
+

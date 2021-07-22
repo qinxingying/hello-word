@@ -14,7 +14,7 @@
 #include "DopplerDataView.h"
 #include "DopplerViewItems.h"
 #include "ParameterProcess.h"
-
+#include "DopplerDrawSScanTrueDepth.h"
 #include <QObject>
 #include <QVector>
 
@@ -43,6 +43,7 @@ protected:
 	DopplerDataView*	m_pView ;
 	DopplerConfigure*	m_pConfigure;
 	ParameterProcess*	m_pProcess;
+
 	int m_nGroup ;
     int m_nLaw   ;
     int m_eDisp  ;

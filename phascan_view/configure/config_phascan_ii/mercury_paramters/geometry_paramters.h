@@ -1,4 +1,4 @@
-#ifndef GEOMETRY_H
+﻿#ifndef GEOMETRY_H
 #define GEOMETRY_H
 
 #include <QObject>
@@ -6,6 +6,7 @@
 #include "cylinder_paramters.h"
 #include "nozzle_paramters.h"
 #include "fillet_paramters.h"
+#include "asymmetric_plane_paramters.h"
 
 namespace Paramters {
 
@@ -20,6 +21,7 @@ private:
     Cylinder m_cylinder;
     Nozzle m_nozzle;
     Fillet m_fillet;
+    Asymmetric_Plane m_Asymmetric_Plane;
     friend class Config;
 };
 

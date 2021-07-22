@@ -65,6 +65,7 @@ public:
     double              curlawstop;
     int                 currangestart;
     int                 currangestop;
+
 protected:
     virtual void UpdateDisplayRange(int nType_, int nRangle_ , int nPos_);
     virtual void UpdateIndexRange(int nType_, int nRangle_ , int nPos_);

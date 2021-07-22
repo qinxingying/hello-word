@@ -202,6 +202,7 @@ enum setup_WELD_TYPE_II
     UU,
     UV,
     TKY,
+    ASYMMETRIC,
     DXF
 };
 
@@ -211,6 +212,14 @@ enum setup_WELD_SYMMETRY_TYPE
     setup_WELD_RIGHT ,
     setup_WELD_LEFT
 } ;
+
+enum setup_PLANE_ALIGN_TYPE//板的对齐方式
+{
+    setup_PLANE_TOP=0,
+    setup_PLANE_CENTER,
+    setup_PLANE_BOTTOM,
+};
+
 
 struct WELD
 {
@@ -226,7 +235,7 @@ struct WELD
     float   fizone_down_height;
     float	fizone_down_angle ;
     float   Diameter;
-} ;
+};
 
 struct WELD_FORMAT_I
 {
@@ -300,6 +309,21 @@ struct WELD_FORMAT_TKY
     double a2;
 };
 
+//二代数据不等厚焊缝数据
+struct WELD_FORMAT_ASY
+{
+
+    bool m_symmetry;
+    double W1;
+    double H1;
+    double W2;
+    double H2;
+    double W3;
+    double m_thickness;//主板厚度
+    double s_thickness;
+
+};
+
 enum KTY_ProbePosition {
     KTY_WED_1,
     KTY_WED_2,
@@ -328,6 +352,13 @@ struct WELD_II
     float topCapHeight;
     float topCapOverlap;
     Cylinder_WeldDir eWeldDir;          // 管道焊缝方向
+
+    double l1;                          // 不等厚焊缝削边信息
+    double h1;
+    double l2;
+    double h2;
+    setup_PLANE_ALIGN_TYPE align;  //不等厚板对齐
+
     union{
         WELD_FORMAT_I  I;
         WELD_FORMAT_V  V;
@@ -337,6 +368,8 @@ struct WELD_II
         WELD_FORMAT_UU UU;
         WELD_FORMAT_UV UV;
         WELD_FORMAT_TKY TKY;
+        WELD_FORMAT_ASY ASY;
+
     };
 };
 
@@ -569,6 +602,25 @@ enum setup_PROBE_ANGLE
 	setup_PROBE_PART_SKEW_270
 };
 
+//S扫反射类型显示
+enum setup_REFLECT_TYPE
+{
+    CLOSE = 0,
+    FIRST   ,
+    LAST    ,
+    OVERLAY
+
+};
+
+//S扫1:1显示
+enum setup_REFLECT_SHOWS
+{
+    OFF = 0,
+    ON
+
+};
+
+
 enum setup_CURSOR_TYPE
 {
 	setup_CURSOR_LAW = 0 , /* 参考光标当前聚焦法则*/
@@ -728,6 +780,9 @@ typedef struct _Group
 	float					fIndexOffset;		/*mm*/
     setup_PROBE_ANGLE		eSkew;              /* 探头角度 */
 
+    setup_REFLECT_TYPE      m_Retype; //S扫反射类型
+    setup_REFLECT_SHOWS     m_Shows; //S扫1:1显示
+
 	/*  校准状态  */
 	int						bVelocityCalib;
 	int						bWedgeDelayCalib;
@@ -773,6 +828,8 @@ typedef struct _Group
     TOPC_DATA               TopCData;
     RASTER_DATA             RasterData;
     STORE_SCAN_LAWID        storeScanLawId;
+
+
 }GROUP_CONFIG;
 //####################################################################################
 //#################				 COMMON DATA			 ######################
