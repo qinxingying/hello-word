@@ -1,9 +1,9 @@
-#include "DopplerRulerBar.h"
+﻿#include "DopplerRulerBar.h"
 #include <QPainter>
 #include <math.h>
 #include <QtMath>
 #include <QDragEnterEvent>
-
+#include<QDebug>
 const int g_nBaseLineOffset = 3 ;
 const int g_nMinMarkerLength= 3 ;
 const int g_nMidMarkerLength= 5 ;

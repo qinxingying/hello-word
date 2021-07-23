@@ -982,6 +982,7 @@ void DopplerViewItems::SetupMarkersVector(QVector<QLineF>* pLines_)
 	{
 		markers.append(pLines_->at(i));
 	}
+
 }
 
 void DopplerViewItems::SetupLawMarkerString(QVector<QString>* pMarkers_)

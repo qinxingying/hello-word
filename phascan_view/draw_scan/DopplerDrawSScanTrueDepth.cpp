@@ -4,9 +4,11 @@
 #include <math.h>
 #include <gHeader.h>
 #include "defectidentify.h"
+
 DopplerDrawSScanTrueDepth::DopplerDrawSScanTrueDepth() :
 	DopplerDrawScan()
 {
+
     m_nWidth = m_nHeight  = 0;
     m_pDraw	   = NULL;
     m_pAngleZoom = NULL;
@@ -14,6 +16,7 @@ DopplerDrawSScanTrueDepth::DopplerDrawSScanTrueDepth() :
     m_pColRate   = NULL;
     m_pDataNo	 = NULL;
     m_bClear	 = false;
+
 }
 
 DopplerDrawSScanTrueDepth::~DopplerDrawSScanTrueDepth ()
@@ -63,18 +66,23 @@ void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
     int _nHeight	  = pImage_->height();
     int _nWidth	   = pImage_->width();
 
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[m_cInfo.nGroupId];
+    float m_thickness;
+    thickness=_group.part.afSize[0];
+
     if((m_nWidth !=  _nWidth) || (m_nHeight != _nHeight) || (m_bWeldRemainingHeightAffect != m_pGroup->bWeldRemainingHeight))
     {
         m_nWidth  =  _nWidth ;
         m_nHeight =  _nHeight ;
         m_bWeldRemainingHeightAffect = m_pGroup->bWeldRemainingHeight;
+        _group.zoomFactor=m_nHeight/(float)m_nWidth;
         UpdateDrawInfo() ;
     }
 
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    GROUP_CONFIG& _group = _pConfig->group[m_cInfo.nGroupId];
-    float m_thickness;
-    thickness=_group.part.afSize[0];
+
+
+
     /***********工件厚度更改后刷新图像*************/
     if(thickness!=m_thickness)
     {
@@ -760,6 +768,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 }
 void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 {
+
     //m_hMutex.lock();
     QMutexLocker locker(&m_hMutex);
 
@@ -767,6 +776,8 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
         //m_hMutex.unlock();
 		return;
 	}
+
+
 
 
     ParameterProcess* _process = ParameterProcess::Instance();
@@ -777,6 +788,9 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = _pConfig->group[m_cInfo.nGroupId];
+
+    float _fStart , _fStop  ;
+    _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fStart ,  &_fStop);
 
 
     int _nLawSize;
@@ -838,8 +852,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
             m_width=m_nWidth;
         }
        /*****************1:1比例显示*************/
-
-
          Img2.resize(m_nHeight);//设置向量行-高
          for(int j=0;j<Img2.size();j++)
          {
@@ -853,6 +865,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
           }
 
          int m_Offsety=OFFSET_Y/_nStepY; //坐标偏移
+         int m_i=(thickness-(_fStart+OFFSET_Y))/_nStepY+m_Offsety;//一次波截止纵坐标
          if(!_group.m_Retype)//不翻转
          {
              for(i = 0; i< m_nHeight; i++)
@@ -880,8 +893,9 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                  }
              }
          }else{
-         //显示和记录一次波数据
-        for(i = m_Offsety; i<((OFFSET_Y+thickness)/_nStepY)&&i<m_nHeight; i++)
+              //显示和记录一次波数据
+
+        for(i = m_Offsety;i<m_i&&i<m_nHeight; i++)
         {
             _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
             for(j = 0; j < m_width; j++)
@@ -906,11 +920,10 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
             }
         }
 
-
-        //翻转二次波(底波)图像-处理重叠部分
-        int m_AxisHeight=(thickness/_nStepY+OFFSET_Y/_nStepY)*2; //翻转轴高度
+        //翻转二次波(底波)图像-处理重叠部分 _fStart/_nStepY
+        int m_AxisHeight=((thickness+OFFSET_Y-(_fStart+OFFSET_Y))/_nStepY)*2; //翻转轴高度
         int m_DateOffset=m_nHeight+m_Offsety; //颜色数据偏移后高度
-        for(i = (OFFSET_Y+thickness)/_nStepY; i<m_AxisHeight&&i<m_DateOffset;i++)//底波范围
+        for(i = m_i; i<m_AxisHeight&&i<m_DateOffset;i++)//底波范围
         {
 
             _pImg1 = _pImageBits + _nWidthStep * (m_AxisHeight-i);//每行数据的起点位置
@@ -933,7 +946,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 
                     if(_group.m_Retype==FIRST) //一次波优先
                     {
-
                         if(m_AxisHeight-i>=m_nHeight) continue;//防止超过下标范围
                         if(_pImg2==Img2[m_AxisHeight-i][j])
                          {
@@ -970,6 +982,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 }
 
     }
-
     //m_hMutex.unlock();
+
 }

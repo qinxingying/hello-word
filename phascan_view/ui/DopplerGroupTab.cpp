@@ -2488,35 +2488,33 @@ void DopplerGroupTab::on_ComCScanShowAll_currentIndexChanged(int index)
     g_pMainWnd->RunDrawThreadOnce();
 }
 
-
 void DopplerGroupTab::on_ComSscanReflect_currentIndexChanged(int index)
 {
     if(!ui->ComSscanReflect->hasFocus()) return;
-    ParameterProcess* _process = ParameterProcess::Instance();
-    _process->SetupReflectType(m_nGroupId,(setup_REFLECT_TYPE)index);
+    //    ParameterProcess* _process = ParameterProcess::Instance();
+    //    _process->SetupReflectType(m_nGroupId,(setup_REFLECT_TYPE)index);
+    m_pGroup->m_Retype  = (setup_REFLECT_TYPE)index  ;
 
     ProcessDisplay _display ;
-    _display.UpdateAllView();
+    //    _display.UpdateAllView();
     _display.UpdateAllViewOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 
     return ;
 }
 
-
 void DopplerGroupTab::on_ComOneToOneShows_currentIndexChanged(int index)
 {
     if(!ui->ComOneToOneShows->hasFocus()) return;
-    ParameterProcess* _process = ParameterProcess::Instance();
-    _process->SetupReflectShows(m_nGroupId,(setup_REFLECT_SHOWS)index);
+    //    ParameterProcess* _process = ParameterProcess::Instance();
+    //    _process->SetupReflectShows(m_nGroupId,(setup_REFLECT_SHOWS)index);
+     m_pGroup->m_Shows  = (setup_REFLECT_SHOWS)index  ;
 
     ProcessDisplay _display ;
-    _display.UpdateAllView();
+    //    _display.UpdateAllView();
     _display.UpdateAllViewOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
-
     return ;
-
 
 }
 

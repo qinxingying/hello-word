@@ -1,4 +1,4 @@
-#ifndef DOPPLERDRAWSSCANSOUNDPATH_H
+﻿#ifndef DOPPLERDRAWSSCANSOUNDPATH_H
 #define DOPPLERDRAWSSCANSOUNDPATH_H
 
 #include "DopplerDrawScan.h"
@@ -32,6 +32,7 @@ public:
 
 protected:
     S_SCAN_DRAW_INFO m_SScanInfo ;
+
 
 };
 

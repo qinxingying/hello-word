@@ -151,7 +151,6 @@ QPainterPath DopplerLawMarker::shape () const
     return path ;
 
 }
-
 void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* /*item*/, QWidget* /*widget*/)
 {
 
@@ -174,11 +173,13 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
            QColor _color = m_aColor[i].lighter()  ;
            _pen.setColor(_color);
            painter->setPen(_pen);
-           QLineF _line = m_cMarkers.at(m_anMarkerId[i]) ;
+           QLineF _line = m_cMarkers.at(m_anMarkerId[i]);
+
            if(m_eDirection == HORIZENTAL)  _line = QLineF(0 , _line.y1() , m_nWidth, _line.y1());
            painter->drawLine(_line);
            _NewPen.setColor(_color);
            painter->setPen(_NewPen);
+
            if(m_eDirection == HORIZENTAL)
            {
                _line = QLineF(0 , dotLine.y1() , m_nWidth, dotLine.y1());
@@ -188,9 +189,8 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
                painter->drawLine(dotLine);
 
            /********m_Retype不为零***扫查轴翻转*************/
-           if(_group.m_Retype)
+           if(_group.m_Retype&&m_cMarkers.size()>_nLawQty)//m_cMarkers.size()>_nLawQty-多组时等待坐标获取完毕
            {
-
                _pen.setColor(_color);
                painter->setPen(_pen);
                QLineF _line2 = m_cMarkers.at(m_anMarkerId[i]+_nLawQty);
@@ -203,42 +203,43 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
 
            }
            /******m_Retype不为零*****扫查轴翻转*************/
-
-        }
-
-
-        else
+        }else
         {
-           QColor _color = m_aColor[i]  ;
-           _pen.setColor(_color);
-           painter->setPen(_pen);
-           QLineF _line = m_cMarkers.at(m_anMarkerId[i]) ;
-           if(m_eDirection == HORIZENTAL)   _line = QLineF(0 , _line.y1() , m_nWidth, _line.y1());
-           painter->drawLine(_line);
-           _NewPen.setColor(_color);
-           painter->setPen(_NewPen);
-           painter->drawLine(_line);
+            QColor _color = m_aColor[i];
+            _pen.setColor(_color);
+            painter->setPen(_pen);
+            QLineF _line = m_cMarkers.at(m_anMarkerId[i]);
+
+            if(m_eDirection == HORIZENTAL) _line = QLineF(0 , _line.y1() , m_nWidth, _line.y1());
+            painter->drawLine(_line);
+            _NewPen.setColor(_color);
+            painter->setPen(_NewPen);
+            painter->drawLine(_line);
 
            /***********扫查轴翻转*************/
-           if(_group.m_Retype)
+           if(_group.m_Retype&&m_cMarkers.size()>_nLawQty)//m_cMarkers.size()>_nLawQty-多组时等待坐标获取完毕
            {
            _pen.setColor(_color);
            painter->setPen(_pen);
            QLineF _line2 = m_cMarkers.at(m_anMarkerId[i]+_nLawQty);
+
            if(m_eDirection == HORIZENTAL)   _line = QLineF(0 , _line.y1() , m_nWidth, _line.y1());
            painter->drawLine(_line2);
 
            _NewPen.setColor(_color);
            painter->setPen(_NewPen);
            painter->drawLine(_line2);
+          /***********扫查轴翻转*************/
            }
-           /***********扫查轴翻转*************/
+
         }
 
         DrawLabel(painter , i) ;
     }
     if(m_bShowWeld)
         DrawWeld(painter) ;
+
+
 }
 
 void DopplerLawMarker::DrawLabel(QPainter *painter , int nIndex_)

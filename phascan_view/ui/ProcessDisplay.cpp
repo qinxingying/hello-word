@@ -320,7 +320,6 @@ int ProcessDisplay::CreateViews_S(QWidget* pWidget_)
         _pView = new DopplerDataView(pWidget_);
     }
 
-
 	split->addWidget(_pView);
 	_layout->addWidget(split);
 	pWidget_->setLayout(_layout);
@@ -330,10 +329,8 @@ int ProcessDisplay::CreateViews_S(QWidget* pWidget_)
 
 	QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
 	_pList->append(_pView);
-
 	//**************  transfer item move signal to main window
     ConnectSlots(_pView) ;
-
 	return 0;
 }
 // PA-A SCAN
@@ -2359,8 +2356,10 @@ void ProcessDisplay::UpdateDataViewFrameSA(DopplerDataView* pWidget_ , int nGrou
     QString _strLeftUnit = _process->GetSonicAxisUnit(nGroupId_)  ;
 	float _fStart , _fStop  ;
 	_process->GetSScanVerticalRange(nGroupId_ , &_fStart ,  &_fStop);
+
 	pWidget_->SetRulerRange( _fStart , _fStop,  _fStart , _fStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
-	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
+
+    pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_LEFT );
 
 	QString _strBottomUnit =  _process->GetIndexAxisUnit() ;
 	_process->GetSScanHorizentalRange(nGroupId_ , &_fStart , &_fStop) ;
