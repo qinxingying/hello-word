@@ -129,10 +129,9 @@ void DopplerViewItems::EnableItems(OVERLAYS eItems_)
    else
 	   m_eShow = OVERLAYS_NONE ;
 }
-
 OVERLAYS DopplerViewItems::GetItemsEnable() const
-{
-	return m_eShow ;
+{   
+	return m_eShow ;   
 }
 
 
@@ -374,7 +373,7 @@ void DopplerViewItems::UpdateItemsCursor()
 	}
 	if(!m_pCursor[3])
 	{
-		m_pCursor[3] = new DopplerLineItem(COLOR_CURSOR_UMES);
+        m_pCursor[3] =new DopplerLineItem(COLOR_CURSOR_UMES);
         m_pCursor[3]->SetWheelEnable();
 		m_pCursor[3]->SetItemType(DOPPLER_GRAPHICS_ITEM_CURSOR ) ;
 		m_pCursor[3]->SetLineType(DopplerLineItem::LINE_VERTICAL);
@@ -406,21 +405,23 @@ void DopplerViewItems::UpdateItemsCursor()
 	m_pCursor[1]->SetItemId(anCursorId[1]);
 	m_pCursor[2]->SetItemId(anCursorId[2]);
     m_pCursor[3]->SetItemId(anCursorId[3]);
-	CursorMove(0 , afCursorPos[0])  ;
+
+    CursorMove(0 , afCursorPos[0])  ;
     CursorMove(1 , afCursorPos[1])  ;
-	CursorMove(2 , afCursorPos[2])  ;
+    CursorMove(2 , afCursorPos[2])  ;
     CursorMove(3 , afCursorPos[3])  ;
 
-	m_pCursor[0]->SetScenceSize(m_pDataView->GetViewSize());
-	m_pCursor[1]->SetScenceSize(m_pDataView->GetViewSize());
-	m_pCursor[2]->SetScenceSize(m_pDataView->GetViewSize());
+    m_pCursor[0]->SetScenceSize(m_pDataView->GetViewSize());
+    m_pCursor[1]->SetScenceSize(m_pDataView->GetViewSize());
+    m_pCursor[2]->SetScenceSize(m_pDataView->GetViewSize());
     m_pCursor[3]->SetScenceSize(m_pDataView->GetViewSize());
-	m_pCursor[0]->show() ;
+    m_pCursor[0]->show() ;
     m_pCursor[1]->show() ;
-	m_pCursor[2]->show() ;
+    m_pCursor[2]->show() ;
     m_pCursor[3]->show() ;
 
-	if(m_eShow & OVERLAYS_PARABOLA)
+
+    if(m_eShow & OVERLAYS_PARABOLA)
 	{
 		if(!m_pParabola[0])
 		{
@@ -449,7 +450,7 @@ void DopplerViewItems::UpdateItemsCursor()
 		m_pParabola[1]->setPos(_pos);
         m_pParabola[1]->show();
 	}
-    
+
     if(bHideCursor)
     {
         if(HideMode == 0)
@@ -476,6 +477,7 @@ void DopplerViewItems::UpdateItemsCursor()
         }
 
     }
+
 }
 
 void DopplerViewItems::UpdateItemsLawMarker()
@@ -828,16 +830,15 @@ void DopplerViewItems::UpdateScanMarker()
 		m_pScanMarker->SetMoveType(m_bScanMarkerHorizental ? DopplerLineItem::LINE_MOVE_VERTICAL : DopplerLineItem::LINE_MOVE_HORIZENTAL);
 		m_pDataView->AddOverlayItems(m_pScanMarker);
 	}
-
 	QRectF _rect(0 , 0 , 0 , 0);
 	if(m_bScanMarkerHorizental)
-		_rect.setTop (m_fScanPos);
-	else
-		_rect.setLeft(m_fScanPos);
-
-	m_pDataView->SetItemGeometry(m_pScanMarker, _rect );
+        _rect.setTop (m_fScanPos);
+    else
+        _rect.setLeft(m_fScanPos);
+    m_pDataView->SetItemGeometry(m_pScanMarker, _rect);
 	m_pScanMarker->SetScenceSize(m_pDataView->GetViewSize());
-	m_pScanMarker->show();
+    m_pScanMarker->show();
+
 }
 
 void DopplerViewItems::SetGateDrawMode(GATE_DRAW_MODE eMode_)

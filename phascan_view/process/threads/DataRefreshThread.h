@@ -28,7 +28,6 @@ public:
     void StopThread(bool bStop_ = true);
     bool IsStoped();
     void RunOnce(THREAD_RUN_MODE eMode_ = RUN_IN_MAIN_THREAD);
-
 protected:
     explicit DataRefreshThread(QObject *parent = 0);
     void run();

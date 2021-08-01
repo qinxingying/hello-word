@@ -745,7 +745,7 @@ void DopplerDataView::slotTofdDragProAction(QPointF ptS_, QPointF ptE_)
 	}
 
 	opp.TofdDragProcess(m_nGroupId, _area);
-	g_pMainWnd->RunDrawThreadOnce(false);
+    g_pMainWnd->RunDrawThreadOnce(false);
 }
 
 void DopplerDataView::slotScanRangeMove(int nType_, int nStart_, int nStop_)
@@ -998,7 +998,7 @@ void DopplerDataView::slotItemMoved(DopplerGraphicsItem* item_)
     }
 
 	item_->SetItemGeometryReal(_rect)   ;
-	emit signalItemMoved(this , item_)  ;
+    emit signalItemMoved(this , item_)  ;
 
 }
 

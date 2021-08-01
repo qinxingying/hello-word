@@ -620,6 +620,14 @@ enum setup_REFLECT_SHOWS
 
 };
 
+//S扫模式
+enum setup_SSCANF_MODE
+{
+    S_MODE = 0,
+    D_MODE
+
+};
+
 
 enum setup_CURSOR_TYPE
 {
@@ -782,7 +790,9 @@ typedef struct _Group
 
     setup_REFLECT_TYPE      m_Retype; //S扫反射类型
     setup_REFLECT_SHOWS     m_Shows; //S扫1:1显示
+    setup_SSCANF_MODE       m_mode;//S扫模式
     float zoomFactor;               //S扫1:1缩放因子-扫查轴坐标
+
 
 
 	/*  校准状态  */

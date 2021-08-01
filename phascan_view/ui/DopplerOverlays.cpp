@@ -44,7 +44,7 @@ void DopplerOverlays::CreateOverlays()
 		CreateOverlaysBV() ;
 		break;
 	case setup_DISPLAY_MODE_C_H  :
-		CreateOverlaysCH() ;
+        CreateOverlaysCH() ;
 		break;
 	case setup_DISPLAY_MODE_C_V :
 		CreateOverlaysCV() ;
@@ -409,12 +409,13 @@ void DopplerOverlays::CreateOverlaysCH()
         }
     }
 
-	if(group.bShowCursor)
+    if(group.bShowCursor)
 	{
         _pItemGroup->EnableItems(OVERLAYS_CURSOR);
         bool topc, topcMerge;
-        m_pView->GetCScanTopcDis( topc, topcMerge);
+        m_pView->GetCScanTopcDis(topc, topcMerge);
         if(group.TopCInfo.TOPCStatus || topc || topcMerge){
+
             _pItemGroup->SetCursorPos(0 , group.afCursor[setup_CURSOR_I_REF]);
             _pItemGroup->SetCursorPos(1 , group.afCursor[setup_CURSOR_I_MES]);
             _pItemGroup->SetCursorId(0 , setup_CURSOR_I_REF);
@@ -426,16 +427,18 @@ void DopplerOverlays::CreateOverlaysCH()
             _pItemGroup->SetCursorId(0 , setup_CURSOR_VPA_REF);
             _pItemGroup->SetCursorId(1 , setup_CURSOR_VPA_MES);
         }
-		_pItemGroup->SetCursorPos(2 , group.afCursor[setup_CURSOR_S_REF]);
-		_pItemGroup->SetCursorPos(3 , group.afCursor[setup_CURSOR_S_MES]);		
-		_pItemGroup->SetCursorId(2 , setup_CURSOR_S_REF);
-		_pItemGroup->SetCursorId(3 , setup_CURSOR_S_MES);
+
+        _pItemGroup->SetCursorPos(2 , group.afCursor[setup_CURSOR_S_REF]);
+        _pItemGroup->SetCursorPos(3 , group.afCursor[setup_CURSOR_S_MES]);
+        _pItemGroup->SetCursorId(2 , setup_CURSOR_S_REF);
+        _pItemGroup->SetCursorId(3 , setup_CURSOR_S_MES);
 
         if(bHideCursor)
         {
             HideMode = 0;
         }
 	}
+
     if(m_pConfigure->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
         //qDebug()<<"setup_CURSOR_C_ANGLE"<<group.afCursor[setup_CURSOR_LAW];
         _pItemGroup->SetCursorPos(4 , group.afCursor[setup_CURSOR_C_ANGLE]);
@@ -461,9 +464,10 @@ void DopplerOverlays::CreateOverlaysCH()
 	_pItemGroup->EnableItems(OVERLAYS_SCAN_MARKER);
 	_pItemGroup->SetScanMarkerDirectionHorizental(false);
 
+
     if(m_pConfigure->common.scanner.fScanStart2 > m_pConfigure->common.scanner.fScanPos) {
        _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanStart2);
-    } else {
+    } else{
         _pItemGroup->SetScanMarkerPos(m_pConfigure->common.scanner.fScanPos);
     }
     if(!group.TopCInfo.TOPCStatus){
@@ -703,14 +707,12 @@ void DopplerOverlays::CreateOverlaysSA()
             HideMode = 2;
         }
 	}
-
 	if(group.bShowThickness)
 	{
 		_pItemGroup->EnableItems(OVERLAYS_THICKNESS);
 		_pItemGroup->SetThicknessDirection(false);
 	}
 	_pItemGroup->SetThicknessInterval(group.part.afSize[0]);
-
     _pItemGroup->EnableItems(OVERLAYS_LAW_MARKER);
 	_pItemGroup->EnableMarkerQty(m_pView->GetLawIdentify() + 1);
 	QVector<QLineF> _line ;
@@ -827,7 +829,7 @@ void DopplerOverlays::CreateOverlaysSL()
 
 void DopplerOverlays::UpdateOverlays()
 {
-	DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup() ;
+    DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup();
 	_pItemGroup->EnableItems(OVERLAYS_NONE);
 	CreateOverlays();
 	m_pView->UpdateScene();

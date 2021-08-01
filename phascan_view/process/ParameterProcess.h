@@ -159,6 +159,8 @@ public:
     WDATA* GetLawDataPointer(int nGroupId_ , int nLawId_)  ;
     WDATA* GetCoupleDataPointer( int nGroupId_);
 
+    WDATA* GetGroupDataDscanPointer(int nGroupId_);//D扫光标数据指针
+
     double GetDetermineThreshold(int nGroupId_, DAC_MODE mode);
 
     unsigned int   GetLawGateDWORD(int nGroupId_ , int nLawId_ , setup_GATE_NAME eGate_);

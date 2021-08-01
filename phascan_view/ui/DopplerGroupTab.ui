@@ -10195,6 +10195,27 @@
                   </item>
                  </widget>
                 </item>
+                <item row="6" column="0">
+                 <widget class="QLabel" name="LabelsScanfMode">
+                  <property name="text">
+                   <string>S Scanf Mode:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="1">
+                 <widget class="QComboBox" name="ComsScanfMode">
+                  <item>
+                   <property name="text">
+                    <string>S Mode</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>D Mode</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
                </layout>
               </item>
               <item>

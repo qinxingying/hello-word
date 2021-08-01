@@ -611,13 +611,14 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
 
 }
 
+
 void MainWindow::slotSliderhChanged(int value)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    SCANNER& _scanner = _pConfig->common.scanner ;
-    if(_scanner.eScanEncoderType) {
+    SCANNER& _scanner = _pConfig->common.scanner;
+    if(_scanner.eScanEncoderType){
             _scanner.fScanPos = _scanner.fScanStep * value + _scanner.fScanStart2;
-    } else {
+    }else{
             _scanner.fScanPos =  value / _scanner.fPrf  + _scanner.fScanStart2;
     }
     scanSpin->setValue( _scanner.fScanPos);
@@ -629,6 +630,8 @@ void MainWindow::slotSliderhChanged(int value)
     _pScanner->UpdateScanPos();
     RunDrawThreadOnce(true);
 }
+
+
 
 void MainWindow::slotIndexSliderHChanged(int value)
 {
@@ -2010,6 +2013,7 @@ void MainWindow::slotCursorUChange(int groupId, int lawId, bool orientation)
 void MainWindow::slotShowCursor(int groupId, bool status)
 {
     m_pGroupList[groupId]->setShowCursorStatus(status);
+
 }
 
 void MainWindow::slotShowDefect(int groupId, bool status)

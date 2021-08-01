@@ -1971,7 +1971,7 @@ void DopplerGraphicView::UpdateDrawing()
 
         //m_pBackGround->m_hMutex.unlock();
 	}
-	emit signalUpdateDrawing();
+    emit signalUpdateDrawing();
 }
 /****************************************************************************
   Description:   刷新场景
@@ -1987,10 +1987,13 @@ void DopplerGraphicView::UpdateSceneRegion()
 *****************************************************************************/
 void DopplerGraphicView::slotUpdateDrawing()
 {
+
 	if(m_pDrawScan)
 	{
+
         m_pBackGround->update();
-	}
+
+    }
 }
 
 void DopplerGraphicView::respondView(QPoint startPos, QPoint endPos, bool zoomStatus)
