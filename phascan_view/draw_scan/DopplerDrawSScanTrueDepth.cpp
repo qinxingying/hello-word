@@ -160,13 +160,11 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
 
     float _nStartX , _nStopX , _nStartY , _nStopY ;
 
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    GROUP_CONFIG& _group = _pConfig->group[m_cInfo.nGroupId];
 	ParameterProcess* _process = ParameterProcess::Instance();
 	_process->GetSImageHorizentalRange(m_cInfo.nGroupId , &_nStartX , &_nStopX) ;
 	_process->GetSImageVerticalRange(m_cInfo.nGroupId , &_nStartY , &_nStopY);
 
-    if(!_group.m_Retype)
+    if(!m_pGroup->m_Retype)
     {
         _nStartY=_nStartY;
         _nStopY=_nStopY;
@@ -346,15 +344,28 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
         for(int i = 0 ; i < _nBeamQty ; i++)
         {
             float angle = _nAngleStart + i * _nAngleStep ;
-            float x = tan(angle) * height + _pExitPoint[i] + m_pGroup->fIndexOffset;
-            if (x >= leftBoder && lawIdStart[index] == -2) {
-                lawIdStart[index] = i;
-            }
-            if (x >= rightBoder && lawIdStop[index] == -2) {
-                lawIdStop[index] = i - 1;
-            }
-            if ((i == _nBeamQty - 1) && lawIdStop[index] == -2 && lawIdStart[index] != -2) {
-                lawIdStop[index] = i;
+            if (!_nDirection) {
+                float x = tan(angle) * height + _pExitPoint[i] + m_pGroup->fIndexOffset;
+                if (x >= leftBoder && lawIdStart[index] == -2) {
+                    lawIdStart[index] = i;
+                }
+                if (x >= rightBoder && lawIdStop[index] == -2) {
+                    lawIdStop[index] = i - 1;
+                }
+                if ((i == _nBeamQty - 1) && lawIdStop[index] == -2 && lawIdStart[index] != -2) {
+                    lawIdStop[index] = i;
+                }
+            } else {
+                float x = -(tan(angle) * height + _pExitPoint[i] - m_pGroup->fIndexOffset);
+                if (x <= rightBoder && lawIdStart[index] == -2) {
+                    lawIdStart[index] = i;
+                }
+                if (x <= leftBoder && lawIdStop[index] == -2) {
+                    lawIdStop[index] = i - 1;
+                }
+                if ((i == _nBeamQty - 1) && lawIdStop[index] == -2 && lawIdStart[index] != -2) {
+                    lawIdStop[index] = i;
+                }
             }
         }
     } // end
@@ -395,7 +406,6 @@ void DopplerDrawSScanTrueDepth::CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_)
                         }
                         if (!bDraw) {
                             bAffect = true;
-                            //break;
                         }
                     } // end of 焊缝余高
 					if(_nDirection)
