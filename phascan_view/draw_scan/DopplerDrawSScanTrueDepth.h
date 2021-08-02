@@ -3,7 +3,7 @@
 
 #include <configure/const.h>
 #include "DopplerDrawScan.h"
-
+#include "DopplerDataView.h"
 //#define FLOAT_ZERO_GATE 0.00001
 //#define COLOR_STEP  32     /*    4  8  16  32  64*/
 //#define COLOR_SHIFT 5      /*    2  3   4   5   6*/
@@ -13,7 +13,7 @@
 //#define BUFF_MAX_SIZE   (BUFF_MAX_WIDTH * BUFF_MAX_HEIGHT)
 
  const int OFFSET_Y=15;
- extern int m_nWidth , m_nHeight ;
+
 //#define OFFSET_Y 25
 struct FAN_SCAN_INFO
 {
@@ -64,8 +64,9 @@ protected:
 
     FAN_SCAN_INFO m_SScaninfo  ;
     float _nStepX , _nStepY;
-
-    float thickness;
+    int m_nWidth , m_nHeight ;
+    float m_thickness {0.0};
+    int m_reType {0};
 
     U8*  m_pAngleZoom;
     U8*  m_pDraw;
@@ -75,7 +76,6 @@ protected:
     bool m_bClear;
     bool m_bWeldRemainingHeightAffect {false};
 
-     friend class DopplerOverlays;
 
 };
 

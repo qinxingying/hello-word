@@ -39,7 +39,7 @@ public:
 		setWindowFlags(Qt::Window | Qt::CustomizeWindowHint
                      | Qt::WindowTitleHint | Qt::FramelessWindowHint);
 		m_cSize = cSize_ ;
-		m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE) ;
+        m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE) ;
         m_scaleH = 1.0;
         m_scaleV = 1.0;
         m_fix    = false;
@@ -170,6 +170,7 @@ public:
             painter->scale( scaleX, scaleY);
             painter->setRenderHint(QPainter::Antialiasing, true);
             painter->drawImage(QRect( m_transferX, m_transferY, m_cSize.width() , m_cSize.height()), *m_pImage);
+
 //            painter->drawImage(QRect(0 , 0 , m_cSize.width() , m_cSize.height()), *m_pImage);
 			m_hMutex.unlock();
 		}
@@ -208,9 +209,8 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
 	m_pBackGround = NULL ;
 	m_nScaleH = 1.0 ;
     m_nScaleV = 1.0 ;
-	InitGraphicView(size());
-
-	// connect update signal for multi threads update user interface
+    InitGraphicView(size());//size()为当前窗口尺寸
+	//connect update signal for multi threads update user interface
     connect(this, SIGNAL(signalUpdateDrawing()), SLOT(slotUpdateDrawing()));
     connect(this, SIGNAL(signalScanPosChange(int)), g_pMainWnd, SLOT(slotScanPosChange(int)));
     connect(this, SIGNAL(signalLawPosChange(int,int,int)), g_pMainWnd, SLOT(slotLawPosChange(int,int,int)));
@@ -255,6 +255,7 @@ static QRect mRect;
 
 void DopplerGraphicView::InitGraphicView(const QSize& cSize_)
 {
+
 
 	QRect cRect(0 , 0 , cSize_.width() , cSize_.height()) ;
 	mRect = cRect ;
@@ -1101,6 +1102,7 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                                     m_pDrawScan->curlawstart = lawstart;
                                     m_pDrawScan->curlawstop = lawstop;
                                     _pParent->SetRulerRange( lawstart , lawstop ,  lawstart , lawstop , DopplerDataView::DATA_VIEW_RULER_LEFT);
+
                                     _pParent->SetCopleCScanDisplayRange( scanstart, scanstop);
                                     m_pDrawScan->zoomflag = 1;
                                     UpdateDrawing();

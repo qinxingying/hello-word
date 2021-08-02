@@ -82,7 +82,7 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
 
     convert_other_to_phascan_config();
 
-    for(uint i = 0; i < m_global.m_groupQty; ++i) {
+    for(uint i = 0; i < m_global.m_groupQty; ++i){
         unpack_group(i);
         convert_to_phascan_config(i);
     }
@@ -140,6 +140,7 @@ Config::Config(QObject *parent)
 void Config::unpack_group(int groupId)
 {
     m_currentGroupID = groupId;
+
     QVariantMap map = value(QString("Group%1").arg(groupId)).toMap();
 
     m_groups[m_currentGroupID].m_mode         = static_cast<Paramters::Group::GroupMode> (map["Mode"].toUInt());

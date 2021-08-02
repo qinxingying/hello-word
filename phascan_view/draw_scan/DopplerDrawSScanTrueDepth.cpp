@@ -11,6 +11,7 @@ static unsigned char COMPOSITION_COLOR[4] = {255,0,0,40};
 DopplerDrawSScanTrueDepth::DopplerDrawSScanTrueDepth() :
 	DopplerDrawScan()
 {
+
     m_nWidth = m_nHeight  = 0;
     m_pDraw	   = NULL;
     m_pAngleZoom = NULL;
@@ -18,6 +19,7 @@ DopplerDrawSScanTrueDepth::DopplerDrawSScanTrueDepth() :
     m_pColRate   = NULL;
     m_pDataNo	 = NULL;
     m_bClear	 = false;
+
 }
 
 DopplerDrawSScanTrueDepth::~DopplerDrawSScanTrueDepth ()
@@ -66,26 +68,20 @@ void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
     int _nHeight	  = pImage_->height();
     int _nWidth	   = pImage_->width();
 
-    if((m_nWidth !=  _nWidth) || (m_nHeight != _nHeight) || (m_bWeldRemainingHeightAffect != m_pGroup->bWeldRemainingHeight) ||
-            m_bWeldRemainingHeightAffect)
-    {
+    if((m_nWidth !=  _nWidth) || (m_nHeight != _nHeight) || (m_bWeldRemainingHeightAffect != m_pGroup->bWeldRemainingHeight)
+            || m_bWeldRemainingHeightAffect) {
         m_nWidth  =  _nWidth ;
         m_nHeight =  _nHeight ;
         m_bWeldRemainingHeightAffect = m_pGroup->bWeldRemainingHeight;
+        m_pGroup->zoomFactor = m_nHeight/(float)m_nWidth;
         UpdateDrawInfo() ;
     }
 
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    GROUP_CONFIG& _group = _pConfig->group[m_cInfo.nGroupId];
-    float m_thickness;
-    thickness=_group.part.afSize[0];
-    /***********工件厚度更改后刷新图像*************/
-    if(thickness!=m_thickness)
-    {
-      m_bClear=true;
-
+    if ( m_thickness != m_pGroup->part.afSize[0] || m_reType != m_pGroup->m_Retype) {
+        m_thickness =  m_pGroup->part.afSize[0];
+        m_reType = m_pGroup->m_Retype;
+        m_bClear = true;
     }
-     m_thickness=thickness;
    /***********工件厚度更改后刷新图像*************/
     if(m_bClear)
     {
@@ -545,14 +541,16 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
     memset(pAffectImageBits, 0, weldRemainHeightAffectImage.byteCount());
     int affectImgWidthStep = weldRemainHeightAffectImage.bytesPerLine();
 
+
+
     ParameterProcess* _process = ParameterProcess::Instance();
 
     U8* _pImageBits = pImage_->bits();  // 获取图像的首地址 https://blog.csdn.net/lengyuezuixue/article/details/80656358
 
     int _nWidthStep = pImage_->bytesPerLine();  // 获取图像每行字节数
 
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    GROUP_CONFIG& _group = _pConfig->group[m_cInfo.nGroupId];
+    float _fStart , _fStop  ;
+    _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fStart ,  &_fStop);
 
 
     int _nLawSize;
@@ -581,7 +579,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
         QVector < QVector < int> > tempdata;//记录存储一次波数据颜色索引
         /*****************1:1比例显示*************/
         float zoomFactor;
-        if(_group.m_Shows==ON)
+        if(m_pGroup->m_Shows==ON)
         {
             zoomFactor=m_nWidth/(float)m_nHeight;
             m_width=m_nHeight;
@@ -591,8 +589,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
             m_width=m_nWidth;
         }
        /*****************1:1比例显示*************/
-
-
          Img2.resize(m_nHeight);//设置向量行-高
          for(int j=0;j<Img2.size();j++)
          {
@@ -606,7 +602,8 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
           }
 
          int m_Offsety=OFFSET_Y/_nStepY; //坐标偏移
-         if(!_group.m_Retype)//不翻转
+         int m_i=(m_thickness-(_fStart+OFFSET_Y))/_nStepY+m_Offsety;//一次波截止纵坐标
+         if(!m_pGroup->m_Retype)//不翻转
          {
              for(i = 0; i< m_nHeight; i++)
              {
@@ -636,9 +633,9 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                      }
                  }
              }
-         }else{
-             //显示和记录一次波数据
-            for(i = m_Offsety; i<((OFFSET_Y+thickness)/_nStepY)&&i<m_nHeight; i++)
+         } else {
+            //显示和记录一次波数据
+            for(i = m_Offsety;i<m_i&&i<m_nHeight; i++)
             {
                 _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
                 for(j = 0; j < m_width; j++)
@@ -663,18 +660,16 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                 }
             }
 
-
-            //翻转二次波(底波)图像-处理重叠部分
-            int m_AxisHeight=(thickness/_nStepY+OFFSET_Y/_nStepY)*2; //翻转轴高度
+            //翻转二次波(底波)图像-处理重叠部分 _fStart/_nStepY
+            int m_AxisHeight=((m_thickness+OFFSET_Y-(_fStart+OFFSET_Y))/_nStepY)*2; //翻转轴高度
             int m_DateOffset=m_nHeight+m_Offsety; //颜色数据偏移后高度
-            for(i = (OFFSET_Y+thickness)/_nStepY; i<m_AxisHeight&&i<m_DateOffset;i++)//底波范围
+            for(i = m_i; i<m_AxisHeight&&i<m_DateOffset;i++)//底波范围
             {
-
                 _pImg1 = _pImageBits + _nWidthStep * (m_AxisHeight-i);//每行数据的起点位置
                 _pImgAffect1 = pAffectImageBits + affectImgWidthStep * (m_AxisHeight-i);
+
                 for(j = 0; j < m_width; j++)
                 {
-
                     _idx1 = (i-m_Offsety) * m_nWidth + j*zoomFactor ; //图像每个像素点位置
                     if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
                     {
@@ -689,27 +684,25 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                         _iData = _iData>>(COLOR_SHIFT * 2);  //右移
                         _pImg2 = _pImg1 + j * 3 ;
 
-                        if(_group.m_Retype==FIRST) //一次波优先
+                        if(m_pGroup->m_Retype==FIRST) //一次波优先
                         {
-
                             if(m_AxisHeight-i>=m_nHeight) continue;//防止超过下标范围
                             if(_pImg2==Img2[m_AxisHeight-i][j])
                              {
                                memcpy(_pImg2, &m_pColor[tempdata[m_AxisHeight-i][j]], 3); //将数据拷贝到图像地址中
                                continue;
                             }
-
                             _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
                             memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
                         }
-                        if(_group.m_Retype==LAST)//反射波优先
+                        if(m_pGroup->m_Retype==LAST)//反射波优先
                         {
                           _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
                           memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
 
                         }
 
-                        if(_group.m_Retype==OVERLAY)//叠加
+                        if(m_pGroup->m_Retype==OVERLAY)//叠加
                         {
                             _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
                             if(m_AxisHeight-i>=m_nHeight) continue;//防止超过下标范围
@@ -717,8 +710,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                              {
                                _iData= _iData>tempdata[m_AxisHeight-i][j]?_iData:tempdata[m_AxisHeight-i][j];
                             }
-                         memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
-
+                            memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
                         }
 
                     }
@@ -727,17 +719,16 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                        _pImgAffect2 = _pImgAffect1 + j * 4;
                        memcpy(_pImgAffect2, COMPOSITION_COLOR, 4);
                     }
+
                 }
             }
-
         }
-
-         if (m_bWeldRemainingHeightAffect) {
-              // blend
-              QPainter imagepainter(pImage_);
-              imagepainter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-              imagepainter.drawImage(0,0, weldRemainHeightAffectImage);
-              imagepainter.end();
-         }
+        if (m_bWeldRemainingHeightAffect) {
+          // blend
+          QPainter imagepainter(pImage_);
+          imagepainter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+          imagepainter.drawImage(0,0, weldRemainHeightAffectImage);
+          imagepainter.end();
+        }
     }
 }

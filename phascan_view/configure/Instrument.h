@@ -782,6 +782,8 @@ typedef struct _Group
 
     setup_REFLECT_TYPE      m_Retype; //S扫反射类型
     setup_REFLECT_SHOWS     m_Shows; //S扫1:1显示
+    float zoomFactor;               //S扫1:1缩放因子-扫查轴坐标
+
 
 	/*  校准状态  */
 	int						bVelocityCalib;

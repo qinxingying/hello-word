@@ -11,6 +11,7 @@ DopplerOverlays::DopplerOverlays(QObject *parent) :
 {
 	if(parent)
 	{
+
 		m_pView = (DopplerDataView*) parent ;
 		m_pView->GetDataViewConfigure(&m_nGroup , &m_nLaw , &m_eDisp) ;
 	}
@@ -851,6 +852,7 @@ void DopplerOverlays::UpdateCursor()
 #include <gHeader.h>
 void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 {
+
 	setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)m_eDisp;
 	switch(_eMode)
 	{
@@ -871,6 +873,7 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
             float _fAngleStart = DEGREE_TO_ARCH(_law.nAngleStartRefract/10.0) ;
             float  _fAngleStep = DEGREE_TO_ARCH(_law.nAngleStepRefract/10.0)  ;
 			float      _fStart = _group.fSampleStart	 ;
+
             float       _fStop = _group.fSampleRange + _fStart ;
 			float*   _pBeamPos = _group.afBeamPos	   ;
 			int       _nLawQty = m_pProcess->GetGroupLawQty(m_nGroup) ;
@@ -881,15 +884,12 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 			float _fAngleTmp ;
             float _fPos1 , _fPos2 , _fPos3 , _fPos4 , _fTmp1,_fPos5,_fPos6;
 			setup_PROBE_ANGLE _eAngle = m_pProcess->GetProbeAngle(m_nGroup);
+            float zoomFactor=_group.zoomFactor;
+
 
 			if(_eAngle == setup_PROBE_PART_SKEW_0 )
             {
-               float _fIndexOffset = _group.fIndexOffset ;
-               float zoomFactor=1;
-//             float zoomFactor=m_Sscan->m_nWidth/(float)m_Sscan->m_nHeight;
-
-               if(m_nHeight!=0&&m_nWidth!=0)
-               zoomFactor=m_nHeight/(float)m_nWidth;
+               float _fIndexOffset = _group.fScanOffset ;
 
                if(!_group.m_Retype)
                {
@@ -897,8 +897,7 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                 {
                     _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
                     _fAngleTmp = _fAngleStart + i * _fAngleStep ;
-//                    _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
-//                    _fPos1 = -37.5+0.1*i;
+
                     if(_group.m_Shows==ON)
                     _fPos1 = _fIndexOffset + _pBeamPos[0]+i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
                     else
@@ -911,6 +910,8 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                     _fPos4 = cos(_fAngleTmp) * _fStop  ;
                     QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
                     _pVector->append(_line);
+
+
                 }
                }else{
 
@@ -960,11 +961,6 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 			else if(_eAngle == setup_PROBE_PART_SKEW_90 )
 			{
                float _fIndexOffset = _group.fIndexOffset ;
-               float zoomFactor=1;
-//             float zoomFactor=m_Sscan->m_nWidth/(float)m_Sscan->m_nHeight;
-
-               if(m_nHeight!=0&&m_nWidth!=0)
-               zoomFactor=m_nHeight/(float)m_nWidth;
 
                if(!_group.m_Retype)
                {
@@ -975,7 +971,8 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 //                    _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
 //                    _fPos1 = -37.5+0.1*i;
                     if(_group.m_Shows==ON)
-                    _fPos1 = _fIndexOffset + _pBeamPos[0]+i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
+//                    _fPos1 = _fIndexOffset + _pBeamPos[0]+i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
+                    _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart*zoomFactor;
                     else
                     _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
                     if(_group.m_Shows==ON)
@@ -1034,23 +1031,18 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 			}
 			else if(_eAngle == setup_PROBE_PART_SKEW_180 )
             {
-               float _fIndexOffset = _group.fIndexOffset ;
-               float zoomFactor=1;
-//             float zoomFactor=m_Sscan->m_nWidth/(float)m_Sscan->m_nHeight;
-
-               if(m_nHeight!=0&&m_nWidth!=0)
-               zoomFactor=m_nHeight/(float)m_nWidth;
+               float _fIndexOffset = _group.fScanOffset ;
 
                if(!_group.m_Retype)
                {
                 for(int i = 0 ; i < _nLawQty ; i++)
                 {
-                    _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
+                    _fTmp1 = _fIndexOffset - _pBeamPos[i] ;
                     _fAngleTmp = _fAngleStart + i * _fAngleStep ;
 //                    _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
 //                    _fPos1 = -37.5+0.1*i;
                     if(_group.m_Shows==ON)
-                    _fPos1 = _fIndexOffset + _pBeamPos[0]-i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
+                    _fPos1 = _fIndexOffset - _pBeamPos[0]-i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
                     else
                     _fPos1 = _fTmp1-sin(_fAngleTmp)*_fStart;
                     if(_group.m_Shows==ON)
@@ -1068,7 +1060,7 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                    {
                    for(int i = 0 ; i < _nLawQty ; i++)
                    {
-                       _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
+                       _fTmp1 = _fIndexOffset - _pBeamPos[i] ;
                        _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
 
                         //-x
@@ -1110,18 +1102,14 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 			else if(_eAngle == setup_PROBE_PART_SKEW_270 )
             {
                float _fIndexOffset = _group.fIndexOffset ;
-               float zoomFactor=1;
-//             float zoomFactor=m_Sscan->m_nWidth/(float)m_Sscan->m_nHeight;
 
-               if(m_nHeight!=0&&m_nWidth!=0)
-               zoomFactor=m_nHeight/(float)m_nWidth;
 
                if(!_group.m_Retype)
                {
                 for(int i = 0 ; i < _nLawQty ; i++)
                 {
-                    _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
-                    _fAngleTmp = _fAngleStart + i * _fAngleStep ;
+                    _fTmp1 = _fIndexOffset - _pBeamPos[i] ;
+                    _fAngleTmp = _fAngleStart+ i * _fAngleStep ;
 //                    _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
 //                    _fPos1 = -37.5+0.1*i;
                     if(_group.m_Shows==ON)
@@ -1143,7 +1131,7 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                    {
                    for(int i = 0 ; i < _nLawQty ; i++)
                    {
-                       _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
+                       _fTmp1 = _fIndexOffset - _pBeamPos[i] ;
                        _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
 
                         //-x
@@ -1254,6 +1242,9 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 //        _pVector->append(_line);
 		break;
 	};
+
+
+
 }
 
 void DopplerOverlays::GetLawMarkers(QVector<QString>* pVector_)

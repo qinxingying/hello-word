@@ -53,8 +53,6 @@ DopplerDataView::DopplerDataView(QWidget *parent , DATA_VIEW_COMPONENT eComponen
 	CreateComponent() ;
 	m_pItemsGroup = new DopplerViewItems(this);
 }
-
-
 DopplerDataView::~DopplerDataView()
 {
 	delete m_pItemsGroup ;
@@ -156,8 +154,9 @@ void DopplerDataView::SetRulerRange(double nStart_ , double nStop_ , double nSli
 	   && (FLOAT_EQ(RulerRange[eRuler_].second ,nStop_ )))
 		return ;
 
-	RulerRange[eRuler_].first  = nStart_  ;
+    RulerRange[eRuler_].first  = nStart_  ;
 	RulerRange[eRuler_].second = nStop_   ;
+
 
 	SliderRange[eRuler_].first  = nSliderStart_  ;
 	SliderRange[eRuler_].second = nSliderStop_  ;
