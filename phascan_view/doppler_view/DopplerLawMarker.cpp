@@ -31,22 +31,7 @@ DopplerLawMarker::DopplerLawMarker()
     m_eDirection = VERTICAL  ;
     m_bShowWeld  = false     ;
 
-    if( parentWidget())
-    {
-//        m_pView = (DopplerDataView*) parentWidget() ;
-        m_pView->GetDataViewConfigure(&m_nGroup , &m_nLaw , &m_eDisp) ;
-    }
-    else
-    {
-        m_pView   = 0 ;
-        m_nGroup  = 0 ;
-        m_nLaw	= 0 ;
-        m_eDisp   = 0 ;
-    }
-
-    m_pConfigure = DopplerConfigure::Instance();
-    m_pProcess   = ParameterProcess::Instance();
-
+    m_nGroup  = 0 ;
 }
 
 QVector<QLineF>* DopplerLawMarker::GetMarkerVector()
@@ -162,8 +147,13 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
     QVector<qreal> dashes;
     dashes << 1 << 4 << 1 <<4 ;
     _NewPen.setDashPattern(dashes);
-    GROUP_CONFIG& _group = m_pConfigure->group[m_nGroup];
-    int  _nLawQty = m_pProcess->GetGroupLawQty(m_nGroup) ;
+    DopplerConfigure* pConfigure = DopplerConfigure::Instance();
+    ParameterProcess* pProcess = ParameterProcess::Instance();
+    if (m_pDataView) {
+        m_nGroup = m_pDataView->GetGroupId();
+    }
+    GROUP_CONFIG& _group = pConfigure->group[m_nGroup];
+    int  _nLawQty = pProcess->GetGroupLawQty(m_nGroup) ;
 
 
     for(int i = 0 ; i < m_nMarkerQty ; i++)
@@ -319,7 +309,8 @@ void DopplerLawMarker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     int _nZoom;
     float _fScale ;
     GetCurrentLineIndex(event->pos() , &_nPos , &_nZoom , &_fScale);
-    int  _nLawQty = m_pProcess->GetGroupLawQty(m_nGroup) ;
+    ParameterProcess* pProcess = ParameterProcess::Instance();
+    int  _nLawQty = pProcess->GetGroupLawQty(m_nGroup) ;
     if(_nPos>=_nLawQty-1)
     {
      _nPos=_nLawQty-1 ;
