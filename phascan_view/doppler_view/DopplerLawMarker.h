@@ -67,12 +67,9 @@ protected:
     QPainterPath weld      ;
     QPainterPath HAZBrush  ;
 
-    DopplerDataView*	m_pView ;
-    DopplerConfigure*	m_pConfigure;
-    ParameterProcess*	m_pProcess;
+//    DopplerDataView*	m_pView ;
     int m_nGroup ;
-    int m_nLaw   ;
-    int m_eDisp  ;
+
 
 
 

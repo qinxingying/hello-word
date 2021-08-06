@@ -496,6 +496,7 @@ void DopplerViewItems::UpdateItemsLawMarker()
 		QRectF _rect(0 , 0 , 0 , 0) ;
 		m_pDataView->SetItemGeometry(m_pLawMarker , _rect);
 		m_pLawMarker->EnableMarkerQty(m_nLawQty);
+        m_pLawMarker->SetDataView(m_pDataView);
 	}
 
 	QVector<QLineF> _lines ; _lines.clear();

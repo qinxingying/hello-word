@@ -873,7 +873,7 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 			GROUP_CONFIG& _group = m_pConfigure->group[m_nGroup];
 			LAW_CONFIG& _law = _group.law ;
             float _fAngleStart = DEGREE_TO_ARCH(_law.nAngleStartRefract/10.0) ;
-            float  _fAngleStep = DEGREE_TO_ARCH(_law.nAngleStepRefract/10.0)  ;
+            float  _fAngleStep = DEGREE_TO_ARCH(_law.nAngleStepRefract/10.0) ;
 			float      _fStart = _group.fSampleStart	 ;
 
             float       _fStop = _group.fSampleRange + _fStart ;
@@ -898,22 +898,15 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                 for(int i = 0 ; i < _nLawQty ; i++)
                 {
                     _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
-                    _fAngleTmp = _fAngleStart + i * _fAngleStep ;
+                    _fAngleTmp = _fAngleStart + i * _fAngleStep;
 
-                    if(_group.m_Shows==ON)
-                    _fPos1 = _fIndexOffset + _pBeamPos[0]+i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
-                    else
                     _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
-                    if(_group.m_Shows==ON)
-                    _fPos3 =_fTmp1 + sin(_fAngleTmp)* _fStop*zoomFactor;
-                    else
                     _fPos3 =_fTmp1 + sin(_fAngleTmp)* _fStop;
+
                     _fPos2 = cos(_fAngleTmp) * _fStart ;
                     _fPos4 = cos(_fAngleTmp) * _fStop  ;
                     QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
                     _pVector->append(_line);
-
-
                 }
                }else{
 
@@ -923,21 +916,11 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                    {
                        _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
                        _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
-
                         //-x
 //                       _fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart; // 起点横坐标
-                       if(_group.m_Shows==ON)
-                       {
-                       _fPos1 = _fIndexOffset + _pBeamPos[0]+i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
-                       _fPos3 = _fTmp1 + tan(_fAngleTmp) * thickness*zoomFactor;// 中间点横坐标
-                       _fPos5 = _fTmp1 + sin(_fAngleTmp) * _fStop*zoomFactor;// 终点横坐标
-                       }
-                       else
-                       {
                        _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
                        _fPos3 = _fTmp1 + tan(_fAngleTmp) * thickness;// 中间点横坐标
                        _fPos5 = _fTmp1 + sin(_fAngleTmp) * _fStop;// 终点横坐标
-                       }
                         //-y
                         _fPos2 = cos(_fAngleTmp) * _fStart ;// 起点纵坐标
                         _fPos4 = thickness ;//中间点纵坐标
@@ -952,39 +935,33 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                       /***********扫查轴后半段*************/
                       QLineF _line2( _fPos3 , _fPos4 , _fPos5 , _fPos6);
                      _pVector->append(_line2);
-
-                       }
+                            }
                    }
+
                   }
 
-                    }
-
+                  }
             }
 			else if(_eAngle == setup_PROBE_PART_SKEW_90 )
 			{
-               float _fIndexOffset = _group.fIndexOffset ;
+
+               float _fIndexOffset = _group.fIndexOffset ; //步进偏置
 
                if(!_group.m_Retype)
-               {
+                {
                 for(int i = 0 ; i < _nLawQty ; i++)
                 {
+
                     _fTmp1 = _fIndexOffset + _pBeamPos[i] ;
-                    _fAngleTmp = _fAngleStart + i * _fAngleStep ;
-//                    _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
-//                    _fPos1 = -37.5+0.1*i;
-                    if(_group.m_Shows==ON)
-//                    _fPos1 = _fIndexOffset + _pBeamPos[0]+i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
-                    _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart*zoomFactor;
-                    else
+                    _fAngleTmp = _fAngleStart + i * _fAngleStep  ;
                     _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
-                    if(_group.m_Shows==ON)
-                    _fPos3 =_fTmp1 + sin(_fAngleTmp)* _fStop*zoomFactor;
-                    else
                     _fPos3 =_fTmp1 + sin(_fAngleTmp)* _fStop;
+
                     _fPos2 = cos(_fAngleTmp) * _fStart ;
                     _fPos4 = cos(_fAngleTmp) * _fStop  ;
 					QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
 					_pVector->append(_line);
+
 				}
                }else{
 
@@ -997,18 +974,9 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 
                         //-x
 //                       _fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart; // 起点横坐标
-                       if(_group.m_Shows==ON)
-                       {
-                       _fPos1 = _fIndexOffset + _pBeamPos[0]+i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
-                       _fPos3 = _fTmp1 + tan(_fAngleTmp) * thickness*zoomFactor;// 中间点横坐标
-                       _fPos5 = _fTmp1 + sin(_fAngleTmp) * _fStop*zoomFactor;// 终点横坐标
-                       }
-                       else
-                       {
                        _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
                        _fPos3 = _fTmp1 + tan(_fAngleTmp) * thickness;// 中间点横坐标
-                       _fPos5 = _fTmp1 + sin(_fAngleTmp) * _fStop;// 终点横坐标
-                       }
+                       _fPos5 = _fTmp1 + sin(_fAngleTmp) * _fStop;// 终点横坐标         
                         //-y
                         _fPos2 = cos(_fAngleTmp) * _fStart ;// 起点纵坐标
                         _fPos4 = thickness ;//中间点纵坐标
@@ -1019,17 +987,15 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                        QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
                        _pVector->append(_line);
                        }else{
-
                       /***********扫查轴后半段*************/
                       QLineF _line2( _fPos3 , _fPos4 , _fPos5 , _fPos6);
                      _pVector->append(_line2);
 
-                       }
+                            }
                    }
                   }
 
-                    }
-
+                 }
 			}
 			else if(_eAngle == setup_PROBE_PART_SKEW_180 )
             {
@@ -1040,17 +1006,9 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                 for(int i = 0 ; i < _nLawQty ; i++)
                 {
                     _fTmp1 = _fIndexOffset - _pBeamPos[i] ;
-                    _fAngleTmp = _fAngleStart + i * _fAngleStep ;
-//                    _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
-//                    _fPos1 = -37.5+0.1*i;
-                    if(_group.m_Shows==ON)
-                    _fPos1 = _fIndexOffset - _pBeamPos[0]-i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
-                    else
+                    _fAngleTmp = _fAngleStart + i * _fAngleStep ;                   
                     _fPos1 = _fTmp1-sin(_fAngleTmp)*_fStart;
-                    if(_group.m_Shows==ON)
-                    _fPos3 =_fTmp1 - sin(_fAngleTmp)* _fStop*zoomFactor;
-                    else
-                    _fPos3 =_fTmp1 - sin(_fAngleTmp)* _fStop;
+                    _fPos3 =_fTmp1 - sin(_fAngleTmp)* _fStop;                    
                     _fPos2 = cos(_fAngleTmp) * _fStart ;
                     _fPos4 = cos(_fAngleTmp) * _fStop  ;
                     QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
@@ -1067,18 +1025,9 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 
                         //-x
 //                       _fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart; // 起点横坐标
-                       if(_group.m_Shows==ON)
-                       {
-                       _fPos1 = _fIndexOffset + _pBeamPos[0]-i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
-                       _fPos3 = _fTmp1 - tan(_fAngleTmp) * thickness*zoomFactor;// 中间点横坐标
-                       _fPos5 = _fTmp1 -sin(_fAngleTmp) * _fStop*zoomFactor;// 终点横坐标
-                       }
-                       else
-                       {
                        _fPos1 = _fTmp1-sin(_fAngleTmp)*_fStart;
                        _fPos3 = _fTmp1 - tan(_fAngleTmp) * thickness;// 中间点横坐标
                        _fPos5 = _fTmp1 - sin(_fAngleTmp) * _fStop;// 终点横坐标
-                       }
                         //-y
                         _fPos2 = cos(_fAngleTmp) * _fStart ;// 起点纵坐标
                         _fPos4 = thickness ;//中间点纵坐标
@@ -1094,17 +1043,16 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                       QLineF _line2( _fPos3 , _fPos4 , _fPos5 , _fPos6);
                      _pVector->append(_line2);
 
-                       }
+                            }
                    }
+
                   }
 
-                    }
-
+                  }
             }
 			else if(_eAngle == setup_PROBE_PART_SKEW_270 )
             {
                float _fIndexOffset = _group.fIndexOffset ;
-
 
                if(!_group.m_Retype)
                {
@@ -1112,16 +1060,10 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                 {
                     _fTmp1 = _fIndexOffset - _pBeamPos[i] ;
                     _fAngleTmp = _fAngleStart+ i * _fAngleStep ;
-//                    _fPos1 = _fTmp1+sin(_fAngleTmp)*_fStart;
-//                    _fPos1 = -37.5+0.1*i;
-                    if(_group.m_Shows==ON)
-                    _fPos1 = _fIndexOffset + _pBeamPos[0]-i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
-                    else
+
                     _fPos1 = _fTmp1-sin(_fAngleTmp)*_fStart;
-                    if(_group.m_Shows==ON)
-                    _fPos3 =_fTmp1 - sin(_fAngleTmp)* _fStop*zoomFactor;
-                    else
                     _fPos3 =_fTmp1 - sin(_fAngleTmp)* _fStop;
+
                     _fPos2 = cos(_fAngleTmp) * _fStart ;
                     _fPos4 = cos(_fAngleTmp) * _fStop  ;
                     QLineF _line( _fPos1 , _fPos2 , _fPos3 , _fPos4);
@@ -1138,18 +1080,10 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 
                         //-x
 //                       _fPos1 = _fTmp1 + sin(_fAngleTmp) * _fStart; // 起点横坐标
-                       if(_group.m_Shows==ON)
-                       {
-                       _fPos1 = _fIndexOffset + _pBeamPos[0]-i*(_pBeamPos[1]-_pBeamPos[0])*zoomFactor;
-                       _fPos3 = _fTmp1 - tan(_fAngleTmp) * thickness*zoomFactor;// 中间点横坐标
-                       _fPos5 = _fTmp1 -sin(_fAngleTmp) * _fStop*zoomFactor;// 终点横坐标
-                       }
-                       else
-                       {
+
                        _fPos1 = _fTmp1-sin(_fAngleTmp)*_fStart;
                        _fPos3 = _fTmp1 - tan(_fAngleTmp) * thickness;// 中间点横坐标
                        _fPos5 = _fTmp1 - sin(_fAngleTmp) * _fStop;// 终点横坐标
-                       }
                         //-y
                         _fPos2 = cos(_fAngleTmp) * _fStart ;// 起点纵坐标
                         _fPos4 = thickness ;//中间点纵坐标
@@ -1165,12 +1099,11 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
                       QLineF _line2( _fPos3 , _fPos4 , _fPos5 , _fPos6);
                      _pVector->append(_line2);
 
-                       }
+                           }
                    }
                   }
 
-                    }
-
+                  }
             }
 		}
 		break;
