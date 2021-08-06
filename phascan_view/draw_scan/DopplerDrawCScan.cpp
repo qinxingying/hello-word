@@ -1814,6 +1814,10 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 //			}
 //		}
 	}
+
+    if (zoomflag == 0) {
+        _process->SetCScanData(src);
+    }
     unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
         TransformImage( HRange,lawstop-lawstart,src,pImage_->width(),pImage_->height(),pImage_);
@@ -3399,6 +3403,9 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 //			}
 		}
 	}
+    if (zoomflag == 0) {
+        _process->SetCScanData(src);
+    }
     unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
     TransformImage(lawstop - lawstart, VRange, src, pImage_->width(), pImage_->height(), pImage_);
