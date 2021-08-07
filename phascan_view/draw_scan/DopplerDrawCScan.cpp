@@ -1395,6 +1395,8 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
         }
 	}
     if (zoomflag == 0) {
+        _process->SetCScanRange(m_PosStart, m_PosStop);
+        _process->SetCScanStep(step);
         _process->SetCScanData(src);
     }
     _pData = pImage_->bits() ;
@@ -1775,6 +1777,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     int new_index = 0;
     float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
     memset(src,0x00,sizeof(src));
+    memset(srcMerge, 0x00, sizeof(srcMerge));
     for(i = m_PosStart-1 , j = -1 ; i <= m_PosStop+1 && j < (_nScanend)+1; i++ , j++) {
         if(i<0)
             continue;
@@ -1791,7 +1794,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 GetPixValueDistance(_aGateValue1, _aGateValue2, _fScale);
 			} else {
 				GetPixValueInfo(i, eGate1_, _aGateValue1);
-                GetPixValuePos(_aGateValue1, _fScale);
+                GetPixValuePos(_aGateValue1, _aGateValue2, _fScale);
 			}
             //int index_ = (j+1)*step;
             for(k = lawstart-1 ; k < lawstop+1 ; k++) {
@@ -1800,6 +1803,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 //_pImageTmp	   = _pImageBits + (k -lawstart) * _nWidthStep + j * 3 ;
                 //_pColorTmp	   = m_pColor[_aGateValue1[k ]] ;
                  src[new_index][k-lawstart+1]=_aGateValue1[k ];
+                 srcMerge[new_index][k-lawstart+1]=_aGateValue2[k ];
                 //memcpy(_pImageTmp, _pColorTmp, 3);
 			}
         }
@@ -1816,7 +1820,9 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	}
 
     if (zoomflag == 0) {
-        _process->SetCScanData(src);
+        _process->SetCScanRange(m_PosStart, m_PosStop);
+        _process->SetCScanStep(step);
+        _process->SetCScanData(srcMerge);
     }
     unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
@@ -1844,12 +1850,12 @@ void DopplerDrawCScanH::GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pB
 	for(int i = 0 ; i < _nBeamQty ; i++)
 	{
 		_process->GetGatePeakInfos(m_cInfo.nGroupId, nScanPos_, i, _info);
-		pBuff_[i] = (_info[_eGate].fD * 1000);
+        pBuff_[i] = (_info[_eGate].fH * 1000);
         pBuff_[i] = combinedGateDate( pBuff_[i], _info[_eGate].iY);
 	}
 }
 
-void DopplerDrawCScanH::GetPixValuePos(U32* pBuff_, float GainScale_)
+void DopplerDrawCScanH::GetPixValuePos(U32* pBuff_, U32* pBuff2_, float GainScale_)
 {
 	U32	_nBeamQty = m_CScanInfo.nLawQty;
 	U32		_nMin = m_CScanInfo.nThicknessStart;
@@ -1869,11 +1875,12 @@ void DopplerDrawCScanH::GetPixValuePos(U32* pBuff_, float GainScale_)
 		{
 			//pBuff_[i] = 255 ;
 			pBuff_[i] = 0 ;
+            pBuff2_[i] = 0;
 		}
 		else
 		{
             _nDepth = getGateDataDepth(_nData);
-
+            pBuff2_[i] = _nDepth / 1000;
 			if(_nDepth < _nMin)
 				pBuff_[i] = 0 ;
 			else if(_nDepth > _nMax)
@@ -1912,7 +1919,7 @@ void DopplerDrawCScanH::GetPixValueDistance(U32* pBuff1_ , U32* pBuff2_, float G
             _nDepth2 = getGateDataDepth(_nData2);
 
 			_nDepth1 = abs((int)(_nDepth2 - _nDepth1));
-
+            pBuff2_[i] = _nDepth1 / 100;
 			if(_nDepth1 < _nMin)
 				pBuff1_[i] = 0 ;
 			else if(_nDepth1 > _nMax)
@@ -1927,6 +1934,7 @@ void DopplerDrawCScanH::GetPixValueDistance(U32* pBuff1_ , U32* pBuff2_, float G
 		else
 		{
             pBuff1_[i] = 0;
+            pBuff2_[i] = 0;
 		}
 	}
 }
@@ -3068,6 +3076,8 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 		}
 	}
     if (zoomflag == 0) {
+        _process->SetCScanRange(m_PosStart, m_PosStop);
+        _process->SetCScanStep(step);
         _process->SetCScanData(src);
     }
     unsigned char* _pData = pImage_->bits() ;
@@ -3365,6 +3375,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	int _nScanMax = _process->GetScanMax();
     float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
     memset(src,0x00,sizeof(src));
+    memset(srcMerge, 0x00, sizeof(srcMerge));
     int old_index = -1;
     int new_index = 0;
     for(i = m_PosStart-1 , j = _nScanend  ; i <= m_PosStop+1 && j >= -1; i++ , j--) {
@@ -3383,7 +3394,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 GetPixValueDistance(_aGateValue1, _aGateValue2, _fScale);
 			} else {
 				GetPixValueInfo(i, eGate1_, _aGateValue1);
-                GetPixValuePos(_aGateValue1, _fScale);
+                GetPixValuePos(_aGateValue1, _aGateValue2, _fScale);
 			}
 
             //_pImageTmp1 = _pImageBits + j * _nWidthStep  ;
@@ -3394,6 +3405,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 //_pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
                 //_pColorTmp = m_pColor[_aGateValue1[k ]] ;
                 src[k-lawstart+1][new_index]=_aGateValue1[k ];
+                srcMerge[k-lawstart+1][new_index]=_aGateValue2[k ];
                 //memcpy(_pImageTmp2, _pColorTmp, 3);
 			}
 		} else {
@@ -3404,7 +3416,9 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 		}
 	}
     if (zoomflag == 0) {
-        _process->SetCScanData(src);
+        _process->SetCScanRange(m_PosStart, m_PosStop);
+        _process->SetCScanStep(step);
+        _process->SetCScanData(srcMerge);
     }
     unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
