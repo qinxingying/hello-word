@@ -3020,6 +3020,17 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
     int lawstart  = process->GetLawStart();
     int lawstop   = process->GetLawStop();
     int disp_mode = pConfig->group[m_iCurGroup].DisplayMode;
+
+    bool twoGate = false;
+    setup_CSCAN_SOURCE_MODE eSource = process->GetCScanSource(m_iCurGroup , 0) ;
+    if (eSource == setup_CSCAN_POS_AI || eSource == setup_CSCAN_POS_BI || eSource == setup_CSCAN_POS_BA) {
+        twoGate = true;
+    }
+    int scanStart = 0, scanStop = 0;
+    process->GetCScanRange(scanStart, scanStop);
+    float step = 1.0;
+    process->GetCScanStep(step);
+
     if(disp_mode < 0){
         disp_mode = (int)ProcessDisplay::DISP_S_AV;
     }
@@ -3031,9 +3042,9 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
         WDATA* data = process->GetCScanData();
         QList< QList<QVariant> > m_datas;
         if (data != nullptr) {
-            for (int j = -1; j <= scanMax; ++j) {
+            for (int j = scanStart-1; j <= scanStop; ++j) {
                 QList<QVariant> rows;
-                if (j == -1) {
+                if (j == scanStart-1) {
                     rows.append("");
                     for (int i = 1; i <= lawstop; ++i) {
                         rows.append(QString("Beam%1").arg(i));
@@ -3042,6 +3053,7 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
                     continue;
                 }
                 rows.append(QString("Pos%1").arg(j));
+                int index = j * step;
                 for (int i = lawstart + 1; i <= lawstop; ++i) {
                     switch (disp_mode) {
                     case ProcessDisplay::DISP_S_AV_BH_CH:
@@ -3051,12 +3063,21 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
                     case ProcessDisplay::DISP_S_AV_CH_BH:
                     case ProcessDisplay::DISP_S_AV_CH_N:
                     case ProcessDisplay::DISP_S_AV_BH_CHH:
-                        rows.append(data[(j + 1)*2048 + i]);
+                        if (twoGate) {
+                            rows.append(data[(index + 1)*2048 + i] / 10.0);
+                        } else {
+                            rows.append(data[(index + 1)*2048 + i]);
+                        }
                         break;
                     case ProcessDisplay::DISP_S_AH_BH_CV:
                     case ProcessDisplay::DISP_S_AH_CV:
                     case ProcessDisplay::DISP_S_AH_CV_CV:
-                        rows.append(data[(scanMax - j) + i * 2048]);
+                        index = (scanStop - j + 1) * step;
+                        if (twoGate) {
+                            rows.append(data[index + i * 2048] / 10.0);
+                        } else {
+                            rows.append(data[index + i * 2048]);
+                        }
                         break;
                     default:
                         break;
