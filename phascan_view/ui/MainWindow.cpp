@@ -154,8 +154,9 @@ void MainWindow::init_ui()
     ui->actionSave->setDisabled(true);
     //ui->actionNew->setDisabled(true);
     ui->actionSaveFile->setDisabled(true);
-    ui->actionSaveDisplay->setDisabled(true);
-    ui->actionLoadDisplay->setDisabled(true);
+    ui->actionSavePreferences->setDisabled(true);
+    ui->actionLoadPreferences->setDisabled(true);
+    ui->actionLoadRecommendedSettings->setDisabled(true);
     ui->actionStop_Analysis->setDisabled(true);
     ui->actionSave_Data->setDisabled(true);
     ui->actionSave_B_Scan_Data->setDisabled(true);
@@ -1020,8 +1021,9 @@ void MainWindow::UpdateTableDisplay()
     }
     ui->TabWidget_parameter->setEnabled(true);
     ui->TabWidget_display->setEnabled(true);
-    ui->actionSaveDisplay->setEnabled(true);
-    ui->actionLoadDisplay->setEnabled(true);
+    ui->actionSavePreferences->setEnabled(true);
+    ui->actionLoadPreferences->setEnabled(true);
+    ui->actionLoadRecommendedSettings->setEnabled(true);
     ui->toolBar->setEnabled(true);
     SetDispTabText();
 }
@@ -2648,7 +2650,7 @@ void MainWindow::on_actionScreenShot_triggered()
     ScreenShot();
 }
 
-void MainWindow::on_actionSaveDisplay_triggered()
+void MainWindow::on_actionSavePreferences_triggered()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     QString strDirPath = QCoreApplication::applicationDirPath() + "/init/config/";
@@ -2726,7 +2728,7 @@ void MainWindow::on_actionSaveDisplay_triggered()
     }
 }
 
-void MainWindow::on_actionLoadDisplay_triggered()
+void MainWindow::on_actionLoadPreferences_triggered()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     QString strDirPath = QCoreApplication::applicationDirPath() + "/init/config/";
@@ -2813,6 +2815,11 @@ void MainWindow::on_actionLoadDisplay_triggered()
             }
         }
     }
+}
+
+void MainWindow::on_actionLoadRecommendedSettings_triggered()
+{
+
 }
 
 void MainWindow::slot_actionEnglish_triggered()

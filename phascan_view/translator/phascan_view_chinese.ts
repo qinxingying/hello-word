@@ -1370,7 +1370,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="9677"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10203"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10257"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1280"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1279"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
@@ -1921,7 +1921,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5397"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7570"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9670"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1353"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1352"/>
         <source>Width:</source>
         <translation>宽        度：</translation>
     </message>
@@ -2032,8 +2032,8 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7070"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7121"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7172"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1248"/>
         <location filename="../ui/DopplerGroupTab.cpp" line="1249"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1250"/>
         <source>Ref Amplitude:</source>
         <translation>参考幅度：</translation>
     </message>
@@ -2056,7 +2056,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7210"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8759"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8822"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1265"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1264"/>
         <source>%</source>
         <translation></translation>
     </message>
@@ -2118,8 +2118,8 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="7510"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9402"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1352"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1356"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1351"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1355"/>
         <source>Length:</source>
         <translation>长        度：</translation>
     </message>
@@ -2885,8 +2885,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="9971"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1351"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1355"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1350"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1354"/>
         <source>Thickness:</source>
         <translation>厚        度：</translation>
     </message>
@@ -3013,322 +3013,322 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="293"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="292"/>
         <source>Peak amplitude in gate A</source>
         <translation>A闸门内的峰值幅度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="294"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="293"/>
         <source>Signal in gate minus gate level for gate A</source>
         <translation>闸门A 内峰值幅度与闸门阈值幅度之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="295"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="294"/>
         <source>Diff. between signal and reference in gate A</source>
         <translation>闸门A内峰值幅度与参考信号幅度之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="296"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="295"/>
         <source>Peak amplitude in gate B</source>
         <translation>B闸门内的峰值幅度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="297"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="296"/>
         <source>Signal in gate minus gate level for gate B</source>
         <translation> 闸门B内峰值幅度与闸门阈值幅度之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="298"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="297"/>
         <source>Diff. between signal and reference in gate B</source>
         <translation>闸门B内峰值幅度与参考信号幅度之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="299"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="298"/>
         <source>Peak in gate A</source>
         <translation>闸门A内的峰值位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="299"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="298"/>
         <source>Edge in gate A</source>
         <translation>闸门A的前沿位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="300"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="299"/>
         <source>Peak in gate B</source>
         <translation>闸门B内的峰值位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="300"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="299"/>
         <source>Edge in gate B</source>
         <translation>闸门B的前沿位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="301"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="300"/>
         <source>Peak in gate I</source>
         <translation>闸门I内的峰值位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="301"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="300"/>
         <source>Edge in gate I</source>
         <translation>闸门I的前沿位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="302"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="301"/>
         <source>Peak in gate I in water</source>
         <translation>闸门I内的峰值位置（水）</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="302"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="301"/>
         <source>Edge in gate I in water</source>
         <translation>闸门I的前沿位置（水）</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="303"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="302"/>
         <source>Thickness</source>
         <translation>厚度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="304"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="303"/>
         <source>Percentage of material loss</source>
         <translation>材料损失百分比</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="305"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="304"/>
         <source>Amplitude value for the reference cursor</source>
         <translation>参考光标位置的幅度值</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="306"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="305"/>
         <source>Amplitude value of the measurement cursor</source>
         <translation>测量光标位置的幅度值</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="307"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="306"/>
         <source>Amplitude (measurement cursor - reference cursor)</source>
         <translation>测量光标的幅度值减去参考光标的幅度值</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="308"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="307"/>
         <source>Ultrasonic position of the reference cursor</source>
         <translation>参考光标在超声轴上的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="309"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="308"/>
         <source>Ultrasonic position of the measurement cursor</source>
         <translation>测量光标在超声轴上的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="310"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="309"/>
         <source>Ultrasonic axis (measurement cursor - reference cursor)</source>
         <translation>超声轴上测量光标与参考光标位置之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="311"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="310"/>
         <source>Probe position of the reference cursor</source>
         <translation>相对于参考光标的探头位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="312"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="311"/>
         <source>Probe position of the measurement cursor</source>
         <translation>相对于测量光标的探头位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="313"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="312"/>
         <source>Probe (measurement cursor - reference cursor)</source>
         <translation>探头相对于测量光标与参考光标差值的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="314"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="313"/>
         <source>Scan position of the reference cursor</source>
         <translation>扫查轴上参考光标的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="315"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="314"/>
         <source>Scan position of the measurement cursor</source>
         <translation>扫查轴上测量光标的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="316"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="315"/>
         <source>Scan axis (measurement cursor - reference cursor)</source>
         <translation>扫查轴上测量光标与参考光标的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="317"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="316"/>
         <source>Index position of the reference cursor</source>
         <translation>步进轴上参考光标的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="318"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="317"/>
         <source>Index position of the measurement cursor</source>
         <translation>步进轴上测量光标的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="319"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="318"/>
         <source>Index axis (measurement cursor - reference cursor)</source>
         <translation>步进轴上测量光标与参考光标的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="320"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="319"/>
         <source>Reference point to the indication in gate A</source>
         <translation>声束出射点与闸门A内检测到的缺陷之间的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="321"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="320"/>
         <source>Reference point to the indication in gate B</source>
         <translation>声束出射点与闸门B内检测到的缺陷之间的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="322"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="321"/>
         <source>Probe front face to the indication in gate A</source>
         <translation>探头前表面与闸门A内检测到的缺陷的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="323"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="322"/>
         <source>Probe front face to the indication in gate B</source>
         <translation>探头前表面与闸门B内检测到的缺陷的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="324"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="323"/>
         <source>Depth of the indication in gate A</source>
         <translation>闸门A内检测到的缺陷在工件中的深度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="325"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="324"/>
         <source>Depth of the indication in gate B</source>
         <translation>闸门B内检测到的缺陷在工件中的深度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="326"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="325"/>
         <source>Sound path of the indication in gate A</source>
         <translation>声束出射点到闸门A内检测到的缺陷之间的声程</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="327"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="326"/>
         <source>Sound path of the indication in gate B</source>
         <translation>声束出射点到闸门B内检测到的缺陷之间的声程</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="328"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="327"/>
         <source>Volumetric position in gate A on the index axis</source>
         <translation>闸门A内检测到的缺陷相对于步进轴的体积定位</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="329"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="328"/>
         <source>Volumetric position in gate B on the index axis</source>
         <translation>闸门B内检测到的缺陷相对于步进轴的体积定位</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="330"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="329"/>
         <source>Volumetric position in gate A on the scan axis</source>
         <translation>闸门A内检测到的缺陷相对于扫查轴的体积定位</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="331"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="330"/>
         <source>Volumetric position in gate B on the scan axis</source>
         <translation>闸门B内检测到的缺陷相对于扫查轴的体积定位</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="332"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="331"/>
         <source>Leg (skip) of the indication in gate A</source>
         <translation>声波从探头到闸门A探测到的缺陷在材料中的路径改变次数</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="333"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="332"/>
         <source>Leg (skip) of the indication in gate B</source>
         <translation>声波从探头到闸门B探测到的缺陷在材料中的路径改变次数</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="334"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="333"/>
         <source>Tofd Ultrasonic Axis Reference Cursor Depth</source>
         <translation>TOFD超声轴方向参考光标深度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="335"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="334"/>
         <source>Tofd Ultrasonic Axis Measure Cursor Depth</source>
         <translation>TOFD超声轴方向测量光标深度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="336"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="335"/>
         <source>Tofd Scan Axis Cursor Measure to Reference</source>
         <translation>TOFD扫查轴参考光标与测量光标间距</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="337"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="336"/>
         <source>Tofd Ultrasonic Axis Cursor Measure to Reference</source>
         <translation>TOFD超声轴方向参考光标与测量光标高度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="338"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="337"/>
         <source>Distance between peaks in gate A and gate I</source>
         <translation>A闸门和I闸门内回波信号位置的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="339"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="338"/>
         <source>Distance between peaks in gate B and gate I</source>
         <translation>B闸门和I闸门内回波信号位置的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="340"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="339"/>
         <source>Distance between peaks in gate A and gate B</source>
         <translation>A闸门和B闸门内回波信号位置的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="341"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="340"/>
         <source>Distance between peaks in gate B and gate A</source>
         <translation>B闸门和A闸门内回波信号位置的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="342"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="341"/>
         <source>Gate A echo dB value compared to RL height</source>
         <translation>判废线</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="343"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="342"/>
         <source>Gate A echo dB value compared to SL height</source>
         <translation>定量线</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="344"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="343"/>
         <source>Gate A echo dB value compared to EL height</source>
         <translation>评定线</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="345"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="344"/>
         <source>Peak amplitude in gate coupleMonitoring</source>
         <translation>耦合监控的闸门A内峰值幅度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="346"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="345"/>
         <source>Max defect scanPoint</source>
         <translation>缺陷的最高回波信号在扫查轴上的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="347"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="346"/>
         <source>zone of amplitude in gate A</source>
         <translation>闸门A内最高回波所在区域</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="348"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="347"/>
         <source>defect area</source>
         <translation>缺陷面积</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2641"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2640"/>
         <source>Number %1 defect will be deleted.</source>
         <translation> %1 号缺陷将被删除。</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2642"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2641"/>
         <source>Are you sure to delete this defect?</source>
         <translation>确定删除这个缺陷吗？</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2645"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2644"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2646"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2645"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -3337,23 +3337,23 @@
         <translation type="vanished">其它</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="788"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2666"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="787"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2665"/>
         <source>Display Mode</source>
         <translation>显示模式</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1246"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1245"/>
         <source>Mat. Atten:</source>
         <translation>衰减系数:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1247"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1246"/>
         <source>Delay:</source>
         <translation>延迟时间：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1279"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1278"/>
         <source>dB/mm</source>
         <translation></translation>
     </message>
@@ -3362,7 +3362,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="367"/>
         <location filename="../ui/DopplerGroupTab.ui" line="496"/>
         <location filename="../ui/DopplerGroupTab.ui" line="601"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1291"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1290"/>
         <source>dB</source>
         <translation></translation>
     </message>
@@ -3371,7 +3371,7 @@
         <translation type="vanished">内部直径:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1357"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1356"/>
         <source>Outer Diameter:</source>
         <translation>外部直径:</translation>
     </message>
@@ -4175,7 +4175,7 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="249"/>
-        <location filename="../ui/mainwindow.ui" line="676"/>
+        <location filename="../ui/mainwindow.ui" line="677"/>
         <source>Language</source>
         <translation>语言</translation>
     </message>
@@ -4195,123 +4195,120 @@
         <translation>远程监控</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="276"/>
         <source>Display Config</source>
-        <translation>显示配置</translation>
+        <translation type="vanished">显示配置</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="307"/>
+        <location filename="../ui/mainwindow.ui" line="308"/>
         <source>toolBar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="351"/>
+        <location filename="../ui/mainwindow.ui" line="352"/>
         <source>New File</source>
         <translation>新建文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="359"/>
+        <location filename="../ui/mainwindow.ui" line="360"/>
         <source>Open File</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="367"/>
+        <location filename="../ui/mainwindow.ui" line="368"/>
         <source>Save File</source>
         <translation>保存文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="385"/>
+        <location filename="../ui/mainwindow.ui" line="386"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="401"/>
+        <location filename="../ui/mainwindow.ui" line="402"/>
         <source>Chinese</source>
         <translation>中文</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="409"/>
+        <location filename="../ui/mainwindow.ui" line="410"/>
         <source>Japanese</source>
         <translation>日语</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="420"/>
+        <location filename="../ui/mainwindow.ui" line="421"/>
         <source>Korean</source>
         <translation>韩语</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="428"/>
+        <location filename="../ui/mainwindow.ui" line="429"/>
         <source>Keyboard Guide</source>
         <translation>键位说明</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="460"/>
+        <location filename="../ui/mainwindow.ui" line="461"/>
         <source>OpenFile</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="463"/>
+        <location filename="../ui/mainwindow.ui" line="464"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="475"/>
-        <location filename="../ui/mainwindow.ui" line="478"/>
+        <location filename="../ui/mainwindow.ui" line="476"/>
+        <location filename="../ui/mainwindow.ui" line="479"/>
         <source>New</source>
         <translation>新建</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="487"/>
+        <location filename="../ui/mainwindow.ui" line="488"/>
         <source>SaveFile</source>
         <translation>保存文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="490"/>
+        <location filename="../ui/mainwindow.ui" line="491"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="706"/>
         <source>Save Display</source>
-        <translation>保存显示参数</translation>
+        <translation type="vanished">保存显示参数</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="711"/>
         <source>Load Display</source>
-        <translation>加载显示参数</translation>
+        <translation type="vanished">加载显示参数</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="720"/>
+        <location filename="../ui/mainwindow.ui" line="721"/>
         <source>Aided Analysis</source>
         <translation>辅助分析</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="723"/>
+        <location filename="../ui/mainwindow.ui" line="724"/>
         <source>Aided Analysis Defect</source>
         <translation>辅助缺陷分析</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="732"/>
+        <location filename="../ui/mainwindow.ui" line="733"/>
         <source>actionStop_Analysis</source>
         <translation>停止分析</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="735"/>
+        <location filename="../ui/mainwindow.ui" line="736"/>
         <source>Stop Analysis</source>
         <translation>停止分析</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="743"/>
+        <location filename="../ui/mainwindow.ui" line="744"/>
         <source>File Properties</source>
         <translation>文件属性</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="748"/>
+        <location filename="../ui/mainwindow.ui" line="749"/>
         <source>Save C Scan Data</source>
         <translation>保存C扫数据</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="753"/>
+        <location filename="../ui/mainwindow.ui" line="754"/>
         <source>Save B Scan Data</source>
         <translation>保存B扫数据</translation>
     </message>
@@ -4320,9 +4317,9 @@
         <translation type="vanished">增加报告项</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="499"/>
-        <location filename="../ui/mainwindow.ui" line="502"/>
-        <location filename="../ui/mainwindow.ui" line="505"/>
+        <location filename="../ui/mainwindow.ui" line="500"/>
+        <location filename="../ui/mainwindow.ui" line="503"/>
+        <location filename="../ui/mainwindow.ui" line="506"/>
         <source>Report Add One Item</source>
         <translation>增加报告项</translation>
     </message>
@@ -4331,9 +4328,9 @@
         <translation type="vanished">删除报告项</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="514"/>
-        <location filename="../ui/mainwindow.ui" line="517"/>
-        <location filename="../ui/mainwindow.ui" line="520"/>
+        <location filename="../ui/mainwindow.ui" line="515"/>
+        <location filename="../ui/mainwindow.ui" line="518"/>
+        <location filename="../ui/mainwindow.ui" line="521"/>
         <source>Report Del One Item</source>
         <translation>删除报告项</translation>
     </message>
@@ -4342,110 +4339,130 @@
         <translation type="vanished">报告设置</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="529"/>
-        <location filename="../ui/mainwindow.ui" line="532"/>
-        <location filename="../ui/mainwindow.ui" line="535"/>
+        <location filename="../ui/mainwindow.ui" line="276"/>
+        <source>Preferences</source>
+        <translation>偏好</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="530"/>
+        <location filename="../ui/mainwindow.ui" line="533"/>
+        <location filename="../ui/mainwindow.ui" line="536"/>
         <source>Report Setting</source>
         <translation>报表设置</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="544"/>
-        <location filename="../ui/mainwindow.ui" line="547"/>
+        <location filename="../ui/mainwindow.ui" line="545"/>
+        <location filename="../ui/mainwindow.ui" line="548"/>
         <source>Save Report</source>
         <translation>报告生成</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="556"/>
-        <location filename="../ui/mainwindow.ui" line="559"/>
+        <location filename="../ui/mainwindow.ui" line="557"/>
+        <location filename="../ui/mainwindow.ui" line="560"/>
         <source>TOFD LW Straitening</source>
         <translation>TOFD 直通波对齐</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="568"/>
-        <location filename="../ui/mainwindow.ui" line="571"/>
+        <location filename="../ui/mainwindow.ui" line="569"/>
+        <location filename="../ui/mainwindow.ui" line="572"/>
         <source>TOFD BW Straitening</source>
         <translation>TOFD 底波对齐</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="580"/>
-        <location filename="../ui/mainwindow.ui" line="583"/>
+        <location filename="../ui/mainwindow.ui" line="581"/>
+        <location filename="../ui/mainwindow.ui" line="584"/>
         <source>TOFD LW Removal</source>
         <translation>TOFD 差分</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="592"/>
-        <location filename="../ui/mainwindow.ui" line="595"/>
+        <location filename="../ui/mainwindow.ui" line="593"/>
+        <location filename="../ui/mainwindow.ui" line="596"/>
         <source>TOFD SAFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="604"/>
-        <location filename="../ui/mainwindow.ui" line="607"/>
+        <location filename="../ui/mainwindow.ui" line="605"/>
+        <location filename="../ui/mainwindow.ui" line="608"/>
         <source>TOFD Repeal</source>
         <translation>TOFD 撤销</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="616"/>
-        <location filename="../ui/mainwindow.ui" line="619"/>
+        <location filename="../ui/mainwindow.ui" line="617"/>
+        <location filename="../ui/mainwindow.ui" line="620"/>
         <source>TOFD Redo</source>
         <translation>TOFD 重做</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="628"/>
-        <location filename="../ui/mainwindow.ui" line="631"/>
+        <location filename="../ui/mainwindow.ui" line="629"/>
+        <location filename="../ui/mainwindow.ui" line="632"/>
         <source>TOFD Length Measurement</source>
         <translation>TOFD 测长</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="640"/>
-        <location filename="../ui/mainwindow.ui" line="643"/>
+        <location filename="../ui/mainwindow.ui" line="641"/>
+        <location filename="../ui/mainwindow.ui" line="644"/>
         <source>TOFD Height Measurement</source>
         <translation>TOFD 测高</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="652"/>
-        <location filename="../ui/mainwindow.ui" line="655"/>
+        <location filename="../ui/mainwindow.ui" line="653"/>
+        <location filename="../ui/mainwindow.ui" line="656"/>
         <source>TOFD Depth Measurement</source>
         <translation>TOFD 测深</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="664"/>
-        <location filename="../ui/mainwindow.ui" line="667"/>
+        <location filename="../ui/mainwindow.ui" line="665"/>
+        <location filename="../ui/mainwindow.ui" line="668"/>
         <source>Save Defect</source>
         <translation>保存缺陷</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="679"/>
+        <location filename="../ui/mainwindow.ui" line="680"/>
         <source>CH/EN</source>
         <translation>中/英 切换</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="688"/>
-        <location filename="../ui/mainwindow.ui" line="691"/>
+        <location filename="../ui/mainwindow.ui" line="689"/>
+        <location filename="../ui/mainwindow.ui" line="692"/>
         <source>ScreenShot</source>
         <translation>截屏</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="696"/>
+        <location filename="../ui/mainwindow.ui" line="697"/>
         <source>Connect</source>
         <translation>连接</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="701"/>
+        <location filename="../ui/mainwindow.ui" line="702"/>
         <source>Disconnect</source>
         <translation>断开</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="707"/>
+        <source>Save Individual Preferences</source>
+        <translation>保存个人偏好</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="712"/>
+        <source>Load Individual Preferences</source>
+        <translation>加载个人偏好</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="759"/>
+        <source>Load Recommended Settings</source>
+        <translation>加载推荐设置</translation>
     </message>
     <message>
         <source>New Configure</source>
         <translation type="obsolete">新建</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="372"/>
+        <location filename="../ui/mainwindow.ui" line="373"/>
         <source>Close File</source>
         <translation>关闭文件</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="377"/>
+        <location filename="../ui/mainwindow.ui" line="378"/>
         <source>Open Scan Data</source>
         <translation>打开扫查数据</translation>
     </message>
@@ -4454,27 +4471,27 @@
         <translation type="vanished">关闭</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="393"/>
+        <location filename="../ui/mainwindow.ui" line="394"/>
         <source>English</source>
         <translation>英语</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="436"/>
+        <location filename="../ui/mainwindow.ui" line="437"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="441"/>
+        <location filename="../ui/mainwindow.ui" line="442"/>
         <source>Report Format</source>
         <translation>报告格式</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="446"/>
+        <location filename="../ui/mainwindow.ui" line="447"/>
         <source>Report PreView</source>
         <translation>报告预览</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="451"/>
+        <location filename="../ui/mainwindow.ui" line="452"/>
         <source>Save </source>
         <translation>保存</translation>
     </message>
@@ -4554,12 +4571,12 @@
         <translation>缺陷位置没有设置。如果你设置当前位置为缺陷位置，点击0k，否则点击取消并用Z键来设置缺陷位置</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="3038"/>
+        <location filename="../ui/mainwindow.cpp" line="3043"/>
         <source>Save CSacn Data</source>
         <translation>保存C扫数据</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="3114"/>
+        <location filename="../ui/mainwindow.cpp" line="3119"/>
         <source>Save BSacn Data</source>
         <translation>保存B扫数据</translation>
     </message>
