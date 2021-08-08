@@ -288,7 +288,6 @@ void DopplerGroupTab::UpdateProbeWedge()
 #include <process/CalcMeasurement.h>
 void DopplerGroupTab::slotMeasureBoxTipInfo(int nIndex_)
 {
-	QToolTip::hideText();
     QStringList tips = {
         tr("Peak amplitude in gate A"),
         tr("Signal in gate minus gate level for gate A"),
