@@ -2,6 +2,7 @@
 #include <process/ParameterProcess.h>
 #include <QImage>
 #include <gHeader.h>
+#include "ProcessDisplay.h"
 
 extern int lastgroup,currentgroup;
 extern int Phascan_Version;
@@ -1394,7 +1395,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 			}
         }
 	}
-    if (zoomflag == 0) {
+    if (zoomflag == 0 && m_CScanInfo.eType == m_pConfig->group[m_cInfo.nGroupId].eCScanSource[0]) {
         _process->SetCScanRange(m_PosStart, m_PosStop);
         _process->SetCScanStep(step);
         _process->SetCScanData(src);
@@ -1819,7 +1820,7 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 //		}
 	}
 
-    if (zoomflag == 0) {
+    if (zoomflag == 0 && m_CScanInfo.eType == m_pConfig->group[m_cInfo.nGroupId].eCScanSource[0]) {
         _process->SetCScanRange(m_PosStart, m_PosStop);
         _process->SetCScanStep(step);
         _process->SetCScanData(srcMerge);
@@ -3075,7 +3076,7 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 //			}
 		}
 	}
-    if (zoomflag == 0) {
+    if (zoomflag == 0 && m_CScanInfo.eType == m_pConfig->group[m_cInfo.nGroupId].eCScanSource[0]) {
         _process->SetCScanRange(m_PosStart, m_PosStop);
         _process->SetCScanStep(step);
         _process->SetCScanData(src);
@@ -3415,7 +3416,7 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 //			}
 		}
 	}
-    if (zoomflag == 0) {
+    if (zoomflag == 0 && m_CScanInfo.eType == m_pConfig->group[m_cInfo.nGroupId].eCScanSource[0]) {
         _process->SetCScanRange(m_PosStart, m_PosStop);
         _process->SetCScanStep(step);
         _process->SetCScanData(srcMerge);
