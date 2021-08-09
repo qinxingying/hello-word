@@ -258,6 +258,10 @@ public:
     WDATA* GetTOPCData(int nGroupId_, int startX_, int stopX_, int startY_, int stopY_, int direction_);
     WDATA* GetRasterData(int nGroupId_, setup_CSCAN_SOURCE_MODE source_mode);
     void   SetCScanData(WDATA data[2048][2048]);
+    void   SetCScanRange(int _start, int _end);
+    void   GetCScanRange(int &_start, int &_end);
+    void   SetCScanStep(float _step);
+    void   GetCScanStep(float &_step);
     WDATA* GetCScanData();
     void   SetBScanData(WDATA data[2048][2048]);
     WDATA* GetBScanData();
@@ -266,6 +270,9 @@ protected:
     DopplerConfigure* m_pConfig;
 	float m_fBScanOff[8];
 	float m_fCScanOff[8];
+    int m_cPosStart;
+    int m_cPosStop;
+    float m_cStep {1.0};
 signals:
 
 public slots:
