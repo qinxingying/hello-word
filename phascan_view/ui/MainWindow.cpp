@@ -2660,6 +2660,8 @@ void MainWindow::on_actionSavePreferences_triggered()
                             "Doppler Files(*.dis)");
     if( !strFileName.isEmpty()){
         DISPLAY_CONFIG buff;
+        buff.eLanguage = m_currentLang;
+        buff.bSAxisCursorSync = _pConfig->AppEvn.bSAxisCursorSync;
         buff.bShowRL = CUR_RES.bShowRL;
         buff.bShowSL = CUR_RES.bShowSL;
         buff.bShowEL = CUR_RES.bShowEL;
@@ -2678,13 +2680,18 @@ void MainWindow::on_actionSavePreferences_triggered()
             buff.CScanSource[i][1] = (int)_group.eCScanSource[1];
             buff.MinThickness[i]   = _group.fMinThickness;
             buff.MaxThickness[i]   = _group.fMaxThickness;
-            buff.CurSS[i]          = CUR_RES.CurSS[i];
             buff.Standard[i]       = CUR_RES.Standard[i];
             buff.Thickness[i]      = CUR_RES.Thickness[i];
             buff.bShowAScanMeasure[i] = _group.bShowAScanMeasure;
             buff.bShowBScanMeasure[i] = _group.bShowBScanMeasure;
             buff.bShowCScanMeasure[i] = _group.bShowCScanMeasure;
             buff.bShowSScanMeasure[i] = _group.bShowSScanMeasure;
+
+            buff.bShowGateA[i]        = _group.bShowGateA;
+            buff.bShowGateB[i]        = _group.bShowGateB;
+            buff.bShowGateI[i]        = _group.bShowGateI;
+            buff.bTOPCStatus[i]       = _group.TopCInfo.TOPCStatus;
+            buff.TOPCWidth[i]         = _group.TopCInfo.TOPCWidth;
         }
         for(int i = _pConfig->common.nGroupQty; i < setup_MAX_GROUP_QTY; i++){
             buff.bShowDAC[i]       = true;
@@ -2697,7 +2704,6 @@ void MainWindow::on_actionSavePreferences_triggered()
             buff.CScanSource[i][1] = 3;
             buff.MinThickness[i]   = 0;
             buff.MaxThickness[i]   = 50;
-            buff.CurSS[i]          = 0;
             buff.Standard[i]       = 0;
             buff.Thickness[i]      = 0;
             buff.bShowAScanMeasure[i] = true;
@@ -2718,6 +2724,12 @@ void MainWindow::on_actionSavePreferences_triggered()
             buff.anMeasureSelection[i][11] = FEILD_NONE;
             buff.anMeasureSelection[i][12] = FEILD_NONE;
             buff.anMeasureSelection[i][13] = FEILD_NONE;
+
+            buff.bShowGateA[i]        = true;
+            buff.bShowGateB[i]        = false;
+            buff.bShowGateI[i]        = true;
+            buff.bTOPCStatus[i]       = false;
+            buff.TOPCWidth[i]         = 10.0;
         }
 
         QFile file( strFileName);
@@ -2747,6 +2759,9 @@ void MainWindow::on_actionLoadPreferences_triggered()
             return;
         }
         int _nGroupQty = _pConfig->common.nGroupQty;
+        _pConfig->AppEvn.bSAxisCursorSync = buff.bSAxisCursorSync;
+        _pConfig->AppEvn.eLanguage        = buff.eLanguage;
+        m_currentLang   = buff.eLanguage;
         CUR_RES.bShowRL = buff.bShowRL;
         CUR_RES.bShowSL = buff.bShowSL;
         CUR_RES.bShowEL = buff.bShowEL;
@@ -2765,13 +2780,18 @@ void MainWindow::on_actionLoadPreferences_triggered()
             _group.eCScanSource[1] = (setup_CSCAN_SOURCE_MODE)buff.CScanSource[i][1];
             _group.fMinThickness = buff.MinThickness[i];
             _group.fMaxThickness = buff.MaxThickness[i];
-            CUR_RES.CurSS[i]     = buff.CurSS[i];
             CUR_RES.Standard[i]  = buff.Standard[i];
             CUR_RES.Thickness[i] = buff.Thickness[i];
             _group.bShowAScanMeasure = buff.bShowAScanMeasure[i];
             _group.bShowBScanMeasure = buff.bShowBScanMeasure[i];
             _group.bShowCScanMeasure = buff.bShowCScanMeasure[i];
             _group.bShowSScanMeasure = buff.bShowSScanMeasure[i];
+
+            _group.bShowGateA           = buff.bShowGateA[i] ;
+            _group.bShowGateB           = buff.bShowGateB[i] ;
+            _group.bShowGateI           = buff.bShowGateI[i] ;
+            _group.TopCInfo.TOPCStatus  = buff.bTOPCStatus[i];
+            _group.TopCInfo.TOPCWidth   = buff.TOPCWidth[i]  ;
         }
 
         for(int i = 0; i < _nGroupQty; i++){
@@ -2819,6 +2839,72 @@ void MainWindow::on_actionLoadPreferences_triggered()
 
 void MainWindow::on_actionLoadRecommendedSettings_triggered()
 {
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    int _nGroupQty = _pConfig->common.nGroupQty;
+    _pConfig->AppEvn.bSAxisCursorSync = false;
+    CUR_RES.bShowRL = false;
+    CUR_RES.bShowSL = false;
+    CUR_RES.bShowEL = false;
+    for( int i = 0; i < _nGroupQty; i++){
+        GROUP_CONFIG& _group  = _pConfig->group[i];
+        _group.bShowCurve     = false;
+        _group.bShowThickness = true;
+        _group.bShowWeldPart  = true;
+        _group.bShowMeasure   = true;
+        _group.bShowCursor    = true;
+
+        _group.DisplayMode = (int)ProcessDisplay::DISP_S_AV_CH_BH;
+        _group.eCScanSource[0] = setup_CSCAN_AMP_A;
+        _group.eCScanSource[1] = setup_CSCAN_POS_A;
+        _group.fMinThickness = 0.0;
+        _group.fMaxThickness = 50.0;
+        CUR_RES.Standard[i]  = 6;//other
+        CUR_RES.Thickness[i] = 0;
+        _group.bShowAScanMeasure = true;
+        _group.bShowBScanMeasure = false;
+        _group.bShowCScanMeasure = false;
+        _group.bShowSScanMeasure = true;
+
+        _group.bShowGateA           = true;
+        _group.bShowGateB           = false;
+        _group.bShowGateI           = false;
+        _group.TopCInfo.TOPCStatus  = false;
+    }
+
+    for(int i = 0; i < _nGroupQty; i++){
+        m_pGroupList.at(i)->UpdateGroupConfig();
+        m_pGroupList.at(i)->LoadStandardFormConifg();
+    }
+    DopplerViewFrame* _pViewFrame = NULL;
+    if(_nGroupQty > 1){
+        for(int i = 1; i < _nGroupQty+1; i++){
+
+            ui->TabWidget_display->setCurrentIndex(i);
+            sleep(600); //这里一定要sleep不然会崩
+            m_iCurGroup = i-1;
+            _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
+
+            int disp_mode = _pConfig->group[m_iCurGroup].DisplayMode;
+            if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
+                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
+            } else {
+                _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BV);
+            }
+
+        }
+    }else{
+        ui->TabWidget_display->setCurrentIndex(0);
+        sleep(600);
+        m_iCurGroup = 0;
+        _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
+        _pViewFrame->SetViewFrameId(0);
+        int disp_mode = _pConfig->group[0].DisplayMode;
+        if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
+            _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
+        } else {
+            _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BV);
+        }
+    }
 
 }
 

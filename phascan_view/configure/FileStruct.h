@@ -18,13 +18,6 @@ struct FILE_HEADER
     char strVersion[64];
 };
 
-enum setup_LANG
-{
-    setup_LANG_ENGLISH = 0,
-    setup_LANG_CHINESE,
-    setup_LANG_JAPANESE,
-    setup_LANG_KOREAN
-};
 enum setup_SOUND_UNIT
 {
     setup_SOUND_AXIX_UNIT_MM = 0,
