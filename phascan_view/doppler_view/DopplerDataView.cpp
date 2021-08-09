@@ -285,7 +285,8 @@ DopplerDrawScan* DopplerDataView::GetDrawScan() const
 void DopplerDataView::UpdateDrawing()
 {
     UpdateMeasure();
-	m_pGraphicView->UpdateDrawing();
+
+    m_pGraphicView->UpdateDrawing();
     if( m_pCoupleSBar)
     {
         m_pCoupleSBar->update();
@@ -295,6 +296,13 @@ void DopplerDataView::UpdateDrawing()
 //        m_pCoupleCBar->update();
 //    }
     //UpdateMeasure() ;
+}
+
+void DopplerDataView::UpdateDSDrawing()
+{
+
+    m_pGraphicView->UpdateDSDrawing();
+
 }
 
 #include <process/ParameterProcess.h>

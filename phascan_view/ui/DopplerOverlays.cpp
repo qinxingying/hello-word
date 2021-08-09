@@ -58,9 +58,9 @@ void DopplerOverlays::CreateOverlays()
 	case setup_DISPLAY_MODE_S_SOUNDPATH :
 		CreateOverlaysSS() ;
 		break;
-	case setup_DISPLAY_MODE_S_ATHUMIZ :
+    case setup_DISPLAY_MODE_S_ATHUMIZ :
 		CreateOverlaysSA() ;
-		break;
+        break;
 	case setup_DISPLAY_MODE_S_LINEAR:
 		CreateOverlaysSL() ;
 		break;
@@ -385,7 +385,6 @@ void DopplerOverlays::CreateOverlaysCH()
 	GROUP_CONFIG&            group = m_pConfigure->group[m_nGroup];
 	DopplerViewItems* _pItemGroup  = m_pView->GetItemGroup() ;
     ParameterProcess* _process = ParameterProcess::Instance();
-
     if(group.bShowDefect)
     {
         _pItemGroup->EnableItems(OVERLAYS_DEFECT);
@@ -478,6 +477,7 @@ void DopplerOverlays::CreateOverlaysCH()
         _pItemGroup->SetWeldBorderDirection(true);
     }
 	_pItemGroup->UpdateItems();
+
 }
 
 void DopplerOverlays::CreateOverlaysCV()

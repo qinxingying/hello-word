@@ -478,6 +478,7 @@ void DopplerViewItems::UpdateItemsCursor()
 
     }
 
+
 }
 
 void DopplerViewItems::UpdateItemsLawMarker()

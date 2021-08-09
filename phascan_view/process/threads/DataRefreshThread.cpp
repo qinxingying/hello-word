@@ -33,7 +33,7 @@ void DataRefreshThread::StopThread(bool bStop_)
 void DataRefreshThread::run()
 {
     QList<QWidget*>* _list = g_pMainWnd->GetCurrentDisplayTableWidgetList();
-    if(!_list->count())  return ;
+    if(!_list->count()) return ;
     // run once and get out
     if(m_nRunOnce)
     {
@@ -91,13 +91,13 @@ void DataRefreshThread::RunOnce(THREAD_RUN_MODE eMode_)
         UpdateAllWidgetDrawing() ;
     else
     {
-        while (isRunning()) {
+        while (isRunning()){
 
         }
         if(m_nRunOnce)
-            m_nRunOnce = 1 ;
+            m_nRunOnce = 1;
         else
-            m_nRunOnce = 2 ;
+            m_nRunOnce = 2;
         start();
     }
 }

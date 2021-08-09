@@ -2063,6 +2063,11 @@ WDATA* ParameterProcess::GetGroupDataDscanPointer(int nGroupId_)
     _mScanPos= _group.afCursor[ setup_CURSOR_S_REF ];
    else
      _mScanPos= _group.afCursor[ setup_CURSOR_S_MES ];
+
+   if(_group.afCursor[ setup_CURSOR_S_MES ]<0||_group.afCursor[ setup_CURSOR_S_REF ]<0)
+    _mScanPos=0;
+
+
     WDATA* _pData = GetShadowDataPointer();
     if(!_pData)  return 0 ;
     int   _nFrameSize = GetTotalDataSize() ;
@@ -2070,7 +2075,6 @@ WDATA* ParameterProcess::GetGroupDataDscanPointer(int nGroupId_)
     int        _index = GetRealScanIndex(nGroupId_, _nScanPos);
     int _nFrameOffset = _nFrameSize * _index  ;
     int _nGroupOffset = GetGroupDataOffset(nGroupId_) ;
-    //qDebug()<<"_index"<<_index<<"offset"<<_nFrameOffset + _nGroupOffset;
     return (_pData + _nFrameOffset + _nGroupOffset)  ;
 
 }

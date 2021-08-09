@@ -4,6 +4,11 @@
 #include <math.h>
 #include <gHeader.h>
 #include "defectidentify.h"
+#include <QApplication>
+#include "DopplerDataView.h"
+#include "gHeader.h"
+#include <process/ParameterProcess.h>
+#include <QtGlobal>
 
 DopplerDrawSScanTrueDepth::DopplerDrawSScanTrueDepth() :
 	DopplerDrawScan()
@@ -28,7 +33,7 @@ DopplerDrawSScanTrueDepth::~DopplerDrawSScanTrueDepth ()
 
 void DopplerDrawSScanTrueDepth::UpdateDrawInfo()
 {
-	m_hMutex.lock();
+    m_hMutex.lock();
 	ParameterProcess* _process = ParameterProcess::Instance();
 
 	LAW_CONFIG* _law = _process->GetLawConfig(m_cInfo.nGroupId);
@@ -58,7 +63,7 @@ void DopplerDrawSScanTrueDepth::UpdateDrawInfo()
 	m_SScaninfo.eType   = _law->eLawType  ;
 	CalcMatrix();
 	m_bClear = true ;
-	m_hMutex.unlock();
+    m_hMutex.unlock();
 }
 
 void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
@@ -766,6 +771,7 @@ void DopplerDrawSScanTrueDepth::CalcMatrixLinear(FAN_SCAN_INFO* pInfo_)
 		}
 	}
 }
+
 void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 {
 
@@ -787,6 +793,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 
     int _nFrameOffset = _process->GetTotalDataSize() ;//一帧数据偏移量
 
+//    QImage* pImage=new QImage(pImage_->width(),pImage_->height(),QImage::Format_RGB888);
     U8* _pImageBits = pImage_->bits();  // 获取图像的首地址 https://blog.csdn.net/lengyuezuixue/article/details/80656358
 
     int _nWidthStep = pImage_->bytesPerLine();  // 获取图像每行字节数
@@ -794,11 +801,13 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
     float _fStart , _fStop  ;
     _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fStart ,  &_fStop);
 
-    int CursorOffset=0;
+    int cursorOffset=1;
      if(_group.m_mode==D_MODE)
         {
-         CursorOffset=_group.afCursor[ setup_CURSOR_S_MES ]- _group.afCursor[setup_CURSOR_S_REF];
-        if(CursorOffset<0)CursorOffset=-CursorOffset;
+         cursorOffset=_group.afCursor[ setup_CURSOR_S_MES ]- _group.afCursor[setup_CURSOR_S_REF];
+        if(cursorOffset<0)cursorOffset=-cursorOffset;
+        if(cursorOffset==0)cursorOffset=1;
+
         }
     int _nLawSize;
 //    if(m_SScaninfo.eType == 2){
@@ -883,7 +892,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
          {
              Img2[j].resize(m_nWidth);//设置向量列-宽
          }
-
           tempdata.resize(m_nHeight);//行-高
           for(int j=0;j<tempdata.size();j++)
           {
@@ -893,19 +901,24 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
          int m_i=(thickness-(_fStart+OFFSET_Y))/_nStepY+m_Offsety;//一次波截止纵坐标
          if(!_group.m_Retype)//不翻转
          {
-             for(k=0;k<CursorOffset+1;k++) //加1
+
+             for(k=0;k<cursorOffset;k++) //
              {
-            _pData=_ptemData+_nFrameOffset*k;//注意叠加
+
+              _pData=_ptemData+_nFrameOffset*k;//注意叠加
+
              for(i = 0; i< m_nHeight; i++)
              {
                  _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
 //                 for(j = 0; j < m_width; j++)
                  for(j = 0+_xoffset; j < m_width; j++)
                  {    
-                     _idx1 = i * m_nWidth + (j-_xoffset)*zoomFactor ; //图像每个像素点位置(颜色索引)
+
+                    _idx1 = i * m_nWidth + (j-_xoffset)*zoomFactor ; //图像每个像素点位置(颜色索引)
+
                      if(m_pDraw[_idx1] != 0)
                      {
-//                       //当前一共多少个采样点
+                       //当前一共多少个采样点
                          _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
                          _pImg2 = _pImg1 + j * 3;
                          _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) * m_pColRate[_idx1] +
@@ -914,7 +927,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                                   _pData[_idx2 + _nLawSize + 1] * m_pDrawRate[_idx1] * ( COLOR_STEP - m_pColRate[_idx1]));
                          _iData = _iData>>(COLOR_SHIFT * 2);  //右移
                          _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
-                         if(k==0)
+                        if(k==0)
                          {
                             tempdata[i][j]=_iData;
                          }else{
@@ -926,13 +939,15 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                                  tempdata[i][j]=_iData;//更新向量中的数据,始终保持最大值
                                   }
                              }
-                        memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
-                      }
+                          memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
 
-                    }      
-                }
 
+                     }
+
+                  }
                }
+
+              }
 
          }else{
              //显示和记录一次波数据
@@ -957,7 +972,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                     _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
                     tempdata[i][j]=_iData;//记录存储一次波数据颜色索引
                     memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
-
                 }
             }
         }
@@ -1029,3 +1043,17 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
     //m_hMutex.unlock();
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -58,9 +58,9 @@ DopplerDrawCScanH::DopplerDrawCScanH(QObject *parent) : DopplerDrawScan(parent)
 
 void DopplerDrawCScanH::UpdateDrawInfo()
 {
-	m_hMutex.lock();
+    m_hMutex.lock();
 	UpdateDrawInfo_private();
-	m_hMutex.unlock();
+    m_hMutex.unlock();
 }
 
 void DopplerDrawCScanH::UpdateDrawInfo_private()
@@ -136,7 +136,7 @@ void DopplerDrawCScanH::SetCScanType(CSCAN_TYPE eType_)
 
 void  DopplerDrawCScanH::Draw (QImage* pImage_)
 {
-	m_hMutex.lock();
+    m_hMutex.lock();
 	if(!pImage_) {
 		m_hMutex.unlock();
 		return ;
@@ -171,7 +171,7 @@ void  DopplerDrawCScanH::Draw (QImage* pImage_)
         default:
             break;
 	};
-	m_hMutex.unlock();
+    m_hMutex.unlock();
 }
 
 
