@@ -1,4 +1,4 @@
-#ifndef CURVES_H
+﻿#ifndef CURVES_H
 #define CURVES_H
 
 #include <QObject>
@@ -23,8 +23,10 @@ public:
         TCG
     };
 
-    enum Compliance {
+    enum Standard {
         CUSTOM,
+        NBT_47013_15,
+        SYT_4019_2020,
         JIC,
         ASME
     };
@@ -36,7 +38,7 @@ private:
     double m_delay;
     double m_attenuation;
 	
-    Compliance m_compliance;
+    Standard m_standard;
     int m_curveQty;
     double m_gain;
     QVector<double> m_offsets;

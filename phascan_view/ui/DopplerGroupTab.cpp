@@ -391,52 +391,63 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
     //int i;
     if(ifadd)
     {
-    if(selectID == 0)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[0]);
-        _field->addItem(g_strThicknessStandard[1]);
-        _field->addItem(g_strThicknessStandard[2]);
+        int thinkness = 0;
+        float partThinkness = m_pGroup->part.afSize[0];
+        if(selectID == 0)
+        {
+            if (partThinkness >= 6.0 && partThinkness <= 40.0) {
+                thinkness = 0;
+            } else if (partThinkness > 40.0 && partThinkness <= 100.0) {
+                thinkness = 1;
+            } else if (partThinkness > 100.0 && partThinkness <= 200.0) {
+                thinkness = 2;
+            } else if (partThinkness > 200.0 && partThinkness <= 300.0) {
+                thinkness = 3;
+            } else {
+                thinkness = 4;
+            }
+
+            _field->clear();
+            _field->addItem(g_strThicknessStandard[6]);
+            _field->addItem(g_strThicknessStandard[7]);
+            _field->addItem(g_strThicknessStandard[8]);
+            _field->addItem(g_strThicknessStandard[9]);
+            _field->addItem(g_strThicknessStandard[10]);
+        }
+        else if(selectID == 1)
+        {
+            if (partThinkness >= 6.0) {
+                thinkness = 1;
+            }
+
+            _field->clear();
+            _field->addItem(g_strThicknessStandard[11]);
+            _field->addItem(g_strThicknessStandard[12]);
+        }
+        else if(selectID == 2)
+        {
+            _field->clear();
+            _field->addItem(g_strThicknessStandard[16]);
+        }
+        else if(selectID == 3)
+        {
+            if (partThinkness > 25.0) {
+                thinkness = 1;
+            }
+
+            _field->clear();
+            _field->addItem(g_strThicknessStandard[14]);
+            _field->addItem(g_strThicknessStandard[15]);
+        }
+        else if(selectID == 4)
+        {
+            _field->clear();
+            _field->addItem(g_strThicknessStandard[16]);
+        }
+
+        m_pGroup->ThicknessType[m_nGroupId] = thinkness;
     }
-    else if(selectID == 1)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[3]);
-        _field->addItem(g_strThicknessStandard[4]);
-        _field->addItem(g_strThicknessStandard[5]);
-    }
-    else if(selectID == 2)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[6]);
-        _field->addItem(g_strThicknessStandard[7]);
-        _field->addItem(g_strThicknessStandard[8]);
-        _field->addItem(g_strThicknessStandard[9]);
-        _field->addItem(g_strThicknessStandard[10]);
-    }
-    else if(selectID == 3)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[11]);
-        _field->addItem(g_strThicknessStandard[12]);
-    }
-    else if(selectID == 4)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[13]);
-    }
-    else if(selectID == 5)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[14]);
-        _field->addItem(g_strThicknessStandard[15]);
-    }
-    else if(selectID == 6)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[16]);
-    }
-    }
+
     _field->setCurrentIndex(m_pGroup->ThicknessType[m_nGroupId]);
     int index = _field->currentIndex();
     CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
@@ -447,7 +458,7 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
-    if(selectID == 2 && (index == 3 || index == 4)){
+    if(selectID == 0 && (index == 3 || index == 4)){
 
         ui->labelRLaperture->setText(QString::fromLocal8Bit("φ6"));
         ui->labelSLaperture->setText(QString::fromLocal8Bit("φ6"));
@@ -466,22 +477,22 @@ void DopplerGroupTab::LoadStandardFormConifg()
     ui->ComStandard->blockSignals(true);
     ui->ComStandard->setCurrentIndex(selectID);
     ui->ComStandard->blockSignals(false);
+    int thinkness = 0;
+    float partThinkness = m_pGroup->part.afSize[0];
     if(selectID == 0)
     {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[0]);
-        _field->addItem(g_strThicknessStandard[1]);
-        _field->addItem(g_strThicknessStandard[2]);
-    }
-    else if(selectID == 1)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[3]);
-        _field->addItem(g_strThicknessStandard[4]);
-        _field->addItem(g_strThicknessStandard[5]);
-    }
-    else if(selectID == 2)
-    {
+        if (partThinkness >= 6.0 && partThinkness <= 40.0) {
+            thinkness = 0;
+        } else if (partThinkness > 40.0 && partThinkness <= 100.0) {
+            thinkness = 1;
+        } else if (partThinkness > 100.0 && partThinkness <= 200.0) {
+            thinkness = 2;
+        } else if (partThinkness > 200.0 && partThinkness <= 300.0) {
+            thinkness = 3;
+        } else {
+            thinkness = 4;
+        }
+
         _field->clear();
         _field->addItem(g_strThicknessStandard[6]);
         _field->addItem(g_strThicknessStandard[7]);
@@ -489,29 +500,38 @@ void DopplerGroupTab::LoadStandardFormConifg()
         _field->addItem(g_strThicknessStandard[9]);
         _field->addItem(g_strThicknessStandard[10]);
     }
-    else if(selectID == 3)
+    else if(selectID == 1)
     {
+        if (partThinkness >= 6.0) {
+            thinkness = 1;
+        }
+
         _field->clear();
         _field->addItem(g_strThicknessStandard[11]);
         _field->addItem(g_strThicknessStandard[12]);
     }
-    else if(selectID == 4)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[13]);
-    }
-    else if(selectID == 5)
-    {
-        _field->clear();
-        _field->addItem(g_strThicknessStandard[14]);
-        _field->addItem(g_strThicknessStandard[15]);
-    }
-    else if(selectID == 6)
+    else if(selectID == 2)
     {
         _field->clear();
         _field->addItem(g_strThicknessStandard[16]);
     }
-    int thinkness = CUR_RES.Thickness[m_nGroupId];
+    else if(selectID == 3)
+    {
+        if (partThinkness > 25.0) {
+            thinkness = 1;
+        }
+
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[14]);
+        _field->addItem(g_strThicknessStandard[15]);
+    }
+    else if(selectID == 4)
+    {
+        _field->clear();
+        _field->addItem(g_strThicknessStandard[16]);
+    }
+
+    CUR_RES.Thickness[m_nGroupId] = thinkness;
     _field->setCurrentIndex(thinkness);
     int index = _field->currentIndex();
     if(!m_pGroup->loadCurveData){
@@ -522,7 +542,7 @@ void DopplerGroupTab::LoadStandardFormConifg()
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
     ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
-    if(selectID == 2 && (index == 3 || index == 4)){
+    if(selectID == 0 && (index == 3 || index == 4)){
 
         ui->labelRLaperture->setText(QString::fromLocal8Bit("φ6"));
         ui->labelSLaperture->setText(QString::fromLocal8Bit("φ6"));
@@ -2810,7 +2830,6 @@ void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
 void DopplerGroupTab::on_ComStandard_currentIndexChanged(int index)
 {
     if(!ui->ComStandard->hasFocus())  return ;
-    m_pGroup->ThicknessType[m_nGroupId] = 0;
 
     UpdateStandard(index,1);
     g_pMainWnd->RunDrawThreadOnce(true);

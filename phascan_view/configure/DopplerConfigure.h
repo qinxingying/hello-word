@@ -62,6 +62,14 @@ enum DEFECT_SIGN_TYPE
 //	DEFECT_SIGN_DELETE
 };
 
+enum Standard {
+    NBT_47013_15_I_PRB,
+    NBT_47013_15_II_PGS,
+    SYT_4019_2020,
+    SYT_6755_2016,
+    CUSTOM
+};
+
 struct DEFECT_INFO
 {
 	DEFECT_INFO *pPrev;

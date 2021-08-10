@@ -1005,7 +1005,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
                 m_pDataFile->GetFileHeader()->reserved;
     }
     //qDebug()<<"Phascan_Version"<<Phascan_Version;
-
+    ExtConfig2* extConfig = pConf_->GetExtConfig2();
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{
 		GROUP_INFO* _pGroupInfo = pConf_->GetGroupInfo(i) ;
@@ -1059,12 +1059,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
         CUR_RES.REF_Gain[i]      = 0;
         CUR_RES.Com_Gain[i]      = 0;
-        CUR_RES.CurRL[i]         = -4;
-        CUR_RES.CurEL[i]         = -18;
-        CUR_RES.CurSL[i]         = -12;
         CUR_RES.Ref_Amp[i]       = 80;
         CUR_RES.CurSS[i]         = _group.RefGain;
-//        CUR_RES.Standard[i]      = AppEvn.Standard[i];
 //        CUR_RES.Thickness[i]     = AppEvn.Thickness[i];
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
@@ -1411,11 +1407,40 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             Config::instance()->getWeldData(i, _group.part.weld_ii);
             Config::instance()->getTOPCWidth(i, _group.TopCInfo.TOPCWidth);
             _group.loadCurveData = Config::instance()->getCurve_RL_EL_SL(i, _group.CoupleGain);
-            //qDebug()<<"loadCurveData"<<_group.loadCurveData<<CUR_RES.CurSS[i];
+
+            if (CUR_RES.Standard[i] == 1) {
+                if (_group.part.eGeometry == setup_PART_GEOMETRY_FLAT) {
+                    CUR_RES.Standard[i] = NBT_47013_15_I_PRB;
+                } else {
+                    CUR_RES.Standard[i] = NBT_47013_15_II_PGS;
+                }
+            } else if (CUR_RES.Standard[i] == 2) {
+                CUR_RES.Standard[i] = SYT_4019_2020;
+            } else {
+                CUR_RES.Standard[i] = CUSTOM;
+            }
         }
         else
         {
-            _group.loadCurveData = false;
+            CUR_RES.CurRL[i]         = extConfig->standardInfo[i].RL;
+            CUR_RES.CurEL[i]         = extConfig->standardInfo[i].EL;;
+            CUR_RES.CurSL[i]         = extConfig->standardInfo[i].SL;;
+            int standand = (_group.on_off_status>>26) & 0x0F;
+            if (standand == 0) {
+                _group.loadCurveData = false;
+            } else {
+                _group.loadCurveData = true;
+                if (standand == 1) {
+                    CUR_RES.Standard[i]  = NBT_47013_15_I_PRB;
+                } else if (standand == 2) {
+                    CUR_RES.Standard[i]  = NBT_47013_15_II_PGS;
+                } else if (standand == 3) {
+                    CUR_RES.Standard[i]  = SYT_4019_2020;
+                } else {
+                    CUR_RES.Standard[i]  = CUSTOM;
+                }
+            }
+
             _group.part.weldFormat = PHASCAN_I_FORMAT;
             _group.TopCInfo.TOPCWidth = 10;
             WELD& _weld = _group.part.weld;
@@ -1447,6 +1472,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             default:
                 break;
             }
+        }
+
+        if (_group.loadCurveData) {
+            CUR_RES.bShowRL = true;
+            CUR_RES.bShowSL = true;
+            CUR_RES.bShowEL = true;
         }
 
         _group.part.weld_border = _process->GetWeldBorder(i);

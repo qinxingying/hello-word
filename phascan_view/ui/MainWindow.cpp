@@ -2858,7 +2858,7 @@ void MainWindow::on_actionLoadRecommendedSettings_triggered()
         _group.eCScanSource[1] = setup_CSCAN_POS_A;
         _group.fMinThickness = 0.0;
         _group.fMaxThickness = 50.0;
-        CUR_RES.Standard[i]  = 6;//other
+        CUR_RES.Standard[i]  = 4;//other
         CUR_RES.Thickness[i] = 0;
         _group.bShowAScanMeasure = true;
         _group.bShowBScanMeasure = false;

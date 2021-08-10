@@ -642,6 +642,7 @@ bool Config::getCurve_RL_EL_SL(int groupId, float &coupleGain)
     coupleGain = m_groups[groupId].m_sample.m_couplingGain;
     if(Paramters::Sizing::TCG == m_groups[groupId].m_sizing.m_type){
         Paramters::Curves &curves = m_groups[groupId].m_sizing.m_curves;
+        CUR_RES.Standard[groupId] = curves.m_standard;
         if(curves.m_offsets.size() == 4){
             //CUR_RES.CurSS[groupId] = curves.m_offsets[0];
             CUR_RES.CurSS[groupId] = m_groups[groupId].m_sample.m_gain;
@@ -1025,7 +1026,7 @@ void Config::unpack_curves(const QVariantMap &map)
     }
 
     Paramters::Curves &curves = m_groups[m_currentGroupID].m_sizing.m_curves;
-    curves.m_compliance = static_cast<Paramters::Curves::Compliance> (map.value("Compliance").toUInt());
+    curves.m_standard = static_cast<Paramters::Curves::Standard> (map.value("Standard").toUInt());
     curves.m_curveQty   = map.value("CurveQty").toUInt();
     curves.m_gain       = map.value("Gain").toDouble();
     curves.m_pointQty   = map.value("PointQty").toUInt();
@@ -1040,7 +1041,7 @@ void Config::unpack_curves(const QVariantMap &map)
     }
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
-             << " compliance " << curves.m_compliance
+             << " compliance " << curves.m_standard
              << " curveQty " << curves.m_curveQty
              << " gain " << curves.m_gain
              << " pointQty " << curves.m_pointQty
