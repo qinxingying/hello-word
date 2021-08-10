@@ -94,6 +94,8 @@ public:
     void SetDrawScan(DopplerDrawScan* pDraw_)  ;
     DopplerDrawScan* GetDrawScan() const;
     void UpdateDrawing();
+    void UpdateDSDrawing();
+    void UpdateScanfDrawing();
     void UpdateMeasure() ;
     void SetDefect(int id);
     void ResetDefect();

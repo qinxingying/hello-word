@@ -625,6 +625,7 @@ int ParameterProcess::GetGroupDataSize(int nGroupId_) const
 //    }else{
         _nRet = (setup_DATA_PENDIX_LENGTH + _nPointQty) * _nBeamQty;
 //    }
+
 	return _nRet;
 }
 
@@ -2041,15 +2042,41 @@ WDATA* ParameterProcess::GetScanPosPointer(int nGroupId_, int nScanPos_)
 
 WDATA* ParameterProcess::GetGroupDataPointer(int nGroupId_)
 {
-	WDATA* _pData = GetShadowDataPointer();
-	if(!_pData)  return 0 ;
-	int   _nFrameSize = GetTotalDataSize() ;
-	int     _nScanPos = GetScanIndexPos()  ;
-	int        _index = GetRealScanIndex(nGroupId_, _nScanPos);
-	int _nFrameOffset = _nFrameSize * _index  ;
-	int _nGroupOffset = GetGroupDataOffset(nGroupId_) ;
+    WDATA* _pData = GetShadowDataPointer();
+    if(!_pData)  return 0 ;
+    int   _nFrameSize = GetTotalDataSize() ;
+    int     _nScanPos = GetScanIndexPos()  ;
+    int        _index = GetRealScanIndex(nGroupId_, _nScanPos);
+    int _nFrameOffset = _nFrameSize * _index  ;
+    int _nGroupOffset = GetGroupDataOffset(nGroupId_) ;
     //qDebug()<<"_index"<<_index<<"offset"<<_nFrameOffset + _nGroupOffset;
-	return (_pData + _nFrameOffset + _nGroupOffset)  ;
+    return (_pData + _nFrameOffset + _nGroupOffset)  ;
+}
+
+WDATA* ParameterProcess::GetGroupDataDscanPointer(int nGroupId_)
+{
+    float _mScanPos;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = _pConfig->group[nGroupId_];
+
+   if(_group.afCursor[ setup_CURSOR_S_MES ]> _group.afCursor[setup_CURSOR_S_REF])
+    _mScanPos= _group.afCursor[ setup_CURSOR_S_REF ];
+   else
+     _mScanPos= _group.afCursor[ setup_CURSOR_S_MES ];
+
+   if(_group.afCursor[ setup_CURSOR_S_MES ]<0||_group.afCursor[ setup_CURSOR_S_REF ]<0)
+    _mScanPos=0;
+
+
+    WDATA* _pData = GetShadowDataPointer();
+    if(!_pData)  return 0 ;
+    int   _nFrameSize = GetTotalDataSize() ;
+    int _nScanPos = SAxisDistToIndex(_mScanPos);
+    int        _index = GetRealScanIndex(nGroupId_, _nScanPos);
+    int _nFrameOffset = _nFrameSize * _index  ;
+    int _nGroupOffset = GetGroupDataOffset(nGroupId_) ;
+    return (_pData + _nFrameOffset + _nGroupOffset)  ;
+
 }
 
 WDATA* ParameterProcess::GetGroupDataPointerRaster(int nGroupId_)

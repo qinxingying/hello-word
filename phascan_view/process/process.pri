@@ -6,11 +6,13 @@ HEADERS += \
     $$PWD/CalcMeasurement.h \
     $$PWD/Limitation.h \
     $$PWD/ParameterProcess.h \
-    $$PWD/aidedanalysis.h
+    $$PWD/aidedanalysis.h \
+    $$PWD/threads/drawdscanfthread.h
 
 SOURCES += \
     $$PWD/threads/DataRefreshThread.cpp \
     $$PWD/CalcMeasurement.cpp \
     $$PWD/Limitation.cpp \
     $$PWD/ParameterProcess.cpp \
-    $$PWD/aidedanalysis.cpp
+    $$PWD/aidedanalysis.cpp \
+    $$PWD/threads/drawdscanfthread.cpp

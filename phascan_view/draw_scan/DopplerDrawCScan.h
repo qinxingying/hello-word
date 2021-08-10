@@ -69,7 +69,7 @@ protected:
 
 	virtual void DrawGateAmplitude (QImage* pImage_ , GATE_TYPE eGate_) ;
     virtual void DrawGatePos (QImage* pImage_ , GATE_TYPE eGate1_ , GATE_TYPE eGate2_);
-    float m_afScale[256]  ;
+    float m_afScale[256];
 
     C_SCAN_DRAW_INFO m_CScanInfo ;
 };
@@ -81,8 +81,8 @@ public:
     explicit DopplerDrawCScanV(QObject *parent = 0);
 
 protected:
-    virtual void DrawGateAmplitude (QImage* pImage_ , GATE_TYPE eGate_) ;
+    virtual void DrawGateAmplitude (QImage* pImage_ , GATE_TYPE eGate_);
     virtual void DrawGatePos (QImage* pImage_ , GATE_TYPE eGate1_ , GATE_TYPE eGate2_);
-} ;
+};
 
 #endif // DOPPLERDRAWCSCAN_H

@@ -2,7 +2,7 @@
 #include <process/ParameterProcess.h>
 #include <QImage>
 #include <QColor>
-
+#include<QDebug>
 int Bscan_range = 0;
 int Bsrc_start = 0;
 DopplerDrawBScanH::DopplerDrawBScanH(QObject *parent) :

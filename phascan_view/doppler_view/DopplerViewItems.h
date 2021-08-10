@@ -127,13 +127,13 @@ protected:
 	DopplerCalibrationMark*  m_pItemBw    ;
 	DopplerGateItem*     m_pGate[3]   ;
 	DopplerLineItem*     m_pCursor[4] ;
-	DopplerLawMarker*    m_pLawMarker ;
+    DopplerLawMarker*    m_pLawMarker ;
     DopplerCScanLineMark*    m_pLawMarkerCScan ;
-	DopplerLineItem*     m_pThickness[10]  ;
+    DopplerLineItem*     m_pThickness[10]  ;
     DopplerLineItem*     m_pTOPCWidth[2];
     DopplerLineItem*     m_pWeldBorder[3];
-	DopplerScanMarker*   m_pScanMarker  ;
-	DopplerParabolaItem* m_pParabola[2]    ;
+    DopplerScanMarker*   m_pScanMarker  ;
+    DopplerParabolaItem* m_pParabola[2]    ;
 
 	float m_fLW;
 	float m_fBW;

@@ -31,7 +31,8 @@ DopplerLawMarker::DopplerLawMarker()
     m_eDirection = VERTICAL  ;
     m_bShowWeld  = false     ;
 
-    m_nGroup  = 0 ;
+     m_nGroup  = 0 ;
+
 }
 
 QVector<QLineF>* DopplerLawMarker::GetMarkerVector()
@@ -138,8 +139,6 @@ QPainterPath DopplerLawMarker::shape () const
 }
 void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* /*item*/, QWidget* /*widget*/)
 {
-
-
     QPen _pen;
     _pen.setWidth(0);
     QPen _NewPen;
@@ -147,6 +146,8 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
     QVector<qreal> dashes;
     dashes << 1 << 4 << 1 <<4 ;
     _NewPen.setDashPattern(dashes);
+
+
     DopplerConfigure* pConfigure = DopplerConfigure::Instance();
     ParameterProcess* pProcess = ParameterProcess::Instance();
     if (m_pDataView) {
@@ -154,7 +155,6 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
     }
     GROUP_CONFIG& _group = pConfigure->group[m_nGroup];
     int  _nLawQty = pProcess->GetGroupLawQty(m_nGroup) ;
-
 
     for(int i = 0 ; i < m_nMarkerQty ; i++)
     {
@@ -179,8 +179,9 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
                painter->drawLine(dotLine);
 
            /********m_Retype不为零***扫查轴翻转*************/
-           if(_group.m_Retype&&m_cMarkers.size()>_nLawQty)//m_cMarkers.size()>_nLawQty-多组时等待坐标获取完毕
+           if(_group.m_Retype)
            {
+
                _pen.setColor(_color);
                painter->setPen(_pen);
                QLineF _line2 = m_cMarkers.at(m_anMarkerId[i]+_nLawQty);
@@ -190,7 +191,6 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
                _NewPen.setColor(_color);
                painter->setPen(_NewPen);
                painter->drawLine(_line2);
-
            }
            /******m_Retype不为零*****扫查轴翻转*************/
         }else
@@ -205,9 +205,8 @@ void DopplerLawMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem* 
             _NewPen.setColor(_color);
             painter->setPen(_NewPen);
             painter->drawLine(_line);
-
            /***********扫查轴翻转*************/
-           if(_group.m_Retype&&m_cMarkers.size()>_nLawQty)//m_cMarkers.size()>_nLawQty-多组时等待坐标获取完毕
+           if(_group.m_Retype)
            {
            _pen.setColor(_color);
            painter->setPen(_pen);
@@ -310,7 +309,7 @@ void DopplerLawMarker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     float _fScale ;
     GetCurrentLineIndex(event->pos() , &_nPos , &_nZoom , &_fScale);
     ParameterProcess* pProcess = ParameterProcess::Instance();
-    int  _nLawQty = pProcess->GetGroupLawQty(m_nGroup) ;
+   int  _nLawQty = pProcess->GetGroupLawQty(m_nGroup) ;
     if(_nPos>=_nLawQty-1)
     {
      _nPos=_nLawQty-1 ;

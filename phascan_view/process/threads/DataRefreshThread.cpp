@@ -24,18 +24,16 @@ DataRefreshThread::DataRefreshThread(QObject *parent) :
     m_nRunOnce = 0 ;
 }
 
-
 DataRefreshThread::~DataRefreshThread(){}
 
 void DataRefreshThread::StopThread(bool bStop_)
 {
     m_bStop = bStop_ ;
 }
-
 void DataRefreshThread::run()
 {
     QList<QWidget*>* _list = g_pMainWnd->GetCurrentDisplayTableWidgetList();
-    if(!_list->count())  return ;
+    if(!_list->count()) return ;
     // run once and get out
     if(m_nRunOnce)
     {
@@ -57,9 +55,12 @@ void DataRefreshThread::run()
     m_bStop = false ;
     while(!m_bStop)
     {
+
         UpdateAllWidgetDrawing() ;
         msleep(1000) ;
     }
+
+
 }
 
 #include <configure/DopplerConfigure.h>
@@ -70,6 +71,7 @@ void DataRefreshThread::UpdateAllWidgetDrawing()
 {
     static DopplerDataView* _pDraw ;
     QList<QWidget*>* _list = g_pMainWnd->GetCurrentDisplayTableWidgetList();
+
     if(_list && _list->count())
     {
 		for(int i = 0 ;  i < _list->count() ; i++)
@@ -89,13 +91,13 @@ void DataRefreshThread::RunOnce(THREAD_RUN_MODE eMode_)
         UpdateAllWidgetDrawing() ;
     else
     {
-        while (isRunning()) {
+        while (isRunning()){
 
         }
         if(m_nRunOnce)
-            m_nRunOnce = 1 ;
+            m_nRunOnce = 1;
         else
-            m_nRunOnce = 2 ;
+            m_nRunOnce = 2;
         start();
     }
 }

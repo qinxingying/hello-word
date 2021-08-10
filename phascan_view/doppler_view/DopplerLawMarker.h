@@ -67,7 +67,9 @@ protected:
     QPainterPath weld      ;
     QPainterPath HAZBrush  ;
 
+//    DopplerDataView*	m_pView ;
     int m_nGroup ;
+
 
 public slots:
     void SlotChangeLinePos(int nNewLineIndex);

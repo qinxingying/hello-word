@@ -253,6 +253,8 @@ private slots:
 
     void on_ComOneToOneShows_currentIndexChanged(int index);
 
+    void on_ComsScanfMode_currentIndexChanged(int index);
+
 private:
     Ui::DopplerGroupTab *ui;
 };

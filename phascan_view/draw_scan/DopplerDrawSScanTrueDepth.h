@@ -67,6 +67,7 @@ protected:
     int m_nWidth , m_nHeight ;
     float m_thickness {0.0};
     int m_reType {0};
+    int m_Shows{0};
 
     U8*  m_pAngleZoom;
     U8*  m_pDraw;

@@ -39,7 +39,7 @@ public:
 		setWindowFlags(Qt::Window | Qt::CustomizeWindowHint
                      | Qt::WindowTitleHint | Qt::FramelessWindowHint);
 		m_cSize = cSize_ ;
-        m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE) ;
+        m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE);
         m_scaleH = 1.0;
         m_scaleV = 1.0;
         m_fix    = false;
@@ -164,7 +164,7 @@ public:
 	{
         if(m_pImage)
 		{
-			m_hMutex.lock();
+            m_hMutex.lock();
             double scaleX = 1.0 / painter->matrix().m11();
             double scaleY = 1.0 / painter->matrix().m22();
             painter->scale( scaleX, scaleY);
@@ -172,12 +172,14 @@ public:
             painter->drawImage(QRect( m_transferX, m_transferY, m_cSize.width() , m_cSize.height()), *m_pImage);
 
 //            painter->drawImage(QRect(0 , 0 , m_cSize.width() , m_cSize.height()), *m_pImage);
-			m_hMutex.unlock();
+            m_hMutex.unlock();
 		}
 	}
 
 public:
 	QMutex m_hMutex;
+
+    QMutex m_hMutex2;
 
 private:
     QImage* m_pImage;
@@ -275,6 +277,7 @@ void DopplerGraphicView::InitGraphicView(const QSize& cSize_)
 	//set display zoom
 	this->setSceneRect(cRect);
 }
+
 
 void DopplerGraphicView::slotResetView()
 {
@@ -1962,17 +1965,56 @@ DopplerDrawScan* DopplerGraphicView::GetDrawScan() const
 *****************************************************************************/
 void DopplerGraphicView::UpdateDrawing()
 {
-	if(m_pDrawScan)
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId;
+    _iGroupId=_pParent->GetGroupId();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
+    GROUP_CONFIG& _group = _pConfig->group[_iGroupId];
+
+    if(m_pDrawScan)
 	{
         QMutexLocker locker(&m_pBackGround->m_hMutex);
         //m_pBackGround->m_hMutex.lock();
 
-            m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
+      if(_group.m_mode==S_MODE)
+      {
 
+       m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
+
+      }
         //m_pBackGround->m_hMutex.unlock();
 	}
-	emit signalUpdateDrawing();
+    emit signalUpdateDrawing();
 }
+
+void DopplerGraphicView::UpdateDSDrawing()
+{
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId;
+    _iGroupId=_pParent->GetGroupId();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
+    GROUP_CONFIG& _group = _pConfig->group[_iGroupId];
+
+    if(m_pDrawScan)
+    {
+        QMutexLocker locker(&m_pBackGround->m_hMutex2);
+
+//     m_pBackGround->m_hMutex.lock();
+
+      if(m_pDrawScan->inherits("DopplerDrawSScanTrueDepth")&&_group.m_mode==D_MODE)//判断是否属于“DopplerDrawSScanTrueDepth”对象
+      {
+        m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
+
+      }
+//        m_pBackGround->m_hMutex.unlock();
+    }
+    emit signalUpdateDrawing();
+
+}
+
+
 /****************************************************************************
   Description:   刷新场景
 *****************************************************************************/
@@ -1987,10 +2029,13 @@ void DopplerGraphicView::UpdateSceneRegion()
 *****************************************************************************/
 void DopplerGraphicView::slotUpdateDrawing()
 {
+
 	if(m_pDrawScan)
 	{
+
         m_pBackGround->update();
-	}
+
+    }
 }
 
 void DopplerGraphicView::respondView(QPoint startPos, QPoint endPos, bool zoomStatus)
