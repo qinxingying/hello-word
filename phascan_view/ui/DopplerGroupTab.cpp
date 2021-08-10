@@ -65,8 +65,8 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 
     SetWidgetInvalide(); // 使窗口不使能  只作数据显示用
 
-    ui->LabeloneToOneShows->hide();
-    ui->ComOneToOneShows->hide();
+//    ui->LabeloneToOneShows->hide();
+//    ui->ComOneToOneShows->hide();
 }
 
 DopplerGroupTab::~DopplerGroupTab()
