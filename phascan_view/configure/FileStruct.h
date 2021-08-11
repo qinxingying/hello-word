@@ -68,6 +68,9 @@ struct SYSTEM_ENVIRMENT
     bool bShowBScanMeasure[ENV_MAX_GROUP_QTY];
     bool bShowCScanMeasure[ENV_MAX_GROUP_QTY];
     bool bShowSScanMeasure[ENV_MAX_GROUP_QTY];
+    float fMinThickness[ENV_MAX_GROUP_QTY];
+    float fMaxThickness[ENV_MAX_GROUP_QTY];
+    bool bTopCStatus[ENV_MAX_GROUP_QTY];
 };
 
 #endif // FILESTRUCT_H

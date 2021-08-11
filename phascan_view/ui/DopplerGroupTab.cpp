@@ -534,7 +534,7 @@ void DopplerGroupTab::LoadStandardFormConifg()
     CUR_RES.Thickness[m_nGroupId] = thinkness;
     _field->setCurrentIndex(thinkness);
     int index = _field->currentIndex();
-    if(!m_pGroup->loadCurveData){
+    if(m_pGroup->loadCurveData){
         CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
         CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
         CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];

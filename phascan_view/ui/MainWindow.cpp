@@ -2854,12 +2854,20 @@ void MainWindow::on_actionLoadRecommendedSettings_triggered()
         _group.bShowCursor    = true;
 
         _group.DisplayMode = (int)ProcessDisplay::DISP_S_AV_CH_BH;
-        _group.eCScanSource[0] = setup_CSCAN_AMP_A;
-        _group.eCScanSource[1] = setup_CSCAN_POS_A;
-        _group.fMinThickness = 0.0;
-        _group.fMaxThickness = 50.0;
-        CUR_RES.Standard[i]  = 4;//other
-        CUR_RES.Thickness[i] = 0;
+        _group.eCScanSource[0] = (setup_CSCAN_SOURCE_MODE)_pConfig->AppEvn.CScanSource[i][0];
+        _group.eCScanSource[1] = (setup_CSCAN_SOURCE_MODE)_pConfig->AppEvn.CScanSource[i][1];
+        _group.fMinThickness   = _pConfig->AppEvn.fMinThickness[i];
+        _group.fMaxThickness   = _pConfig->AppEvn.fMaxThickness[i];
+        CUR_RES.Standard[i]    = 4;
+
+        if (_pConfig->group[m_iCurGroup].loadCurveData) {
+            CUR_RES.bShowRL      = true;
+            CUR_RES.bShowSL      = true;
+            CUR_RES.bShowEL      = true;
+            CUR_RES.Standard[i]  = _pConfig->AppEvn.Standard[i];
+
+            _group.bShowCurve    = true;
+        }
         _group.bShowAScanMeasure = true;
         _group.bShowBScanMeasure = false;
         _group.bShowCScanMeasure = false;
@@ -2868,7 +2876,7 @@ void MainWindow::on_actionLoadRecommendedSettings_triggered()
         _group.bShowGateA           = true;
         _group.bShowGateB           = false;
         _group.bShowGateI           = false;
-        _group.TopCInfo.TOPCStatus  = false;
+        _group.TopCInfo.TOPCStatus  = _pConfig->AppEvn.bTopCStatus[i];
     }
 
     for(int i = 0; i < _nGroupQty; i++){

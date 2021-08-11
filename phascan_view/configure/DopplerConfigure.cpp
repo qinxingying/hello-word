@@ -165,11 +165,11 @@ void DopplerConfigure::OpenEvn()
 
     if(ret != sizeof(SYSTEM_ENVIRMENT))
 	{
-        GetExePathName1(g_strDataFilePath.toLatin1().data(), _strPathName.toLatin1().data());
-        strcpy(AppEvn.strDataFilePath, _strPathName.toLatin1().data());
+//        GetExePathName1(g_strDataFilePath.toLatin1().data(), _strPathName.toLatin1().data());
+        strcpy(AppEvn.strDataFilePath, g_strDataFilePath.toLatin1().data());
 
-        GetExePathName1(g_strPartDir.toLatin1().data(), _strPathName.toLatin1().data());
-        strcpy(AppEvn.strNccFilePath, _strPathName.toLatin1().data());
+//        GetExePathName1(g_strPartDir.toLatin1().data(), _strPathName.toLatin1().data());
+        strcpy(AppEvn.strNccFilePath, g_strPartDir.toLatin1().data());
 
         AppEvn.eLanguage = setup_LANG_ENGLISH;
 		AppEvn.eUnit	 = setup_SOUND_AXIX_UNIT_MM;
@@ -234,6 +234,10 @@ void DopplerConfigure::OpenEvn()
                 AppEvn.bCursor[i][setup_CURSOR_I_MES] =
                 AppEvn.bCursor[i][setup_CURSOR_VPA_MES] =
                 AppEvn.bCursor[i][setup_CURSOR_TFOD_BW]= 20 ;
+
+            AppEvn.fMinThickness[i]  = 0.0;
+            AppEvn.fMaxThickness[i]  = 50.0;
+            AppEvn.bTopCStatus[i]    = false;
 		}
 		SetLastDate();
 	}
@@ -269,7 +273,7 @@ void DopplerConfigure::OpenEvn()
             group[i].afCursor[j] = AppEvn.bCursor[i][j];
         }
 	}
-	AppEvn.bSAxisCursorSync		= false;
+    //AppEvn.bSAxisCursorSync		= false;
 	AppEvn.bRegStatus = false;
 
 	file.close();
@@ -314,6 +318,9 @@ void DopplerConfigure::SaveEvn()
         AppEvn.bShowBScanMeasure[i] = group[i].bShowBScanMeasure;
         AppEvn.bShowCScanMeasure[i] = group[i].bShowCScanMeasure;
         AppEvn.bShowSScanMeasure[i] = group[i].bShowSScanMeasure;
+
+        AppEvn.fMinThickness[i]     = group[i].fMinThickness;
+        AppEvn.fMaxThickness[i]     = group[i].fMinThickness;
 
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             AppEvn.bCursor[i][j] = group[i].afCursor[j];
@@ -1095,13 +1102,19 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		/* 参考光标 */
 		//_group.afCursor[setup_CURSOR_MAX]  ;
 		// thickness range for c scan display
-        //int CScanSource1 = getSetting(i,"CScansource1");
+
         int CScanSource1 = AppEvn.CScanSource[i][0];
+        int CScanSource2 = AppEvn.CScanSource[i][1];
+        if (!Config::instance()->is_phascan_ii()) {
+            CScanSource1 = _pGroupInfo->source & 0x03;
+            CScanSource2 = (_pGroupInfo->source >> 2) & 0x07;
+        } else {
+            Config::instance()->getCScanSourceType(i, CScanSource1);
+            Config::instance()->getCScanSourceType(i, CScanSource2);
+        }
         if(CScanSource1 < 0){
             CScanSource1 = (int)setup_CSCAN_AMP_A;
         }
-        //int CScanSource2 = getSetting(i,"CScansource2");
-        int CScanSource2 = AppEvn.CScanSource[i][1];
         if(CScanSource2 < 0){
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }
@@ -1113,8 +1126,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
         _group.eCScanSource[0]= (setup_CSCAN_SOURCE_MODE)CScanSource1 ;
         _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
+        AppEvn.CScanSource[i][0] = _group.eCScanSource[0];
+        AppEvn.CScanSource[i][1] = _group.eCScanSource[1];
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */
 		_group.fMaxThickness  = _pGroupInfo->max_thickness/1000.0 ;		/* Measurements->Thickness->max */
+        AppEvn.fMinThickness[i]  = _group.fMinThickness;
+        AppEvn.fMaxThickness[i]  = _group.fMinThickness;
         _group.CScanShowAll   = false;
 
 		/*  校准状态  */
@@ -1406,6 +1423,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.part.weldFormat = PHASCAN_II_FORMAT;
             Config::instance()->getWeldData(i, _group.part.weld_ii);
             Config::instance()->getTOPCWidth(i, _group.TopCInfo.TOPCWidth);
+            Config::instance()->getTOPCStatus(i, _group.TopCInfo.TOPCStatus);
             _group.loadCurveData = Config::instance()->getCurve_RL_EL_SL(i, _group.CoupleGain);
 
             if (CUR_RES.Standard[i] == 1) {
@@ -1428,6 +1446,10 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             int standand = (_group.on_off_status>>26) & 0x0F;
             if (standand == 0) {
                 _group.loadCurveData = false;
+                CUR_RES.Standard[i]  = CUSTOM;
+                CUR_RES.CurRL[i]     = 0;
+                CUR_RES.CurEL[i]     = -8;
+                CUR_RES.CurSL[i]     = -6;
             } else {
                 _group.loadCurveData = true;
                 if (standand == 1) {
@@ -1442,42 +1464,50 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             }
 
             _group.part.weldFormat = PHASCAN_I_FORMAT;
-            _group.TopCInfo.TOPCWidth = 10;
-            WELD& _weld = _group.part.weld;
-            switch ( _group.part.weld.eType) {
-            case setup_WELD_I:
-                _group.TopCInfo.TOPCWidth = _weld.weland_offset * 2 + 2;
-                break;
-            case setup_WELD_V:
-            case setup_WELD_DV:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
-                                              * _weld.fizone_height) *2 + 2;
-                break;
-            case setup_WELD_U:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
-                                              _weld.fizone_height + _weld.fizone_radius) *2 + 2;
-                break;
-            case setup_WELD_DIFF_DV:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
-                                              * _weld.fizone_height) *2 + 2;
-                break;
-            case setup_WELD_J:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
-                                              _weld.fizone_height + _weld.fizone_radius) *2 + 2;
-                break;
-            case setup_WELD_VY:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
-                                              * _weld.fizone_height) *2 + 2;
-                break;
-            default:
-                break;
+
+            _group.TopCInfo.TOPCStatus = _pGroupInfo->on_off_status >> 24 & 0x01;// 24 c1角度或投影，25 c2角度或投影
+            if (_group.TopCInfo.TOPCStatus) {
+                _group.TopCInfo.TOPCWidth = extConfig->cShadowWidth[i][0] / 10;
+            } else {
+                WELD& _weld = _group.part.weld;
+                switch ( _group.part.weld.eType) {
+                case setup_WELD_I:
+                    _group.TopCInfo.TOPCWidth = _weld.weland_offset * 2 + 2;
+                    break;
+                case setup_WELD_V:
+                case setup_WELD_DV:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                                                  * _weld.fizone_height) *2 + 2;
+                    break;
+                case setup_WELD_U:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
+                                                  _weld.fizone_height + _weld.fizone_radius) *2 + 2;
+                    break;
+                case setup_WELD_DIFF_DV:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                                                  * _weld.fizone_height) *2 + 2;
+                    break;
+                case setup_WELD_J:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
+                                                  _weld.fizone_height + _weld.fizone_radius) *2 + 2;
+                    break;
+                case setup_WELD_VY:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                                                  * _weld.fizone_height) *2 + 2;
+                    break;
+                default:
+                    break;
+                }
             }
         }
 
+        AppEvn.bTopCStatus[i]    = _group.TopCInfo.TOPCStatus;
         if (_group.loadCurveData) {
             CUR_RES.bShowRL = true;
             CUR_RES.bShowSL = true;
             CUR_RES.bShowEL = true;
+
+            AppEvn.Standard[i] = CUR_RES.Standard[i];
         }
 
         _group.part.weld_border = _process->GetWeldBorder(i);
@@ -1654,8 +1684,9 @@ void  DopplerConfigure::InitTOPCInfo()
             _TOPCInfo.TOPCStatus = false;
             continue;
         }
+
         _TOPCInfo.TOPCValid  = true;
-        _TOPCInfo.TOPCStatus = false;
+        //_TOPCInfo.TOPCStatus = false;
         float _nStartX, _nStopX, _nStartY, _nStopY;
         _process->GetSImageHorizentalRange( i, &_nStartX, &_nStopX);
         _process->GetSImageVerticalRange( i, &_nStartY, &_nStopY);

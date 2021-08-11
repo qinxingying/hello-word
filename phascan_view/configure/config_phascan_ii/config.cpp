@@ -778,6 +778,20 @@ void Config::getTOPCWidth( int groupId, double &topcWidth)
     }
 }
 
+void Config::getTOPCStatus(int groupId, bool &topcStatus)
+{
+    if (m_groups[groupId].m_cScan.m_mode == Paramters::CScan::TOPC) {
+        topcStatus = true;
+    } else {
+        topcStatus = false;
+    }
+}
+
+void Config::getCScanSourceType(int groupId, int &cType)
+{
+    cType = m_groups[groupId].m_cScan.m_sourceType;
+}
+
 void Config::getApertureSec( int groupId, unsigned int * apertureData)
 {
     apertureData[0] = m_groups[groupId].m_focallawer.m_scan.m_secApe;
