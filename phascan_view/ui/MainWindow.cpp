@@ -977,7 +977,7 @@ void MainWindow::UpdateTableDisplay()
         }
 
         UpdateCombinationDisplay();
-        sleep(600);
+        //sleep(600);
 
         for(int i = 1; i < _nGroupQty+1; i++)
         {
@@ -999,7 +999,7 @@ void MainWindow::UpdateTableDisplay()
                 _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BV);
             }
 
-            sleep(600);
+            //sleep(600);
         }
         ui->TabWidget_display->setCurrentIndex(0);
     } else {
@@ -2803,7 +2803,6 @@ void MainWindow::on_actionLoadPreferences_triggered()
             for(int i = 1; i < _nGroupQty+1; i++){
 
                 ui->TabWidget_display->setCurrentIndex(i);
-                sleep(600); //这里一定要sleep不然会崩
                 m_iCurGroup = i-1;
                 _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
 
@@ -2820,7 +2819,6 @@ void MainWindow::on_actionLoadPreferences_triggered()
             }
         }else{
             ui->TabWidget_display->setCurrentIndex(0);
-            sleep(600);
             m_iCurGroup = 0;
             _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
             _pViewFrame->SetViewFrameId(0);
@@ -2888,7 +2886,6 @@ void MainWindow::on_actionLoadRecommendedSettings_triggered()
         for(int i = 1; i < _nGroupQty+1; i++){
 
             ui->TabWidget_display->setCurrentIndex(i);
-            sleep(600); //这里一定要sleep不然会崩
             m_iCurGroup = i-1;
             _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
 
@@ -2902,7 +2899,6 @@ void MainWindow::on_actionLoadRecommendedSettings_triggered()
         }
     }else{
         ui->TabWidget_display->setCurrentIndex(0);
-        sleep(600);
         m_iCurGroup = 0;
         _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
         _pViewFrame->SetViewFrameId(0);

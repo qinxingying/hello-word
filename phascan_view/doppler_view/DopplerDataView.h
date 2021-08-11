@@ -114,6 +114,8 @@ public:
 	QRect GetZoomRect();
     void setInteractionStatus(bool status);
     void updateAllItems();
+public:
+    QMutex m_mutex;
 private:
     void CreateComponent();
     void RangeTransfer(QPair<double , double> range_ , QPair<double , double>* pos_) ;

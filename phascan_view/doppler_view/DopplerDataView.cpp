@@ -57,6 +57,7 @@ DopplerDataView::DopplerDataView(QWidget *parent , DATA_VIEW_COMPONENT eComponen
 
 DopplerDataView::~DopplerDataView()
 {
+    QMutexLocker locker(&m_mutex);
 	delete m_pItemsGroup ;
 	DeleteAllWidget()	;
 }
@@ -286,6 +287,8 @@ DopplerDrawScan* DopplerDataView::GetDrawScan() const
 void DopplerDataView::UpdateDrawing()
 {
     UpdateMeasure();
+    QMutexLocker locker(&m_mutex);
+    if (!m_pGraphicView) return;
 	m_pGraphicView->UpdateDrawing();
     if( m_pCoupleSBar)
     {

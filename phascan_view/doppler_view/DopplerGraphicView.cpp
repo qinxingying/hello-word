@@ -69,13 +69,13 @@ public:
 
 	void ResetBaseImage(QSizeF size_)
 	{
-		//m_hMutex.lock();
+        m_hMutex.lock();
         //m_cSize = QSize((int)size_.width() , (int)size_.height());
         m_cSize = QSize( size_.width()*m_scaleH, size_.height()*m_scaleV);
 		if(m_pImage) delete m_pImage ;
 		m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE) ;
 		ClearImage() ;
-		//m_hMutex.unlock();
+        m_hMutex.unlock();
 	}
 
     void SetFixStatus( bool status)
@@ -109,6 +109,7 @@ public:
 
     void setScaleFactor( double scaleH, double scaleV)
     {
+        QMutexLocker locker(&m_hMutex);
         m_scaleH = scaleH;
         m_scaleV = scaleV;
         QSizeF viewSize = size();
