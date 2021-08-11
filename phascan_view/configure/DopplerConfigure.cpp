@@ -1099,7 +1099,8 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;
         /* 耦合监控 版本4和5才有此功能，on_off_status 第2位表示开启关闭，0关闭；1开启 3位到21表示声速的10倍值*/
-        if(Phascan_Version == 4 || Phascan_Version == 5 || Phascan_Version == 6 || Phascan_Version == 7)
+        if(Phascan_Version == 4 || Phascan_Version == 5 || Phascan_Version == 6 || Phascan_Version == 7 ||
+                Phascan_Version == 8 || Phascan_Version == 9)
         {
             _group.coupleMonitoringState = (( _group.on_off_status>>2) & 0x01);
             _group.coupleMonitoringVelocity = ((_group.on_off_status>>3) & 0x3FFFF)/10;
