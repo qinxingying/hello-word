@@ -375,6 +375,32 @@ int DopplerConfigure::getSetting(int group, const QString &valueName)
     return value;
 }
 
+void DopplerConfigure::CSourceTypeConvertI(int &type)
+{
+    if(type == 1 || type == 2) {
+       type = setup_CSCAN_POS_AI;
+    } else if (type == 3){
+       type = setup_CSCAN_AMP_B;
+    } else if (type == 4 || type == 5){
+        type = setup_CSCAN_POS_BI;
+     } else if (type == 6){
+        type = setup_CSCAN_POS_BA;
+     } else if (type == 7 || type == 8){
+        type = setup_CSCAN_POS_I;
+    }
+}
+
+void DopplerConfigure::CSourceTypeConvertII(int &type)
+{
+    if(type == 1) {
+       type = setup_CSCAN_AMP_B;
+    } else if (type == 2){
+       type = setup_CSCAN_POS_I;
+    } else if (type == 3){
+        type = setup_CSCAN_POS_AI;
+     }
+}
+
 int DopplerConfigure::OpenConfig(QString& path_)
 {
 	FilePathPro(path_);
@@ -1108,9 +1134,15 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         if (!Config::instance()->is_phascan_ii()) {
             CScanSource1 = _pGroupInfo->source & 0x03;
             CScanSource2 = (_pGroupInfo->source >> 2) & 0x07;
+
+            CSourceTypeConvertI(CScanSource1);
+            CSourceTypeConvertI(CScanSource2);
         } else {
             Config::instance()->getCScanSourceType(i, CScanSource1);
             Config::instance()->getCScanSourceType(i, CScanSource2);
+
+            CSourceTypeConvertII(CScanSource1);
+            CSourceTypeConvertII(CScanSource2);
         }
         if(CScanSource1 < 0){
             CScanSource1 = (int)setup_CSCAN_AMP_A;

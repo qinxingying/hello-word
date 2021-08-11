@@ -234,7 +234,9 @@ public:
 
     static void setSetting(int group,const QString &valueName,int value);
     static int getSetting(int group,const QString &valueName);
-
+private:
+    void CSourceTypeConvertI(int &type);
+    void CSourceTypeConvertII(int &type);
 protected:
 	explicit DopplerConfigure(QObject *parent = 0);
 	void OpenEvn() ;
