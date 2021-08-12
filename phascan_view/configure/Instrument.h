@@ -8,6 +8,14 @@
 
 #include "const.h"
 
+enum setup_LANG
+{
+    setup_LANG_ENGLISH = 0,
+    setup_LANG_CHINESE,
+    setup_LANG_JAPANESE,
+    setup_LANG_KOREAN
+};
+
 enum setup_UNIT_TYPE
 {
 	setup_UNIT_MM,
@@ -723,6 +731,7 @@ struct STORE_SCAN_LAWID
     float depth;
     int   lawId;
     int   ZA;
+    int   maxValue; // 当前缺陷在beam上的最高点值
 };
 
 typedef struct _Group
@@ -815,8 +824,8 @@ typedef struct _Group
 	int						bShowCurve;
 	int						bShowLwBw;
     int						bShowDefect;
-
     bool                    bWeldRemainingHeight;
+    bool                    bShowCurrentDefect;
 
 	LAW_CONFIG				law;
 	GATE_CONFIG				gate[setup_GATE_MAX] ;
@@ -1006,30 +1015,38 @@ struct COMMON_CONFIG
     AIDED_ANALYSIS      aidedAnalysis;
     bool                bDefectIdentifyStatus;      // 在分析状态
     bool                bDefectIdentifyStatusDone;  // 分析完成
+    bool                bMarkDefectNotIdentifyArea;  // 标记是否在框选缺陷不识别区域
 } ;
 
 struct DISPLAY_CONFIG
 {    
-    bool bShowRL;
+    bool bShowRL;                                                                                   //11.是否显示RL,SL,EL,线
     bool bShowSL;
     bool bShowEL;
-    bool bShowDAC[setup_MAX_GROUP_QTY];
-    bool bShowThickness[setup_MAX_GROUP_QTY];
-    bool bShowWeld[setup_MAX_GROUP_QTY];
-    bool bShowMeasure[setup_MAX_GROUP_QTY];
-    bool bShowCursor[setup_MAX_GROUP_QTY];
-    int  anMeasureSelection[setup_MAX_GROUP_QTY][setup_MAX_MEASURE_QTY];
-    int  DisplayMode[setup_MAX_GROUP_QTY];
-    int  CScanSource[setup_MAX_GROUP_QTY][2];
-    float MinThickness[setup_MAX_GROUP_QTY];
+    bool bShowDAC[setup_MAX_GROUP_QTY];                                                             //16.DAC曲线
+    bool bShowThickness[setup_MAX_GROUP_QTY];                                                       //7.是否开启厚度显示
+    bool bShowWeld[setup_MAX_GROUP_QTY];                                                            //8.是否开启焊缝显示
+    bool bShowMeasure[setup_MAX_GROUP_QTY];                                                         // 2.是否显示测量参数
+    bool bShowCursor[setup_MAX_GROUP_QTY];                                                          // 5.是否显示测量光标
+    int  anMeasureSelection[setup_MAX_GROUP_QTY][setup_MAX_MEASURE_QTY];                            // 4.测量参数的种类
+    int  DisplayMode[setup_MAX_GROUP_QTY];                                                          //17.显示模式
+    int  CScanSource[setup_MAX_GROUP_QTY][2];                                                       //14.C扫描1/C扫描2数据源
+    float MinThickness[setup_MAX_GROUP_QTY];                                                        // 15.C扫最小厚度和最大厚度
     float MaxThickness[setup_MAX_GROUP_QTY];
-    int   CurSS[setup_MAX_GROUP_QTY];
-    int   Standard[setup_MAX_GROUP_QTY];
-    int   Thickness[setup_MAX_GROUP_QTY];
-    bool bShowAScanMeasure[setup_MAX_GROUP_QTY];
+    int   Standard[setup_MAX_GROUP_QTY];                                                            //10.标准
+    bool bShowAScanMeasure[setup_MAX_GROUP_QTY];                                                    //3.测量参数的显示位置（A、B、C、S）
     bool bShowBScanMeasure[setup_MAX_GROUP_QTY];
     bool bShowCScanMeasure[setup_MAX_GROUP_QTY];
     bool bShowSScanMeasure[setup_MAX_GROUP_QTY];
+    int   Thickness[setup_MAX_GROUP_QTY];                                                           // 曲线->标准->厚度
+
+    setup_LANG       eLanguage;                                                                     // 1.中/英文模式
+    bool bSAxisCursorSync;                                                                          //6.是否开启光标同步
+    int bShowGateA[setup_MAX_GROUP_QTY];                                                            //9.表示A闸门可见性
+    int bShowGateB[setup_MAX_GROUP_QTY];                                                            //表示B闸门可见性
+    int bShowGateI[setup_MAX_GROUP_QTY];                                                            //表示I闸门可见性
+    bool  bTOPCStatus[setup_MAX_GROUP_QTY];                                                         //12.C扫描模式（false=角度C,true=投影C）
+    float TOPCWidth[setup_MAX_GROUP_QTY];                                                           //13. 如选择为投影C，需保存投影C扫描宽度的设置
 };
 
 

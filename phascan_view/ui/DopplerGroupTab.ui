@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>3</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -5113,8 +5113,8 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>315</width>
+        <y>-120</y>
+        <width>318</width>
         <height>1160</height>
        </rect>
       </property>
@@ -5807,16 +5807,6 @@
                      </property>
                      <item>
                       <property name="text">
-                       <string>NB/T 47013.3 I型焊接接头 IIA试块</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>NB/T 47013.3 II型焊接接头 GS试块</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
                        <string>NB/T 47013.15  I型焊接接头 PRB试块</string>
                       </property>
                      </item>
@@ -5827,7 +5817,7 @@
                      </item>
                      <item>
                       <property name="text">
-                       <string>SYT 4109-2013</string>
+                       <string>SYT 4109-2020</string>
                       </property>
                      </item>
                      <item>
@@ -5837,7 +5827,7 @@
                      </item>
                      <item>
                       <property name="text">
-                       <string>other</string>
+                       <string>自定义</string>
                       </property>
                      </item>
                     </widget>
@@ -9773,8 +9763,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>330</width>
-        <height>769</height>
+        <width>318</width>
+        <height>755</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -9837,8 +9827,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>330</width>
-            <height>769</height>
+            <width>318</width>
+            <height>755</height>
            </rect>
           </property>
           <property name="minimumSize">

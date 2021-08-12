@@ -381,6 +381,50 @@ struct _ExtConfig
     double extDouble[8 * 8];
 };
 
+typedef struct S_DScanRange
+{
+    int start;
+    int end;
+}DScanRange;
+
+typedef struct S_StandardInfo
+{
+    char EL;
+    char SL;
+    char RL;
+    char coupleGain;
+} StandardInfo;
+
+typedef struct _tofd_calibration
+{
+    int depth1; /* mm, 乘以1000 */
+    int depth2; /* mm, 乘以1000 */
+} TOFDCalibration;
+
+#define CAD_FILE_NAME_SIZE 20
+
+typedef struct S_CADInfo
+{
+    char name[CAD_FILE_NAME_SIZE];
+} CADInfo;
+
+typedef struct _ExtConfig2
+{
+    unsigned char sscanMode;                    /* S扫二次翻转开关，叠加翻转、非叠加翻转、关 */
+    double  firsOverLay[8];   /* 翻转时，工件厚度对应的第一条线 */
+    double  secondOverLay[8]; /* 翻转时，工件厚度对应的第二条线 */
+    /* 投影C扫宽度 */
+    unsigned short cShadowWidth[8][2];
+    /* tofd校准的两个深度值 */
+    TOFDCalibration tofdCalibration[8];
+    /* 预留配置信息项 */
+    unsigned char status[4]; /* 0: 工件设置应用至所有组开关 1:工件加载标志（1～8组） 2:预留 3:预留 */
+    CADInfo cadInfo[8];
+    DScanRange dscanRange;
+    StandardInfo standardInfo[8];
+    int extInt[125];
+} ExtConfig2;
+
 struct INSPEC_DATA_FILE
 {
     int type;       // 类型

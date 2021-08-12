@@ -94,5 +94,7 @@
         <file>resource/Main/left.png</file>
         <file>resource/Main/shift.png</file>
         <file>resource/Main/keyboardLogo.png</file>
+        <file>resource/Main/A.jpg</file>
+        <file>resource/Main/M.jpg</file>
     </qresource>
 </RCC>

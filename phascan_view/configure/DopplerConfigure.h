@@ -62,6 +62,14 @@ enum DEFECT_SIGN_TYPE
 //	DEFECT_SIGN_DELETE
 };
 
+enum Standard {
+    NBT_47013_15_I_PRB,
+    NBT_47013_15_II_PGS,
+    SYT_4019_2020,
+    SYT_6755_2016,
+    CUSTOM
+};
+
 struct DEFECT_INFO
 {
 	DEFECT_INFO *pPrev;
@@ -104,7 +112,7 @@ struct DEFECT_INFO
     float dIndexOffset;    //步进偏置
     float dScanPos;        //缺陷最高波扫查位置
     float dDepth;          //缺陷最高波深度
-    int   reserve[4];      //保留位，用于以后扩展
+    int   reserve[4];      //保留位，用于以后扩展, 0 保留缺陷最大值
 };
 
 struct DEFECT_INFO_V1
@@ -189,6 +197,8 @@ public:
 	DopplerHtmlReport* GetReportOpp() ;
 	void OpenDefectFile(QString& path_);
 	void SaveDefectFile(QString& path_);
+    void OpenNoDefectAreaFile(QString& path_);
+    void SaveNoDefectAreaFile();
 	void FilePathPro(QString& path_);
 	// 
 	int DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_);
@@ -215,6 +225,7 @@ public:
     DEFECT_INFO* SetDefectInfo(int iGroupId_, int index_, char* strInfo_,char* strInfo2);
 	char* GetDefectInfo(int iGroupId_, int index_);
     int  GetDefectIndex(int iGroupId_, int index_);
+    int  GetDefectId(int iGroupId_, int index_);
 	void SetLastDate();
 	QDate GetLastDate();
 	//--------------------------------------------------
@@ -223,7 +234,9 @@ public:
 
     static void setSetting(int group,const QString &valueName,int value);
     static int getSetting(int group,const QString &valueName);
-
+private:
+    void CSourceTypeConvertI(int &type);
+    void CSourceTypeConvertII(int &type);
 protected:
 	explicit DopplerConfigure(QObject *parent = 0);
 	void OpenEvn() ;
@@ -261,6 +274,8 @@ public:
 	DEFECT_PARAM		m_dfParam[setup_MAX_GROUP_QTY];
 	int					m_nCutBmpNo[setup_MAX_GROUP_QTY];
     int                 loadDefectVersion;
+    QVector<QRect>      m_selectedNotToAnalysisAreas[setup_MAX_GROUP_QTY];    // 选择不识别缺陷区域,将画在S扫上
+    QVector<QRectF>     m_transformedNotToAnalysisAreas[setup_MAX_GROUP_QTY];// 转换坐标后的不识别缺陷区域
 };
 
 #endif // DOPPLERCONFIGURE_H

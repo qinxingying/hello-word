@@ -81,8 +81,13 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
         if(ret != _nTmp){
             return -1;
         }
-        _nTmp = sizeof(_ExtConfig);
-        ret = reader.skipRawData(_nTmp);
+        if (Phascan_Version >=8) {
+            _nTmp = sizeof(_ExtConfig2);
+            ret = reader.readRawData((char*)&m_extConfig, _nTmp);
+        } else {
+            _nTmp = sizeof(_ExtConfig);
+            ret = reader.skipRawData(_nTmp);
+        }
         if(ret != _nTmp){
             return -1;
         }
@@ -161,4 +166,9 @@ bool DopplerDataFileOperateor::GetCADExist(int nGroupId_)
     }else{
         return false;
     }
+}
+
+ExtConfig2 *DopplerDataFileOperateor::GetExtConfig2()
+{
+    return &m_extConfig;
 }

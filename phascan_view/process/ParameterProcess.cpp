@@ -17,7 +17,7 @@ float CalPeakAmp2( float, int);
 
 float CalculatePeakAmp(float nPeak_, int nRectify_)
 {
-    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6 || Phascan_Version == 8)
     {
         return CalPeakAmp( nPeak_, nRectify_);
     }
@@ -743,7 +743,7 @@ float  ParameterProcess::GetRefGainScale(int nGroupId_)
 
 int ParameterProcess::getWaveHalfValue()
 {
-    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6 || Phascan_Version == 8)
     {
         return 128;
     }
@@ -755,7 +755,7 @@ int ParameterProcess::getWaveHalfValue()
 
 int ParameterProcess::correctionPdata( WDATA value)
 {
-    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6 || Phascan_Version == 8)
     {
         return value;
     }
@@ -767,7 +767,7 @@ int ParameterProcess::correctionPdata( WDATA value)
 
 bool ParameterProcess::is200Data()
 {
-    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6){
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6 || Phascan_Version == 8){
         return false;
     }else{
         return true;
@@ -1212,7 +1212,7 @@ float ParameterProcess::GetPeakTraceHeight(int nGroupId_, int nScanPos_, int nLa
     bool _bRectify = (GetRectifierMode(nGroupId_) == setup_RECTIFIER_RF );
     //F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
 
-    if(Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
+    if(Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6 || Phascan_Version == 8)
     {
         F32	 _fData    = GetRefGainScaleData(_pData[_index], _fScale, _bRectify);
         int bRectify_  = GetRectifierMode(nGroupId_);
