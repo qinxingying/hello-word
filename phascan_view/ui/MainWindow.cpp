@@ -2760,8 +2760,9 @@ void MainWindow::on_actionLoadPreferences_triggered()
         }
         int _nGroupQty = _pConfig->common.nGroupQty;
         _pConfig->AppEvn.bSAxisCursorSync = buff.bSAxisCursorSync;
-        _pConfig->AppEvn.eLanguage        = buff.eLanguage;
-        m_currentLang   = buff.eLanguage;
+        if (buff.eLanguage != m_currentLang) {
+            on_actionLanguage_triggered();
+        }
         CUR_RES.bShowRL = buff.bShowRL;
         CUR_RES.bShowSL = buff.bShowSL;
         CUR_RES.bShowEL = buff.bShowEL;

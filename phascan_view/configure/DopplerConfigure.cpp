@@ -320,7 +320,7 @@ void DopplerConfigure::SaveEvn()
         AppEvn.bShowSScanMeasure[i] = group[i].bShowSScanMeasure;
 
         AppEvn.fMinThickness[i]     = group[i].fMinThickness;
-        AppEvn.fMaxThickness[i]     = group[i].fMinThickness;
+        AppEvn.fMaxThickness[i]     = group[i].fMaxThickness;
 
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             AppEvn.bCursor[i][j] = group[i].afCursor[j];
@@ -1164,7 +1164,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */
 		_group.fMaxThickness  = _pGroupInfo->max_thickness/1000.0 ;		/* Measurements->Thickness->max */
         AppEvn.fMinThickness[i]  = _group.fMinThickness;
-        AppEvn.fMaxThickness[i]  = _group.fMinThickness;
+        AppEvn.fMaxThickness[i]  = _group.fMaxThickness;
         _group.CScanShowAll   = false;
 
 		/*  校准状态  */
