@@ -499,8 +499,6 @@ void MainWindow::slotViewFrameButtonClicked(QWidget* pWidget_)
 *****************************************************************************/
 void MainWindow::slotCurrentGroupChanged(int nIndex_)
 {
-    //qDebug()<<"index"<<nIndex_;
-    static int _nOldIndex = 0;
     if(nIndex_ + 3 >= ui->TabWidget_parameter->count())  return;
     if(ui->TabWidget_parameter->count() < 5)  return;
 
@@ -537,21 +535,6 @@ void MainWindow::slotCurrentGroupChanged(int nIndex_)
                     }
                 }
             }
-        }
-    }
-
-    DopplerGroupTab* _pWidget = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nOldIndex);
-    QToolBox* _toolBox = _pWidget->GetToolBox();
-
-    if(_toolBox){
-        int _nId = _toolBox->currentIndex();
-        _pWidget = (DopplerGroupTab*)ui->TabWidget_parameter->widget(nIndex_);
-        _nOldIndex = nIndex_;
-
-        if(_pWidget)
-        {
-            _toolBox = _pWidget->GetToolBox();
-            _toolBox->setCurrentIndex(_nId);
         }
     }
 }
