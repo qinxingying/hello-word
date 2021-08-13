@@ -58,9 +58,9 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 
     SetWndName();
 
-    UpdateMeasureBox();
-    UpdateGroupConfig();
-	ui->toolBox->setCurrentIndex(0);
+    //UpdateMeasureBox();
+    //UpdateGroupConfig();
+    ui->toolBox->setCurrentIndex(0);
     CreateSettingView();
 
     SetWidgetInvalide(); // 使窗口不使能  只作数据显示用
