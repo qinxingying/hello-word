@@ -1015,11 +1015,14 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
-    ui->ValueCouplingGainCom->setValue(CUR_RES.Couple_Com_Gain[m_nGroupId]);
-    ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
-    ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
-    ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
-    //qDebug()<<"885"<<CUR_RES.CurSS[m_nGroupId];
+    ui->ValueCouplingGainCom->setValue(CUR_RES.Couple_Com_Gain[m_nGroupId]);   
+    UpdateStandard(CUR_RES.Standard[m_nGroupId],1);
+    ui->ComStandard->setCurrentIndex(CUR_RES.Standard[m_nGroupId]);
+    ui->ValueRL->blockSignals(false);
+    ui->ValueSL->blockSignals(false);
+    ui->ValueEL->blockSignals(false);
+    ui->ComStandard->blockSignals(false);
+    ui->ComThickness->blockSignals(false);
     ui->ValueScannerSensitivity->setValue(CUR_RES.CurSS[m_nGroupId]);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
@@ -2681,6 +2684,12 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 
 void DopplerGroupTab::retranslateGroupTabUi()
 {
+    ui->ValueRL->blockSignals(true);
+    ui->ValueSL->blockSignals(true);
+    ui->ValueEL->blockSignals(true);
+    ui->ComStandard->blockSignals(true);
+    ui->ComThickness->blockSignals(true);
+
     ui->retranslateUi(this);
     model->setHeaderData(0, Qt::Horizontal, tr("Display Mode"));
 }
