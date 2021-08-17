@@ -2094,9 +2094,16 @@ WDATA* ParameterProcess::GetGroupDataPointerRaster(int nGroupId_)
 WDATA* ParameterProcess::GetLawDataPointer(int nGroupId_ , int nLawId_)
 {
     WDATA* _pData;
-    if( m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
+    if( m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE&&_group.m_mode){
+
+        _pData=GetGroupDataDscanPointer(nGroupId_);
+    }else if( m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE) {
+
         _pData = GetGroupDataPointer(nGroupId_);
-    }else{
+
+    }
+    else{
         _pData = GetGroupDataPointerRaster(nGroupId_);
     }
 

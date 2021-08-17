@@ -2003,17 +2003,22 @@ void DopplerGraphicView::UpdateDSDrawing()
 
 //     m_pBackGround->m_hMutex.lock();
 
-      if(m_pDrawScan->inherits("DopplerDrawSScanTrueDepth")&&_group.m_mode==D_MODE)//判断是否属于“DopplerDrawSScanTrueDepth”对象
-      {
+      if(_group.lawMove&&(m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))&&_group.m_mode==D_MODE)
+        {
+        _group.lawMove=false;
         m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
 
-      }
+        }
+      else if( _group.lawMove==false
+               &&((m_pDrawScan->inherits("DopplerDrawSScanTrueDepth"))
+               ||m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))
+               &&_group.m_mode==D_MODE)
+      m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
 //        m_pBackGround->m_hMutex.unlock();
     }
     emit signalUpdateDrawing();
 
 }
-
 
 /****************************************************************************
   Description:   刷新场景

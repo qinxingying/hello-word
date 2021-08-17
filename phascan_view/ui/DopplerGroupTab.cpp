@@ -1166,7 +1166,6 @@ void DopplerGroupTab::UpdateTofdParam()
 void DopplerGroupTab::UpdateSizeingCurves()
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-
     ui->CheckCurveShow->setCheckState(m_pGroup->bShowCurve ? Qt::Checked : Qt::Unchecked);
     ui->CheckRLShow->setCheckState(CUR_RES.bShowRL ? Qt::Checked : Qt::Unchecked);
     ui->CheckELShow->setCheckState(CUR_RES.bShowEL ? Qt::Checked : Qt::Unchecked);

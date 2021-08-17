@@ -1648,7 +1648,6 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
         if(_nItemId == setup_CURSOR_S_REF||_nItemId == setup_CURSOR_S_MES)
         {
-        qDebug()<<"[FILE:"<<__FILE__<<",LINE"<<__LINE__<<",FUNC"<<__FUNCTION__<<"]"<< endl;
         DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
         GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
@@ -1656,7 +1655,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
              DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
              Th->start();
-            qDebug()<<"[FILE:"<<__FILE__<<",LINE"<<__LINE__<<",FUNC"<<__FUNCTION__<<"]"<<endl;
+
         }
         }
 
@@ -2866,7 +2865,17 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
             _proDispy.UpdateDataViewTitle(_pView);
         }
     }
+
     RunDrawThreadOnce(true);
+
+    if(_group.m_mode){
+
+      _group.lawMove=true;
+      DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
+      Th->start();
+
+    }
+
 }
 
 void MainWindow::on_actionFile_Properties_triggered()

@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>4</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -1716,7 +1716,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>315</width>
+        <width>318</width>
         <height>786</height>
        </rect>
       </property>
@@ -5114,7 +5114,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>315</width>
+        <width>318</width>
         <height>1160</height>
        </rect>
       </property>
@@ -5172,8 +5172,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>306</width>
-            <height>1142</height>
+            <width>295</width>
+            <height>1155</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -7227,7 +7227,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>315</width>
+        <width>318</width>
         <height>850</height>
        </rect>
       </property>
@@ -7297,7 +7297,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>315</width>
+            <width>318</width>
             <height>850</height>
            </rect>
           </property>
@@ -7377,6 +7377,16 @@
                   <item>
                    <property name="text">
                     <string>ID</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>ASYMMETRIC</string>
                    </property>
                   </item>
                  </widget>
@@ -8267,7 +8277,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>315</width>
+        <width>318</width>
         <height>1040</height>
        </rect>
       </property>
@@ -8319,7 +8329,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>315</width>
+            <width>318</width>
             <height>1040</height>
            </rect>
           </property>
@@ -9773,8 +9783,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>330</width>
-        <height>769</height>
+        <width>318</width>
+        <height>755</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -9837,8 +9847,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>330</width>
-            <height>769</height>
+            <width>318</width>
+            <height>755</height>
            </rect>
           </property>
           <property name="minimumSize">

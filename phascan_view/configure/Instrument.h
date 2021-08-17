@@ -378,7 +378,8 @@ enum setup_PART_GEOMETRY
 	setup_PART_GEOMETRY_FLAT = 0 ,
 	setup_PART_GEOMETRY_OD ,
 	setup_PART_GEOMETRY_ID ,
-	setup_PART_GEOMETRY_BALL
+    setup_PART_GEOMETRY_BALL,
+    setup_PART_GEOMETRY_ASYMMETRIC
 } ;
 
 
@@ -792,7 +793,7 @@ typedef struct _Group
     setup_REFLECT_SHOWS     m_Shows; //S扫1:1显示
     setup_SSCANF_MODE       m_mode;//S扫模式
     float zoomFactor;               //S扫1:1缩放因子-扫查轴坐标
-
+    bool lawMove=false;                   //S扫的扫查轴移动标志
 
 
 	/*  校准状态  */

@@ -1,4 +1,4 @@
-#include "dialogweldfixdataii.h"
+﻿#include "dialogweldfixdataii.h"
 #include "ui_dialogweldfixdataii.h"
 
 #include "ParameterProcess.h"
@@ -129,6 +129,20 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
 {
     m_cPart.weld_ii.eType = (setup_WELD_TYPE_II)index;
     blockSignals(true);
+
+    if(m_cPart.weld_ii.eType==ASYMMETRIC)
+    {
+    ui->symmetryLabel->setText(tr("alignment:"));
+    ui->symmetryComboBox->setItemText(0,tr("Center"));
+    ui->symmetryComboBox->setItemText(1,tr("top"));
+    ui->symmetryComboBox->setItemText(2,tr("bottom"));
+    }else{
+        ui->symmetryLabel->setText(tr("Symmetry:"));
+        ui->symmetryComboBox->setItemText(0,tr("Symmetry"));
+        ui->symmetryComboBox->setItemText(1,tr("Right"));
+        ui->symmetryComboBox->setItemText(2,tr("Left"));
+        }
+
     switch (m_cPart.weld_ii.eType) {
     case NONE_TYPE:
         ui->weldImageLabel->setPixmap(QPixmap(":/file/resource/weld/none.jpg"));
@@ -445,7 +459,48 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->w2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.w2);
         ui->h2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.h2);
         ui->r2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.a2);
+        break;   
+    case ASYMMETRIC:
+        ui->weldImageLabel->setPixmap(QPixmap(":/file/resource/weld/asymmetric_weld1.png"));
+        ui->symmetryLabel->show();
+        ui->symmetryComboBox->show();
+        ui->probePosLabel->hide();
+        ui->ProbePosComboBox->hide();
+        ui->HAZLabel->hide();
+        ui->HAZDoubleSpinBox->hide();
+        ui->HAZUnitLabel->hide();
+        ui->w1Label->show();
+        ui->w1DoubleSpinBox->show();
+        ui->w1UnitLabel->show();
+        ui->h1Label->show();
+        ui->h1DoubleSpinBox->show();
+        ui->h1UnitLabel->show();
+        ui->r1Label->hide();
+        ui->r1DoubleSpinBox->hide();
+        ui->r1UnitLabel->hide();
+        ui->w2Label->show();
+        ui->w2DoubleSpinBox->show();
+        ui->w2UnitLabel->show();
+        ui->h2Label->show();
+        ui->h2DoubleSpinBox->show();
+        ui->h2UnitLabel->show();
+        ui->r2Label->hide();
+        ui->r2DoubleSpinBox->hide();
+        ui->r2UnitLabel->hide();
+        ui->w3Label->show();
+        ui->w3DoubleSpinBox->show();
+        ui->w3UnitLabel->show();
+        ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.w1);
+        ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.h1);
+        ui->r1DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.a1);
+        ui->w2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.w2);
+        ui->h2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.h2);
+        ui->r2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.a2);
+
+
+
         break;
+
     default:
         break;
     }

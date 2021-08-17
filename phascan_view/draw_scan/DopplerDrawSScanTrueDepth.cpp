@@ -745,7 +745,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
                 _pImg1 = _pImageBits + _nWidthStep * (m_AxisHeight-i);//每行数据的起点位置
                 _pImgAffect1 = pAffectImageBits + affectImgWidthStep * (m_AxisHeight-i);
 
-                for(j = 0; j < m_width; j++)
+                for(j = 0+_xoffset; j < m_width; j++)
                 {
                     _idx1 = (i-m_Offsety) * m_nWidth + (j-_xoffset)*zoomFactor ; //图像每个像素点位置
                     if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)

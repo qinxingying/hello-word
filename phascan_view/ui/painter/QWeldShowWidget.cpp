@@ -1,4 +1,4 @@
-#include "QWeldShowWidget.h"
+﻿#include "QWeldShowWidget.h"
 #include "gHeader.h"
 //#include "DopplerPart.h"
 #include "DrawDxf.h"
