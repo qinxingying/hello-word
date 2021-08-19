@@ -401,7 +401,7 @@ void ExcelBase::write(int row, int col, const QVariant& value)
     if (d->sheet != NULL && ! d->sheet->isNull())
     {
         QAxObject* range = d->sheet->querySubObject("Cells(int, int)", row, col);
-        range->setProperty("Value", value);
+        range->setProperty("Value2", value);
         delete range;
     }
 #else
@@ -433,6 +433,49 @@ bool ExcelBase::usedRange(int& rowStart, int& colStart, int& rowEnd, int& colEnd
     Q_UNUSED(colEnd)
 #endif // Q_OS_WIN
     return ret;
+}
+
+void ExcelBase::setAutoFit()
+{
+    Q_D(ExcelBase);
+    if (d->sheet != NULL && ! d->sheet->isNull())
+    {
+        QAxObject* urange  = d->sheet->querySubObject("UsedRange");
+        QAxObject* rows    = urange->querySubObject("EntireRow");
+        QAxObject* cols    = urange->querySubObject("EntireColumn");
+        if (rows == nullptr || cols == nullptr) {
+            qDebug("failed");
+            return;
+        }
+        rows->dynamicCall("AutoFit");
+        cols->dynamicCall("AutoFit");
+    }
+}
+
+void ExcelBase::setRowHeight(int row, int col, int height)
+{
+    Q_D(ExcelBase);
+    if (d->sheet != NULL && ! d->sheet->isNull()) {
+        QAxObject *pRange =  d->sheet->querySubObject("Cells(int,int)", row, col);
+        if (pRange==nullptr) {
+            return;
+        }
+        pRange->setProperty("RowHeight", height); //设置单元格行高
+        //d->sheet->querySubObject("Range(const QString&)", "1:1")->setProperty("RowHeight", height);
+
+    }
+}
+
+void ExcelBase::setColumnWidth(int row, int col, int width)
+{
+    Q_D(ExcelBase);
+    if (d->sheet != NULL && ! d->sheet->isNull()) {
+        QAxObject *pRange =  d->sheet->querySubObject("Cells(int,int)", row, col);
+        if (pRange==nullptr) {
+            return;
+        }
+        pRange->setProperty("ColumnWidth", width); //设置单元格列宽
+    }
 }
 ///
 /// \brief 读取整个sheet

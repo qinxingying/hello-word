@@ -122,6 +122,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->IndicationTable, &IndicationTableWidget::merged, this, &MainWindow::on_actionSave_Defect_triggered);
     connect(ui->IndicationTable, &IndicationTableWidget::save, this, &MainWindow::slotSaveDefect);
+
+    connect(ui->actionExcel_Export, &QAction::triggered, this, &MainWindow::slot_actionExcelExport_triggered);
 }
 
 MainWindow::~MainWindow()
@@ -3245,4 +3247,11 @@ void MainWindow::slot_actionSaveBSacnData_triggered()
             xls.close();
         }
     }
+}
+
+void MainWindow::slot_actionExcelExport_triggered()
+{
+    DopplerConfigure* pConfig  = DopplerConfigure::Instance();
+    DopplerHtmlReport* pReport = pConfig->GetReportOpp();
+    pReport->ExportExcel();
 }

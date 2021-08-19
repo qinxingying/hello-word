@@ -1,4 +1,4 @@
-#ifndef DOPPLERHTMLREPORT_H
+﻿#ifndef DOPPLERHTMLREPORT_H
 #define DOPPLERHTMLREPORT_H
 
 #include <QString>
@@ -7,6 +7,7 @@
 #include <QList>
 #include <configure/DopplerConfigure.h>
 #include <process/CalcMeasurement.h>
+#include "DopplerExcelBase.h"
 
 #define STRING QString
 #define TOCHAR(x) ((x).toLocal8Bit().data())
@@ -55,6 +56,7 @@ public:
     void set_data_path(QString &str);
     void set_reportName(QString &str);
 
+    void ExportExcel();
 protected:
     void BuildStarter () ;
     void BuildEnder()    ;
