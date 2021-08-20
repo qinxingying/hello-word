@@ -112,7 +112,7 @@ enum FEILD_VALUE_INDEX
 	FEILD_Imr,				// "I(m-r)		步进轴上测量光标与参考光标的距离",
 	FEILD_RA,				// "RA^			声束出射点与闸门A内检测到的缺陷之间的距离",
 	FEILD_RB,				// "RB^			声束出射点与闸门B内检测到的缺陷之间的距离",
-	FEILD_PA,				// "PA^			探头前表面与闸门A内检测到的缺陷的距离",
+    FEILD_PA,				// "PA^			探陷的距头前表面与闸门A内检测到的缺离",
 	FEILD_PB,				// "PB^			探头前表面与闸门B内检测到的缺陷的距离",
 	FEILD_DA,				// "DA^			闸门A内检测到的缺陷在工件中的深度",
 	FEILD_DB,				// "DB^			闸门B内检测到的缺陷在工件中的深度",

@@ -31,7 +31,7 @@ class ParameterProcess : public QObject
     Q_OBJECT
 public:
     static   ParameterProcess* Instance() ;
-
+    static int cursorOffset ;
     QString AddOneGroup(int nGroupId_) ;
     QString DeleteOneGroup(int nGroupId_);
     //******************************
@@ -275,6 +275,7 @@ protected:
     int m_cPosStart;
     int m_cPosStop;
     float m_cStep {1.0};
+
 signals:
 
 public slots:

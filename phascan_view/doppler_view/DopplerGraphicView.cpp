@@ -1455,39 +1455,38 @@ void DopplerGraphicView::DrawMeasureValue()
 
 		if(_iDisplay == setup_DISPLAY_MODE_S_ATHUMIZ || _iDisplay == setup_DISPLAY_MODE_S_LINEAR)
 		{
-			if(setup_GROUP_MODE_PA == _group.eGroupMode)
-			{
-				QSize _size((int)(m_pBackGround->size().width()) , (int)(m_pBackGround->size().height()))  ;
-				setup_PROBE_ANGLE _eAngle =  _process->GetProbeAngle(_iGroupId) ;
+            if(setup_GROUP_MODE_PA == _group.eGroupMode)
+            {
+                QSize _size((int)(m_pBackGround->size().width()) , (int)(m_pBackGround->size().height()))  ;
+                setup_PROBE_ANGLE _eAngle =  _process->GetProbeAngle(_iGroupId) ;
                 int _off = 120;
-				switch(_nLawNum)
-				{
+                switch(_nLawNum)
+                {
                 case 1:_off = 120;						break;
                 case 2:_off = 120 + _nMeaNum * 12;		break;
                 case 3:_off = 120 + 2 * _nMeaNum * 12;	break;
-				}
-				if(_eAngle >= setup_PROBE_PART_SKEW_180 )
-				{
-					//_iDirection   =  1 ;
-					_x0 = _size.width() - 120;
-					_y0 = _size.height() - _off;
-				}
-				else
-				{
-					//_iDirection   =  0 ;
-					_x0 = 10;
-					_y0 = _size.height() - _off;
-				}
-			}
+                }
+                if(_eAngle >= setup_PROBE_PART_SKEW_180 )
+                {
+                    //_iDirection   =  1 ;
+                    _x0 = _size.width() - 120;
+                    _y0 = _size.height() - _off;
+                }
+                else
+                {
+                    //_iDirection   =  0 ;
+                    _x0 = 10;
+                    _y0 = _size.height() - _off;
+                }
+            }
 		}
-
         if(_nLawNum <= 1) {
-			int i= 0;
-			for(; (i < m_nMeasureQty) && (i < MAX_MEASURE_DATA_DISPLAY) ; i++)
-			{
-				if(!m_strMeasure[i].isEmpty())
-					_painter.drawText(_x0 , _y0 + 12 * i , m_strMeasure[i]);
-			}
+            int i= 0;
+            for(; (i < m_nMeasureQty) && (i < MAX_MEASURE_DATA_DISPLAY) ; i++)
+            {
+                if(!m_strMeasure[i].isEmpty())
+                    _painter.drawText(_x0 , _y0 + 12 * i , m_strMeasure[i]);
+            }
 		} else {
 			int idx = 0;
 			int n = 0;
@@ -1498,13 +1497,13 @@ void DopplerGraphicView::DrawMeasureValue()
 				case 1:_painter.setPen(QPen(LAW_2_COLOR));break;
 				case 2:_painter.setPen(QPen(LAW_3_COLOR));break;
 				}
-				for(int k = 0; k < _nMeaNum; k++) {
-					idx = i * _nMeaNum + k;
-					if(!m_strMeasure[idx].isEmpty()) {
-						_painter.drawText(_x0 , _y0 + 12 * n , m_strMeasure[idx]);
-						n++;
-					}
-				}
+                for(int k = 0; k < _nMeaNum; k++) {
+                    idx = i * _nMeaNum + k;
+                    if(!m_strMeasure[idx].isEmpty()) {
+                        _painter.drawText(_x0 , _y0 + 12 * n , m_strMeasure[idx]);
+                        n++;
+                    }
+                }
 				n++;
 			}
 
@@ -1513,58 +1512,58 @@ void DopplerGraphicView::DrawMeasureValue()
 		int i= 0;
 		for(; (i < m_nMeasureQty) && (i < MAX_MEASURE_DATA_DISPLAY) ; i++)
 		{
-			if(!m_strMeasure[i].isEmpty())
+            if(!m_strMeasure[i].isEmpty())
                 _painter.drawText(_x0 , _y0 + 12 * i , m_strMeasure[i]);
 		}
 
-		if(_iDisplay == setup_DISPLAY_MODE_B_H || _iDisplay == setup_DISPLAY_MODE_B_V)
-		{
-			DopplerTofdOpp opp;
-			char _strBuf[256];
+        if(_iDisplay == setup_DISPLAY_MODE_B_H || _iDisplay == setup_DISPLAY_MODE_B_V)
+        {
+            DopplerTofdOpp opp;
+            char _strBuf[256];
 
-			if(opp.TofdProStr(_iGroupId, _strBuf) >= 0)
-			{
-				_painter.setPen(QPen(Qt::green));
-				_painter.drawText(_x0 , _y0 + 12 * i , QString(_strBuf));
-				i++;
-			}
+            if(opp.TofdProStr(_iGroupId, _strBuf) >= 0)
+            {
+                _painter.setPen(QPen(Qt::green));
+                _painter.drawText(_x0 , _y0 + 12 * i , QString(_strBuf));
+                i++;
+            }
 
-			if(opp.TofdDragProStr(_iGroupId, _strBuf) >= 0)
-			{
-				_painter.setPen(QPen(Qt::red));
-				_painter.drawText(_x0 , _y0 + 12 * i , QString(_strBuf));
-				i++;
-			}
+            if(opp.TofdDragProStr(_iGroupId, _strBuf) >= 0)
+            {
+                _painter.setPen(QPen(Qt::red));
+                _painter.drawText(_x0 , _y0 + 12 * i , QString(_strBuf));
+                i++;
+            }
 
-			if(_pConfig->m_dfParam[_iGroupId].dfInfo.bValid)
-			{
-				_painter.setPen(QPen(Qt::green));
-				float _fStart;
-				float _fData = _pConfig->DefectLengthValue(_iGroupId, &_fStart);
-				QString _str ;
+            if(_pConfig->m_dfParam[_iGroupId].dfInfo.bValid)
+            {
+                _painter.setPen(QPen(Qt::green));
+                float _fStart;
+                float _fData = _pConfig->DefectLengthValue(_iGroupId, &_fStart);
+                QString _str ;
 
-				if(_fData >= 0) {
-					_str.sprintf("length: %.1f mm", _fData);
-					_painter.drawText(_x0 , _y0 + 12 * i , _str);
-					i++;
-				}
+                if(_fData >= 0) {
+                    _str.sprintf("length: %.1f mm", _fData);
+                    _painter.drawText(_x0 , _y0 + 12 * i , _str);
+                    i++;
+                }
 
-				_fData = _pConfig->DefectHeightValue(_iGroupId, &_fStart);
-				if(_fData >= 0) {
-					_str.sprintf("height: %.1f mm", _fData);
-					_painter.drawText(_x0 , _y0 + 12 * i , _str);
-					i++;
-				}
+                _fData = _pConfig->DefectHeightValue(_iGroupId, &_fStart);
+                if(_fData >= 0) {
+                    _str.sprintf("height: %.1f mm", _fData);
+                    _painter.drawText(_x0 , _y0 + 12 * i , _str);
+                    i++;
+                }
 
-				_fData = _pConfig->DefectDepthValue(_iGroupId);
-				if(_fData >= 0)	{
-					_str.sprintf("depth: %.1f mm", _fData);
-					_painter.drawText(_x0 , _y0 + 12 * i , _str);
-					i++;
-				}
-			}
+                _fData = _pConfig->DefectDepthValue(_iGroupId);
+                if(_fData >= 0)	{
+                    _str.sprintf("depth: %.1f mm", _fData);
+                    _painter.drawText(_x0 , _y0 + 12 * i , _str);
+                    i++;
+                }
+            }
 
-		}
+        }
 	}
     this->viewport()->update();
     _painter.end();
@@ -1968,6 +1967,7 @@ void DopplerGraphicView::UpdateDrawing()
     DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
     int _iGroupId;
     _iGroupId=_pParent->GetGroupId();
+
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
     GROUP_CONFIG& _group = _pConfig->group[_iGroupId];
@@ -1990,22 +1990,26 @@ void DopplerGraphicView::UpdateDrawing()
 
 void DopplerGraphicView::UpdateDSDrawing()
 {
+
     DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
     int _iGroupId;
+     int _nGroupId;
+
     _iGroupId=_pParent->GetGroupId();
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-
     GROUP_CONFIG& _group = _pConfig->group[_iGroupId];
+    _nGroupId=g_pMainWnd->GetCurGroup();
 
-    if(m_pDrawScan)
+    if(m_pDrawScan&&_nGroupId==_iGroupId)
     {
         QMutexLocker locker(&m_pBackGround->m_hMutex2);
 
 //     m_pBackGround->m_hMutex.lock();
 
-      if(_group.lawMove&&(m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))&&_group.m_mode==D_MODE)
+      if(_group.lawMove==true&&(m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))&&_group.m_mode==D_MODE)
         {
         _group.lawMove=false;
+
         m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
 
         }
@@ -2013,8 +2017,9 @@ void DopplerGraphicView::UpdateDSDrawing()
                &&((m_pDrawScan->inherits("DopplerDrawSScanTrueDepth"))
                ||m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))
                &&_group.m_mode==D_MODE)
-      m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
+         m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
 //        m_pBackGround->m_hMutex.unlock();
+
     }
     emit signalUpdateDrawing();
 

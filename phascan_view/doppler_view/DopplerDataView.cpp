@@ -303,6 +303,7 @@ void DopplerDataView::UpdateDSDrawing()
 
     m_pGraphicView->UpdateDSDrawing();
 
+
 }
 
 #include <process/ParameterProcess.h>
@@ -339,7 +340,7 @@ void DopplerDataView::UpdateMeasure()
 					}
 				}
 			}
-			m_pGraphicView->SetMeasureStringQty(_nQty);
+            m_pGraphicView->SetMeasureStringQty(_nQty);
 
 		} else {
             for(int i = 0 ; i < setup_MAX_MEASURE_QTY; i++) {
@@ -350,7 +351,7 @@ void DopplerDataView::UpdateMeasure()
 					_nQty++  ;
 				}
 			}
-			m_pGraphicView->SetMeasureStringQty(_nQty);
+            m_pGraphicView->SetMeasureStringQty(_nQty);
 		}
 	}
 	else

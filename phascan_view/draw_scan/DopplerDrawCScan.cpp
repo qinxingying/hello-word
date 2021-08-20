@@ -1846,7 +1846,6 @@ void DopplerDrawCScanH::GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pB
 	}
 
 	int	 _nBeamQty = m_CScanInfo.nLawQty;
-
 	ParameterProcess* _process = ParameterProcess::Instance();
 	PEAK_CONFIG _info[setup_GATE_MAX];
 	for(int i = 0 ; i < _nBeamQty ; i++)

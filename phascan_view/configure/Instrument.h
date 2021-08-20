@@ -793,7 +793,8 @@ typedef struct _Group
     setup_REFLECT_SHOWS     m_Shows; //S扫1:1显示
     setup_SSCANF_MODE       m_mode;//S扫模式
     float zoomFactor;               //S扫1:1缩放因子-扫查轴坐标
-    bool lawMove=false;                   //S扫的扫查轴移动标志
+    bool lawMove;                   //D扫的扫查轴移动标志
+    int currentGroupId;                   //D扫绘制组ID
 
 
 	/*  校准状态  */

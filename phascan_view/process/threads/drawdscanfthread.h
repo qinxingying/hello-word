@@ -14,15 +14,15 @@ public:
     ~DrawDscanfTHread() ;
     void StopThread(bool bStop_ = true);
     bool IsStoped();
-
+    void RunOnce();
 
 protected:
     explicit DrawDscanfTHread(QObject *parent = 0);
     void run();
-    void UpdateAllWidgetDrawing() ;
+    void UpdateAllWidgetDrawing();
 
     static DrawDscanfTHread* _pThread ;
-
+    volatile int  m_nRunOnce ;
 signals:
 
 public slots:

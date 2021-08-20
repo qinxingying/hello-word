@@ -40,7 +40,7 @@ Date     : 2016-12-06
 #include "DopplerExcelBase.h"
 #include <QProgressDialog>
 #include "threads/drawdscanfthread.h"
-
+#include "threads/drawdscanfthread.h"
 int lastgroup = 0;
 int currentgroup = 0; //-1表示全部组的那个tab
 
@@ -273,12 +273,7 @@ void MainWindow::RunDrawThreadOnce(bool bUseDrawThread_)
          _pThread->RunOnce(RUN_IN_MAIN_THREAD);
     }
 
-//    if(_group.m_mode){
 
-//         DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
-//         Th->start();
-
-//    }
 
 }
 
@@ -621,6 +616,9 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
     }
     //------------------------------------------------------
     RunDrawThreadOnce(true);
+    DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
+    Th->RunOnce();
+
 
 }
 
@@ -1648,19 +1646,12 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
         if(_nItemId == setup_CURSOR_S_REF||_nItemId == setup_CURSOR_S_MES)
         {
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-
-        GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
         if(_group.m_mode){
 
              DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
-             Th->start();
-
+             Th->RunOnce();
+            }
         }
-        }
-
-
-
     }
     break;
     //case OVERLAYS_THICKNESS:
@@ -1700,16 +1691,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         _process->SetupScanPos(_fCursorPos);
 
         RunDrawThreadOnce(true);
-//        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
-//        GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
-//        if(_group.m_mode){
-
-//             DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
-//             Th->start();
-//             qDebug()<<"[FILE:"<<__FILE__<<",LINE"<<__LINE__<<",FUNC"<<__FUNCTION__<<"]"<<endl;
-
-//        }
 
     }
     break;
@@ -2833,6 +2815,7 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
 
+
     _group.afCursor[setup_CURSOR_LAW] = lawPos;
     updateCscanLawPos(lawPos, _nGroupId);
     DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
@@ -2872,7 +2855,7 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
 
       _group.lawMove=true;
       DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
-      Th->start();
+      Th->RunOnce();
 
     }
 

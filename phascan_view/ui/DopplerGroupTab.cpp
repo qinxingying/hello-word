@@ -12,6 +12,7 @@
 #include "defectidentify.h"
 #include <QMessageBox>
 #include "DopplerDrawSScanTrueDepth.h"
+#include "threads/drawdscanfthread.h"
 const int MAX_ITEM_QTY = 50;
 extern int bHideCursor;
 //  Description: 所有显示窗口类型
@@ -2531,6 +2532,8 @@ void DopplerGroupTab::on_ComsScanfMode_currentIndexChanged(int index)
     //    _display.UpdateAllView();
     _display.UpdateAllViewOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
+    DrawDscanfTHread* _pThread = DrawDscanfTHread::Instance();
+    _pThread->RunOnce();
     return ;
 }
 

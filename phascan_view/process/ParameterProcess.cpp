@@ -13,6 +13,7 @@ double NFreScale = 200/511.0;
 extern int Phascan_Version;
 ParameterProcess* g_pParameterProcess = NULL ;
 
+int ParameterProcess::cursorOffset=1;
 float CalPeakAmp2( float, int);
 
 float CalculatePeakAmp(float nPeak_, int nRectify_)
@@ -1314,7 +1315,7 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
 	if(!pData_) return 0;
 
 	if(iStart_ < 0) {
-		iStart_ = 0;
+        iStart_ = 0;
 	}
 	if(iEnd_ < 0) {
 		iEnd_ = 0;
@@ -1337,32 +1338,43 @@ int SearchPeakAmp(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, bool bRecti
 	int _iTmp = 0;
 	int _iPos = 0;
     int WAVE_HALF;
+    WDATA* tempData_=pData_;
 
     WAVE_HALF = ParameterProcess::getWaveHalfValue();
+    ParameterProcess* _process = ParameterProcess::Instance();
+    int _nFrameOffset = _process->GetTotalDataSize() ;//一帧数据偏移量
 	if(!bRectify_) {// 射频
-		int _iMax = 0;
-		int _iData = 0;
-		for(int i = _iS; i < _iE; i++) {
+        int _iMax = 0;
+        int _iData = 0;
+        for(int i = _iS; i < _iE; i++) {
             _iTmp = ParameterProcess::correctionPdata( pData_[i]);
-			_iData = abs(_iTmp - WAVE_HALF);
+            _iData = abs(_iTmp - WAVE_HALF);
 
-			if(_iData > _iMax) {
-				_iMax = _iData;
-				_iAmp = _iTmp;
-				_iPos = i;
-			}
-		}
+            if(_iData > _iMax) {
+                _iMax = _iData;
+                _iAmp = _iTmp;
+                _iPos = i;
+            }
+        }
 	} else {
-		for(int i = _iS; i < _iE; i++) {
+
+        for(int j=0;j<ParameterProcess::cursorOffset;j++)
+        {
+
+        pData_=tempData_+j*_nFrameOffset;
+
+        for(int i = _iS; i < _iE; i++) {
             _iTmp = ParameterProcess::correctionPdata( pData_[i]);
 
-			if(_iTmp > _iAmp) {
-				_iAmp = _iTmp;
-				_iPos = i;
-			}
-		}
-	}
+            if(_iTmp > _iAmp) {
+                _iAmp = _iTmp;
+                _iPos = i;
+            }
+          }
 
+       }
+
+	}
 	*_pPos = _iPos;
 	return _iAmp;
 }
@@ -1373,6 +1385,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, int nScanPos_, int nLawId
 //	if(!_pData) return false;
 
 	int    _nPointQty = GetGroupPointQty(nGroupId_);
+
 	int _nFrameOffset = GetTotalDataSize() ;
 	int _nGroupOffset = GetGroupDataOffset(nGroupId_);
     int _nLawSize;
@@ -1398,6 +1411,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 	memset(pInfo_, 0x00, 3*sizeof(PEAK_CONFIG));
     DopplerConfigure* m_pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG* config = &(m_pConfig->group[nGroupId_]);
+
     int      _nPointQty = GetGroupPointQty(nGroupId_);
     int       _nRectify = GetRectifierMode(nGroupId_);
     float _fSampleStart, _fSampleRange, _fScale;
@@ -1407,6 +1421,18 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
     float _fSin    = sin(_fAngle);
     float _fCos    = cos(_fAngle);
     float _fIRadius, _fORadius, _fSstep, _fLstep;
+
+    if(config->m_mode==D_MODE)
+      {
+        cursorOffset=config->afCursor[ setup_CURSOR_S_MES ]- config->afCursor[setup_CURSOR_S_REF];
+        if(cursorOffset<0)cursorOffset=-cursorOffset;
+        if(cursorOffset==0)cursorOffset=1;
+      }else{
+
+        cursorOffset=1;
+
+    }
+
     if( config->part.eGeometry == setup_PART_GEOMETRY_OD){
         if (config->part.weldFormat == PHASCAN_II_FORMAT && config->part.weld_ii.eWeldDir == CIRC) {
             _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
@@ -1605,6 +1631,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
     pInfo_[setup_GATE_I].fAmp = CalculatePeakAmp(pInfo_[setup_GATE_I].iY, _nRectify);
     pInfo_[setup_GATE_I].fXdXA  = A_DB_B(pow(10.0, config->fRefGain/20.0) * pInfo_[setup_GATE_I].fAmp, pInfo_[setup_GATE_I].fGh);
 	//-----------------------------------
+
 	// A
 	_pGate = GetGateInfo(nGroupId_ , setup_GATE_A);
     if(config->eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH){
@@ -1632,7 +1659,6 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
             _fWidth = _fScale * DistMmToUs( nGroupId_, _pGate->fWidth);
         }
     }
-
 	_fHeigh = _pGate->nThreshold * WAVE_MAX / 100;
 	switch(_pGate->eSynChro)
 	{
@@ -1644,7 +1670,7 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
 //	if(_fStart+_fWidth >= _nPointQty) _fWidth = _nPointQty - _fStart - 1;
 
 	pInfo_[setup_GATE_A].iYEdge = SearchPeakFront(pData_, &pInfo_[setup_GATE_A].iXEdge, _fStart, _fStart+_fWidth, _fHeigh, _nRectify, _nPointQty);
-	pInfo_[setup_GATE_A].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_A].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
+    pInfo_[setup_GATE_A].iY    = SearchPeakAmp(pData_, &pInfo_[setup_GATE_A].iX, _fStart, _fStart+_fWidth, _nRectify, _nPointQty);
 
 //    if( config->part.eGeometry == setup_PART_GEOMETRY_OD || config->part.eGeometry == setup_PART_GEOMETRY_ID){
 //        pInfo_[setup_GATE_A].fGs   = ( _fStart / _fScale + _fSampleStart) * _fCos;
@@ -3459,22 +3485,23 @@ void* ParameterProcess::GetPalete(int nGroupId_ , PALETTE_NAME eName_)
 *****************************************************************************/
 float ParameterProcess::GetGateValueAmp(int nGroupId_ , int nLaw_ , setup_GATE_NAME eGate_)
 {
-	GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 
-	PEAK_CONFIG _info[setup_GATE_MAX];
-	GetGatePeakInfos(nGroupId_, GetScanIndexPos(), nLaw_, _info);
-	float _fRet = _info[eGate_].iY;
-	if(_group.eRectifier) {
-		_fRet = _fRet / (float)WAVE_MAX;
-	} else {
-		float _half = (float)WAVE_MAX/2.0;
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
 
-		_fRet = (_fRet - _half) / (float)_half;
-		if(_fRet > 1)	_fRet = 1;
-		if(_fRet < -1)	_fRet = -1;
-	}
+    PEAK_CONFIG _info[setup_GATE_MAX];
+    GetGatePeakInfos(nGroupId_, GetScanIndexPos(), nLaw_, _info);
+    float _fRet = _info[eGate_].iY;
+    if(_group.eRectifier) {
+        _fRet = _fRet / (float)WAVE_MAX;
+    } else {
+        float _half = (float)WAVE_MAX/2.0;
 
-	return _fRet * 100.0f;
+        _fRet = (_fRet - _half) / (float)_half;
+        if(_fRet > 1)	_fRet = 1;
+        if(_fRet < -1)	_fRet = -1;
+    }
+
+    return _fRet * 100.0f;
 }
 /******************************************************
   Description:   计算闸门读数 位置
