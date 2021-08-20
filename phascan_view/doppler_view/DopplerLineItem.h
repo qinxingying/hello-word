@@ -1,4 +1,4 @@
-#ifndef DOPPLERGRPHICSITEMLINE_H
+﻿#ifndef DOPPLERGRPHICSITEMLINE_H
 #define DOPPLERGRPHICSITEMLINE_H
 
 #include <QObject>
@@ -50,7 +50,6 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) ;
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-
     LINE_TYPE      m_eLineType   ;
     LINE_MOVE_TYPE m_eMoveType ;
     QRectF         m_rect   ;

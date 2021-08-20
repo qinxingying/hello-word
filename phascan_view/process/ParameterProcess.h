@@ -31,7 +31,7 @@ class ParameterProcess : public QObject
     Q_OBJECT
 public:
     static   ParameterProcess* Instance() ;
-
+    static int cursorOffset ;
     QString AddOneGroup(int nGroupId_) ;
     QString DeleteOneGroup(int nGroupId_);
     //******************************
@@ -159,6 +159,8 @@ public:
     WDATA* GetLawDataPointer(int nGroupId_ , int nLawId_)  ;
     WDATA* GetCoupleDataPointer( int nGroupId_);
 
+    WDATA* GetGroupDataDscanPointer(int nGroupId_);//D扫光标数据指针
+
     double GetDetermineThreshold(int nGroupId_, DAC_MODE mode);
 
     unsigned int   GetLawGateDWORD(int nGroupId_ , int nLawId_ , setup_GATE_NAME eGate_);
@@ -273,6 +275,7 @@ protected:
     int m_cPosStart;
     int m_cPosStop;
     float m_cStep {1.0};
+
 signals:
 
 public slots:

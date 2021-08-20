@@ -386,7 +386,8 @@ enum setup_PART_GEOMETRY
 	setup_PART_GEOMETRY_FLAT = 0 ,
 	setup_PART_GEOMETRY_OD ,
 	setup_PART_GEOMETRY_ID ,
-	setup_PART_GEOMETRY_BALL
+    setup_PART_GEOMETRY_BALL,
+    setup_PART_GEOMETRY_ASYMMETRIC
 } ;
 
 
@@ -628,6 +629,14 @@ enum setup_REFLECT_SHOWS
 
 };
 
+//S扫模式
+enum setup_SSCANF_MODE
+{
+    S_MODE = 0,
+    D_MODE
+
+};
+
 
 enum setup_CURSOR_TYPE
 {
@@ -791,7 +800,10 @@ typedef struct _Group
 
     setup_REFLECT_TYPE      m_Retype; //S扫反射类型
     setup_REFLECT_SHOWS     m_Shows; //S扫1:1显示
+    setup_SSCANF_MODE       m_mode;//S扫模式
     float zoomFactor;               //S扫1:1缩放因子-扫查轴坐标
+    bool lawMove;                   //D扫的扫查轴移动标志
+    int currentGroupId;                   //D扫绘制组ID
 
 
 	/*  校准状态  */

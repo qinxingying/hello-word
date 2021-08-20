@@ -3056,6 +3056,7 @@ void ProcessDisplay::UpdateAllViewCursorOfGroup(int)
                  _overlay.UpdateCursor();
 				 UpdateDataViewTitle(_pView);
 			}
+
 		}
 	}
 }

@@ -1,4 +1,4 @@
-#include "weldshowdataiiwidget.h"
+﻿#include "weldshowdataiiwidget.h"
 #include <QPainter>
 #include "painter/DrawDxf.h"
 #include <math.h>

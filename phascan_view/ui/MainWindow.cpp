@@ -39,7 +39,8 @@ Date     : 2016-12-06
 #include "defectidentify.h"
 #include "DopplerExcelBase.h"
 #include <QProgressDialog>
-
+#include "threads/drawdscanfthread.h"
+#include "threads/drawdscanfthread.h"
 int lastgroup = 0;
 int currentgroup = 0; //-1表示全部组的那个tab
 
@@ -264,6 +265,10 @@ void MainWindow::RunDrawThread()
 *****************************************************************************/
 void MainWindow::RunDrawThreadOnce(bool bUseDrawThread_)
 {
+//    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
+//    GROUP_CONFIG& _group = _pConfig->group[m_iCurGroup];
+
     DataRefreshThread* _pThread = DataRefreshThread::Instance();
 
     if(bUseDrawThread_){
@@ -271,6 +276,9 @@ void MainWindow::RunDrawThreadOnce(bool bUseDrawThread_)
     }else{
          _pThread->RunOnce(RUN_IN_MAIN_THREAD);
     }
+
+
+
 }
 
 /****************************************************************************
@@ -620,16 +628,20 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
     ui->IndicationTable->setGroupId(m_iCurGroup);
     //------------------------------------------------------
     RunDrawThreadOnce(true);
+    DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
+    Th->RunOnce();
+
 
 }
+
 
 void MainWindow::slotSliderhChanged(int value)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    SCANNER& _scanner = _pConfig->common.scanner ;
-    if(_scanner.eScanEncoderType) {
+    SCANNER& _scanner = _pConfig->common.scanner;
+    if(_scanner.eScanEncoderType){
             _scanner.fScanPos = _scanner.fScanStep * value + _scanner.fScanStart2;
-    } else {
+    }else{
             _scanner.fScanPos =  value / _scanner.fPrf  + _scanner.fScanStart2;
     }
     scanSpin->setValue( _scanner.fScanPos);
@@ -641,6 +653,8 @@ void MainWindow::slotSliderhChanged(int value)
     _pScanner->UpdateScanPos();
     RunDrawThreadOnce(true);
 }
+
+
 
 void MainWindow::slotIndexSliderHChanged(int value)
 {
@@ -1567,15 +1581,11 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                     indexSliderh->setValue(pos_);
                     indexSliderh->blockSignals(false);
                 }
-
             }
 
             DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
-
             _pGroupTab->UpdateCurrentAngleCom();
             _pGroupTab->UpdateSizeingCurves();
-
-
             for(int i = 0; i < m_pViewList[_nTabIndex]->count(); i++)
             {
                 int tmpGroupID, tmpLawId, tmpDisplay;
@@ -1612,11 +1622,13 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                     _proDispy.UpdateDataViewTitle(_pView);
                 }
             }
+
         }
+
         if(_nItemId == setup_CURSOR_S_REF || _nItemId == setup_CURSOR_U_REF) {
             m_bCursorSel = true;
         } else if(_nItemId == setup_CURSOR_S_MES || _nItemId == setup_CURSOR_U_MES) {
-            m_bCursorSel = false;
+            m_bCursorSel = false;    
         }
 
         if(_pConfig->AppEvn.bSAxisCursorSync) {
@@ -1634,6 +1646,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
                     _process->SetupScanPos(_fCursor);
                 }
             }
+
         }
 //        qDebug("*** %s[%d], _fCursor:%.2f, _nItemId:%d, _nDisplay:%d",
 //               __FUNCTION__, __LINE__, _fCursor, _nItemId, _nDisplay);
@@ -1645,6 +1658,15 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
         _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
         RunDrawThreadOnce(true);
+
+        if(_nItemId == setup_CURSOR_S_REF||_nItemId == setup_CURSOR_S_MES)
+        {
+        if(_group.m_mode){
+
+             DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
+             Th->RunOnce();
+            }
+        }
     }
     break;
     //case OVERLAYS_THICKNESS:
@@ -1684,6 +1706,8 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         _process->SetupScanPos(_fCursorPos);
 
         RunDrawThreadOnce(true);
+
+
     }
     break;
 
@@ -2025,6 +2049,7 @@ void MainWindow::slotCursorUChange(int groupId, int lawId, bool orientation)
 void MainWindow::slotShowCursor(int groupId, bool status)
 {
     m_pGroupList[groupId]->setShowCursorStatus(status);
+
 }
 
 void MainWindow::slotShowDefect(int groupId, bool status)
@@ -3070,6 +3095,7 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
 
+
     _group.afCursor[setup_CURSOR_LAW] = lawPos;
     updateCscanLawPos(lawPos, _nGroupId);
     DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
@@ -3102,7 +3128,17 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
             _proDispy.UpdateDataViewTitle(_pView);
         }
     }
+
     RunDrawThreadOnce(true);
+
+    if(_group.m_mode){
+
+      _group.lawMove=true;
+      DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
+      Th->RunOnce();
+
+    }
+
 }
 
 void MainWindow::on_actionFile_Properties_triggered()

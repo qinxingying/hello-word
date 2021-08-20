@@ -12,6 +12,7 @@
 #include "defectidentify.h"
 #include <QMessageBox>
 #include "DopplerDrawSScanTrueDepth.h"
+#include "threads/drawdscanfthread.h"
 const int MAX_ITEM_QTY = 50;
 extern int bHideCursor;
 //  Description: 所有显示窗口类型
@@ -65,8 +66,8 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 
     SetWidgetInvalide(); // 使窗口不使能  只作数据显示用
 
-    ui->LabeloneToOneShows->hide();
-    ui->ComOneToOneShows->hide();
+//    ui->LabeloneToOneShows->hide();
+//    ui->ComOneToOneShows->hide();
 }
 
 DopplerGroupTab::~DopplerGroupTab()
@@ -571,6 +572,7 @@ void DopplerGroupTab::setThicknessValue(double value)
 
 void DopplerGroupTab::setShowCursorStatus(bool status)
 {
+
     ui->CheckCursorShow->setChecked(status);
     on_CheckCursorShow_clicked(status);
 }
@@ -1242,7 +1244,6 @@ void DopplerGroupTab::UpdateTofdParam()
 void DopplerGroupTab::UpdateSizeingCurves()
 {
 	ParameterProcess* _process = ParameterProcess::Instance();
-
     ui->CheckCurveShow->setCheckState(m_pGroup->bShowCurve ? Qt::Checked : Qt::Unchecked);
     ui->CheckRLShow->setCheckState(CUR_RES.bShowRL ? Qt::Checked : Qt::Unchecked);
     ui->CheckELShow->setCheckState(CUR_RES.bShowEL ? Qt::Checked : Qt::Unchecked);
@@ -2162,7 +2163,7 @@ void DopplerGroupTab::on_CheckMeasureShow_clicked(bool checked)
     ui->checkBScanShow->setCheckState( checked ? Qt::Checked : Qt::Unchecked);
     ui->checkCScanShow->setCheckState( checked ? Qt::Checked : Qt::Unchecked);
     ui->checkSScanShow->setCheckState( checked ? Qt::Checked : Qt::Unchecked);
-	g_pMainWnd->RunDrawThreadOnce(true);
+    g_pMainWnd->RunDrawThreadOnce(true);
 }
 
 void DopplerGroupTab::on_checkAScanShow_clicked(bool checked)
@@ -2354,6 +2355,7 @@ void DopplerGroupTab::on_ComField14_currentIndexChanged(int index)
 
 void DopplerGroupTab::on_CheckCursorShow_clicked(bool checked)
 {
+
 	m_pGroup->bShowCursor = checked ;
 	ProcessDisplay _display ;
 	_display.UpdateAllViewOverlay();
@@ -2595,7 +2597,21 @@ void DopplerGroupTab::on_ComOneToOneShows_currentIndexChanged(int index)
     _display.UpdateAllViewOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
     return ;
+}
 
+void DopplerGroupTab::on_ComsScanfMode_currentIndexChanged(int index)
+{
+
+    if(!ui->ComsScanfMode->hasFocus()) return;
+     m_pGroup->m_mode  = (setup_SSCANF_MODE)index  ;
+//     qDebug()<<"[FILE:"<<__FILE__<<",LINE"<<__LINE__<<",FUNC"<<__FUNCTION__<<"]"<< "  m_pGroup->m_mode" <<  m_pGroup->m_mode <<endl;
+    ProcessDisplay _display ;
+    //    _display.UpdateAllView();
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+    g_pMainWnd->RunDrawThreadOnce(true);
+    DrawDscanfTHread* _pThread = DrawDscanfTHread::Instance();
+    _pThread->RunOnce();
+    return ;
 }
 
 
@@ -2945,6 +2961,8 @@ void DopplerGroupTab::on_ComWeldRemianingHeight_activated(int index)
     m_pGroup->bWeldRemainingHeight = index;
     g_pMainWnd->RunDrawThreadOnce(true);
 }
+
+
 
 
 

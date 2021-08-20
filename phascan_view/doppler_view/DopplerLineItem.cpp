@@ -251,18 +251,15 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 	} else {
 		painter->setBackgroundMode(Qt::TransparentMode);
 	}
-
 	_x += 1;
 	_y += 1 + (g_nRectSize + 3);
 	painter->drawText( _x, _y, _str );
 }
-
 void DopplerLineItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	DopplerGraphicsItem::mousePressEvent(event) ;
+    DopplerGraphicsItem::mousePressEvent(event);
 	mouseMoveEvent(event) ;
 }
-
 void DopplerLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     Q_UNUSED(event);
@@ -272,7 +269,6 @@ void DopplerLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 		QPointF _posScene = event->scenePos() ;
 		int _x = _posScene.x() ;
 		int _y = _posScene.y() ;
-
 		const int _nAdjustOff = 20;
 
 		if(_x < 0 - _nAdjustOff) {
@@ -280,13 +276,11 @@ void DopplerLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 		} else if(_x > m_cSize.width() + _nAdjustOff) {
 			_posScene.setX(m_cSize.width() + _nAdjustOff);
 		}
-
 		if(_y < 0 - _nAdjustOff) {
 			_posScene.setY(0 - _nAdjustOff);
 		} else if(_y > m_cSize.height() + _nAdjustOff) {
 			_posScene.setY(m_cSize.height() + _nAdjustOff);
 		}
-
 		setPos(_posScene) ;
 		double _fX  = _posItem.x() ;
 		double _fY  = _posItem.y() ;
@@ -298,7 +292,6 @@ void DopplerLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 	setSelected(false);
 	update();
 }
-
 void DopplerLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if(!m_eMoveType)  return ;
@@ -349,11 +342,10 @@ void DopplerLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	default:
 		break;
 	}
-
-	setPos(_posScene) ;
-	double _fX  = _posItem.x() ;
-	double _fY  = _posItem.y() ;
-	m_rect.setLeft(_fX - g_nRectSize) ;
+    setPos(_posScene);
+    double _fX  = _posItem.x();
+    double _fY  = _posItem.y();
+    m_rect.setLeft(_fX - g_nRectSize);
 	m_rect.setRight(_fX + g_nRectSize);
 	m_rect.setTop(_fY - g_nRectSize);
 	m_rect.setBottom(_fY + g_nRectSize);
@@ -443,13 +435,11 @@ Qt::CursorShape DopplerLineItem::GetCursorShape(QPointF posCursor_)
 	rcTmp = _rect;
 	this->update();
 }
-//----------------------------------------------------------
-
+//-----------------------------------------------------------
 //黑色虚线，在B，C视图中显示当前的扫查帧，和滑块联动
 DopplerScanMarker::DopplerScanMarker(const QColor& cColor_) : DopplerLineItem(cColor_){}
 
-
-void DopplerScanMarker::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* /*widget*/)
+void DopplerScanMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* /*widget*/)
 {
 	//******** to change the background color of when mouse is rect
 	QColor fillColor = (option->state & QStyle::State_Selected) ? m_cColor.dark(50) : m_cColor;
@@ -462,13 +452,13 @@ void DopplerScanMarker::paint (QPainter *painter, const QStyleOptionGraphicsItem
 	switch (m_eLineType)
 	{
 	case LINE_VERTICAL:
-		{
-			QGraphicsScene* _pScene = scene () ;
-			if(_pScene)
-				m_nHeight = _pScene->height() ;
-		}
-		m_nWidth  = 0 ;
-		break;
+        {
+            QGraphicsScene* _pScene = scene () ;
+            if(_pScene)
+                m_nHeight = _pScene->height() ;
+        }
+        m_nWidth  = 0 ;
+        break;
 	case LINE_HORIZENTAL:
 		{
 			QGraphicsScene* _pScene = scene () ;
@@ -482,22 +472,20 @@ void DopplerScanMarker::paint (QPainter *painter, const QStyleOptionGraphicsItem
 	};
 	painter->save();
 
-
 	QPen _NewPen ;
 	QVector<qreal> dashes;
 	_NewPen.setColor(fillColor);
 	_NewPen.setWidth(2);
 
-	dashes << 1 << 4 << 1 << 4 ;
+    dashes << 1 << 4 << 1 << 4;
 	_NewPen.setDashPattern(dashes);
 	painter->setPen(_NewPen);
-	painter->drawLine(0, 0 , m_nWidth , m_nHeight );
-
+    painter->drawLine(0, 0 , m_nWidth , m_nHeight );
 	painter->restore();
+
 }
 
 DopplerCalibrationMark::DopplerCalibrationMark(const QColor& cColor_) : DopplerLineItem(cColor_){}
-
 
 void DopplerCalibrationMark::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* /*widget*/)
 {

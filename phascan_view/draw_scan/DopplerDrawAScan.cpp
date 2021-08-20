@@ -84,27 +84,27 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 	double _nHeight = (double)m_nHeight;
 	double  _nWidth = (double)m_nWidth ;
 
-	QPainter painter(pImage_) ;
-	ClearAll(&painter);
+    QPainter painter(pImage_) ;
+    ClearAll(&painter);
 
 	//int _nScanPos = _process->GetScanIndexPos();
 	//U8*  _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	//if(!_pMarker[_nScanPos])
 		//return ;
-
-	float  _fScale = _process->GetRefGainScale(m_cInfo.nGroupId) ;
+    float  _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
 	bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;
 
 	double _fX , _fY;
-	double _fXRatio = _nWidth / (_nPointQty - 1)  ;
+    double _fXRatio = _nWidth / (_nPointQty - 1);
 	double _fYRatio = _nHeight / 255  ;
 	//---------------
-	if(m_AScanInfo.fDRangeS > 0) {
+    if(m_AScanInfo.fDRangeS > 0){
 		ParameterProcess* _process = ParameterProcess::Instance();
 		double _fCurDepthRange = _process->GetSampleRange(m_cInfo.nGroupId, m_cInfo.nBeamId) ;
 		_nWidth = _nWidth * _fCurDepthRange / m_AScanInfo.fDRangeS;
-		_fXRatio = _nWidth / (_nPointQty -1) ;
-	}
+        _fXRatio = _nWidth / (_nPointQty -1);
+
+    }
 	//---------------
     float _nStart = _process->GetSampleStart(m_cInfo.nGroupId,m_cInfo.nBeamId);
     float _fS, _fE;
@@ -119,18 +119,45 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
             _process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_TIME){
         start = 0;
     }
-    int i;
-	for(i = 0 ; i < _nPointQty ; i++)
-	{
+
+
+    int _nFrameOffset = _process->GetTotalDataSize() ;//一帧数据偏移量
+    int cursorOffset=1;
+    if(m_pGroup->m_mode==D_MODE)
+      {
+        cursorOffset=m_pGroup->afCursor[ setup_CURSOR_S_MES ]- m_pGroup->afCursor[setup_CURSOR_S_REF];
+        if(cursorOffset<0)cursorOffset=-cursorOffset;
+        if(cursorOffset==0)cursorOffset=1;
+
+      }
+
+    int i,j;
+    double _tempfY=0.0;
+     WDATA* _tempData= _pData;
+
+    for(i = 0 ; i < _nPointQty ; i++)
+    {
         _fX = i * _fXRatio +start;
-        _fY = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
-		_fY = _nHeight -_fY * _fYRatio ;
-		Lines<<QPointF(_fX , _fY) ;
-	}
+        _tempfY=0.0;
+        for(j=0;j<cursorOffset;j++)
+        {
+             _pData= _tempData+j*_nFrameOffset;
+             _fY = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
+             if(_fY>_tempfY)
+             {
+               _tempfY=_fY;
+             }
+        }
+
+        _fY = _nHeight -_tempfY * _fYRatio;
+        Lines<<QPointF(_fX , _fY);
+    }
+
+
     QPen NewPen(color[0]);
     NewPen.setWidth( 0);
     painter.setPen(NewPen);
-	painter.drawPolyline(Lines);
+    painter.drawPolyline(Lines);
 
 	if(bDrawLimit)
 	{
@@ -199,7 +226,7 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
             break;
         }
     }
-    else    {
+    else {
         switch(m_pGroup->curve.eType)
         {
         case setup_CURVE_TYPE_TCG:
@@ -762,15 +789,51 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
             _process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_TIME){
         start = 0;
     }
-    int i  ;
-	for(i = 0 ; i < _nPointQty  ; i++)
-	{
-        _fY = i * _fYRatio + start;
-		_fX = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
-		_fX = _fX * _fXRatio ;
 
-		Lines<<QPointF(_fX , _fY) ;
-	}
+
+//    int i  ;
+//	for(i = 0 ; i < _nPointQty  ; i++)
+//	{
+//        _fY = i * _fYRatio + start;
+//		_fX = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
+//		_fX = _fX * _fXRatio ;
+
+//		Lines<<QPointF(_fX , _fY) ;
+//	}
+
+    int _nFrameOffset = _process->GetTotalDataSize() ;//一帧数据偏移量
+    int cursorOffset=1;
+    if(m_pGroup->m_mode==D_MODE)
+      {
+        cursorOffset=m_pGroup->afCursor[ setup_CURSOR_S_MES ]- m_pGroup->afCursor[setup_CURSOR_S_REF];
+        if(cursorOffset<0)cursorOffset=-cursorOffset;
+        if(cursorOffset==0)cursorOffset=1;
+
+      }
+
+    int i,j;
+    double _tempfX=0.0;
+    WDATA* _tempData= _pData;
+
+    for(i = 0 ; i < _nPointQty ; i++)
+    {
+        _fY = i * _fYRatio + start;
+        _tempfX=0.0;
+        for(j=0;j<cursorOffset;j++)
+        {
+             _pData= _tempData+j*_nFrameOffset;
+             _fX = _process->GetRefGainScaleData(_pData[i], _fScale, _bRectify);
+             if(_fX>_tempfX)
+             {
+               _tempfX=_fX;
+             }
+        }
+
+        _fX = _tempfX * _fXRatio;
+        Lines<<QPointF(_fX , _fY);
+    }
+
+
 	painter.setPen(QPen(color[0]));
 	painter.drawPolyline(Lines);
     //qDebug()<<"Adata"<<_nPointQty<<_nHeight<<_nWidth;

@@ -59,9 +59,9 @@ DopplerDrawCScanH::DopplerDrawCScanH(QObject *parent) : DopplerDrawScan(parent)
 
 void DopplerDrawCScanH::UpdateDrawInfo()
 {
-	m_hMutex.lock();
+    m_hMutex.lock();
 	UpdateDrawInfo_private();
-	m_hMutex.unlock();
+    m_hMutex.unlock();
 }
 
 void DopplerDrawCScanH::UpdateDrawInfo_private()
@@ -137,7 +137,7 @@ void DopplerDrawCScanH::SetCScanType(CSCAN_TYPE eType_)
 
 void  DopplerDrawCScanH::Draw (QImage* pImage_)
 {
-	m_hMutex.lock();
+    m_hMutex.lock();
 	if(!pImage_) {
 		m_hMutex.unlock();
 		return ;
@@ -145,34 +145,34 @@ void  DopplerDrawCScanH::Draw (QImage* pImage_)
 
 	switch (m_CScanInfo.eType)
 	{
-		case CSCAN_AMP_A :
-			DrawGateAmplitude (pImage_ , GATE_A);
-			break;
-		case CSCAN_AMP_B :
-			DrawGateAmplitude (pImage_ , GATE_B);
-			break;
-		case CSCAN_POS_I :
-			DrawGatePos (pImage_ , GATE_I , GATE_NONE);
-			break;
-		case CSCAN_POS_A :
-			DrawGatePos (pImage_ , GATE_A , GATE_NONE);
-			break;
-		case CSCAN_POS_B :
-			DrawGatePos (pImage_ , GATE_B , GATE_NONE);
-			break;
-		case CSCAN_POS_AI :
-			DrawGatePos (pImage_ , GATE_A , GATE_I);
-			break;
-		case CSCAN_POS_BI :
-			DrawGatePos(pImage_ , GATE_B , GATE_I);
-			break;
-		case CSCAN_POS_BA :
-			DrawGatePos(pImage_ , GATE_B , GATE_A);
-			break;
-		default:
-			break;
+        case CSCAN_AMP_A :
+            DrawGateAmplitude (pImage_ , GATE_A);
+            break;
+        case CSCAN_AMP_B :
+            DrawGateAmplitude (pImage_ , GATE_B);
+            break;
+        case CSCAN_POS_I :
+            DrawGatePos (pImage_ , GATE_I , GATE_NONE);
+            break;
+        case CSCAN_POS_A :
+            DrawGatePos (pImage_ , GATE_A , GATE_NONE);
+            break;
+        case CSCAN_POS_B :
+            DrawGatePos (pImage_ , GATE_B , GATE_NONE);
+            break;
+        case CSCAN_POS_AI :
+            DrawGatePos (pImage_ , GATE_A , GATE_I);
+            break;
+        case CSCAN_POS_BI :
+            DrawGatePos(pImage_ , GATE_B , GATE_I);
+            break;
+        case CSCAN_POS_BA :
+            DrawGatePos(pImage_ , GATE_B , GATE_A);
+            break;
+        default:
+            break;
 	};
-	m_hMutex.unlock();
+    m_hMutex.unlock();
 }
 
 
@@ -1402,6 +1402,7 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
     }
     _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
+
         TransformImage( HRange,lawstop-lawstart,src,pImage_->width(),pImage_->height(),pImage_);
     //delete TImage;
 }
@@ -1845,7 +1846,6 @@ void DopplerDrawCScanH::GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pB
 	}
 
 	int	 _nBeamQty = m_CScanInfo.nLawQty;
-
 	ParameterProcess* _process = ParameterProcess::Instance();
 	PEAK_CONFIG _info[setup_GATE_MAX];
 	for(int i = 0 ; i < _nBeamQty ; i++)
@@ -1939,6 +1939,8 @@ void DopplerDrawCScanH::GetPixValueDistance(U32* pBuff1_ , U32* pBuff2_, float G
 		}
 	}
 }
+
+
 
 DopplerDrawCScanV::DopplerDrawCScanV(QObject *parent) : DopplerDrawCScanH(parent)
 {

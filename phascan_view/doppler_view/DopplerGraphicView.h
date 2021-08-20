@@ -29,6 +29,8 @@ public:
     void   SetDrawScan(DopplerDrawScan*  pDrawScan_) ;
     DopplerDrawScan* GetDrawScan() const ;
     void   UpdateDrawing() ;
+    void    UpdateDSDrawing();
+    void  UpdateScanDrawing();
     void   UpdateSceneRegion();
     QSize  GetSceneSize() ;
     void   SetMeasureString(int nIndex_ , QString* str_) ;
