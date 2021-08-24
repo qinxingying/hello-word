@@ -165,11 +165,11 @@ void DopplerConfigure::OpenEvn()
 
     if(ret != sizeof(SYSTEM_ENVIRMENT))
 	{
-        GetExePathName1(g_strDataFilePath.toLatin1().data(), _strPathName.toLatin1().data());
-        strcpy(AppEvn.strDataFilePath, _strPathName.toLatin1().data());
+//        GetExePathName1(g_strDataFilePath.toLatin1().data(), _strPathName.toLatin1().data());
+        strcpy(AppEvn.strDataFilePath, g_strDataFilePath.toLatin1().data());
 
-        GetExePathName1(g_strPartDir.toLatin1().data(), _strPathName.toLatin1().data());
-        strcpy(AppEvn.strNccFilePath, _strPathName.toLatin1().data());
+//        GetExePathName1(g_strPartDir.toLatin1().data(), _strPathName.toLatin1().data());
+        strcpy(AppEvn.strNccFilePath, g_strPartDir.toLatin1().data());
 
         AppEvn.eLanguage = setup_LANG_ENGLISH;
 		AppEvn.eUnit	 = setup_SOUND_AXIX_UNIT_MM;
@@ -234,6 +234,10 @@ void DopplerConfigure::OpenEvn()
                 AppEvn.bCursor[i][setup_CURSOR_I_MES] =
                 AppEvn.bCursor[i][setup_CURSOR_VPA_MES] =
                 AppEvn.bCursor[i][setup_CURSOR_TFOD_BW]= 20 ;
+
+            AppEvn.fMinThickness[i]  = 0.0;
+            AppEvn.fMaxThickness[i]  = 50.0;
+            AppEvn.bTopCStatus[i]    = false;
 		}
 		SetLastDate();
 	}
@@ -269,7 +273,7 @@ void DopplerConfigure::OpenEvn()
             group[i].afCursor[j] = AppEvn.bCursor[i][j];
         }
 	}
-	AppEvn.bSAxisCursorSync		= false;
+    //AppEvn.bSAxisCursorSync		= false;
 	AppEvn.bRegStatus = false;
 
 	file.close();
@@ -314,6 +318,9 @@ void DopplerConfigure::SaveEvn()
         AppEvn.bShowBScanMeasure[i] = group[i].bShowBScanMeasure;
         AppEvn.bShowCScanMeasure[i] = group[i].bShowCScanMeasure;
         AppEvn.bShowSScanMeasure[i] = group[i].bShowSScanMeasure;
+
+        AppEvn.fMinThickness[i]     = group[i].fMinThickness;
+        AppEvn.fMaxThickness[i]     = group[i].fMaxThickness;
 
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             AppEvn.bCursor[i][j] = group[i].afCursor[j];
@@ -366,6 +373,32 @@ int DopplerConfigure::getSetting(int group, const QString &valueName)
     int value = s.value(valueName).toInt();
     s.endArray();
     return value;
+}
+
+void DopplerConfigure::CSourceTypeConvertI(int &type)
+{
+    if(type == 1 || type == 2) {
+       type = setup_CSCAN_POS_AI;
+    } else if (type == 3){
+       type = setup_CSCAN_AMP_B;
+    } else if (type == 4 || type == 5){
+        type = setup_CSCAN_POS_BI;
+     } else if (type == 6){
+        type = setup_CSCAN_POS_BA;
+     } else if (type == 7 || type == 8){
+        type = setup_CSCAN_POS_I;
+    }
+}
+
+void DopplerConfigure::CSourceTypeConvertII(int &type)
+{
+    if(type == 1) {
+       type = setup_CSCAN_AMP_B;
+    } else if (type == 2){
+       type = setup_CSCAN_POS_I;
+    } else if (type == 3){
+        type = setup_CSCAN_POS_AI;
+     }
 }
 
 int DopplerConfigure::OpenConfig(QString& path_)
@@ -1005,7 +1038,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
                 m_pDataFile->GetFileHeader()->reserved;
     }
     //qDebug()<<"Phascan_Version"<<Phascan_Version;
-
+    ExtConfig2* extConfig = pConf_->GetExtConfig2();
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{
 		GROUP_INFO* _pGroupInfo = pConf_->GetGroupInfo(i) ;
@@ -1059,18 +1092,15 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
         CUR_RES.REF_Gain[i]      = 0;
         CUR_RES.Com_Gain[i]      = 0;
-        CUR_RES.CurRL[i]         = -4;
-        CUR_RES.CurEL[i]         = -18;
-        CUR_RES.CurSL[i]         = -12;
         CUR_RES.Ref_Amp[i]       = 80;
         CUR_RES.CurSS[i]         = _group.RefGain;
-//        CUR_RES.Standard[i]      = AppEvn.Standard[i];
 //        CUR_RES.Thickness[i]     = AppEvn.Thickness[i];
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
 		_group.bSumGainAuto   = 0;
         /* 耦合监控 版本4和5才有此功能，on_off_status 第2位表示开启关闭，0关闭；1开启 3位到21表示声速的10倍值*/
-        if(Phascan_Version == 4 || Phascan_Version == 5 || Phascan_Version == 6 || Phascan_Version == 7)
+        if(Phascan_Version == 4 || Phascan_Version == 5 || Phascan_Version == 6 || Phascan_Version == 7 ||
+                Phascan_Version == 8 || Phascan_Version == 9)
         {
             _group.coupleMonitoringState = (( _group.on_off_status>>2) & 0x01);
             _group.coupleMonitoringVelocity = ((_group.on_off_status>>3) & 0x3FFFF)/10;
@@ -1099,13 +1129,25 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		/* 参考光标 */
 		//_group.afCursor[setup_CURSOR_MAX]  ;
 		// thickness range for c scan display
-        //int CScanSource1 = getSetting(i,"CScansource1");
+
         int CScanSource1 = AppEvn.CScanSource[i][0];
+        int CScanSource2 = AppEvn.CScanSource[i][1];
+        if (!Config::instance()->is_phascan_ii()) {
+            CScanSource1 = _pGroupInfo->source & 0x03;
+            CScanSource2 = (_pGroupInfo->source >> 2) & 0x07;
+
+            CSourceTypeConvertI(CScanSource1);
+            CSourceTypeConvertI(CScanSource2);
+        } else {
+            Config::instance()->getCScanSourceType(i, CScanSource1);
+            Config::instance()->getCScanSourceType(i, CScanSource2);
+
+            CSourceTypeConvertII(CScanSource1);
+            CSourceTypeConvertII(CScanSource2);
+        }
         if(CScanSource1 < 0){
             CScanSource1 = (int)setup_CSCAN_AMP_A;
         }
-        //int CScanSource2 = getSetting(i,"CScansource2");
-        int CScanSource2 = AppEvn.CScanSource[i][1];
         if(CScanSource2 < 0){
             CScanSource2 = (int)setup_CSCAN_POS_A;
         }
@@ -1117,8 +1159,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
         _group.eCScanSource[0]= (setup_CSCAN_SOURCE_MODE)CScanSource1 ;
         _group.eCScanSource[1]= (setup_CSCAN_SOURCE_MODE)CScanSource2 ;
+        AppEvn.CScanSource[i][0] = _group.eCScanSource[0];
+        AppEvn.CScanSource[i][1] = _group.eCScanSource[1];
 		_group.fMinThickness  = _pGroupInfo->min_thickness/1000.0 ;		/* Measurements->Thickness->min */
 		_group.fMaxThickness  = _pGroupInfo->max_thickness/1000.0 ;		/* Measurements->Thickness->max */
+        AppEvn.fMinThickness[i]  = _group.fMinThickness;
+        AppEvn.fMaxThickness[i]  = _group.fMaxThickness;
         _group.CScanShowAll   = false;
 
 		/*  校准状态  */
@@ -1410,43 +1456,91 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.part.weldFormat = PHASCAN_II_FORMAT;
             Config::instance()->getWeldData(i, _group.part.weld_ii);
             Config::instance()->getTOPCWidth(i, _group.TopCInfo.TOPCWidth);
+            Config::instance()->getTOPCStatus(i, _group.TopCInfo.TOPCStatus);
             _group.loadCurveData = Config::instance()->getCurve_RL_EL_SL(i, _group.CoupleGain);
-            //qDebug()<<"loadCurveData"<<_group.loadCurveData<<CUR_RES.CurSS[i];
+
+            if (CUR_RES.Standard[i] == 1) {
+                if (_group.part.eGeometry == setup_PART_GEOMETRY_FLAT) {
+                    CUR_RES.Standard[i] = NBT_47013_15_I_PRB;
+                } else {
+                    CUR_RES.Standard[i] = NBT_47013_15_II_PGS;
+                }
+            } else if (CUR_RES.Standard[i] == 2) {
+                CUR_RES.Standard[i] = SYT_4019_2020;
+            } else {
+                CUR_RES.Standard[i] = CUSTOM;
+            }
         }
         else
         {
-            _group.loadCurveData = false;
-            _group.part.weldFormat = PHASCAN_I_FORMAT;
-            _group.TopCInfo.TOPCWidth = 10;
-            WELD& _weld = _group.part.weld;
-            switch ( _group.part.weld.eType) {
-            case setup_WELD_I:
-                _group.TopCInfo.TOPCWidth = _weld.weland_offset * 2 + 2;
-                break;
-            case setup_WELD_V:
-            case setup_WELD_DV:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
-                                              * _weld.fizone_height) *2 + 2;
-                break;
-            case setup_WELD_U:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
-                                              _weld.fizone_height + _weld.fizone_radius) *2 + 2;
-                break;
-            case setup_WELD_DIFF_DV:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
-                                              * _weld.fizone_height) *2 + 2;
-                break;
-            case setup_WELD_J:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
-                                              _weld.fizone_height + _weld.fizone_radius) *2 + 2;
-                break;
-            case setup_WELD_VY:
-                _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
-                                              * _weld.fizone_height) *2 + 2;
-                break;
-            default:
-                break;
+            CUR_RES.CurRL[i]         = extConfig->standardInfo[i].RL;
+            CUR_RES.CurEL[i]         = extConfig->standardInfo[i].EL;;
+            CUR_RES.CurSL[i]         = extConfig->standardInfo[i].SL;;
+            int standand = (_group.on_off_status>>26) & 0x0F;
+            if (standand == 0) {
+                _group.loadCurveData = false;
+                CUR_RES.Standard[i]  = CUSTOM;
+                CUR_RES.CurRL[i]     = 0;
+                CUR_RES.CurEL[i]     = -8;
+                CUR_RES.CurSL[i]     = -6;
+            } else {
+                _group.loadCurveData = true;
+                if (standand == 1) {
+                    CUR_RES.Standard[i]  = NBT_47013_15_I_PRB;
+                } else if (standand == 2) {
+                    CUR_RES.Standard[i]  = NBT_47013_15_II_PGS;
+                } else if (standand == 3) {
+                    CUR_RES.Standard[i]  = SYT_4019_2020;
+                } else {
+                    CUR_RES.Standard[i]  = CUSTOM;
+                }
             }
+
+            _group.part.weldFormat = PHASCAN_I_FORMAT;
+
+            _group.TopCInfo.TOPCStatus = _pGroupInfo->on_off_status >> 24 & 0x01;// 24 c1角度或投影，25 c2角度或投影
+            if (_group.TopCInfo.TOPCStatus) {
+                _group.TopCInfo.TOPCWidth = extConfig->cShadowWidth[i][0] / 10;
+            } else {
+                WELD& _weld = _group.part.weld;
+                switch ( _group.part.weld.eType) {
+                case setup_WELD_I:
+                    _group.TopCInfo.TOPCWidth = _weld.weland_offset * 2 + 2;
+                    break;
+                case setup_WELD_V:
+                case setup_WELD_DV:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                                                  * _weld.fizone_height) *2 + 2;
+                    break;
+                case setup_WELD_U:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
+                                                  _weld.fizone_height + _weld.fizone_radius) *2 + 2;
+                    break;
+                case setup_WELD_DIFF_DV:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                                                  * _weld.fizone_height) *2 + 2;
+                    break;
+                case setup_WELD_J:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))*
+                                                  _weld.fizone_height + _weld.fizone_radius) *2 + 2;
+                    break;
+                case setup_WELD_VY:
+                    _group.TopCInfo.TOPCWidth = ( _weld.weland_offset + tan(DEGREE_TO_ARCH(_weld.fizone_angle))
+                                                  * _weld.fizone_height) *2 + 2;
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        AppEvn.bTopCStatus[i]    = _group.TopCInfo.TOPCStatus;
+        if (_group.loadCurveData) {
+            CUR_RES.bShowRL = true;
+            CUR_RES.bShowSL = true;
+            CUR_RES.bShowEL = true;
+
+            AppEvn.Standard[i] = CUR_RES.Standard[i];
         }
 
         _group.part.weld_border = _process->GetWeldBorder(i);
@@ -1624,8 +1718,9 @@ void  DopplerConfigure::InitTOPCInfo()
             _TOPCInfo.TOPCStatus = false;
             continue;
         }
+
         _TOPCInfo.TOPCValid  = true;
-        _TOPCInfo.TOPCStatus = false;
+        //_TOPCInfo.TOPCStatus = false;
         float _nStartX, _nStopX, _nStartY, _nStopY;
         _process->GetSImageHorizentalRange( i, &_nStartX, &_nStopX);
         _process->GetSImageVerticalRange( i, &_nStartY, &_nStopY);
@@ -1875,6 +1970,7 @@ void DopplerConfigure::SaveDefectFile(QString& path_)
 
             for(int i = 0; i < _iDefectN; i++) {
                 DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroup, i);
+                _pDfInfo->bValid = true;
                 write.writeRawData((char*)_pDfInfo, sizeof(DEFECT_INFO_V1));
             }
         }
@@ -1891,11 +1987,62 @@ void DopplerConfigure::SaveDefectFile(QString& path_)
 
             for(int i = 0; i < _iDefectN; i++) {
                 DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroup, i);
+                _pDfInfo->bValid = true;
                 write.writeRawData((char*)_pDfInfo, sizeof(DEFECT_INFO));
             }
         }
     }
-	file.close();
+    file.close();
+}
+
+void DopplerConfigure::OpenNoDefectAreaFile(QString &path_)
+{
+    for(int iGroup = 0; iGroup < common.nGroupQty; iGroup++) {
+        m_selectedNotToAnalysisAreas[iGroup].clear();
+        m_transformedNotToAnalysisAreas[iGroup].clear();
+    }
+
+    QString _strName = path_ + QString(tr("/defectArea"));
+    QFile file(_strName);
+    if(!file.open (QIODevice::ReadOnly)){
+        return;
+    }
+    QDataStream reader(&file);
+    int _nGroupQty;
+    reader.readRawData((char*)&_nGroupQty , sizeof(int));
+    for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+        QVector<QRect> tmp1;
+        QVector<QRectF> tmp2;
+        reader >> tmp1 >> tmp2;
+        m_selectedNotToAnalysisAreas[iGroup].append(tmp1);
+        m_transformedNotToAnalysisAreas[iGroup].append(tmp2);
+    }
+
+    file.close();
+}
+
+void DopplerConfigure::SaveNoDefectAreaFile()
+{
+    QDir *_tmp = new QDir;
+    if(!_tmp->exists(m_szDefectPathName)) {
+        _tmp->mkdir(m_szDefectPathName);
+    }
+
+    QString _strName = m_szDefectPathName + QString(tr("/defectArea"));
+    QFile file(_strName);
+    file.open (QIODevice::WriteOnly);
+    QDataStream write(&file);
+
+    int _nGroupQty = common.nGroupQty;
+    write.writeRawData((char*)&_nGroupQty , sizeof(int));
+
+    for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+        QVector<QRect> tmp1 = m_selectedNotToAnalysisAreas[iGroup];
+        QVector<QRectF> tmp2 = m_transformedNotToAnalysisAreas[iGroup];
+        write << tmp1 << tmp2;
+    }
+
+    file.close();
 }
 
 #include <QDir.h>
@@ -1921,6 +2068,7 @@ void DopplerConfigure::FilePathPro(QString& path_)
 
 	m_szDefectPathName = _strDefectPath + _name;
 	OpenDefectFile(m_szDefectPathName);
+    OpenNoDefectAreaFile(m_szDefectPathName);
 }
 
 int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
@@ -2001,7 +2149,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
             m_dfParam[iGroupId_].dfInfo.fVPAStop  = _fRef > _fMes ? _fRef : _fMes;
 
 			m_dfParam[iGroupId_].dfInfo.fUDepth = m_dfParam[iGroupId_].dfInfo.fUStart;
-			m_dfParam[iGroupId_].dfInfo.bValid = true;
+            m_dfParam[iGroupId_].dfInfo.bValid = false;
 
             m_dfParam[iGroupId_].dfInfo.dGroupId = iGroupId_ + 1;
 
@@ -2013,15 +2161,15 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 		} else {
 			if(m_dfParam[iGroupId_].dfInfo.fSStart < -10000)
 			break;
-		}
-		_ret = AddDefectInfo(iGroupId_, m_dfParam[iGroupId_].dfInfo);
-		ClearDefectInfo(iGroupId_);
+        }
+        _ret = AddDefectInfo(iGroupId_, m_dfParam[iGroupId_].dfInfo);
+        ClearDefectInfo(iGroupId_);
 
-		if(_ret >= 0) {
+        if(_ret >= 0) {
 
-			int _index = GetDefectCnt(iGroupId_)-1;
-			DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, _index);
-			//---------------------------------------
+            int _index = GetDefectCnt(iGroupId_)-1;
+            DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, _index);
+            //---------------------------------------
             int _nLawNo;
             if(loadDefectVersion == 1){
                 _nLawNo = _group.afCursor[setup_CURSOR_LAW];
@@ -2031,12 +2179,13 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
                 _pDfInfo->dZA          = _group.storeScanLawId.ZA;
                 _pDfInfo->dScanPos     = _group.storeScanLawId.scanPos;
                 _pDfInfo->dDepth       = _group.storeScanLawId.depth;
+                _pDfInfo->reserve[0]   = _group.storeScanLawId.maxValue;
                 _pDfInfo->dScanOffset  = _group.fScanOffset;
                 _pDfInfo->dIndexOffset = _group.fIndexOffset;
                 _nLawNo = _group.storeScanLawId.lawId;
             }
             ReorderDefect();
-			//---------------------------------------
+            //---------------------------------------
             int* _pMeasure;
             if(group[iGroupId_].measureGateStatus){
                 _pMeasure = group[iGroupId_].measuregateType;
@@ -2044,22 +2193,22 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
                 _pMeasure = group[iGroupId_].aeMeasureType;
             }
             //int* _pMeasure = group[iGroupId_].aeMeasureType;
-			int _nQty = 0 ;
+            int _nQty = 0 ;
             for(int i = 0 ; i < setup_MAX_MEASURE_QTY_V1; i++) {
-				strcpy(_pDfInfo->m_strMeasure[i], "-");
+                strcpy(_pDfInfo->m_strMeasure[i], "-");
                 strcpy(_pDfInfo->m_strSzField[i],"-");
                 strcpy(_pDfInfo->m_strSzFieldUnit[i],"-");
 
-				if(_pMeasure[i]) {
+                if(_pMeasure[i]) {
                     QString _str = CalcMeasurement::GetMeasureValueSimpleString(iGroupId_, _nLawNo, (FEILD_VALUE_INDEX)_pMeasure[i]);
-					strcpy(_pDfInfo->m_strMeasure[_nQty], (char*)(qPrintable(_str)));
+                    strcpy(_pDfInfo->m_strMeasure[_nQty], (char*)(qPrintable(_str)));
                     _str = CalcMeasurement::GetMeasureString(iGroupId_ , (FEILD_VALUE_INDEX)_pMeasure[i]);
                     strcpy(_pDfInfo->m_strSzField[_nQty], (char*)(qPrintable(_str)));
                     _str = CalcMeasurement::GetMeasureUnit((FEILD_VALUE_INDEX)_pMeasure[i]) ;
                     strcpy(_pDfInfo->m_strSzFieldUnit[_nQty], (char*)(qPrintable(_str)));
-					_nQty++  ;
-				}
-			}
+                    _nQty++  ;
+                }
+            }
             int index_ = 0;
             _nQty = 0;
             for(int i = setup_MAX_MEASURE_QTY_V1; i < setup_MAX_MEASURE_QTY; i++){
@@ -2090,22 +2239,24 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
                 Pa_Value = QString::number(Index_pos,10,2);
             }
             strcpy(_pDfInfo->Index_pos,(char*)(qPrintable(Pa_Value)));
-			//---------------------------------------
-			m_dfParam[iGroupId_].index = _index;
+            //---------------------------------------
+            m_dfParam[iGroupId_].index = m_pConfig->GetDefectId(iGroupId_, _pDfInfo->dIndex);
 
-			QDateTime time = QDateTime::currentDateTime();
-			memset(_pDfInfo->srtInfo, 0x00, 256);
+            QDateTime time = QDateTime::currentDateTime();
+            memset(_pDfInfo->srtInfo, 0x00, 256);
 
-			QString str1, str2;
-			str1.sprintf("GR%d ", iGroupId_+1);
-			str2 = time.toString("yyyy-MM-dd hh mm ss");
+            QString str1, str2;
+            str1.sprintf("GR%d ", iGroupId_+1);
+            str2 = time.toString("yyyy-MM-dd hh mm ss zzz");
 
-			QString str3 = str1 + str2;
-			strcpy(_pDfInfo->srtImageName, (char*)(qPrintable(str3)));
-			//---------------------------------------
-			SaveDefectFile(m_szDefectPathName);
-			_ret = 3;
-		}
+            QString str3 = str1 + str2;
+            strcpy(_pDfInfo->srtImageName, (char*)(qPrintable(str3)));
+            //---------------------------------------
+            if (!common.bDefectIdentifyStatus) {
+                SaveDefectFile(m_szDefectPathName);
+            }
+            _ret = 3;
+        }
 		break;
 	default:
 		_ret = -1;
@@ -2136,15 +2287,15 @@ int DopplerConfigure::AddDefectInfo(int iGroupId_, DEFECT_INFO &dfInfo_)
 	_pDfInfo->pNext = NULL;
 
 	if(m_dfParam[iGroupId_].pDFHead == NULL) {
-		m_dfParam[iGroupId_].pDFHead = _pDfInfo;
+        m_dfParam[iGroupId_].pDFHead = _pDfInfo;
 	}
 
-	if(m_dfParam[iGroupId_].pDFEnd) {
-		_pDfInfo->pPrev = m_dfParam[iGroupId_].pDFEnd;
-		m_dfParam[iGroupId_].pDFEnd->pNext = _pDfInfo;
-	}
+    if(m_dfParam[iGroupId_].pDFEnd) {
+        _pDfInfo->pPrev = m_dfParam[iGroupId_].pDFEnd;
+        m_dfParam[iGroupId_].pDFEnd->pNext = _pDfInfo;
+    }
 
-	m_dfParam[iGroupId_].pDFEnd = _pDfInfo;
+    m_dfParam[iGroupId_].pDFEnd = _pDfInfo;
 	return 0;
 }
 
@@ -2204,6 +2355,7 @@ int DopplerConfigure::DeleteDefect(int iGroupId_, int index_)
 			m_dfParam[iGroupId_].pDFEnd = _pDf1;
 
 			delete _pDfInfo ;
+            _pDfInfo = NULL;
             break;
 		}
 		_pDfInfo = _pDfInfo->pNext;
@@ -2215,7 +2367,9 @@ int DopplerConfigure::DeleteDefect(int iGroupId_, int index_)
 		m_dfParam[iGroupId_].index = _iMax - 1;
 	}
     ReorderDefect();
-	SaveDefectFile(m_szDefectPathName);
+    if (!common.bDefectIdentifyStatus) {
+        SaveDefectFile(m_szDefectPathName);
+    }
 	return 0;
 }
 
@@ -2295,7 +2449,7 @@ void DopplerConfigure::ReorderDefect()
         DEFECT_INFO *temp;
         for(int i = 0; i < defectNum - 1; i++){
             for(int j = 0; j < defectNum - 1 - i; j++){
-                if(sortBuff[j]->dScanPos > sortBuff[j+1]->dScanPos){
+                if(sortBuff[j]->fSStart > sortBuff[j+1]->fSStart){
                     temp = sortBuff[j];
                     sortBuff[j] = sortBuff[j+1];
                     sortBuff[j+1] = temp;
@@ -2306,6 +2460,54 @@ void DopplerConfigure::ReorderDefect()
             sortBuff[i]->dIndex = i + 1;
         }
         free(sortBuff);
+    }
+
+    // reorder list
+    for(int i = 0; i < common.nGroupQty; i++){
+        DEFECT_INFO* pHead = m_dfParam[i].pDFHead;
+        if (pHead != NULL) {
+            while(pHead->pNext != NULL) {
+                int min = pHead->dIndex;
+                DEFECT_INFO* tmpHead = pHead->pNext;
+                DEFECT_INFO* next = pHead->pNext;
+                while (next != NULL) {
+                    DEFECT_INFO* tmpNext = next->pNext;
+                    if (min > next->dIndex) {
+                        min = next->dIndex;
+
+                        next->pNext          = pHead->pNext;
+                        pHead->pNext->pPrev  = next;
+                        if (tmpNext) {
+                            next->pNext->pPrev   = pHead;
+                            pHead->pNext         = tmpNext->pNext;
+                        } else {
+                            pHead->pNext         = NULL;
+                        }
+
+                        if (pHead->pPrev != NULL) {
+                            pHead->pPrev->pNext = next;
+                        }
+                        DEFECT_INFO* prev    = pHead->pPrev;
+                        pHead->pPrev         = next->pPrev;
+                        next->pPrev->pNext   = pHead;
+
+                        next->pPrev          = prev;
+                        if (!next->pPrev) {
+                            m_dfParam[i].pDFHead = next;
+                        }
+                    }
+                    next = tmpNext;
+                }
+
+                pHead = tmpHead;
+            }
+
+            pHead = m_dfParam[i].pDFHead;
+            while(pHead->pNext != NULL) {
+                pHead = pHead->pNext;
+            }
+            m_dfParam[i].pDFEnd = pHead;
+        }
     }
 }
 
@@ -2322,12 +2524,12 @@ float DopplerConfigure::DefectLengthPos(int iGroupId_, float* pStart_, int index
 
 
 	float _fLength = -1;
-	if(_pDfInfo->bValid) {
-		if(_pDfInfo->fSStart > -10000) {
-			_fLength = _pDfInfo->fSStop - _pDfInfo->fSStart;
-            *pStart_ = _pDfInfo->fSStart;
-		}
-	}
+
+    if(_pDfInfo->fSStart > -10000) {
+        _fLength = _pDfInfo->fSStop - _pDfInfo->fSStart;
+        *pStart_ = _pDfInfo->fSStart;
+    }
+
 	*pStart_ += _fScanOff;
 	return _fLength;
  }
@@ -2340,12 +2542,12 @@ float DopplerConfigure::DefectVPAPos(int iGroupId_, float* pStart_, int index_)
 
 
     float _fLength = -1;
-    if(_pDfInfo->bValid) {
-        if(_pDfInfo->fVPAStart > -10000) {
-            _fLength = _pDfInfo->fVPAStop - _pDfInfo->fVPAStart;
-            *pStart_ = _pDfInfo->fVPAStart;
-        }
+
+    if(_pDfInfo->fVPAStart > -10000) {
+        _fLength = _pDfInfo->fVPAStop - _pDfInfo->fVPAStart;
+        *pStart_ = _pDfInfo->fVPAStart;
     }
+
     return _fLength;
  }
 
@@ -2379,12 +2581,12 @@ float DopplerConfigure::DefectHeightPos(int iGroupId_, float* pStart_, int index
 	DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
 
 	float _fHeight = -1;
-	if(_pDfInfo->bValid) {
-		if(_pDfInfo->fUStart > -10000) {
-			_fHeight = _pDfInfo->fUStop - _pDfInfo->fUStart;
-			*pStart_ =_pDfInfo->fUStart;
-		}
-	}
+
+    if(_pDfInfo->fUStart > -10000) {
+        _fHeight = _pDfInfo->fUStop - _pDfInfo->fUStart;
+        *pStart_ =_pDfInfo->fUStart;
+    }
+
 	return _fHeight;
 }
 
@@ -2398,12 +2600,12 @@ float DopplerConfigure::DefectWidthPos(int iGroupId_, float* pStart_, int index_
 	DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
 
 	float _fWidth = -1;
-	if(_pDfInfo->bValid) {
-		if(_pDfInfo->fIStart > -10000) {
-			_fWidth  = _pDfInfo->fIStop - _pDfInfo->fIStart;
-			*pStart_ =_pDfInfo->fIStart;
-		}
-	}
+
+    if(_pDfInfo->fIStart > -10000) {
+        _fWidth  = _pDfInfo->fIStop - _pDfInfo->fIStart;
+        *pStart_ =_pDfInfo->fIStart;
+    }
+
 	return _fWidth;
 }
 
@@ -2426,11 +2628,11 @@ float DopplerConfigure::DefectDepthPos(int iGroupId_, int index_)
 	DEFECT_INFO* _pDfInfo = &m_dfParam[iGroupId_].dfInfo;
 
 	float _fDepth = -1;
-	if(_pDfInfo->bValid) {
-		if(_pDfInfo->fUDepth > -10000) {
-			_fDepth = _pDfInfo->fUDepth;
-		}
-	}
+
+    if(_pDfInfo->fUDepth > -10000) {
+        _fDepth = _pDfInfo->fUDepth;
+    }
+
 	return _fDepth;
 }
 
@@ -2442,7 +2644,7 @@ DEFECT_INFO* DopplerConfigure::GetDefectPointer(int iGroupId_, int index_)
 		_pDfInfo = &m_dfParam[iGroupId_].dfInfo;
 	} else {
 		for(int i = 1; i <= index_; i++) {
-			if(_pDfInfo->pNext == NULL)
+            if(_pDfInfo->pNext == NULL)
 			break;
 			_pDfInfo = _pDfInfo->pNext;
 		}
@@ -2469,6 +2671,25 @@ int DopplerConfigure::GetDefectIndex(int iGroupId_, int index_)
 {
     DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroupId_, index_);
     return _pDfInfo->dIndex;
+}
+
+/**
+ * @brief DopplerConfigure::GetDefectId 获取当前组内，此缺陷在链表中的位置
+ * @param iGroupId_
+ * @param index_
+ * @return
+ */
+int DopplerConfigure::GetDefectId(int iGroupId_, int index_)
+{
+    int id = 0;
+    DEFECT_INFO* pDfInfo = GetDefectPointer(iGroupId_, id);
+    while (pDfInfo) {
+        if (pDfInfo->dIndex == index_)
+            break;
+        id++;
+        pDfInfo = pDfInfo->pNext;
+    }
+    return id;
 }
 
 void DopplerConfigure::SetLastDate()

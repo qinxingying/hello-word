@@ -110,7 +110,7 @@ void DopplerViewFrame::slotCreateDrawWindow(QWidget* pWidget_, int _nId , int nG
 	_display.SetCurrentGroupId(nGroupId_);
 	_display.CreateViews(pWidget_  , _nId) ;
 	pWidget_->show();
-	g_pMainWnd->RunDrawThreadOnce(false);
+    g_pMainWnd->RunDrawThreadOnce(false);
 	//emit signalDropEvent(_nId) ;
 	//sleep(100);
 	_display.UpdateAllViewOverlay();

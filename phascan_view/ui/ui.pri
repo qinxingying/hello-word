@@ -29,7 +29,8 @@ HEADERS += \
     $$PWD/measurewidget.h \
     $$PWD/dialog/measuretypeselect.h \
     $$PWD/dialog/dialogdefectmethodselect.h \
-    $$PWD/dialog/dialogaboutfileproperties.h
+    $$PWD/dialog/dialogaboutfileproperties.h \
+    $$PWD/indicationtablewidget.h
 
 
 SOURCES += \
@@ -61,7 +62,8 @@ SOURCES += \
     $$PWD/measurewidget.cpp \
     $$PWD/dialog/measuretypeselect.cpp \
     $$PWD/dialog/dialogdefectmethodselect.cpp \
-    $$PWD/dialog/dialogaboutfileproperties.cpp
+    $$PWD/dialog/dialogaboutfileproperties.cpp \
+    $$PWD/indicationtablewidget.cpp
 
 FORMS += \
     $$PWD/dialog/DialogAddOneGroup.ui \
@@ -79,4 +81,5 @@ FORMS += \
     $$PWD/dialog/dialogkeyboardhelp.ui \
     $$PWD/measurewidget.ui \
     $$PWD/dialog/dialogdefectmethodselect.ui \
-    $$PWD/dialog/dialogaboutfileproperties.ui
+    $$PWD/dialog/dialogaboutfileproperties.ui \
+    $$PWD/indicationtablewidget.ui

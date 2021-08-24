@@ -116,6 +116,8 @@ public:
 	QRect GetZoomRect();
     void setInteractionStatus(bool status);
     void updateAllItems();
+public:
+    QMutex m_mutex;
 private:
     void CreateComponent();
     void RangeTransfer(QPair<double , double> range_ , QPair<double , double>* pos_) ;
@@ -150,6 +152,7 @@ signals:
     void signalDataViewResized(DopplerDataView*);
     void signalMouseDoubleClicked(DopplerDataView* , QPointF pos_);
     void signalNotifyOtherView(QPoint startPos, QPoint endPos, bool zoomStatus);
+    void signalSelectDefect(int _id);
 public slots:
 	void slotZoomAction(QRectF rect) ;
     void slotRespondView(QPoint startPos, QPoint endPos, bool zoomStatus);

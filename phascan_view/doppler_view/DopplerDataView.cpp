@@ -55,6 +55,7 @@ DopplerDataView::DopplerDataView(QWidget *parent , DATA_VIEW_COMPONENT eComponen
 }
 DopplerDataView::~DopplerDataView()
 {
+    QMutexLocker locker(&m_mutex);
 	delete m_pItemsGroup ;
 	DeleteAllWidget()	;
 }
@@ -285,8 +286,10 @@ DopplerDrawScan* DopplerDataView::GetDrawScan() const
 void DopplerDataView::UpdateDrawing()
 {
     UpdateMeasure();
+    QMutexLocker locker(&m_mutex);
+    if (!m_pGraphicView) return;
+	m_pGraphicView->UpdateDrawing();
 
-    m_pGraphicView->UpdateDrawing();
     if( m_pCoupleSBar)
     {
         m_pCoupleSBar->update();
@@ -663,6 +666,8 @@ void DopplerDataView::CreateComponent()
     connect(m_pGraphicView , SIGNAL(signalButtonDoubleClicked(QPointF)) , SLOT(slotMouseDoubleClicked(QPointF))) ;
 	connect(m_pGraphicView , SIGNAL(signalTofdDragProAction(QPointF, QPointF)) , SLOT(slotTofdDragProAction(QPointF, QPointF))) ;
     connect(m_pGraphicView, SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)), this, SIGNAL(signalNotifyOtherView(QPoint,QPoint,bool)));
+
+    connect(this, &DopplerDataView::signalSelectDefect, g_pMainWnd,&MainWindow::slotSelectDefect);
 
 	setLayout(m_pLayout);
 }
@@ -1047,6 +1052,7 @@ void DopplerDataView::slotItemPressed(DopplerGraphicsItem* item_)
             ((DopplerDefectItem*)item_)->IsSelected = item_->GetItemId();
         }
         id = item_->GetItemId();
+        emit signalSelectDefect(id);
     }
 }
 

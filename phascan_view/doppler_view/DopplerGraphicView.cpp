@@ -68,13 +68,13 @@ public:
 
 	void ResetBaseImage(QSizeF size_)
 	{
-		//m_hMutex.lock();
+        m_hMutex.lock();
         //m_cSize = QSize((int)size_.width() , (int)size_.height());
         m_cSize = QSize( size_.width()*m_scaleH, size_.height()*m_scaleV);
 		if(m_pImage) delete m_pImage ;
 		m_pImage = new QImage(m_cSize , DPL_BASE_IMAGE_FORMATE) ;
 		ClearImage() ;
-		//m_hMutex.unlock();
+        m_hMutex.unlock();
 	}
 
     void SetFixStatus( bool status)
@@ -108,6 +108,7 @@ public:
 
     void setScaleFactor( double scaleH, double scaleV)
     {
+        QMutexLocker locker(&m_hMutex);
         m_scaleH = scaleH;
         m_scaleV = scaleV;
         QSizeF viewSize = size();
@@ -224,7 +225,10 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
     connect(this, SIGNAL(signalMeasureGate(int)), g_pMainWnd, SLOT(slotMeasureGate(int)));
     connect(this, SIGNAL(signalMarkNextDefect()), g_pMainWnd, SLOT(slotMarkNextDefect()));
     connect(this, SIGNAL(signalMarkPreviousDefect()), g_pMainWnd, SLOT(slotMarkPreviousDefect()));
-//    connect(this, SIGNAL(signalStartAnalysis()), g_pMainWnd, SLOT(on_actionAided_Analysis_triggered()));
+    connect(this, SIGNAL(signalStartAnalysis()), g_pMainWnd, SLOT(on_actionAided_Analysis_triggered()));
+    connect(this, SIGNAL(signalStopAnalysis()), g_pMainWnd, SLOT(on_actionStop_Analysis_triggered()));
+    connect(this, SIGNAL(signalDeleteDefect()), g_pMainWnd, SLOT(slotDeleteDefect()));
+
 	// pass the drop event to father widget
 	setAcceptDrops(false);
 	// use openGL to render drawing
@@ -564,62 +568,108 @@ void DopplerGraphicView::SetDrawOperation(DopplerDrawScan* pDrawScan_)
 
 void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
 {
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     if(Qt::RightButton == event->button()){
         DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
         int _iGroupId, _iLaw, _iDisplay;
         _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
-        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-        bool dataModeStatus, cursorStatus, defectStatus, showCoupleStatus;
-        dataModeStatus = _pConfig->common.dataModeStatus;
-        cursorStatus = _pConfig->group[_iGroupId].bShowCursor;
-        defectStatus = _pConfig->group[_iGroupId].bShowDefect;
-        showCoupleStatus = _pConfig->group[_iGroupId].bShowCoupleInAScan;
-        m_dataMode->blockSignals(true);
-        m_showCursor->blockSignals(true);
-        m_showDefect->blockSignals(true);
-        m_showCouple->blockSignals(true);
-        m_dataMode->setChecked( dataModeStatus);
-        m_showCursor->setChecked( cursorStatus);
-        m_showDefect->setChecked( defectStatus);
-        m_showCouple->setChecked( showCoupleStatus);
-        m_dataMode->blockSignals(false);
-        m_showCursor->blockSignals(false);
-        m_showDefect->blockSignals(false);
-        m_showCouple->blockSignals(false);
-
-        m_scaleRecover->setText(tr("Scale Recover"));
-        m_dataMode->setText(tr("Data Mode"));
-        m_showCursor->setText(tr("Show Cursor"));
-        m_showDefect->setText(tr("Show Defect"));
-        m_showCouple->setText(tr("Show Couple"));
-        m_selectMeasureMethod->setText(tr("Select Method"));
-        m_startAnalysis->setText(tr("Start Analysis"));
-        m_contextMenu->clear();
-        if (_pConfig->common.bDefectIdentifyStatus) {
-            m_contextMenu->addAction(m_startAnalysis);
-            m_contextMenu->addAction(m_selectMeasureMethod);
-            m_contextMenu->addAction(m_showCursor);
-            m_contextMenu->addAction(m_showDefect);
-        } else {
-            m_contextMenu->addAction(m_scaleRecover);
-            if(_iDisplay > 1){
-                m_contextMenu->addAction(m_dataMode);
-            } else {
-                if (_pConfig->group[_iGroupId].coupleMonitoringState) {
-                    m_contextMenu->addAction(m_showCouple);
+        if (_pConfig->common.bMarkDefectNotIdentifyArea && !_pConfig->common.bDefectIdentifyStatus) {
+            for (int i = 0; i < _pConfig->m_selectedNotToAnalysisAreas[_iGroupId].count(); ++i) {
+                if (_pConfig->m_selectedNotToAnalysisAreas[_iGroupId][i].contains(event->pos())) {
+                    _pConfig->m_selectedNotToAnalysisAreas[_iGroupId].removeAt(i);
+                    _pConfig->m_transformedNotToAnalysisAreas[_iGroupId].removeAt(i);
+                    break;
                 }
             }
-            m_contextMenu->addAction(m_showCursor);
-            m_contextMenu->addAction(m_showDefect);
-        }
+        } else {          
+            bool dataModeStatus, cursorStatus, defectStatus, showCoupleStatus;
+            dataModeStatus = _pConfig->common.dataModeStatus;
+            cursorStatus = _pConfig->group[_iGroupId].bShowCursor;
+            defectStatus = _pConfig->group[_iGroupId].bShowDefect;
+            showCoupleStatus = _pConfig->group[_iGroupId].bShowCoupleInAScan;
+            m_dataMode->blockSignals(true);
+            m_showCursor->blockSignals(true);
+            m_showDefect->blockSignals(true);
+            m_showCouple->blockSignals(true);
+            m_dataMode->setChecked( dataModeStatus);
+            m_showCursor->setChecked( cursorStatus);
+            m_showDefect->setChecked( defectStatus);
+            m_showCouple->setChecked( showCoupleStatus);
+            m_dataMode->blockSignals(false);
+            m_showCursor->blockSignals(false);
+            m_showDefect->blockSignals(false);
+            m_showCouple->blockSignals(false);
 
-        m_contextMenu->exec(event->globalPos());
+            m_scaleRecover->setText(tr("Scale Recover"));
+            m_dataMode->setText(tr("Data Mode"));
+            m_showCursor->setText(tr("Show Cursor"));
+            m_showDefect->setText(tr("Show Defect"));
+            m_showCouple->setText(tr("Show Couple"));
+            m_selectMeasureMethod->setText(tr("Select Method"));
+            m_startAnalysis->setText(tr("Start Analysis"));
+            m_showCurrentDefect->setText(tr("Show Current Defect"));
+            m_showAllDefect->setText(tr("Show All Defect"));
+            m_contextMenu->clear();
+            m_defectMenu->clear();
+
+            if (!m_showDefect->isChecked()) {
+                m_defectMenu->setEnabled(false);
+            } else {
+                m_defectMenu->setEnabled(true);
+            }
+
+            DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+            int _iGroupId, _iLaw, _iDisplay;
+            _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+            setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
+
+            switch(_eMode){
+            case setup_DISPLAY_MODE_S_ATHUMIZ:
+            case setup_DISPLAY_MODE_S_LINEAR: {
+                m_defectMenu->setTitle(tr("Show Defect"));
+                m_defectMenu->addAction(m_defectActions->addAction(m_showAllDefect));
+                m_defectMenu->addAction(m_defectActions->addAction(m_showCurrentDefect));
+                break;
+            }
+            default:
+                break;
+            }
+
+            if (_pConfig->common.bDefectIdentifyStatus) {
+                m_contextMenu->addAction(m_startAnalysis);
+                m_contextMenu->addAction(m_selectMeasureMethod);
+                m_contextMenu->addAction(m_showCursor);
+                if (m_defectMenu->isEmpty()) {
+                    m_contextMenu->addAction(m_showDefect);
+                } else {
+                    m_contextMenu->addMenu(m_defectMenu);
+                }
+            } else {
+                m_contextMenu->addAction(m_scaleRecover);
+                if(_iDisplay > 1){
+                    m_contextMenu->addAction(m_dataMode);
+                } else {
+                    if (_pConfig->group[_iGroupId].coupleMonitoringState) {
+                        m_contextMenu->addAction(m_showCouple);
+                    }
+                }
+                m_contextMenu->addAction(m_showCursor);
+                if (m_defectMenu->isEmpty()) {
+                    m_contextMenu->addAction(m_showDefect);
+                } else {
+                    m_contextMenu->addMenu(m_defectMenu);
+                }
+            }
+
+            m_contextMenu->exec(event->globalPos());
+        }
     }else{
         if(Qt::LeftButton == event->button())
         {
             m_cPosStart = event->pos() ;
         }
 
+        if (_pConfig->common.bDefectIdentifyStatus)
         {
             m_isDrawSelectArea = false;
             DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
@@ -628,13 +678,17 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
             setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
             switch(_eMode){
             case setup_DISPLAY_MODE_S_ATHUMIZ:
-            case setup_DISPLAY_MODE_S_LINEAR: {
+            case setup_DISPLAY_MODE_S_LINEAR:
 
-                g_pMainWnd->setSelectSscanAreaValid(m_isDrawSelectArea);
+                g_pMainWnd->setSelectSscanAreaValid(false);
                 break;
+            case setup_DISPLAY_MODE_C_H:
+            case setup_DISPLAY_MODE_CC_H:
+            case setup_DISPLAY_MODE_C_V:
+            case setup_DISPLAY_MODE_CC_V:
+                g_pMainWnd->setDefectIdentifyCScanArea(0, 0, 0, 0);
             default:
-                    break;
-            }
+                    break;            
             }
         }
 
@@ -739,7 +793,7 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
         //if(_eMode >= setup_DISPLAY_MODE_C_H && _eMode <= setup_DISPLAY_MODE_S_LINEAR){
             DopplerConfigure* _pConfig = DopplerConfigure::Instance();
             ParameterProcess* _process = ParameterProcess::Instance();
-            if(_pConfig->group[_iGroupId].storeScanLawId.status){
+            if(_pConfig->group[_iGroupId].storeScanLawId.status || (_pConfig->common.bDefectIdentifyStatus && _pConfig->common.bDefectIdentifyStatusDone)){
                 float scanPos = _pConfig->group[_iGroupId].storeScanLawId.scanPos;
                 _process->SetupScanPos(scanPos);
                 int lawId = _pConfig->group[_iGroupId].storeScanLawId.lawId;
@@ -815,8 +869,19 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
         emit signalMarkPreviousDefect();
         break;
     }
-    case Qt::Key_Control: {
-        emit signalStartAnalysis();
+    case Qt::Key_QuoteLeft: {//Key_AsciiTilde
+        DopplerConfigure* pConfig = DopplerConfigure::Instance();
+        if (!pConfig->common.bDefectIdentifyStatus) {
+            emit signalStartAnalysis();
+        } else {
+            int ret = QMessageBox::information(this, tr(""), tr("Exit automatic analysing?"), QMessageBox::Ok | QMessageBox::No);
+            if (ret == QMessageBox::Ok)
+                emit signalStopAnalysis();
+        }
+        break;
+    }
+    case Qt::Key_Delete: {
+        signalDeleteDefect();
         break;
     }
     default:
@@ -907,6 +972,73 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                             break;
                         }
                         m_isDrawSelectArea = true;
+                    } else if (m_cPosStart != m_cPosStop){
+                        QMessageBox::warning(this, tr("Range too Small"), tr("Please Selected More Wider Range"));
+                    }
+                }
+
+            }
+            else if (_pConfig->common.bMarkDefectNotIdentifyArea) {
+                m_cPosStop = event->pos();
+                QRectF _rect = this->geometry();
+                if(_rect.contains(m_cPosStop)){
+                    QPoint leftTop, rightBottom;
+                    if( m_cPosStart.x() < m_cPosStop.x()){
+                        leftTop.setX( m_cPosStart.x());
+                        rightBottom.setX( m_cPosStop.x());
+                    }else{
+                        leftTop.setX( m_cPosStop.x());
+                        rightBottom.setX( m_cPosStart.x());
+                    }
+
+                    if( m_cPosStart.y() < m_cPosStop.y()){
+                        leftTop.setY( m_cPosStart.y());
+                        rightBottom.setY( m_cPosStop.y());
+                    }else{
+                        leftTop.setY( m_cPosStop.y());
+                        rightBottom.setY( m_cPosStart.y());
+                    }
+                    QRect rect( leftTop, rightBottom);
+                    if(abs(rect.height()) > 5 && abs(rect.width()) > 5){
+                        DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+                        int _iGroupId, _iLaw, _iDisplay;
+                        _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+                        double _fScanStart , _fScanStop , _fSliderStart, _fSliderStop;
+                        double _nScaleX1,_nScaleX2,_nScaleY1,_nScaleY2;
+                        double scanstart , scanstop;
+                        double lawstart, lawstop;
+                        QSize _size;
+                        _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+                        qDebug()<<"ScanStart"<<_fScanStart<<"ScanStop"<<_fScanStop;
+                        _size = size();
+                        _nScaleX1 = ((double)leftTop.x()) / _size.width();
+                        _nScaleY1 = ((double)leftTop.y()) / _size.height();
+                        _nScaleX2 = ((double)rightBottom.x()) / _size.width();
+                        _nScaleY2 = ((double)rightBottom.y()) / _size.height();
+                        scanstart = _fScanStart + _nScaleX1 * (_fScanStop - _fScanStart);
+                        scanstop  = _fScanStart + _nScaleX2 * (_fScanStop - _fScanStart);
+                        _pParent->GetRulerRange(&_fScanStart , &_fScanStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
+                        qDebug()<<"indexStart"<<_fScanStart<<"indexStop"<<_fScanStop;
+                        lawstart = _fScanStart + _nScaleY1 * (_fScanStop - _fScanStart);
+                        lawstop = _fScanStart + _nScaleY2 * (_fScanStop - _fScanStart);
+                        qDebug()<<"scanstart"<<scanstart<<"scanstop"<<scanstop<<"lawstart"<<lawstart<<"lawstop"<<lawstop;
+
+                        setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
+
+                        switch(_eMode){
+                        case setup_DISPLAY_MODE_S_ATHUMIZ:
+                        case setup_DISPLAY_MODE_S_LINEAR: {
+                            _pConfig->m_selectedNotToAnalysisAreas[_iGroupId].append(rect);
+                            QPointF topL(scanstart, lawstart);
+                            QPointF bottomR(scanstop, lawstop);
+                            QRectF transformedRect(topL, bottomR);
+                            _pConfig->m_transformedNotToAnalysisAreas[_iGroupId].append(transformedRect);
+                            break;
+                        }
+                        default:
+                            break;
+                        }
+
                     } else if (m_cPosStart != m_cPosStop){
                         QMessageBox::warning(this, tr("Range too Small"), tr("Please Selected More Wider Range"));
                     }
@@ -1395,10 +1527,29 @@ void DopplerGraphicView::paintEvent(QPaintEvent *event)
 {
     QGraphicsView::paintEvent(event);
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId, _iLaw, _iDisplay;
+    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
     if (_pConfig->common.bDefectIdentifyStatus && m_isDrawSelectArea) {
-        DrawSelectArea();
+        DrawSelectArea(m_selectedArea, QColor(18,133,240));
     } else {
         m_isDrawSelectArea = false;
+    }
+    if (_pConfig->common.bMarkDefectNotIdentifyArea) {
+        setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
+
+        switch(_eMode){
+        case setup_DISPLAY_MODE_S_ATHUMIZ:
+        case setup_DISPLAY_MODE_S_LINEAR: {
+             for (int i = 0; i < _pConfig->m_selectedNotToAnalysisAreas[_iGroupId].count(); ++i) {
+                _pConfig->m_selectedNotToAnalysisAreas[_iGroupId][i] = transformRectToPolar(_pConfig->m_transformedNotToAnalysisAreas[_iGroupId][i]);
+                DrawSelectArea(_pConfig->m_selectedNotToAnalysisAreas[_iGroupId][i], QColor(255,0,0));
+            }
+            break;
+        }
+        default:
+            break;
+        }
     }
     DrawMeasureValue();
 }
@@ -1569,19 +1720,20 @@ void DopplerGraphicView::DrawMeasureValue()
     _painter.end();
 }
 
-void DopplerGraphicView::DrawSelectArea()
+void DopplerGraphicView::DrawSelectArea(QRect &_rect, QColor _color)
 {
     QMutexLocker locker(&m_mutex);
     QWidget* _pViewPort = (QWidget*)this->viewport();
     QPainter _painter(_pViewPort) ;
-    _painter.setPen(QPen(QColor(18,133,240)));
+    _painter.setPen(QPen(_color));
 
     QBrush _brush(QColor(0,0,0));
     _painter.setBackground(_brush);
 
-    _brush.setColor(QColor(18,133,240,40));
+    _color.setAlpha(40);
+    _brush.setColor(_color);
     _painter.setBrush(_brush);
-    _painter.drawRect(m_selectedArea);
+    _painter.drawRect(_rect);
 
     _painter.end();
 }
@@ -1880,15 +2032,17 @@ void DopplerGraphicView::backNoZoom()
 
 void DopplerGraphicView::creatActionAndMenu()
 {
-//    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
-//    int _iGroupId, _iLaw, _iDisplay;
-//    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId, _iLaw, _iDisplay;
+    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
 //    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 //    bool cursorStatus, defectStatus;
 //    cursorStatus = _pConfig->group[_iGroupId].bShowCursor;
 //    defectStatus = _pConfig->group[_iGroupId].bShowDefect;
 
     m_contextMenu = new QMenu;
+    m_defectMenu = new QMenu;
+    m_defectActions = new QActionGroup(this);
 
     m_scaleRecover = new QAction(this);
     m_scaleRecover->setIcon(QIcon(":/file/resource/main_menu/recover.png"));
@@ -1912,6 +2066,28 @@ void DopplerGraphicView::creatActionAndMenu()
     m_showDefect->setChecked( true);
     connect( m_showDefect, SIGNAL(toggled(bool)), this, SLOT(setShowDefect(bool)));
 
+    m_showAllDefect = new QAction(tr("Show All Defect"), this);
+    m_showAllDefect->setCheckable( true);
+    m_showAllDefect->setChecked( true);
+    connect( m_showAllDefect, &QAction::toggled, this, [=](bool status) {
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        int _iGroupId, _iLaw, _iDisplay;
+        _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+        _pConfig->group[_iGroupId].bShowCurrentDefect = false;
+        g_pMainWnd->UpdateAllDisplay();
+    });
+
+    m_showCurrentDefect = new QAction(tr("Show Current Defect"), this);
+    m_showCurrentDefect->setCheckable( true);
+    m_showCurrentDefect->setChecked( false);
+    connect( m_showCurrentDefect, &QAction::toggled, this, [=](bool status) {
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        int _iGroupId, _iLaw, _iDisplay;
+        _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+        _pConfig->group[_iGroupId].bShowCurrentDefect = true;
+        g_pMainWnd->UpdateAllDisplay();
+    });
+
     m_showCouple = new QAction(tr("Show Couple"), this);
     m_showCouple->setCheckable( true);
     m_showCouple->setChecked( false);
@@ -1934,6 +2110,39 @@ void DopplerGraphicView::creatActionAndMenu()
 //    m_contextMenu->addAction(m_showCursor);
 //    m_contextMenu->addAction(m_showDefect);
 
+}
+
+QRect DopplerGraphicView::transformRectToPolar(QRectF &_rect)
+{
+    DopplerDataView* pParent = (DopplerDataView*)parentWidget();
+    int iGroupId, iLaw, iDisplay;
+    pParent->GetDataViewConfigure(&iGroupId, &iLaw, &iDisplay);
+    double fScanStart , fScanStop , fSliderStart, fSliderStop;
+    QSize s = size();;
+    pParent->GetRulerRange(&fScanStart , &fScanStop , &fSliderStart, &fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+
+    QPoint leftTop, rightBottom;
+
+    float scanstart = _rect.left();
+    float scanstop  = _rect.right();
+
+    int x1 = ((scanstart - fScanStart) / (fScanStop - fScanStart)) * s.width() + 1;
+    int x2 = ((scanstop - fScanStart) / (fScanStop - fScanStart)) * s.width();
+    leftTop.setX(x1);
+    rightBottom.setX(x2);
+
+    pParent->GetRulerRange(&fScanStart , &fScanStop , &fSliderStart, &fSliderStop, DopplerDataView::DATA_VIEW_RULER_LEFT);
+
+    float lawstart = _rect.top();
+    float lawstop  = _rect.bottom();
+    int y1 = ((lawstart - fScanStart) / (fScanStop - fScanStart)) * s.height() + 1;
+    int y2 = ((lawstop - fScanStart) / (fScanStop - fScanStart)) * s.height() + 1;
+
+    leftTop.setY(y1);
+    rightBottom.setY(y2);
+
+    QRect rect(leftTop, rightBottom);
+    return rect;
 }
 
 void DopplerGraphicView::AddOverlayItems(QGraphicsItem* item_)

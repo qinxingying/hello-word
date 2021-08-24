@@ -1,4 +1,4 @@
-#include "DopplerTofdOpp.h"
+﻿#include "DopplerTofdOpp.h"
 #include <math.h>
 #include <stdlib.h>
 
@@ -7,7 +7,7 @@ WDATA g_TofdAlignBuff[8192] ;
 
 int getWaveMaxData()
 {
-    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6 || Phascan_Version == 8)
     {
         return WAVE_MAX;
     }
@@ -19,7 +19,7 @@ int getWaveMaxData()
 
 WDATA conversionToPdata( float data)
 {
-    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6)
+    if( Phascan_Version == 1 || Phascan_Version == 3 || Phascan_Version == 4 || Phascan_Version == 6 || Phascan_Version == 8)
     {
         if(data > WAVE_MAX)
         {

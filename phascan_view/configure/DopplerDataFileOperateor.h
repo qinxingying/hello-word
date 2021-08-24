@@ -1,4 +1,4 @@
-#ifndef DOPPLERDATAFILEOPERATEOR_H
+﻿#ifndef DOPPLERDATAFILEOPERATEOR_H
 #define DOPPLERDATAFILEOPERATEOR_H
 
 #include <QObject>
@@ -20,7 +20,7 @@ public:
     DRAW_INFO_PACK*   GetDrawInfo() ;
     GROUP_INFO*       GetGroupInfo(int nGroupId_)  ;
     bool GetCADExist(int nGroupId_);
-
+    ExtConfig2*   GetExtConfig2();
 
 protected:
     INSPEC_DATA_FILE m_cFileHead;
@@ -30,6 +30,7 @@ protected:
     QFile* m_file ;
     qint64 m_mapdataSize;
     int m_cadInfo[8];
+    ExtConfig2 m_extConfig;
 signals:
 
 public slots:

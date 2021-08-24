@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>6</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -5172,8 +5172,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>295</width>
-            <height>1155</height>
+            <width>309</width>
+            <height>1159</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -5807,16 +5807,6 @@
                      </property>
                      <item>
                       <property name="text">
-                       <string>NB/T 47013.3 I型焊接接头 IIA试块</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>NB/T 47013.3 II型焊接接头 GS试块</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
                        <string>NB/T 47013.15  I型焊接接头 PRB试块</string>
                       </property>
                      </item>
@@ -5827,7 +5817,7 @@
                      </item>
                      <item>
                       <property name="text">
-                       <string>SYT 4109-2013</string>
+                       <string>SYT 4109-2020</string>
                       </property>
                      </item>
                      <item>
@@ -5837,7 +5827,7 @@
                      </item>
                      <item>
                       <property name="text">
-                       <string>other</string>
+                       <string>自定义</string>
                       </property>
                      </item>
                     </widget>
@@ -7226,7 +7216,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-81</y>
         <width>318</width>
         <height>850</height>
        </rect>
@@ -9783,8 +9773,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>318</width>
-        <height>755</height>
+        <width>330</width>
+        <height>769</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -9847,8 +9837,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>318</width>
-            <height>755</height>
+            <width>330</width>
+            <height>769</height>
            </rect>
           </property>
           <property name="minimumSize">
@@ -10135,32 +10125,13 @@
                  </widget>
                 </item>
                 <item row="3" column="0">
-                 <widget class="QLabel" name="LabelCScanThickness">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>90</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>C Scan Thickness</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="0">
                  <widget class="QLabel" name="LabelSscanReflect">
                   <property name="text">
                    <string>S Scan Reflect:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="1">
+                <item row="3" column="1">
                  <widget class="QComboBox" name="ComSscanReflect">
                   <item>
                    <property name="text">
@@ -10184,14 +10155,14 @@
                   </item>
                  </widget>
                 </item>
-                <item row="5" column="0">
+                <item row="4" column="0">
                  <widget class="QLabel" name="LabeloneToOneShows">
                   <property name="text">
                    <string>S Scanf one to one shows:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="1">
+                <item row="4" column="1">
                  <widget class="QComboBox" name="ComOneToOneShows">
                   <item>
                    <property name="text">
@@ -10205,14 +10176,14 @@
                   </item>
                  </widget>
                 </item>
-                <item row="6" column="0">
+                <item row="5" column="0">
                  <widget class="QLabel" name="LabelsScanfMode">
                   <property name="text">
                    <string>S Scanf Mode:</string>
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="1">
+                <item row="5" column="1">
                  <widget class="QComboBox" name="ComsScanfMode">
                   <item>
                    <property name="text">
@@ -10229,111 +10200,134 @@
                </layout>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_9">
-                <item>
-                 <widget class="QLabel" name="LabelCScanThicknessMin">
-                  <property name="text">
-                   <string>Min:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="ValueCScanThicknessMin">
+               <layout class="QFormLayout" name="formLayout_2">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="LabelCScanThickness">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>50</width>
-                    <height>20</height>
+                    <width>90</width>
+                    <height>0</height>
                    </size>
                   </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <double>300.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="LabelCScanThicknessMax_3">
                   <property name="text">
-                   <string>mm</string>
+                   <string>C Scan Thickness</string>
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <widget class="QLabel" name="LabelCScanThicknessMax">
-                  <property name="text">
-                   <string>Max:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="ValueCScanThicknessMax">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>50</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="keyboardTracking">
-                   <bool>false</bool>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <double>300.000000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.100000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="LabelCScanThicknessMax_2">
-                  <property name="text">
-                   <string>mm</string>
-                  </property>
-                 </widget>
+                <item row="1" column="0">
+                 <layout class="QHBoxLayout" name="horizontalLayout_9">
+                  <item>
+                   <widget class="QLabel" name="LabelCScanThicknessMin">
+                    <property name="text">
+                     <string>Min:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="ValueCScanThicknessMin">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="buttonSymbols">
+                     <enum>QAbstractSpinBox::NoButtons</enum>
+                    </property>
+                    <property name="decimals">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <double>300.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="LabelCScanThicknessMax_3">
+                    <property name="text">
+                     <string>mm</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="LabelCScanThicknessMax">
+                    <property name="text">
+                     <string>Max:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="ValueCScanThicknessMax">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="buttonSymbols">
+                     <enum>QAbstractSpinBox::NoButtons</enum>
+                    </property>
+                    <property name="keyboardTracking">
+                     <bool>false</bool>
+                    </property>
+                    <property name="decimals">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <double>300.000000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="LabelCScanThicknessMax_2">
+                    <property name="text">
+                     <string>mm</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </item>

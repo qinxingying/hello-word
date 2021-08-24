@@ -59,7 +59,7 @@ protected:
     void   CScanZoomAction();
     void   GeometryChanged();
     void   DrawMeasureValue();
-    void   DrawSelectArea();
+    void   DrawSelectArea(QRect &_rect, QColor _color);
     QRectF RangeTranslate(QRectF& rect_);
 
 
@@ -72,6 +72,7 @@ private slots:
 private:
     void backNoZoom();
     void creatActionAndMenu();
+    QRect transformRectToPolar(QRectF& _rect);
     QGraphicsScene*   m_pScene        ;
     GraphicsViewBase* m_pBackGround   ;
     DopplerDrawScan*  m_pDrawScan     ;
@@ -99,10 +100,14 @@ private:
     QAction *m_dataMode;
     QAction *m_showCursor;
     QAction *m_showDefect;
+    QAction *m_showCurrentDefect;
+    QAction *m_showAllDefect;
     QAction *m_showCouple;
     QAction *m_startAnalysis;
     QAction *m_selectMeasureMethod;
     QMenu *m_contextMenu;
+    QMenu *m_defectMenu;
+    QActionGroup *m_defectActions;
 
     QRect m_selectedArea;
     bool m_isDrawSelectArea {false};
@@ -127,6 +132,8 @@ signals:
     void signalMarkNextDefect();
     void signalMarkPreviousDefect();
     void signalStartAnalysis();
+    void signalStopAnalysis();
+    void signalDeleteDefect();
 public slots:
     void slotResetView();
     void slotPrint();
