@@ -1917,6 +1917,9 @@ void MainWindow::allThicknessChange(double thickness)
     }
 
     RunDrawThreadOnce(true);
+    DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
+    Th->RunOnce();
+
 }
 
 void MainWindow::slotScanPosChange(int steps)
@@ -1929,6 +1932,7 @@ void MainWindow::slotLawPosChange(int groupId, int lawId, int steps)
     ParameterProcess* _pProcess = ParameterProcess::Instance();
     int lawQty = _pProcess->GetGroupLawQty(groupId);
     if( lawId == 0 && steps < 0){
+
         return;
     }
     if((lawId == lawQty - 1) && steps > 0){

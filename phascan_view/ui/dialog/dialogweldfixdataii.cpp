@@ -490,12 +490,13 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->w3Label->show();
         ui->w3DoubleSpinBox->show();
         ui->w3UnitLabel->show();
-        ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.w1);
-        ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.h1);
-        ui->r1DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.a1);
-        ui->w2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.w2);
-        ui->h2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.h2);
-        ui->r2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.a2);
+        ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W1);
+        ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.H1);
+//        ui->r1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.A1);
+        ui->w2DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W2);
+        ui->h2DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.H2);
+        ui->w3DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W3);
+//        ui->r2DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.A2);
 
 
 
@@ -592,6 +593,7 @@ void DialogWeldFixDataII::w2ValueChanged( double value)
         m_cPart.weld_ii.V.w2 = value;
     }
     ui->showWidget->update();
+
 }
 
 void DialogWeldFixDataII::w3ValueChanged( double value)

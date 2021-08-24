@@ -14,21 +14,11 @@ CalcMeasurement::CalcMeasurement(QObject *parent) :
 void CalGatePeakInfo(int nGroupId_ , int nLaw_)
 {
 
-    float _mScanPos;
     int _nScanPos;
     ParameterProcess* _process = ParameterProcess::Instance();
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-    GROUP_CONFIG& _group = _pConfig->group[nGroupId_];
 
-   if(_group.afCursor[ setup_CURSOR_S_MES ]> _group.afCursor[setup_CURSOR_S_REF])
-    _mScanPos= _group.afCursor[ setup_CURSOR_S_REF ];
-   else
-     _mScanPos= _group.afCursor[ setup_CURSOR_S_MES ];
-
-    if( _pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE&&_group.m_mode==D_MODE){
-        _nScanPos = _process->SAxisDistToIndex(_mScanPos);
-
-    }else if(_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+   if(_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
 
      _nScanPos = _process->GetScanIndexPos();
     }

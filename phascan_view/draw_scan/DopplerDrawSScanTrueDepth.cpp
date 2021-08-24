@@ -579,14 +579,15 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
     float _fStart , _fStop  ;
     _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fStart ,  &_fStop);
 
-    int cursorOffset=1;
-     if(m_pGroup->m_mode==D_MODE)
+     int cursorOffset=1;
+     if(m_pGroup->m_mode==D_MODE&&m_pGroup->afCursor[ setup_CURSOR_S_MES ]<m_pConfig->comTmp.nRecMax&& m_pGroup->afCursor[setup_CURSOR_S_REF]<m_pConfig->comTmp.nRecMax)
         {
          cursorOffset=m_pGroup->afCursor[ setup_CURSOR_S_MES ]- m_pGroup->afCursor[setup_CURSOR_S_REF];
         if(cursorOffset<0)cursorOffset=-cursorOffset;
         if(cursorOffset==0)cursorOffset=1;
 
         }
+
     int _nLawSize;
 
     _nLawSize	= m_cInfo.nPointQty + setup_DATA_PENDIX_LENGTH;

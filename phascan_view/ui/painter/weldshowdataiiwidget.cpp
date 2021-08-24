@@ -258,6 +258,7 @@ void WeldShowDataIIWidget::DrawWeld( QPainter &painter)
 
 void WeldShowDataIIWidget::DrawWeldI( QPainter &painter)
 {
+
     QPainterPath path;
     QPointF _pos[2];
     double w = m_pPart->weld_ii.I.w;

@@ -819,26 +819,27 @@ void DopplerViewItems::UpdateItemsWeld()
 
 void DopplerViewItems::UpdateScanMarker()
 {
-	if(!(m_eShow & OVERLAYS_SCAN_MARKER))
-	{
-		if(m_pScanMarker) m_pScanMarker->hide();
-		return ;
-	}
-	if(!m_pScanMarker)
-	{
-		m_pScanMarker = new DopplerScanMarker(COLOR_SCAN_MARKER);
-		m_pScanMarker->SetItemType(DOPPLER_GRAPHICS_ITEM_SCAN ) ;
+    if(!(m_eShow & OVERLAYS_SCAN_MARKER))
+    {
+        if(m_pScanMarker) m_pScanMarker->hide();
+        return ;
+    }
+
+    if(!m_pScanMarker)
+    {
+        m_pScanMarker = new DopplerScanMarker(COLOR_SCAN_MARKER);
+        m_pScanMarker->SetItemType(DOPPLER_GRAPHICS_ITEM_SCAN ) ;
         m_pScanMarker->SetLineType(m_bScanMarkerHorizental ? DopplerLineItem::LINE_HORIZENTAL : DopplerLineItem::LINE_VERTICAL );
-		m_pScanMarker->SetMoveType(m_bScanMarkerHorizental ? DopplerLineItem::LINE_MOVE_VERTICAL : DopplerLineItem::LINE_MOVE_HORIZENTAL);
-		m_pDataView->AddOverlayItems(m_pScanMarker);
-	}
-	QRectF _rect(0 , 0 , 0 , 0);
-	if(m_bScanMarkerHorizental)
+        m_pScanMarker->SetMoveType(m_bScanMarkerHorizental ? DopplerLineItem::LINE_MOVE_VERTICAL : DopplerLineItem::LINE_MOVE_HORIZENTAL);
+        m_pDataView->AddOverlayItems(m_pScanMarker);
+    }
+    QRectF _rect(0 , 0 , 0 , 0);
+    if(m_bScanMarkerHorizental)
         _rect.setTop (m_fScanPos);
     else
         _rect.setLeft(m_fScanPos);
     m_pDataView->SetItemGeometry(m_pScanMarker, _rect);
-	m_pScanMarker->SetScenceSize(m_pDataView->GetViewSize());
+    m_pScanMarker->SetScenceSize(m_pDataView->GetViewSize());
     m_pScanMarker->show();
 
 }

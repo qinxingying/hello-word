@@ -81,43 +81,43 @@ void DopplerRulerBar::SetMarkerUnit(QString* strUnit_)
 
 void DopplerRulerBar::paintEvent(QPaintEvent*)
 {
-	QPainter painter(this) ;
+    QPainter painter(this) ;
 /*
-	if(m_bSliderON) {
-		CalSliderArea();
-		CalSliderRect();
-		drawSlider(painter);
-	}
+    if(m_bSliderON) {
+        CalSliderArea();
+        CalSliderRect();
+        drawSlider(painter);
+    }
 */
-	QPen _OldPen = painter.pen()  ;
-	QPen _NewPen = _OldPen ;
-	_NewPen.setColor(m_cFgColor);
-	painter.setPen(_NewPen);
-	switch(m_eType)
-	{
-	case RULER_BAR_LEFT:
+    QPen _OldPen = painter.pen()  ;
+    QPen _NewPen = _OldPen ;
+    _NewPen.setColor(m_cFgColor);
+    painter.setPen(_NewPen);
+    switch(m_eType)
+    {
+    case RULER_BAR_LEFT:
         if(m_tofdDepth){
             drawTofdLeftRuler(painter);
         }else{
            drawLeftRuler(painter);
         }
-		break;
-	case RULER_BAR_RIGHT:
-		drawRightRuler(painter);
-		break;
-	case RULER_BAR_BOTTOM:
+        break;
+    case RULER_BAR_RIGHT:
+        drawRightRuler(painter);
+        break;
+    case RULER_BAR_BOTTOM:
         if(m_tofdDepth){
             drawTofdBottomRuler(painter);
         }else{
             drawBottomRuler(painter);
         }
-		break;
-	case RULER_BAR_TOP:
-		break;
-	default:
-		break;
-	}
-	painter.setPen(_OldPen);
+        break;
+    case RULER_BAR_TOP:
+        break;
+    default:
+        break;
+    }
+    painter.setPen(_OldPen);
 }
 
 double DopplerRulerBar::calDepth(double soundPath)

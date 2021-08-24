@@ -108,52 +108,54 @@ QPainterPath DopplerLineItem::shape() const
 
 void DopplerLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* /*widget*/)
 {
-	//******** to change the background color of when mouse is rect
-	QColor fillColor = (option->state & QStyle::State_Selected) ? m_cColor.dark(50) : m_cColor;
-	if (option->state & QStyle::State_MouseOver)
-		fillColor = fillColor.light(50);
-	//******** get the enlarged rate, and by which to determine whether draw the details
-	//******** the real display size diliver real size (in pixels)
-	//const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
 
-	switch (m_eLineType)
-	{
-	case LINE_VERTICAL:
-		{
-			QGraphicsScene* _pScene = scene () ;
-			if(_pScene)
-				m_nHeight = _pScene->height() ;
-		}
-		m_nWidth  = 0 ;
-		break;
-	case LINE_HORIZENTAL:
-		{
-			QGraphicsScene* _pScene = scene () ;
-			if(_pScene)
-				m_nWidth = _pScene->width() ;
-		}
-		m_nHeight = 0 ;
-		break;
-	default:
-		break;
-	};
 
-	painter->save();
-	QPen _NewPen ;
-	_NewPen.setWidth(0);
-	_NewPen.setColor(fillColor);
-	_NewPen.setStyle(m_eStype);
-	painter->setPen(_NewPen);
-	painter->drawLine(0, 0 , m_nWidth , m_nHeight );
+    //******** to change the background color of when mouse is rect
+    QColor fillColor = (option->state & QStyle::State_Selected) ? m_cColor.dark(50) : m_cColor;
+    if (option->state & QStyle::State_MouseOver)
+        fillColor = fillColor.light(50);
+    //******** get the enlarged rate, and by which to determine whether draw the details
+    //******** the real display size diliver real size (in pixels)
+    //const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
 
-	//if(m_eMoveType)
-	//{
-	//_NewPen.setStyle(Qt::SolidLine) ;
-	//painter->setPen(_NewPen);
-	//painter->drawRect(m_rect);
-	//}
-	DrawLabel(painter) ;
-	painter->restore();
+    switch (m_eLineType)
+    {
+    case LINE_VERTICAL:
+        {
+            QGraphicsScene* _pScene = scene () ;
+            if(_pScene)
+                m_nHeight = _pScene->height() ;
+        }
+        m_nWidth  = 0 ;
+        break;
+    case LINE_HORIZENTAL:
+        {
+            QGraphicsScene* _pScene = scene () ;
+            if(_pScene)
+                m_nWidth = _pScene->width() ;
+        }
+        m_nHeight = 0 ;
+        break;
+    default:
+        break;
+    };
+
+    painter->save();
+    QPen _NewPen ;
+    _NewPen.setWidth(0);
+    _NewPen.setColor(fillColor);
+    _NewPen.setStyle(m_eStype);
+    painter->setPen(_NewPen);
+    painter->drawLine(0, 0 , m_nWidth , m_nHeight );
+
+    //if(m_eMoveType)
+    //{
+    //_NewPen.setStyle(Qt::SolidLine) ;
+    //painter->setPen(_NewPen);
+    //painter->drawRect(m_rect);
+    //}
+    DrawLabel(painter) ;
+    painter->restore();
 }
 QPointF ptTmp;
 QRectF  rcTmp;
@@ -258,7 +260,7 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 void DopplerLineItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     DopplerGraphicsItem::mousePressEvent(event);
-	mouseMoveEvent(event) ;
+    mouseMoveEvent(event) ;
 }
 void DopplerLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
@@ -294,61 +296,61 @@ void DopplerLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 }
 void DopplerLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if(!m_eMoveType)  return ;
+    if(!m_eMoveType)  return ;
 
-	QPointF  _posItem = event->pos()  ;
-	QPointF _posScene = event->scenePos() ;
+    QPointF  _posItem = event->pos()  ;
+    QPointF _posScene = event->scenePos() ;
 
-	int _x = _posScene.x() ;
-	int _y = _posScene.y() ;
+    int _x = _posScene.x() ;
+    int _y = _posScene.y() ;
 
-	const int _nAdjustOff = 20;
+    const int _nAdjustOff = 20;
 
-	if(_x < 0 - _nAdjustOff) {
-		_posScene.setX(0 - _nAdjustOff);
-	} else if(_x > m_cSize.width() + _nAdjustOff) {
-		_posScene.setX(m_cSize.width() + _nAdjustOff);
-	}
+    if(_x < 0 - _nAdjustOff) {
+        _posScene.setX(0 - _nAdjustOff);
+    } else if(_x > m_cSize.width() + _nAdjustOff) {
+        _posScene.setX(m_cSize.width() + _nAdjustOff);
+    }
 
-	if(_y < 0 - _nAdjustOff) {
-		_posScene.setY(0 - _nAdjustOff);
-	} else if(_y > m_cSize.height() + _nAdjustOff) {
-		_posScene.setY(m_cSize.height() + _nAdjustOff);
-	}
-	/*
-	if(_x < 0 ) {
-		_posScene.setX(0);
-	} else if(_x > m_cSize.width() - 2) {
-		_posScene.setX(m_cSize.width() - 2);
-	}
+    if(_y < 0 - _nAdjustOff) {
+        _posScene.setY(0 - _nAdjustOff);
+    } else if(_y > m_cSize.height() + _nAdjustOff) {
+        _posScene.setY(m_cSize.height() + _nAdjustOff);
+    }
+    /*
+    if(_x < 0 ) {
+        _posScene.setX(0);
+    } else if(_x > m_cSize.width() - 2) {
+        _posScene.setX(m_cSize.width() - 2);
+    }
 
-	if(_y < 1 ) {
-		_posScene.setY(1);
-	} else if(_y > m_cSize.height() - 2) {
-		_posScene.setY(m_cSize.height() - 2);
-	}
-	*/
+    if(_y < 1 ) {
+        _posScene.setY(1);
+    } else if(_y > m_cSize.height() - 2) {
+        _posScene.setY(m_cSize.height() - 2);
+    }
+    */
 
-	switch (m_eMoveType)
-	{
-	case LINE_MOVE_VERTICAL:
-		_posScene.setX(0.0);
-		_posItem.setY(0);
-		break;
-	case LINE_MOVE_HORIZENTAL:
-		_posScene.setY(0.0);
-		_posItem.setX(0);
-		break;
-	default:
-		break;
-	}
+    switch (m_eMoveType)
+    {
+    case LINE_MOVE_VERTICAL:
+        _posScene.setX(0.0);
+        _posItem.setY(0);
+        break;
+    case LINE_MOVE_HORIZENTAL:
+        _posScene.setY(0.0);
+        _posItem.setX(0);
+        break;
+    default:
+        break;
+    }
     setPos(_posScene);
     double _fX  = _posItem.x();
     double _fY  = _posItem.y();
     m_rect.setLeft(_fX - g_nRectSize);
-	m_rect.setRight(_fX + g_nRectSize);
-	m_rect.setTop(_fY - g_nRectSize);
-	m_rect.setBottom(_fY + g_nRectSize);
+    m_rect.setRight(_fX + g_nRectSize);
+    m_rect.setTop(_fY - g_nRectSize);
+    m_rect.setBottom(_fY + g_nRectSize);
 }
 
 void DopplerLineItem::SetItemGeometry (QRectF& rect_)
@@ -441,17 +443,19 @@ DopplerScanMarker::DopplerScanMarker(const QColor& cColor_) : DopplerLineItem(cC
 
 void DopplerScanMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* /*widget*/)
 {
-	//******** to change the background color of when mouse is rect
-	QColor fillColor = (option->state & QStyle::State_Selected) ? m_cColor.dark(50) : m_cColor;
-	if (option->state & QStyle::State_MouseOver)
-		fillColor = fillColor.light(50);
-	//******** get the enlarged rate, and by which to determine whether draw the details
-	//******** the real display size diliver real size (in pixels)
-	//const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
 
-	switch (m_eLineType)
-	{
-	case LINE_VERTICAL:
+
+    //******** to change the background color of when mouse is rect
+    QColor fillColor = (option->state & QStyle::State_Selected) ? m_cColor.dark(50) : m_cColor;
+    if (option->state & QStyle::State_MouseOver)
+        fillColor = fillColor.light(50);
+    //******** get the enlarged rate, and by which to determine whether draw the details
+    //******** the real display size diliver real size (in pixels)
+    //const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
+
+    switch (m_eLineType)
+    {
+    case LINE_VERTICAL:
         {
             QGraphicsScene* _pScene = scene () ;
             if(_pScene)
@@ -459,29 +463,29 @@ void DopplerScanMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem 
         }
         m_nWidth  = 0 ;
         break;
-	case LINE_HORIZENTAL:
-		{
-			QGraphicsScene* _pScene = scene () ;
-			if(_pScene)
-				m_nWidth = _pScene->width() ;
-		}
-		m_nHeight = 0 ;
-		break;
-	default:
-		break;
-	};
-	painter->save();
+    case LINE_HORIZENTAL:
+        {
+            QGraphicsScene* _pScene = scene () ;
+            if(_pScene)
+                m_nWidth = _pScene->width() ;
+        }
+        m_nHeight = 0 ;
+        break;
+    default:
+        break;
+    };
+    painter->save();
 
-	QPen _NewPen ;
-	QVector<qreal> dashes;
-	_NewPen.setColor(fillColor);
-	_NewPen.setWidth(2);
+    QPen _NewPen ;
+    QVector<qreal> dashes;
+    _NewPen.setColor(fillColor);
+    _NewPen.setWidth(2);
 
     dashes << 1 << 4 << 1 << 4;
-	_NewPen.setDashPattern(dashes);
-	painter->setPen(_NewPen);
+    _NewPen.setDashPattern(dashes);
+    painter->setPen(_NewPen);
     painter->drawLine(0, 0 , m_nWidth , m_nHeight );
-	painter->restore();
+    painter->restore();
 
 }
 

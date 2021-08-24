@@ -2504,7 +2504,8 @@ void DopplerGroupTab::on_ComSscanReflect_currentIndexChanged(int index)
     //    _display.UpdateAllView();
     _display.UpdateAllViewOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
-
+    DrawDscanfTHread* _pThread = DrawDscanfTHread::Instance();
+    _pThread->RunOnce();
     return ;
 }
 
@@ -2519,6 +2520,9 @@ void DopplerGroupTab::on_ComOneToOneShows_currentIndexChanged(int index)
     //    _display.UpdateAllView();
     _display.UpdateAllViewOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
+    DrawDscanfTHread* _pThread = DrawDscanfTHread::Instance();
+    _pThread->RunOnce();
+
     return ;
 }
 

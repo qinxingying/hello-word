@@ -227,7 +227,7 @@ struct WELD
 	setup_WELD_SYMMETRY_TYPE		 eSymmetry;		/* 对称 */
 
     float	weland_height;
-    float	weland_offset;
+    float	weland_offset;              //???
 	float	fizone_height;
 	float	fizone_angle ;
 	float	fizone_radius;

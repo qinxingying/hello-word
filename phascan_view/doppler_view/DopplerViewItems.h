@@ -48,7 +48,7 @@ public:
 	void UpdateItemsDefect();
     void SetItemDefect(int id);
 	void UpdateItemsLwBw();
-	void UpdateItemsCursor() ;
+    void UpdateItemsCursor();
 	void UpdateItemsLawMarker() ;
     void UpdateItemsLawMarkerCScan() ;
     int GetLawMarkerQty();

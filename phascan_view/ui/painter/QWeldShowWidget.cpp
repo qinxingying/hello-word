@@ -160,12 +160,15 @@ void QWeldShowWidget::DrawWeldI(QPainter& painter)
 		_fY = _fOrgY + _pos[1].y() ;
         painter.drawLine( _fX, _fOrgY, _fX , _fY);
 	}
-
     if(m_pPart->weld.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld.eSymmetry == setup_WELD_RIGHT){
         _fX = _fOrgX + _pos[0].x();
         _fY = _fOrgY + _pos[1].y();
         painter.drawLine( _fX, _fOrgY, _fX, _fY);
 	}
+
+
+
+
 }
 
 void QWeldShowWidget::DrawWeldV(QPainter& painter)
