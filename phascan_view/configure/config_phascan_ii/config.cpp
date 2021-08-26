@@ -1529,7 +1529,11 @@ void Config::convert_to_phascan_config(int groupId)
         }else{
             targetGroup.part.Thickness = currentSpecimen.m_geometry.m_fillet.m_bottomPlane.m_height * 1000.0;
         }
-    }
+    }else if(Paramters::Specimen::ASYMMETRIC_PLANE == currentSpecimen.m_shape)
+        {
+        targetGroup.part.Thickness = currentSpecimen.m_geometry.m_Asymmetric_Plane.m_mainplane.m_height * 1000.0;
+
+        }
 
     if(Paramters::Focallawer::Longitudinal == currentGroup.m_focallawer.m_waveType) {
          targetGroup.velocity = currentSpecimen.m_LV * 100.0;

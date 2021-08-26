@@ -1,4 +1,4 @@
-/**********************************
+﻿/**********************************
   Description: 显示二代数据的焊缝图示的图像
 **********************************/
 
@@ -38,6 +38,7 @@ private:
     void DrawWeldUU( QPainter &painter);
     void DrawWeldUV( QPainter &painter);
     void DrawWeldTKY( QPainter &painter);
+    void DrawWeldASY(QPainter &painter);
     struct RANGE_INFO
     {
         double fWidth;

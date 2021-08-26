@@ -251,6 +251,9 @@ void WeldShowDataIIWidget::DrawWeld( QPainter &painter)
     case TKY:
         DrawWeldTKY( painter);
         break;
+    case ASYMMETRIC:
+        DrawWeldASY( painter);
+        break;
     default:
         break;
     }
@@ -272,7 +275,6 @@ void WeldShowDataIIWidget::DrawWeldI( QPainter &painter)
         path.moveTo(_pos[0]);
         path.lineTo(_pos[1]);
     }
-
     if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_RIGHT){
         _pos[0].setX(w);
         _pos[0].setY(0);
@@ -915,6 +917,297 @@ void WeldShowDataIIWidget::DrawWeldTKY( QPainter &painter)
     painter.restore();
 }
 
+
+void WeldShowDataIIWidget::DrawWeldASY(QPainter &painter)
+{
+
+    QPainterPath path;
+//    QPointF _pos[2];
+
+//    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_LEFT){
+//        _pos[0].setX(-w);
+//        _pos[0].setY(0);
+//        _pos[1].setX(-w);
+//        _pos[1].setY(m_fThickness);
+//        PositionTransfer(_pos[0]);
+//        PositionTransfer(_pos[1]);
+//        path.moveTo(_pos[0]);
+//        path.lineTo(_pos[1]);
+//    }
+
+//    if( m_pPart->weld_ii.eSymmetry == setup_WELD_SYMMETRY || m_pPart->weld_ii.eSymmetry == setup_WELD_RIGHT){
+//        _pos[0].setX(w);
+//        _pos[0].setY(0);
+//        _pos[1].setX(w);
+//        _pos[1].setY(m_fThickness);
+//        PositionTransfer(_pos[0]);
+//        PositionTransfer(_pos[1]);
+//        path.moveTo(_pos[0]);
+//        path.lineTo(_pos[1]);
+//    }
+
+
+    QVector<QPointF>_pos(11);
+    double W1= m_pPart->weld_ii.ASY.W1;
+
+    double H1= m_pPart->weld_ii.ASY.H1;
+    double W2 = m_pPart->weld_ii.ASY.W2;
+    double H2 = m_pPart->weld_ii.ASY.H2;
+    double W3=  m_pPart->weld_ii.ASY.W3;
+
+    double T1=m_pPart->weld_ii.ASY.m_thickness;//主板厚度
+    double T2=m_pPart->weld_ii.ASY.s_thickness;//从板厚度
+
+    double l1=m_pPart->weld_ii.l1;
+    double l2=m_pPart->weld_ii.l2;
+    double h1=m_pPart->weld_ii.h1;
+    double h2=m_pPart->weld_ii.h2;
+
+    if(setup_PLANE_TOP==m_pPart->weld_ii.align)
+    {
+        // 厚板3个点
+        _pos[0].setX(-W1-W3/2);
+        _pos[0].setY(h1-h1/l1*W1);
+        _pos[1].setX(-W3/2);
+        _pos[1].setY(h1-h1/l1*W1+H1);
+        _pos[2].setX(-W3/2);
+        _pos[2].setY(T1-h2);
+
+        //薄板3个点
+        _pos[3].setX(W2+W3/2);
+        _pos[3].setY(0);
+
+        _pos[4].setX(W3/2);
+        _pos[4].setY(H2);
+        _pos[5].setX(W3/2);
+        _pos[5].setY(T2);
+
+        //厚板的削边起点
+        _pos[6].setX(-W3/2-l1);
+        _pos[6].setY(0);
+
+        //厚板的左下端点
+        _pos[7].setX(-m_cRange.fWidth/2);
+        _pos[7].setY(T1);
+
+        //厚板的下削边下端点
+        _pos[10].setX(-W3/2-l2);
+        _pos[10].setY(T1);
+
+        //薄板的右上边框端点
+        _pos[8].setX(m_cRange.fWidth);
+        _pos[8].setY(0);
+
+        //薄板的右下边框端点
+        _pos[9].setX(m_cRange.fWidth);
+        _pos[9].setY(T2);
+
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        PositionTransfer(_pos[3]);
+        PositionTransfer(_pos[4]);
+        PositionTransfer(_pos[5]);
+        PositionTransfer(_pos[6]);
+        PositionTransfer(_pos[7]);
+        PositionTransfer(_pos[8]);
+        PositionTransfer(_pos[9]);
+        PositionTransfer(_pos[10]);
+
+
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+        path.lineTo(_pos[5]);
+        path.lineTo(_pos[4]);
+        path.lineTo(_pos[3]);
+        path.lineTo(_pos[0]);
+
+        //厚板上边框
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[6]);
+
+        //厚板下削边
+        path.moveTo(_pos[2]);
+        path.lineTo(_pos[10]);
+
+        //厚板下边框
+        path.moveTo(_pos[10]);
+        path.lineTo(_pos[7]);
+
+        //薄板上边框
+        path.moveTo(_pos[3]);
+        path.lineTo(_pos[8]);
+
+        //薄板下边框
+        path.moveTo(_pos[5]);
+        path.lineTo(_pos[9]);
+    }
+    else if(setup_PLANE_CENTER==m_pPart->weld_ii.align)
+    {
+        // 厚板3个点
+        _pos[0].setX(-W1-W3/2);
+        _pos[0].setY(h1-h1/l1*W1);
+        _pos[1].setX(-W3/2);
+        _pos[1].setY( h1-h1/l1*W1+H1);
+        _pos[2].setX(-W3/2);
+        _pos[2].setY(T1-h2);//T1:厚板的厚度
+        //薄板3个点
+        _pos[3].setX(W2+W3/2);
+        _pos[3].setY(T1/2-T2/2);
+
+        _pos[4].setX(W3/2);
+        _pos[4].setY(T1/2-T2/2+H2);
+        _pos[5].setX(W3/2);
+        _pos[5].setY(T1/2-T2/2+T2);
+
+        //厚板的削边起点
+        _pos[6].setX(-W3/2-l1);
+        _pos[6].setY(0);
+
+        //厚板的左下端点
+
+        _pos[7].setX(-m_cRange.fWidth/2);
+        _pos[7].setY(T1);
+
+        //厚板的下削边下端点
+        _pos[10].setX(-W3/2-l2);
+        _pos[10].setY(T1);
+
+        //薄板的上边框端点
+        _pos[8].setX(m_cRange.fWidth/2);
+        _pos[8].setY(T1/2-T2/2);
+
+        //薄板的右边框端点
+        _pos[9].setX(m_cRange.fWidth/2);
+        _pos[9].setY(T1/2-T2/2+T2);
+
+        PositionTransfer(_pos[0]);
+        PositionTransfer(_pos[1]);
+        PositionTransfer(_pos[2]);
+        PositionTransfer(_pos[3]);
+        PositionTransfer(_pos[4]);
+        PositionTransfer(_pos[5]);
+        PositionTransfer(_pos[6]);
+        PositionTransfer(_pos[7]);
+        PositionTransfer(_pos[8]);
+        PositionTransfer(_pos[9]);
+        PositionTransfer(_pos[10]);
+
+        //焊缝
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[1]);
+        path.lineTo(_pos[2]);
+        path.lineTo(_pos[5]);
+        path.lineTo(_pos[4]);
+        path.lineTo(_pos[3]);
+        path.lineTo(_pos[0]);
+
+        //厚板上边框
+        path.moveTo(_pos[0]);
+        path.lineTo(_pos[6]);
+
+        //厚板下边框
+        path.moveTo(_pos[2]);
+        path.lineTo(_pos[10]);
+
+        path.moveTo(_pos[10]);
+        path.lineTo(_pos[7]);
+
+        //薄板上边框
+        path.moveTo(_pos[3]);
+        path.lineTo(_pos[8]);
+
+        //薄板下边框
+        path.moveTo(_pos[5]);
+        path.lineTo(_pos[9]);
+    }
+        else
+        {
+
+            // 厚板3个点
+            _pos[0].setX(-W1-W3/2);
+            _pos[0].setY(h1-h1/l1*W1);
+            _pos[1].setX(-W3/2);
+            _pos[1].setY( h1-h1/l1*W1+H1);
+            _pos[2].setX(-W3/2);
+            _pos[2].setY(T1-h2);
+
+            //薄板3个点
+            _pos[3].setX(W2+W3/2);
+            _pos[3].setY(T1-T2);
+
+            _pos[4].setX(W3/2);
+            _pos[4].setY(T1-T2+H2);
+            _pos[5].setX(W3/2);
+            _pos[5].setY(T1);
+
+            //厚板的削边起点
+            _pos[6].setX(-W3/2-l1);
+            _pos[6].setY(0);
+
+            //厚板的左下端点
+            _pos[7].setX(-m_cRange.fWidth/2);
+            _pos[7].setY(T1);
+
+            //厚板的下削边下端点
+            _pos[10].setX(-W3/2-l2);
+            _pos[10].setY(T1);
+
+            //薄板的上边框端点
+            _pos[8].setX(m_cRange.fWidth/2);
+            _pos[8].setY(T1-T2);
+
+            //薄板的右边框端点
+            _pos[9].setX(m_cRange.fWidth/2);
+            _pos[9].setY(T1);
+
+            PositionTransfer(_pos[0]);
+            PositionTransfer(_pos[1]);
+            PositionTransfer(_pos[2]);
+            PositionTransfer(_pos[3]);
+            PositionTransfer(_pos[4]);
+            PositionTransfer(_pos[5]);
+            PositionTransfer(_pos[6]);
+            PositionTransfer(_pos[7]);
+            PositionTransfer(_pos[8]);
+            PositionTransfer(_pos[9]);
+            PositionTransfer(_pos[10]);
+
+
+            path.moveTo(_pos[0]);
+            path.lineTo(_pos[1]);
+            path.lineTo(_pos[2]);
+            path.lineTo(_pos[5]);
+            path.lineTo(_pos[4]);
+            path.lineTo(_pos[3]);
+            path.lineTo(_pos[0]);
+
+            //厚板上边框
+            path.moveTo(_pos[0]);
+            path.lineTo(_pos[6]);
+
+            //厚板下边框
+            path.moveTo(_pos[2]);
+            path.lineTo(_pos[10]);
+
+            path.moveTo(_pos[10]);
+            path.lineTo(_pos[7]);
+
+            //薄板上边框
+            path.moveTo(_pos[3]);
+            path.lineTo(_pos[8]);
+
+            //薄板下边框
+            path.moveTo(_pos[5]);
+            path.lineTo(_pos[9]);
+
+        }
+
+     painter.drawPath(path);
+}
+
+
 void WeldShowDataIIWidget::PositionTransfer( QPointF &pos_)
 {
     double _fOrgX = m_cRange.fWidth / 2;
@@ -922,5 +1215,8 @@ void WeldShowDataIIWidget::PositionTransfer( QPointF &pos_)
     double _fX = (pos_.x() / m_cRange.fPixelSize) + _fOrgX;
     double _fY = (pos_.y() / m_cRange.fPixelSize) + _fOrgY;
     pos_.setX(_fX);
-    pos_.setY(_fY);
+    pos_.setY(_fY);   
 }
+
+
+

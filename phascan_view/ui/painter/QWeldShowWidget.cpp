@@ -166,9 +166,6 @@ void QWeldShowWidget::DrawWeldI(QPainter& painter)
         painter.drawLine( _fX, _fOrgY, _fX, _fY);
 	}
 
-
-
-
 }
 
 void QWeldShowWidget::DrawWeldV(QPainter& painter)

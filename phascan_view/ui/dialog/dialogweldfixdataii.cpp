@@ -133,8 +133,8 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
     if(m_cPart.weld_ii.eType==ASYMMETRIC)
     {
     ui->symmetryLabel->setText(tr("alignment:"));
-    ui->symmetryComboBox->setItemText(0,tr("Center"));
-    ui->symmetryComboBox->setItemText(1,tr("top"));
+    ui->symmetryComboBox->setItemText(0,tr("top"));
+    ui->symmetryComboBox->setItemText(1,tr("Center"));
     ui->symmetryComboBox->setItemText(2,tr("bottom"));
     }else{
         ui->symmetryLabel->setText(tr("Symmetry:"));
@@ -461,7 +461,19 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
         ui->r2DoubleSpinBox->setValue(m_cPart.weld_ii.TKY.a2);
         break;   
     case ASYMMETRIC:
-        ui->weldImageLabel->setPixmap(QPixmap(":/file/resource/weld/asymmetric_weld1.png"));
+        if(m_cPart.weld_ii.align==0||m_cPart.weld_ii.align==1||m_cPart.weld_ii.align==2)
+        {
+//        char buf[100];
+//        sprintf(buf,":/file/resource/weld/asymmetric_weld%d.png", m_cPart.weld_ii.align);
+        QString str;
+        str=QString(":/file/resource/weld/asymmetric_weld%1.png").arg(m_cPart.weld_ii.align+1);
+        ui->weldImageLabel->setPixmap(QPixmap(str));
+        ui->symmetryComboBox->setCurrentIndex(m_cPart.weld_ii.align);
+        }
+        else
+        {
+        ui->weldImageLabel->setPixmap(QPixmap(":/file/resource/weld/asymmetric_weld0.png"));
+        }
         ui->symmetryLabel->show();
         ui->symmetryComboBox->show();
         ui->probePosLabel->hide();
@@ -543,8 +555,21 @@ void DialogWeldFixDataII::weldTypeChanged(int index)
 }
 
 void DialogWeldFixDataII::symmetryChanged( int index)
-{
-    m_cPart.weld_ii.eSymmetry = static_cast<setup_WELD_SYMMETRY_TYPE>(index);
+{    
+    if(m_cPart.weld_ii.eType==ASYMMETRIC)
+    {
+        ui->showWidget->clear_point();
+        m_cPart.weld_ii.align = static_cast<setup_PLANE_ALIGN_TYPE>(index);
+        if(m_cPart.weld_ii.align==setup_PLANE_TOP)
+            ui->weldImageLabel->setPixmap(QPixmap(":/file/resource/weld/asymmetric_weld1.png"));
+        else if(m_cPart.weld_ii.align==setup_PLANE_CENTER)
+            ui->weldImageLabel->setPixmap(QPixmap(":/file/resource/weld/asymmetric_weld2.png"));
+        else
+            ui->weldImageLabel->setPixmap(QPixmap(":/file/resource/weld/asymmetric_weld3.png"));
+
+    }
+    else
+        m_cPart.weld_ii.eSymmetry = static_cast<setup_WELD_SYMMETRY_TYPE>(index);
     ui->showWidget->update();
 }
 
@@ -576,6 +601,15 @@ void DialogWeldFixDataII::w1ValueChanged( double value)
         if(m_cPart.weld_ii.UU.r1 > value){
             ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.UU.r1);
         }
+    }else if(m_cPart.weld_ii.eType == ASYMMETRIC)
+    {
+
+        if(m_cPart.weld_ii.ASY.W1 < m_cPart.weld_ii.l1)
+        {
+            ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W1);
+            m_cPart.weld_ii.ASY.W1 = value;
+        }
+
     }
     m_cPart.weld_ii.I.w = value;
     ui->showWidget->update();
@@ -592,6 +626,11 @@ void DialogWeldFixDataII::w2ValueChanged( double value)
         }
         m_cPart.weld_ii.V.w2 = value;
     }
+     if(m_cPart.weld_ii.eType == ASYMMETRIC)
+        {
+        ui->w2DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W2);
+        m_cPart.weld_ii.ASY.W2 = value;
+        }
     ui->showWidget->update();
 
 }
@@ -613,6 +652,11 @@ void DialogWeldFixDataII::w3ValueChanged( double value)
             return;
         }
         break;
+
+    case ASYMMETRIC:
+        m_cPart.weld_ii.ASY.W3 = value;
+        ui->w3DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W3);
+        break;
     default:
         break;
     }
@@ -622,7 +666,7 @@ void DialogWeldFixDataII::w3ValueChanged( double value)
 
 void DialogWeldFixDataII::h1ValueChanged( double value)
 {
-    switch (m_cPart.weld_ii.eType) {
+    switch (m_cPart.weld_ii.eType){
     case V:
         if( m_cPart.afSize[0] < value)
         {
@@ -651,6 +695,12 @@ void DialogWeldFixDataII::h1ValueChanged( double value)
             ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.UV.h1);
         }
         break;
+    case ASYMMETRIC:
+        if(m_cPart.weld_ii.ASY.H1 < m_cPart.weld_ii.ASY.m_symmetry-m_cPart.weld_ii.h2)
+        {
+            ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.H1);
+            m_cPart.weld_ii.ASY.H1 = value;
+        }
     default:
         break;
     }
@@ -681,6 +731,8 @@ void DialogWeldFixDataII::h2ValueChanged( double value)
             ui->h2DoubleSpinBox->setValue(m_cPart.weld_ii.UV.h2);
         }
         break;
+    case ASYMMETRIC:
+            m_cPart.weld_ii.ASY.H2 = value;
     default:
         break;
     }
