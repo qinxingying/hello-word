@@ -255,6 +255,18 @@ private slots:
 
     void on_ComsScanfMode_currentIndexChanged(int index);
 
+    void on_ValuePartSizel1_valueChanged(double arg1);
+
+    void on_ValuePartSizeh1_valueChanged(double arg1);
+
+    void on_ValuePartSizea1_valueChanged(double arg1);
+
+    void on_ValuePartSizel2_valueChanged(double arg1);
+
+    void on_ValuePartSizeh2_valueChanged(double arg1);
+
+    void on_ValuePartSizea2_valueChanged(double arg1);
+
 private:
     Ui::DopplerGroupTab *ui;
 };

@@ -365,6 +365,8 @@ struct WELD_II
     double h1;
     double l2;
     double h2;
+    double a1;
+    double a2;
     setup_PLANE_ALIGN_TYPE align;  //不等厚板对齐
 
     union{

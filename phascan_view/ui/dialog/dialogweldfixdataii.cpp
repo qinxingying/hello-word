@@ -2,7 +2,7 @@
 #include "ui_dialogweldfixdataii.h"
 
 #include "ParameterProcess.h"
-
+#include<QDebug>
 DialogWeldFixDataII::DialogWeldFixDataII(QWidget *parent, int nGroupId) :
     QDialog(parent),
     ui(new Ui::DialogWeldFixDataII), m_nGroupId(nGroupId)
@@ -604,11 +604,25 @@ void DialogWeldFixDataII::w1ValueChanged( double value)
     }else if(m_cPart.weld_ii.eType == ASYMMETRIC)
     {
 
-        if(m_cPart.weld_ii.ASY.W1 < m_cPart.weld_ii.l1)
+        if(value >m_cPart.weld_ii.l1)
         {
+
+
+            m_cPart.weld_ii.ASY.W1 = m_cPart.weld_ii.l1;;
             ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W1);
+            ui->showWidget->update();
+            return ;
+        }else{
+
+
             m_cPart.weld_ii.ASY.W1 = value;
+            ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W1);
+            ui->showWidget->update();
+            return ;
+
         }
+
+
 
     }
     m_cPart.weld_ii.I.w = value;
@@ -617,6 +631,13 @@ void DialogWeldFixDataII::w1ValueChanged( double value)
 
 void DialogWeldFixDataII::w2ValueChanged( double value)
 {
+    if(m_cPart.weld_ii.eType == ASYMMETRIC)
+            {
+            m_cPart.weld_ii.ASY.W2 = value;
+            ui->w2DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W2);
+            ui->showWidget->update();
+            return ;
+            }
     if(m_cPart.weld_ii.eType == TKY){
         m_cPart.weld_ii.TKY.w2 = value;
     }else{
@@ -626,11 +647,6 @@ void DialogWeldFixDataII::w2ValueChanged( double value)
         }
         m_cPart.weld_ii.V.w2 = value;
     }
-     if(m_cPart.weld_ii.eType == ASYMMETRIC)
-        {
-        ui->w2DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W2);
-        m_cPart.weld_ii.ASY.W2 = value;
-        }
     ui->showWidget->update();
 
 }
@@ -656,6 +672,8 @@ void DialogWeldFixDataII::w3ValueChanged( double value)
     case ASYMMETRIC:
         m_cPart.weld_ii.ASY.W3 = value;
         ui->w3DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.W3);
+        ui->showWidget->update();
+        return;
         break;
     default:
         break;
@@ -666,6 +684,7 @@ void DialogWeldFixDataII::w3ValueChanged( double value)
 
 void DialogWeldFixDataII::h1ValueChanged( double value)
 {
+
     switch (m_cPart.weld_ii.eType){
     case V:
         if( m_cPart.afSize[0] < value)
@@ -696,11 +715,26 @@ void DialogWeldFixDataII::h1ValueChanged( double value)
         }
         break;
     case ASYMMETRIC:
-        if(m_cPart.weld_ii.ASY.H1 < m_cPart.weld_ii.ASY.m_symmetry-m_cPart.weld_ii.h2)
+        if(value < m_cPart.weld_ii.ASY.m_thickness-m_cPart.weld_ii.h2)
         {
-            ui->w1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.H1);
+//            if(value>=m_cPart.weld_ii.h1)
+//            {
+//             ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.h1);
+
+//            }
+
             m_cPart.weld_ii.ASY.H1 = value;
+            ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.H1);
+            ui->showWidget->update();
+            return;
+        }else{
+
+            ui->h1DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.m_thickness-m_cPart.weld_ii.h2);
+            m_cPart.weld_ii.ASY.H1 = m_cPart.weld_ii.ASY.m_thickness-m_cPart.weld_ii.h2;
+            ui->showWidget->update();
+            return;
         }
+        break;
     default:
         break;
     }
@@ -733,6 +767,9 @@ void DialogWeldFixDataII::h2ValueChanged( double value)
         break;
     case ASYMMETRIC:
             m_cPart.weld_ii.ASY.H2 = value;
+            ui->h2DoubleSpinBox->setValue(m_cPart.weld_ii.ASY.H2);
+            ui->showWidget->update();
+            return;
     default:
         break;
     }

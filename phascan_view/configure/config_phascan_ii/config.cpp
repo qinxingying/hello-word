@@ -6,6 +6,9 @@
 #include "../DopplerDataFileOperateor.h"
 #include "mercury_paramters/group_paramters.h"
 
+#define D_PI  3.141592654
+#define DEGREE_TO_ARCH(a)  ((a) * D_PI / 180.0)
+#define ARCH_TO_DEGREE(a)  ((a) * 180.0 / D_PI)
 Config *Config::m_instance = NULL;
 
 Config *Config::instance()
@@ -605,6 +608,7 @@ void Config::unpack_geometry_asymmetric_plan(const QVariantMap &map)
     asymmetric_Plane.m_l1=map.value("l1",DEFAULT_ASYMMETRIC_L1).toDouble();
     asymmetric_Plane.m_l2=map.value("l2",DEFAULT_ASYMMETRIC_L2).toDouble();
 
+
 //    Asymmetric_Plane.m_mainplane.m_height=map.value("Height",DEFAULT_ASYMMETRIC_H).toDouble();
 
     unpack_geometry_plane(map.value("Main").toMap(), asymmetric_Plane.m_mainplane);
@@ -785,6 +789,10 @@ void Config::getWeldData( int groupId, WELD_II & weld_ii)
         weld_ii.l2=asymmetric_Plane.m_l2;
         weld_ii.h2=asymmetric_Plane.m_h2;
         weld_ii.align=static_cast<setup_PLANE_ALIGN_TYPE>(asymmetric_Plane.m_align);
+
+        weld_ii.a1=ARCH_TO_DEGREE(atan(weld_ii.h1/weld_ii.l1));
+        weld_ii.a2=ARCH_TO_DEGREE(atan(weld_ii.h2/weld_ii.l2));
+        qDebug()<<"[FILE:"<<__FILE__<<",LINE"<<__LINE__<<",FUNC"<<__FUNCTION__<<"]"<< "weld_ii.a1 " << weld_ii.a1 <<endl;
         break;
     default:
         break;
