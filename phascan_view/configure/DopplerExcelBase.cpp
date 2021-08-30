@@ -543,7 +543,7 @@ bool ExcelBase::writeCurrentSheet(const QList<QList<QVariant> > &cells)
     bool succ = false;
     QVariant var;
     castListListVariant2Variant(cells,var);
-    succ = range->setProperty("Value", var);
+    succ = range->setProperty("Value2", var);
     delete range;
     return succ;
 #else
