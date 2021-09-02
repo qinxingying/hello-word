@@ -899,7 +899,7 @@ int ParameterProcess::SAxisDistToIndex(float fDist_) const
         {
             fDist_ = _scaner.fScanStop;
         }
-        _index = ceil(fDist_ - _scaner.fScanStart) / _scaner.fScanStep ;
+        _index = ceil((fDist_ - _scaner.fScanStart) / _scaner.fScanStep) ;
 	} else {
         if( fDist_ < _scaner.fScanStart2)
         {
@@ -908,7 +908,7 @@ int ParameterProcess::SAxisDistToIndex(float fDist_) const
         if( fDist_ > _scaner.fScanend){
             fDist_ = _scaner.fScanend;
         }
-        _index =  ceil(fDist_ * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep;
+        _index =  ceil((fDist_ * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep);
 	}
 	return _index;
 }
