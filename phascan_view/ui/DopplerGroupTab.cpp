@@ -1159,8 +1159,8 @@ void DopplerGroupTab::UpdateGroupConfig()
 	} else {
 		ui->LabelScanOffsetUnit->setText("mm");
 	}
-
 	UpdateTofdParam();
+
 
 	//*********** measure
 	ui->CheckMeasureShow->setCheckState(m_pGroup->bShowMeasure ? Qt::Checked : Qt::Unchecked );
@@ -1170,8 +1170,8 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->checkSScanShow->setCheckState(m_pGroup->bShowSScanMeasure ? Qt::Checked : Qt::Unchecked);
 
 	//ui->CheckBackShow->setCheckState(g_pMainWnd->ParamBackMode() ? Qt::Checked : Qt::Unchecked );
-	//ui->CheckBackShow->setChecked(g_pMainWnd->ParamBackMode()); //放开程序崩溃
-	ui->ComField1->setCurrentIndex(m_pGroup->aeMeasureType[0]);
+    //ui->CheckBackShow->setChecked(g_pMainWnd->ParamBackMode()); //放开程序崩溃
+    ui->ComField1->setCurrentIndex(m_pGroup->aeMeasureType[0]);
 	ui->ComField2->setCurrentIndex(m_pGroup->aeMeasureType[1]);
 	ui->ComField3->setCurrentIndex(m_pGroup->aeMeasureType[2]);
 	ui->ComField4->setCurrentIndex(m_pGroup->aeMeasureType[3]);
@@ -2074,7 +2074,6 @@ void DopplerGroupTab::on_BtnLoadDxfFile_clicked()
     g_pMainWnd->RunDrawThreadOnce(true);
     ui->ComSkewAngle->setCurrentIndex(m_pGroup->eSkew);
     ui->ValuePartSize1->setValue(m_pGroup->part.afSize[0]);
-
 }
 
 void DopplerGroupTab::on_CheckLwBwShow_clicked(bool checked)
@@ -3025,6 +3024,8 @@ void DopplerGroupTab::on_ValuePartSizel1_valueChanged(double arg1)
    m_pGroup->part.weld_ii.l1=arg1;
    m_pGroup->part.weld_ii.a1=ARCH_TO_DEGREE(atan(m_pGroup->part.weld_ii.h1/m_pGroup->part.weld_ii.l1));
    ui->ValuePartSizea1->setValue(m_pGroup->part.weld_ii.a1);
+   ProcessDisplay _display ;
+   _display.UpdateAllView();
 // g_pMainWnd->RunDrawThreadOnce(true);
 
 }
@@ -3032,17 +3033,20 @@ void DopplerGroupTab::on_ValuePartSizel1_valueChanged(double arg1)
 void DopplerGroupTab::on_ValuePartSizeh1_valueChanged(double arg1)
 {
     if(!ui->ValuePartSizeh1->hasFocus())  return ;
-
+     ProcessDisplay _display ;
     if(arg1>m_pGroup->part.weld_ii.ASY.m_thickness)
     {
 
       ui->ValuePartSizeh1->setValue(0);
+       _display.UpdateAllView();
       return ;
     }
     m_pGroup->part.weld_ii.h1=arg1;
 
     m_pGroup->part.weld_ii.a1=ARCH_TO_DEGREE(atan(m_pGroup->part.weld_ii.h1/m_pGroup->part.weld_ii.l1));
     ui->ValuePartSizea1->setValue(m_pGroup->part.weld_ii.a1);
+
+    _display.UpdateAllView();
 //  g_pMainWnd->RunDrawThreadOnce(true);
 
 
@@ -3050,12 +3054,13 @@ void DopplerGroupTab::on_ValuePartSizeh1_valueChanged(double arg1)
 
 void DopplerGroupTab::on_ValuePartSizea1_valueChanged(double arg1)
 {
-
+  ProcessDisplay _display ;
   if(!ui->ValuePartSizea1->hasFocus())  return ;
   if(arg1>=90)
   {
   ui->ValuePartSizeh1->setValue(0);
   ui->ValuePartSizea1->setValue(0);
+   _display.UpdateAllView();
   return ;
 
   }
@@ -3069,6 +3074,8 @@ void DopplerGroupTab::on_ValuePartSizea1_valueChanged(double arg1)
   else
    ui->ValuePartSizeh1->setValue(m_pGroup->part.weld_ii.h1);
 
+  _display.UpdateAllView();
+
 //    g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -3079,6 +3086,8 @@ void DopplerGroupTab::on_ValuePartSizel2_valueChanged(double arg1)
     m_pGroup->part.weld_ii.l2=arg1;
     m_pGroup->part.weld_ii.a2=ARCH_TO_DEGREE(atan(m_pGroup->part.weld_ii.h2/m_pGroup->part.weld_ii.l2));
     ui->ValuePartSizea2->setValue(m_pGroup->part.weld_ii.a2);
+    ProcessDisplay _display ;
+    _display.UpdateAllView();
 //    g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -3096,18 +3105,22 @@ void DopplerGroupTab::on_ValuePartSizeh2_valueChanged(double arg1)
 
     m_pGroup->part.weld_ii.a2=ARCH_TO_DEGREE(atan(m_pGroup->part.weld_ii.h2/m_pGroup->part.weld_ii.l2));
     ui->ValuePartSizea2->setValue(m_pGroup->part.weld_ii.a2);
+    ProcessDisplay _display ;
+    _display.UpdateAllView();
 //  g_pMainWnd->RunDrawThreadOnce(true);
 
 }
 
 void DopplerGroupTab::on_ValuePartSizea2_valueChanged(double arg1)
 {
-
+    ProcessDisplay _display ;
     if(!ui->ValuePartSizea2->hasFocus())  return ;
     if(arg1>=90)
     {
     ui->ValuePartSizeh2->setValue(0);
     ui->ValuePartSizea2->setValue(0);
+
+    _display.UpdateAllView();
     return ;
 
     }
@@ -3120,6 +3133,7 @@ void DopplerGroupTab::on_ValuePartSizea2_valueChanged(double arg1)
       }
       else
        ui->ValuePartSizeh2->setValue(m_pGroup->part.weld_ii.h2);
+      _display.UpdateAllView();
 
 //      g_pMainWnd->RunDrawThreadOnce(true);
 }
