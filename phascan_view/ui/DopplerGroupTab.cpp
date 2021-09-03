@@ -41,7 +41,7 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 	m_nGroupId = 0 ;
     m_pConfig = DopplerConfigure::Instance();
     m_pGroup  = &m_pConfig->group[m_nGroupId];
-	ui->toolBox->setMinimumHeight(400);
+//	ui->toolBox->setMinimumHeight(400);
     ui->ValueCScanThicknessMax->setMinimum(0.1);
     ui->ValueCScanThicknessMin->setMinimum(0);
 
@@ -59,9 +59,9 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
 
     SetWndName();
 
-    UpdateMeasureBox();
-    UpdateGroupConfig();
-	ui->toolBox->setCurrentIndex(0);
+    //UpdateMeasureBox();
+    //UpdateGroupConfig();
+    ui->toolBox->setCurrentIndex(0);
     CreateSettingView();
 
     SetWidgetInvalide(); // 使窗口不使能  只作数据显示用
@@ -1020,11 +1020,14 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
-    ui->ValueCouplingGainCom->setValue(CUR_RES.Couple_Com_Gain[m_nGroupId]);
-    ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
-    ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
-    ui->ValueEL->setValue(CUR_RES.CurEL[m_nGroupId]);
-    //qDebug()<<"885"<<CUR_RES.CurSS[m_nGroupId];
+    ui->ValueCouplingGainCom->setValue(CUR_RES.Couple_Com_Gain[m_nGroupId]);   
+    UpdateStandard(CUR_RES.Standard[m_nGroupId],1);
+    ui->ComStandard->setCurrentIndex(CUR_RES.Standard[m_nGroupId]);
+    ui->ValueRL->blockSignals(false);
+    ui->ValueSL->blockSignals(false);
+    ui->ValueEL->blockSignals(false);
+    ui->ComStandard->blockSignals(false);
+    ui->ComThickness->blockSignals(false);
     ui->ValueScannerSensitivity->setValue(CUR_RES.CurSS[m_nGroupId]);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
@@ -1212,33 +1215,29 @@ void DopplerGroupTab::UpdateGroupConfig()
 }
 void DopplerGroupTab::UpdateTofdParam()
 {
-	ui->LabelTofdPcsCal->hide();
-	ui->SpinBoxCalPCS->hide();
-	ui->LabelCalPCSUnit->hide();
+    ui->LabelTofdPcsCal->hide();
+    ui->SpinBoxCalPCS->hide();
+    ui->LabelCalPCSUnit->hide();
 
-	if(m_pGroup->eTxRxMode != setup_TX_RX_MODE_TOFD )
-	{
-		ui->BoxPartTofd->hide();
-        ui->scrollGeometry->setMinimumHeight(450);
-        ui->scrollGeometry->resize(ui->scrollGeometry->width(), 450);
+    if(m_pGroup->eTxRxMode != setup_TX_RX_MODE_TOFD )
+    {
+        ui->BoxPartTofd->hide();
     }else{
-		ui->BoxPartTofd->show();
-        ui->scrollGeometry->setMinimumHeight(760);
-        ui->scrollGeometry->resize(ui->scrollGeometry->width(), 760);
-		ui->CheckLwBwShow->setChecked(m_pGroup->bShowLwBw);
+        ui->BoxPartTofd->show();
+        ui->CheckLwBwShow->setChecked(m_pGroup->bShowLwBw);
 
-		SCANNER& _scaner = m_pConfig->common.scanner ;
-		ui->ComBoxScanMode->setCurrentIndex(_scaner.eScanMode);
-		ui->ComBoxProMode->setCurrentIndex(m_pConfig->AppEvn.iTofdDataProMode);
+        SCANNER& _scaner = m_pConfig->common.scanner ;
+        ui->ComBoxScanMode->setCurrentIndex(_scaner.eScanMode);
+        ui->ComBoxProMode->setCurrentIndex(m_pConfig->AppEvn.iTofdDataProMode);
 
-		TOFD_PARA* _tofd = m_pConfig->GetTofdConfig(m_nGroupId);
-		ui->SpinBoxWedgeSeperation->setValue(_tofd->fWedgeSep);
-		ui->SpinBoxPCS->setValue(_tofd->fPCS);
-		ui->SpinBoxCalPCS->setValue(_tofd->fPcs);
-		ui->SpinBoxZeroOff->setValue(_tofd->fZeroOff);
-		ui->SpinBoxDepthStart->setValue(_tofd->fLayerStart);
-		ui->SpinBoxDepthEnd->setValue(_tofd->fLayerEnd);
-	}
+        TOFD_PARA* _tofd = m_pConfig->GetTofdConfig(m_nGroupId);
+        ui->SpinBoxWedgeSeperation->setValue(_tofd->fWedgeSep);
+        ui->SpinBoxPCS->setValue(_tofd->fPCS);
+        ui->SpinBoxCalPCS->setValue(_tofd->fPcs);
+        ui->SpinBoxZeroOff->setValue(_tofd->fZeroOff);
+        ui->SpinBoxDepthStart->setValue(_tofd->fLayerStart);
+        ui->SpinBoxDepthEnd->setValue(_tofd->fLayerEnd);
+    }
 }
 
 void DopplerGroupTab::UpdateSizeingCurves()
@@ -1382,53 +1381,31 @@ void DopplerGroupTab::UpdateGeometryState()
         ui->ValuePartSize3->hide();
         ui->LabelPartSizeUnit3->hide();
 	}
+
     if(_eGeometry == setup_PART_GEOMETRY_ASYMMETRIC)
     {
-     ui->LabelPartSize2->hide();
-     ui->LabelPartSize3->hide();
-     ui->ValuePartSize2->hide();
-     ui->ValuePartSize3->hide();
-     ui->LabelPartSizeUnit2->hide();
-     ui->LabelPartSizeUnit3->hide();
+        ui->asyPartWidget->show();
 
-     ui->ValuePartSizel1->setValue(m_pGroup->part.weld_ii.l1);
-     ui->ValuePartSizeh1->setValue(m_pGroup->part.weld_ii.h1);
-     ui->ValuePartSizel2->setValue(m_pGroup->part.weld_ii.l2);
-     ui->ValuePartSizeh2->setValue(m_pGroup->part.weld_ii.h2);
-     ui->ValuePartSize1_2->setValue(m_pGroup->part.weld_ii.ASY.s_thickness);
-     ui->ValuePartSizea1->setValue(m_pGroup->part.weld_ii.a1);
-     ui->ValuePartSizea2->setValue(m_pGroup->part.weld_ii.a2);
+        ui->LabelPartSize2->hide();
+        ui->LabelPartSize3->hide();
+        ui->ValuePartSize2->hide();
+        ui->ValuePartSize3->hide();
+        ui->LabelPartSizeUnit2->hide();
+        ui->LabelPartSizeUnit3->hide();
 
-     ui->LabelPartSize1->setText(QString(tr("Main_Thickness:")));
-     ui->LabelPartSize1_2->setText(QString(tr("Slave_Thickness:")));
+        ui->ValuePartSizel1->setValue(m_pGroup->part.weld_ii.l1);
+        ui->ValuePartSizeh1->setValue(m_pGroup->part.weld_ii.h1);
+        ui->ValuePartSizel2->setValue(m_pGroup->part.weld_ii.l2);
+        ui->ValuePartSizeh2->setValue(m_pGroup->part.weld_ii.h2);
+        ui->ValuePartSize1_2->setValue(m_pGroup->part.weld_ii.ASY.s_thickness);
+        ui->ValuePartSizea1->setValue(m_pGroup->part.weld_ii.a1);
+        ui->ValuePartSizea2->setValue(m_pGroup->part.weld_ii.a2);
+
+        ui->LabelPartSize1->setText(QString(tr("Main_Thickness:")));
+        ui->LabelPartSize1_2->setText(QString(tr("Slave_Thickness:")));
 
     }else{
-
-        ui->LabelPartSize1_2->hide();
-        ui->ValuePartSize1_2->hide();
-        ui->LabelPartSizeUnit1_2->hide();
-
-        ui->LabelPartSizel1->hide();
-        ui->LabelPartSizeh1->hide();
-        ui->LabelPartSizea1->hide();
-        ui->LabelPartSizel2->hide();
-        ui->LabelPartSizeh2->hide();
-        ui->LabelPartSizea2->hide();
-
-        ui->ValuePartSizel1->hide();
-        ui->ValuePartSizeh1->hide();
-        ui->ValuePartSizea1->hide();
-        ui->ValuePartSizel2->hide();
-        ui->ValuePartSizeh2->hide();
-        ui->ValuePartSizea2->hide();
-
-        ui->LabelPartSizeUnitl1->hide();
-        ui->LabelPartSizeUnith1->hide();
-        ui->LabelPartSizeUnita1->hide();
-        ui->LabelPartSizeUnith2->hide();
-        ui->LabelPartSizeUnitl2->hide();
-        ui->LabelPartSizeUnita2->hide();
-
+        ui->asyPartWidget->hide();
     }
 
 	ui->ValuePartSize1->setValue(m_pGroup->part.afSize[0]);
@@ -2789,6 +2766,12 @@ void DopplerGroupTab::on_BtnDefectDelete_clicked()
 
 void DopplerGroupTab::retranslateGroupTabUi()
 {
+    ui->ValueRL->blockSignals(true);
+    ui->ValueSL->blockSignals(true);
+    ui->ValueEL->blockSignals(true);
+    ui->ComStandard->blockSignals(true);
+    ui->ComThickness->blockSignals(true);
+
     ui->retranslateUi(this);
     model->setHeaderData(0, Qt::Horizontal, tr("Display Mode"));
 }
