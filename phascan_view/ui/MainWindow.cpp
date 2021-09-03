@@ -162,6 +162,7 @@ void MainWindow::init_ui()
     ui->actionStop_Analysis->setDisabled(true);
     ui->actionSave_Data->setDisabled(true);
     ui->actionSave_B_Scan_Data->setDisabled(true);
+    ui->actionExcel_Export->setVisible(false);
     // init display widget list
     for(int i = 0 ; i < MAX_LIST_QTY ; i++)
     {

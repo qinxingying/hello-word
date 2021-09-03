@@ -480,6 +480,7 @@ void DopplerHtmlReport::BuildReport()
                 fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _fData);
                 fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pDfInfo->dDepth);
                 int groupId = _pDfInfo->dGroupId - 1;
+                if(groupId < 0) groupId = 0;
                 int defectId = _pDfInfo->dIndex;
                 int _index = 0;
                 DEFECT_INFO* _DfInfo = _pConfig->m_dfParam[groupId].pDFHead;
@@ -515,6 +516,7 @@ void DopplerHtmlReport::BuildReport()
             for(int i = 0; i < defectNum; i++){
                 DEFECT_INFO* _pDfInfo = sortBuff[i];
                 int groupId = _pDfInfo->dGroupId - 1;
+                if(groupId < 0) groupId = 0;
                 int indexId = _pDfInfo->dIndex - 1;
                 CreateDefectCell(groupId, indexId, _pDfInfo, 2);
             }

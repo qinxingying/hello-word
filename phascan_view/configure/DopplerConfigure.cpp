@@ -2161,6 +2161,7 @@ int DopplerConfigure::DefectSign(int iGroupId_, DEFECT_SIGN_TYPE signType_)
 			if(m_dfParam[iGroupId_].dfInfo.fSStart < -10000)
 			break;
         }
+        m_dfParam[iGroupId_].dfInfo.dGroupId = iGroupId_ + 1;
         _ret = AddDefectInfo(iGroupId_, m_dfParam[iGroupId_].dfInfo);
         ClearDefectInfo(iGroupId_);
 
