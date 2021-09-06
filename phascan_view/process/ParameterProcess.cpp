@@ -4058,15 +4058,4 @@ WDATA *ParameterProcess::GetCScanData()
     return CScanData[0];
 }
 
-WDATA BScanData[2048][2048];
-void ParameterProcess::SetBScanData(WDATA data[2048][2048])
-{
-    memset(BScanData,0x00,sizeof(BScanData));
-    memcpy(BScanData, data, sizeof(BScanData));
-}
-
-WDATA *ParameterProcess::GetBScanData()
-{
-    return BScanData[0];
-}
 

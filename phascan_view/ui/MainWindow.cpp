@@ -3197,59 +3197,86 @@ void MainWindow::slot_actionSaveBSacnData_triggered()
     if(dispMode < 0){
         dispMode = (int)ProcessDisplay::DISP_S_AV;
     }
+    int nLawId = pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_LAW];
 
     QString filePath = QFileDialog::getSaveFileName(this, tr("Save BSacn Data"), "BScanData",
             "Microsoft Excel(*.xlsx)");
     if (!filePath.isEmpty())
     {
-        WDATA* data = process->GetBScanData();
-        QList< QList<QVariant> > m_datas;
-        if (data != nullptr) {
-            for (int j = -1; j <= scanMax; ++j) {
-                QList<QVariant> rows;
-                if (j == -1) {
-                    rows.append("");
-                    for (int i = 1; i <= pointQty; ++i) {
-                        rows.append(QString("Point%1").arg(i));
-                    }
-                    m_datas.append(rows);
-                    continue;
-                }
-                rows.append(QString("Pos%1").arg(j));
-                for (int i = 1; i <= pointQty; ++i) {
-                    switch (dispMode) {                                       
-                    case ProcessDisplay::DISP_S_AV_BH_CH:
-                    case ProcessDisplay::DISP_AH_BV:
-                    case ProcessDisplay::DISP_AV_BV:
-                    case ProcessDisplay::DISP_S_AV_BV:
-                    case ProcessDisplay::DISP_S_AH_BV:
-                    case ProcessDisplay::DISP_S_AV_CH_BH:
-                    case ProcessDisplay::DISP_S_AV_BH_CHH:
-                        rows.append(data[(j + 1)*2048 + i]);
-                        break;
-                    case ProcessDisplay::DISP_S_AH_BH_CH:
-                    case ProcessDisplay::DISP_S_AV_BH:
-                    case ProcessDisplay::DISP_S_AH_BH_CV:
-                        rows.append(data[(scanMax - j + 1) + i * 2048]);
-                        break;
-                    default:
-                        break;
-                    }
+        volatile WDATA*	    pData = process->GetShadowDataPointer();
 
-                }
-
-                m_datas.append(rows);
-            }
-            ExcelBase xls;
-            xls.create(filePath);
-            xls.setCurrentSheet(1);
-            QElapsedTimer timer;
-            timer.start();
-            xls.writeCurrentSheet(m_datas);
-            qDebug() << "write cost:"<< timer.elapsed()<< "ms";
-            xls.save();
-            xls.close();
+        if(!pData) {
+            return ;
         }
+        SCANNER& scanner = pConfig->common.scanner;
+        int fixDis;
+        int nScanOff = process->GetScanOff(m_iCurGroup);
+        S32 j , k , iData;
+        S32 nFrameOffset = process->GetTotalDataSize()  ;
+        int nGroupOffset = process->GetGroupDataOffset(m_iCurGroup);
+        int nLawOffset   = process->GetGroupLawDataOffset(m_iCurGroup, nLawId) ;
+        int nOffset	  = nGroupOffset + nLawOffset  ;
+
+        U8*      pMarker = process->GetScanMarker(m_iCurGroup)  ;
+
+        F32	   fScale = process->GetRefGainScale(m_iCurGroup) ;
+        bool bRectify = (process->GetRectifierMode(m_iCurGroup) == setup_RECTIFIER_RF ) ;
+
+        volatile WDATA* pData1, *pData2 ;
+        if( scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
+            fixDis = 0;
+        }else{
+            int index = process->TransforIndexPosToIndex(scanner.fIndexPos);
+            int scanQty = ( scanner.fScanStop - scanner.fScanStart) / scanner.fScanStep + 0.5;
+            fixDis = scanQty*index;
+
+        }
+        int  index = 0;
+        int step = 1.0;
+        U8 (*src)[1024] = new WDATA[scanMax+1][1024];
+        memset(src, 0, scanMax * 1024);
+        for( k = 0 ; k <= scanMax; k++) {
+            int buff = fixDis + k;
+            if(pMarker[buff] && buff >= nScanOff && buff <= scanMax) {
+                index = process->GetRealScanIndex(m_iCurGroup, buff);
+                pData1 = index * nFrameOffset + pData + nOffset ;
+                int index_ = k*step;
+                for(j = 0 ; j <= pointQty ; j++)	{
+                    pData2 = pData1 + j   ;
+                    iData  = process->GetRefGainScaleData(*pData2, fScale, bRectify);
+                    src[index_][j] = iData;
+                }
+            }
+        }
+
+        QList< QList<QVariant> > m_datas;
+        for (int j = -1; j <= scanMax; ++j) {
+            QList<QVariant> rows;
+            if (j == -1) {
+                rows.append("");
+                for (int i = 1; i <= pointQty; ++i) {
+                    rows.append(QString("Point%1").arg(i));
+                }
+                m_datas.append(rows);
+                continue;
+            }
+            rows.append(QString("Pos%1").arg(j));
+            for (int i = 0; i < pointQty; ++i) {
+                  rows.append(src[j][i]);
+            }
+
+            m_datas.append(rows);
+        }
+        ExcelBase xls;
+        xls.create(filePath);
+        xls.setCurrentSheet(1);
+        QElapsedTimer timer;
+        timer.start();
+        xls.writeCurrentSheet(m_datas);
+        qDebug() << "write cost:"<< timer.elapsed()<< "ms";
+        xls.save();
+        xls.close();
+        free(src);
     }
 }
 

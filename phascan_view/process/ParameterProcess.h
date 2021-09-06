@@ -258,8 +258,6 @@ public:
     void   SetCScanStep(float _step);
     void   GetCScanStep(float &_step);
     WDATA* GetCScanData();
-    void   SetBScanData(WDATA data[2048][2048]);
-    WDATA* GetBScanData();
 protected:
     explicit ParameterProcess(QObject *parent = 0);
     DopplerConfigure* m_pConfig;
