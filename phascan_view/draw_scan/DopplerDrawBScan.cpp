@@ -205,7 +205,6 @@ void DopplerDrawBScanH::Draw (QImage* pImage_)
 //			}
 		}
 	}
-    _process->SetBScanData(src);
      TransformImage(_nPointQty,VRange,src,_nWidth,_nHeight,pImage_);
     }
     else if (zoomflag == 1)
@@ -417,7 +416,6 @@ void DopplerDrawBScanV::Draw (QImage* pImage_)
 //			}
 		}
 	}
-    _process->SetBScanData(src);
     TransformImage(HRange,_nPointQty,src,_nWidth,_nHeight,pImage_);
     }
     else if(zoomflag == 1)
