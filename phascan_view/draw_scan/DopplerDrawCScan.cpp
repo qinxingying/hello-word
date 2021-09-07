@@ -1395,11 +1395,6 @@ void DopplerDrawCScanH::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 			}
         }
 	}
-    if (zoomflag == 0 && m_CScanInfo.eType == m_pConfig->group[m_cInfo.nGroupId].eCScanSource[0]) {
-        _process->SetCScanRange(m_PosStart, m_PosStop);
-        _process->SetCScanStep(step);
-        _process->SetCScanData(src);
-    }
     _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
         TransformImage( HRange,lawstop-lawstart,src,pImage_->width(),pImage_->height(),pImage_);
@@ -1778,7 +1773,6 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
     int new_index = 0;
     float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
     memset(src,0x00,sizeof(src));
-    memset(srcMerge, 0x00, sizeof(srcMerge));
     for(i = m_PosStart-1 , j = -1 ; i <= m_PosStop+1 && j < (_nScanend)+1; i++ , j++) {
         if(i<0)
             continue;
@@ -1804,7 +1798,6 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 //_pImageTmp	   = _pImageBits + (k -lawstart) * _nWidthStep + j * 3 ;
                 //_pColorTmp	   = m_pColor[_aGateValue1[k ]] ;
                  src[new_index][k-lawstart+1]=_aGateValue1[k ];
-                 srcMerge[new_index][k-lawstart+1]=_aGateValue2[k ];
                 //memcpy(_pImageTmp, _pColorTmp, 3);
 			}
         }
@@ -1819,12 +1812,6 @@ void DopplerDrawCScanH::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 //			}
 //		}
 	}
-
-    if (zoomflag == 0 && m_CScanInfo.eType == m_pConfig->group[m_cInfo.nGroupId].eCScanSource[0]) {
-        _process->SetCScanRange(m_PosStart, m_PosStop);
-        _process->SetCScanStep(step);
-        _process->SetCScanData(srcMerge);
-    }
     unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
         TransformImage( HRange,lawstop-lawstart,src,pImage_->width(),pImage_->height(),pImage_);
@@ -3076,11 +3063,6 @@ void DopplerDrawCScanV::DrawGateAmplitude(QImage* pImage_ , GATE_TYPE eGate_)
 //			}
 		}
 	}
-    if (zoomflag == 0 && m_CScanInfo.eType == m_pConfig->group[m_cInfo.nGroupId].eCScanSource[0]) {
-        _process->SetCScanRange(m_PosStart, m_PosStop);
-        _process->SetCScanStep(step);
-        _process->SetCScanData(src);
-    }
     unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
     TransformImage(lawstop-lawstart, VRange, src, pImage_->width(), pImage_->height(), pImage_);
@@ -3376,7 +3358,6 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 	int _nScanMax = _process->GetScanMax();
     float _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
     memset(src,0x00,sizeof(src));
-    memset(srcMerge, 0x00, sizeof(srcMerge));
     int old_index = -1;
     int new_index = 0;
     for(i = m_PosStart-1 , j = _nScanend  ; i <= m_PosStop+1 && j >= -1; i++ , j--) {
@@ -3406,7 +3387,6 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
                 //_pImageTmp2 = _pImageTmp1 + (k - lawstart) * 3 ;
                 //_pColorTmp = m_pColor[_aGateValue1[k ]] ;
                 src[k-lawstart+1][new_index]=_aGateValue1[k ];
-                srcMerge[k-lawstart+1][new_index]=_aGateValue2[k ];
                 //memcpy(_pImageTmp2, _pColorTmp, 3);
 			}
 		} else {
@@ -3416,11 +3396,6 @@ void DopplerDrawCScanV::DrawGatePos(QImage* pImage_ , GATE_TYPE eGate1_ , GATE_T
 //			}
 		}
 	}
-    if (zoomflag == 0 && m_CScanInfo.eType == m_pConfig->group[m_cInfo.nGroupId].eCScanSource[0]) {
-        _process->SetCScanRange(m_PosStart, m_PosStop);
-        _process->SetCScanStep(step);
-        _process->SetCScanData(srcMerge);
-    }
     unsigned char* _pData = pImage_->bits() ;
         memset(_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
     TransformImage(lawstop - lawstart, VRange, src, pImage_->width(), pImage_->height(), pImage_);
