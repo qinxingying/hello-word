@@ -5,6 +5,7 @@
 #include <QDebug>
 #if defined(Q_OS_WIN)
 #include <ActiveQt/QAxObject>
+#include "qt_windows.h"
 #endif // Q_OS_WIN
 
 
@@ -68,6 +69,12 @@ void ExcelBasePrivate::construct()
 {
 #if defined(Q_OS_WIN)
     destory();
+    HRESULT hr=S_FALSE;
+    hr = CoInitialize(0);
+    if(FAILED(hr)) {
+        qDebug("Qt: Could not initialize OLE error %x", (unsigned int)hr);
+    }
+
     excel = new QAxObject(q_ptr);
     excel->setControl("Excel.Application");
     excel->setProperty("Visible",false);
@@ -112,6 +119,7 @@ ExcelBase::ExcelBase(QObject* par):QObject(par)
 ExcelBase::~ExcelBase()
 {
     close();
+    OleUninitialize();
     delete d_ptr;
 }
 
@@ -500,7 +508,7 @@ bool ExcelBase::writeCurrentSheet(const QList<QList<QVariant> > &cells)
     bool succ = false;
     QVariant var;
     castListListVariant2Variant(cells,var);
-    succ = range->setProperty("Value", var);
+    succ = range->setProperty("Value2", var);
     delete range;
     return succ;
 #else
