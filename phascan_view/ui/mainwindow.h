@@ -14,6 +14,7 @@
 #include <QTranslator>
 #include <QDoubleSpinBox>
 #include "dialog/dialogdefectmethodselect.h"
+#include "aexportscandatatoexcel.h"
 
 #define MAX_LIST_QTY     10
 class DataRefreshThread;
@@ -154,8 +155,15 @@ private:
     bool m_bDefectBackMode;
     setup_LANG m_currentLang;
 
+    int m_iCurDefectIndex; // 当前是第几个缺陷
+
+    QThread* m_pExportExcelThread;
+    AExportScanDataToExcel* m_excelWriter;
+
 signals:
     void setPixmap(QPixmap pixmap);
+    void exportBScanData(QString filePath);
+    void exportCScanData(QString filePath);
 
 private slots:
     void slotsLeftTabButton(Qt::MouseButton);

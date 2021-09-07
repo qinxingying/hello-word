@@ -4024,38 +4024,4 @@ WDATA* ParameterProcess::GetRasterData(int nGroupId_, setup_CSCAN_SOURCE_MODE so
 
 }
 
-WDATA CScanData[2048][2048];
-void ParameterProcess::SetCScanData(WDATA data[2048][2048])
-{
-    memset(CScanData,0x00,sizeof(CScanData));
-    memcpy(CScanData, data, sizeof(CScanData));
-}
-
-void ParameterProcess::SetCScanRange(int _start, int _end)
-{
-    m_cPosStart = _start;
-    m_cPosStop = _end;
-}
-
-void ParameterProcess::GetCScanRange(int &_start, int &_end)
-{
-    _start = m_cPosStart;
-    _end = m_cPosStop;
-}
-
-void ParameterProcess::SetCScanStep(float _step)
-{
-    m_cStep = _step;
-}
-
-void ParameterProcess::GetCScanStep(float &_step)
-{
-    _step = m_cStep;
-}
-
-WDATA *ParameterProcess::GetCScanData()
-{
-    return CScanData[0];
-}
-
 

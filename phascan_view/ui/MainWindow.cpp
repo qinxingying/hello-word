@@ -120,16 +120,31 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave_Data, &QAction::triggered, this, &MainWindow::slot_actionSaveCSacnData_triggered);
     connect(ui->actionSave_B_Scan_Data, &QAction::triggered, this, &MainWindow::slot_actionSaveBSacnData_triggered);
 
+
     connect(ui->IndicationTable, &IndicationTableWidget::merged, this, &MainWindow::on_actionSave_Defect_triggered);
     connect(ui->IndicationTable, &IndicationTableWidget::save, this, &MainWindow::slotSaveDefect);
 
     connect(ui->actionExcel_Export, &QAction::triggered, this, &MainWindow::slot_actionExcelExport_triggered);
+
+    m_excelWriter = new AExportScanDataToExcel();
+    m_pExportExcelThread = new QThread(this);
+    m_excelWriter->moveToThread(m_pExportExcelThread);
+    connect(this, &MainWindow::exportBScanData, m_excelWriter, &AExportScanDataToExcel::saveBScanData);
+    connect(this, &MainWindow::exportCScanData, m_excelWriter, &AExportScanDataToExcel::saveCScanData);
+    connect(m_excelWriter, &AExportScanDataToExcel::done, this, [=]{
+        m_pExportExcelThread->quit();
+        m_pExportExcelThread->wait();
+    });
 }
 
 MainWindow::~MainWindow()
 {
     if(m_pThreadDraw){
         m_pThreadDraw->terminate();
+    }
+
+    if(m_pExportExcelThread) {
+        m_pExportExcelThread->terminate();
     }
 
     for(int i = 0; i < MAX_LIST_QTY; i++)
@@ -3101,182 +3116,33 @@ void MainWindow::on_actionFile_Properties_triggered()
 
 void MainWindow::slot_actionSaveCSacnData_triggered()
 {
-    DopplerConfigure* pConfig = DopplerConfigure::Instance();
-    ParameterProcess* process = ParameterProcess::Instance();
-    int scanMax    = process->SAxisstoptoIndex(process->GetScanend());
-    int lawstart  = process->GetLawStart();
-    int lawstop   = process->GetLawStop();
-    int disp_mode = pConfig->group[m_iCurGroup].DisplayMode;
-
-    bool twoGate = false;
-    setup_CSCAN_SOURCE_MODE eSource = process->GetCScanSource(m_iCurGroup , 0) ;
-    if (eSource == setup_CSCAN_POS_AI || eSource == setup_CSCAN_POS_BI || eSource == setup_CSCAN_POS_BA) {
-        twoGate = true;
-    }
-    int scanStart = 0, scanStop = 0;
-    process->GetCScanRange(scanStart, scanStop);
-    float step = 1.0;
-    process->GetCScanStep(step);
-
-    if(disp_mode < 0){
-        disp_mode = (int)ProcessDisplay::DISP_S_AV;
-    }
-
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Save CSacn Data"), "CScanData",
-            "Microsoft Excel(*.xlsx)");
-    if (!filePath.isEmpty())
+    if(m_pExportExcelThread->isRunning())
     {
-        WDATA* data = process->GetCScanData();
-        QList< QList<QVariant> > m_datas;
-        if (data != nullptr) {
-            for (int j = scanStart-1; j <= scanStop; ++j) {
-                QList<QVariant> rows;
-                if (j == scanStart-1) {
-                    rows.append("");
-                    for (int i = 1; i <= lawstop; ++i) {
-                        rows.append(QString("Beam%1").arg(i));
-                    }
-                    m_datas.append(rows);
-                    continue;
-                }
-                rows.append(QString("Pos%1").arg(j));
-                int index = j * step;
-                for (int i = lawstart + 1; i <= lawstop; ++i) {
-                    switch (disp_mode) {
-                    case ProcessDisplay::DISP_S_AV_BH_CH:
-                    case ProcessDisplay::DISP_S_AH_BH_CH:
-                    case ProcessDisplay::DISP_S_AV_CH:
-                    case ProcessDisplay::DISP_S_AV_CH_CH:
-                    case ProcessDisplay::DISP_S_AV_CH_BH:
-                    case ProcessDisplay::DISP_S_AV_CH_N:
-                    case ProcessDisplay::DISP_S_AV_BH_CHH:
-                        if (twoGate) {
-                            rows.append(data[(index + 1)*2048 + i] / 10.0);
-                        } else {
-                            rows.append(data[(index + 1)*2048 + i]);
-                        }
-                        break;
-                    case ProcessDisplay::DISP_S_AH_BH_CV:
-                    case ProcessDisplay::DISP_S_AH_CV:
-                    case ProcessDisplay::DISP_S_AH_CV_CV:
-                        index = (scanStop - j + 1) * step;
-                        if (twoGate) {
-                            rows.append(data[index + i * 2048] / 10.0);
-                        } else {
-                            rows.append(data[index + i * 2048]);
-                        }
-                        break;
-                    default:
-                        break;
-                    }
+        return;
+    }
+    m_excelWriter->setGroupId(m_iCurGroup);
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save CSacn Data"), "CScanData",
+               "Microsoft Excel(*.xlsx)");
+    if (!filePath.isEmpty()) {
+        m_pExportExcelThread->start();
 
-                }
-
-                m_datas.append(rows);
-            }
-            ExcelBase xls;
-            xls.create(filePath);
-            xls.setCurrentSheet(1);
-            QElapsedTimer timer;
-            timer.start();
-            xls.writeCurrentSheet(m_datas);
-            qDebug() << "write cost:"<< timer.elapsed()<< "ms";
-            xls.save();
-            xls.close();
-        }
+        emit exportCScanData(filePath);
     }
 }
 
 void MainWindow::slot_actionSaveBSacnData_triggered()
 {
-    DopplerConfigure* pConfig = DopplerConfigure::Instance();
-    ParameterProcess* process = ParameterProcess::Instance();
-    int scanMax    = process->SAxisstoptoIndex(process->GetScanend());
-    int pointQty  = process->GetGroupPointQty(m_iCurGroup);
-    int dispMode = pConfig->group[m_iCurGroup].DisplayMode;
-    if(dispMode < 0){
-        dispMode = (int)ProcessDisplay::DISP_S_AV;
-    }
-    int nLawId = pConfig->group[m_iCurGroup].afCursor[setup_CURSOR_LAW];
-
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Save BSacn Data"), "BScanData",
-            "Microsoft Excel(*.xlsx)");
-    if (!filePath.isEmpty())
+    if(m_pExportExcelThread->isRunning())
     {
-        volatile WDATA*	    pData = process->GetShadowDataPointer();
+        return;
+    }
+    m_excelWriter->setGroupId(m_iCurGroup);
+    QString filePath = QFileDialog::getSaveFileName(0, tr("Save BSacn Data"), "BScanData",
+            "Microsoft Excel(*.xlsx)");
+    if (!filePath.isEmpty()) {
+        m_pExportExcelThread->start();
 
-        if(!pData) {
-            return ;
-        }
-        SCANNER& scanner = pConfig->common.scanner;
-        int fixDis;
-        int nScanOff = process->GetScanOff(m_iCurGroup);
-        S32 j , k , iData;
-        S32 nFrameOffset = process->GetTotalDataSize()  ;
-        int nGroupOffset = process->GetGroupDataOffset(m_iCurGroup);
-        int nLawOffset   = process->GetGroupLawDataOffset(m_iCurGroup, nLawId) ;
-        int nOffset	  = nGroupOffset + nLawOffset  ;
-
-        U8*      pMarker = process->GetScanMarker(m_iCurGroup)  ;
-
-        F32	   fScale = process->GetRefGainScale(m_iCurGroup) ;
-        bool bRectify = (process->GetRectifierMode(m_iCurGroup) == setup_RECTIFIER_RF ) ;
-
-        volatile WDATA* pData1, *pData2 ;
-        if( scanner.eScanType == setup_SCAN_TYPE_ONE_LINE){
-            fixDis = 0;
-        }else{
-            int index = process->TransforIndexPosToIndex(scanner.fIndexPos);
-            int scanQty = ( scanner.fScanStop - scanner.fScanStart) / scanner.fScanStep + 0.5;
-            fixDis = scanQty*index;
-
-        }
-        int  index = 0;
-        int step = 1.0;
-        U8 (*src)[1024] = new WDATA[scanMax+1][1024];
-        memset(src, 0, scanMax * 1024);
-        for( k = 0 ; k <= scanMax; k++) {
-            int buff = fixDis + k;
-            if(pMarker[buff] && buff >= nScanOff && buff <= scanMax) {
-                index = process->GetRealScanIndex(m_iCurGroup, buff);
-                pData1 = index * nFrameOffset + pData + nOffset ;
-                int index_ = k*step;
-                for(j = 0 ; j <= pointQty ; j++)	{
-                    pData2 = pData1 + j   ;
-                    iData  = process->GetRefGainScaleData(*pData2, fScale, bRectify);
-                    src[index_][j] = iData;
-                }
-            }
-        }
-
-        QList< QList<QVariant> > m_datas;
-        for (int j = -1; j <= scanMax; ++j) {
-            QList<QVariant> rows;
-            if (j == -1) {
-                rows.append("");
-                for (int i = 1; i <= pointQty; ++i) {
-                    rows.append(QString("Point%1").arg(i));
-                }
-                m_datas.append(rows);
-                continue;
-            }
-            rows.append(QString("Pos%1").arg(j));
-            for (int i = 0; i < pointQty; ++i) {
-                  rows.append(src[j][i]);
-            }
-
-            m_datas.append(rows);
-        }
-        ExcelBase xls;
-        xls.create(filePath);
-        xls.setCurrentSheet(1);
-        QElapsedTimer timer;
-        timer.start();
-        xls.writeCurrentSheet(m_datas);
-        qDebug() << "write cost:"<< timer.elapsed()<< "ms";
-        xls.save();
-        xls.close();
-        free(src);
+        emit exportBScanData(filePath);
     }
 }
 
