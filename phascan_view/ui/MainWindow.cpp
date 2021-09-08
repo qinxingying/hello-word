@@ -2598,6 +2598,9 @@ void MainWindow::on_actionSave_Defect_triggered()
             }else{
                 CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_DA, &pResult_);
             }
+            if (_group.eTxRxMode == setup_TX_RX_MODE_TOFD) {
+                CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_TofdDepth1, &pResult_);
+            }
             _group.storeScanLawId.depth = pResult_;
             pResult_ = 0;
             CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_ZA, &pResult_);

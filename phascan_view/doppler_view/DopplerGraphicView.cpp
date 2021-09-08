@@ -842,6 +842,10 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
                     //_process->SscanGetPeakPoint(_iGroupId, _iLaw, setup_GATE_A, _point);
                     CalcMeasurement::Calc(_iGroupId, _iLaw, FEILD_DA, &pResult_);
                 }
+                if (_pConfig->group[_iGroupId].eTxRxMode == setup_TX_RX_MODE_TOFD) {
+                    CalcMeasurement::Calc(_iGroupId, _iLaw, FEILD_TofdDepth1, &pResult_);
+                }
+
                 _pConfig->group[_iGroupId].storeScanLawId.depth = pResult_;
                 pResult_ = 0;
                 CalcMeasurement::Calc(_iGroupId, _iLaw, FEILD_ZA, &pResult_);
