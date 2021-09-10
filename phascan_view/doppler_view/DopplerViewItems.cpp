@@ -1,4 +1,4 @@
-#include "DopplerViewItems.h"
+﻿#include "DopplerViewItems.h"
 //#include "painter/DopplerPart.h"
 #include "painter/DrawDxf.h"
 
@@ -1500,10 +1500,10 @@ void DopplerViewItems::DrawWeldVDataII( QPainterPath& path, QPainterPath& HAZpat
                     _pos[0].setY(_nOffsetY);
                     _pos[1].setX(_xOffset);
                     _pos[1].setY(_nOffsetY + m_fInterval);
-                    _pos[0].setX(w1 + HAZ);
-                    _pos[0].setY(_nOffsetY);
-                    _pos[1].setX(_xOffset + HAZ);
-                    _pos[1].setY(_nOffsetY + m_fInterval);
+                    _pos[2].setX(w1 + HAZ);
+                    _pos[2].setY(_nOffsetY);
+                    _pos[3].setX(_xOffset + HAZ);
+                    _pos[3].setY(_nOffsetY + m_fInterval);
 
                     _pos[0] = m_pDataView->TranslateToScenePlan(&_pos[0]);
                     _pos[1] = m_pDataView->TranslateToScenePlan(&_pos[1]);

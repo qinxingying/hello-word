@@ -80,11 +80,14 @@ public:
     void setAllTopcWidht(double value);
     void updateAllDefectBox();
     void loadDefectPosition(int groupId, int index);
+    void loadDefectPositionAndSave(int groupId, DEFECT_INFO &defect);
     void setDefectIdentifyCScanArea(double scanStart, double scanStop, double beamStart, double beamStop);
     void setDefectIdentifySScanArea(QRectF _rect);
     void setSelectSscanAreaValid(bool _isValid);
     int selectDefectMeasureMethod();
     void startDefectIdentify();
+    void slotSelectDefect(int _id);
+    void slotModifyDefect(int groupId, DEFECT_INFO &defect);
 
 protected:
     void CreateStatusBar();
@@ -143,6 +146,7 @@ private:
     void init_ui();
 
     int  m_iCurGroup;
+    int  m_iCurDefectMaxValue {0};  // 当前缺陷最大值
     //int  m_nLawIdSel;
     int  m_nTBCnt;
     int  m_nAlloff;  //0值时表示只有一个组
@@ -155,6 +159,7 @@ private:
 
     QThread* m_pExportExcelThread;
     AExportScanDataToExcel* m_excelWriter;
+
 signals:
     void setPixmap(QPixmap pixmap);
     void exportBScanData(QString filePath);
@@ -188,6 +193,8 @@ private slots:
     void slotMeasureGate(int groupId);
     void slotMarkNextDefect();
     void slotMarkPreviousDefect();
+    void slotDeleteDefect();
+    void slotSaveDefect();
 
 protected slots:
   void on_actionNew_Config_triggered();
@@ -216,8 +223,9 @@ protected slots:
   void on_actionSave_Defect_triggered();
   void on_actionLanguage_triggered();
   void on_actionScreenShot_triggered();
-  void on_actionSaveDisplay_triggered();
-  void on_actionLoadDisplay_triggered();
+  void on_actionSavePreferences_triggered();
+  void on_actionLoadPreferences_triggered();
+  void on_actionLoadRecommendedSettings_triggered();
   void slot_actionEnglish_triggered();
   void slot_actionChinese_triggered();
   void on_actionJapanese_triggered();
@@ -228,6 +236,7 @@ protected slots:
   void on_actionFile_Properties_triggered();
   void slot_actionSaveCSacnData_triggered();
   void slot_actionSaveBSacnData_triggered();
+  void slot_actionExcelExport_triggered();
 };
 
 extern MainWindow* g_pMainWnd;

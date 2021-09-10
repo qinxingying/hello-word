@@ -1,4 +1,4 @@
-#include "DopplerDefectItem.h"
+﻿#include "DopplerDefectItem.h"
 #include <QGraphicsScene>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -134,8 +134,8 @@ void DopplerDefectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem 
             painter->drawLine(m_nWidth-15, 0 , 0, 0 );
         }
     }
-	if(_nBmpNo == 0)
-		DrawLabel(painter, fillColor, _bSel);
+    if(_nBmpNo == 0)
+        DrawLabel(painter, fillColor, _bSel);
 	painter->restore();
 
 }
@@ -179,36 +179,15 @@ void DopplerDefectItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_
 
 		int _nGroup , _nLaw , _nDisp ;
 		m_pDataView->GetDataViewConfigure(&_nGroup , &_nLaw , &_nDisp);
-		DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
-		char *_pInfo = _pConfig->GetDefectInfo(_nGroup, m_nId);
+        DopplerConfigure* _pConfig =  DopplerConfigure::Instance() ;
         int index_ = _pConfig->GetDefectIndex(_nGroup, m_nId);
-        _str.sprintf("%d:%s", index_, _pInfo);
+        _str.sprintf("%d", index_);
     if(this->y()>30)
         painter->drawText(0 , -4 , _str );
     else if(this->y()+ m_nHeight <scene()->height() - 30)
         painter->drawText(0 , this->y() + m_nHeight + 4 , _str );
     else if(this->x() + m_nWidth < scene()->width() - 30)
         painter->drawText(this->x() + m_nWidth + 4 , 0 , _str );
-    if(IsSelected == GetItemId())
-    {
-        float start = 0;
-        float length = 0;
-        float depth = 0;
-        float height = 0;
-        length = _pConfig->DefectLengthValue(m_pDataView->GetGroupId(),&start,IsSelected);
-        height = _pConfig->DefectHeightValue(m_pDataView->GetGroupId(),&depth,IsSelected);
-        float _fDepth = _pConfig->DefectDepthValue(m_pDataView->GetGroupId(), IsSelected);
-        if(_fDepth >= 0){
-            length = _fDepth;
-        }
-        _str.sprintf("%.1f(%.1f) %.1f(%.1f)",start,length,depth,height);
-        if(this->y()>30)
-            painter->drawText(0 , -15 , _str );
-        else if(this->y()+ m_nHeight <scene()->height() - 30)
-            painter->drawText(0 , this->y() + m_nHeight + 15 , _str );
-        else if(this->x() + m_nWidth < scene()->width() - 30)
-            painter->drawText(this->x() + m_nWidth + 15 , 0 , _str );
-    }
 }
 
 //void DopplerDefectItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)

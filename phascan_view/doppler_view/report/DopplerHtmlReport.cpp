@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include "../configure/config_phascan_ii/config.h"
+#include <QFileDialog>
 
 #define TABLE_WIDTH	 800
 char tableWidth[256];
@@ -479,6 +480,7 @@ void DopplerHtmlReport::BuildReport()
                 fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _fData);
                 fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pDfInfo->dDepth);
                 int groupId = _pDfInfo->dGroupId - 1;
+                if(groupId < 0) groupId = 0;
                 int defectId = _pDfInfo->dIndex;
                 int _index = 0;
                 DEFECT_INFO* _DfInfo = _pConfig->m_dfParam[groupId].pDFHead;
@@ -514,6 +516,7 @@ void DopplerHtmlReport::BuildReport()
             for(int i = 0; i < defectNum; i++){
                 DEFECT_INFO* _pDfInfo = sortBuff[i];
                 int groupId = _pDfInfo->dGroupId - 1;
+                if(groupId < 0) groupId = 0;
                 int indexId = _pDfInfo->dIndex - 1;
                 CreateDefectCell(groupId, indexId, _pDfInfo, 2);
             }
@@ -1291,4 +1294,50 @@ void DopplerHtmlReport::set_reportName(QString &str)
     std::string t2 = str.toStdString();
     const char * t3 = t2.c_str();
     strcpy(m_cInfo.strReportName, t3);
+}
+
+void DopplerHtmlReport::ExportExcel()
+{
+    DopplerConfigure* pConfig = DopplerConfigure::Instance();
+    int groupNum = pConfig->common.nGroupQty;
+    float fStart = 0;
+    float fLength = 0;
+    float fHeight = 0;
+
+    QString file = m_strReportDir;
+    file.append(m_cInfo.strReportName);
+    QString filePath = QFileDialog::getSaveFileName(NULL, QObject::tr("Excel Export"), file,
+            "Microsoft Excel(*.xlsx)");
+    if (!filePath.isEmpty())
+    {
+        QList< QList<QVariant> > m_datas;
+        QList<QVariant> heads;
+        heads << QObject::tr("Index") << QObject::tr("X-Start(mm)") << QObject::tr("X-Length(mm)")
+              << QObject::tr("Y-Start(mm)") << QObject::tr("Y-Length(mm)") << QObject::tr("Area(mm2)");
+        m_datas.append(heads);
+        for (int n = 0; n < groupNum; ++n) {
+            for(int i = 0; i < pConfig->GetDefectCnt(n); i++)
+            {
+                QList<QVariant> rows;
+                //DEFECT_INFO* pDfInfo = pConfig->GetDefectPointer(n, i);
+                rows << i + 1;
+
+                fLength = pConfig->DefectLengthValue(n, &fStart, i);
+                rows << QString::number(fStart, 'f', 1) << QString::number(fLength, 'f', 1);
+
+                fHeight = pConfig->DefectHeightValue(n, &fStart, i);
+                rows << QString::number(fStart, 'f', 1) << QString::number(fHeight, 'f', 1) << QString::number(fLength * fHeight, 'f', 2);
+
+                m_datas << rows;
+            }
+        }
+
+        ExcelBase xls;
+        xls.create(filePath);
+        xls.setCurrentSheet(1);
+        xls.writeCurrentSheet(m_datas);
+        xls.setAutoFit();
+        xls.save();
+        xls.close();
+    }
 }

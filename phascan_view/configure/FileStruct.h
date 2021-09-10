@@ -18,13 +18,6 @@ struct FILE_HEADER
     char strVersion[64];
 };
 
-enum setup_LANG
-{
-    setup_LANG_ENGLISH = 0,
-    setup_LANG_CHINESE,
-    setup_LANG_JAPANESE,
-    setup_LANG_KOREAN
-};
 enum setup_SOUND_UNIT
 {
     setup_SOUND_AXIX_UNIT_MM = 0,
@@ -75,6 +68,9 @@ struct SYSTEM_ENVIRMENT
     bool bShowBScanMeasure[ENV_MAX_GROUP_QTY];
     bool bShowCScanMeasure[ENV_MAX_GROUP_QTY];
     bool bShowSScanMeasure[ENV_MAX_GROUP_QTY];
+    float fMinThickness[ENV_MAX_GROUP_QTY];
+    float fMaxThickness[ENV_MAX_GROUP_QTY];
+    bool bTopCStatus[ENV_MAX_GROUP_QTY];
 };
 
 #endif // FILESTRUCT_H

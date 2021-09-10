@@ -2182,7 +2182,16 @@ void ProcessDisplay::UpdateDataViewFrameBV(DopplerDataView* pWidget_ , int nGrou
 
 	double _fStart , _fStop , _fSliderStart, _fSliderStop;
 	pWidget_->GetRulerRange(&_fStart , &_fStop , &_fSliderStart, &_fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM ) ;
-	_process->GetBScanScanAxisRange(nGroupId_ ,  pWidget_->width()-50 , &_fStart , &_fStop, &_fSliderStart , &_fSliderStop) ;
+    int _nScanend    = _process->SAxisstoptoIndex(_process->GetScanend());
+    int _nWidth	   = pWidget_->width() - 50 ;
+    if(_nWidth < _nScanend)
+    {
+        _process->GetBScanScanAxisRange(nGroupId_ ,  _nWidth , &_fStart , &_fStop, &_fSliderStart , &_fSliderStop) ;
+    }
+    else
+    {
+        _process->GetBScanScanAxisRange(nGroupId_ ,  _nScanend , &_fStart , &_fStop, &_fSliderStart , &_fSliderStop) ;
+    }
 	pWidget_->SetRulerRange( _fStart , _fStop ,  _fSliderStart , _fSliderStop, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
 	pWidget_->SetRulerUnit (&_strLeftUnit, DopplerDataView::DATA_VIEW_RULER_BOTTOM );
 

@@ -34,6 +34,8 @@ public:
     bool getCurve_RL_EL_SL(int groupId, float &coupleGain);
     void getWeldData( int groupId, WELD_II & weld);
     void getTOPCWidth( int groupId, double &topcWidth);
+    void getTOPCStatus( int groupId, bool &topcStatus);
+    void getCScanSourceType( int groupId, int &cType);
     void getApertureSec( int groupId, unsigned int * apertureData);
     void getTofdData( int groupId, float *PCS, float *RefPoint);
     void getTMFRange(int groupId, float *start, float *range, int *pointQty);

@@ -1,4 +1,4 @@
-#include "DopplerOverlays.h"
+﻿#include "DopplerOverlays.h"
 #include "DopplerConfigure.h"
 #include "DopplerViewItems.h"
 extern int bHideCursor;
@@ -573,18 +573,30 @@ void DopplerOverlays::CreateOverlaysSS()
 		float _fStart, _fData;
 		_pItemGroup->SetDefectIndex(m_pConfigure->m_dfParam[m_nGroup].index);
 		_pItemGroup->ClearDefect();
-		for(int i = 0; i < _iNO; i++)
-		{
-			_fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, i);
-			_rect.setLeft(_fStart);
-			_rect.setRight(_fStart + _fData);
+        if (group.bShowCurrentDefect) {
+            _fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, m_pConfigure->m_dfParam[m_nGroup].index);
+            _rect.setLeft(_fStart);
+            _rect.setRight(_fStart + _fData);
 
-			_fData = m_pConfigure->DefectHeightPos(m_nGroup, &_fStart, i);
-			_rect.setTop(_fStart);
-			_rect.setBottom(_fStart + _fData);
+            _fData = m_pConfigure->DefectHeightPos(m_nGroup, &_fStart, m_pConfigure->m_dfParam[m_nGroup].index);
+            _rect.setTop(_fStart);
+            _rect.setBottom(_fStart + _fData);
 
-			_pItemGroup->SetDefect(i, _rect);
-		}
+            _pItemGroup->SetDefect(m_pConfigure->m_dfParam[m_nGroup].index, _rect);
+        } else {
+            for(int i = 0; i < _iNO; i++)
+            {
+                _fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, i);
+                _rect.setLeft(_fStart);
+                _rect.setRight(_fStart + _fData);
+
+                _fData = m_pConfigure->DefectHeightPos(m_nGroup, &_fStart, i);
+                _rect.setTop(_fStart);
+                _rect.setBottom(_fStart + _fData);
+
+                _pItemGroup->SetDefect(i, _rect);
+            }
+        }
 	}
 	//-------------------------------------------------------------------
 //	if(group.bShowGate)
@@ -653,19 +665,31 @@ void DopplerOverlays::CreateOverlaysSA()
 		int _iNO = m_pConfigure->GetDefectCnt(m_nGroup);
 		float _fStart, _fData;
 		_pItemGroup->SetDefectIndex(m_pConfigure->m_dfParam[m_nGroup].index);
-		_pItemGroup->ClearDefect();
-		for(int i = 0; i < _iNO; i++)
-		{
-			_fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, i);
-			_rect.setLeft(_fStart);
-			_rect.setRight(_fStart + _fData);
+        _pItemGroup->ClearDefect();
+        if (group.bShowCurrentDefect && _iNO > 0) {
+            _fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, m_pConfigure->m_dfParam[m_nGroup].index);
+            _rect.setLeft(_fStart);
+            _rect.setRight(_fStart + _fData);
 
-			_fData = m_pConfigure->DefectHeightPos(m_nGroup, &_fStart, i);
-			_rect.setTop(_fStart);
-			_rect.setBottom(_fStart + _fData);
+            _fData = m_pConfigure->DefectHeightPos(m_nGroup, &_fStart, m_pConfigure->m_dfParam[m_nGroup].index);
+            _rect.setTop(_fStart);
+            _rect.setBottom(_fStart + _fData);
 
-			_pItemGroup->SetDefect(i, _rect);
-		}
+            _pItemGroup->SetDefect(m_pConfigure->m_dfParam[m_nGroup].index, _rect);
+        } else {
+            for(int i = 0; i < _iNO; i++)
+            {
+                _fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, i);
+                _rect.setLeft(_fStart);
+                _rect.setRight(_fStart + _fData);
+
+                _fData = m_pConfigure->DefectHeightPos(m_nGroup, &_fStart, i);
+                _rect.setTop(_fStart);
+                _rect.setBottom(_fStart + _fData);
+
+                _pItemGroup->SetDefect(i, _rect);
+            }
+        }
 	}
 	//-------------------------------------------------------------------
 //	if(group.bShowGate)
@@ -745,18 +769,30 @@ void DopplerOverlays::CreateOverlaysSL()
 		float _fStart, _fData;
 		_pItemGroup->SetDefectIndex(m_pConfigure->m_dfParam[m_nGroup].index);
 		_pItemGroup->ClearDefect();
-		for(int i = 0; i < _iNO; i++)
-		{
-			_fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, i);
-			_rect.setLeft(_fStart);
-			_rect.setRight(_fStart + _fData);
+        if (group.bShowCurrentDefect) {
+            _fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, m_pConfigure->m_dfParam[m_nGroup].index);
+            _rect.setLeft(_fStart);
+            _rect.setRight(_fStart + _fData);
 
-			_fData = m_pConfigure->DefectHeightPos(m_nGroup, &_fStart, i);
-			_rect.setTop(_fStart);
-			_rect.setBottom(_fStart + _fData);
+            _fData = m_pConfigure->DefectHeightPos(m_nGroup, &_fStart, m_pConfigure->m_dfParam[m_nGroup].index);
+            _rect.setTop(_fStart);
+            _rect.setBottom(_fStart + _fData);
 
-			_pItemGroup->SetDefect(i, _rect);
-		}
+            _pItemGroup->SetDefect(m_pConfigure->m_dfParam[m_nGroup].index, _rect);
+        } else {
+            for(int i = 0; i < _iNO; i++)
+            {
+                _fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, i);
+                _rect.setLeft(_fStart);
+                _rect.setRight(_fStart + _fData);
+
+                _fData = m_pConfigure->DefectHeightPos(m_nGroup, &_fStart, i);
+                _rect.setTop(_fStart);
+                _rect.setBottom(_fStart + _fData);
+
+                _pItemGroup->SetDefect(i, _rect);
+            }
+        }
 	}
 	//-------------------------------------------------------------------
 //	if(group.bShowGate)

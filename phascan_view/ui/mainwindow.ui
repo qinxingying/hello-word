@@ -193,6 +193,11 @@
          <string>Scan</string>
         </attribute>
        </widget>
+       <widget class="IndicationTableWidget" name="IndicationTable">
+        <attribute name="title">
+         <string>Indication Table</string>
+        </attribute>
+       </widget>
        <widget class="QWidget" name="GroupAdd">
         <property name="minimumSize">
          <size>
@@ -259,6 +264,7 @@
     </property>
     <addaction name="actionReport_PreView"/>
     <addaction name="actionSaveReport"/>
+    <addaction name="actionExcel_Export"/>
    </widget>
    <widget class="QMenu" name="menuConnect">
     <property name="title">
@@ -266,18 +272,19 @@
     </property>
     <addaction name="actionConnect"/>
    </widget>
-   <widget class="QMenu" name="menuDisplay">
+   <widget class="QMenu" name="menuPreferences">
     <property name="title">
-     <string>Display Config</string>
+     <string>Preferences</string>
     </property>
-    <addaction name="actionSaveDisplay"/>
-    <addaction name="actionLoadDisplay"/>
+    <addaction name="actionSavePreferences"/>
+    <addaction name="actionLoadPreferences"/>
+    <addaction name="actionLoadRecommendedSettings"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuLanguage"/>
    <addaction name="menuReport"/>
    <addaction name="menuConnect"/>
-   <addaction name="menuDisplay"/>
+   <addaction name="menuPreferences"/>
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
@@ -420,7 +427,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Help</string>
+    <string>Keyboard Guide</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -696,14 +703,14 @@
     <string>Disconnect</string>
    </property>
   </action>
-  <action name="actionSaveDisplay">
+  <action name="actionSavePreferences">
    <property name="text">
-    <string>Save Display</string>
+    <string>Save Individual Preferences</string>
    </property>
   </action>
-  <action name="actionLoadDisplay">
+  <action name="actionLoadPreferences">
    <property name="text">
-    <string>Load Display</string>
+    <string>Load Individual Preferences</string>
    </property>
   </action>
   <action name="actionAided_Analysis">
@@ -748,6 +755,16 @@
     <string>Save B Scan Data</string>
    </property>
   </action>
+  <action name="actionLoadRecommendedSettings">
+   <property name="text">
+    <string>Load Recommended Settings</string>
+   </property>
+  </action>
+  <action name="actionExcel_Export">
+   <property name="text">
+    <string>Excel Export</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -778,6 +795,12 @@
    <class>MeasureWidget</class>
    <extends>QWidget</extends>
    <header location="global">measurewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>IndicationTableWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">indicationtablewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
