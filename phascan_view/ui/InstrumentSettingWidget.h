@@ -1,4 +1,4 @@
-#ifndef INSTRUMENTSETTINGWIDGET_H
+﻿#ifndef INSTRUMENTSETTINGWIDGET_H
 #define INSTRUMENTSETTINGWIDGET_H
 //##########################
 //    �����������ô��� �� ���е�����������
@@ -7,11 +7,10 @@
 
 #include <QWidget>
 
-class DopplerConfigure ;
+class DopplerConfigure;
 namespace Ui {
     class InstrumentSettingWidget;
 }
-
 class InstrumentSettingWidget : public QWidget
 {
     Q_OBJECT

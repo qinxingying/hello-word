@@ -44,8 +44,12 @@ void DrawDscanfTHread::UpdateAllWidgetDrawing()
 
             }
         }
-
-
+        int _nGroupId;
+        _nGroupId=g_pMainWnd->GetCurGroup();
+        DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+        GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
+        _group.viewDragflage=false;
+        _group.DrawCviewflage=false;
 
 }
 

@@ -292,7 +292,6 @@ void MainWindow::RunDrawThreadOnce(bool bUseDrawThread_)
     }
 
 
-
 }
 
 /****************************************************************************
@@ -646,12 +645,20 @@ void MainWindow::slotSliderhChanged(int value)
     for(int i = 0; i < _pConfig->common.nGroupQty; i ++) {
          _proDisplay.UpdateAllViewCursorOfGroup(i);
     }
-    InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
+    InstrumentSettingWidget* _pScanner =(InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
     _pScanner->UpdateScanPos();
-    RunDrawThreadOnce(true);
+
+    int _nGroup = m_iCurGroup;
+    GROUP_CONFIG& _group = _pConfig->group[_nGroup];
+    if(_group.m_mode)
+    {
+    _group.DrawCviewflage=true;
+    DrawDscanfTHread* _pThread = DrawDscanfTHread::Instance();
+    _pThread->RunOnce();
+
+    }else
+        RunDrawThreadOnce(true);
 }
-
-
 
 void MainWindow::slotIndexSliderHChanged(int value)
 {
@@ -1160,7 +1167,6 @@ void MainWindow::OpenFilePro(QString strFileName_)
     DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
     _pReport->set_reportName(m_baseName);
     this->setWindowTitle(m_titleName + m_fileName);
-
     //ParameterProcess* _process = ParameterProcess::Instance();
     //_process->testOutputSrcData(0, 50, 0);
 
@@ -1354,22 +1360,19 @@ void MainWindow::ReportSave()
     DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
     _pReport->SaveReport();
 }
-
 void MainWindow::TofdDataPro(TOFD_PRO_STATUS proSt_)
 {
-    DopplerTofdOpp opp;
-
+    DopplerTofdOpp opp; 
     if(proSt_ == TOFD_PRO_REPEAL){
         opp.TofdDataProRepeal(m_iCurGroup);
     }else if(proSt_ == TOFD_PRO_REDO){
         opp.TofdDataProRedo(m_iCurGroup);
     }else{
-        if(opp.TofdDragProStart(m_iCurGroup, proSt_) < 0){
-            opp.TofdDataProStart(m_iCurGroup, proSt_, NULL);
-            opp.TofdDataToShadow(m_iCurGroup);
+        if(opp.TofdDragProStart(m_iCurGroup,proSt_)<0){
+           opp.TofdDataProStart(m_iCurGroup, proSt_, NULL);
+           opp.TofdDataToShadow(m_iCurGroup);
         }
     }
-
     RunDrawThreadOnce(false);
 }
 
@@ -3096,7 +3099,6 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = _pConfig->group[_nGroupId];
 
-
     _group.afCursor[setup_CURSOR_LAW] = lawPos;
     updateCscanLawPos(lawPos, _nGroupId);
     DopplerGroupTab* _pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
@@ -3129,15 +3131,12 @@ void MainWindow::updateCurLawPos(int _nGroupId, int lawPos, int _nId)
             _proDispy.UpdateDataViewTitle(_pView);
         }
     }
-
     RunDrawThreadOnce(true);
 
     if(_group.m_mode){
-
       _group.lawMove=true;
       DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
       Th->RunOnce();
-
     }
 
 }

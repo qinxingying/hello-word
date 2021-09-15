@@ -37,7 +37,7 @@ void DataRefreshThread::run()
     // run once and get out
     if(m_nRunOnce)
     {
-        msleep(0) ;
+        msleep(0);
         if(currentgroup == -1)
         {
 

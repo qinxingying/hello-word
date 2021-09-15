@@ -1,20 +1,16 @@
-#ifndef DOPPLERTOFDOPP_H
+﻿#ifndef DOPPLERTOFDOPP_H
 #define DOPPLERTOFDOPP_H
-
 #include <QObject>
 #include <QRectF>
 #include <configure/DopplerConfigure.h>
 #include "../process/ParameterProcess.h"
-
-
 class DopplerTofdOpp : public QObject
 {
     Q_OBJECT
 public:
-    explicit DopplerTofdOpp(QObject *parent = 0);
+    explicit DopplerTofdOpp(QObject *parent=0);
     void SetGroupId(int nGroupId_);
     TOFD_PRO_STATUS TofdDragProStatus(int nGroupId_);
-
 private:
     int TofdSearchPos(WDATA* pSource_, int iStart, int iMax, int iMin, int iEdge_);
 public:
@@ -33,23 +29,17 @@ private:
     int TofdBwStraitening(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSource_, WDATA* pDest_);
     int TofdDifference(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSource_, WDATA* pDest_);
     int TofdSaft(int nGroupId_, TOFD_PRO_INFO* pInfo_, WDATA* pSource_, WDATA* pDest_);
-
     int TofdSAFTInit(int nGroupId_, TOFD_PRO_INFO* pInfo_, int* pCurveBuf);
 	void TofdWavAlign(int iBase_, int iDot_, WDATA* pSource_, WDATA* pDest_, GYRECT rect_);
-
-
     DopplerConfigure* m_pConfig;
     ParameterProcess* m_process;
     GROUP_CONFIG*     m_pGroup;
     SCANNER*          m_pScanner;
-	//int               m_iPosMax;
+    //int             m_iPosMax;
     TOFD_PARA*        m_pTofd ;
     int               m_nGroupId ;
-
 signals:
-
 public slots:
-
 };
 
 #endif // DOPPLERTOFDOPP_H

@@ -1,4 +1,4 @@
-#ifndef DOPPLERFOCALLAW_H
+﻿#ifndef DOPPLERFOCALLAW_H
 #define DOPPLERFOCALLAW_H
 
 #define DOPPLER_EXPORT __declspec(dllexport)
@@ -54,9 +54,7 @@ struct TOFD_PARA
 	float fTb;
 	float fTa;
 	float fT0;
-
 	float fPcs;
-
 	TOFD_PRO_STATUS eProingST;
 	TOFD_PRO_INFO   proInfo[9];
 	int iProCnt;

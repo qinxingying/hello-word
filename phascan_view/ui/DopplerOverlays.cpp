@@ -318,7 +318,7 @@ void DopplerOverlays::CreateOverlaysBV()
 	}
 	if(_group.eTxRxMode == setup_TX_RX_MODE_TOFD)
 	{
-		if(_group.bShowLwBw) {
+        if(_group.bShowLwBw){
 			_pItemGroup->EnableItems(OVERLAYS_LW_BW);
 			_pItemGroup->SetLwBwPos(_group.afCursor[setup_CURSOR_TFOD_LW], _group.afCursor[setup_CURSOR_TFOD_BW]);
 			_pItemGroup->SetLwBwId(setup_CURSOR_TFOD_LW, setup_CURSOR_TFOD_BW);

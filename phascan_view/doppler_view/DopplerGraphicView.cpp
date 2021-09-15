@@ -1748,6 +1748,7 @@ int DopplerGraphicView::tofdProAction()
 	int _iGroupId, _iLaw, _iDisplay;
 	_pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
 
+
 	if(opp.TofdDragProStatus(_iGroupId) != TOFD_PRO_NONE)
 	{
 		QSize  _size = size();
@@ -1975,6 +1976,7 @@ void DopplerGraphicView::backNoZoom()
     _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
     setup_DISPLAY_MODE _eMode  = (setup_DISPLAY_MODE)_iDisplay;
     DopplerTofdOpp opp;
+
     opp.TofdClearDragStatus(_iGroupId);
     if(m_pDrawScan->zoomflag == 1)
     {
@@ -2182,15 +2184,12 @@ void DopplerGraphicView::UpdateDrawing()
     GROUP_CONFIG& _group = _pConfig->group[_iGroupId];
 
     if(m_pDrawScan)
-	{
+    {
         QMutexLocker locker(&m_pBackGround->m_hMutex);
         //m_pBackGround->m_hMutex.lock();
-
       if(_group.m_mode==S_MODE)
       {
-
        m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
-
       }
         //m_pBackGround->m_hMutex.unlock();
 	}
@@ -2199,39 +2198,41 @@ void DopplerGraphicView::UpdateDrawing()
 
 void DopplerGraphicView::UpdateDSDrawing()
 {
-
     DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
     int _iGroupId;
      int _nGroupId;
-
     _iGroupId=_pParent->GetGroupId();
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = _pConfig->group[_iGroupId];
     _nGroupId=g_pMainWnd->GetCurGroup();
-
     if(m_pDrawScan&&_nGroupId==_iGroupId)
     {
         QMutexLocker locker(&m_pBackGround->m_hMutex2);
-
-//     m_pBackGround->m_hMutex.lock();
-
-      if(_group.lawMove==true&&(m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))&&_group.m_mode==D_MODE)
+//      m_pBackGround->m_hMutex.lock();
+        if(_group.DrawCviewflage&&(m_pDrawScan->inherits("DopplerDrawCScanH")||m_pDrawScan->inherits("DopplerDrawCScanV")))
         {
-        _group.lawMove=false;
-
-        m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
-
+           QMutexLocker locker(&m_pBackGround->m_hMutex);
+          m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
         }
-      else if( _group.lawMove==false
+        else if(_group.viewDragflage==true)
+        {
+        m_pDrawScan->Draw(m_pBackGround->GetBaseImage());         
+        }
+        else if(_group.lawMove==true&&(m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV")))
+        {      
+        _group.lawMove=false;
+        m_pDrawScan->Draw(m_pBackGround->GetBaseImage());         
+        }
+        else if(_group.lawMove==false&&_group.DrawCviewflage==false
                &&((m_pDrawScan->inherits("DopplerDrawSScanTrueDepth"))
                ||m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))
-               &&_group.m_mode==D_MODE)
-         m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
-//        m_pBackGround->m_hMutex.unlock();
-
+               )
+        {
+            m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
+//          m_pBackGround->m_hMutex.unlock();
+         }
     }
     emit signalUpdateDrawing();
-
 }
 
 /****************************************************************************

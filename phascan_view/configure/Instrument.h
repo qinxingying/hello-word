@@ -806,8 +806,9 @@ typedef struct _Group
     float zoomFactor;               //S扫1:1缩放因子-扫查轴坐标
     bool lawMove;                   //D扫的扫查轴移动标志
     int currentGroupId;                   //D扫绘制组ID
-
-
+    bool viewDragflage;             //视图拖拽切换显示标志位
+    bool DrawCviewflage;            //绘制C视图标志
+    bool ToFdView;                 //ToFd的绘制标志
 	/*  校准状态  */
 	int						bVelocityCalib;
 	int						bWedgeDelayCalib;

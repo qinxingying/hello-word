@@ -9,7 +9,7 @@
 #include <QSplitter>
 #include <QBoxLayout>
 #include <QMessageBox>
-
+#include "threads/drawdscanfthread.h"
 
 
 DopplerViewFrame::DopplerViewFrame(QWidget *parent) :
@@ -111,6 +111,13 @@ void DopplerViewFrame::slotCreateDrawWindow(QWidget* pWidget_, int _nId , int nG
 	_display.CreateViews(pWidget_  , _nId) ;
 	pWidget_->show();
     g_pMainWnd->RunDrawThreadOnce(false);
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    if(_pConfig->group[nGroupId_].m_mode==D_MODE)
+    {
+    _pConfig->group[nGroupId_].viewDragflage=true;
+    DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
+    Th->RunOnce();
+    }
 	//emit signalDropEvent(_nId) ;
 	//sleep(100);
 	_display.UpdateAllViewOverlay();

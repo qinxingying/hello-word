@@ -52,18 +52,20 @@ DopplerTofdOpp::DopplerTofdOpp(QObject *parent) :
 
 void DopplerTofdOpp::SetGroupId(int nGroupId_)
 {
-	if(m_nGroupId != nGroupId_) {
+    if(m_nGroupId != nGroupId_) {
 		m_nGroupId = nGroupId_ ;
 		m_pTofd	   = m_pConfig->GetTofdConfig(m_nGroupId) ;
-		m_pGroup   = &m_pConfig->group[m_nGroupId]  ;
+        m_pGroup   = &m_pConfig->group[m_nGroupId] ;
 		m_pScanner = &m_pConfig->common.scanner;
 		//m_iPosMax  = m_process->SAxisDistToIndex(m_pScanner->fScanStop);
 	}
-}
 
+}
 TOFD_PRO_STATUS DopplerTofdOpp::TofdDragProStatus(int nGroupId_)
 {
 	SetGroupId(nGroupId_);
+
+
 	TOFD_PRO_STATUS _st = TOFD_PRO_NONE;
 	if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD )
 	{
@@ -192,7 +194,6 @@ int DopplerTofdOpp::TofdDataProStart(int nGroupId_, TOFD_PRO_STATUS proSt_, GYRE
 		m_pTofd->proInfo[i].fY = _iY;
 	} else {
 		GYRECT _rect;
-
 		_rect = *pRect_;
 		_rect.top    -= _nScanOff;
 		_rect.bottom -= _nScanOff;
@@ -233,6 +234,7 @@ int DopplerTofdOpp::TofdDataProStart(int nGroupId_, TOFD_PRO_STATUS proSt_, GYRE
 int DopplerTofdOpp::TofdDataToShadow(int nGroupId_)
 {
 	SetGroupId(nGroupId_);
+
 	if(m_pGroup->eTxRxMode != setup_TX_RX_MODE_TOFD )
 		return -1;
 	if(m_pTofd->iProCnt < 1)
@@ -243,7 +245,6 @@ int DopplerTofdOpp::TofdDataToShadow(int nGroupId_)
 	int   _nScanOff = m_process->GetScanOff(nGroupId_);
 
 	TofdDataProcess(m_nGroupId, &m_pTofd->proInfo[0], _pSource, _pShadow);
-
 	if(m_pTofd->iProCnt > 1)
 	{
 		WDATA* _pWaveBuf = new WDATA[m_pConfig->common.nDataSize+10];
@@ -272,6 +273,7 @@ int DopplerTofdOpp::TofdDataToShadow(int nGroupId_)
 int DopplerTofdOpp::TofdDataProRepeal(int nGroupId_)
 {
 	SetGroupId(nGroupId_);
+
 	int _ret = -1;
 	if(m_pTofd->iProCnt > 0) {
 		m_pTofd->iProCnt--;
@@ -350,7 +352,7 @@ int DopplerTofdOpp::TofdProStr(int nGroupId_, char* pStr_)
 int DopplerTofdOpp::TofdDragProStr(int nGroupId_, char* pStr_)
 {
 	SetGroupId(nGroupId_);
-
+//    m_pGroup->m_mode=S_MODE;
 	if(m_pGroup->eTxRxMode != setup_TX_RX_MODE_TOFD )
 		return -1;
 

@@ -56,18 +56,18 @@ DopplerGroupTab::DopplerGroupTab(QWidget *parent) :
     for(int i = 0; i < setup_DAC_POINT_QTY; i++){
         m_pSizingCurveUnit[i] = findChild<QLabel*>("LabelSizingCureUnit" + QString::number(i + 1));
     }
-
     SetWndName();
-
     //UpdateMeasureBox();
     //UpdateGroupConfig();
     ui->toolBox->setCurrentIndex(0);
     CreateSettingView();
-
     SetWidgetInvalide(); // 使窗口不使能  只作数据显示用
+//    if(m_pGroup->ToFdView==true)
+//    {
+//    ui->LabelsScanfMode->hide();
+//    ui->ComsScanfMode->hide();
+//    }
 
-//    ui->LabeloneToOneShows->hide();
-//    ui->ComOneToOneShows->hide();
 }
 
 DopplerGroupTab::~DopplerGroupTab()
