@@ -126,14 +126,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->actionExcel_Export, &QAction::triggered, this, &MainWindow::slot_actionExcelExport_triggered);
 
-    m_excelWriter = new AExportScanDataToExcel();
-    m_pExportExcelThread = new QThread(this);
-    m_excelWriter->moveToThread(m_pExportExcelThread);
-    connect(this, &MainWindow::exportBScanData, m_excelWriter, &AExportScanDataToExcel::saveBScanData);
-    connect(this, &MainWindow::exportCScanData, m_excelWriter, &AExportScanDataToExcel::saveCScanData);
-    connect(m_excelWriter, &AExportScanDataToExcel::done, this, [=]{
-        m_pExportExcelThread->quit();
-        m_pExportExcelThread->wait();
+    m_reportWriter = new AExportData();
+    m_pExportThread = new QThread(this);
+    m_reportWriter->moveToThread(m_pExportThread);
+    connect(this, &MainWindow::exportBScanData, m_reportWriter, &AExportData::saveBScanData);
+    connect(this, &MainWindow::exportCScanData, m_reportWriter, &AExportData::saveCScanData);
+    connect(this, &MainWindow::exportReport, m_reportWriter, &AExportData::saveReport);
+    connect(m_reportWriter, &AExportData::done, this, [=]{
+        m_pExportThread->quit();
+        m_pExportThread->wait();
     });
 }
 
@@ -143,8 +144,8 @@ MainWindow::~MainWindow()
         m_pThreadDraw->terminate();
     }
 
-    if(m_pExportExcelThread) {
-        m_pExportExcelThread->terminate();
+    if(m_pExportThread) {
+        m_pExportThread->terminate();
     }
 
     for(int i = 0; i < MAX_LIST_QTY; i++)
@@ -1340,9 +1341,22 @@ void MainWindow::ReportSetting()
 *****************************************************************************/
 void MainWindow::ReportSave()
 {
-    DopplerConfigure* _pConfig  = DopplerConfigure::Instance();
-    DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
-    _pReport->SaveReport();
+//    DopplerConfigure* _pConfig  = DopplerConfigure::Instance();
+//    DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
+//    _pReport->SaveReport();
+    if(m_pExportThread->isRunning())
+    {
+        return;
+    }
+    m_reportWriter->setGroupId(m_iCurGroup);
+    DopplerConfigure* pConfig  = DopplerConfigure::Instance();
+    DopplerHtmlReport* pReport = pConfig->GetReportOpp();
+    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportDir() + QString::fromLocal8Bit("玻璃粘接相控阵检测报告"), tr("*.docx"));
+    if (!filePath.isEmpty()) {
+        m_pExportThread->start();
+
+        emit exportReport(filePath);
+    }
 }
 
 void MainWindow::TofdDataPro(TOFD_PRO_STATUS proSt_)
@@ -3116,15 +3130,15 @@ void MainWindow::on_actionFile_Properties_triggered()
 
 void MainWindow::slot_actionSaveCSacnData_triggered()
 {
-    if(m_pExportExcelThread->isRunning())
+    if(m_pExportThread->isRunning())
     {
         return;
     }
-    m_excelWriter->setGroupId(m_iCurGroup);
+    m_reportWriter->setGroupId(m_iCurGroup);
     QString filePath = QFileDialog::getSaveFileName(this, tr("Save CSacn Data"), "CScanData",
                "Microsoft Excel(*.xlsx)");
     if (!filePath.isEmpty()) {
-        m_pExportExcelThread->start();
+        m_pExportThread->start();
 
         emit exportCScanData(filePath);
     }
@@ -3132,15 +3146,15 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
 
 void MainWindow::slot_actionSaveBSacnData_triggered()
 {
-    if(m_pExportExcelThread->isRunning())
+    if(m_pExportThread->isRunning())
     {
         return;
     }
-    m_excelWriter->setGroupId(m_iCurGroup);
+    m_reportWriter->setGroupId(m_iCurGroup);
     QString filePath = QFileDialog::getSaveFileName(0, tr("Save BSacn Data"), "BScanData",
             "Microsoft Excel(*.xlsx)");
     if (!filePath.isEmpty()) {
-        m_pExportExcelThread->start();
+        m_pExportThread->start();
 
         emit exportBScanData(filePath);
     }
@@ -3148,7 +3162,17 @@ void MainWindow::slot_actionSaveBSacnData_triggered()
 
 void MainWindow::slot_actionExcelExport_triggered()
 {
+    if(m_pExportThread->isRunning())
+    {
+        return;
+    }
+    m_reportWriter->setGroupId(m_iCurGroup);
     DopplerConfigure* pConfig  = DopplerConfigure::Instance();
     DopplerHtmlReport* pReport = pConfig->GetReportOpp();
-    pReport->ExportExcel();
+    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportDir() + QString::fromLocal8Bit("玻璃粘接相控阵检测报告"), tr("*.docx"));
+    if (!filePath.isEmpty()) {
+        m_pExportThread->start();
+
+        emit exportReport(filePath);
+    }
 }

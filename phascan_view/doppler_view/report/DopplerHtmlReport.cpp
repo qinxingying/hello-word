@@ -1341,3 +1341,20 @@ void DopplerHtmlReport::ExportExcel()
         xls.close();
     }
 }
+
+QString DopplerHtmlReport::getReportName()
+{
+    QString file = m_strReportDir;
+    file.append(m_cInfo.strReportName);
+    return file;
+}
+
+QString DopplerHtmlReport::getReportDir()
+{
+    return m_strReportDir;
+}
+
+QString DopplerHtmlReport::getReportFolder()
+{
+    return m_strFolder;
+}
