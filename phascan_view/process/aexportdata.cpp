@@ -290,10 +290,9 @@ void AExportData::saveReport(QString filePath)
         for(int i = 0; i < nGroupQty; i++){
             defectNum += pConfig->GetDefectCnt(i);
         }
-        word.addTableRow(3,3,defectNum*3 - 1);//
-        for (int i = 0; i < defectNum*3; i += 3) {
+        word.addTableRow(3,3,defectNum*2 - 1);//
+        for (int i = 0; i < defectNum*2; i += 2) {
             word.MergeCells(3,4 + i,1,4 + i,7);
-            word.MergeCells(3,4 + i + 1,1,4 + i + 1,7);
         }
         if (defectNum > 23) {
             word.addTableRow(2,3,defectNum - 23);
@@ -353,14 +352,13 @@ void AExportData::saveReport(QString filePath)
                 QString strDir = pReport->getReportDir() + sourceImgName ;
                 pReport->CopyFileToPath(strDir , strImgPathName);
 
-//                word.setRowHeight(3, 4 + i * 3, 305);
-                word.setCellString(3,3 + i * 3,1,index);
-                word.setCellString(3,3 + i * 3,2,X);
-                word.setCellString(3,3 + i * 3,3,L);
-                word.setCellString(3,3 + i * 3,4,Y);
-                word.setCellString(3,3 + i * 3,5,W);
-                word.setCellString(3,3 + i * 3,6,Area);
-                word.insertCellPic(3,4 + i * 3,1,strDir);
+                word.setCellString(3,3 + i * 2,1,index);
+                word.setCellString(3,3 + i * 2,2,X);
+                word.setCellString(3,3 + i * 2,3,L);
+                word.setCellString(3,3 + i * 2,4,Y);
+                word.setCellString(3,3 + i * 2,5,W);
+                word.setCellString(3,3 + i * 2,6,Area);
+                word.insertCellPic(3,4 + i * 2,1,strDir);
             }
             word.setBookmarkText("TotalArea", QString::number(totalArea, 'f', 1));
         }
