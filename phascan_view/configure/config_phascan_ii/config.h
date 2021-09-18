@@ -26,6 +26,8 @@ public:
     QString getFpgaCpuVersion() {return m_global.m_version.m_FpgaCpuVersion;}
     QString getFpgaPaVersion() {return m_global.m_version.m_FpgaPaVersion;}
     QString getVersion() {return m_global.m_version.m_phascanVersion;}
+    QString getDeviceSN() {return m_global.m_version.m_deviceSN;}
+    QString getDeviceType() {return m_global.m_version.m_type;}
 
     char *data_mark();
 

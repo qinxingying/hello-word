@@ -170,6 +170,8 @@ void Config::unpack_version()
     version.m_phascanVersion = value("Version").toString();
     version.m_FpgaCpuVersion = value("FpgaCpuVersion").toString();
     version.m_FpgaPaVersion  = value("FpgaPaVersion").toString();
+    version.m_deviceSN       = value("SN").toString();
+    version.m_type           = value("Type").toString();
     if(!value("DxfData").isNull()){
         version.m_dxfExist = true;
         version.m_dxfData = value("DxfData").toByteArray();
@@ -181,6 +183,8 @@ void Config::unpack_version()
              << " version " << version.m_phascanVersion
              << " fpgaCpuVersion " << version.m_FpgaCpuVersion
              << " fpgaPaVersion " << version.m_FpgaPaVersion
+             << " type " << version.m_type
+             << " SN " << version.m_deviceSN
              << " DxfDataExist " << version.m_dxfExist << version.m_dxfData.size();
 }
 
