@@ -37,12 +37,17 @@
         <translation>FPGA PA版本 ：</translation>
     </message>
     <message>
+        <location filename="../ui/dialog/dialogaboutfileproperties.ui" line="94"/>
+        <source>FileDateTime   :</source>
+        <translation>文件日期    ：</translation>
+    </message>
+    <message>
         <location filename="../ui/dialog/dialogaboutfileproperties.ui" line="40"/>
         <source>PhascanVersion :</source>
         <translation>设备版本    ：</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogaboutfileproperties.cpp" line="11"/>
+        <location filename="../ui/dialog/dialogaboutfileproperties.cpp" line="12"/>
         <source>File Properties</source>
         <translation>文件属性</translation>
     </message>
@@ -4724,7 +4729,7 @@
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="172"/>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="175"/>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="454"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="634"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="637"/>
         <source>Defect</source>
         <translation>缺陷</translation>
     </message>
@@ -4737,7 +4742,7 @@
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="177"/>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="243"/>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="457"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1315"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1318"/>
         <source>Index</source>
         <translation>序   号</translation>
     </message>
@@ -4780,7 +4785,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="891"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="894"/>
         <source>Width</source>
         <translation>宽度</translation>
     </message>
@@ -4801,7 +4806,7 @@
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="128"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="824"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="827"/>
         <source>Wedge Angle</source>
         <translation>楔块角度</translation>
     </message>
@@ -4891,128 +4896,133 @@
         <translation>日期</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="632"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="570"/>
+        <source>FileDate</source>
+        <translation>文件日期</translation>
+    </message>
+    <message>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="635"/>
         <source>Off</source>
         <translation>关</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="633"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="636"/>
         <source>ON</source>
         <translation>开</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="637"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="640"/>
         <source>RF</source>
         <translation>射频</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="638"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="641"/>
         <source>HW+</source>
         <translation>正检</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="639"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="642"/>
         <source>HW-</source>
         <translation>负检</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="640"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="643"/>
         <source>FW</source>
         <translation>全检</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="643"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="646"/>
         <source>Pitch Catch</source>
         <translation>一发一收</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="644"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="647"/>
         <source>Pitch Echo</source>
         <translation>脉冲回波</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="645"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="648"/>
         <source>Through Trans</source>
         <translation>穿透法</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="646"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="649"/>
         <source>TOFD</source>
         <translation>衍射时差法</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="679"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="682"/>
         <source>Pulse</source>
         <translation>脉冲</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="680"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="683"/>
         <source>I/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="681"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="684"/>
         <source>A/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="711"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="714"/>
         <source>Azimuthal</source>
         <translation>扇形扫查</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="712"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="715"/>
         <source>Linear</source>
         <translation>线性扫查</translation>
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="460"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="713"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="716"/>
         <source>Depth</source>
         <translation>深度</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="714"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="717"/>
         <source>Static</source>
         <translation>静态</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="717"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="720"/>
         <source>Half Path</source>
         <translation>半声程</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="718"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="721"/>
         <source>True Depth</source>
         <translation>真实深度</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="719"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="722"/>
         <source>Projection</source>
         <translation>投影</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="720"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="723"/>
         <source>Focal Plane</source>
         <translation>任意面</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="721"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="724"/>
         <source>Automatic</source>
         <translation>自动</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="752"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="755"/>
         <source>Plate</source>
         <translation>平板</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="753"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="756"/>
         <source>OD</source>
         <translation>凸面</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="754"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="757"/>
         <source>ID</source>
         <translation>凹面</translation>
     </message>
@@ -5025,37 +5035,37 @@
         <translation type="vanished">第</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="806"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="809"/>
         <source>GROUP </source>
         <translation>第 </translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="808"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="811"/>
         <source>:</source>
         <translation> 组：</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="819"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="822"/>
         <source>Probe Characterization</source>
         <translation>探头表征</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="820"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="823"/>
         <source>Probe Model</source>
         <translation>探头型号</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="821"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="824"/>
         <source>Probe Serial</source>
         <translation>探头序列</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="822"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="825"/>
         <source>Probe Frequency</source>
         <translation>探头频率</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="823"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="826"/>
         <source>Wedge Model</source>
         <translation>楔块型号</translation>
     </message>
@@ -5064,304 +5074,304 @@
         <translation type="vanished">楔块孔径</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="867"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="870"/>
         <source>Setup</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="869"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="872"/>
         <source>Beam Delay</source>
         <translation>波束延迟</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="870"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="873"/>
         <source>Sample Start</source>
         <translation>采样起点</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="871"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="874"/>
         <source>Sample Range</source>
         <translation>采样范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="872"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="875"/>
         <source>PRF</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="873"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="876"/>
         <source>Type</source>
         <translation>检测模式</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="874"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="877"/>
         <source>Averaging Factor</source>
         <translation>平均</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="876"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="879"/>
         <source>Scale Factor</source>
         <translation>比例因子</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="877"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="880"/>
         <source>Video Filter</source>
         <translation>视频滤波器</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="878"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="881"/>
         <source>Rectification</source>
         <translation>检波方式</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="879"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="882"/>
         <source>Band-Pass Filter</source>
         <translation>带通滤波器</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="881"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="884"/>
         <source>Gain</source>
         <translation>增益</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="882"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="885"/>
         <source>Mode</source>
         <translation>收发模式</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="883"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="886"/>
         <source>Sound Velocity</source>
         <translation>声速</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="884"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="887"/>
         <source>Pulse Width</source>
         <translation>脉冲宽度</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="886"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="889"/>
         <source>Scan Offset</source>
         <translation>扫查偏置</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="887"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="890"/>
         <source>Index Offset</source>
         <translation>步进偏置</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="888"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="891"/>
         <source>Skew</source>
         <translation>转向角</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="889"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="892"/>
         <source>Gate</source>
         <translation>闸门</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="890"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="893"/>
         <source>Start</source>
         <translation>起点</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="892"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="895"/>
         <source>Threshold</source>
         <translation>阀值</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="893"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="896"/>
         <source>Synchro</source>
         <translation>同步</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1004"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1007"/>
         <source>Calculator</source>
         <translation>计算</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1006"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1009"/>
         <source>Element Qty</source>
         <translation>阵元数</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1007"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1010"/>
         <source>First TX Element</source>
         <translation>TX 起始阵元</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1008"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1011"/>
         <source>Last TX Element</source>
         <translation>TX 末阵元</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1009"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1012"/>
         <source>First RX Element</source>
         <translation>RX 起始阵元</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1010"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1013"/>
         <source>Last RX Element</source>
         <translation>RX 末阵元</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1011"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1014"/>
         <source>Resolution</source>
         <translation>阵元步进</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1013"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1016"/>
         <source>Start Angle</source>
         <translation>起始角度</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1014"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1017"/>
         <source>Stop Angle</source>
         <translation>终止角度</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1015"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1018"/>
         <source>Angle Resolution</source>
         <translation>角度步进</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1016"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1019"/>
         <source>Law Configuration</source>
         <translation>聚焦法则类型</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1018"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1021"/>
         <source>Focal Type</source>
         <translation>聚焦类型</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1019"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1022"/>
         <source>Position Start</source>
         <translation>起始位置</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1020"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1023"/>
         <source>Position End</source>
         <translation>终止位置</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1021"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1024"/>
         <source>Position Step</source>
         <translation>位置步进</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1022"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1025"/>
         <source>Offset Start</source>
         <translation>偏置起点</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1023"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1026"/>
         <source>Offset Stop</source>
         <translation>偏置终点</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1024"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1027"/>
         <source>Depth Start</source>
         <translation>深度起点</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1025"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1028"/>
         <source>Depth Stop</source>
         <translation>深度终点</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1117"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1120"/>
         <source>Part</source>
         <translation>工件</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1118"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1121"/>
         <source>Material</source>
         <translation>材料</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1119"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1122"/>
         <source>Geometry</source>
         <translation>工件形状</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1120"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1123"/>
         <source>Thickness</source>
         <translation>厚度</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1156"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1159"/>
         <source>Table</source>
         <translation>缺陷报表</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1178"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1181"/>
         <source>Scan Pos</source>
         <translation>扫描轴</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1309"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1312"/>
         <source>Excel Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1315"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1318"/>
         <source>X-Start(mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1315"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1318"/>
         <source>X-Length(mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1316"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1319"/>
         <source>Y-Start(mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1316"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1319"/>
         <source>Y-Length(mm)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1316"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1319"/>
         <source>Area(mm2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="244"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1179"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1182"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="245"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1180"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1183"/>
         <source>Law ID</source>
         <translation>聚焦法则编号</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="825"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="828"/>
         <source>Aperture</source>
         <translation>孔径</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1219"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1222"/>
         <source>Technician Name:</source>
         <translation>技术员姓名 :</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1220"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1223"/>
         <source>Technician Signature:</source>
         <translation>技术员签名 :</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1221"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1224"/>
         <source>Contractor:</source>
         <translation>承包商 :</translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1222"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1225"/>
         <source>Date:</source>
         <translation>日期 :</translation>
     </message>
