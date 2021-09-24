@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>209</width>
-    <height>189</height>
+    <width>216</width>
+    <height>230</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,6 +79,24 @@
      </item>
      <item>
       <widget class="QLabel" name="labelFpgaPaVersion">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>FileDateTime   :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelDateTime">
        <property name="text">
         <string/>
        </property>

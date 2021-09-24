@@ -2707,5 +2707,11 @@ QDate DopplerConfigure::GetLastDate()
 	int _day   = AppEvn.day;
 
 	QDate _date(_year, _month, _day);
-	return _date;
+    return _date;
+}
+
+QDateTime DopplerConfigure::GetDataFileDateTime()
+{
+    QFileInfo fi = QFileInfo(m_szFileInUse);
+    return fi.lastModified();
 }

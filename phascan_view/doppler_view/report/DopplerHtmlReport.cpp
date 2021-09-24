@@ -566,7 +566,8 @@ void DopplerHtmlReport::CreateHeader()
         QString(QObject::tr("Part Name")),
         QString(QObject::tr("Part No.")),
         QString(QObject::tr("Position")),
-        QString(QObject::tr("Date"))
+        QString(QObject::tr("Date")),
+        QString(QObject::tr("FileDate"))
     };
 
     fprintf(m_pFile,"<table %s>\n", tableWidth);
@@ -585,18 +586,20 @@ void DopplerHtmlReport::CreateHeader()
 
 	fprintf(m_pFile,"<tr>\n");
 
-    for(int i = 0 ;i < 4 ;++i){
+    for(int i = 0 ;i < 5 ;++i){
         fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strReportHead[i]));
 	}
 	fprintf(m_pFile,"</tr>\n\n");
 
     QString _date;
-    _date.sprintf("%d - %d - %d" , m_cInfo.nYear , m_cInfo.nMonth,  m_cInfo.nDate );
+    _date.sprintf("%d-%d-%d" , m_cInfo.nYear , m_cInfo.nMonth,  m_cInfo.nDate );
+    QString fileDate = DopplerConfigure::Instance()->GetDataFileDateTime().toString("yyyy-MM-dd HH:mm:ss");
 	fprintf(m_pFile,"<tr>\n");
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , m_cInfo.strPartName );
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , m_cInfo.strPartNo   );
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , m_cInfo.strPartPos);
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , TOCHAR(_date));
+    fprintf(m_pFile,"<td colspan=\"2\" %s>%s</td>\n" ,tableTdStyle , TOCHAR(fileDate));
 	fprintf(m_pFile,"</tr>\n\n");
 
 	fprintf(m_pFile,"<tr>\n");

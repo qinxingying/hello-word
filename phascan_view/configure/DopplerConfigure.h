@@ -228,6 +228,7 @@ public:
     int  GetDefectId(int iGroupId_, int index_);
 	void SetLastDate();
 	QDate GetLastDate();
+    QDateTime GetDataFileDateTime();
 	//--------------------------------------------------
 
 	void SaveEvn() ;
