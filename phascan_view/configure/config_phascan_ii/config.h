@@ -28,6 +28,7 @@ public:
     QString getVersion() {return m_global.m_version.m_phascanVersion;}
     QString getDeviceSN() {return m_global.m_version.m_deviceSN;}
     QString getDeviceType() {return m_global.m_version.m_type;}
+    QDateTime getDataFileDate() {return m_global.m_version.m_date;}
 
     char *data_mark();
 

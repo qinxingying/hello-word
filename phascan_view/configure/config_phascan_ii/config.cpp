@@ -172,6 +172,7 @@ void Config::unpack_version()
     version.m_FpgaPaVersion  = value("FpgaPaVersion").toString();
     version.m_deviceSN       = value("SN").toString();
     version.m_type           = value("Type").toString();
+    version.m_date           = QDateTime::fromTime_t(value("Date").toUInt());
     if(!value("DxfData").isNull()){
         version.m_dxfExist = true;
         version.m_dxfData = value("DxfData").toByteArray();
@@ -185,6 +186,7 @@ void Config::unpack_version()
              << " fpgaPaVersion " << version.m_FpgaPaVersion
              << " type " << version.m_type
              << " SN " << version.m_deviceSN
+             << "Date " << version.m_date.toString("yyyy-MM-dd HH:mm:ss")
              << " DxfDataExist " << version.m_dxfExist << version.m_dxfData.size();
 }
 

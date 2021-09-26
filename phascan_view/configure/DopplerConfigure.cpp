@@ -2712,6 +2712,11 @@ QDate DopplerConfigure::GetLastDate()
 
 QDateTime DopplerConfigure::GetDataFileDateTime()
 {
-    QFileInfo fi = QFileInfo(m_szFileInUse);
-    return fi.lastModified();
+    QDateTime date = Config::instance()->getDataFileDate();
+    qDebug() << date.toString("yyyy-MM-dd HH:mm:ss");
+    if (date.toString("yyyy") == "1970" || date.isNull()) {
+        QFileInfo fi = QFileInfo(m_szFileInUse);
+        date = fi.lastModified();
+    }
+    return date;
 }
