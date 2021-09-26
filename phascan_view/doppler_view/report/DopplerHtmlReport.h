@@ -57,6 +57,10 @@ public:
     void set_reportName(QString &str);
 
     void ExportExcel();
+    QString getReportName();
+    QString getReportDir();
+    QString getReportFolder();
+    bool CopyFileToPath(QString toDir ,QString sourceDir);
 protected:
     void BuildStarter () ;
     void BuildEnder()    ;
@@ -74,7 +78,6 @@ protected:
     void SfprintfReportSignature() ;
 
     void CreateFolder()  ;
-    bool CopyFileToPath(QString toDir ,QString sourceDir);
 
     ReportInfo m_cInfo ;
     FILE*      m_pFile ;

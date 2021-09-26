@@ -1,18 +1,21 @@
-﻿#include "aexportscandatatoexcel.h"
+﻿#include "AExportData.h"
 #include "DopplerConfigure.h"
 #include "DopplerDataView.h"
 #include "DopplerExcelBase.h"
+#include "DopplerWordBase.h"
+#include "report/DopplerHtmlReport.h"
+#include <QApplication>
 
 extern U32 getGateDataAmplitude( U32 value);
 extern U32 getGateDataDepth( U32 value);
 extern U32 combinedGateDate( U32 depth, int amp);
 
-AExportScanDataToExcel::AExportScanDataToExcel(QObject *parent) : QObject(parent)
+AExportData::AExportData(QObject *parent) : QObject(parent)
 {
 
 }
 
-void AExportScanDataToExcel::saveBScanData(QString filePath)
+void AExportData::saveBScanData(QString filePath)
 {
     //qDebug() << QThread::currentThread() << "sub thread";
     DopplerConfigure* pConfig = DopplerConfigure::Instance();
@@ -105,7 +108,7 @@ void AExportScanDataToExcel::saveBScanData(QString filePath)
     emit done();
 }
 
-void AExportScanDataToExcel::saveCScanData(QString filePath)
+void AExportData::saveCScanData(QString filePath)
 {
     ParameterProcess* process = ParameterProcess::Instance();
 
@@ -240,7 +243,135 @@ void AExportScanDataToExcel::saveCScanData(QString filePath)
     emit done();
 }
 
-void AExportScanDataToExcel::getPixValueInfo(int nScanPos, setup_GATE_NAME eGate, U32 *pBuff)
+void AExportData::saveReport(QString filePath)
+{
+    DopplerConfigure* pConfig  = DopplerConfigure::Instance();
+    DopplerHtmlReport* pReport = pConfig->GetReportOpp();
+    pReport->BuildReport();
+    QString reportPath = QCoreApplication::applicationDirPath() + "/data/Report/report.docx";
+    if (!filePath.isEmpty()) {
+        WordBase word;
+        bool ret = word.open(reportPath, false);
+        int nGroupQty = pConfig->common.nGroupQty;
+        word.setBookmarkPic("Logo", QCoreApplication::applicationDirPath() + "/data/logo/logo.png");
+
+        QDate date = QDate::currentDate();
+        m_num++;
+        QString num = "000";
+        if (m_num < 10) {
+            num = QString("00%1").arg(m_num);
+        } else if (m_num < 100) {
+            num = QString("0%1").arg(m_num);
+        } else {
+             num = QString("%1").arg(m_num);
+        }
+        word.setBookmarkText("ReportNum", date.toString("yyyyMMdd") + num);
+        //focallaw
+        for(int i = 0; i < nGroupQty; i++){
+            word.setBookmarkText("Thickness", QString::number(pConfig->group[i].part.afSize[0], 'f', 0) + "mm");
+
+            WEDGE_CONFIG& wedge = pConfig->group[i].wedge[0];
+            word.setBookmarkText("Velocity", QString::number( pConfig->group[i].fVelocity, 'f', 0) + "m/s");
+            word.setBookmarkText("WedgeType", wedge.strName);
+            PROBE_CONFIG& probe = pConfig->group[i].probe[0];
+            word.setBookmarkText("ProbeType", probe.strName);
+
+            word.setBookmarkText("ElemQtyFir", QString::number(probe.fPitchPri * probe.nElementPri) + "mm");
+            int elemQty = probe.nElementPri;
+            word.setBookmarkText("ElemQty", QString::number(elemQty) + QString::fromLocal8Bit("个"));
+             word.setBookmarkText("FocallawPosition", QString::number(pConfig->group[i].law.fPositionStart, 'f', 0) + "mm");
+
+            word.setBookmarkText("Gain", QString::number(pConfig->group[i].fGain, 'f', 0) + "db");
+        }
+        word.setBookmarkText("Resolution", QString::number(pConfig->common.scanner.fScanStep, 'f', 0) + "mm");
+
+        // defect
+        int defectNum = 0;
+        for(int i = 0; i < nGroupQty; i++){
+            defectNum += pConfig->GetDefectCnt(i);
+        }
+        word.addTableRow(3,3,defectNum*2 - 1);//
+        for (int i = 0; i < defectNum*2; i += 2) {
+            word.MergeCells(3,4 + i,1,4 + i,7);
+        }
+        if (defectNum > 23) {
+            word.addTableRow(2,3,defectNum - 23);
+        }
+
+        if(defectNum){
+            DEFECT_INFO **sortBuff = (DEFECT_INFO **)malloc(sizeof(DEFECT_INFO *)* defectNum);
+            int index_ = 0;
+            for(int i = 0; i < nGroupQty; i++){
+                DEFECT_INFO* pDfInfo = pConfig->m_dfParam[i].pDFHead;
+                while (pDfInfo != NULL) {
+                    sortBuff[index_] = pDfInfo;
+                    pDfInfo = pDfInfo->pNext;
+                    index_++;
+                }
+            }
+            DEFECT_INFO *temp;
+            for(int i = 0; i < defectNum - 1; i++){
+                for(int j = 0; j < defectNum - 1 - i; j++){
+                    if(sortBuff[j]->dIndex > sortBuff[j+1]->dIndex){
+                        temp = sortBuff[j];
+                        sortBuff[j] = sortBuff[j+1];
+                        sortBuff[j+1] = temp;
+                    }
+                }
+            }
+
+            float totalArea = 0.0;
+            for(int i = 0; i < defectNum; i++){
+                DEFECT_INFO* pDfInfo = sortBuff[i];
+                int groupId = pDfInfo->dGroupId - 1;
+                if(groupId < 0) groupId = 0;
+
+                QString index = QString::number(pDfInfo->dIndex);
+                QString X     = QString::number(pDfInfo->fSStart,'f',1);
+                QString L     = QString::number(pDfInfo->fSStop - pDfInfo->fSStart,'f',1);
+                QString Y     = QString::number(pDfInfo->fIStart,'f',1);
+                QString W     = QString::number(pDfInfo->fIStop - pDfInfo->fIStart,'f',1);
+                QString Area  = QString::number(L.toFloat() * W.toFloat(),'f',1);
+                totalArea += Area.toFloat();
+                // table2
+                word.setCellString(2,3 + i,1,index);
+                word.setCellString(2,3 + i,2,X);
+                word.setCellString(2,3 + i,3,L);
+                word.setCellString(2,3 + i,4,Y);
+                word.setCellString(2,3 + i,5,W);
+                word.setCellString(2,3 + i,6,Area);
+
+                // table 3
+                QString strImgPathName = pConfig->m_szDefectPathName +
+                                        QString(QObject::tr("/")) +
+                                        QString(QObject::tr(pDfInfo->srtImageName)) +
+                                        QString(QObject::tr(".png"));
+                QString sourceImgName = pReport->getReportFolder() + QString("/") +
+                                        QString(QObject::tr(pDfInfo->srtImageName)) +
+                                        QString(QObject::tr(".png"));
+                QString strDir = pReport->getReportDir() + sourceImgName ;
+                pReport->CopyFileToPath(strDir , strImgPathName);
+
+                word.setCellString(3,3 + i * 2,1,index);
+                word.setCellString(3,3 + i * 2,2,X);
+                word.setCellString(3,3 + i * 2,3,L);
+                word.setCellString(3,3 + i * 2,4,Y);
+                word.setCellString(3,3 + i * 2,5,W);
+                word.setCellString(3,3 + i * 2,6,Area);
+                word.insertCellPic(3,4 + i * 2,1,strDir);
+            }
+            word.setBookmarkText("TotalArea", QString::number(totalArea, 'f', 1));
+        }
+
+        word.setSaveName(filePath);
+        word.moveForEnd();
+        word.setVisible(true);
+        word.close();
+    }
+    emit done();
+}
+
+void AExportData::getPixValueInfo(int nScanPos, setup_GATE_NAME eGate, U32 *pBuff)
 {
     ParameterProcess* process = ParameterProcess::Instance();
     int lawstop   = process->GetLawStop();
@@ -253,7 +384,7 @@ void AExportScanDataToExcel::getPixValueInfo(int nScanPos, setup_GATE_NAME eGate
     }
 }
 
-void AExportScanDataToExcel::getPixValueDistance(U32 *pBuff1, U32 *pBuff2, float GainScale, U32 gateHeight1, U32 gateHeight2)
+void AExportData::getPixValueDistance(U32 *pBuff1, U32 *pBuff2, float GainScale, U32 gateHeight1, U32 gateHeight2)
 {
     ParameterProcess* process = ParameterProcess::Instance();
     int lawstop   = process->GetLawStop();
@@ -299,7 +430,7 @@ void AExportScanDataToExcel::getPixValueDistance(U32 *pBuff1, U32 *pBuff2, float
     }
 }
 
-void AExportScanDataToExcel::getPixValuePos(U32* pBuff, U32* pBuff2, float gainScale, U32 gateHeight1)
+void AExportData::getPixValuePos(U32* pBuff, U32* pBuff2, float gainScale, U32 gateHeight1)
 {
     ParameterProcess* process = ParameterProcess::Instance();
     int lawstop   = process->GetLawStop();
