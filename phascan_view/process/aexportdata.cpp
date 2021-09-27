@@ -1,5 +1,6 @@
 ﻿#include "AExportData.h"
 #include "DopplerConfigure.h"
+#include "config_phascan_ii/config.h"
 #include "DopplerDataView.h"
 #include "DopplerExcelBase.h"
 #include "DopplerWordBase.h"
@@ -253,9 +254,9 @@ void AExportData::saveReport(QString filePath)
         WordBase word;
         bool ret = word.open(reportPath, false);
         int nGroupQty = pConfig->common.nGroupQty;
-        word.setBookmarkPic("Logo", QCoreApplication::applicationDirPath() + "/data/logo/logo.png");
+        //word.setBookmarkPic("Logo", QCoreApplication::applicationDirPath() + "/data/logo/logo.png");
 
-        QDate date = QDate::currentDate();
+        /*QDate date = QDate::currentDate();
         m_num++;
         QString num = "000";
         if (m_num < 10) {
@@ -265,37 +266,111 @@ void AExportData::saveReport(QString filePath)
         } else {
              num = QString("%1").arg(m_num);
         }
-        word.setBookmarkText("ReportNum", date.toString("yyyyMMdd") + num);
+        word.setBookmarkText("ReportNum", date.toString("yyyyMMdd") + num);*/
         //focallaw
-        for(int i = 0; i < nGroupQty; i++){
-            word.setBookmarkText("Thickness", QString::number(pConfig->group[i].part.afSize[0], 'f', 0) + "mm");
+        for(int i = 0; i < 1; i++){
+            GROUP_CONFIG& group = pConfig->group[i];
+            COMMON_CONFIG& config = pConfig->common ;
+            LAW_CONFIG& law = group.law;
 
-            WEDGE_CONFIG& wedge = pConfig->group[i].wedge[0];
-            word.setBookmarkText("Velocity", QString::number( pConfig->group[i].fVelocity, 'f', 0) + "m/s");
+            // customer info
+            word.setBookmarkText("ProjectName", "");
+            word.setBookmarkText("Client", "");
+            word.setBookmarkText("SpecimenName", "");
+            word.setBookmarkText("ReportNum", "");
+            word.setBookmarkText("InspectionQuantity", "");
+            word.setBookmarkText("InspectionScale", "");
+            word.setBookmarkText("ConstructionOrganization", "");
+            word.setBookmarkText("Specifications", "");
+            word.setBookmarkText("WeldingMethod", "");
+            word.setBookmarkText("SlopeType", "");
+            word.setBookmarkText("HotDealingCondition", "");
+            word.setBookmarkText("TestSurface", "");
+            word.setBookmarkText("DetectionTime", "");
+            word.setBookmarkText("OperationInstructionNum", "");
+            word.setBookmarkText("TestStandard", "");
+            word.setBookmarkText("AcceptanceStandard", "");
+            word.setBookmarkText("DetectionLevel", "");
+            word.setBookmarkText("AcceptanceLevel", "");
+            word.setBookmarkText("SurfaceCondition", "");
+            word.setBookmarkText("CalibrationBlock", "");
+
+            //
+            MATERIAL& material = group.part.material;
+            QString strTmp[3];
+            int iLang = pConfig->AppEvn.eLanguage;
+            strTmp[0] = QString(material.strName[iLang]);
+            strTmp[1].sprintf("[L]%.0f" , material.fVelocityLon) ;
+            strTmp[2].sprintf("[T]%.0f" , material.fVelocityTran) ;
+            word.setBookmarkText("Material", strTmp[0] + strTmp[1] + strTmp[2]);
+
+            WEDGE_CONFIG& wedge = group.wedge[0];
             word.setBookmarkText("WedgeType", wedge.strName);
-            PROBE_CONFIG& probe = pConfig->group[i].probe[0];
+            PROBE_CONFIG& probe = group.probe[0];
             word.setBookmarkText("ProbeType", probe.strName);
 
-            word.setBookmarkText("ElemQtyFir", QString::number(probe.fPitchPri * probe.nElementPri) + "mm");
-            int elemQty = probe.nElementPri;
-            word.setBookmarkText("ElemQty", QString::number(elemQty) + QString::fromLocal8Bit("个"));
-             word.setBookmarkText("FocallawPosition", QString::number(pConfig->group[i].law.fPositionStart, 'f', 0) + "mm");
+            if (Config::instance()->is_phascan_ii()) {
+                word.setBookmarkText("DeviceType", "Phascan II");
+            } else {
+                word.setBookmarkText("DeviceType", "Phascan I");
+            }
 
-            word.setBookmarkText("Gain", QString::number(pConfig->group[i].fGain, 'f', 0) + "db");
+            word.setBookmarkText("ElemQtyFir", QString::number(probe.fPitchPri * probe.nElementPri) + " mm");
+            if (config.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE) {
+                word.setBookmarkText("ScanType", QString::fromLocal8Bit("单线扫查"));
+            } else {
+                word.setBookmarkText("ScanType", QString::fromLocal8Bit("双线扫查"));
+            }
+            word.setBookmarkText("Resolution", QString::number(pConfig->common.scanner.fScanStep, 'f', 0) + " mm");
+
+            QString angeleRange = QString::number(law.nAngleStartRefract / 10) + "~" + QString::number(law.nAngleStopRefract / 10);
+            word.setBookmarkText("AngleRange", angeleRange);
+            word.setBookmarkText("AngleStep", QString::number(law.nAngleStepRefract));
+
+            if (law.eLawType == setup_LAW_TYPE_AZIMUTHAL) {
+                word.setBookmarkText("LawType", QString::fromLocal8Bit("扇形扫查"));
+            } else if (law.eLawType == setup_LAW_TYPE_LINEAR) {
+                word.setBookmarkText("LawType", QString::fromLocal8Bit("线形扫查"));
+            } else if (law.eLawType == setup_LAW_TYPE_TFM) {
+                word.setBookmarkText("LawType", QString::fromLocal8Bit("全聚焦"));
+            }
+
+            if (law.eFocalType == setup_FOCAL_TYPE_HALF_PATH) {
+                word.setBookmarkText("FocallawType", QString::fromLocal8Bit("半声程"));
+            } else if (law.eFocalType == setup_FOCAL_TYPE_TRUE_DEPTH) {
+                word.setBookmarkText("FocallawType", QString::fromLocal8Bit("真实深度"));
+            } else if (law.eFocalType == setup_FOCAL_TYPE_PROJECTION) {
+                word.setBookmarkText("FocallawType", QString::fromLocal8Bit("投影"));
+            } else if (law.eFocalType == setup_FOCAL_TYPE_FOCAL_PLANE) {
+                word.setBookmarkText("FocallawType", QString::fromLocal8Bit("任意面"));
+            }
+
+            word.setBookmarkText("FocallawPosition", QString::number(law.fPositionStart, 'f', 0) + "mm");
+
+            word.setBookmarkText("CoupleGain", QString::number(group.CoupleGain + CUR_RES.Com_Gain[i], 'f', 0) + " db");
+            word.setBookmarkText("RL", QString::number(CUR_RES.CurRL[i], 'f', 0) + " db");
+            word.setBookmarkText("SL", QString::number(CUR_RES.CurSL[i], 'f', 0) + " db");
+            word.setBookmarkText("EL", QString::number(CUR_RES.CurEL[i], 'f', 0) + " db");
+            word.setBookmarkText("SS", QString::number(CUR_RES.CurSS[i], 'f', 0) + " db");
         }
-        word.setBookmarkText("Resolution", QString::number(pConfig->common.scanner.fScanStep, 'f', 0) + "mm");
 
+        //qDebug() << "table count : " << word.getTableCount();
         // defect
         int defectNum = 0;
         for(int i = 0; i < nGroupQty; i++){
             defectNum += pConfig->GetDefectCnt(i);
         }
-        word.addTableRow(3,3,defectNum*2 - 1);//
-        for (int i = 0; i < defectNum*2; i += 2) {
-            word.MergeCells(3,4 + i,1,4 + i,7);
+        word.addTableRow(3,4,defectNum - 1);//
+        //for (int i = 0; i < defectNum*2; i += 2) {
+        //    word.MergeCells(3,4 + i,1,4 + i,7);
+        //}
+        if (defectNum > 16) {
+            word.addTableRow(2,4,19);
         }
-        if (defectNum > 23) {
-            word.addTableRow(2,3,defectNum - 23);
+        if (defectNum > 34) {
+            for (int i = 0 ; i < defectNum % 34; i++) {
+                word.addTableRow(2,4,19*(i+1));
+            }
         }
 
         if(defectNum){
@@ -320,7 +395,6 @@ void AExportData::saveReport(QString filePath)
                 }
             }
 
-            float totalArea = 0.0;
             for(int i = 0; i < defectNum; i++){
                 DEFECT_INFO* pDfInfo = sortBuff[i];
                 int groupId = pDfInfo->dGroupId - 1;
@@ -329,17 +403,46 @@ void AExportData::saveReport(QString filePath)
                 QString index = QString::number(pDfInfo->dIndex);
                 QString X     = QString::number(pDfInfo->fSStart,'f',1);
                 QString L     = QString::number(pDfInfo->fSStop - pDfInfo->fSStart,'f',1);
-                QString Y     = QString::number(pDfInfo->fIStart,'f',1);
-                QString W     = QString::number(pDfInfo->fIStop - pDfInfo->fIStart,'f',1);
-                QString Area  = QString::number(L.toFloat() * W.toFloat(),'f',1);
-                totalArea += Area.toFloat();
+                QString Y     = QString::number(pDfInfo->dDepth,'f',1);
+
+                float fStart;
+                float fData = pConfig->DefectHeightValue(groupId, &fStart, pDfInfo->dIndex);
+                QString H     = QString::number(fData,'f',1);
+
+                QStringList m_strMeasure;
+                for(int i = 0; i < setup_MAX_MEASURE_QTY_V1; i++) {
+                    if(pDfInfo->m_strSzField[i][0] == 45 && pDfInfo->m_strSzField[i][1] == 0){
+
+                    }else{
+                        m_strMeasure << pDfInfo->m_strMeasure[i];
+                    }
+
+                }
+                int max = setup_MAX_MEASURE_QTY - setup_MAX_MEASURE_QTY_V1;
+                if(pConfig->loadDefectVersion == 2){
+                    for(int i = 0; i < max; i++){
+                        if(pDfInfo->m_strSzField_V2[i][0] == 45 && pDfInfo->m_strSzField_V2[i][1] == 0){
+
+                        }else{
+                            m_strMeasure << pDfInfo->m_strMeasure[i];
+                        }
+
+                    }
+                }
+                //qDebug() << m_strMeasure;
+                QString ViA = m_strMeasure[2];
+                QString buff = m_strMeasure.last();
+
                 // table2
-                word.setCellString(2,3 + i,1,index);
-                word.setCellString(2,3 + i,2,X);
-                word.setCellString(2,3 + i,3,L);
-                word.setCellString(2,3 + i,4,Y);
-                word.setCellString(2,3 + i,5,W);
-                word.setCellString(2,3 + i,6,Area);
+                word.setCellString(2,5 + i,2,index);
+                word.setCellString(2,5 + i,3,X);
+                word.setCellString(2,5 + i,4,L);
+                word.setCellString(2,5 + i,5,Y);
+                word.setCellString(2,5 + i,6,H);
+                word.setCellString(2,5 + i,7,ViA);
+                word.setCellString(2,5 + i,8,buff);
+
+                //word.setCellString(2,5 + i,10,QString(pDfInfo->srtImageName) + ".png");
 
                 // table 3
                 QString strImgPathName = pConfig->m_szDefectPathName +
@@ -352,15 +455,19 @@ void AExportData::saveReport(QString filePath)
                 QString strDir = pReport->getReportDir() + sourceImgName ;
                 pReport->CopyFileToPath(strDir , strImgPathName);
 
-                word.setCellString(3,3 + i * 2,1,index);
-                word.setCellString(3,3 + i * 2,2,X);
-                word.setCellString(3,3 + i * 2,3,L);
-                word.setCellString(3,3 + i * 2,4,Y);
-                word.setCellString(3,3 + i * 2,5,W);
-                word.setCellString(3,3 + i * 2,6,Area);
-                word.insertCellPic(3,4 + i * 2,1,strDir);
+                word.insertBookMark(3,4+i,1,QString("defect%1").arg(i+1));
+                word.createHyperLink(2,5 + i,10,QString(pDfInfo->srtImageName) + ".png", QString("defect%1").arg(i+1));
+
+                word.insertCellPic(3,4 + i,1,strDir);
+
+//                word.setCellString(3,3 + i * 2,1,index);
+//                word.setCellString(3,3 + i * 2,2,X);
+//                word.setCellString(3,3 + i * 2,3,L);
+//                word.setCellString(3,3 + i * 2,4,Y);
+//                word.setCellString(3,3 + i * 2,5,W);
+//                word.setCellString(3,3 + i * 2,6,Area);
+//                word.insertCellPic(3,4 + i * 2,1,strDir);
             }
-            word.setBookmarkText("TotalArea", QString::number(totalArea, 'f', 1));
         }
 
         word.setSaveName(filePath);

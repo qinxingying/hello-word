@@ -124,7 +124,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->IndicationTable, &IndicationTableWidget::merged, this, &MainWindow::on_actionSave_Defect_triggered);
     connect(ui->IndicationTable, &IndicationTableWidget::save, this, &MainWindow::slotSaveDefect);
 
-    connect(ui->actionExcel_Export, &QAction::triggered, this, &MainWindow::slot_actionExcelExport_triggered);
+    connect(ui->actionWord_Export, &QAction::triggered, this, &MainWindow::slot_actionWordExport_triggered);
 
     m_reportWriter = new AExportData();
     m_pExportThread = new QThread(this);
@@ -178,7 +178,7 @@ void MainWindow::init_ui()
     ui->actionStop_Analysis->setDisabled(true);
     ui->actionSave_Data->setDisabled(true);
     ui->actionSave_B_Scan_Data->setDisabled(true);
-    ui->actionExcel_Export->setVisible(false);
+    ui->actionWord_Export->setVisible(true);
     // init display widget list
     for(int i = 0 ; i < MAX_LIST_QTY ; i++)
     {
@@ -1341,22 +1341,9 @@ void MainWindow::ReportSetting()
 *****************************************************************************/
 void MainWindow::ReportSave()
 {
-//    DopplerConfigure* _pConfig  = DopplerConfigure::Instance();
-//    DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
-//    _pReport->SaveReport();
-    if(m_pExportThread->isRunning())
-    {
-        return;
-    }
-    m_reportWriter->setGroupId(m_iCurGroup);
-    DopplerConfigure* pConfig  = DopplerConfigure::Instance();
-    DopplerHtmlReport* pReport = pConfig->GetReportOpp();
-    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportDir() + QString::fromLocal8Bit("玻璃粘接相控阵检测报告"), tr("*.docx"));
-    if (!filePath.isEmpty()) {
-        m_pExportThread->start();
-
-        emit exportReport(filePath);
-    }
+    DopplerConfigure* _pConfig  = DopplerConfigure::Instance();
+    DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
+    _pReport->SaveReport();
 }
 
 void MainWindow::TofdDataPro(TOFD_PRO_STATUS proSt_)
@@ -3160,7 +3147,7 @@ void MainWindow::slot_actionSaveBSacnData_triggered()
     }
 }
 
-void MainWindow::slot_actionExcelExport_triggered()
+void MainWindow::slot_actionWordExport_triggered()
 {
     if(m_pExportThread->isRunning())
     {
@@ -3169,7 +3156,7 @@ void MainWindow::slot_actionExcelExport_triggered()
     m_reportWriter->setGroupId(m_iCurGroup);
     DopplerConfigure* pConfig  = DopplerConfigure::Instance();
     DopplerHtmlReport* pReport = pConfig->GetReportOpp();
-    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportDir() + QString::fromLocal8Bit("玻璃粘接相控阵检测报告"), tr("*.docx"));
+    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportName(), tr("*.docx"));
     if (!filePath.isEmpty()) {
         m_pExportThread->start();
 

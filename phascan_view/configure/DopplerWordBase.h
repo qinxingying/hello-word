@@ -82,6 +82,9 @@ public:
 	void setColumnHeight(int nTable,int column, int height);
 	void intsertTable(int tableIndex, int row,int column);
 
+    void insertBookMark(int nTable,int row,int column,const QString &mark);
+    // 创建内部超链接
+    void createHyperLink(int nTable,int row,int column, const QString &linkName,const QString &markName);
     void setBookmarkText(const QString &mark, const QString &text);
     void setBookmarkPic(const QString &mark, const QString &picPath);
     void setSaveName(const QString &name);

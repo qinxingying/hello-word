@@ -1299,52 +1299,6 @@ void DopplerHtmlReport::set_reportName(QString &str)
     strcpy(m_cInfo.strReportName, t3);
 }
 
-void DopplerHtmlReport::ExportExcel()
-{
-    DopplerConfigure* pConfig = DopplerConfigure::Instance();
-    int groupNum = pConfig->common.nGroupQty;
-    float fStart = 0;
-    float fLength = 0;
-    float fHeight = 0;
-
-    QString file = m_strReportDir;
-    file.append(m_cInfo.strReportName);
-    QString filePath = QFileDialog::getSaveFileName(NULL, QObject::tr("Excel Export"), file,
-            "Microsoft Excel(*.xlsx)");
-    if (!filePath.isEmpty())
-    {
-        QList< QList<QVariant> > m_datas;
-        QList<QVariant> heads;
-        heads << QObject::tr("Index") << QObject::tr("X-Start(mm)") << QObject::tr("X-Length(mm)")
-              << QObject::tr("Y-Start(mm)") << QObject::tr("Y-Length(mm)") << QObject::tr("Area(mm2)");
-        m_datas.append(heads);
-        for (int n = 0; n < groupNum; ++n) {
-            for(int i = 0; i < pConfig->GetDefectCnt(n); i++)
-            {
-                QList<QVariant> rows;
-                //DEFECT_INFO* pDfInfo = pConfig->GetDefectPointer(n, i);
-                rows << i + 1;
-
-                fLength = pConfig->DefectLengthValue(n, &fStart, i);
-                rows << QString::number(fStart, 'f', 1) << QString::number(fLength, 'f', 1);
-
-                fHeight = pConfig->DefectHeightValue(n, &fStart, i);
-                rows << QString::number(fStart, 'f', 1) << QString::number(fHeight, 'f', 1) << QString::number(fLength * fHeight, 'f', 2);
-
-                m_datas << rows;
-            }
-        }
-
-        ExcelBase xls;
-        xls.create(filePath);
-        xls.setCurrentSheet(1);
-        xls.writeCurrentSheet(m_datas);
-        xls.setAutoFit();
-        xls.save();
-        xls.close();
-    }
-}
-
 QString DopplerHtmlReport::getReportName()
 {
     QString file = m_strReportDir;

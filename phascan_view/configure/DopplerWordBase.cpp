@@ -471,6 +471,55 @@ void WordBase::intsertTable(int tableIndex, int row,int column)
     ts<<doc<<endl;*/
 }
 
+void WordBase::insertBookMark(int nTable,int row,int column,const QString &mark)
+{
+    if (!m_document) return;
+    QAxObject *bookmark = m_document->querySubObject("Bookmarks");
+
+    QAxObject* pTables =m_document->querySubObject("Tables");
+    if(NULL==pTables)
+    {
+        return;
+    }
+    QAxObject* table=pTables->querySubObject("Item(int)",nTable);
+    if(!table)
+    {
+        return;
+    }
+    QList<QVariant> list;
+    list << mark << table->querySubObject("Cell(int,int)",row,column)->property("Range");
+    if(bookmark) {
+        bookmark->dynamicCall("Add(QString, QVariant)", list);
+    }
+}
+
+void WordBase::createHyperLink(int nTable,int row,int column, const QString &linkName, const QString &markName)
+{
+    if (!m_document) return;
+    QAxObject *hyperLinks = m_document->querySubObject("HyperLinks");
+
+    QAxObject* pTables =m_document->querySubObject("Tables");
+    if(NULL==pTables)
+    {
+        return;
+    }
+    QAxObject* table=pTables->querySubObject("Item(int)",nTable);
+    if(table)
+    {
+        table->querySubObject("Cell(int,int)",row,column)->querySubObject("Range")
+                                ->dynamicCall("SetText(QString)",linkName);
+
+        QAxObject *bookmark = m_document->querySubObject("Bookmarks(QString)", markName);
+        if(bookmark) {
+            QList<QVariant> list;
+            list << table->querySubObject("Cell(int,int)",row,column)->property("Range") << "" << markName << "" << "";
+            if(hyperLinks) {
+                hyperLinks->dynamicCall("Add(QVariant, QString, QString, QString, QString)", list);
+            }
+        }
+    }
+}
+
 void WordBase::setBookmarkText(const QString &mark, const QString &text)
 {
     if (!m_document) return;

@@ -56,7 +56,6 @@ public:
     void set_data_path(QString &str);
     void set_reportName(QString &str);
 
-    void ExportExcel();
     QString getReportName();
     QString getReportDir();
     QString getReportFolder();

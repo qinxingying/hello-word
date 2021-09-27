@@ -237,7 +237,7 @@ protected slots:
   void on_actionFile_Properties_triggered();
   void slot_actionSaveCSacnData_triggered();
   void slot_actionSaveBSacnData_triggered();
-  void slot_actionExcelExport_triggered();
+  void slot_actionWordExport_triggered();
 };
 
 extern MainWindow* g_pMainWnd;
