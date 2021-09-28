@@ -2104,6 +2104,11 @@ void MainWindow::slotSaveDefect()
     QElapsedTimer timer;
     timer.start();
 
+    QDir *_tmp = new QDir;
+    if(!_tmp->exists(pConfig->m_szDefectPathName)) {
+        _tmp->mkdir(pConfig->m_szDefectPathName);
+    }
+
     for (int i = 0; i < cnt; ++i) {
         if (progress.wasCanceled()) {
             break;
