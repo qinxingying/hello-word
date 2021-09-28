@@ -791,6 +791,11 @@
         <source>CalibrationBlock</source>
         <translation>校准试块</translation>
     </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="245"/>
+        <source>Couplant</source>
+        <translation>耦合剂</translation>
+    </message>
 </context>
 <context>
     <name>DialogReportSetting</name>
@@ -4979,15 +4984,15 @@
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="321"/>
-        <location filename="../process/aexportdata.cpp" line="451"/>
+        <location filename="../process/aexportdata.cpp" line="452"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="323"/>
         <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="327"/>
-        <location filename="../process/aexportdata.cpp" line="453"/>
-        <location filename="../process/aexportdata.cpp" line="456"/>
+        <location filename="../process/aexportdata.cpp" line="454"/>
+        <location filename="../process/aexportdata.cpp" line="457"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>

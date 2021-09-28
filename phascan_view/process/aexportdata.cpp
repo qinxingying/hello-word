@@ -296,6 +296,7 @@ void AExportData::saveReport(QString filePath)
             word.setBookmarkText("AcceptanceLevel", info.acceptanceLevel);
             word.setBookmarkText("SurfaceCondition", info.surfaceCondition);
             word.setBookmarkText("CalibrationBlock", info.calibrationBlock);
+            word.setBookmarkText("Couplant", info.couplant);
 
             //
             MATERIAL& material = group.part.material;

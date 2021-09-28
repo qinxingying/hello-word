@@ -49,6 +49,7 @@ struct ReportInfo2
     QString  acceptanceLevel;
     QString  surfaceCondition;
     QString  calibrationBlock;
+    QString  couplant;
 }  ;
 
 struct ReportValueItem

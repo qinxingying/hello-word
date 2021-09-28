@@ -6,9 +6,6 @@ DialogReportInfoSetting::DialogReportInfoSetting(QWidget *parent) :
     ui(new Ui::DialogReportInfoSetting)
 {
     ui->setupUi(this);
-    ui->spaceLine->hide();
-
-
 }
 
 DialogReportInfoSetting::~DialogReportInfoSetting()
@@ -41,6 +38,7 @@ void DialogReportInfoSetting::SetReportInfo2(ReportInfo2 &pInfo)
     ui->AcceptanceLevelLine->setText(m_cInfo.acceptanceLevel);
     ui->SurfaceConditionLine->setText(m_cInfo.surfaceCondition);
     ui->CalibrationBlockLine->setText(m_cInfo.calibrationBlock);
+    ui->CouplantLine->setText(m_cInfo.couplant);
 }
 
 ReportInfo2& DialogReportInfoSetting::GetRePortInfo2()
@@ -72,4 +70,5 @@ void DialogReportInfoSetting::on_buttonBox_accepted()
     m_cInfo.acceptanceLevel = ui->AcceptanceLevelLine->text();
     m_cInfo.surfaceCondition = ui->SurfaceConditionLine->text();
     m_cInfo.calibrationBlock = ui->CalibrationBlockLine->text();
+    m_cInfo.couplant = ui->CouplantLine->text();
 }
