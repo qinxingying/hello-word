@@ -636,6 +636,119 @@
     </message>
 </context>
 <context>
+    <name>DialogReportInfoSetting</name>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished">Report Setting</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="27"/>
+        <source>ProjectName</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="37"/>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="47"/>
+        <source>SpecimenName</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="57"/>
+        <source>ReportNum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="67"/>
+        <source>SpecimenNum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="81"/>
+        <source>InspectionQuantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="91"/>
+        <source>InspectionScale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="101"/>
+        <source>ConstructionOrganization</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="111"/>
+        <source>Specifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="121"/>
+        <source>WeldingMethod</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="131"/>
+        <source>SlopeType</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="145"/>
+        <source>HotDealingCondition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="155"/>
+        <source>TestSurface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="165"/>
+        <source>DetectionTime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="175"/>
+        <source>OperationInstructionNum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="185"/>
+        <source>TestStandard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="195"/>
+        <source>AcceptanceStandard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="205"/>
+        <source>DetectionLevel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="215"/>
+        <source>AcceptanceLevel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="225"/>
+        <source>SurfaceCondition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="235"/>
+        <source>CalibrationBlock</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DialogReportSetting</name>
     <message>
         <source>Dialog</source>
@@ -3591,7 +3704,7 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="765"/>
-        <source>Excel Export</source>
+        <source>Word Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3775,133 +3888,143 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="365"/>
+        <location filename="../ui/mainwindow.cpp" line="367"/>
         <source>Com Groups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="405"/>
+        <location filename="../ui/mainwindow.cpp" line="407"/>
         <source>Delete Current Display Table ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="406"/>
-        <location filename="../ui/mainwindow.cpp" line="450"/>
-        <location filename="../ui/mainwindow.cpp" line="1048"/>
+        <location filename="../ui/mainwindow.cpp" line="408"/>
+        <location filename="../ui/mainwindow.cpp" line="452"/>
+        <location filename="../ui/mainwindow.cpp" line="1050"/>
         <source>YES</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="407"/>
-        <location filename="../ui/mainwindow.cpp" line="451"/>
-        <location filename="../ui/mainwindow.cpp" line="1049"/>
+        <location filename="../ui/mainwindow.cpp" line="409"/>
+        <location filename="../ui/mainwindow.cpp" line="453"/>
+        <location filename="../ui/mainwindow.cpp" line="1051"/>
         <source>NO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="449"/>
+        <location filename="../ui/mainwindow.cpp" line="451"/>
         <source>Add One View ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="498"/>
-        <location filename="../ui/mainwindow.cpp" line="757"/>
+        <location filename="../ui/mainwindow.cpp" line="500"/>
+        <location filename="../ui/mainwindow.cpp" line="759"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1134"/>
+        <location filename="../ui/mainwindow.cpp" line="1136"/>
         <source>Illegal Datafile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1134"/>
+        <location filename="../ui/mainwindow.cpp" line="1136"/>
         <source>This is illegal datafile. Please Choose another one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1411"/>
+        <location filename="../ui/mainwindow.cpp" line="1412"/>
         <source>The defect was saved failed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1416"/>
+        <location filename="../ui/mainwindow.cpp" line="1417"/>
         <source>The defect was saved successfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2099"/>
+        <location filename="../ui/mainwindow.cpp" line="2100"/>
         <source>Saving defects...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2395"/>
+        <location filename="../ui/mainwindow.cpp" line="2396"/>
         <source>Analysis defects...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2597"/>
+        <location filename="../ui/mainwindow.cpp" line="2598"/>
         <source>Set current position as defect position ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="2598"/>
+        <location filename="../ui/mainwindow.cpp" line="2599"/>
         <source>The defect postion is&apos;nt store. If you want set current position as defect position,                                   click &apos;ok&apos; button. Otherwise click cancel button and use keyboard button &apos;Z&apos; to store defect postion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="3124"/>
+        <location filename="../ui/mainwindow.cpp" line="3125"/>
         <source>Save CSacn Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="3140"/>
+        <location filename="../ui/mainwindow.cpp" line="3141"/>
         <source>Save BSacn Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1047"/>
+        <location filename="../ui/mainwindow.cpp" line="3159"/>
+        <source>Report Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="3159"/>
+        <source>*.docx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.cpp" line="1049"/>
         <source>New Configure ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1058"/>
+        <location filename="../ui/mainwindow.cpp" line="1060"/>
         <source>New Setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1256"/>
+        <location filename="../ui/mainwindow.cpp" line="1258"/>
         <source>save in </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1304"/>
+        <location filename="../ui/mainwindow.cpp" line="1306"/>
         <source>increase success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1315"/>
+        <location filename="../ui/mainwindow.cpp" line="1317"/>
         <source>delete success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1408"/>
-        <location filename="../ui/mainwindow.cpp" line="2119"/>
+        <location filename="../ui/mainwindow.cpp" line="1409"/>
+        <location filename="../ui/mainwindow.cpp" line="2120"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1408"/>
-        <location filename="../ui/mainwindow.cpp" line="2119"/>
+        <location filename="../ui/mainwindow.cpp" line="1409"/>
+        <location filename="../ui/mainwindow.cpp" line="2120"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.cpp" line="1256"/>
-        <location filename="../ui/mainwindow.cpp" line="1304"/>
-        <location filename="../ui/mainwindow.cpp" line="1315"/>
-        <location filename="../ui/mainwindow.cpp" line="1411"/>
-        <location filename="../ui/mainwindow.cpp" line="1416"/>
+        <location filename="../ui/mainwindow.cpp" line="1258"/>
+        <location filename="../ui/mainwindow.cpp" line="1306"/>
+        <location filename="../ui/mainwindow.cpp" line="1317"/>
+        <location filename="../ui/mainwindow.cpp" line="1412"/>
+        <location filename="../ui/mainwindow.cpp" line="1417"/>
         <source>prompt</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3968,636 +4091,608 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="125"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="135"/>
         <source>Channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="126"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="136"/>
         <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="127"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="137"/>
         <source>Chip Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="128"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="827"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="138"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="837"/>
         <source>Wedge Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="129"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="139"/>
         <source>Probe Dealy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="130"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="140"/>
         <source>The Probe Center Distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="131"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="141"/>
         <source>The Time Window Set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="132"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="142"/>
         <source>DB Set</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="133"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="143"/>
         <source>Scan Incremental</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="134"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="144"/>
         <source>Scan Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="145"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="155"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="146"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="156"/>
         <source>Parallel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="172"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="175"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="454"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="637"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="182"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="185"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="464"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="647"/>
         <source>Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="176"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="186"/>
         <source>Remark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="177"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="243"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="457"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1318"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="187"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="253"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="467"/>
         <source>Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="178"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="458"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="188"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="468"/>
         <source>Position start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="179"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="459"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="189"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="469"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="180"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="190"/>
         <source>Depth start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="181"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="461"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="191"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="471"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="182"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="192"/>
         <source>Index pos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="561"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="571"/>
         <source>Phascan II Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="894"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="904"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="311"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="321"/>
+        <location filename="../process/aexportdata.cpp" line="451"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="183"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="193"/>
         <source>SL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="313"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="317"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="323"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="327"/>
+        <location filename="../process/aexportdata.cpp" line="453"/>
+        <location filename="../process/aexportdata.cpp" line="456"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="564"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="574"/>
         <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="566"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="576"/>
         <source>Part Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="567"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="577"/>
         <source>Part No.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="568"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="578"/>
         <source>Position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="569"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="579"/>
         <source>Date</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="635"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="645"/>
         <source>Off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="636"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="646"/>
         <source>ON</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="640"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="650"/>
         <source>RF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="641"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="651"/>
         <source>HW+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="642"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="652"/>
         <source>HW-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="643"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="653"/>
         <source>FW</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="646"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="656"/>
         <source>Pitch Catch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="647"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="657"/>
         <source>Pitch Echo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="648"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="658"/>
         <source>Through Trans</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="649"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="659"/>
         <source>TOFD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="682"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="692"/>
         <source>Pulse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="683"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="693"/>
         <source>I/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="684"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="694"/>
         <source>A/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="714"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="724"/>
         <source>Azimuthal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="715"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="725"/>
         <source>Linear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="460"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="716"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="470"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="726"/>
         <source>Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="462"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="472"/>
         <source>Zone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="570"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="580"/>
         <source>FileDate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="717"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="727"/>
         <source>Static</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="720"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="730"/>
         <source>Half Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="721"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="731"/>
         <source>True Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="722"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="732"/>
         <source>Projection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="723"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="733"/>
         <source>Focal Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="724"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="734"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="755"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="765"/>
         <source>Plate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="756"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="766"/>
         <source>OD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="757"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="767"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="809"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="819"/>
         <source>GROUP </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="811"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="821"/>
         <source>:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="822"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="832"/>
         <source>Probe Characterization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="823"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="833"/>
         <source>Probe Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="824"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="834"/>
         <source>Probe Serial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="825"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="835"/>
         <source>Probe Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="826"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="836"/>
         <source>Wedge Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="870"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="880"/>
         <source>Setup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="872"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="882"/>
         <source>Beam Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="873"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="883"/>
         <source>Sample Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="874"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="884"/>
         <source>Sample Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="875"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="885"/>
         <source>PRF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="876"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="886"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="877"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="887"/>
         <source>Averaging Factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="879"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="889"/>
         <source>Scale Factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="880"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="890"/>
         <source>Video Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="881"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="891"/>
         <source>Rectification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="882"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="892"/>
         <source>Band-Pass Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="884"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="894"/>
         <source>Gain</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="885"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="895"/>
         <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="886"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="896"/>
         <source>Sound Velocity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="887"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="897"/>
         <source>Pulse Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="889"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="899"/>
         <source>Scan Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="890"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="900"/>
         <source>Index Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="891"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="901"/>
         <source>Skew</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="892"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="902"/>
         <source>Gate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="893"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="903"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="895"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="905"/>
         <source>Threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="896"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="906"/>
         <source>Synchro</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1007"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1017"/>
         <source>Calculator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1009"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1019"/>
         <source>Element Qty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1010"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1020"/>
         <source>First TX Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1011"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1021"/>
         <source>Last TX Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1012"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1022"/>
         <source>First RX Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1013"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1023"/>
         <source>Last RX Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1014"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1024"/>
         <source>Resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1016"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1026"/>
         <source>Start Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1017"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1027"/>
         <source>Stop Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1018"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1028"/>
         <source>Angle Resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1019"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1029"/>
         <source>Law Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1021"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1031"/>
         <source>Focal Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1022"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1032"/>
         <source>Position Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1023"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1033"/>
         <source>Position End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1024"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1034"/>
         <source>Position Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1025"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1035"/>
         <source>Offset Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1026"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1036"/>
         <source>Offset Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1027"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1037"/>
         <source>Depth Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1028"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1038"/>
         <source>Depth Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1120"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1130"/>
         <source>Part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1121"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1131"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1122"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1132"/>
         <source>Geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1123"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1133"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1159"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1169"/>
         <source>Table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1181"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1191"/>
         <source>Scan Pos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1312"/>
-        <source>Excel Export</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1318"/>
-        <source>X-Start(mm)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1318"/>
-        <source>X-Length(mm)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1319"/>
-        <source>Y-Start(mm)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1319"/>
-        <source>Y-Length(mm)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1319"/>
-        <source>Area(mm2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="244"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1182"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="254"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1192"/>
         <source>Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="245"/>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1183"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="255"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1193"/>
         <source>Law ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="828"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="838"/>
         <source>Aperture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1222"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1232"/>
         <source>Technician Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1223"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1233"/>
         <source>Technician Signature:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1224"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1234"/>
         <source>Contractor:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1225"/>
+        <location filename="../doppler_view/report/DopplerHtmlReport.cpp" line="1235"/>
         <source>Date:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4612,6 +4707,41 @@
     <message>
         <location filename="../remote_monitoring/RemoteMonitoring.cpp" line="25"/>
         <source>remote monitor had connected!!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WordBase</name>
+    <message>
+        <location filename="../configure/DopplerWordBase.cpp" line="31"/>
+        <source>Report Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configure/DopplerWordBase.cpp" line="31"/>
+        <source>*.doc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configure/DopplerWordBase.cpp" line="37"/>
+        <source>abnormal:the file already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configure/DopplerWordBase.cpp" line="45"/>
+        <location filename="../configure/DopplerWordBase.cpp" line="79"/>
+        <source>abnormal:failed to get the word component,please make sure the word is installed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configure/DopplerWordBase.cpp" line="57"/>
+        <location filename="../configure/DopplerWordBase.cpp" line="100"/>
+        <source>abnormal:the file name is empty!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../configure/DopplerWordBase.cpp" line="91"/>
+        <source>abnormal:failed to get the documents!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

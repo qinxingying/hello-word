@@ -26,6 +26,31 @@ struct ReportInfo
     int   eMode  ;
 }  ;
 
+struct ReportInfo2
+{
+    QString  projectName;
+    QString  client;
+    QString  specimenName;
+    QString  reportNum;
+    QString  specimenNum;
+    QString  inspectionQuantity;
+    QString  inspectionScale;
+    QString  constructionOrganization;
+    QString  specifications;
+    QString  weldingMethod;
+    QString  slopeType;
+    QString  hotDealingCondition;
+    QString  testSurface;
+    QString  detectionTime;
+    QString  operationInstructionNum;
+    QString  testStandard;
+    QString  acceptanceStandard;
+    QString  detectionLevel;
+    QString  acceptanceLevel;
+    QString  surfaceCondition;
+    QString  calibrationBlock;
+}  ;
+
 struct ReportValueItem
 {
     float fPos ;
@@ -45,6 +70,8 @@ public:
     void InitReportInfo();
     void SetReportInfo(ReportInfo*) ;
     ReportInfo* GetReportInfo() ;
+    void SetReportInfo2(ReportInfo2& info2) ;
+    ReportInfo2& GetReportInfo2() ;
     void SaveReport()    ;
     void BuildReport()   ;
     void AddOneValueItem(ReportValueItem* value)  ;
@@ -79,6 +106,7 @@ protected:
     void CreateFolder()  ;
 
     ReportInfo m_cInfo ;
+    ReportInfo2 m_cInfo2;
     FILE*      m_pFile ;
     QString    m_strFile      ;
     QString    m_szDataFile   ;

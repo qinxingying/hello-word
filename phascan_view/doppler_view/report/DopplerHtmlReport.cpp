@@ -104,7 +104,17 @@ void DopplerHtmlReport::SetReportInfo(ReportInfo* pInfo_)
 
 ReportInfo* DopplerHtmlReport::GetReportInfo()
 {
-	return &m_cInfo ;
+    return &m_cInfo ;
+}
+
+void DopplerHtmlReport::SetReportInfo2(ReportInfo2 &pInfo2)
+{
+    m_cInfo2 = pInfo2;
+}
+
+ReportInfo2& DopplerHtmlReport::GetReportInfo2()
+{
+    return m_cInfo2;
 }
 
 void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)

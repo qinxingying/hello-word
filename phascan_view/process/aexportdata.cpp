@@ -274,26 +274,28 @@ void AExportData::saveReport(QString filePath)
             LAW_CONFIG& law = group.law;
 
             // customer info
-            word.setBookmarkText("ProjectName", "");
-            word.setBookmarkText("Client", "");
-            word.setBookmarkText("SpecimenName", "");
-            word.setBookmarkText("ReportNum", "");
-            word.setBookmarkText("InspectionQuantity", "");
-            word.setBookmarkText("InspectionScale", "");
-            word.setBookmarkText("ConstructionOrganization", "");
-            word.setBookmarkText("Specifications", "");
-            word.setBookmarkText("WeldingMethod", "");
-            word.setBookmarkText("SlopeType", "");
-            word.setBookmarkText("HotDealingCondition", "");
-            word.setBookmarkText("TestSurface", "");
-            word.setBookmarkText("DetectionTime", "");
-            word.setBookmarkText("OperationInstructionNum", "");
-            word.setBookmarkText("TestStandard", "");
-            word.setBookmarkText("AcceptanceStandard", "");
-            word.setBookmarkText("DetectionLevel", "");
-            word.setBookmarkText("AcceptanceLevel", "");
-            word.setBookmarkText("SurfaceCondition", "");
-            word.setBookmarkText("CalibrationBlock", "");
+            ReportInfo2 info = pReport->GetReportInfo2();
+            word.setBookmarkText("ProjectName", info.projectName);
+            word.setBookmarkText("Client", info.client);
+            word.setBookmarkText("SpecimenName", info.specimenName);
+            word.setBookmarkText("ReportNum", info.reportNum);
+            word.setBookmarkText("SpecimenNum", info.specimenNum);
+            word.setBookmarkText("InspectionQuantity", info.inspectionQuantity);
+            word.setBookmarkText("InspectionScale", info.inspectionScale);
+            word.setBookmarkText("ConstructionOrganization", info.constructionOrganization);
+            word.setBookmarkText("Specifications", info.specifications);
+            word.setBookmarkText("WeldingMethod", info.weldingMethod);
+            word.setBookmarkText("SlopeType", info.slopeType);
+            word.setBookmarkText("HotDealingCondition", info.hotDealingCondition);
+            word.setBookmarkText("TestSurface", info.testSurface);
+            word.setBookmarkText("DetectionTime", info.detectionTime);
+            word.setBookmarkText("OperationInstructionNum", info.operationInstructionNum);
+            word.setBookmarkText("TestStandard", info.testStandard);
+            word.setBookmarkText("AcceptanceStandard", info.acceptanceStandard);
+            word.setBookmarkText("DetectionLevel", info.detectionLevel);
+            word.setBookmarkText("AcceptanceLevel", info.acceptanceLevel);
+            word.setBookmarkText("SurfaceCondition", info.surfaceCondition);
+            word.setBookmarkText("CalibrationBlock", info.calibrationBlock);
 
             //
             MATERIAL& material = group.part.material;

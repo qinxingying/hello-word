@@ -20,6 +20,7 @@ Date     : 2016-12-06
 #include "ProcessDisplay.h"
 #include "report/DopplerHtmlReport.h"
 #include "dialog/DialogReportSetting.h"
+#include "dialog/DialogReportInfoSetting.h"
 #include "DopplerTofdOpp.h"
 #include "doppler_view/DopplerLineItem.h"
 #include "doppler_view/dopplercscanlinemark.h"
@@ -1322,17 +1323,16 @@ void MainWindow::ReportDelOneItem()
 *****************************************************************************/
 void MainWindow::ReportSetting()
 {
-    DialogReportSetting _dialog;
+    DialogReportInfoSetting _dialog;
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
-    ReportInfo* _pInfo = _pReport->GetReportInfo();
-    _dialog.SetReportInfo(_pInfo);
-    _dialog.SetRepotName(m_baseName);
+    ReportInfo2& _pInfo2 = _pReport->GetReportInfo2();
+    _dialog.SetReportInfo2(_pInfo2);
 
     if(_dialog.exec())
     {
-        _pInfo = _dialog.GetRePortInfo();
-        _pReport->SetReportInfo(_pInfo);
+        _pInfo2 = _dialog.GetRePortInfo2();
+        _pReport->SetReportInfo2(_pInfo2);
     }
 }
 
