@@ -249,7 +249,7 @@ void AExportData::saveReport(QString filePath)
     DopplerConfigure* pConfig  = DopplerConfigure::Instance();
     DopplerHtmlReport* pReport = pConfig->GetReportOpp();
     pReport->BuildReport();
-    QString reportPath = QCoreApplication::applicationDirPath() + "/data/Report/report.docx";
+    QString reportPath = QCoreApplication::applicationDirPath() + "/data/Report/report.doc";
     if (!filePath.isEmpty()) {
         WordBase word;
         bool ret = word.open(reportPath, false);
@@ -363,7 +363,9 @@ void AExportData::saveReport(QString filePath)
         for(int i = 0; i < nGroupQty; i++){
             defectNum += pConfig->GetDefectCnt(i);
         }
-        word.addTableRow(3,4,defectNum - 1);//
+        if (defectNum > 2) {
+            word.addTableRow(3,4,defectNum - 1);//
+        }
         //for (int i = 0; i < defectNum*2; i += 2) {
         //    word.MergeCells(3,4 + i,1,4 + i,7);
         //}

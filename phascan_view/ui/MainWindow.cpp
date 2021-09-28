@@ -3156,7 +3156,7 @@ void MainWindow::slot_actionWordExport_triggered()
     m_reportWriter->setGroupId(m_iCurGroup);
     DopplerConfigure* pConfig  = DopplerConfigure::Instance();
     DopplerHtmlReport* pReport = pConfig->GetReportOpp();
-    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportName(), tr("*.docx"));
+    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportName(), tr("*.doc"));
     if (!filePath.isEmpty()) {
         m_pExportThread->start();
 
