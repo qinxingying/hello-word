@@ -196,6 +196,7 @@ private slots:
     void slotMarkPreviousDefect();
     void slotDeleteDefect();
     void slotSaveDefect();
+    void saveDefectInfoToDataFile();
 
 protected slots:
   void on_actionNew_Config_triggered();

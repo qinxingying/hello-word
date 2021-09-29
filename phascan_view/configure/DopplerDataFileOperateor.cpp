@@ -128,6 +128,8 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     m_pBeamData = m_file->map(m_cFileHead.size , reservedSize) ;
     m_mapdataSize = reservedSize;
 
+    m_dataFilePos = m_file->pos() + 1;
+
     return 0 ;
 }
 
@@ -140,6 +142,11 @@ unsigned char* DopplerDataFileOperateor::GetData() const
 qint64 DopplerDataFileOperateor::GetDataSize() const
 {
     return m_mapdataSize;
+}
+
+qint64 DopplerDataFileOperateor::GetDataPos() const
+{
+    return m_dataFilePos;
 }
 
 INSPEC_DATA_FILE* DopplerDataFileOperateor::GetFileHeader()
@@ -171,4 +178,15 @@ bool DopplerDataFileOperateor::GetCADExist(int nGroupId_)
 ExtConfig2 *DopplerDataFileOperateor::GetExtConfig2()
 {
     return &m_extConfig;
+}
+
+void DopplerDataFileOperateor::close()
+{
+    if(m_file)
+    {
+        m_file->unmap(m_pBeamData);
+        m_file->close ();
+        delete m_file;
+        m_file = NULL;
+    }
 }

@@ -363,7 +363,7 @@ void AExportData::saveReport(QString filePath)
         for(int i = 0; i < nGroupQty; i++){
             defectNum += pConfig->GetDefectCnt(i);
         }
-        if (defectNum > 2) {
+        if (defectNum > 1) {
             word.addTableRow(3,4,defectNum - 1);//
         }
         //for (int i = 0; i < defectNum*2; i += 2) {

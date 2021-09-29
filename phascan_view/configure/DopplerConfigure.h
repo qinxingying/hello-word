@@ -173,6 +173,8 @@ public:
 	int   OpenConfig(QString& path_) ;
 	void  SaveConfig(QString& path_) ;
 	int   OpenData(QString& path_);
+    void  SaveDefectInfoToDataFile();
+    void  ReadDefectInfoFromDataFile();
 
 	int RectifyScanLength();
 	void CreateShadowData(int iLen_);
@@ -229,6 +231,8 @@ public:
 	void SetLastDate();
 	QDate GetLastDate();
     QDateTime GetDataFileDateTime();
+
+    bool DefectInfoIsSaved();
 	//--------------------------------------------------
 
 	void SaveEvn() ;
@@ -261,9 +265,11 @@ private:
 	WDATA*				m_pDataShadow ;
     U8					m_nComDisplay[setup_MAX_DISPLAY_QTY];
     qint64  m_pDataSize;
+    qint64  m_pDataPos;
     QString g_strColorAmp;
     QString g_strColorThickness;
     QString g_strColorRectifier;
+    bool m_defectIsSaved {false};
 
 public:
     QList<MATERIAL*>*	m_listMaterial;

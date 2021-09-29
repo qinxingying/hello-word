@@ -469,6 +469,7 @@ int DopplerConfigure::OpenData(QString& path_)
     ReorderDefect();
 	m_pData = m_pDataFile->GetData();
     m_pDataSize = m_pDataFile->GetDataSize();
+    m_pDataPos  = m_pDataFile->GetDataPos();
 //    GROUP_INFO *targetGroup;
 //    if(Config::instance()->is_phascan_ii()) {
 //        targetGroup = m_pDataFile->GetGroupInfo(0);
@@ -492,7 +493,140 @@ int DopplerConfigure::OpenData(QString& path_)
 
     m_pReport->set_data_path(QFileInfo(path_).absolutePath());
 	m_pReport->InitReportInfo();
-	return 0;
+
+    ReadDefectInfoFromDataFile();
+    return 0;
+}
+
+void DopplerConfigure::SaveDefectInfoToDataFile()
+{
+    if(!Config::instance()->is_phascan_ii()) {
+        m_pDataFile->close();
+    }
+
+    QFile file(m_szFileInUse);
+    file.open(QIODevice::Append);
+    file.resize(m_pDataPos);
+
+    int _nGroupQty = common.nGroupQty;
+    int defectCnt = 0;
+    for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+        defectCnt += GetDefectCnt(iGroup);
+    }
+
+    if (defectCnt == 0) {
+        file.close();
+        return;
+    }
+
+    QDataStream write(&file);
+
+    if(loadDefectVersion == 1){
+        int _sign = 0x15263748;
+        write.writeRawData((char*)&_sign , sizeof(int));
+        write.writeRawData((char*)&_nGroupQty , sizeof(int));
+
+        for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+            int _iDefectN = GetDefectCnt(iGroup);
+            write.writeRawData((char*)&_iDefectN , sizeof(int));
+
+            for(int i = 0; i < _iDefectN; i++) {
+                DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroup, i);
+                _pDfInfo->bValid = true;
+                write.writeRawData((char*)_pDfInfo, sizeof(DEFECT_INFO_V1));
+            }
+        }
+    }else{
+        int _sign = 0x15263749;
+        write.writeRawData((char*)&_sign , sizeof(int));
+        write.writeRawData((char*)&_nGroupQty , sizeof(int));
+
+        for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+            int _iDefectN = GetDefectCnt(iGroup);
+            write.writeRawData((char*)&_iDefectN , sizeof(int));
+
+            for(int i = 0; i < _iDefectN; i++) {
+                DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroup, i);
+                _pDfInfo->bValid = true;
+                write.writeRawData((char*)_pDfInfo, sizeof(DEFECT_INFO));
+                QString strImgPathName = m_szDefectPathName +
+                                        QString(QObject::tr("/")) +
+                                        QString(QObject::tr(_pDfInfo->srtImageName)) +
+                                        QString(QObject::tr(".png"));
+
+                QPixmap pic(strImgPathName);
+                write << pic;
+            }
+        }
+    }
+
+    file.close();
+}
+
+void DopplerConfigure::ReadDefectInfoFromDataFile()
+{
+    loadDefectVersion = 2;
+    QFile file(m_szFileInUse);
+    if(!file.open (QIODevice::ReadOnly)){
+        return;
+    }
+    QDataStream reader(&file);
+
+    reader.skipRawData(m_pDataPos);
+    int _sign;
+    int ret = reader.readRawData((char*)&_sign , sizeof(int)) ;
+    if (ret) {
+        ReleaseAllDefect();
+    } else {
+        file.close();
+        return;
+    }
+
+    QDir *_tmp = new QDir;
+    qDebug() << m_szDefectPathName;
+    if(!_tmp->exists(m_szDefectPathName)) {
+        _tmp->mkdir(m_szDefectPathName);
+    }
+
+    if(_sign == 0x15263748)	{
+        loadDefectVersion = 1;
+        int _nGroupQty;
+        reader.readRawData((char*)&_nGroupQty , sizeof(int));
+
+        for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+            int _iDefectN;
+            reader.readRawData((char*)&_iDefectN , sizeof(int));
+
+            for(int i = 0; i < _iDefectN; i++) {
+                DEFECT_INFO_V1 _dfInfo;
+                reader.readRawData((char*)&_dfInfo , sizeof(DEFECT_INFO_V1));
+                AddDefectInfo(iGroup, _dfInfo);
+            }
+        }
+    }else if(_sign == 0x15263749){
+        loadDefectVersion = 2;
+        int _nGroupQty;
+        reader.readRawData((char*)&_nGroupQty , sizeof(int));
+
+        for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+            int _iDefectN;
+            reader.readRawData((char*)&_iDefectN , sizeof(int));
+
+            for(int i = 0; i < _iDefectN; i++) {
+                DEFECT_INFO _dfInfo;
+                reader.readRawData((char*)&_dfInfo , sizeof(DEFECT_INFO));
+                AddDefectInfo(iGroup, _dfInfo);
+
+                QPixmap pic;
+                reader >> pic;
+                QString path = m_szDefectPathName + QString(tr("/")) + QString(tr(_dfInfo.srtImageName)) + QString(tr(".png"));
+                pic.save(path, "PNG");
+            }
+        }
+    }else{
+        loadDefectVersion = 2;
+    }
+    file.close();
 }
 
 int DopplerConfigure::RectifyScanLength()
@@ -1902,6 +2036,7 @@ void DopplerConfigure::OpenDefectFile(QString& path_)
 	QString _strName = path_ + QString(tr("/defect"));
 	QFile file(_strName);
     if(!file.open (QIODevice::ReadOnly)){
+        m_defectIsSaved = false;
         return;
     }
 	QDataStream reader(&file);
@@ -1943,6 +2078,7 @@ void DopplerConfigure::OpenDefectFile(QString& path_)
         loadDefectVersion = 2;
     }
 	file.close();
+    m_defectIsSaved = false;
 }
 
 void DopplerConfigure::SaveDefectFile(QString& path_)
@@ -1992,6 +2128,7 @@ void DopplerConfigure::SaveDefectFile(QString& path_)
         }
     }
     file.close();
+    m_defectIsSaved = true;
 }
 
 void DopplerConfigure::OpenNoDefectAreaFile(QString &path_)
@@ -2059,7 +2196,7 @@ void DopplerConfigure::FilePathPro(QString& path_)
 	_index = _name.lastIndexOf(".");
 	_name.truncate(_index);
 
-	QDir *_tmp = new QDir;
+    QDir *_tmp = new QDir;
 	if(!_tmp->exists(_strDefectPath))
 	{
 		_tmp->mkdir(_strDefectPath);
@@ -2719,4 +2856,9 @@ QDateTime DopplerConfigure::GetDataFileDateTime()
         date = fi.lastModified();
     }
     return date;
+}
+
+bool DopplerConfigure::DefectInfoIsSaved()
+{
+    return m_defectIsSaved;
 }

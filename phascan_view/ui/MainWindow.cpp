@@ -206,6 +206,7 @@ void MainWindow::init_ui()
 
 void MainWindow::closeEvent (QCloseEvent* e)
 {
+    saveDefectInfoToDataFile();
     QMainWindow::closeEvent(e);
 }
 
@@ -1087,10 +1088,10 @@ void MainWindow::OpenFile()
 
 void MainWindow::OpenFilePro(QString strFileName_)
 {
+    saveDefectInfoToDataFile();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     if(strFileName_.isEmpty())  return;
     QString suffix = strFileName_.section('.', -1);
-
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
     DestroyAllDisplay();
 
@@ -1152,6 +1153,9 @@ void MainWindow::OpenFilePro(QString strFileName_)
     DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
     _pReport->set_reportName(m_baseName);
     this->setWindowTitle(m_titleName + m_fileName);
+
+    DopplerGroupTab* pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+    pGroupTab->updateIndexOffset();
 
     //ParameterProcess* _process = ParameterProcess::Instance();
     //_process->testOutputSrcData(0, 50, 0);
@@ -2135,6 +2139,30 @@ void MainWindow::slotSaveDefect()
 
     int timeCost = timer.elapsed();
     qDebug() << "save cost:"<< timeCost << "ms";
+}
+
+void MainWindow::saveDefectInfoToDataFile()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
+    if (m_fileName != "" && _pConfig->DefectInfoIsSaved()) {
+        QMessageBox msgBox;
+        msgBox.setText(tr("Save defect info to data file ?"));
+        //msgBox.setInformativeText();
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        int ret = msgBox.exec();
+        switch (ret) {
+        case QMessageBox::Ok:
+        {
+            _pConfig->SaveDefectInfoToDataFile();
+            break;
+        }
+        case QMessageBox::Cancel:
+        default:
+            break;
+        }
+    }
 }
 
 void MainWindow::slotModifyDefect(int groupId, DEFECT_INFO &defect)

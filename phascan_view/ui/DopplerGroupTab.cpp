@@ -617,6 +617,23 @@ void DopplerGroupTab::setShowGateB(bool status)
     _display.UpdateAllViewOverlay();
 }
 
+void DopplerGroupTab::updateIndexOffset()
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+    double _fValue1 = ui->ValueScanOffset->value()  ;
+    double _fValue2 = ui->ValueIndexOffset->value() ;
+    SCANNER& _scan = m_pConfig->common.scanner;
+    if(_scan.eScanEncoderType == setup_ENCODER_TYPE_TIMER)
+    {
+        _fValue1 = _fValue1 * _scan.fPrf;
+    }
+    _process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
+
+    ProcessDisplay _display ;
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
 /****************************************************************************
   Description: 当前角度选择控件更新
 *****************************************************************************/

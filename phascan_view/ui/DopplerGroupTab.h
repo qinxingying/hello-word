@@ -1,4 +1,4 @@
-/***************************
+﻿/***************************
   Name:  DopplerGroupTab
   Date : 2013-08-26
 ************************************/
@@ -53,6 +53,7 @@ public:
     void setCscanShowallChange();
     void setMeasureEnable(bool status);
     void setShowGateB(bool status);
+    void updateIndexOffset();
 protected:
     void SetWidgetInvalide();
     void CreateSettingView();

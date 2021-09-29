@@ -123,6 +123,8 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
     m_pDataFile->m_pBeamData = (unsigned char *)m_dataSource.data();
     m_pDataFile->m_mapdataSize = len;
 
+    m_pDataFile->m_dataFilePos = file.pos();
+
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << " Read Phascan II Data Success!!";
     set_is_phascan_ii(true);
     return true;
