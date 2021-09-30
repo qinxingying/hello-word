@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -122,6 +122,18 @@
            </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_15">
+           <property name="leftMargin">
+            <number>3</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
             <widget class="QGroupBox" name="BoxGeneral">
              <property name="enabled">
@@ -149,6 +161,18 @@
               <string>General</string>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_13">
+              <property name="leftMargin">
+               <number>3</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_20">
                 <item>
@@ -238,136 +262,56 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_21">
                 <item>
-                 <widget class="QLabel" name="label_RefGain">
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>80</width>
-                    <height>25</height>
-                   </size>
-                  </property>
+                 <widget class="QLabel" name="LabelScannerSensitivity">
                   <property name="text">
-                   <string>Ref_Gain:</string>
+                   <string>Scanner Sensitivity: </string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QDoubleSpinBox" name="ValueRefGain">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="buttonSymbols">
-                   <enum>QAbstractSpinBox::NoButtons</enum>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
-                  <property name="minimum">
-                   <double>-80.000000000000000</double>
-                  </property>
-                  <property name="maximum">
-                   <double>80.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="LabelGain_3">
+                 <widget class="QDoubleSpinBox" name="ValueScannerSensitivity">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>10</width>
-                    <height>25</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>10</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                  <property name="text">
-                   <string>+</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDoubleSpinBox" name="ValueREFGain">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>60</width>
-                    <height>20</height>
-                   </size>
-                  </property>
                   <property name="maximumSize">
                    <size>
                     <width>60</width>
                     <height>20</height>
                    </size>
+                  </property>
+                  <property name="mouseTracking">
+                   <bool>false</bool>
                   </property>
                   <property name="focusPolicy">
                    <enum>Qt::WheelFocus</enum>
                   </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                  <property name="contextMenuPolicy">
+                   <enum>Qt::DefaultContextMenu</enum>
                   </property>
                   <property name="buttonSymbols">
                    <enum>QAbstractSpinBox::NoButtons</enum>
                   </property>
-                  <property name="keyboardTracking">
-                   <bool>false</bool>
-                  </property>
-                  <property name="decimals">
-                   <number>1</number>
-                  </property>
                   <property name="minimum">
-                   <double>-40.000000000000000</double>
+                   <double>-30.000000000000000</double>
                   </property>
                   <property name="maximum">
-                   <double>40.000000000000000</double>
+                   <double>30.000000000000000</double>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="LabelGainUnit_2">
+                 <widget class="QLabel" name="labelUnitSS_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>30</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>dB</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -390,7 +334,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>Couple Gain:</string>
+                   <string>Surface Compensation:</string>
                   </property>
                  </widget>
                 </item>
@@ -1080,7 +1024,16 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_14" stretch="1,2,1">
               <property name="leftMargin">
-               <number>9</number>
+               <number>3</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
               </property>
               <item>
                <layout class="QGridLayout" name="gridLayout_17" columnstretch="1,1,0,1,1">
@@ -1488,7 +1441,16 @@
              </property>
              <layout class="QGridLayout" name="gridLayout_19">
               <property name="leftMargin">
-               <number>9</number>
+               <number>3</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
               </property>
               <item row="0" column="0">
                <layout class="QGridLayout" name="gridLayout">
@@ -5113,7 +5075,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-120</y>
+        <y>0</y>
         <width>318</width>
         <height>1160</height>
        </rect>
@@ -5173,7 +5135,7 @@
             <x>0</x>
             <y>0</y>
             <width>309</width>
-            <height>1159</height>
+            <height>1128</height>
            </rect>
           </property>
           <property name="sizePolicy">
@@ -5728,6 +5690,18 @@
                  <enum>Qt::WheelFocus</enum>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_10">
                    <item>
@@ -6169,58 +6143,6 @@
                    </item>
                    <item>
                     <widget class="QLabel" name="label_30">
-                     <property name="minimumSize">
-                      <size>
-                       <width>30</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>db</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_17">
-                   <item>
-                    <widget class="QLabel" name="LabelScannerSensitivity">
-                     <property name="text">
-                      <string>Scanner Sensitivity        </string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QDoubleSpinBox" name="ValueScannerSensitivity">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="mouseTracking">
-                      <bool>false</bool>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::WheelFocus</enum>
-                     </property>
-                     <property name="contextMenuPolicy">
-                      <enum>Qt::DefaultContextMenu</enum>
-                     </property>
-                     <property name="buttonSymbols">
-                      <enum>QAbstractSpinBox::NoButtons</enum>
-                     </property>
-                     <property name="minimum">
-                      <double>-30.000000000000000</double>
-                     </property>
-                     <property name="maximum">
-                      <double>30.000000000000000</double>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="labelUnitSS">
                      <property name="minimumSize">
                       <size>
                        <width>30</width>
@@ -9763,8 +9685,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>318</width>
-        <height>755</height>
+        <width>330</width>
+        <height>769</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -9827,8 +9749,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>318</width>
-            <height>755</height>
+            <width>330</width>
+            <height>769</height>
            </rect>
           </property>
           <property name="minimumSize">

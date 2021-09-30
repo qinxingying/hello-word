@@ -231,10 +231,6 @@ private slots:
 
     void on_ValueSL_valueChanged(double arg1);
 
-    void on_ValueREFGain_valueChanged(double arg1);
-
-    void on_ValueComGain_valueChanged(double arg1);
-
     void on_ComStandard_currentIndexChanged(int index);
 
     void on_ComThickness_currentIndexChanged(int index);

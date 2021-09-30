@@ -749,7 +749,6 @@ void DopplerGroupTab::SetWndName()
 void DopplerGroupTab::SetWidgetInvalide()
 {
     ui->ValueGain->setDisabled(true);
-    ui->ValueRefGain->setDisabled(true);
     ui->ValueCoupleGain->setDisabled(true);
     ui->ValueCouplingGain->setDisabled(true);
     ui->ValueStart->setDisabled(true);
@@ -1024,13 +1023,10 @@ void DopplerGroupTab::UpdateGroupConfig()
         ui->ValueComGain->setDisabled(true);
     }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
-    ui->ValueRefGain->setValue(m_pGroup->RefGain);
     ui->ValueCoupleGain->setValue(m_pGroup->CoupleGain);
     ui->ValueCouplingGain->setValue(m_pGroup->CoupleMonitoringGain);
     ui->ValueCouplingGainCom->setMinimum(0 - m_pGroup->CoupleMonitoringGain);
-    ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
-    ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
     ui->ValueCouplingGainCom->setValue(CUR_RES.Couple_Com_Gain[m_nGroupId]);   
     UpdateStandard(CUR_RES.Standard[m_nGroupId],1);
@@ -2826,30 +2822,6 @@ void DopplerGroupTab::on_CheckSLShow_clicked(bool checked)
 void DopplerGroupTab::on_ValueSL_valueChanged(double arg1)
 {
     CUR_RES.CurSL[m_nGroupId] = arg1;
-    g_pMainWnd->RunDrawThreadOnce(true);
-}
-
-void DopplerGroupTab::on_ValueREFGain_valueChanged(double arg1)
-{
-    if(!ui->ValueREFGain->hasFocus())  return ;
-    CUR_RES.REF_Gain[m_nGroupId] = arg1;
-    ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
-    ParameterProcess* _process = ParameterProcess::Instance();
-    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.Com_Gain[m_nGroupId]) ;
-    ProcessDisplay _display ;
-    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
-    g_pMainWnd->RunDrawThreadOnce(true);
-}
-
-void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
-{
-    if(!ui->ValueComGain->hasFocus())  return ;
-    CUR_RES.Com_Gain[m_nGroupId] = arg1;
-    ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
-    ParameterProcess* _process = ParameterProcess::Instance();
-    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.REF_Gain[m_nGroupId]) ;
-    ProcessDisplay _display ;
-    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
