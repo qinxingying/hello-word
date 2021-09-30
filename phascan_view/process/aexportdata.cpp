@@ -414,12 +414,14 @@ void AExportData::saveReport(QString filePath)
                 float fData = pConfig->DefectHeightValue(groupId, &fStart, pDfInfo->dIndex);
                 QString H     = QString::number(fData,'f',1);
 
-                QStringList m_strMeasure;
+                QStringList strMeasure;
+                QStringList strSzField;
                 for(int i = 0; i < setup_MAX_MEASURE_QTY_V1; i++) {
                     if(pDfInfo->m_strSzField[i][0] == 45 && pDfInfo->m_strSzField[i][1] == 0){
 
                     }else{
-                        m_strMeasure << pDfInfo->m_strMeasure[i];
+                        strMeasure << pDfInfo->m_strMeasure[i];
+                        strSzField << pDfInfo->m_strSzField[i];
                     }
 
                 }
@@ -429,14 +431,22 @@ void AExportData::saveReport(QString filePath)
                         if(pDfInfo->m_strSzField_V2[i][0] == 45 && pDfInfo->m_strSzField_V2[i][1] == 0){
 
                         }else{
-                            m_strMeasure << pDfInfo->m_strMeasure[i];
+                            strMeasure << pDfInfo->m_strMeasure_V2[i];
+                            strSzField << pDfInfo->m_strSzField_V2[i];
                         }
 
                     }
                 }
-                //qDebug() << m_strMeasure;
-                QString ViA = m_strMeasure[2];
-                QString buff = m_strMeasure.last();
+                //qDebug() << strMeasure;
+                //qDebug() << strSzField;
+                int indexViA = strSzField.indexOf("ViA^  ");
+                int indexZA = strSzField.indexOf("ZA    ");
+                qDebug() << indexViA << indexZA;
+
+                QString ViA;
+                QString ZA;
+                if (indexViA) ViA = strMeasure[indexViA];
+                if (indexZA) ZA = strMeasure[indexZA];
 
                 // table2
                 word.setCellString(2,5 + i,2,index);
@@ -445,7 +455,7 @@ void AExportData::saveReport(QString filePath)
                 word.setCellString(2,5 + i,5,Y);
                 word.setCellString(2,5 + i,6,H);
                 word.setCellString(2,5 + i,7,ViA);
-                word.setCellString(2,5 + i,8,buff);
+                word.setCellString(2,5 + i,8,ZA);
 
                 //word.setCellString(2,5 + i,10,QString(pDfInfo->srtImageName) + ".png");
 
