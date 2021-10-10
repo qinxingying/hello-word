@@ -441,12 +441,11 @@ void AExportData::saveReport(QString filePath)
                 //qDebug() << strSzField;
                 int indexViA = strSzField.indexOf("ViA^  ");
                 int indexZA = strSzField.indexOf("ZA    ");
-                qDebug() << indexViA << indexZA;
 
-                QString ViA;
-                QString ZA;
-                if (indexViA) ViA = strMeasure[indexViA];
-                if (indexZA) ZA = strMeasure[indexZA];
+                QString ViA = "NA";
+                QString ZA = "NA";
+                if (indexViA >= 0) ViA = strMeasure[indexViA];
+                if (indexZA >= 0) ZA = strMeasure[indexZA];
 
                 // table2
                 word.setCellString(2,5 + i,2,index);
