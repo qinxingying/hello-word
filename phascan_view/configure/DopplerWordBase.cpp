@@ -512,7 +512,7 @@ void WordBase::createHyperLink(int nTable,int row,int column, const QString &lin
         QAxObject *bookmark = m_document->querySubObject("Bookmarks(QString)", markName);
         if(bookmark) {
             QList<QVariant> list;
-            list << table->querySubObject("Cell(int,int)",row,column)->property("Range") << "" << markName << "" << "";
+            list << table->querySubObject("Cell(int,int)",row,column)->property("Range") << "" << markName << markName << linkName;
             if(hyperLinks) {
                 hyperLinks->dynamicCall("Add(QVariant, QString, QString, QString, QString)", list);
             }
