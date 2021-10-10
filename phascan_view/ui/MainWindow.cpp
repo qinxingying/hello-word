@@ -2404,14 +2404,17 @@ void MainWindow::startDefectIdentify()
 
     DEFECT_INFO* _pDfInfo = _pConfig->m_dfParam[m_iCurGroup].pDFHead;
     DEFECT_INFO* _pNext;
+    int index = 0;
     while(_pDfInfo)
     {
         _pNext = _pDfInfo->pNext;
         if(!_pDfInfo->bValid)
         {
-            _pConfig->DeleteDefect(m_iCurGroup, _pDfInfo->dIndex - 1);
+            _pConfig->DeleteDefect(m_iCurGroup, index);
+            index --;
         }
         _pDfInfo = _pNext;
+        index ++;
     }
 
     ui->IndicationTable->clearStack();
