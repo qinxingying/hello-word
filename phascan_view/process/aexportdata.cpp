@@ -363,9 +363,7 @@ void AExportData::saveReport(QString filePath)
         for(int i = 0; i < nGroupQty; i++){
             defectNum += pConfig->GetDefectCnt(i);
         }
-        if (defectNum > 1) {
-            word.addTableRow(3,4,defectNum - 1);//
-        }
+
         //for (int i = 0; i < defectNum*2; i += 2) {
         //    word.MergeCells(3,4 + i,1,4 + i,7);
         //}
@@ -382,6 +380,10 @@ void AExportData::saveReport(QString filePath)
             DEFECT_INFO **sortBuff = (DEFECT_INFO **)malloc(sizeof(DEFECT_INFO *)* defectNum);
             int index_ = 0;
             for(int i = 0; i < nGroupQty; i++){
+                GROUP_CONFIG&   group = pConfig->group[i];
+                if(group.eTxRxMode == setup_TX_RX_MODE_TOFD){
+                    continue;
+                }
                 DEFECT_INFO* pDfInfo = pConfig->m_dfParam[i].pDFHead;
                 while (pDfInfo != NULL) {
                     sortBuff[index_] = pDfInfo;
@@ -389,24 +391,17 @@ void AExportData::saveReport(QString filePath)
                     index_++;
                 }
             }
-            DEFECT_INFO *temp;
-            for(int i = 0; i < defectNum - 1; i++){
-                for(int j = 0; j < defectNum - 1 - i; j++){
-                    if(sortBuff[j]->dIndex > sortBuff[j+1]->dIndex){
-                        temp = sortBuff[j];
-                        sortBuff[j] = sortBuff[j+1];
-                        sortBuff[j+1] = temp;
-                    }
-                }
+            if (index_ > 1) {
+                word.addTableRow(3,4,index_ - 1);
             }
 
-            for(int i = 0; i < defectNum; i++){
+            for(int i = 0; i < index_; i++){
                 DEFECT_INFO* pDfInfo = sortBuff[i];
                 int groupId = pDfInfo->dGroupId - 1;
                 if(groupId < 0) groupId = 0;
 
                 QString index = QString::number(pDfInfo->dIndex);
-                QString X     = QString::number(pDfInfo->fSStart,'f',1);
+                QString X     = QString::number(pDfInfo->fSStart + pDfInfo->dScanOffset,'f',1);
                 QString L     = QString::number(pDfInfo->fSStop - pDfInfo->fSStart,'f',1);
                 QString Y     = QString::number(pDfInfo->dDepth,'f',1);
 
