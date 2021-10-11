@@ -36,6 +36,17 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
     }
 
     int totalSize = file.size();
+    file.seek(totalSize - sizeof(int) * 2);
+    int flag = 0;
+    int ret = file.read((char*)&flag , sizeof(int)) ;
+    int defectInfoSize = 0;
+    if (flag == 0x20211011) {
+        ret = file.read((char*)&defectInfoSize , sizeof(int)) ;
+    }
+    totalSize -= defectInfoSize;
+    m_pDataFile->m_dataFilePos = totalSize;
+    file.seek(0);
+
     quint64 len = 0;
 
     file.read((char *)&len, sizeof(len));
@@ -123,7 +134,9 @@ bool Config::load(const QString &filename, DopplerDataFileOperateor *dataFile)
     m_pDataFile->m_pBeamData = (unsigned char *)m_dataSource.data();
     m_pDataFile->m_mapdataSize = len;
 
-    m_pDataFile->m_dataFilePos = file.pos();
+    if (flag != 0x20211011) {
+        m_pDataFile->m_dataFilePos = file.pos();
+    }
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << " Read Phascan II Data Success!!";
     set_is_phascan_ii(true);

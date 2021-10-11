@@ -48,6 +48,19 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     m_file->open (QIODevice::ReadOnly);
     QDataStream reader(m_file);
     int ret  , _nTmp;
+    QFileInfo info1( *m_file);
+    qint64 fileSize = info1.size();
+    m_file->seek(fileSize - sizeof(int) * 2);
+    _nTmp = sizeof(int) ;
+    int flag = 0;
+    ret = reader.readRawData((char*)&flag , _nTmp) ;
+    int defectInfoSize = 0;
+    if (flag == 0x20211011) {
+        ret = reader.readRawData((char*)&defectInfoSize , _nTmp) ;
+    }
+    fileSize -= defectInfoSize;
+    m_file->seek(0);
+
     _nTmp = sizeof(INSPEC_DATA_FILE) ;
     ret = reader.readRawData((char*)&m_cFileHead , _nTmp) ;
     if(ret != _nTmp)
@@ -62,8 +75,6 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     if(ret != _nTmp)
         return -1 ;
     //得到采样数据,存在数据实际大小比m_cFileHead.version小的情况
-    QFileInfo info1( *m_file);
-    qint64 fileSize = info1.size();
     qint64 reservedSize;
     if( m_cFileHead.version > fileSize){
         if(Phascan_Version >= 6){
@@ -128,7 +139,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
     m_pBeamData = m_file->map(m_cFileHead.size , reservedSize) ;
     m_mapdataSize = reservedSize;
 
-    m_dataFilePos = m_file->pos() + 1;
+    m_dataFilePos = fileSize;
 
     return 0 ;
 }

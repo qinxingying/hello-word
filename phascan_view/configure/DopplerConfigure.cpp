@@ -534,6 +534,13 @@ void DopplerConfigure::SaveDefectInfoToDataFile()
                 DEFECT_INFO* _pDfInfo = GetDefectPointer(iGroup, i);
                 _pDfInfo->bValid = true;
                 write.writeRawData((char*)_pDfInfo, sizeof(DEFECT_INFO_V1));
+                QString strImgPathName = m_szDefectPathName +
+                                        QString(QObject::tr("/")) +
+                                        QString(QObject::tr(_pDfInfo->srtImageName)) +
+                                        QString(QObject::tr(".png"));
+
+                QPixmap pic(strImgPathName);
+                write << pic;
             }
         }
     }else{
@@ -559,6 +566,11 @@ void DopplerConfigure::SaveDefectInfoToDataFile()
             }
         }
     }
+    int flag = 0x20211011;
+    write.writeRawData((char*)&flag , sizeof(int));
+
+    int infoSize = file.size() - m_pDataPos + sizeof(int);
+    write.writeRawData((char*)&infoSize , sizeof(int));
 
     file.close();
 }
@@ -601,6 +613,11 @@ void DopplerConfigure::ReadDefectInfoFromDataFile()
                 DEFECT_INFO_V1 _dfInfo;
                 reader.readRawData((char*)&_dfInfo , sizeof(DEFECT_INFO_V1));
                 AddDefectInfo(iGroup, _dfInfo);
+
+                QPixmap pic;
+                reader >> pic;
+                QString path = m_szDefectPathName + QString(tr("/")) + QString(tr(_dfInfo.srtImageName)) + QString(tr(".png"));
+                pic.save(path, "PNG");
             }
         }
     }else if(_sign == 0x15263749){
