@@ -3192,7 +3192,11 @@ void MainWindow::slot_actionWordExport_triggered()
     m_reportWriter->setGroupId(m_iCurGroup);
     DopplerConfigure* pConfig  = DopplerConfigure::Instance();
     DopplerHtmlReport* pReport = pConfig->GetReportOpp();
-    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportName(), tr("*.doc"));
+    QString name = "";
+    if(pConfig->group[m_iCurGroup].eTxRxMode == setup_TX_RX_MODE_TOFD) {
+        name = "-tofd";
+    }
+    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportName() + name, tr("*.doc"));
     if (!filePath.isEmpty()) {
         m_pExportThread->start();
 

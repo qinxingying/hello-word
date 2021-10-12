@@ -247,26 +247,28 @@ void AExportData::saveCScanData(QString filePath)
 void AExportData::saveReport(QString filePath)
 {
     DopplerConfigure* pConfig  = DopplerConfigure::Instance();
+    QString reportForm = "/data/Report/report.doc";
+    if(pConfig->group[m_iCurGroup].eTxRxMode == setup_TX_RX_MODE_TOFD) {
+        reportForm = "/data/Report/tofdReport.doc";
+        QString reportPath = QCoreApplication::applicationDirPath() + reportForm;
+        saveTofdReport(filePath, reportPath);
+    } else {
+        QString reportPath = QCoreApplication::applicationDirPath() + reportForm;
+        savePhaseReport(filePath, reportPath);
+    }
+
+    emit done();
+}
+
+void AExportData::savePhaseReport(QString filePath, QString reportFormPath)
+{
+    DopplerConfigure* pConfig  = DopplerConfigure::Instance();
     DopplerHtmlReport* pReport = pConfig->GetReportOpp();
     pReport->BuildReport();
-    QString reportPath = QCoreApplication::applicationDirPath() + "/data/Report/report.doc";
     if (!filePath.isEmpty()) {
         WordBase word;
-        bool ret = word.open(reportPath, false);
+        bool ret = word.open(reportFormPath, false);
         int nGroupQty = pConfig->common.nGroupQty;
-        //word.setBookmarkPic("Logo", QCoreApplication::applicationDirPath() + "/data/logo/logo.png");
-
-        /*QDate date = QDate::currentDate();
-        m_num++;
-        QString num = "000";
-        if (m_num < 10) {
-            num = QString("00%1").arg(m_num);
-        } else if (m_num < 100) {
-            num = QString("0%1").arg(m_num);
-        } else {
-             num = QString("%1").arg(m_num);
-        }
-        word.setBookmarkText("ReportNum", date.toString("yyyyMMdd") + num);*/
         //focallaw
         for(int i = 0; i < 1; i++){
             GROUP_CONFIG& group = pConfig->group[i];
@@ -432,8 +434,7 @@ void AExportData::saveReport(QString filePath)
 
                     }
                 }
-                //qDebug() << strMeasure;
-                //qDebug() << strSzField;
+
                 int indexViA = strSzField.indexOf("ViA^  ");
                 int indexZA = strSzField.indexOf("ZA    ");
 
@@ -451,8 +452,6 @@ void AExportData::saveReport(QString filePath)
                 word.setCellString(2,5 + i,7,ViA);
                 word.setCellString(2,5 + i,8,ZA);
 
-                //word.setCellString(2,5 + i,10,QString(pDfInfo->srtImageName) + ".png");
-
                 // table 3
                 QString strImgPathName = pConfig->m_szDefectPathName +
                                         QString(QObject::tr("/")) +
@@ -468,14 +467,6 @@ void AExportData::saveReport(QString filePath)
                 word.createHyperLink(2,5 + i,10,QString(pDfInfo->srtImageName) + ".png", QString("defect%1").arg(i+1));
 
                 word.insertCellPic(3,4 + i,1,strDir);
-
-//                word.setCellString(3,3 + i * 2,1,index);
-//                word.setCellString(3,3 + i * 2,2,X);
-//                word.setCellString(3,3 + i * 2,3,L);
-//                word.setCellString(3,3 + i * 2,4,Y);
-//                word.setCellString(3,3 + i * 2,5,W);
-//                word.setCellString(3,3 + i * 2,6,Area);
-//                word.insertCellPic(3,4 + i * 2,1,strDir);
             }
         }
 
@@ -484,7 +475,87 @@ void AExportData::saveReport(QString filePath)
         word.setVisible(true);
         word.close();
     }
-    emit done();
+}
+
+void AExportData::saveTofdReport(QString filePath, QString reportFormPath)
+{
+    DopplerConfigure* pConfig  = DopplerConfigure::Instance();
+    DopplerHtmlReport* pReport = pConfig->GetReportOpp();
+    pReport->BuildReport();
+    if (!filePath.isEmpty()) {
+        WordBase word;
+        bool ret = word.open(reportFormPath, false);
+        //int nGroupQty = pConfig->common.nGroupQty;
+
+        if (Config::instance()->is_phascan_ii()) {
+            word.setBookmarkText("DeviceType", "Phascan II");
+        } else {
+            word.setBookmarkText("DeviceType", "Phascan I");
+        }
+
+        int defectNum = 0;
+        defectNum += pConfig->GetDefectCnt(m_iCurGroup);
+
+        if (defectNum > 17) {
+            word.addTableRow(2,4,defectNum - 17);
+        }
+
+        if(defectNum){
+            DEFECT_INFO **sortBuff = (DEFECT_INFO **)malloc(sizeof(DEFECT_INFO *)* defectNum);
+            int index_ = 0;
+            DEFECT_INFO* pDfInfo = pConfig->m_dfParam[m_iCurGroup].pDFHead;
+            while (pDfInfo != NULL) {
+                sortBuff[index_] = pDfInfo;
+                pDfInfo = pDfInfo->pNext;
+                index_++;
+            }
+
+            word.addTableRow(3,2,index_ - 1);
+
+            for(int i = 0; i < index_; i++){
+                DEFECT_INFO* pDfInfo = sortBuff[i];
+                int groupId = pDfInfo->dGroupId - 1;
+                if(groupId < 0) groupId = 0;
+
+                //QString index = QString::number(pDfInfo->dIndex);
+                QString X     = QString::number(pDfInfo->fSStart + pDfInfo->dScanOffset,'f',1);
+                QString L     = QString::number(pDfInfo->fSStop - pDfInfo->fSStart,'f',1);
+                QString Y     = QString::number(pDfInfo->dDepth,'f',1);
+
+                float fStart;
+                float fData = pConfig->DefectHeightValue(groupId, &fStart, pDfInfo->dIndex);
+                QString H     = QString::number(fData,'f',1);
+
+                //word.setCellString(1,4 + i,1,index);
+                word.setCellString(2,4 + i,2,X);
+                word.setCellString(2,4 + i,3,L);
+                word.setCellString(2,4 + i,4,Y);
+                word.setCellString(2,4 + i,5,H);
+
+                // table 3
+                QString strImgPathName = pConfig->m_szDefectPathName +
+                                        QString(QObject::tr("/")) +
+                                        QString(QObject::tr(pDfInfo->srtImageName)) +
+                                        QString(QObject::tr(".png"));
+                QString sourceImgName = pReport->getReportFolder() + QString("/") +
+                                        QString(QObject::tr(pDfInfo->srtImageName)) +
+                                        QString(QObject::tr(".png"));
+                QString strDir = pReport->getReportDir() + sourceImgName ;
+                pReport->CopyFileToPath(strDir , strImgPathName);
+
+                //word.insertBookMark(1,4+i,1,QString("defect%1").arg(i+1));
+                //word.createHyperLink(1,5 + i,10,QString(pDfInfo->srtImageName) + ".png", QString("defect%1").arg(i+1));
+
+                word.setCellString(3,2 + i,1, QString("%1").arg(i+1));
+                word.insertCellPic(3,2 + i,1,strDir);
+            }
+        }
+
+        word.setSaveName(filePath);
+        word.moveForEnd();
+        word.setVisible(true);
+        word.close();
+    }
 }
 
 void AExportData::getPixValueInfo(int nScanPos, setup_GATE_NAME eGate, U32 *pBuff)

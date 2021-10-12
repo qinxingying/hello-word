@@ -23,6 +23,9 @@ protected:
     void getPixValueDistance(U32* pBuff1 , U32* pBuff2, float GainScale, U32 gateHeight1, U32 gateHeight2);
     void getPixValuePos(U32* pBuff, U32* pBuff2, float gainScale, U32 gateHeight1);
 private:
+    void savePhaseReport(QString filePath, QString reportFormPath);
+    void saveTofdReport(QString filePath, QString reportFormPath);
+private:
     int m_iCurGroup {0};
     int m_num {0};
 };
