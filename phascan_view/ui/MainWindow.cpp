@@ -1692,7 +1692,28 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         RunDrawThreadOnce(true);
     }
     break;
+    case DOPPLER_GRAPHICS_ITEM_GATE :
+    {
+        QRectF rect = pItem_->GetItemGeometryReal();
+        int nItemId = pItem_->GetItemId();
+        GATE_CONFIG &gate = _group.gate[nItemId];
+        if (GATE_MODE_GATE_VERTICAL == ((DopplerGateItem*)pItem_)->GetDrawMode()) {
+            gate.fStart       = rect.top();
+            gate.fWidth       = rect.height();
+            gate.nThreshold   = rect.left();
+        } else if (GATE_MODE_GATE_HORIZENTAL == ((DopplerGateItem*)pItem_)->GetDrawMode()) {
+            gate.fStart       = rect.left();
+            gate.fWidth       = rect.width();
+            gate.nThreshold   = rect.top();
+        }
 
+        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
+        _pGroup->UpdateGateValue(nItemId);
+
+        _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
+        RunDrawThreadOnce(true);
+    }
+    break;
     default: break;
     }
 }

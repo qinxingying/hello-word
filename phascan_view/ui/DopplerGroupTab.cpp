@@ -1221,6 +1221,15 @@ void DopplerGroupTab::UpdateGroupConfig()
 	UpdateParameterLimit();
     //blockSignals(false);
 }
+
+void DopplerGroupTab::UpdateGateValue(int index)
+{
+    ui->ComGateSelect->setCurrentIndex(index);
+    ui->ValueGateStart->setValue(m_pGroup->gate[index].fStart);
+    ui->ValueGateWidth->setValue(m_pGroup->gate[index].fWidth);
+    ui->ValueGateHeight->setValue(m_pGroup->gate[index].nThreshold);
+}
+
 void DopplerGroupTab::UpdateTofdParam()
 {
 	ui->LabelTofdPcsCal->hide();

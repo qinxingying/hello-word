@@ -1,4 +1,4 @@
-#include "DopplerGateItem.h"
+﻿#include "DopplerGateItem.h"
 #include <QGraphicsScene>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -17,8 +17,9 @@ DopplerGateItem::DopplerGateItem(const QColor& cColor_)
 	m_cColor   = cColor_;
 	m_eMode	= GATE_MODE_GATE_HORIZENTAL  ;
 	setZValue(g_nDfZValue);
-	setFlags(ItemIsPanel);
-	//setFlags(/*ItemIsPanel */ItemIsSelectable | ItemIsMovable);
+//	setFlags(ItemIsPanel);
+    setFlags(/*ItemIsPanel */ItemIsSelectable | ItemIsMovable);
+    setCursor(QCursor(Qt::SizeAllCursor));
 }
 
 void DopplerGateItem::SetDrawMode(GATE_DRAW_MODE eMode_)
@@ -221,6 +222,30 @@ void DopplerGateItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_)
 	QString _str ;
 	_str.sprintf("%d", m_nId+1)  ;
 	painter->drawText(0 , -4 , _str );
+}
+
+void DopplerGateItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QPointF posScene = event->scenePos() ;
+    int x = posScene.x() ;
+    int y = posScene.y() ;
+
+    this->setPos(x - m_mouseDownPos.x(), y - m_mouseDownPos.y());
+}
+
+void DopplerGateItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    m_mouseDownPos = event->pos();
+    DopplerGraphicsItem::mousePressEvent(event) ;
+    mouseMoveEvent(event) ;
+}
+
+void DopplerGateItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event);
+
+    setSelected(false);
+    update();
 }
 
 void DopplerGateItem::SetItemGeometry (QRectF& rect_)

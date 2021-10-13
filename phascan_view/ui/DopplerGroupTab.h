@@ -40,6 +40,7 @@ public:
     void UpdateDefectValue();
     void SetWndName();
     void UpdateGroupConfig();
+    void UpdateGateValue(int index);
 
 	void UpdateCurrentAngleCom();
 	void UpdateTofdParam();
