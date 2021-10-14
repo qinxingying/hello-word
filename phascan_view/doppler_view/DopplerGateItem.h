@@ -39,6 +39,8 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) ;
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void hoverEnterEvent(QGraphicsSceneHoverEvent  *event);
+    void hoverMoveEvent(QGraphicsSceneHoverEvent  *event);
 
 	GATE_DRAW_MODE	m_eMode ;
 	QColor			m_cColor ;

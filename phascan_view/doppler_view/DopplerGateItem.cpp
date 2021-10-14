@@ -20,6 +20,7 @@ DopplerGateItem::DopplerGateItem(const QColor& cColor_)
 //	setFlags(ItemIsPanel);
     setFlags(/*ItemIsPanel */ItemIsSelectable | ItemIsMovable);
     setCursor(QCursor(Qt::SizeAllCursor));
+    setAcceptHoverEvents(true);
 }
 
 void DopplerGateItem::SetDrawMode(GATE_DRAW_MODE eMode_)
@@ -227,10 +228,31 @@ void DopplerGateItem::DrawLabel(QPainter *painter, QColor& cColor_, bool bSel_)
 void DopplerGateItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF posScene = event->scenePos() ;
+    QPointF  posItem = event->pos()  ;
     int x = posScene.x() ;
     int y = posScene.y() ;
 
-    this->setPos(x - m_mouseDownPos.x(), y - m_mouseDownPos.y());
+    if (cursor().shape() == Qt::SizeAllCursor) {
+        this->setPos(x - m_mouseDownPos.x(), y - m_mouseDownPos.y());
+    } else {
+        switch (m_eMode)
+        {
+        case GATE_MODE_GATE_HORIZENTAL :
+            if (posItem.x() < 0) {
+                return;
+            }
+            m_nWidth += posItem.x() - m_nWidth;
+            break;
+        case GATE_MODE_GATE_VERTICAL:
+            if (posItem.y() < 0) {
+                return;
+            }
+            m_nHeight += posItem.y() - m_nHeight;
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 void DopplerGateItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -246,6 +268,54 @@ void DopplerGateItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
     setSelected(false);
     update();
+}
+
+void DopplerGateItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    QPointF p = event->pos();
+    switch (m_eMode)
+    {
+    case GATE_MODE_GATE_HORIZENTAL :
+        if (p.x() > m_nWidth - 3) {
+            setCursor(QCursor(Qt::PointingHandCursor));
+        } else {
+            setCursor(QCursor(Qt::SizeAllCursor));
+        }
+        break;
+    case GATE_MODE_GATE_VERTICAL:
+        if (p.y() > m_nHeight - 3) {
+            setCursor(QCursor(Qt::PointingHandCursor));
+        } else {
+            setCursor(QCursor(Qt::SizeAllCursor));
+        }
+        break;
+    default:
+        break;
+    }
+}
+
+void DopplerGateItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+    QPointF p = event->pos();
+    switch (m_eMode)
+    {
+    case GATE_MODE_GATE_HORIZENTAL :
+        if (p.x() > m_nWidth - 3) {
+            setCursor(QCursor(Qt::PointingHandCursor));
+        } else {
+            setCursor(QCursor(Qt::SizeAllCursor));
+        }
+        break;
+    case GATE_MODE_GATE_VERTICAL:
+        if (p.y() > m_nHeight - 3) {
+            setCursor(QCursor(Qt::PointingHandCursor));
+        } else {
+            setCursor(QCursor(Qt::SizeAllCursor));
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 void DopplerGateItem::SetItemGeometry (QRectF& rect_)

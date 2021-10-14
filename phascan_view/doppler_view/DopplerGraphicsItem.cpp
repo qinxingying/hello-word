@@ -86,3 +86,8 @@ QRectF DopplerGraphicsItem::GetItemGeometryReal() const
 {
     return m_Geometry ;
 }
+
+QRectF DopplerGraphicsItem::GetItemGeometry()
+{
+    return this->boundingRect();
+}

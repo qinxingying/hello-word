@@ -41,6 +41,7 @@ public:
     QPointF GetItemScenePos();
     void SetItemGeometryReal(QRectF& rect_);
     QRectF GetItemGeometryReal() const;
+    QRectF GetItemGeometry();
     virtual void SetItemGeometry(QRectF& rect_);
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
