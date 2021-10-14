@@ -750,6 +750,7 @@ void DopplerGroupTab::SetWidgetInvalide()
 {
     ui->ValueGain->setDisabled(true);
     ui->ValueCoupleGain->setDisabled(true);
+    ui->ValueScannerSensitivityGain->setDisabled(true);
     ui->ValueCouplingGain->setDisabled(true);
     ui->ValueStart->setDisabled(true);
     ui->ValueRange->setDisabled(true);
@@ -1036,7 +1037,7 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueEL->blockSignals(false);
     ui->ComStandard->blockSignals(false);
     ui->ComThickness->blockSignals(false);
-    ui->ValueScannerSensitivity->setValue(CUR_RES.CurSS[m_nGroupId]);
+    ui->ValueScannerSensitivityGain->setValue(CUR_RES.CurSS[m_nGroupId]);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
 	ui->ValueWedgeDelay->setValue(m_pGroup->nWedgeDelay / 1000.0);
@@ -1133,11 +1134,11 @@ void DopplerGroupTab::UpdateGroupConfig()
         ui->ComTopcMergeStatus->setCurrentIndex(0);
     }
 
-    if(m_pGroup->loadCurveData) {
-        ui->ValueScannerSensitivity->setEnabled(false);
-    }else{
-        ui->ValueScannerSensitivity->setEnabled(true);
-    }
+//    if(m_pGroup->loadCurveData) {
+//        ui->ValueScannerSensitivity->setEnabled(false);
+//    }else{
+//        ui->ValueScannerSensitivity->setEnabled(true);
+//    }
 
     //  ********** geometry  ***************//
 	InitComBoxMaterialSelection() ;
@@ -2805,8 +2806,12 @@ void DopplerGroupTab::on_ValueScannerSensitivity_valueChanged(double arg1)
 {
     if(!ui->ValueScannerSensitivity->hasFocus())  return ;
     CUR_RES.CurSS[m_nGroupId] = arg1;
-    ProcessDisplay _display;
-    _display.UpdateAllViewOverlay();
+    CUR_RES.REF_Gain[m_nGroupId] = arg1;
+    ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.Com_Gain[m_nGroupId]) ;
+    ProcessDisplay _display ;
+    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -2831,6 +2836,18 @@ void DopplerGroupTab::on_CheckSLShow_clicked(bool checked)
 void DopplerGroupTab::on_ValueSL_valueChanged(double arg1)
 {
     CUR_RES.CurSL[m_nGroupId] = arg1;
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
+void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
+{
+    if(!ui->ValueComGain->hasFocus())  return ;
+    CUR_RES.Com_Gain[m_nGroupId] = arg1;
+    ui->ValueScannerSensitivity->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.REF_Gain[m_nGroupId]) ;
+    ProcessDisplay _display ;
+    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
