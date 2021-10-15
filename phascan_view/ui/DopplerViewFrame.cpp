@@ -11,8 +11,6 @@
 #include <QMessageBox>
 #include "threads/drawdscanfthread.h"
 
-
-
 DopplerViewFrame::DopplerViewFrame(QWidget *parent) :
 	QWidget(parent)
 {
@@ -119,9 +117,11 @@ void DopplerViewFrame::slotCreateDrawWindow(QWidget* pWidget_, int _nId , int nG
     DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
     Th->RunOnce();
     }
+
     //emit signalDropEvent(_nId) ;
     //sleep(100);
     _display.UpdateAllViewOverlay();
+
 }
 void DopplerViewFrame::CreateDrawView(int nGroupId_, int nId_)
 {

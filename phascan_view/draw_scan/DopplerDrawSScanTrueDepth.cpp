@@ -99,8 +99,6 @@ void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
     }
 
    /***********工件厚度或者反射类型更改后刷新图像*************/
-
-
     if(m_bClear)
     {
         m_bClear = false ;
@@ -108,7 +106,6 @@ void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
         U8* _pImageBits = pImage_->bits() ;
         memset(_pImageBits , 0 , m_nHeight * _nWidthStep) ;
     }
-
     DrawPixbuff(pImage_) ;
 
 }
@@ -602,6 +599,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
         if(m_pGroup->m_mode==D_MODE)
             {
             _pData =_process->GetGroupDataDscanPointer(m_cInfo.nGroupId);
+//            _pData = _process->GetGroupDataPointer(m_cInfo.nGroupId);
            _ptemData=_pData;
             }
         else{

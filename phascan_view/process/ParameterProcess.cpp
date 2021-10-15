@@ -1025,7 +1025,7 @@ int ParameterProcess::GetRealScanIndex(int nGroupId_, int nScanPos_)
 	int _nScanPos = nScanPos_;
 	int _nScanOff = GetScanOff(nGroupId_) ;
     if(!_pMarker[_nScanPos]){
-		if(_nScanPos < _nScanOff) {
+        if(_nScanPos < _nScanOff){
 			_nScanPos = _nScanOff;
 			int _nScanMax = GetScanMax();
 			while(_nScanPos < _nScanMax) {
@@ -1034,7 +1034,7 @@ int ParameterProcess::GetRealScanIndex(int nGroupId_, int nScanPos_)
 				}
 				_nScanPos++;
 			}
-		} else {
+        }else{
 			while(_nScanPos > _nScanOff) {
 				if(_pMarker[_nScanPos]) {
 					break;
@@ -1307,11 +1307,13 @@ int SearchPeakFront(WDATA* pData_, int* _pPos, int iStart_, int iEnd_, int iHeig
 		for(int i = _iS; i < _iE; i++) {
 
             _iTmp = ParameterProcess::correctionPdata(pData_[i]);
+
             if(_iTmp >= _iH){
                 if(_iTmp>_iFro)
                 {
 				_iFro = _iTmp;
 				_iPos = i;
+
                 }
 				break;
 			}
@@ -1393,37 +1395,35 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, int nScanPos_, int nLawId
 {
 	WDATA* _pData  = GetShadowDataPointer();
 //	if(!_pData) return false;
-
-	int    _nPointQty = GetGroupPointQty(nGroupId_);
-
+    int _nPointQty = GetGroupPointQty(nGroupId_);
 	int _nFrameOffset = GetTotalDataSize() ;
 	int _nGroupOffset = GetGroupDataOffset(nGroupId_);
     int _nLawSize;
-//    if(m_pConfig->group[nGroupId_].law.eLawType == setup_LAW_TYPE_TFM){
+//  if(m_pConfig->group[nGroupId_].law.eLawType == setup_LAW_TYPE_TFM){
 //        _nLawSize = _nPointQty;
 //    }else{
-        _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
+     _nLawSize = _nPointQty + setup_DATA_PENDIX_LENGTH;
     //}
 
         float _mScanPos;
         ParameterProcess* _process = ParameterProcess::Instance();
         DopplerConfigure* _pConfig = DopplerConfigure::Instance();
         GROUP_CONFIG& _group = _pConfig->group[nGroupId_];
+
         if(_group.m_mode==D_MODE&&!_group.DrawCviewflage){
             if(_group.afCursor[ setup_CURSOR_S_MES ]> _group.afCursor[setup_CURSOR_S_REF]&&_group.afCursor[ setup_CURSOR_S_MES ]<m_pConfig->comTmp.nRecMax)
              _mScanPos= _group.afCursor[ setup_CURSOR_S_REF ];
             else if(_group.afCursor[ setup_CURSOR_S_MES ]< _group.afCursor[setup_CURSOR_S_REF]&&_group.afCursor[ setup_CURSOR_S_REF ]<m_pConfig->comTmp.nRecMax)
               _mScanPos= _group.afCursor[ setup_CURSOR_S_MES ];
-            else
-              _mScanPos =_group.afCursor[setup_CURSOR_S_MES];
             nScanPos_ = _process->SAxisDistToIndex(_mScanPos);
          }
-
     int _index = GetRealScanIndex(nGroupId_, nScanPos_);
     if(_pData){
+
         _pData += (_nFrameOffset * _index + _nGroupOffset + nLawId_ * _nLawSize);
     }
     GetGatePeakInfos(nGroupId_, _pData, nLawId_, pInfo_);
+
 	return true;
 }
 
@@ -1444,7 +1444,6 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
     float _fSin    = sin(_fAngle);
     float _fCos    = cos(_fAngle);
     float _fIRadius, _fORadius, _fSstep, _fLstep;
-
     if(config->m_mode==D_MODE&&config->afCursor[ setup_CURSOR_S_MES ]<m_pConfig->comTmp.nRecMax&& config->afCursor[setup_CURSOR_S_REF]<m_pConfig->comTmp.nRecMax)
     {
        cursorOffset=config->afCursor[ setup_CURSOR_S_MES ]- config->afCursor[setup_CURSOR_S_REF];
@@ -1460,12 +1459,12 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, WDATA* pData_, int nLawId
             _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
             _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
             _fScale  = _nPointQty / _fSampleRange;
-        } else {
+        }else{
             _fSampleStart = GetSampleStart(nGroupId_ , nLawId_);
             _fSampleRange = GetSampleRange(nGroupId_ , nLawId_);
             _fScale  = _nPointQty / _fSampleRange;
             _fIRadius = config->part.afSize[3] / 2 - _fThick;
-            _fORadius = config->part.afSize[3] / 2;
+            _fORadius =  config->part.afSize[3] / 2;
             _fSstep = _fORadius * _fCos - sqrt( _fIRadius * _fIRadius - _fORadius * _fORadius * _fSin * _fSin);
             _fLstep = ( asin( _fORadius * _fSin / _fIRadius) - _fAngle) * _fORadius;
         }
@@ -2116,6 +2115,7 @@ WDATA* ParameterProcess::GetGroupDataDscanPointer(int nGroupId_)
     if(!_pData)  return 0 ;
     int   _nFrameSize = GetTotalDataSize() ;
     int _nScanPos = SAxisDistToIndex(_mScanPos);
+
     int        _index = GetRealScanIndex(nGroupId_, _nScanPos);
     int _nFrameOffset = _nFrameSize * _index ;
     int _nGroupOffset = GetGroupDataOffset(nGroupId_) ;
@@ -2136,23 +2136,22 @@ WDATA* ParameterProcess::GetGroupDataPointerRaster(int nGroupId_)
 WDATA* ParameterProcess::GetLawDataPointer(int nGroupId_ , int nLawId_)
 {
     WDATA* _pData;
-    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_] ;
-    if( m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE&&_group.m_mode){
+    GROUP_CONFIG& _group = m_pConfig->group[nGroupId_];
+    if(m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE&&_group.m_mode){
 
         _pData=GetGroupDataDscanPointer(nGroupId_);
-    }else if( m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE) {
+//      _pData = GetGroupDataPointer(nGroupId_);
 
+    }else if(m_pConfig->common.scanner.eScanType == setup_SCAN_TYPE_ONE_LINE) {
         _pData = GetGroupDataPointer(nGroupId_);
-
     }
     else{
         _pData = GetGroupDataPointerRaster(nGroupId_);
     }
-
 	if(!_pData)  return 0 ;
-	int _nLawOffset  = GetGroupLawDataOffset(nGroupId_ , nLawId_)  ;
+    int _nLawOffset  = GetGroupLawDataOffset(nGroupId_ , nLawId_);
 	//*** total offset
-	return (_pData + _nLawOffset)  ;
+    return (_pData + _nLawOffset);
 }
 
 WDATA* ParameterProcess::GetCoupleDataPointer( int nGroupId_)

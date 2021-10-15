@@ -61,17 +61,12 @@ protected:
     bool m_wheelAble;
     float m_pcs;
 };
-
 class DopplerScanMarker :public QObject, public DopplerLineItem
 {
-
 public:
     DopplerScanMarker(const QColor& cColor_);
-
 protected:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *item, QWidget *widget);
-
-
 };
 
 class DopplerCalibrationMark : public DopplerLineItem

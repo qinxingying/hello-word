@@ -805,10 +805,12 @@ typedef struct _Group
     setup_SSCANF_MODE       m_mode;//S扫模式
     float zoomFactor;               //S扫1:1缩放因子-扫查轴坐标
     bool lawMove;                   //D扫的扫查轴移动标志
+
     int currentGroupId;             //D扫绘制组ID
     bool viewDragflage;             //视图拖拽切换显示标志位
     bool DrawCviewflage;            //绘制C视图标志
     bool LawMarker;                 //扫查轴标志位
+
 
 	/*  校准状态  */
 	int						bVelocityCalib;

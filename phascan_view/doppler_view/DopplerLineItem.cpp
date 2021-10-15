@@ -443,17 +443,14 @@ DopplerScanMarker::DopplerScanMarker(const QColor& cColor_) : DopplerLineItem(cC
 
 void DopplerScanMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* /*widget*/)
 {
-
-
     //******** to change the background color of when mouse is rect
-    QColor fillColor = (option->state & QStyle::State_Selected) ? m_cColor.dark(50) : m_cColor;
-    if (option->state & QStyle::State_MouseOver)
-        fillColor = fillColor.light(50);
+    QColor fillColor =(option->state & QStyle::State_Selected)?m_cColor.dark(50) : m_cColor;
+    if(option->state & QStyle::State_MouseOver)
+      fillColor = fillColor.light(50);
     //******** get the enlarged rate, and by which to determine whether draw the details
     //******** the real display size diliver real size (in pixels)
     //const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
-
-    switch (m_eLineType)
+    switch(m_eLineType)
     {
     case LINE_VERTICAL:
         {
@@ -475,7 +472,6 @@ void DopplerScanMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem 
         break;
     };
     painter->save();
-
     QPen _NewPen ;
     QVector<qreal> dashes;
     _NewPen.setColor(fillColor);
@@ -486,62 +482,61 @@ void DopplerScanMarker::paint(QPainter *painter, const QStyleOptionGraphicsItem 
     painter->setPen(_NewPen);
     painter->drawLine(0, 0 , m_nWidth , m_nHeight );
     painter->restore();
-
 }
 
 DopplerCalibrationMark::DopplerCalibrationMark(const QColor& cColor_) : DopplerLineItem(cColor_){}
 
 void DopplerCalibrationMark::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* /*widget*/)
 {
-	//******** to change the background color of when mouse is rect
-	QColor fillColor = (option->state & QStyle::State_Selected) ? m_cColor.dark(50) : m_cColor;
-	if (option->state & QStyle::State_MouseOver)
-	fillColor = fillColor.light(50);
-	//******** get the enlarged rate, and by which to determine whether draw the details
-	//******** the real display size diliver real size (in pixels)
-	//const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
+    //******** to change the background color of when mouse is rect
+    QColor fillColor = (option->state & QStyle::State_Selected) ? m_cColor.dark(50) : m_cColor;
+    if (option->state & QStyle::State_MouseOver)
+    fillColor = fillColor.light(50);
+    //******** get the enlarged rate, and by which to determine whether draw the details
+    //******** the real display size diliver real size (in pixels)
+    //const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
 
-	switch (m_eLineType)
-	{
-	case LINE_VERTICAL:
-		{
-			QGraphicsScene* _pScene = scene () ;
-			if(_pScene)
-			m_nHeight = _pScene->height() ;
-		}
-		m_nWidth  = 0 ;
-		break;
-	case LINE_HORIZENTAL:
-		{
-			QGraphicsScene* _pScene = scene () ;
-			if(_pScene)
-			m_nWidth = _pScene->width() ;
-		}
-		m_nHeight = 0 ;
-		break;
-	default:
-		break;
-	};
-	painter->save();
+    switch (m_eLineType)
+    {
+    case LINE_VERTICAL:
+        {
+            QGraphicsScene* _pScene = scene () ;
+            if(_pScene)
+            m_nHeight = _pScene->height() ;
+        }
+        m_nWidth  = 0 ;
+        break;
+    case LINE_HORIZENTAL:
+        {
+            QGraphicsScene* _pScene = scene () ;
+            if(_pScene)
+            m_nWidth = _pScene->width() ;
+        }
+        m_nHeight = 0 ;
+        break;
+    default:
+        break;
+    };
+    painter->save();
 
 
-	QPen _NewPen ;
-	QVector<qreal> dashes;
-	_NewPen.setColor(fillColor);
-	_NewPen.setWidth(2);
+    QPen _NewPen ;
+    QVector<qreal> dashes;
+    _NewPen.setColor(fillColor);
+    _NewPen.setWidth(2);
 
-	dashes << 1 << 4 << 1 << 4 ;
-	_NewPen.setDashPattern(dashes);
-	painter->setPen(_NewPen);
-	painter->drawLine(0, 0 , m_nWidth , m_nHeight );
+    dashes << 1 << 4 << 1 << 4 ;
+    _NewPen.setDashPattern(dashes);
+    painter->setPen(_NewPen);
+    painter->drawLine(0, 0 , m_nWidth , m_nHeight );
 
-	switch(m_nId)
-	{
-	case setup_CURSOR_TFOD_LW:	DrawLabel(painter, (char*)"LW");	break;
-	case setup_CURSOR_TFOD_BW:	DrawLabel(painter, (char*)"BW");	break;
-	}
+    switch(m_nId)
+    {
+    case setup_CURSOR_TFOD_LW:	DrawLabel(painter, (char*)"LW");	break;
+    case setup_CURSOR_TFOD_BW:	DrawLabel(painter, (char*)"BW");	break;
+    }
 
-	painter->restore();
+    painter->restore();
 }
 
 void DopplerCalibrationMark::DrawLabel(QPainter *painter, char* str_)

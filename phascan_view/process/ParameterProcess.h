@@ -1,17 +1,13 @@
 ﻿/***************************
   Description:   参数设置处理类
 *****************************/
-
-
 #ifndef PARAMETERPROCESS_H
 #define PARAMETERPROCESS_H
-
 #include "DopplerConfigure.h"
 
 #include <QObject>
 #include <QString>
 #include <QPoint>
-
 class Focallaw ;
 enum GATE_POS_VALUE_TYPE
 {
@@ -23,8 +19,7 @@ enum GATE_POS_VALUE_TYPE
 
    MM_TRUE_DEPTH     ,
    MM_HORIZENTAL_DIST
-} ;
-
+};
 
 class ParameterProcess : public QObject
 {

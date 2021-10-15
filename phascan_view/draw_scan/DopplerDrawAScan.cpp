@@ -91,19 +91,18 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 	//U8*  _pMarker = _process->GetScanMarker(m_cInfo.nGroupId)  ;
 	//if(!_pMarker[_nScanPos])
 		//return ;
-    float  _fScale = _process->GetRefGainScale(m_cInfo.nGroupId);
-	bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;
+    float  _fScale =_process->GetRefGainScale(m_cInfo.nGroupId);
+    bool _bRectify =(_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;
 
 	double _fX , _fY;
     double _fXRatio = _nWidth / (_nPointQty - 1);
 	double _fYRatio = _nHeight / 255  ;
-	//---------------
+    //----------------
     if(m_AScanInfo.fDRangeS > 0){
 		ParameterProcess* _process = ParameterProcess::Instance();
 		double _fCurDepthRange = _process->GetSampleRange(m_cInfo.nGroupId, m_cInfo.nBeamId) ;
 		_nWidth = _nWidth * _fCurDepthRange / m_AScanInfo.fDRangeS;
         _fXRatio = _nWidth / (_nPointQty -1);
-
     }
 	//---------------
     float _nStart = _process->GetSampleStart(m_cInfo.nGroupId,m_cInfo.nBeamId);
@@ -119,8 +118,6 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
             _process->getTravelMode(m_cInfo.nGroupId) == setup_TRAVEL_MODE_TIME){
         start = 0;
     }
-
-
     int _nFrameOffset = _process->GetTotalDataSize() ;//一帧数据偏移量
     int cursorOffset=1;
     if(m_pGroup->m_mode==D_MODE)
@@ -133,7 +130,7 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
 
     int i,j;
     double _tempfY=0.0;
-     WDATA* _tempData= _pData;
+    WDATA* _tempData= _pData;
 
     for(i = 0 ; i < _nPointQty ; i++)
     {
@@ -152,7 +149,6 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
         _fY = _nHeight -_tempfY * _fYRatio;
         Lines<<QPointF(_fX , _fY);
     }
-
 
     QPen NewPen(color[0]);
     NewPen.setWidth( 0);
@@ -739,7 +735,7 @@ void DopplerDrawAScanV::Draw (QImage* pImage_)
     memset(Image_pData, 0 , pImage_->bytesPerLine() * pImage_->height() );
 	ParameterProcess* _process = ParameterProcess::Instance();
     DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
-    WDATA*			  _pData = _process->GetLawDataPointer(m_cInfo.nGroupId , m_cInfo.nBeamId)  ;
+    WDATA*			  _pData = _process->GetLawDataPointer(m_cInfo.nGroupId , m_cInfo.nBeamId);
     if (_pConfig->group[m_cInfo.nGroupId].coupleMonitoringState && _pConfig->group[m_cInfo.nGroupId].bShowCoupleInAScan) {
         DrawCoupleCurve(pImage_);
         return;

@@ -1852,6 +1852,7 @@ void DopplerDrawCScanH::GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pB
 
 }
 
+
 void DopplerDrawCScanH::GetPixValuePos(U32* pBuff_, U32* pBuff2_, float GainScale_)
 {
 	U32	_nBeamQty = m_CScanInfo.nLawQty;

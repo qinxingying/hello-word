@@ -288,7 +288,7 @@ void DopplerDataView::UpdateDrawing()
     UpdateMeasure();
     QMutexLocker locker(&m_mutex);
     if (!m_pGraphicView) return;
-	m_pGraphicView->UpdateDrawing();
+    m_pGraphicView->UpdateDrawing();
 
     if( m_pCoupleSBar)
     {
@@ -303,10 +303,14 @@ void DopplerDataView::UpdateDrawing()
 
 void DopplerDataView::UpdateDSDrawing()
 {
-
+    UpdateMeasure();
+//    QMutexLocker locker(&m_mutex);
+    if (!m_pGraphicView) return;
     m_pGraphicView->UpdateDSDrawing();
-
-
+    if( m_pCoupleSBar)
+    {
+        m_pCoupleSBar->update();
+    }
 }
 
 #include <process/ParameterProcess.h>
@@ -750,7 +754,7 @@ void DopplerDataView::slotTofdDragProAction(QPointF ptS_, QPointF ptE_)
 	QPointF _pt2 = PixTransferToReal(ptE_);
 
 	AREAF _area;
-	DopplerTofdOpp opp ;
+    DopplerTofdOpp opp;
 
 	if(m_eDisplayMode == setup_DISPLAY_MODE_B_H)
 	{
@@ -771,7 +775,6 @@ void DopplerDataView::slotTofdDragProAction(QPointF ptS_, QPointF ptE_)
 	opp.TofdClearDragStatus(m_nGroupId);
 	return;
 	}
-
 	opp.TofdDragProcess(m_nGroupId, _area);
     g_pMainWnd->RunDrawThreadOnce(false);
 }
