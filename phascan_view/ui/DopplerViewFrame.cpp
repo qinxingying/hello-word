@@ -9,6 +9,7 @@
 #include <QSplitter>
 #include <QBoxLayout>
 #include <QMessageBox>
+#include "threads/drawdscanfthread.h"
 
 
 
@@ -94,7 +95,7 @@ void DopplerViewFrame::DropEventProcess(QDropEvent* event)
 		return ;
 	}
 
-	CreateDrawView(_nGroupId, _nId);
+    CreateDrawView(_nGroupId, _nId);
 }
 
 
@@ -106,16 +107,22 @@ void DopplerViewFrame::DropEventProcess(QDropEvent* event)
 *************************************************   */
 void DopplerViewFrame::slotCreateDrawWindow(QWidget* pWidget_, int _nId , int nGroupId_)
 {
-    ProcessDisplay _display ;
+    ProcessDisplay _display;
 	_display.SetCurrentGroupId(nGroupId_);
-	_display.CreateViews(pWidget_  , _nId) ;
-	pWidget_->show();
+    _display.CreateViews(pWidget_  , _nId);
+    pWidget_->show();
     g_pMainWnd->RunDrawThreadOnce(false);
-	//emit signalDropEvent(_nId) ;
-	//sleep(100);
-	_display.UpdateAllViewOverlay();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    if(_pConfig->group[nGroupId_].m_mode==D_MODE)
+    {
+    _pConfig->group[nGroupId_].viewDragflage=true;
+    DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
+    Th->RunOnce();
+    }
+    //emit signalDropEvent(_nId) ;
+    //sleep(100);
+    _display.UpdateAllViewOverlay();
 }
-
 void DopplerViewFrame::CreateDrawView(int nGroupId_, int nId_)
 {
 	QList<QWidget*>* _pList = g_pMainWnd->GetCurrentDisplayTableWidgetList();
@@ -125,7 +132,6 @@ void DopplerViewFrame::CreateDrawView(int nGroupId_, int nId_)
 	}
 	_pList->clear();
 	delete this->layout();
-
     emit signalCreateDrawWindow(this , nId_ , nGroupId_);
 }
 

@@ -681,7 +681,8 @@ void DopplerGroupTab::SetWndName()
 		ui->ValueDefectWidth->hide();
 		ui->LabelCursorUnit3_11->hide();
 		ui->LabelCursorUnit3_12->hide();
-	} else {
+        ui->ComsScanfMode->setDisabled(true);
+    }else{
 		ui->labelDefectOffset->show();
 		ui->labelDefectWidth->show();
 		ui->ValueDefectWStart->show();
@@ -876,7 +877,8 @@ void DopplerGroupTab::StartDrags(QModelIndex index)
 
 	drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
 	drag->setPixmap(pixmap);
-	drag->exec() ; //(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+    drag->exec(); //(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+
 }
 
 void DopplerGroupTab::UpdateColorSetting()
@@ -2998,6 +3000,9 @@ void DopplerGroupTab::on_ComWeldRemianingHeight_activated(int index)
 {
     m_pGroup->bWeldRemainingHeight = index;
     g_pMainWnd->RunDrawThreadOnce(true);
+    DrawDscanfTHread* _pThread = DrawDscanfTHread::Instance();
+    _pThread->RunOnce();
+
 }
 
 void DopplerGroupTab::on_ValuePartSizel1_valueChanged(double arg1)

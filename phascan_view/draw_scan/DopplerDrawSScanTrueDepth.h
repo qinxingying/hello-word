@@ -46,6 +46,9 @@ public:
     ~DopplerDrawSScanTrueDepth();
     void UpdateDrawInfo() ;
     virtual void Draw (QImage *pImage_) ;
+    void DrawPixbuff(QImage* pImage_) ;
+    void CalcDscanDate(WDATA* _pData,QImage* pImage_,int num);
+    void CalcDscanDateReflect(WDATA* _pData,QImage* pImage_,int num);
 
 protected:
     void CalcMatrix();
@@ -54,7 +57,6 @@ protected:
     bool MatrixBuffValid();
     void CalcMatrixAzimuthal(FAN_SCAN_INFO* pInfo_) ;
     void CalcMatrixLinear(FAN_SCAN_INFO* pInfo_);
-    void DrawPixbuff(QImage* pImage_) ;
 
     int m_PosStart ;
     int m_PosStop  ;
@@ -75,9 +77,29 @@ protected:
     U8*  m_pColRate;
     int* m_pDataNo;
     bool m_bClear;
-    bool m_bWeldRemainingHeightAffect {false};
-
-
+    bool m_bWeldRemainingHeightAffect {false}; 
+    float m_zoomFactor;
+    int m_xoffset; //180/270°中 x(像素)的偏移量
+    int m_width;
+    int m_cursorOffset;
+    QVector <QVector<int>>m_tempdata;
+    QVector <QVector<int>>m_RefTempdata;
 };
 
 #endif // DOPPLERDRAWSSCANAZIMUTHAL_H
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

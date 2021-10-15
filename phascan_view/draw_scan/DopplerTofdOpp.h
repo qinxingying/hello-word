@@ -1,4 +1,4 @@
-#ifndef DOPPLERTOFDOPP_H
+﻿#ifndef DOPPLERTOFDOPP_H
 #define DOPPLERTOFDOPP_H
 
 #include <QObject>

@@ -37,8 +37,6 @@ protected:
     volatile int  m_nRunOnce ;
     static DataRefreshThread* m_pThread ;
 
-signals:
-
 public slots:
 
 };

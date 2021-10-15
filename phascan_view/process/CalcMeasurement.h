@@ -1,4 +1,4 @@
-/***************************
+﻿/***************************
   Class Name :  CalcMeasurement
   Description:  calculate class for measures (%A, PA , SA , SB .....)
 ************************************/

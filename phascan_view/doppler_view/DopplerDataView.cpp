@@ -492,12 +492,14 @@ QPointF DopplerDataView::TranslateToScenePlan(QPointF* pPos_)
 	double _fY   = pPos_->y()  ;
 	_fX = _nSceneWidth * (_fX - _nHStart) / _nHWidth  ;
 	_fY   = _nSceneHeight * (_fY - _nVStart) / _nVHeight  ;
-
-    if(_group.m_Shows==ON&&(_eAngle==setup_PROBE_PART_SKEW_0||_eAngle==setup_PROBE_PART_SKEW_90))
+    if(_group.LawMarker&&(_eAngle==setup_PROBE_PART_SKEW_0||_eAngle==setup_PROBE_PART_SKEW_90))
+    {
     _fX=_fX*_group.zoomFactor;
-    else if(_group.m_Shows==ON&&(_eAngle==setup_PROBE_PART_SKEW_180||_eAngle==setup_PROBE_PART_SKEW_270))
+    }
+    else if(_group.LawMarker&&(_eAngle==setup_PROBE_PART_SKEW_180||_eAngle==setup_PROBE_PART_SKEW_270))
+    {
     _fX= (_nSceneWidth-_fX)-(_nSceneWidth-_fX)*_group.zoomFactor+_fX;//6
-
+    }
 	return QPointF(_fX , _fY);
 }
 

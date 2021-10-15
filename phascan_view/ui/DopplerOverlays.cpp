@@ -922,8 +922,6 @@ void DopplerOverlays::GetCurrentLawMarkerPos(QVector<QLineF>* _pVector)
 			float _fAngleTmp ;
             float _fPos1 , _fPos2 , _fPos3 , _fPos4 , _fTmp1,_fPos5,_fPos6;
 			setup_PROBE_ANGLE _eAngle = m_pProcess->GetProbeAngle(m_nGroup);
-            float zoomFactor=_group.zoomFactor;
-
 
 			if(_eAngle == setup_PROBE_PART_SKEW_0 )
             {

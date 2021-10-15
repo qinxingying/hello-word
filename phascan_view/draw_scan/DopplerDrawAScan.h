@@ -1,4 +1,4 @@
-#ifndef ___DOPPLERDRAWASCANH_H____
+﻿#ifndef ___DOPPLERDRAWASCANH_H____
 #define ___DOPPLERDRAWASCANH_H____
 #include "DopplerDrawScan.h"
 #include <QColor>

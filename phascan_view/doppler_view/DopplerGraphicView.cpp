@@ -24,7 +24,12 @@
 #include <QObject>
 #include <QMutex>
 #include "defectidentify.h"
-
+#include "DopplerDrawSScanTrueDepth.h"
+#include "DopplerDrawScan.h"
+#include "DopplerDrawBScan.h"
+#include "DopplerDrawCScan.h"
+#include "DopplerDrawAScan.h"
+#include<QtConcurrent/QtConcurrent>
 static const QSize FIXED_SCENE_SIZE( 480 , 360);
 
 #define DPL_BASE_IMAGE_FORMATE	 (QImage::Format_RGB888)  //存入格式为R, G, B 对应 0,1,2
@@ -2211,28 +2216,78 @@ void DopplerGraphicView::UpdateDSDrawing()
 
     if(m_pDrawScan&&_nGroupId==_iGroupId)
     {
-        QMutexLocker locker(&m_pBackGround->m_hMutex2);
+//      QMutexLocker locker(&m_pBackGround->m_hMutex2);
+//      QMutexLocker locker(&m_pBackGround->m_hMutex);
+//      m_pBackGround->m_hMutex.lock();
+        if(_group.DrawCviewflage&&(m_pDrawScan->inherits("DopplerDrawCScanH")||m_pDrawScan->inherits("DopplerDrawCScanV")))
+        {
+          QMutexLocker locker(&m_pBackGround->m_hMutex);
+            m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
+        }
+        else if(_group.viewDragflage==true&&_group.m_mode==D_MODE)
+        {
+            if((m_pDrawScan->inherits("DopplerDrawAScanH")))
+            {
+             DopplerDrawAScanH *m_Scan=(DopplerDrawAScanH*)m_pDrawScan;
+             QFuture<void>future=QtConcurrent::run(m_Scan,&DopplerDrawAScanH::Draw,m_pBackGround->GetBaseImage());
+             future.waitForFinished();
 
-//     m_pBackGround->m_hMutex.lock();
+            }
+            if((m_pDrawScan->inherits("DopplerDrawAScanV")))
+            {
+             DopplerDrawAScanV *m_Scan=(DopplerDrawAScanV*)m_pDrawScan;
+             QFuture<void>future=QtConcurrent::run(m_Scan,&DopplerDrawAScanV::Draw,m_pBackGround->GetBaseImage());
+             future.waitForFinished();
 
-      if(_group.lawMove==true&&(m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))&&_group.m_mode==D_MODE)
+            }
+            if((m_pDrawScan->inherits("DopplerDrawBScanH")))
+            {
+             DopplerDrawBScanH *m_Scan=(DopplerDrawBScanH*)m_pDrawScan;
+             QFuture<void>future=QtConcurrent::run(m_Scan,&DopplerDrawBScanH::Draw,m_pBackGround->GetBaseImage());
+             future.waitForFinished();
+            }
+            if((m_pDrawScan->inherits("DopplerDrawBScanV")))
+            {
+             DopplerDrawBScanV *m_Scan=(DopplerDrawBScanV*)m_pDrawScan;
+             QFuture<void>future=QtConcurrent::run(m_Scan,&DopplerDrawBScanV::Draw,m_pBackGround->GetBaseImage());
+             future.waitForFinished();
+            }
+            if((m_pDrawScan->inherits("DopplerDrawSScanTrueDepth")))
+            {
+             DopplerDrawSScanTrueDepth *m_Scan=(DopplerDrawSScanTrueDepth*)m_pDrawScan;
+             QFuture<void>future=QtConcurrent::run(m_Scan,&DopplerDrawSScanTrueDepth::Draw,m_pBackGround->GetBaseImage());
+//             future.waitForFinished();
+            }
+            if((m_pDrawScan->inherits("DopplerDrawCScanH")))
+            {
+             DopplerDrawCScanH *m_Scan=(DopplerDrawCScanH*)m_pDrawScan;
+             QFuture<void>future=QtConcurrent::run(m_Scan,&DopplerDrawCScanH::Draw,m_pBackGround->GetBaseImage());
+             future.waitForFinished();
+            }
+        }else if(_group.lawMove==true&&(m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))&&_group.m_mode==D_MODE)
         {
         _group.lawMove=false;
 
         m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
 
         }
-      else if( _group.lawMove==false
+        else if(_group.lawMove==false&&_group.DrawCviewflage==false
                &&((m_pDrawScan->inherits("DopplerDrawSScanTrueDepth"))
                ||m_pDrawScan->inherits("DopplerDrawAScanH")||m_pDrawScan->inherits("DopplerDrawAScanV"))
                &&_group.m_mode==D_MODE)
-         m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
-//        m_pBackGround->m_hMutex.unlock();
-
+        {
+            if((m_pDrawScan->inherits("DopplerDrawSScanTrueDepth")))
+            {
+            DopplerDrawSScanTrueDepth *m_Scan=(DopplerDrawSScanTrueDepth*)m_pDrawScan;
+            QFuture<void>future=QtConcurrent::run(m_Scan,&DopplerDrawSScanTrueDepth::Draw,m_pBackGround->GetBaseImage());
+            future.waitForFinished();
+            }else
+            m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
+       }
     }
-    emit signalUpdateDrawing();
-
+    emit signalUpdateDrawing();   
 }
+
 
 /****************************************************************************
   Description:   刷新场景

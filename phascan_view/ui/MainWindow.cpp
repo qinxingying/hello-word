@@ -648,6 +648,17 @@ void MainWindow::slotSliderhChanged(int value)
     }
     InstrumentSettingWidget* _pScanner = (InstrumentSettingWidget*)ui->TabWidget_parameter->widget(_pConfig->common.nGroupQty);
     _pScanner->UpdateScanPos();
+
+
+    GROUP_CONFIG& _group = _pConfig->group[m_iCurGroup];
+    if(_group.m_mode)
+    {
+    _group.DrawCviewflage=true;
+    DrawDscanfTHread* _pThread = DrawDscanfTHread::Instance();
+    _pThread->RunOnce();
+
+    }
+    else
     RunDrawThreadOnce(true);
 }
 
@@ -1006,14 +1017,14 @@ void MainWindow::UpdateTableDisplay()
             }
             if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
                 _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
-            } else {
+            } else{
                 _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BV);
             }
 
             //sleep(600);
         }
         ui->TabWidget_display->setCurrentIndex(0);
-    } else {
+    } else{
         ui->TabWidget_display->setCurrentIndex(0);
         m_iCurGroup = 0;
         _pViewFrame = (DopplerViewFrame*)ui->TabWidget_display->currentWidget();
@@ -1024,9 +1035,9 @@ void MainWindow::UpdateTableDisplay()
         if(disp_mode < 0){
             disp_mode = (int)ProcessDisplay::DISP_S_AV;
         }
-        if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA) {
+        if(_pConfig->group[m_iCurGroup].eGroupMode == setup_GROUP_MODE_PA){
             _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_MODE(disp_mode));
-        } else {
+        }else{
             _pViewFrame->CreateDrawView(m_iCurGroup, ProcessDisplay::DISP_AH_BV);
         }
     }
@@ -1119,7 +1130,7 @@ void MainWindow::OpenFilePro(QString strFileName_)
         _pConfig->initScanPos();
         UpdateTableParameter();
         UpdateStatusBarInfo();
-        UpdateTableDisplay();
+        UpdateTableDisplay();//创建更新视图
         initSlider();
         initIndexSlider();
         sliderh->setValue(0);
@@ -3047,12 +3058,12 @@ void MainWindow::on_actionAided_Analysis_triggered()
 void MainWindow::on_actionStop_Analysis_triggered()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-//    _pConfig->common.aidedAnalysis.aidedStatus  = false;
+//  _pConfig->common.aidedAnalysis.aidedStatus  = false;
     //int _nGroupId = _pConfig->common.aidedAnalysis.aidedGroupId;
     menuBar()->setEnabled(true);
     set_ToolBarStatus(true);
     _pConfig->common.bMarkDefectNotIdentifyArea = false;
-    for (int i = 0; i < ui->TabWidget_parameter->count(); ++i) {
+    for (int i = 0; i < ui->TabWidget_parameter->count(); ++i){
         ui->TabWidget_parameter->setTabEnabled(i, true);
     }
     ui->IndicationTable->setEnabled(false);

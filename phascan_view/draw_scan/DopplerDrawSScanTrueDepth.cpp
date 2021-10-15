@@ -9,10 +9,12 @@
 #include "gHeader.h"
 #include <process/ParameterProcess.h>
 #include <QtGlobal>
-
+#include<QtConcurrent/QtConcurrent>
 #define WAVE_HALF		125
 static unsigned char COMPOSITION_COLOR[4] = {255,0,0,40};
-
+//int m_cursorOffset=1;
+//QVector <QVector<int>>m_tempdata;
+//QVector <QVector<int>>m_RefTempdata;
 DopplerDrawSScanTrueDepth::DopplerDrawSScanTrueDepth() :
 	DopplerDrawScan()
 {
@@ -79,7 +81,10 @@ void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
         m_nWidth  =  _nWidth ;
         m_nHeight =  _nHeight ;
         m_bWeldRemainingHeightAffect = m_pGroup->bWeldRemainingHeight;
-        m_pGroup->zoomFactor = m_nHeight/(float)m_nWidth;
+        if(_nHeight>_nWidth)
+            m_pGroup->zoomFactor=m_nWidth/(float) m_nHeight;
+        else
+            m_pGroup->zoomFactor = m_nHeight/(float)m_nWidth;
         UpdateDrawInfo() ;
     }
 
@@ -572,22 +577,21 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
     int _nFrameOffset = _process->GetTotalDataSize() ;//一帧数据偏移量
 
 //    QImage* pImage=new QImage(pImage_->width(),pImage_->height(),QImage::Format_RGB888);
-    U8* _pImageBits = pImage_->bits();  // 获取图像的首地址 https://blog.csdn.net/lengyuezuixue/article/details/80656358
-
-    int _nWidthStep = pImage_->bytesPerLine();  // 获取图像每行字节数
-
-    float _fStart , _fStop  ;
+    U8* _pImageBits = pImage_->bits();// 获取图像的首地址 https://blog.csdn.net/lengyuezuixue/article/details/80656358
+    int _nWidthStep = pImage_->bytesPerLine();// 获取图像每行字节数
+    float _fStart , _fStop;
     _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fStart ,  &_fStop);
-
-     int cursorOffset=1;
-     if(m_pGroup->m_mode==D_MODE&&m_pGroup->afCursor[ setup_CURSOR_S_MES ]<m_pConfig->comTmp.nRecMax&& m_pGroup->afCursor[setup_CURSOR_S_REF]<m_pConfig->comTmp.nRecMax)
+    if(m_pGroup->m_mode==D_MODE&&m_pGroup->afCursor[ setup_CURSOR_S_MES ]<m_pConfig->comTmp.nRecMax&& m_pGroup->afCursor[setup_CURSOR_S_REF]<m_pConfig->comTmp.nRecMax)
+     {
+        m_cursorOffset=m_pGroup->afCursor[ setup_CURSOR_S_MES ]- m_pGroup->afCursor[setup_CURSOR_S_REF];
+        if(m_cursorOffset<0)m_cursorOffset=-m_cursorOffset;
+        if(m_cursorOffset==0)m_cursorOffset=1;
+      }else if(m_pGroup->m_mode==S_MODE)
         {
-         cursorOffset=m_pGroup->afCursor[ setup_CURSOR_S_MES ]- m_pGroup->afCursor[setup_CURSOR_S_REF];
-        if(cursorOffset<0)cursorOffset=-cursorOffset;
-        if(cursorOffset==0)cursorOffset=1;
-
+          m_cursorOffset=1;
         }
-
+    QVector< QFuture<void>> future;
+    future.resize(m_cursorOffset+1);
     int _nLawSize;
 
     _nLawSize	= m_cInfo.nPointQty + setup_DATA_PENDIX_LENGTH;
@@ -616,37 +620,34 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
 	float  _fScale = _process->GetRefGainScale(m_cInfo.nGroupId) ;
 	bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF ) ;
     {
-        int _idx1, _idx2, _iData, i , j,k,_temiData=0;
+        int _idx1, _idx2, _iData, i , j,k;
         U8* _pImg1, *_pImg2;
         U8* _pImgAffect1, *_pImgAffect2;
-        int m_width;
         QVector < QVector < U8*> > Img2; //记录存储一次波位置数据
-        QVector < QVector < int> > tempdata;//记录存储一次波数据颜色索引
+
         /*****************1:1比例显示*************/
-
-        float zoomFactor;
-
-
-        int _xoffset; //180/270°中 x(像素)的偏移量
         if(m_pGroup->m_Shows==ON&&(_eAngle==setup_PROBE_PART_SKEW_0||_eAngle==setup_PROBE_PART_SKEW_90))
         {
-            zoomFactor=m_nWidth/(float)m_nHeight;
+            m_zoomFactor=m_nWidth/(float)m_nHeight;
             m_width=m_nHeight ;
-            _xoffset= 0;
+            m_xoffset= 0;
+            if(m_nHeight>m_nWidth)
+            {
+                m_zoomFactor=m_nHeight/(float)m_nWidth;
+                m_pGroup->zoomFactor=1/m_zoomFactor;
+                m_width=m_nWidth*1/m_zoomFactor;
+            }
         }
         else if(m_pGroup->m_Shows==ON&&(_eAngle==setup_PROBE_PART_SKEW_180||_eAngle==setup_PROBE_PART_SKEW_270) )
         {
-
-            zoomFactor=m_nWidth/(float) m_nHeight;
+            m_zoomFactor=m_nWidth/(float) m_nHeight;
             m_width=m_nWidth ;
-            _xoffset= m_nWidth-m_nHeight;
-
+            m_xoffset= m_nWidth-m_nHeight;
         }else
         {
-           zoomFactor =1;
+           m_zoomFactor =1;
            m_width=m_nWidth;
-           _xoffset= 0;
-
+           m_xoffset= 0;
         }
        /*****************1:1比例显示*************/
          Img2.resize(m_nHeight);//设置向量行-高
@@ -654,154 +655,128 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
          {
              Img2[j].resize(m_nWidth);//设置向量列-宽
          }
-          tempdata.resize(m_nHeight);//行-高
-          for(int j=0;j<tempdata.size();j++)
-          {
-              tempdata[j].resize(m_nWidth);//列-宽
-          }
+
+         m_tempdata.resize(m_nHeight);//行-高
+         for(int j=0;j<m_tempdata.size();j++)
+         {
+             m_tempdata[j].resize(m_nWidth);//列-宽
+         }
+
+         m_RefTempdata.resize(m_nHeight);//行-高
+         for(int j=0;j<m_RefTempdata.size();j++)
+         {
+             m_RefTempdata[j].resize(m_nWidth);//列-宽
+         }
+
          int m_Offsety=OFFSET_Y/_nStepY; //坐标偏移
          int m_i=(m_thickness-(_fStart+OFFSET_Y))/_nStepY+m_Offsety;//一次波截止纵坐标
          if(!m_pGroup->m_Retype)//不翻转
          {
+//             QElapsedTimer timer;
+//             timer.start();
 
-             for(k=0;k<cursorOffset;k++)
+             //开启线程计算数据
+             for(k=0;k<m_cursorOffset;k++)
              {
+                 _pData=_ptemData+_nFrameOffset*k;//注意叠加
+                 if(k==0)
+                 {
+                    future[k]=QtConcurrent::run(this,&DopplerDrawSScanTrueDepth::CalcDscanDate,_pData,pImage_,k);
+                    future[k].waitForFinished();
+                 }
+                 else
+                 {
+                   future[k]=QtConcurrent::run(this,&DopplerDrawSScanTrueDepth::CalcDscanDate,_pData,pImage_,k);
+                 }
+             }
+             //等待线程结束
+             for(k=0;k<m_cursorOffset;k++)
+             {
+              if(future[k].isFinished())
+                    continue;
+              else
+                    future[k].waitForFinished();
+             }
 
-              _pData=_ptemData+_nFrameOffset*k;//注意叠加
-
+             //绘制图像
              for(i = 0; i< m_nHeight; i++)
              {
                  _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
                  _pImgAffect1 = pAffectImageBits + affectImgWidthStep * i;
-
-                 for(j = 0+_xoffset; j < m_width; j++)
-                 {    
-                    _idx1 = i * m_nWidth + (j-_xoffset)*zoomFactor ; //图像每个像素点位置(颜色索引)
-
-                    if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
-                     {
-                       //当前一共多少个采样点
-                         _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
-                         _pImg2 = _pImg1 + j * 3;
-                         _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) * m_pColRate[_idx1] +
-                                  _pData[_idx2 + 1] * (COLOR_STEP - m_pDrawRate[_idx1]) * ( COLOR_STEP - m_pColRate[_idx1]) +
-                                  _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] * m_pColRate[_idx1] +
-                                  _pData[_idx2 + _nLawSize + 1] * m_pDrawRate[_idx1] * ( COLOR_STEP - m_pColRate[_idx1]));
-                         _iData = _iData>>(COLOR_SHIFT * 2);  //右移
-                         _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
-                             if(k==0)
-                              {
-                                 tempdata[i][j]=_iData;
-                              }else{
-                                  if(tempdata[i][j]>_iData)
-                                  {
-                                    _iData=tempdata[i][j];
-
-                                  }else{
-                                      tempdata[i][j]=_iData;//更新向量中的数据,始终保持最大值
-                                       }
-                                  }
-
-                         memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
-                     }
-                     if (m_pDraw[_idx1]  == WAVE_HALF) {
-                        _pImgAffect2 = _pImgAffect1 + j * 4;
-                        memcpy(_pImgAffect2, COMPOSITION_COLOR, 4);
+                 for(j = 0+m_xoffset; j < m_width; j++)
+                 {
+                  _idx1 = i * m_nWidth + (j-m_xoffset)*m_zoomFactor ; //图像每个像素点位置(颜色索引)
+                  if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
+                  {
+                  _pImg2 = _pImg1 + j * 3;
+                  memcpy(_pImg2, &m_pColor[m_tempdata[i][j]], 3); //将数据拷贝到图像地址中
+                  }
+                  if (m_pDraw[_idx1]  == WAVE_HALF) {
+                    _pImgAffect2 = _pImgAffect1 + j * 4;
+                     memcpy(_pImgAffect2, COMPOSITION_COLOR, 4);
                      }
                  }
              }
-           }
-         }else{
-             //显示和记录一次波数据
-        for(i = m_Offsety;i<m_i&&i<m_nHeight; i++)
-        {
-            _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
-            for(j = 0+_xoffset; j < m_width; j++)
-            {
-                _idx1 = (i-m_Offsety) * m_nWidth + (j-_xoffset)*zoomFactor ; //图像每个像素点位置(颜色索引)
-                    if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
-                    {
-                        //当前一共多少个采样点
-                        _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
-
-                        _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) * m_pColRate[_idx1] +
-                                 _pData[_idx2 + 1] * (COLOR_STEP - m_pDrawRate[_idx1]) * ( COLOR_STEP - m_pColRate[_idx1]) +
-                                 _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] * m_pColRate[_idx1] +
-                                 _pData[_idx2 + _nLawSize + 1] * m_pDrawRate[_idx1] * ( COLOR_STEP - m_pColRate[_idx1]));
-                        _iData = _iData>>(COLOR_SHIFT * 2);  //右移
-                        _pImg2 = _pImg1 + j * 3 ;
-                        Img2[i][j]=_pImg2;//记录存储一次波数据位置
-                        _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
-                        tempdata[i][j]=_iData;//记录存储一次波数据颜色索引
-                        memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
-                    }
-                }
+//             int timeCost = timer.elapsed();
+//             qDebug() << "save cost:"<< timeCost << "ms";
+         }else{//反射
+             for(k=0;k<m_cursorOffset;k++)
+             {
+                _pData=_ptemData+_nFrameOffset*k;//注意叠加
+             if(k==0)
+             {
+                future[k]=QtConcurrent::run(this,&DopplerDrawSScanTrueDepth::CalcDscanDateReflect,_pData,pImage_,k);
+                future[k].waitForFinished();
+             }
+             else
+               {
+                 future[k]=QtConcurrent::run(this,&DopplerDrawSScanTrueDepth::CalcDscanDateReflect,_pData,pImage_,k);
+               }
             }
-
-            //翻转二次波(底波)图像-处理重叠部分 _fStart/_nStepY
-            int m_AxisHeight=((m_thickness+OFFSET_Y-(_fStart+OFFSET_Y))/_nStepY)*2; //翻转轴高度
-            int m_DateOffset=m_nHeight+m_Offsety; //颜色数据偏移后高度
-            for(i = m_i; i<m_AxisHeight&&i<m_DateOffset;i++)//底波范围
-            {
+             //等待线程结束
+             for(k=0;k<m_cursorOffset;k++)
+             {
+              if(future[k].isFinished())
+                    continue;
+              else
+                    future[k].waitForFinished();
+             }
+             //绘制图像
+             //一次波图像
+             for(i = m_Offsety;i<m_i&&i<m_nHeight; i++)
+             {
+                 _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
+                 for(j = 0+m_xoffset; j < m_width; j++)
+                 {
+                    _idx1 = (i-m_Offsety) * m_nWidth + (j-m_xoffset)*m_zoomFactor ; //图像每个像素点位置(颜色索引)
+                     if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
+                     {
+                     _pImg2 = _pImg1 + j * 3 ;
+                     memcpy(_pImg2, &m_pColor[m_tempdata[i][j]],3);
+                  }
+               }
+             }
+             //二次波图像
+             int m_AxisHeight=((m_thickness+OFFSET_Y-(_fStart+OFFSET_Y))/_nStepY)*2; //翻转轴高度
+             int m_DateOffset=m_nHeight+m_Offsety; //颜色数据偏移后高度
+             for(i = m_i; i<m_AxisHeight&&i<m_DateOffset;i++)//底波范围
+             {
                 _pImg1 = _pImageBits + _nWidthStep * (m_AxisHeight-i);//每行数据的起点位置
-                _pImgAffect1 = pAffectImageBits + affectImgWidthStep * (m_AxisHeight-i);
-
-                for(j = 0+_xoffset; j < m_width; j++)
-                {
-                    _idx1 = (i-m_Offsety) * m_nWidth + (j-_xoffset)*zoomFactor ; //图像每个像素点位置
-                    if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
-                    {
-                        //当前一共多少个采样点
-                        _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
-
-                        _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) * m_pColRate[_idx1] +
-                                 _pData[_idx2 + 1] * (COLOR_STEP - m_pDrawRate[_idx1]) * ( COLOR_STEP - m_pColRate[_idx1]) +
-                                 _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] * m_pColRate[_idx1] +
-                                 _pData[_idx2 + _nLawSize + 1] * m_pDrawRate[_idx1] * ( COLOR_STEP - m_pColRate[_idx1]));
-
-                        _iData = _iData>>(COLOR_SHIFT * 2);  //右移
-                        _pImg2 = _pImg1 + j * 3 ;
-
-                        if(m_pGroup->m_Retype==FIRST) //一次波优先
-                        {
-                            if(m_AxisHeight-i>=m_nHeight) continue;//防止超过下标范围
-                            if(_pImg2==Img2[m_AxisHeight-i][j])
-                             {
-                               memcpy(_pImg2, &m_pColor[tempdata[m_AxisHeight-i][j]], 3); //将数据拷贝到图像地址中
-                               continue;
-                            }
-                            _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
-                            memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
-                        }
-                        if(m_pGroup->m_Retype==LAST)//反射波优先
-                        {
-                          _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
-                          memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
-
-                        }
-
-                        if(m_pGroup->m_Retype==OVERLAY)//叠加
-                        {
-                            _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
-                            if(m_AxisHeight-i>=m_nHeight) continue;//防止超过下标范围
-                            if(_pImg2==Img2[m_AxisHeight-i][j])
-                             {
-                               _iData= _iData>tempdata[m_AxisHeight-i][j]?_iData:tempdata[m_AxisHeight-i][j];
-                            }
-                            memcpy(_pImg2, &m_pColor[_iData], 3); //将数据拷贝到图像地址中
-                        }
-
-                    }
-
-                    if (m_pDraw[_idx1]  == WAVE_HALF) {
-                       _pImgAffect2 = _pImgAffect1 + j * 4;
-                       memcpy(_pImgAffect2, COMPOSITION_COLOR, 4);
-                    }
-
+                 _pImgAffect1 = pAffectImageBits + affectImgWidthStep * (m_AxisHeight-i);
+                 for(j = 0+m_xoffset; j < m_width; j++)
+                 {
+                   _idx1 = (i-m_Offsety) * m_nWidth + (j-m_xoffset)*m_zoomFactor ; //图像每个像素点位置(颜色索引)
+                  if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
+                  {
+                  _pImg2 = _pImg1 + j * 3;
+                  memcpy(_pImg2, &m_pColor[m_RefTempdata[m_AxisHeight-i][j]],3); //将数据拷贝到图像地址中
+                  }
+                  if (m_pDraw[_idx1]  == WAVE_HALF) {
+                    _pImgAffect2 = _pImgAffect1 + j * 4;
+                     memcpy(_pImgAffect2, COMPOSITION_COLOR, 4);
+                     }
                 }
             }
-
-
         }
         if (m_bWeldRemainingHeightAffect) {
           // blend
@@ -812,6 +787,220 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
         }
     }
 }
+void DopplerDrawSScanTrueDepth::CalcDscanDate(WDATA* _pData,QImage* pImage_,int num)
+{
+    int _idx1, _idx2, _iData, i , j;
+     U8* _pImg1, *_pImg2;
+     static int count;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    U8* _pImageBits = pImage_->bits();// 获取图像的首地址 https://blog.csdn.net/lengyuezuixue/article/details/80656358
+    int _nWidthStep = pImage_->bytesPerLine();// 获取图像每行字节数
+    float  _fScale = _process->GetRefGainScale(m_cInfo.nGroupId) ;
+    bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF );
+    int _nLawSize;
+    _nLawSize	= m_cInfo.nPointQty + setup_DATA_PENDIX_LENGTH;
+
+    QImage weldRemainHeightAffectImage(pImage_->width(), pImage_->height(), QImage::Format_RGBA8888);
+    U8* pAffectImageBits = weldRemainHeightAffectImage.bits();
+    memset(pAffectImageBits, 0, weldRemainHeightAffectImage.byteCount());
+    for(i = 0; i< m_nHeight; i++)
+    {
+        _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
+        for(j = 0+m_xoffset; j < m_width; j++)
+        {
+           _idx1 = i * m_nWidth + (j-m_xoffset)*m_zoomFactor ; //图像每个像素点位置(颜色索引)
+           if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
+            {
+              //当前一共多少个采样点
+                _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
+                _pImg2 = _pImg1 + j * 3;
+                _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) * m_pColRate[_idx1] +
+                         _pData[_idx2 + 1] * (COLOR_STEP - m_pDrawRate[_idx1]) * ( COLOR_STEP - m_pColRate[_idx1]) +
+                         _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] * m_pColRate[_idx1] +
+                         _pData[_idx2 + _nLawSize + 1] * m_pDrawRate[_idx1] * ( COLOR_STEP - m_pColRate[_idx1]));
+                _iData = _iData>>(COLOR_SHIFT * 2);  //右移
+                _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
+                    if(num==0)
+                     {
+                           m_tempdata[i][j]=_iData;
+                     }else{
+                         if(m_tempdata[i][j]<_iData)
+                         {
+                            m_tempdata[i][j]=_iData;
+                        }
+                   }
+              }
+          }
+     }
+}
+
+void DopplerDrawSScanTrueDepth::CalcDscanDateReflect(WDATA* _pData,QImage* pImage_,int num)
+{
+    int _idx1, _idx2, _iData, i , j;
+    U8* _pImg1, *_pImg2;
+    ParameterProcess* _process = ParameterProcess::Instance();
+    U8* _pImageBits = pImage_->bits();// 获取图像的首地址 https://blog.csdn.net/lengyuezuixue/article/details/80656358
+    int _nWidthStep = pImage_->bytesPerLine();// 获取图像每行字节数
+    float  _fScale = _process->GetRefGainScale(m_cInfo.nGroupId) ;
+    bool _bRectify = (_process->GetRectifierMode(m_cInfo.nGroupId) == setup_RECTIFIER_RF );
+    int _nLawSize;
+    _nLawSize	= m_cInfo.nPointQty + setup_DATA_PENDIX_LENGTH;
+
+    U8* _pImgAffect1, *_pImgAffect2;
+    QImage weldRemainHeightAffectImage(pImage_->width(), pImage_->height(), QImage::Format_RGBA8888);
+    U8* pAffectImageBits = weldRemainHeightAffectImage.bits();
+    memset(pAffectImageBits, 0, weldRemainHeightAffectImage.byteCount());
+    int affectImgWidthStep = weldRemainHeightAffectImage.bytesPerLine();
+    float _fStart , _fStop;
+    _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fStart ,  &_fStop);
+    int m_Offsety=OFFSET_Y/_nStepY; //坐标偏移
+    int m_i=(m_thickness-(_fStart+OFFSET_Y))/_nStepY+m_Offsety;//一次波截止纵坐标
+    QVector < QVector < U8*> > Img2; //记录存储一次波位置数据
+    static QVector <QVector<int>> tempdata2;
+
+    Img2.resize(m_nHeight);//设置向量行-高
+    for(int j=0;j<Img2.size();j++)
+    {
+        Img2[j].resize(m_nWidth);//设置向量列-宽
+    }
+    tempdata2.resize(m_nHeight);//设置向量行-高
+    for(int j=0;j<tempdata2.size();j++)
+    {
+        tempdata2[j].resize(m_nWidth);//设置向量列-宽
+    }
+
+    //显示和记录一次波数据
+    for(i = m_Offsety;i<m_i&&i<m_nHeight; i++)
+    {
+        _pImg1 = _pImageBits + _nWidthStep * i;//每行数据的起点位置
+        for(j = 0+m_xoffset; j < m_width; j++)
+        {
+            _idx1 = (i-m_Offsety) * m_nWidth + (j-m_xoffset)*m_zoomFactor ; //图像每个像素点位置(颜色索引)
+                if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
+                {
+                    //当前一共多少个采样点
+                    _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
+
+                    _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) * m_pColRate[_idx1] +
+                             _pData[_idx2 + 1] * (COLOR_STEP - m_pDrawRate[_idx1]) * ( COLOR_STEP - m_pColRate[_idx1]) +
+                             _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] * m_pColRate[_idx1] +
+                             _pData[_idx2 + _nLawSize + 1] * m_pDrawRate[_idx1] * ( COLOR_STEP - m_pColRate[_idx1]));
+                    _iData = _iData>>(COLOR_SHIFT * 2);  //右移
+                    _pImg2 = _pImg1 + j * 3 ;
+                    Img2[i][j]=_pImg2;//记录存储一次波数据位置
+                    _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
+                    if(num==0)
+                     {
+                        m_tempdata[i][j]=_iData;
+                        tempdata2[i][j]=_iData;
+                     }else{
+                         if(m_tempdata[i][j]<_iData)
+                         {
+                         m_tempdata[i][j]=_iData;
+                         tempdata2[i][j]=_iData;
+                         }
+                     }
+               }
+          }
+      }
+
+    //翻转二次波(底波)图像-处理重叠部分 _fStart/_nStepY
+    int m_AxisHeight=((m_thickness+OFFSET_Y-(_fStart+OFFSET_Y))/_nStepY)*2; //翻转轴高度
+    int m_DateOffset=m_nHeight+m_Offsety; //颜色数据偏移后高度
+    for(i = m_i; i<m_AxisHeight&&i<m_DateOffset;i++)//底波范围
+        {
+            _pImg1 = _pImageBits + _nWidthStep * (m_AxisHeight-i);//每行数据的起点位置
+            _pImgAffect1 = pAffectImageBits + affectImgWidthStep * (m_AxisHeight-i);
+            for(j = 0+m_xoffset; j < m_width; j++)
+            {
+                _idx1 = (i-m_Offsety) * m_nWidth + (j-m_xoffset)*m_zoomFactor ; //图像每个像素点位置
+                if(m_pDraw[_idx1] == WAVE_MAX || m_pDraw[_idx1] == WAVE_HALF)
+                {
+                    //当前一共多少个采样点
+                    _idx2  = (int)(m_pAngleZoom[_idx1] * _nLawSize + m_pDataNo[_idx1]);
+
+                    _iData = (int)((_pData[_idx2]) * (COLOR_STEP - m_pDrawRate[_idx1]) * m_pColRate[_idx1] +
+                             _pData[_idx2 + 1] * (COLOR_STEP - m_pDrawRate[_idx1]) * ( COLOR_STEP - m_pColRate[_idx1]) +
+                             _pData[_idx2 + _nLawSize] * m_pDrawRate[_idx1] * m_pColRate[_idx1] +
+                             _pData[_idx2 + _nLawSize + 1] * m_pDrawRate[_idx1] * ( COLOR_STEP - m_pColRate[_idx1]));
+                    _iData = _iData>>(COLOR_SHIFT * 2);  //右移
+                    _pImg2 = _pImg1 + j * 3 ;
+                    if(m_pGroup->m_Retype==FIRST) //一次波优先
+                    {
+                        if(m_AxisHeight-i>=m_nHeight) continue;//防止超过下标范围
+                        _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
+                        if(num==0)
+                         {
+                            m_RefTempdata[m_AxisHeight-i][j]=_iData;
+                         }else{
+                                 if(m_RefTempdata[m_AxisHeight-i][j]<_iData)
+                                 {
+                                   m_RefTempdata[m_AxisHeight-i][j]=_iData;
+                                 }
+                              }
+                        if(_pImg2==Img2[m_AxisHeight-i][j])
+                        {
+                          m_RefTempdata[m_AxisHeight-i][j]=tempdata2[m_AxisHeight-i][j];
+                        }
+                    }
+                    if(m_pGroup->m_Retype==LAST)//反射波优先
+                    {
+                      if(m_AxisHeight-i>=m_nHeight) continue;//防止超过下标范围
+                      _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
+                      if(num==0)
+                       {
+                          m_RefTempdata[m_AxisHeight-i][j]=_iData;
+                       }else{
+                           if(m_RefTempdata[m_AxisHeight-i][j]<_iData)
+                           {
+                             m_RefTempdata[m_AxisHeight-i][j]=_iData;
+                           }
+                           }
+                    }
+                    if(m_pGroup->m_Retype==OVERLAY)//叠加
+                    {
+                        if(m_AxisHeight-i>=m_nHeight) continue;//防止超过下标范围
+                        _iData = _process->GetRefGainScaleData(_iData, _fScale, _bRectify);
+                        if(num==0)
+                         {
+                            m_RefTempdata[m_AxisHeight-i][j]=_iData;
+                         }else{
+                                 if(m_RefTempdata[m_AxisHeight-i][j]<_iData)
+                                 {
+                                   m_RefTempdata[m_AxisHeight-i][j]=_iData;
+                                 }
+                              }
+                        if(_pImg2==Img2[m_AxisHeight-i][j])
+                         {
+                           m_RefTempdata[m_AxisHeight-i][j]= tempdata2[m_AxisHeight-i][j]>m_RefTempdata[m_AxisHeight-i][j]?tempdata2[m_AxisHeight-i][j]:m_RefTempdata[m_AxisHeight-i][j];
+                        }
+                   }
+                }
+                if (m_pDraw[_idx1]  == WAVE_HALF) {
+                   _pImgAffect2 = _pImgAffect1 + j * 4;
+                   memcpy(_pImgAffect2, COMPOSITION_COLOR, 4);
+                }
+           }
+      }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

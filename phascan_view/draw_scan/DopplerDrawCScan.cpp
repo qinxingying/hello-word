@@ -1835,12 +1835,21 @@ void DopplerDrawCScanH::GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pB
 	int	 _nBeamQty = m_CScanInfo.nLawQty;
 	ParameterProcess* _process = ParameterProcess::Instance();
 	PEAK_CONFIG _info[setup_GATE_MAX];
+
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    if(_pConfig->group[m_cInfo.nGroupId].m_mode==D_MODE)
+    {
+    _pConfig->group[m_cInfo.nGroupId].DrawCviewflage=true;
+    }
+
 	for(int i = 0 ; i < _nBeamQty ; i++)
 	{
 		_process->GetGatePeakInfos(m_cInfo.nGroupId, nScanPos_, i, _info);
         pBuff_[i] = (_info[_eGate].fH * 1000);
         pBuff_[i] = combinedGateDate( pBuff_[i], _info[_eGate].iY);
-	}
+	}   
+    _pConfig->group[m_cInfo.nGroupId].DrawCviewflage=false;
+
 }
 
 void DopplerDrawCScanH::GetPixValuePos(U32* pBuff_, U32* pBuff2_, float GainScale_)
