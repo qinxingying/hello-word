@@ -958,12 +958,21 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                         }
                         case setup_DISPLAY_MODE_C_H:
                         case setup_DISPLAY_MODE_CC_H: {
-                            g_pMainWnd->setDefectIdentifyCScanArea(scanstart, scanstop, lawstart, lawstop);
+                            if (!_pConfig->group[_iGroupId].TopCInfo.TOPCStatus) {
+                                g_pMainWnd->setDefectIdentifyCScanArea(scanstart, scanstop, lawstart, lawstop);
+                            } else {
+                                g_pMainWnd->setDefectIdentifyTopCScanArea(scanstart, scanstop, lawstart, lawstop);
+                            }
                             break;
                         }
                         case setup_DISPLAY_MODE_C_V:
                         case setup_DISPLAY_MODE_CC_V:
-                            g_pMainWnd->setDefectIdentifyCScanArea(lawstop, lawstart, scanstart, scanstop);
+                            if (!_pConfig->group[_iGroupId].TopCInfo.TOPCStatus) {
+                                g_pMainWnd->setDefectIdentifyCScanArea(lawstop, lawstart, scanstart, scanstop);
+                            } else {
+                                g_pMainWnd->setDefectIdentifyTopCScanArea(lawstop, lawstart, scanstart, scanstop);
+                            }
+
                             break;
                         case setup_DISPLAY_MODE_B_H:
                             break;

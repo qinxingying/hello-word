@@ -2366,6 +2366,60 @@ void MainWindow::setDefectIdentifySScanArea(QRectF _rect)
     _pConfig->m_defect[m_iCurGroup]->setSscanRange(_rect);
 }
 
+void MainWindow::setDefectIdentifyTopCScanArea(double scanStart, double scanStop, double viaStart, double viaStop)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    ParameterProcess* _process = ParameterProcess::Instance();
+    SCANNER& _scaner = _pConfig->common.scanner ;
+    int scanPixelStart;
+    if(_scaner.eScanEncoderType) {
+        if(scanStart < _scaner.fScanStart)
+        {
+            scanStart = _scaner.fScanStart;
+        }
+        if(scanStart > _scaner.fScanStop)
+        {
+            scanStart = _scaner.fScanStop;
+        }
+        scanPixelStart = ceil((scanStart - _scaner.fScanStart) / _scaner.fScanStep) ;
+    } else {
+        if( scanStart < _scaner.fScanStart2)
+        {
+            scanStart = _scaner.fScanStart2;
+        }
+        if( scanStart > _scaner.fScanend){
+            scanStart = _scaner.fScanend;
+        }
+        scanPixelStart =  ceil((scanStart * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep);
+    }
+
+    int scanPixelStop;
+    if(_scaner.eScanEncoderType) {
+        if(scanStop < _scaner.fScanStart)
+        {
+            scanStop = _scaner.fScanStart;
+        }
+        if(scanStop > _scaner.fScanStop)
+        {
+            scanStop = _scaner.fScanStop;
+        }
+        scanPixelStop = floor((scanStop - _scaner.fScanStart) / _scaner.fScanStep) ;
+    } else {
+        if( scanStop < _scaner.fScanStart2)
+        {
+            scanStop = _scaner.fScanStart2;
+        }
+        if( scanStop > _scaner.fScanend){
+            scanStop = _scaner.fScanend;
+        }
+        scanPixelStop =  floor((scanStop * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep);
+    }
+    int beamPixelStart = 0;
+    int beamPixelStop  = _process->GetGroupLawQty(m_iCurGroup);
+    _pConfig->m_defect[m_iCurGroup]->setRange(scanPixelStart, scanPixelStop, beamPixelStart, beamPixelStop);
+    _pConfig->m_defect[m_iCurGroup]->setViARange(viaStart, viaStop);
+}
+
 void MainWindow::setSelectSscanAreaValid(bool _isValid)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
