@@ -1005,8 +1005,9 @@ void DopplerDataView::slotItemMoved(DopplerGraphicsItem* item_)
 
     if (_nItemType == DOPPLER_GRAPHICS_ITEM_GATE) {
         _rect = item_->GetItemGeometry();
-        QPointF _pos3 = PixTransferToReal(_rect.bottomRight())  ;
-        _rect = QRectF(_pos2.x() , _pos2.y() , _pos3.x() , _pos3.y())  ;
+        QRectF rect(_pos1.x(), _pos1.y(), _rect.width(), _rect.height());
+        QPointF _pos4 = PixTransferToReal(rect.bottomRight())  ;
+        _rect = QRectF(_pos2.x() , _pos2.y() , _pos4.x() - _pos2.x(), _pos4.y() - _pos2.y());
     }
 	item_->SetItemGeometryReal(_rect)   ;
 	emit signalItemMoved(this , item_)  ;
