@@ -216,7 +216,7 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
             ui->label_wedgeT_9->hide();
 
             ui->lineEdit_wedgeT_7->setText(QString::number((double)_wedge.fRefPoint, 'f', 1) + " mm");
-            ui->lineEdit_wedgeT_8->setText(QString::number((double)_wedge.nWedgeDelay/1000.0, 'f', 1) + " us");
+            ui->lineEdit_wedgeT_8->setText(QString::number((double)_wedge.nWedgeDelay/1000.0, 'f', 2) + " us");
             ui->lineEdit_wedgeT_9->hide();
         }else{
             ui->lineEdit_wedgeT_3->setText(tr("PA"));

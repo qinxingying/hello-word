@@ -466,6 +466,9 @@ void Config::unpack_wedge(const QVariantMap &map)
     /* 以下键值暂不清楚是否存在 */
     wedge.m_waveType      = static_cast<Paramters::Wedge::WaveType> (map.value("WaveType", DEFAULT_WEDGE_WAVE_TYPE).toUInt());
     wedge.m_refPoint      = map.value("RefPoint", DEFAULT_WEDGE_REF_POINT).toDouble();
+    wedge.m_isDelayCalibrated  = map.value("IsDelayCalibrated", DEFAULT_WEDGE_REF_POINT).toBool();
+    wedge.m_calibratedRefPoint = map.value("CalibratedRefPoint", DEFAULT_WEDGE_REF_POINT).toDouble();
+    wedge.m_calibratedDelay    = 2 * map.value("CalibratedDelay", DEFAULT_WEDGE_REF_POINT).toDouble();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " serial " << wedge.m_serial
@@ -483,7 +486,10 @@ void Config::unpack_wedge(const QVariantMap &map)
              << " delay " << wedge.m_delay
              << " clampOffset " << wedge.m_clampOffset
              << " wave type " << wedge.m_waveType
-             << " ref pint " << wedge.m_refPoint;
+             << " ref pint " << wedge.m_refPoint
+             << " IsDelayCalibrated " << wedge.m_isDelayCalibrated
+             << " CalibratedRefPoint " << wedge.m_calibratedRefPoint
+             << " CalibratedDelay " << wedge.m_calibratedDelay;
 }
 
 void Config::unpack_specimen(const QVariantMap &map)
@@ -825,6 +831,12 @@ void Config::getTofdData( int groupId, float *PCS, float *RefPoint)
 {
     *PCS = m_groups[groupId].m_tofd.m_PCS;
     *RefPoint = m_groups[groupId].m_tofd.m_RefPosition;
+}
+
+void Config::getCalibratedData(int groupId, float *delay, float *refPoint)
+{
+    *delay = m_groups[groupId].m_wedge.m_calibratedDelay;
+    *refPoint = m_groups[groupId].m_wedge.m_calibratedRefPoint * 1000.0;
 }
 
 void Config::getTMFRange(int groupId, float *start, float *range, int *pointQty)
@@ -1440,16 +1452,20 @@ void Config::convert_to_phascan_config(int groupId)
     /* TODO:
          * 一代默认rootAngle = 0；
          * 二代：rootAngle涉及到成像、聚焦法则？ */
-    targetWedge.Velocity_PA       = currentWedge.m_velocity * 1000.0;
-    targetWedge.Velocity_UT       = currentWedge.m_velocity * 1000.0;
-    targetWedge.Primary_offset    = currentWedge.m_priOffset * 1000.0;
-    targetWedge.Secondary_offset  = currentWedge.m_secOffset * 1000.0;
-    targetWedge.Height            = currentWedge.m_fstElemHeight * 1000.0;
-    targetWedge.Orientation       = currentWedge.m_orientation;
-    targetWedge.Wave_type         = currentWedge.m_waveType;
-    targetWedge.Ref_point         = currentWedge.m_refPoint * 1000.0;
-    targetWedge.Probe_delay       = currentWedge.m_delay;
-    targetGroup.wedge_delay       = currentWedge.m_delay;
+    targetWedge.Velocity_PA                = currentWedge.m_velocity * 1000.0;
+    targetWedge.Velocity_UT                = currentWedge.m_velocity * 1000.0;
+    targetWedge.Primary_offset             = currentWedge.m_priOffset * 1000.0;
+    targetWedge.Secondary_offset           = currentWedge.m_secOffset * 1000.0;
+    targetWedge.Height                     = currentWedge.m_fstElemHeight * 1000.0;
+    targetWedge.Orientation                = currentWedge.m_orientation;
+    targetWedge.Wave_type                  = currentWedge.m_waveType;
+    targetWedge.Ref_point                  = currentWedge.m_refPoint * 1000.0;
+    targetWedge.Probe_delay                = currentWedge.m_delay;
+    targetGroup.wedge_delay                = currentWedge.m_delay;
+    targetGroup.WedgeDelayCalibrated       = currentWedge.m_isDelayCalibrated;
+    if (currentWedge.m_isDelayCalibrated) {
+        targetGroup.wedge_delay = currentWedge.m_calibratedDelay;
+    }
 
     /* Specimen */
     targetGroup.part.Geometry     = currentSpecimen.m_shape;

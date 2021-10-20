@@ -41,6 +41,7 @@ public:
     void getCScanSourceType( int groupId, int &cType);
     void getApertureSec( int groupId, unsigned int * apertureData);
     void getTofdData( int groupId, float *PCS, float *RefPoint);
+    void getCalibratedData( int groupId, float *delay, float *refPoint);
     void getTMFRange(int groupId, float *start, float *range, int *pointQty);
     QStringList getColorPalette();
 

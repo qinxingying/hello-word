@@ -1322,6 +1322,14 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		_group.bVelocityCalib	 = _pGroupInfo->VelocityCalibrated  ;
 		_group.bWedgeDelayCalib  = _pGroupInfo->WedgeDelayCalibrated;
 		_group.bSensationCalib   = _pGroupInfo->SensationCalibrated ;
+        if (_group.bWedgeDelayCalib == 1) {
+            if (Config::instance()->is_phascan_ii()) {
+                float calbratedDelay, calbratedRefPoint;
+                Config::instance()->getCalibratedData(i, &calbratedDelay, &calbratedRefPoint);
+                _group.fCalibratedDelay     = calbratedDelay;
+                _group.fCalibratedRefPoint  = calbratedRefPoint;
+            }
+        }
 
 		for(int k = 0 ; k < setup_MAX_GROUP_LAW_QTY ; k++)
 		{
@@ -1505,6 +1513,12 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 		//ut 探头参数
 		_wedge.fRefPoint   = _Wedge.Ref_point / 1000.0;
 		_wedge.nWedgeDelay = _Wedge.Probe_delay  ;
+        if (_group.bWedgeDelayCalib == 1) {
+            if (Config::instance()->is_phascan_ii()) {
+                _wedge.fRefPoint   = _group.fCalibratedRefPoint / 1000;
+                _wedge.nWedgeDelay = _group.fCalibratedDelay;
+            }
+        }
 
         _group.part.eGeometry  = (setup_PART_GEOMETRY)_pGroupInfo->part.Geometry;
         _group.part.afSize[0]  = _pGroupInfo->part.Thickness / 1000.0 ;//thickness
@@ -2025,6 +2039,9 @@ void  DopplerConfigure::UpdateTofdConfig(int nGroupId_)
     if( Config::instance()->is_phascan_ii()){
         Config::instance()->getTofdData( nGroupId_, &_tofd.fPCS, &_tofd.fRefPoint);
         _tofd.fWedgeSep = _tofd.fPCS - 2 *_tofd.fRefPoint;
+        if (_group.bWedgeDelayCalib == 1) {
+            _tofd.fWedgeSep = _tofd.fPCS - 2 * _group.fCalibratedRefPoint  / 1000;
+        }
     }else{
         _tofd.fPCS			= _group.afBeamPos[254];
         _tofd.fRefPoint		=  (_tofd.fPCS - _group.afBeamPos[255]) / 2;

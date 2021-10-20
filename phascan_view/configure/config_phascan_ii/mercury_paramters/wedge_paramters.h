@@ -1,4 +1,4 @@
-#ifndef WEDGE_H
+﻿#ifndef WEDGE_H
 #define WEDGE_H
 
 #include <QObject>
@@ -40,6 +40,9 @@ private:
 
     WaveType m_waveType;
     double m_refPoint;
+    bool m_isDelayCalibrated;
+    double m_calibratedDelay;
+    double m_calibratedRefPoint;
 
     friend class Config;
 };
