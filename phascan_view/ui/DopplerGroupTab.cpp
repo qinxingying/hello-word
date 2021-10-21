@@ -236,6 +236,12 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 
 	}
 
+    ui->LabelWedgeT_Line2->hide();
+    ui->lineEdit_wedgeT_6->hide();
+    ui->label_19->hide();
+    ui->LabelWedgeT_Line2_2->hide();
+    ui->lineEdit_wedgeR_6->hide();
+    ui->label_24->hide();
 }
 /****************************************************************************
   Description: 聚焦法则参数
@@ -642,6 +648,7 @@ void DopplerGroupTab::UpdateCurrentAngleCom()
 	ui->ComCurrentAngle->clear();
 	QString _str ;
 	int _nCurrentAngle = m_pGroup->law.nAngleStartRefract;
+    ui->LabelCurrentAngle->setText(tr("Current Angle:"));
 	if(m_pGroup->eGroupMode == setup_GROUP_MODE_PA && m_pGroup->law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
 	{
 
@@ -652,7 +659,11 @@ void DopplerGroupTab::UpdateCurrentAngleCom()
 			_nCurrentAngle += m_pGroup->law.nAngleStepRefract  ;
 			ui->ComCurrentAngle->addItem(_str);
 		}
-	}
+    } else if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD )
+    {
+        ui->LabelCurrentAngle->setText(tr("Angle:"));
+        ui->ComCurrentAngle->addItem(QString::number((double)m_pGroup->wedge[0].fWedgeAngle, 'f', 1));
+    }
 	else
 	{
 		_str.sprintf("%2.1f" , _nCurrentAngle / 10.0) ;
