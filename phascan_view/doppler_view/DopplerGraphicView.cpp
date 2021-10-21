@@ -851,6 +851,10 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
                     //_process->SscanGetPeakPoint(_iGroupId, _iLaw, setup_GATE_A, _point);
                     CalcMeasurement::Calc(_iGroupId, _iLaw, FEILD_DA, &pResult_);
                 }
+                if (_pConfig->group[_iGroupId].eTxRxMode == setup_TX_RX_MODE_TOFD) {
+                    CalcMeasurement::Calc(_iGroupId, _iLaw, FEILD_TofdDepth1, &pResult_);
+                }
+
                 _pConfig->group[_iGroupId].storeScanLawId.depth = pResult_;
                 pResult_ = 0;
                 CalcMeasurement::Calc(_iGroupId, _iLaw, FEILD_ZA, &pResult_);
@@ -963,12 +967,21 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
                         }
                         case setup_DISPLAY_MODE_C_H:
                         case setup_DISPLAY_MODE_CC_H: {
-                            g_pMainWnd->setDefectIdentifyCScanArea(scanstart, scanstop, lawstart, lawstop);
+                            if (!_pConfig->group[_iGroupId].TopCInfo.TOPCStatus) {
+                                g_pMainWnd->setDefectIdentifyCScanArea(scanstart, scanstop, lawstart, lawstop);
+                            } else {
+                                g_pMainWnd->setDefectIdentifyTopCScanArea(scanstart, scanstop, lawstart, lawstop);
+                            }
                             break;
                         }
                         case setup_DISPLAY_MODE_C_V:
                         case setup_DISPLAY_MODE_CC_V:
-                            g_pMainWnd->setDefectIdentifyCScanArea(lawstop, lawstart, scanstart, scanstop);
+                            if (!_pConfig->group[_iGroupId].TopCInfo.TOPCStatus) {
+                                g_pMainWnd->setDefectIdentifyCScanArea(lawstop, lawstart, scanstart, scanstop);
+                            } else {
+                                g_pMainWnd->setDefectIdentifyTopCScanArea(lawstop, lawstart, scanstart, scanstop);
+                            }
+
                             break;
                         case setup_DISPLAY_MODE_B_H:
                             break;

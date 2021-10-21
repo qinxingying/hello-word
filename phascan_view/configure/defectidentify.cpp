@@ -205,7 +205,7 @@ bool DefectIdentify::analysisDefect()
         mergeDefectsTipDiffraction();
     }
     calDefectRect();
-//    forceMerge();
+    forceMerge();
     return ret;
 }
 
@@ -329,7 +329,21 @@ void DefectIdentify::setIdentifyStatus(bool status)
         m_scanStop  = 0;
         m_beamStart = 0;
         m_beamStop  = 0;
+        m_bViAIsSet = false;
     }
+}
+
+void DefectIdentify::setViARange(float start, float stop)
+{
+    m_bViAIsSet = true;
+    m_ViAStart = start;
+    m_ViAStop  = stop;
+}
+
+void DefectIdentify::setDARange(float start, float stop)
+{
+    m_DAStart = start;
+    m_DAStop  = stop;
 }
 
 //找出每条beam的特征点
@@ -482,6 +496,9 @@ void DefectIdentify::captrueFrameAmps( int scanId, int beamdis, QMap<int, QVecto
                     if (!m_rectSscan.contains(point)) {
                         continue;
                     }
+                }
+                if (m_bViAIsSet && (point.x() < m_ViAStart || point.x() > m_ViAStop)) {
+                    continue;
                 }
                 bool bIsValid = true;
                 for(auto &rect: _pConfig->m_transformedNotToAnalysisAreas[m_groupId]) {

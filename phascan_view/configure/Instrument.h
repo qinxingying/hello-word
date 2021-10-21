@@ -816,6 +816,8 @@ typedef struct _Group
 	int						bVelocityCalib;
 	int						bWedgeDelayCalib;
 	int						bSensationCalib;
+    float                   fCalibratedDelay;
+    float                   fCalibratedRefPoint;
 
 	float					afGainOffset[setup_MAX_GROUP_LAW_QTY];
 	unsigned int			anBeamDelay[setup_MAX_GROUP_LAW_QTY];

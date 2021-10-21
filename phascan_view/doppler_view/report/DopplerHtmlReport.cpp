@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include "../configure/config_phascan_ii/config.h"
+#include <QFileDialog>
 
 #define TABLE_WIDTH	 800
 char tableWidth[256];
@@ -103,7 +104,17 @@ void DopplerHtmlReport::SetReportInfo(ReportInfo* pInfo_)
 
 ReportInfo* DopplerHtmlReport::GetReportInfo()
 {
-	return &m_cInfo ;
+    return &m_cInfo ;
+}
+
+void DopplerHtmlReport::SetReportInfo2(ReportInfo2 &pInfo2)
+{
+    m_cInfo2 = pInfo2;
+}
+
+ReportInfo2& DopplerHtmlReport::GetReportInfo2()
+{
+    return m_cInfo2;
 }
 
 void DopplerHtmlReport::CreateTofdHeader(int nGroupId_)
@@ -479,6 +490,7 @@ void DopplerHtmlReport::BuildReport()
                 fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _fData);
                 fprintf(m_pFile,"<td %s>%.1fmm</td>\n" ,tableTdStyle , _pDfInfo->dDepth);
                 int groupId = _pDfInfo->dGroupId - 1;
+                if(groupId < 0) groupId = 0;
                 int defectId = _pDfInfo->dIndex;
                 int _index = 0;
                 DEFECT_INFO* _DfInfo = _pConfig->m_dfParam[groupId].pDFHead;
@@ -514,6 +526,7 @@ void DopplerHtmlReport::BuildReport()
             for(int i = 0; i < defectNum; i++){
                 DEFECT_INFO* _pDfInfo = sortBuff[i];
                 int groupId = _pDfInfo->dGroupId - 1;
+                if(groupId < 0) groupId = 0;
                 int indexId = _pDfInfo->dIndex - 1;
                 CreateDefectCell(groupId, indexId, _pDfInfo, 2);
             }
@@ -563,7 +576,8 @@ void DopplerHtmlReport::CreateHeader()
         QString(QObject::tr("Part Name")),
         QString(QObject::tr("Part No.")),
         QString(QObject::tr("Position")),
-        QString(QObject::tr("Date"))
+        QString(QObject::tr("Date")),
+        QString(QObject::tr("FileDate"))
     };
 
     fprintf(m_pFile,"<table %s>\n", tableWidth);
@@ -582,18 +596,20 @@ void DopplerHtmlReport::CreateHeader()
 
 	fprintf(m_pFile,"<tr>\n");
 
-    for(int i = 0 ;i < 4 ;++i){
+    for(int i = 0 ;i < 5 ;++i){
         fprintf(m_pFile,"<th %s>%s</th>\n" ,tableThStyle, TOCHAR(g_strReportHead[i]));
 	}
 	fprintf(m_pFile,"</tr>\n\n");
 
     QString _date;
-    _date.sprintf("%d - %d - %d" , m_cInfo.nYear , m_cInfo.nMonth,  m_cInfo.nDate );
+    _date.sprintf("%d-%d-%d" , m_cInfo.nYear , m_cInfo.nMonth,  m_cInfo.nDate );
+    QString fileDate = DopplerConfigure::Instance()->GetDataFileDateTime().toString("yyyy-MM-dd HH:mm:ss");
 	fprintf(m_pFile,"<tr>\n");
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , m_cInfo.strPartName );
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , m_cInfo.strPartNo   );
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , m_cInfo.strPartPos);
 	fprintf(m_pFile,"<td %s>%s</td>\n" ,tableTdStyle , TOCHAR(_date));
+    fprintf(m_pFile,"<td colspan=\"2\" %s>%s</td>\n" ,tableTdStyle , TOCHAR(fileDate));
 	fprintf(m_pFile,"</tr>\n\n");
 
 	fprintf(m_pFile,"<tr>\n");
@@ -1291,4 +1307,21 @@ void DopplerHtmlReport::set_reportName(QString &str)
     std::string t2 = str.toStdString();
     const char * t3 = t2.c_str();
     strcpy(m_cInfo.strReportName, t3);
+}
+
+QString DopplerHtmlReport::getReportName()
+{
+    QString file = m_strReportDir;
+    file.append(m_cInfo.strReportName);
+    return file;
+}
+
+QString DopplerHtmlReport::getReportDir()
+{
+    return m_strReportDir;
+}
+
+QString DopplerHtmlReport::getReportFolder()
+{
+    return m_strFolder;
 }

@@ -40,6 +40,7 @@ public:
     void UpdateDefectValue();
     void SetWndName();
     void UpdateGroupConfig();
+    void UpdateGateValue(int index);
 
 	void UpdateCurrentAngleCom();
 	void UpdateTofdParam();
@@ -53,6 +54,7 @@ public:
     void setCscanShowallChange();
     void setMeasureEnable(bool status);
     void setShowGateB(bool status);
+    void updateIndexOffset();
 protected:
     void SetWidgetInvalide();
     void CreateSettingView();
@@ -233,11 +235,9 @@ private slots:
 
     void on_ValueSL_valueChanged(double arg1);
 
-    void on_ValueREFGain_valueChanged(double arg1);
+    void on_ComStandard_currentIndexChanged(int index);
 
     void on_ValueComGain_valueChanged(double arg1);
-
-    void on_ComStandard_currentIndexChanged(int index);
 
     void on_ComThickness_currentIndexChanged(int index);
 

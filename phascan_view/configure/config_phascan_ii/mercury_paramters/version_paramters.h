@@ -1,4 +1,4 @@
-#ifndef VERSION_PARAMTERS_H
+﻿#ifndef VERSION_PARAMTERS_H
 #define VERSION_PARAMTERS_H
 
 #include <QObject>
@@ -15,6 +15,9 @@ private:
     QString m_phascanVersion;
     QString m_FpgaCpuVersion;
     QString m_FpgaPaVersion;
+    QString m_type; // 设备类型
+    QString m_deviceSN; // 设备序列号
+    QDateTime m_date;
     bool m_dxfExist;
     QByteArray m_dxfData;
     friend class Config;
