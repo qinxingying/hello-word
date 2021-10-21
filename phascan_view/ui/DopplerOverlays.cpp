@@ -400,7 +400,11 @@ void DopplerOverlays::CreateOverlaysCH()
             _rect.setLeft(_fStart);
             _rect.setRight(_fStart + _fData);
 
-            _fData = m_pConfigure->DefectVPAPos(m_nGroup, &_fStart, i);
+            if (!group.TopCInfo.TOPCStatus) {
+                _fData = m_pConfigure->DefectVPAPos(m_nGroup, &_fStart, i);
+            } else {
+                _fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, i);
+            }
             _rect.setTop(_fStart);
             _rect.setBottom(_fStart + _fData);
 
@@ -500,7 +504,11 @@ void DopplerOverlays::CreateOverlaysCV()
             _rect.setTop(_fStart);
             _rect.setBottom(_fStart + _fData);
 
-            _fData = m_pConfigure->DefectVPAPos(m_nGroup, &_fStart, i);
+            if (!group.TopCInfo.TOPCStatus) {
+                _fData = m_pConfigure->DefectVPAPos(m_nGroup, &_fStart, i);
+            } else {
+                _fData = m_pConfigure->DefectWidthPos(m_nGroup, &_fStart, i);
+            }
             _rect.setLeft(_fStart);
             _rect.setRight(_fStart + _fData);
 

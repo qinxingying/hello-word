@@ -14,7 +14,7 @@
 #include <QTranslator>
 #include <QDoubleSpinBox>
 #include "dialog/dialogdefectmethodselect.h"
-#include "aexportscandatatoexcel.h"
+#include "aexportdata.h"
 
 #define MAX_LIST_QTY     10
 class DataRefreshThread;
@@ -83,6 +83,7 @@ public:
     void loadDefectPositionAndSave(int groupId, DEFECT_INFO &defect);
     void setDefectIdentifyCScanArea(double scanStart, double scanStop, double beamStart, double beamStop);
     void setDefectIdentifySScanArea(QRectF _rect);
+    void setDefectIdentifyTopCScanArea(double scanStart, double scanStop, double viaStart, double viaStop);
     void setSelectSscanAreaValid(bool _isValid);
     int selectDefectMeasureMethod();
     void startDefectIdentify();
@@ -157,12 +158,14 @@ private:
 
     int m_iCurDefectIndex; // 当前是第几个缺陷
 
-    QThread* m_pExportExcelThread;
-    AExportScanDataToExcel* m_excelWriter;
+    QThread* m_pExportThread;
+    AExportData* m_reportWriter;
+
 signals:
     void setPixmap(QPixmap pixmap);
     void exportBScanData(QString filePath);
     void exportCScanData(QString filePath);
+    void exportReport(QString filePath);
 
 private slots:
     void slotsLeftTabButton(Qt::MouseButton);
@@ -194,6 +197,7 @@ private slots:
     void slotMarkPreviousDefect();
     void slotDeleteDefect();
     void slotSaveDefect();
+    void saveDefectInfoToDataFile();
 
 protected slots:
   void on_actionNew_Config_triggered();
@@ -235,6 +239,7 @@ protected slots:
   void on_actionFile_Properties_triggered();
   void slot_actionSaveCSacnData_triggered();
   void slot_actionSaveBSacnData_triggered();
+  void slot_actionWordExport_triggered();
 };
 
 extern MainWindow* g_pMainWnd;

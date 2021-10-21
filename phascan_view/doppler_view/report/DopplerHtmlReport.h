@@ -1,4 +1,4 @@
-#ifndef DOPPLERHTMLREPORT_H
+﻿#ifndef DOPPLERHTMLREPORT_H
 #define DOPPLERHTMLREPORT_H
 
 #include <QString>
@@ -7,6 +7,7 @@
 #include <QList>
 #include <configure/DopplerConfigure.h>
 #include <process/CalcMeasurement.h>
+#include "DopplerExcelBase.h"
 
 #define STRING QString
 #define TOCHAR(x) ((x).toLocal8Bit().data())
@@ -23,6 +24,32 @@ struct ReportInfo
     int   nMonth ;
     int   nDate  ;
     int   eMode  ;
+}  ;
+
+struct ReportInfo2
+{
+    QString  projectName;
+    QString  client;
+    QString  specimenName;
+    QString  reportNum;
+    QString  specimenNum;
+    QString  inspectionQuantity;
+    QString  inspectionScale;
+    QString  constructionOrganization;
+    QString  specifications;
+    QString  weldingMethod;
+    QString  slopeType;
+    QString  hotDealingCondition;
+    QString  testSurface;
+    QString  detectionTime;
+    QString  operationInstructionNum;
+    QString  testStandard;
+    QString  acceptanceStandard;
+    QString  detectionLevel;
+    QString  acceptanceLevel;
+    QString  surfaceCondition;
+    QString  calibrationBlock;
+    QString  couplant;
 }  ;
 
 struct ReportValueItem
@@ -44,6 +71,8 @@ public:
     void InitReportInfo();
     void SetReportInfo(ReportInfo*) ;
     ReportInfo* GetReportInfo() ;
+    void SetReportInfo2(ReportInfo2& info2) ;
+    ReportInfo2& GetReportInfo2() ;
     void SaveReport()    ;
     void BuildReport()   ;
     void AddOneValueItem(ReportValueItem* value)  ;
@@ -55,6 +84,10 @@ public:
     void set_data_path(QString &str);
     void set_reportName(QString &str);
 
+    QString getReportName();
+    QString getReportDir();
+    QString getReportFolder();
+    bool CopyFileToPath(QString toDir ,QString sourceDir);
 protected:
     void BuildStarter () ;
     void BuildEnder()    ;
@@ -72,9 +105,9 @@ protected:
     void SfprintfReportSignature() ;
 
     void CreateFolder()  ;
-    bool CopyFileToPath(QString toDir ,QString sourceDir);
 
     ReportInfo m_cInfo ;
+    ReportInfo2 m_cInfo2;
     FILE*      m_pFile ;
     QString    m_strFile      ;
     QString    m_szDataFile   ;

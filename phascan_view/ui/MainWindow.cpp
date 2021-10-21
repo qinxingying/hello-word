@@ -20,6 +20,7 @@ Date     : 2016-12-06
 #include "ProcessDisplay.h"
 #include "report/DopplerHtmlReport.h"
 #include "dialog/DialogReportSetting.h"
+#include "dialog/DialogReportInfoSetting.h"
 #include "DopplerTofdOpp.h"
 #include "doppler_view/DopplerLineItem.h"
 #include "doppler_view/dopplercscanlinemark.h"
@@ -121,17 +122,21 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSave_Data, &QAction::triggered, this, &MainWindow::slot_actionSaveCSacnData_triggered);
     connect(ui->actionSave_B_Scan_Data, &QAction::triggered, this, &MainWindow::slot_actionSaveBSacnData_triggered);
 
+
     connect(ui->IndicationTable, &IndicationTableWidget::merged, this, &MainWindow::on_actionSave_Defect_triggered);
     connect(ui->IndicationTable, &IndicationTableWidget::save, this, &MainWindow::slotSaveDefect);
 
-    m_excelWriter = new AExportScanDataToExcel();
-    m_pExportExcelThread = new QThread(this);
-    m_excelWriter->moveToThread(m_pExportExcelThread);
-    connect(this, &MainWindow::exportBScanData, m_excelWriter, &AExportScanDataToExcel::saveBScanData);
-    connect(this, &MainWindow::exportCScanData, m_excelWriter, &AExportScanDataToExcel::saveCScanData);
-    connect(m_excelWriter, &AExportScanDataToExcel::done, this, [=]{
-        m_pExportExcelThread->quit();
-        m_pExportExcelThread->wait();
+    connect(ui->actionWord_Export, &QAction::triggered, this, &MainWindow::slot_actionWordExport_triggered);
+
+    m_reportWriter = new AExportData();
+    m_pExportThread = new QThread(this);
+    m_reportWriter->moveToThread(m_pExportThread);
+    connect(this, &MainWindow::exportBScanData, m_reportWriter, &AExportData::saveBScanData);
+    connect(this, &MainWindow::exportCScanData, m_reportWriter, &AExportData::saveCScanData);
+    connect(this, &MainWindow::exportReport, m_reportWriter, &AExportData::saveReport);
+    connect(m_reportWriter, &AExportData::done, this, [=]{
+        m_pExportThread->quit();
+        m_pExportThread->wait();
     });
 }
 
@@ -141,8 +146,8 @@ MainWindow::~MainWindow()
         m_pThreadDraw->terminate();
     }
 
-    if(m_pExportExcelThread) {
-        m_pExportExcelThread->terminate();
+    if(m_pExportThread) {
+        m_pExportThread->terminate();
     }
 
     for(int i = 0; i < MAX_LIST_QTY; i++)
@@ -175,6 +180,7 @@ void MainWindow::init_ui()
     ui->actionStop_Analysis->setDisabled(true);
     ui->actionSave_Data->setDisabled(true);
     ui->actionSave_B_Scan_Data->setDisabled(true);
+    ui->actionWord_Export->setVisible(true);
     // init display widget list
     for(int i = 0 ; i < MAX_LIST_QTY ; i++)
     {
@@ -201,6 +207,7 @@ void MainWindow::init_ui()
 
 void MainWindow::closeEvent (QCloseEvent* e)
 {
+    saveDefectInfoToDataFile();
     QMainWindow::closeEvent(e);
 }
 
@@ -1095,10 +1102,10 @@ void MainWindow::OpenFile()
 
 void MainWindow::OpenFilePro(QString strFileName_)
 {
+    saveDefectInfoToDataFile();
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     if(strFileName_.isEmpty())  return;
     QString suffix = strFileName_.section('.', -1);
-
-    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
 
     DestroyAllDisplay();
 
@@ -1160,6 +1167,9 @@ void MainWindow::OpenFilePro(QString strFileName_)
     DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
     _pReport->set_reportName(m_baseName);
     this->setWindowTitle(m_titleName + m_fileName);
+
+    DopplerGroupTab* pGroupTab = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
+    pGroupTab->updateIndexOffset();
 
     //ParameterProcess* _process = ParameterProcess::Instance();
     //_process->testOutputSrcData(0, 50, 0);
@@ -1331,17 +1341,16 @@ void MainWindow::ReportDelOneItem()
 *****************************************************************************/
 void MainWindow::ReportSetting()
 {
-    DialogReportSetting _dialog;
+    DialogReportInfoSetting _dialog;
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     DopplerHtmlReport* _pReport = _pConfig->GetReportOpp();
-    ReportInfo* _pInfo = _pReport->GetReportInfo();
-    _dialog.SetReportInfo(_pInfo);
-    _dialog.SetRepotName(m_baseName);
+    ReportInfo2& _pInfo2 = _pReport->GetReportInfo2();
+    _dialog.SetReportInfo2(_pInfo2);
 
     if(_dialog.exec())
     {
-        _pInfo = _dialog.GetRePortInfo();
-        _pReport->SetReportInfo(_pInfo);
+        _pInfo2 = _dialog.GetRePortInfo2();
+        _pReport->SetReportInfo2(_pInfo2);
     }
 }
 
@@ -1707,7 +1716,28 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
 
     }
     break;
+    case DOPPLER_GRAPHICS_ITEM_GATE :
+    {
+        QRectF rect = pItem_->GetItemGeometryReal();
+        int nItemId = pItem_->GetItemId();
+        GATE_CONFIG &gate = _group.gate[nItemId];
+        if (GATE_MODE_GATE_VERTICAL == ((DopplerGateItem*)pItem_)->GetDrawMode()) {
+            gate.fStart       = rect.top();
+            gate.fWidth       = rect.height();
+            gate.nThreshold   = rect.left();
+        } else if (GATE_MODE_GATE_HORIZENTAL == ((DopplerGateItem*)pItem_)->GetDrawMode()) {
+            gate.fStart       = rect.left();
+            gate.fWidth       = rect.width();
+            gate.nThreshold   = rect.top();
+        }
 
+        DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
+        _pGroup->UpdateGateValue(nItemId);
+
+        _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
+        RunDrawThreadOnce(true);
+    }
+    break;
     default: break;
     }
 }
@@ -2129,6 +2159,11 @@ void MainWindow::slotSaveDefect()
     QElapsedTimer timer;
     timer.start();
 
+    QDir *_tmp = new QDir;
+    if(!_tmp->exists(pConfig->m_szDefectPathName)) {
+        _tmp->mkdir(pConfig->m_szDefectPathName);
+    }
+
     for (int i = 0; i < cnt; ++i) {
         if (progress.wasCanceled()) {
             break;
@@ -2155,6 +2190,30 @@ void MainWindow::slotSaveDefect()
 
     int timeCost = timer.elapsed();
     qDebug() << "save cost:"<< timeCost << "ms";
+}
+
+void MainWindow::saveDefectInfoToDataFile()
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+
+    if (m_fileName != "" && _pConfig->DefectInfoIsSaved()) {
+        QMessageBox msgBox;
+        msgBox.setText(tr("Save defect info to data file ?"));
+        //msgBox.setInformativeText();
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        int ret = msgBox.exec();
+        switch (ret) {
+        case QMessageBox::Ok:
+        {
+            _pConfig->SaveDefectInfoToDataFile();
+            break;
+        }
+        case QMessageBox::Cancel:
+        default:
+            break;
+        }
+    }
 }
 
 void MainWindow::slotModifyDefect(int groupId, DEFECT_INFO &defect)
@@ -2337,6 +2396,60 @@ void MainWindow::setDefectIdentifySScanArea(QRectF _rect)
     _pConfig->m_defect[m_iCurGroup]->setSscanRange(_rect);
 }
 
+void MainWindow::setDefectIdentifyTopCScanArea(double scanStart, double scanStop, double viaStart, double viaStop)
+{
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    ParameterProcess* _process = ParameterProcess::Instance();
+    SCANNER& _scaner = _pConfig->common.scanner ;
+    int scanPixelStart;
+    if(_scaner.eScanEncoderType) {
+        if(scanStart < _scaner.fScanStart)
+        {
+            scanStart = _scaner.fScanStart;
+        }
+        if(scanStart > _scaner.fScanStop)
+        {
+            scanStart = _scaner.fScanStop;
+        }
+        scanPixelStart = ceil((scanStart - _scaner.fScanStart) / _scaner.fScanStep) ;
+    } else {
+        if( scanStart < _scaner.fScanStart2)
+        {
+            scanStart = _scaner.fScanStart2;
+        }
+        if( scanStart > _scaner.fScanend){
+            scanStart = _scaner.fScanend;
+        }
+        scanPixelStart =  ceil((scanStart * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep);
+    }
+
+    int scanPixelStop;
+    if(_scaner.eScanEncoderType) {
+        if(scanStop < _scaner.fScanStart)
+        {
+            scanStop = _scaner.fScanStart;
+        }
+        if(scanStop > _scaner.fScanStop)
+        {
+            scanStop = _scaner.fScanStop;
+        }
+        scanPixelStop = floor((scanStop - _scaner.fScanStart) / _scaner.fScanStep) ;
+    } else {
+        if( scanStop < _scaner.fScanStart2)
+        {
+            scanStop = _scaner.fScanStart2;
+        }
+        if( scanStop > _scaner.fScanend){
+            scanStop = _scaner.fScanend;
+        }
+        scanPixelStop =  floor((scanStop * _scaner.fPrf  - _scaner.fScanStart) / _scaner.fScanStep);
+    }
+    int beamPixelStart = 0;
+    int beamPixelStop  = _process->GetGroupLawQty(m_iCurGroup);
+    _pConfig->m_defect[m_iCurGroup]->setRange(scanPixelStart, scanPixelStop, beamPixelStart, beamPixelStop);
+    _pConfig->m_defect[m_iCurGroup]->setViARange(viaStart, viaStop);
+}
+
 void MainWindow::setSelectSscanAreaValid(bool _isValid)
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
@@ -2396,14 +2509,17 @@ void MainWindow::startDefectIdentify()
 
     DEFECT_INFO* _pDfInfo = _pConfig->m_dfParam[m_iCurGroup].pDFHead;
     DEFECT_INFO* _pNext;
+    int index = 0;
     while(_pDfInfo)
     {
         _pNext = _pDfInfo->pNext;
         if(!_pDfInfo->bValid)
         {
-            _pConfig->DeleteDefect(m_iCurGroup, _pDfInfo->dIndex - 1);
+            _pConfig->DeleteDefect(m_iCurGroup, index);
+            index --;
         }
         _pDfInfo = _pNext;
+        index ++;
     }
 
     ui->IndicationTable->clearStack();
@@ -2638,6 +2754,9 @@ void MainWindow::on_actionSave_Defect_triggered()
                 CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_DB, &pResult_);
             }else{
                 CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_DA, &pResult_);
+            }
+            if (_group.eTxRxMode == setup_TX_RX_MODE_TOFD) {
+                CalcMeasurement::Calc(m_iCurGroup, _iLaw, FEILD_TofdDepth1, &pResult_);
             }
             _group.storeScanLawId.depth = pResult_;
             pResult_ = 0;
@@ -3150,15 +3269,15 @@ void MainWindow::on_actionFile_Properties_triggered()
 
 void MainWindow::slot_actionSaveCSacnData_triggered()
 {
-    if(m_pExportExcelThread->isRunning())
+    if(m_pExportThread->isRunning())
     {
         return;
     }
-    m_excelWriter->setGroupId(m_iCurGroup);
+    m_reportWriter->setGroupId(m_iCurGroup);
     QString filePath = QFileDialog::getSaveFileName(this, tr("Save CSacn Data"), "CScanData",
                "Microsoft Excel(*.xlsx)");
     if (!filePath.isEmpty()) {
-        m_pExportExcelThread->start();
+        m_pExportThread->start();
 
         emit exportCScanData(filePath);
     }
@@ -3166,16 +3285,37 @@ void MainWindow::slot_actionSaveCSacnData_triggered()
 
 void MainWindow::slot_actionSaveBSacnData_triggered()
 {
-    if(m_pExportExcelThread->isRunning())
+    if(m_pExportThread->isRunning())
     {
         return;
     }
-    m_excelWriter->setGroupId(m_iCurGroup);
+    m_reportWriter->setGroupId(m_iCurGroup);
     QString filePath = QFileDialog::getSaveFileName(0, tr("Save BSacn Data"), "BScanData",
             "Microsoft Excel(*.xlsx)");
     if (!filePath.isEmpty()) {
-        m_pExportExcelThread->start();
+        m_pExportThread->start();
 
         emit exportBScanData(filePath);
+    }
+}
+
+void MainWindow::slot_actionWordExport_triggered()
+{
+    if(m_pExportThread->isRunning())
+    {
+        return;
+    }
+    m_reportWriter->setGroupId(m_iCurGroup);
+    DopplerConfigure* pConfig  = DopplerConfigure::Instance();
+    DopplerHtmlReport* pReport = pConfig->GetReportOpp();
+    QString name = "";
+    if(pConfig->group[m_iCurGroup].eTxRxMode == setup_TX_RX_MODE_TOFD) {
+        name = "-tofd";
+    }
+    QString filePath = QFileDialog::getSaveFileName(0,tr("Report Information"),pReport->getReportName() + name, tr("*.doc"));
+    if (!filePath.isEmpty()) {
+        m_pExportThread->start();
+
+        emit exportReport(filePath);
     }
 }

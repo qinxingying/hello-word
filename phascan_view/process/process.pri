@@ -8,7 +8,7 @@ HEADERS += \
     $$PWD/ParameterProcess.h \
     $$PWD/aidedanalysis.h \
     $$PWD/threads/drawdscanfthread.h \
-    $$PWD/aexportscandatatoexcel.h
+    $$PWD/aexportdata.h
 
 SOURCES += \
     $$PWD/threads/DataRefreshThread.cpp \
@@ -17,4 +17,4 @@ SOURCES += \
     $$PWD/ParameterProcess.cpp \
     $$PWD/aidedanalysis.cpp \
     $$PWD/threads/drawdscanfthread.cpp \
-    $$PWD/aexportscandatatoexcel.cpp
+    $$PWD/aexportdata.cpp

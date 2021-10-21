@@ -16,11 +16,13 @@ public:
     int LoadDataFile (QString& strPath_);
     unsigned char* GetData() const ;
     qint64 GetDataSize() const ;
+    qint64 GetDataPos() const ;
     INSPEC_DATA_FILE* GetFileHeader() ;
     DRAW_INFO_PACK*   GetDrawInfo() ;
     GROUP_INFO*       GetGroupInfo(int nGroupId_)  ;
     bool GetCADExist(int nGroupId_);
     ExtConfig2*   GetExtConfig2();
+    void close();
 
 protected:
     INSPEC_DATA_FILE m_cFileHead;
@@ -29,6 +31,7 @@ protected:
     unsigned char* m_pBeamData;
     QFile* m_file ;
     qint64 m_mapdataSize;
+    qint64 m_dataFilePos {0};
     int m_cadInfo[8];
     ExtConfig2 m_extConfig;
 signals:

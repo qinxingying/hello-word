@@ -220,7 +220,7 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
             ui->label_wedgeT_9->hide();
 
             ui->lineEdit_wedgeT_7->setText(QString::number((double)_wedge.fRefPoint, 'f', 1) + " mm");
-            ui->lineEdit_wedgeT_8->setText(QString::number((double)_wedge.nWedgeDelay/1000.0, 'f', 1) + " us");
+            ui->lineEdit_wedgeT_8->setText(QString::number((double)_wedge.nWedgeDelay/1000.0, 'f', 2) + " us");
             ui->lineEdit_wedgeT_9->hide();
         }else{
             ui->lineEdit_wedgeT_3->setText(tr("PA"));
@@ -240,6 +240,12 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 
 	}
 
+    ui->LabelWedgeT_Line2->hide();
+    ui->lineEdit_wedgeT_6->hide();
+    ui->label_19->hide();
+    ui->LabelWedgeT_Line2_2->hide();
+    ui->lineEdit_wedgeR_6->hide();
+    ui->label_24->hide();
 }
 /****************************************************************************
   Description: 聚焦法则参数
@@ -622,6 +628,23 @@ void DopplerGroupTab::setShowGateB(bool status)
     _display.UpdateAllViewOverlay();
 }
 
+void DopplerGroupTab::updateIndexOffset()
+{
+    ParameterProcess* _process = ParameterProcess::Instance();
+    double _fValue1 = ui->ValueScanOffset->value()  ;
+    double _fValue2 = ui->ValueIndexOffset->value() ;
+    SCANNER& _scan = m_pConfig->common.scanner;
+    if(_scan.eScanEncoderType == setup_ENCODER_TYPE_TIMER)
+    {
+        _fValue1 = _fValue1 * _scan.fPrf;
+    }
+    _process->SetupWedgePosition(m_nGroupId ,  _fValue1 , _fValue2) ;
+
+    ProcessDisplay _display ;
+    _display.UpdateAllViewOfGroup(m_nGroupId);
+    g_pMainWnd->RunDrawThreadOnce(true);
+}
+
 /****************************************************************************
   Description: 当前角度选择控件更新
 *****************************************************************************/
@@ -630,6 +653,7 @@ void DopplerGroupTab::UpdateCurrentAngleCom()
 	ui->ComCurrentAngle->clear();
 	QString _str ;
 	int _nCurrentAngle = m_pGroup->law.nAngleStartRefract;
+    ui->LabelCurrentAngle->setText(tr("Current Angle:"));
 	if(m_pGroup->eGroupMode == setup_GROUP_MODE_PA && m_pGroup->law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
 	{
 
@@ -640,7 +664,11 @@ void DopplerGroupTab::UpdateCurrentAngleCom()
 			_nCurrentAngle += m_pGroup->law.nAngleStepRefract  ;
 			ui->ComCurrentAngle->addItem(_str);
 		}
-	}
+    } else if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD )
+    {
+        ui->LabelCurrentAngle->setText(tr("Angle:"));
+        ui->ComCurrentAngle->addItem(QString::number((double)m_pGroup->wedge[0].fWedgeAngle, 'f', 1));
+    }
 	else
 	{
 		_str.sprintf("%2.1f" , _nCurrentAngle / 10.0) ;
@@ -737,8 +765,8 @@ void DopplerGroupTab::SetWndName()
 void DopplerGroupTab::SetWidgetInvalide()
 {
     ui->ValueGain->setDisabled(true);
-    ui->ValueRefGain->setDisabled(true);
     ui->ValueCoupleGain->setDisabled(true);
+    ui->ValueScannerSensitivityGain->setDisabled(true);
     ui->ValueCouplingGain->setDisabled(true);
     ui->ValueStart->setDisabled(true);
     ui->ValueRange->setDisabled(true);
@@ -1012,13 +1040,10 @@ void DopplerGroupTab::UpdateGroupConfig()
         ui->ValueComGain->setDisabled(true);
     }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
-    ui->ValueRefGain->setValue(m_pGroup->RefGain);
     ui->ValueCoupleGain->setValue(m_pGroup->CoupleGain);
     ui->ValueCouplingGain->setValue(m_pGroup->CoupleMonitoringGain);
     ui->ValueCouplingGainCom->setMinimum(0 - m_pGroup->CoupleMonitoringGain);
-    ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
-    ui->ValueREFGain->setValue(CUR_RES.REF_Gain[m_nGroupId]);
     ui->ValueComGain->setValue(CUR_RES.Com_Gain[m_nGroupId]);
     ui->ValueCouplingGainCom->setValue(CUR_RES.Couple_Com_Gain[m_nGroupId]);   
     UpdateStandard(CUR_RES.Standard[m_nGroupId],1);
@@ -1028,7 +1053,7 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueEL->blockSignals(false);
     ui->ComStandard->blockSignals(false);
     ui->ComThickness->blockSignals(false);
-    ui->ValueScannerSensitivity->setValue(CUR_RES.CurSS[m_nGroupId]);
+    ui->ValueScannerSensitivityGain->setValue(CUR_RES.CurSS[m_nGroupId]);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
 	ui->ValueWedgeDelay->setValue(m_pGroup->nWedgeDelay / 1000.0);
@@ -1125,11 +1150,11 @@ void DopplerGroupTab::UpdateGroupConfig()
         ui->ComTopcMergeStatus->setCurrentIndex(0);
     }
 
-    if(m_pGroup->loadCurveData) {
-        ui->ValueScannerSensitivity->setEnabled(false);
-    }else{
-        ui->ValueScannerSensitivity->setEnabled(true);
-    }
+//    if(m_pGroup->loadCurveData) {
+//        ui->ValueScannerSensitivity->setEnabled(false);
+//    }else{
+//        ui->ValueScannerSensitivity->setEnabled(true);
+//    }
 
     //  ********** geometry  ***************//
 	InitComBoxMaterialSelection() ;
@@ -1213,6 +1238,15 @@ void DopplerGroupTab::UpdateGroupConfig()
 	UpdateParameterLimit();
     //blockSignals(false);
 }
+
+void DopplerGroupTab::UpdateGateValue(int index)
+{
+    ui->ComGateSelect->setCurrentIndex(index);
+    ui->ValueGateStart->setValue(m_pGroup->gate[index].fStart);
+    ui->ValueGateWidth->setValue(m_pGroup->gate[index].fWidth);
+    ui->ValueGateHeight->setValue(m_pGroup->gate[index].nThreshold);
+}
+
 void DopplerGroupTab::UpdateTofdParam()
 {
     ui->LabelTofdPcsCal->hide();
@@ -2865,8 +2899,12 @@ void DopplerGroupTab::on_ValueScannerSensitivity_valueChanged(double arg1)
 {
     if(!ui->ValueScannerSensitivity->hasFocus())  return ;
     CUR_RES.CurSS[m_nGroupId] = arg1;
-    ProcessDisplay _display;
-    _display.UpdateAllViewOverlay();
+    CUR_RES.REF_Gain[m_nGroupId] = arg1;
+    ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
+    ParameterProcess* _process = ParameterProcess::Instance();
+    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.Com_Gain[m_nGroupId]) ;
+    ProcessDisplay _display ;
+    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
@@ -2894,23 +2932,11 @@ void DopplerGroupTab::on_ValueSL_valueChanged(double arg1)
     g_pMainWnd->RunDrawThreadOnce(true);
 }
 
-void DopplerGroupTab::on_ValueREFGain_valueChanged(double arg1)
-{
-    if(!ui->ValueREFGain->hasFocus())  return ;
-    CUR_RES.REF_Gain[m_nGroupId] = arg1;
-    ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
-    ParameterProcess* _process = ParameterProcess::Instance();
-    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.Com_Gain[m_nGroupId]) ;
-    ProcessDisplay _display ;
-    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
-    g_pMainWnd->RunDrawThreadOnce(true);
-}
-
 void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
 {
     if(!ui->ValueComGain->hasFocus())  return ;
     CUR_RES.Com_Gain[m_nGroupId] = arg1;
-    ui->ValueREFGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
+    ui->ValueScannerSensitivity->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.REF_Gain[m_nGroupId]) ;
     ProcessDisplay _display ;
