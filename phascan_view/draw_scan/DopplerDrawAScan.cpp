@@ -562,23 +562,18 @@ void DopplerDrawAScanH::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
     }
     else
     {
-        float midx,midy;
-        midx = pow(10.0,(CUR_RES.REF_Gain[m_cInfo.nGroupId])/20.0);
-        midx = midx * 0.8;
+        float midy;
         if(mode == setup_RL)
         {
-            midy = pow(10.0,(CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
-            midy = midx * midy;
+            midy = pow(10.0,(CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0) * 0.8;
         }
         else if(mode == setup_EL)
         {
-            midy = pow(10.0,(CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
-            midy = midx * midy;
+            midy = pow(10.0,(CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0) * 0.8;
         }
         else if(mode == setup_SL)
         {
-            midy = pow(10.0,(CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
-            midy = midx * midy;
+            midy = pow(10.0,(CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0) * 0.8;
         }
         m_linCurves[mode]<<QPointF(0 ,(1 - midy) * m_nHeight) ;
         m_linCurves[mode]<<QPointF(m_nWidth , (1 -midy) * m_nHeight) ;
@@ -1225,23 +1220,18 @@ void DopplerDrawAScanV::DrawTcgCurve(QPainter *painter, int nWidth_, int nHeight
     }
     else
     {
-        float midx,midy;
-        midx = pow(10.0,(CUR_RES.REF_Gain[m_cInfo.nGroupId])/20.0);
-        midx = midx * 0.8;
+        float midy;
         if(mode == setup_RL)
         {
-            midy = pow(10.0,(CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
-            midy = midx * midy;
+            midy = pow(10.0,(CUR_RES.CurRL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0) * 0.8;
         }
         else if(mode == setup_EL)
         {
-            midy = pow(10.0,(CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
-            midy = midx * midy;
+            midy = pow(10.0,(CUR_RES.CurEL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0) * 0.8;
         }
         else if(mode == setup_SL)
         {
-            midy = pow(10.0,(CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0);
-            midy = midx * midy;
+            midy = pow(10.0,(CUR_RES.CurSL[m_cInfo.nGroupId] + CUR_RES.CurSS[m_cInfo.nGroupId])/20.0) * 0.8;
         }
         m_linCurves[mode]<<QPointF( midy * m_nWidth,0) ;
         m_linCurves[mode]<<QPointF( midy * m_nWidth , m_nHeight) ;

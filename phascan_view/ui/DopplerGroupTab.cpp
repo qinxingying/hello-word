@@ -2904,7 +2904,7 @@ void DopplerGroupTab::on_ValueRL_valueChanged(double arg1)
 void DopplerGroupTab::on_ValueScannerSensitivity_valueChanged(double arg1)
 {
     if(!ui->ValueScannerSensitivity->hasFocus())  return ;
-    CUR_RES.CurSS[m_nGroupId] = arg1;
+    CUR_RES.CurSS[m_nGroupId] = ui->ValueScannerSensitivityGain->value() + arg1;
     CUR_RES.REF_Gain[m_nGroupId] = arg1;
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
     ParameterProcess* _process = ParameterProcess::Instance();
