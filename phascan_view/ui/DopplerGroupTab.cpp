@@ -460,9 +460,11 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
 
     _field->setCurrentIndex(m_pGroup->ThicknessType[m_nGroupId]);
     int index = _field->currentIndex();
-    CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
-    CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
-    CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+    if(selectID != 4) {
+        CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
+        CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
+        CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+    }
     CUR_RES.Standard[m_nGroupId] = selectID;
     CUR_RES.Thickness[m_nGroupId] = _field->currentIndex();
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
@@ -545,9 +547,11 @@ void DopplerGroupTab::LoadStandardFormConifg()
     _field->setCurrentIndex(thinkness);
     int index = _field->currentIndex();
     if(m_pGroup->loadCurveData){
-        CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
-        CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
-        CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+        if(selectID != 4) {
+            CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
+            CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
+            CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+        }
     }
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
