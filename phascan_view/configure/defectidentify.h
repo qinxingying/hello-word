@@ -30,6 +30,8 @@ public:
     void setSscanRangeValid(bool _isValid);
     void setIdentifyStatus(bool status);
     void setAutoMerge(bool _merge) {m_bAutoMerge = _merge;}
+    void setViARange(float start, float stop);
+    void setDARange(float start, float stop);
 private:
     struct beamAmp{
         int lawId;
@@ -122,6 +124,12 @@ private:
     int m_beamStop  {0};
     QRectF m_rectSscan;
     bool m_bSscanRangeIsSet {false};
+
+    bool m_bViAIsSet {false};
+    float m_ViAStart {0.0};
+    float m_ViAStop  {0.0};
+    float m_DAStart  {0.0};
+    float m_DAStop   {0.0};
 };
 
 #endif // DEFECTIDENTIFY_H

@@ -264,6 +264,7 @@
     </property>
     <addaction name="actionReport_PreView"/>
     <addaction name="actionSaveReport"/>
+    <addaction name="actionWord_Export"/>
    </widget>
    <widget class="QMenu" name="menuConnect">
     <property name="title">
@@ -757,6 +758,11 @@
   <action name="actionLoadRecommendedSettings">
    <property name="text">
     <string>Load Recommended Settings</string>
+   </property>
+  </action>
+  <action name="actionWord_Export">
+   <property name="text">
+    <string>Word Export</string>
    </property>
   </action>
  </widget>

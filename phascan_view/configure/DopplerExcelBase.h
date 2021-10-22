@@ -1,4 +1,4 @@
-#ifndef EXCELREADER_H
+﻿#ifndef EXCELREADER_H
 #define EXCELREADER_H
 
 #include <QObject>
@@ -96,6 +96,10 @@ public:
     /// @see colStart() const
     /// @see colEnd() const
     bool usedRange(int& rowStart, int& colStart, int &rowEnd, int &colEnd);
+
+    void setAutoFit();
+    void setRowHeight(int row, int col, int height);
+    void setColumnWidth(int row, int col, int width);
 
     QVariant readAll();
     void readAll(QList<QList<QVariant> > &cells);

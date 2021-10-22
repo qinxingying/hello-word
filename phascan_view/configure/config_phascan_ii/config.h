@@ -26,6 +26,9 @@ public:
     QString getFpgaCpuVersion() {return m_global.m_version.m_FpgaCpuVersion;}
     QString getFpgaPaVersion() {return m_global.m_version.m_FpgaPaVersion;}
     QString getVersion() {return m_global.m_version.m_phascanVersion;}
+    QString getDeviceSN() {return m_global.m_version.m_deviceSN;}
+    QString getDeviceType() {return m_global.m_version.m_type;}
+    QDateTime getDataFileDate() {return m_global.m_version.m_date;}
 
     char *data_mark();
 
@@ -38,6 +41,7 @@ public:
     void getCScanSourceType( int groupId, int &cType);
     void getApertureSec( int groupId, unsigned int * apertureData);
     void getTofdData( int groupId, float *PCS, float *RefPoint);
+    void getCalibratedData( int groupId, float *delay, float *refPoint);
     void getTMFRange(int groupId, float *start, float *range, int *pointQty);
     QStringList getColorPalette();
 

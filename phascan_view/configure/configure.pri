@@ -13,7 +13,8 @@ HEADERS += \
     $$PWD/DopplerXMLReader.h \
     $$PWD/dopplermergedatafileoperateor.h \
     $$PWD/defectidentify.h \
-    $$PWD/DopplerExcelBase.h
+    $$PWD/DopplerExcelBase.h \
+    $$PWD/DopplerWordBase.h
 
 SOURCES += \
     $$PWD/const.cpp \
@@ -23,7 +24,8 @@ SOURCES += \
     $$PWD/DopplerXMLReader.cpp \
 	$$PWD/dopplermergedatafileoperateor.cpp \
     $$PWD/defectidentify.cpp \
-    $$PWD/DopplerExcelBase.cpp
+    $$PWD/DopplerExcelBase.cpp \
+    $$PWD/DopplerWordBase.cpp
 
 include(config_phascan_ii/config.pri)
 
