@@ -467,6 +467,45 @@ void DopplerDataView::setSTCurveGatePoints(DopplerGateItem* item, int eGate_)
     item->setCurveGate(start, end);
 }
 
+
+/****************************************************************************
+  Description: 换算实际坐标到场景坐标--1:1显示的扫查轴坐标
+  Input:  的实际坐标
+  Output: 坐标，以像素作单位
+*****************************************************************************/
+QPointF DopplerDataView::LawTranslateToScenePlan(QPointF* pPos_)
+{
+    double _nVStart = RulerRange[DATA_VIEW_RULER_LEFT].first  ;
+    double _nVStop  = RulerRange[DATA_VIEW_RULER_LEFT].second ;
+    double _nVHeight= _nVStop - _nVStart ;
+
+    double _nHStart = RulerRange[DATA_VIEW_RULER_BOTTOM].first  ;
+    double _nHStop  = RulerRange[DATA_VIEW_RULER_BOTTOM].second ;
+    double _nHWidth = _nHStop - _nHStart ;
+
+    int _nSceneWidth = m_pGraphicView->GetSceneSize().width()  ;
+    int _nSceneHeight= m_pGraphicView->GetSceneSize().height() ;
+
+    ParameterProcess* _process = ParameterProcess::Instance();
+    DopplerConfigure* m_pConfigure = DopplerConfigure::Instance();
+    GROUP_CONFIG& _group = m_pConfigure->group[m_nGroupId];
+    setup_PROBE_ANGLE _eAngle = _process->GetProbeAngle(m_nGroupId);
+
+    double _fX   = pPos_->x()  ;
+    double _fY   = pPos_->y()  ;
+    _fX = _nSceneWidth * (_fX - _nHStart) / _nHWidth  ;
+    _fY   = _nSceneHeight * (_fY - _nVStart) / _nVHeight  ;
+    if(/*_group.LawMarker&&*/(_eAngle==setup_PROBE_PART_SKEW_0||_eAngle==setup_PROBE_PART_SKEW_90))
+    {
+    _fX=_fX*_group.zoomFactor;
+    }
+    else if(/*_group.LawMarker&&*/(_eAngle==setup_PROBE_PART_SKEW_180||_eAngle==setup_PROBE_PART_SKEW_270))
+    {
+    _fX=(_nSceneWidth-_fX)-(_nSceneWidth-_fX)*_group.zoomFactor+_fX;//6
+    }
+    return QPointF(_fX , _fY);
+}
+
 /****************************************************************************
   Description: 换算实际坐标到场景坐标
   Input:  的实际坐标
@@ -485,8 +524,6 @@ QPointF DopplerDataView::TranslateToScenePlan(QPointF* pPos_)
 	int _nSceneWidth = m_pGraphicView->GetSceneSize().width()  ;
 	int _nSceneHeight= m_pGraphicView->GetSceneSize().height() ;
 
-
-
     ParameterProcess* _process = ParameterProcess::Instance();
     DopplerConfigure* m_pConfigure = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = m_pConfigure->group[m_nGroupId];
@@ -496,16 +533,17 @@ QPointF DopplerDataView::TranslateToScenePlan(QPointF* pPos_)
 	double _fY   = pPos_->y()  ;
 	_fX = _nSceneWidth * (_fX - _nHStart) / _nHWidth  ;
 	_fY   = _nSceneHeight * (_fY - _nVStart) / _nVHeight  ;
-    if(_group.LawMarker&&(_eAngle==setup_PROBE_PART_SKEW_0||_eAngle==setup_PROBE_PART_SKEW_90))
-    {
-    _fX=_fX*_group.zoomFactor;
-    }
-    else if(_group.LawMarker&&(_eAngle==setup_PROBE_PART_SKEW_180||_eAngle==setup_PROBE_PART_SKEW_270))
-    {
-    _fX= (_nSceneWidth-_fX)-(_nSceneWidth-_fX)*_group.zoomFactor+_fX;//6
-    }
+//    if(_group.LawMarker&&(_eAngle==setup_PROBE_PART_SKEW_0||_eAngle==setup_PROBE_PART_SKEW_90))
+//    {
+//    _fX=_fX*_group.zoomFactor;
+//    }
+//    else if(_group.LawMarker&&(_eAngle==setup_PROBE_PART_SKEW_180||_eAngle==setup_PROBE_PART_SKEW_270))
+//    {
+//    _fX=(_nSceneWidth-_fX)-(_nSceneWidth-_fX)*_group.zoomFactor+_fX;//6
+//    }
 	return QPointF(_fX , _fY);
 }
+
 
 //将标尺宽度转换为场景宽度
 float DopplerDataView::TranslateToScenePlanH(double width)
@@ -1172,6 +1210,13 @@ void DopplerDataView::setInteractionStatus(bool status)
 }
 
 void DopplerDataView::updateAllItems()
+{
+    if(m_pItemsGroup) {
+        m_pItemsGroup->UpdateItems();
+    }
+}
+
+void DopplerDataView::updateAllItem()
 {
     if(m_pItemsGroup) {
         m_pItemsGroup->UpdateItems();

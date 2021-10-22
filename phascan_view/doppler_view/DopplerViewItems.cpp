@@ -512,16 +512,15 @@ void DopplerViewItems::UpdateItemsLawMarker()
         int groupId = m_pDataView->GetGroupId();
         if(_pConfig->group[groupId].m_Shows==ON)
         {
-           _pConfig->group[groupId].LawMarker=true;
+            _pos1 = m_pDataView->LawTranslateToScenePlan(&_pos1) ;
+            _pos2 = m_pDataView->LawTranslateToScenePlan(&_pos2) ;
+
         }else
         {
-
-          _pConfig->group[groupId].LawMarker=false;
+            _pos1 = m_pDataView->TranslateToScenePlan(&_pos1) ;
+            _pos2 = m_pDataView->TranslateToScenePlan(&_pos2) ;
 
         }
-
-        _pos1 = m_pDataView->TranslateToScenePlan(&_pos1) ;
-        _pos2 = m_pDataView->TranslateToScenePlan(&_pos2) ;
 
 		_line = QLineF(_pos1 , _pos2);
 		_lines.append(_line);

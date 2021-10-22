@@ -626,7 +626,8 @@ void MainWindow::slotCurrentDispChanged(int nIndex_)
     RunDrawThreadOnce(true);
     DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
     Th->RunOnce();
-
+    Th->quit();
+    Th->wait();
 
 }
 

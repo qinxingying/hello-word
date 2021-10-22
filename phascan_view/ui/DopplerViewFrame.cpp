@@ -116,12 +116,12 @@ void DopplerViewFrame::slotCreateDrawWindow(QWidget* pWidget_, int _nId , int nG
     _pConfig->group[nGroupId_].viewDragflage=true;
     DrawDscanfTHread* Th = DrawDscanfTHread::Instance();
     Th->RunOnce();
+    Th->quit();
+    Th->wait();
     }
-
     //emit signalDropEvent(_nId) ;
     //sleep(100);
     _display.UpdateAllViewOverlay();
-
 }
 void DopplerViewFrame::CreateDrawView(int nGroupId_, int nId_)
 {

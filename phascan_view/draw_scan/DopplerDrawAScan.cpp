@@ -120,14 +120,12 @@ void DopplerDrawAScanH::Draw(QImage* pImage_)
     }
     int _nFrameOffset = _process->GetTotalDataSize() ;//一帧数据偏移量
     int cursorOffset=1;
-    if(m_pGroup->m_mode==D_MODE)
+    if(m_pGroup->m_mode==D_MODE&&m_pGroup->afCursor[ setup_CURSOR_S_MES ]<m_pConfig->comTmp.nRecMax&&m_pGroup->afCursor[setup_CURSOR_S_REF]<m_pConfig->comTmp.nRecMax)
       {
         cursorOffset=m_pGroup->afCursor[ setup_CURSOR_S_MES ]- m_pGroup->afCursor[setup_CURSOR_S_REF];
         if(cursorOffset<0)cursorOffset=-cursorOffset;
         if(cursorOffset==0)cursorOffset=1;
-
       }
-
     int i,j;
     double _tempfY=0.0;
     WDATA* _tempData= _pData;

@@ -84,6 +84,11 @@ protected:
     int m_cursorOffset;
     QVector <QVector<int>>m_tempdata;
     QVector <QVector<int>>m_RefTempdata;
+
+signals:
+    void updateAllItem() ;
+public slots:
+
 };
 
 #endif // DOPPLERDRAWSSCANAZIMUTHAL_H

@@ -1408,13 +1408,15 @@ bool ParameterProcess::GetGatePeakInfos(int nGroupId_, int nScanPos_, int nLawId
         float _mScanPos;
         ParameterProcess* _process = ParameterProcess::Instance();
         DopplerConfigure* _pConfig = DopplerConfigure::Instance();
-        GROUP_CONFIG& _group = _pConfig->group[nGroupId_];
-
+        GROUP_CONFIG& _group = _pConfig->group[nGroupId_];     
         if(_group.m_mode==D_MODE&&!_group.DrawCviewflage){
-            if(_group.afCursor[ setup_CURSOR_S_MES ]> _group.afCursor[setup_CURSOR_S_REF]&&_group.afCursor[ setup_CURSOR_S_MES ]<m_pConfig->comTmp.nRecMax)
+            if(_group.afCursor[ setup_CURSOR_S_MES ]<=m_pConfig->comTmp.nRecMax&&_group.afCursor[setup_CURSOR_S_REF]<=m_pConfig->comTmp.nRecMax)
+            {
+            if(_group.afCursor[ setup_CURSOR_S_MES ]> _group.afCursor[setup_CURSOR_S_REF])
              _mScanPos= _group.afCursor[ setup_CURSOR_S_REF ];
-            else if(_group.afCursor[ setup_CURSOR_S_MES ]< _group.afCursor[setup_CURSOR_S_REF]&&_group.afCursor[ setup_CURSOR_S_REF ]<m_pConfig->comTmp.nRecMax)
-              _mScanPos= _group.afCursor[ setup_CURSOR_S_MES ];
+            else if(_group.afCursor[ setup_CURSOR_S_MES ]< _group.afCursor[setup_CURSOR_S_REF])
+             _mScanPos= _group.afCursor[ setup_CURSOR_S_MES ];
+            }
             nScanPos_ = _process->SAxisDistToIndex(_mScanPos);
          }
     int _index = GetRealScanIndex(nGroupId_, nScanPos_);
@@ -2100,17 +2102,17 @@ WDATA* ParameterProcess::GetGroupDataPointer(int nGroupId_)
 
 WDATA* ParameterProcess::GetGroupDataDscanPointer(int nGroupId_)
 {
-    float _mScanPos;
+    float _mScanPos=1.0;
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
     GROUP_CONFIG& _group = _pConfig->group[nGroupId_];
 
-   if(_group.afCursor[ setup_CURSOR_S_MES ]> _group.afCursor[setup_CURSOR_S_REF])
-    _mScanPos= _group.afCursor[ setup_CURSOR_S_REF ];
-   else if(_group.afCursor[ setup_CURSOR_S_MES ]< _group.afCursor[setup_CURSOR_S_REF])
-     _mScanPos= _group.afCursor[ setup_CURSOR_S_MES ];
-   else
-     _mScanPos= _group.afCursor[ setup_CURSOR_S_MES ];
-
+    if(_group.afCursor[ setup_CURSOR_S_MES ]<=m_pConfig->comTmp.nRecMax&&_group.afCursor[setup_CURSOR_S_REF]<=m_pConfig->comTmp.nRecMax)
+      {
+       if(_group.afCursor[ setup_CURSOR_S_MES ]> _group.afCursor[setup_CURSOR_S_REF])
+        _mScanPos= _group.afCursor[ setup_CURSOR_S_REF ];
+       else if(_group.afCursor[ setup_CURSOR_S_MES ]< _group.afCursor[setup_CURSOR_S_REF])
+         _mScanPos= _group.afCursor[ setup_CURSOR_S_MES ];
+      }
     WDATA* _pData = GetShadowDataPointer();
     if(!_pData)  return 0 ;
     int   _nFrameSize = GetTotalDataSize() ;

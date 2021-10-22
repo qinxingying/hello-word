@@ -108,6 +108,7 @@ public:
     void setSSCurveGatePoints(DopplerGateItem* item, int eGate_);
     void setSTCurveGatePoints(DopplerGateItem* item, int eGate_);
     QPointF TranslateToScenePlan(QPointF* pPos_) ;
+     QPointF LawTranslateToScenePlan(QPointF* pPos_) ;
     QPointF TranslateTofdToScenePlan(QPointF* pPos_);
     float TranslateToScenePlanH(double width);
     void SetWidgetSelected(bool bSelect_) ;
@@ -156,6 +157,7 @@ signals:
 public slots:
 	void slotZoomAction(QRectF rect) ;
     void slotRespondView(QPoint startPos, QPoint endPos, bool zoomStatus);
+    void updateAllItem();
 protected slots:
     QRectF slotItemSetAngleLineLimit(QRectF &_rect, DopplerGraphicsItem* pItem_);
     void slotItemMoved(DopplerGraphicsItem* item_);

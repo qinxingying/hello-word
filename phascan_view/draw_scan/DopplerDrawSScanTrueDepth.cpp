@@ -26,6 +26,8 @@ DopplerDrawSScanTrueDepth::DopplerDrawSScanTrueDepth() :
     m_pColRate   = NULL;
     m_pDataNo	 = NULL;
     m_bClear	 = false;
+    m_cursorOffset=1;
+
 
 }
 
@@ -75,20 +77,13 @@ void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
     int _nHeight	  = pImage_->height();
     int _nWidth	   = pImage_->width();
 
-
     if((m_nWidth !=  _nWidth) || (m_nHeight != _nHeight) || (m_bWeldRemainingHeightAffect != m_pGroup->bWeldRemainingHeight)
             || m_bWeldRemainingHeightAffect) {
         m_nWidth  =  _nWidth ;
         m_nHeight =  _nHeight ;
         m_bWeldRemainingHeightAffect = m_pGroup->bWeldRemainingHeight;
-        if(_nHeight>_nWidth)
-            m_pGroup->zoomFactor=m_nWidth/(float) m_nHeight;
-        else
-            m_pGroup->zoomFactor = m_nHeight/(float)m_nWidth;
         UpdateDrawInfo() ;
     }
-
-
     /***********工件厚度或者反射类型或者1:1显示更改后刷新图像*************/
 
     if ( m_thickness != m_pGroup->part.afSize[0] || m_reType != m_pGroup->m_Retype||m_Shows!=m_pGroup->m_Shows) {
@@ -578,6 +573,7 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
     int _nWidthStep = pImage_->bytesPerLine();// 获取图像每行字节数
     float _fStart , _fStop;
     _process->GetSScanVerticalRange(m_cInfo.nGroupId , &_fStart ,  &_fStop);
+
     if(m_pGroup->m_mode==D_MODE&&m_pGroup->afCursor[ setup_CURSOR_S_MES ]<m_pConfig->comTmp.nRecMax&& m_pGroup->afCursor[setup_CURSOR_S_REF]<m_pConfig->comTmp.nRecMax)
      {
         m_cursorOffset=m_pGroup->afCursor[ setup_CURSOR_S_MES ]- m_pGroup->afCursor[setup_CURSOR_S_REF];
@@ -590,7 +586,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
     QVector< QFuture<void>> future;
     future.resize(m_cursorOffset+1);
     int _nLawSize;
-
     _nLawSize	= m_cInfo.nPointQty + setup_DATA_PENDIX_LENGTH;
 
     WDATA* _pData,*_ptemData;
@@ -782,6 +777,15 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
           imagepainter.setCompositionMode(QPainter::CompositionMode_SourceOver);
           imagepainter.drawImage(0,0, weldRemainHeightAffectImage);
           imagepainter.end();
+        }
+        //1:1开启更新LAW
+        if(m_pGroup->m_Shows==ON)
+        {
+        if(m_nHeight>m_nWidth)
+            m_pGroup->zoomFactor=m_nWidth/(float) m_nHeight;
+        else
+            m_pGroup->zoomFactor = m_nHeight/(float)m_nWidth;
+        emit updateAllItem();
         }
     }
 }

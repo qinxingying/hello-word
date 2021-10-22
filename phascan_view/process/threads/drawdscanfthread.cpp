@@ -41,7 +41,7 @@ void DrawDscanfTHread::UpdateAllWidgetDrawing()
             {
                 _pDraw = (DopplerDataView*)_list->at(i) ;
                 _pDraw->UpdateDSDrawing();
-
+                _pDraw->updateAllItems();//刷新光标
             }
         }
         int _nGroupId;

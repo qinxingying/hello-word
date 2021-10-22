@@ -16,7 +16,7 @@
 
 #include <QScrollArea>
 #include <QGridLayout>
-
+#include "DopplerDrawSScanTrueDepth.h"
 ProcessDisplay::ProcessDisplay(QObject *parent) :
 	QObject(parent)
 {
@@ -2657,6 +2657,7 @@ void ProcessDisplay::UpdateDataViewDrawSA(DopplerDataView* pWidget_ , int nGroup
 	info.nPointQty = _pGroup->nPointQty ;
 	info.nGroupId  = nGroupId_  ;
 	info.nBeamId   = nLawId_	;
+
 	DopplerDrawSScanTrueDepth* _pDraw = (DopplerDrawSScanTrueDepth*)pWidget_->GetDrawScan() ;
     if(flash){
         _pDraw = new DopplerDrawSScanTrueDepth() ;
@@ -2668,11 +2669,9 @@ void ProcessDisplay::UpdateDataViewDrawSA(DopplerDataView* pWidget_ , int nGroup
             pWidget_->SetDrawScan(_pDraw) ;
         }
     }
-
-
+    connect(_pDraw,SIGNAL(updateAllItem()),pWidget_,SLOT(updateAllItem()));
 	_pDraw->SetDrawInfo(&info);
 	_pDraw->UpdateDrawInfo ();
-
 	ParameterProcess* _process = ParameterProcess::Instance();
 	void* _pColor ;
 	if(setup_RECTIFIER_RF ==  _process->GetRectifierMode(nGroupId_))

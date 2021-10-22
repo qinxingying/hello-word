@@ -2190,8 +2190,8 @@ void DopplerGraphicView::UpdateDrawing()
 
     if(m_pDrawScan)
     {
-        QMutexLocker locker(&m_pBackGround->m_hMutex);
-        //m_pBackGround->m_hMutex.lock();
+       QMutexLocker locker(&m_pBackGround->m_hMutex);
+       //m_pBackGround->m_hMutex.lock();
       if(_group.m_mode==S_MODE)
       {
        m_pDrawScan->Draw(m_pBackGround->GetBaseImage());
