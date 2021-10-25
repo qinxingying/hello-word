@@ -141,6 +141,9 @@ void DopplerGroupTab::InitComBoxMaterialSelection()
 void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 {
     PROBE_CONFIG& _probe = m_pGroup->probe[bIsRx_ ? 1 : 0];
+    if (m_pGroup->eTxRxMode == setup_TX_RX_MODE_PE || m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
+        _probe = m_pGroup->probe[0];
+    }
 
 	if(bIsRx_)
 	{
@@ -172,6 +175,9 @@ void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 {
     WEDGE_CONFIG& _wedge = m_pGroup->wedge[bIsRx_ ? 1 : 0];
+    if (m_pGroup->eTxRxMode == setup_TX_RX_MODE_PE || m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
+        _wedge = m_pGroup->wedge[0];
+    }
 
 	if(bIsRx_)
 	{
