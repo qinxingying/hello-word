@@ -1055,6 +1055,16 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ParameterProcess* _process = ParameterProcess::Instance();
     if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD)
     {
+        int cnt = ui->toolBox->count();
+        for (int i = 0; i < cnt; ++i) {
+            if (ui->toolBox->itemText(i) == tr("Focallaw") || ui->toolBox->itemText(i) == tr("Gate and Sizing Curves")) {
+                ui->toolBox->removeItem(i);
+                i   = -1;
+                cnt = ui->toolBox->count();
+            }
+        }
+        ui->FocalLaw->hide();
+        ui->GateSizingcurves->hide();
         ui->ValueComGain->setDisabled(true);
     }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
