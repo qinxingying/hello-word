@@ -1262,7 +1262,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="913"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="656"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="666"/>
         <source>Current Angle:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1326,7 +1326,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="10094"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10689"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10743"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1338"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1348"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1559,8 +1559,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1836"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="194"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="226"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="200"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="232"/>
         <source>PA</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1939,7 +1939,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5406"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7603"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10087"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1411"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1421"/>
         <source>Width:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2066,8 +2066,8 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7029"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7080"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7131"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1307"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1308"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1317"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1318"/>
         <source>Ref Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2090,7 +2090,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7169"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9176"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9239"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1323"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1333"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2148,8 +2148,8 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="7543"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9819"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1410"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1414"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1420"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1424"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2281,8 +2281,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="769"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="187"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="219"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="190"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="225"/>
         <source>Wedge Delay:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2306,6 +2306,8 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="2305"/>
         <location filename="../ui/DopplerGroupTab.ui" line="3049"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="197"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="198"/>
         <source>Wedge Angle:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2807,8 +2809,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="10382"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1409"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1413"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1419"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1423"/>
         <source>Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2967,380 +2969,386 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.cpp" line="186"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="218"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="187"/>
+        <source>Refracted Angle:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.cpp" line="189"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="224"/>
         <source>Reference Point:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="201"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="233"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="207"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="239"/>
         <source>NORMAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="203"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="235"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="209"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="241"/>
         <source>INVERSE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="216"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="222"/>
         <source>UT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="302"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="308"/>
         <source>Peak amplitude in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="303"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="309"/>
         <source>Signal in gate minus gate level for gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="304"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="310"/>
         <source>Diff. between signal and reference in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="305"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="311"/>
         <source>Peak amplitude in gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="306"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="312"/>
         <source>Signal in gate minus gate level for gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="307"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="313"/>
         <source>Diff. between signal and reference in gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="308"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="314"/>
         <source>Peak in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="308"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="314"/>
         <source>Edge in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="309"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="315"/>
         <source>Peak in gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="309"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="315"/>
         <source>Edge in gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="310"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="316"/>
         <source>Peak in gate I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="310"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="316"/>
         <source>Edge in gate I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="311"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="317"/>
         <source>Peak in gate I in water</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="311"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="317"/>
         <source>Edge in gate I in water</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="312"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="318"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="313"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="319"/>
         <source>Percentage of material loss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="314"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="320"/>
         <source>Amplitude value for the reference cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="315"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="321"/>
         <source>Amplitude value of the measurement cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="316"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="322"/>
         <source>Amplitude (measurement cursor - reference cursor)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="317"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="323"/>
         <source>Ultrasonic position of the reference cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="318"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="324"/>
         <source>Ultrasonic position of the measurement cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="319"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="325"/>
         <source>Ultrasonic axis (measurement cursor - reference cursor)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="320"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="326"/>
         <source>Probe position of the reference cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="321"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="327"/>
         <source>Probe position of the measurement cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="322"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="328"/>
         <source>Probe (measurement cursor - reference cursor)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="323"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="329"/>
         <source>Scan position of the reference cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="324"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="330"/>
         <source>Scan position of the measurement cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="325"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="331"/>
         <source>Scan axis (measurement cursor - reference cursor)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="326"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="332"/>
         <source>Index position of the reference cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="327"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="333"/>
         <source>Index position of the measurement cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="328"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="334"/>
         <source>Index axis (measurement cursor - reference cursor)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="329"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="335"/>
         <source>Reference point to the indication in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="330"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="336"/>
         <source>Reference point to the indication in gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="331"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="337"/>
         <source>Probe front face to the indication in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="332"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="338"/>
         <source>Probe front face to the indication in gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="333"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="339"/>
         <source>Depth of the indication in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="334"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="340"/>
         <source>Depth of the indication in gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="335"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="341"/>
         <source>Sound path of the indication in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="336"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="342"/>
         <source>Sound path of the indication in gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="337"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="343"/>
         <source>Volumetric position in gate A on the index axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="338"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="344"/>
         <source>Volumetric position in gate B on the index axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="339"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="345"/>
         <source>Volumetric position in gate A on the scan axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="340"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="346"/>
         <source>Volumetric position in gate B on the scan axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="341"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="347"/>
         <source>Leg (skip) of the indication in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="342"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="348"/>
         <source>Leg (skip) of the indication in gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="343"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="349"/>
         <source>Tofd Ultrasonic Axis Reference Cursor Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="344"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="350"/>
         <source>Tofd Ultrasonic Axis Measure Cursor Depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="345"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="351"/>
         <source>Tofd Scan Axis Cursor Measure to Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="346"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="352"/>
         <source>Tofd Ultrasonic Axis Cursor Measure to Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="347"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="353"/>
         <source>Distance between peaks in gate A and gate I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="348"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="354"/>
         <source>Distance between peaks in gate B and gate I</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="349"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="355"/>
         <source>Distance between peaks in gate A and gate B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="350"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="356"/>
         <source>Distance between peaks in gate B and gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="351"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="357"/>
         <source>Gate A echo dB value compared to RL height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="352"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="358"/>
         <source>Gate A echo dB value compared to SL height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="353"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="359"/>
         <source>Gate A echo dB value compared to EL height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="354"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="360"/>
         <source>Peak amplitude in gate coupleMonitoring</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="355"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="361"/>
         <source>Max defect scanPoint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="356"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="362"/>
         <source>zone of amplitude in gate A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="357"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="363"/>
         <source>defect area</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="669"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="679"/>
         <source>Angle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="841"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2812"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="851"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2822"/>
         <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1304"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1314"/>
         <source>Mat. Atten:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1305"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1315"/>
         <source>Delay:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1337"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1347"/>
         <source>dB/mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1440"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1450"/>
         <source>Main_Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1441"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1451"/>
         <source>Slave_Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2781"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2791"/>
         <source>Number %1 defect will be deleted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2782"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2792"/>
         <source>Are you sure to delete this defect?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2785"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2795"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2786"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2796"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3349,12 +3357,12 @@
         <location filename="../ui/DopplerGroupTab.ui" line="361"/>
         <location filename="../ui/DopplerGroupTab.ui" line="487"/>
         <location filename="../ui/DopplerGroupTab.ui" line="592"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1349"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1359"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1415"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1425"/>
         <source>Outer Diameter:</source>
         <translation type="unfinished"></translation>
     </message>

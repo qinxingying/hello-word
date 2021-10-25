@@ -183,6 +183,9 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
         if(_wedge.eType){
             ui->lineEdit_wedgeR_3->setText("UT");
 
+            ui->label_11->setText(tr("Refracted Angle:"));
+            ui->label_20->setText(tr("Refracted Angle:"));
+
             ui->label_wedgeR_7->setText(tr("Reference Point:"));
             ui->label_wedgeR_8->setText(tr("Wedge Delay:"));
             ui->label_wedgeR_9->hide();
@@ -214,6 +217,9 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 
         if(_wedge.eType){
             ui->lineEdit_wedgeT_3->setText(tr("UT"));
+
+            ui->label_11->setText(tr("Refracted Angle:"));
+            ui->label_20->setText(tr("Refracted Angle:"));
 
             ui->label_wedgeT_7->setText(tr("Reference Point:"));
             ui->label_wedgeT_8->setText(tr("Wedge Delay:"));

@@ -1473,7 +1473,7 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="913"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="656"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="666"/>
         <source>Current Angle:</source>
         <translation>当前角度：</translation>
     </message>
@@ -1537,7 +1537,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="10094"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10689"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10743"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1338"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1348"/>
         <source>mm</source>
         <translation>mm</translation>
     </message>
@@ -1778,8 +1778,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="1836"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="194"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="226"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="200"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="232"/>
         <source>PA</source>
         <translation></translation>
     </message>
@@ -1993,8 +1993,10 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="2305"/>
         <location filename="../ui/DopplerGroupTab.ui" line="3049"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="197"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="198"/>
         <source>Wedge Angle:</source>
-        <translation>纵波折射角：</translation>
+        <translation>楔块角度：</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="2393"/>
@@ -2089,7 +2091,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="5406"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7603"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10087"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1411"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1421"/>
         <source>Width:</source>
         <translation>宽        度：</translation>
     </message>
@@ -2200,8 +2202,8 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7029"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7080"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7131"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1307"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1308"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1317"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1318"/>
         <source>Ref Amplitude:</source>
         <translation>参考幅度：</translation>
     </message>
@@ -2224,7 +2226,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7169"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9176"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9239"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1323"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1333"/>
         <source>%</source>
         <translation></translation>
     </message>
@@ -2286,8 +2288,8 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="7543"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9819"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1410"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1414"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1420"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1424"/>
         <source>Length:</source>
         <translation>长        度：</translation>
     </message>
@@ -2523,8 +2525,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="769"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="187"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="219"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="190"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="225"/>
         <source>Wedge Delay:</source>
         <translation>楔块延迟：</translation>
     </message>
@@ -2567,7 +2569,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="669"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="679"/>
         <source>Angle:</source>
         <translation>角度：</translation>
     </message>
@@ -3091,8 +3093,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="10382"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1409"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1413"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1419"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1423"/>
         <source>Thickness:</source>
         <translation>厚        度：</translation>
     </message>
@@ -3251,354 +3253,360 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.cpp" line="186"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="218"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="187"/>
+        <source>Refracted Angle:</source>
+        <translation>纵波折射角：</translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.cpp" line="189"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="224"/>
         <source>Reference Point:</source>
         <translation>参考点：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="201"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="233"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="207"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="239"/>
         <source>NORMAL</source>
         <translation>正向</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="203"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="235"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="209"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="241"/>
         <source>INVERSE</source>
         <translation>反向</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="216"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="222"/>
         <source>UT</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="302"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="308"/>
         <source>Peak amplitude in gate A</source>
         <translation>A闸门内的峰值幅度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="303"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="309"/>
         <source>Signal in gate minus gate level for gate A</source>
         <translation>闸门A 内峰值幅度与闸门阈值幅度之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="304"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="310"/>
         <source>Diff. between signal and reference in gate A</source>
         <translation>闸门A内峰值幅度与参考信号幅度之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="305"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="311"/>
         <source>Peak amplitude in gate B</source>
         <translation>B闸门内的峰值幅度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="306"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="312"/>
         <source>Signal in gate minus gate level for gate B</source>
         <translation> 闸门B内峰值幅度与闸门阈值幅度之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="307"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="313"/>
         <source>Diff. between signal and reference in gate B</source>
         <translation>闸门B内峰值幅度与参考信号幅度之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="308"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="314"/>
         <source>Peak in gate A</source>
         <translation>闸门A内的峰值位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="308"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="314"/>
         <source>Edge in gate A</source>
         <translation>闸门A的前沿位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="309"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="315"/>
         <source>Peak in gate B</source>
         <translation>闸门B内的峰值位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="309"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="315"/>
         <source>Edge in gate B</source>
         <translation>闸门B的前沿位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="310"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="316"/>
         <source>Peak in gate I</source>
         <translation>闸门I内的峰值位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="310"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="316"/>
         <source>Edge in gate I</source>
         <translation>闸门I的前沿位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="311"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="317"/>
         <source>Peak in gate I in water</source>
         <translation>闸门I内的峰值位置（水）</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="311"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="317"/>
         <source>Edge in gate I in water</source>
         <translation>闸门I的前沿位置（水）</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="312"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="318"/>
         <source>Thickness</source>
         <translation>厚度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="313"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="319"/>
         <source>Percentage of material loss</source>
         <translation>材料损失百分比</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="314"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="320"/>
         <source>Amplitude value for the reference cursor</source>
         <translation>参考光标位置的幅度值</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="315"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="321"/>
         <source>Amplitude value of the measurement cursor</source>
         <translation>测量光标位置的幅度值</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="316"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="322"/>
         <source>Amplitude (measurement cursor - reference cursor)</source>
         <translation>测量光标的幅度值减去参考光标的幅度值</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="317"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="323"/>
         <source>Ultrasonic position of the reference cursor</source>
         <translation>参考光标在超声轴上的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="318"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="324"/>
         <source>Ultrasonic position of the measurement cursor</source>
         <translation>测量光标在超声轴上的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="319"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="325"/>
         <source>Ultrasonic axis (measurement cursor - reference cursor)</source>
         <translation>超声轴上测量光标与参考光标位置之差</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="320"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="326"/>
         <source>Probe position of the reference cursor</source>
         <translation>相对于参考光标的探头位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="321"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="327"/>
         <source>Probe position of the measurement cursor</source>
         <translation>相对于测量光标的探头位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="322"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="328"/>
         <source>Probe (measurement cursor - reference cursor)</source>
         <translation>探头相对于测量光标与参考光标差值的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="323"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="329"/>
         <source>Scan position of the reference cursor</source>
         <translation>扫查轴上参考光标的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="324"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="330"/>
         <source>Scan position of the measurement cursor</source>
         <translation>扫查轴上测量光标的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="325"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="331"/>
         <source>Scan axis (measurement cursor - reference cursor)</source>
         <translation>扫查轴上测量光标与参考光标的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="326"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="332"/>
         <source>Index position of the reference cursor</source>
         <translation>步进轴上参考光标的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="327"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="333"/>
         <source>Index position of the measurement cursor</source>
         <translation>步进轴上测量光标的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="328"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="334"/>
         <source>Index axis (measurement cursor - reference cursor)</source>
         <translation>步进轴上测量光标与参考光标的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="329"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="335"/>
         <source>Reference point to the indication in gate A</source>
         <translation>声束出射点与闸门A内检测到的缺陷之间的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="330"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="336"/>
         <source>Reference point to the indication in gate B</source>
         <translation>声束出射点与闸门B内检测到的缺陷之间的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="331"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="337"/>
         <source>Probe front face to the indication in gate A</source>
         <translation>探头前表面与闸门A内检测到的缺陷的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="332"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="338"/>
         <source>Probe front face to the indication in gate B</source>
         <translation>探头前表面与闸门B内检测到的缺陷的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="333"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="339"/>
         <source>Depth of the indication in gate A</source>
         <translation>闸门A内检测到的缺陷在工件中的深度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="334"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="340"/>
         <source>Depth of the indication in gate B</source>
         <translation>闸门B内检测到的缺陷在工件中的深度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="335"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="341"/>
         <source>Sound path of the indication in gate A</source>
         <translation>声束出射点到闸门A内检测到的缺陷之间的声程</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="336"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="342"/>
         <source>Sound path of the indication in gate B</source>
         <translation>声束出射点到闸门B内检测到的缺陷之间的声程</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="337"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="343"/>
         <source>Volumetric position in gate A on the index axis</source>
         <translation>闸门A内检测到的缺陷相对于步进轴的体积定位</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="338"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="344"/>
         <source>Volumetric position in gate B on the index axis</source>
         <translation>闸门B内检测到的缺陷相对于步进轴的体积定位</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="339"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="345"/>
         <source>Volumetric position in gate A on the scan axis</source>
         <translation>闸门A内检测到的缺陷相对于扫查轴的体积定位</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="340"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="346"/>
         <source>Volumetric position in gate B on the scan axis</source>
         <translation>闸门B内检测到的缺陷相对于扫查轴的体积定位</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="341"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="347"/>
         <source>Leg (skip) of the indication in gate A</source>
         <translation>声波从探头到闸门A探测到的缺陷在材料中的路径改变次数</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="342"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="348"/>
         <source>Leg (skip) of the indication in gate B</source>
         <translation>声波从探头到闸门B探测到的缺陷在材料中的路径改变次数</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="343"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="349"/>
         <source>Tofd Ultrasonic Axis Reference Cursor Depth</source>
         <translation>TOFD超声轴方向参考光标深度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="344"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="350"/>
         <source>Tofd Ultrasonic Axis Measure Cursor Depth</source>
         <translation>TOFD超声轴方向测量光标深度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="345"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="351"/>
         <source>Tofd Scan Axis Cursor Measure to Reference</source>
         <translation>TOFD扫查轴参考光标与测量光标间距</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="346"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="352"/>
         <source>Tofd Ultrasonic Axis Cursor Measure to Reference</source>
         <translation>TOFD超声轴方向参考光标与测量光标高度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="347"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="353"/>
         <source>Distance between peaks in gate A and gate I</source>
         <translation>A闸门和I闸门内回波信号位置的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="348"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="354"/>
         <source>Distance between peaks in gate B and gate I</source>
         <translation>B闸门和I闸门内回波信号位置的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="349"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="355"/>
         <source>Distance between peaks in gate A and gate B</source>
         <translation>A闸门和B闸门内回波信号位置的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="350"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="356"/>
         <source>Distance between peaks in gate B and gate A</source>
         <translation>B闸门和A闸门内回波信号位置的距离</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="351"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="357"/>
         <source>Gate A echo dB value compared to RL height</source>
         <translation>判废线</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="352"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="358"/>
         <source>Gate A echo dB value compared to SL height</source>
         <translation>定量线</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="353"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="359"/>
         <source>Gate A echo dB value compared to EL height</source>
         <translation>评定线</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="354"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="360"/>
         <source>Peak amplitude in gate coupleMonitoring</source>
         <translation>耦合监控的闸门A内峰值幅度</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="355"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="361"/>
         <source>Max defect scanPoint</source>
         <translation>缺陷的最高回波信号在扫查轴上的位置</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="356"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="362"/>
         <source>zone of amplitude in gate A</source>
         <translation>闸门A内最高回波所在区域</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="357"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="363"/>
         <source>defect area</source>
         <translation>缺陷面积</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1440"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1450"/>
         <source>Main_Thickness:</source>
         <translation type="unfinished">厚板厚度：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1441"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1451"/>
         <source>Slave_Thickness:</source>
         <translation type="unfinished">薄板厚度：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2781"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2791"/>
         <source>Number %1 defect will be deleted.</source>
         <translation> %1 号缺陷将被删除。</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2782"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2792"/>
         <source>Are you sure to delete this defect?</source>
         <translation>确定删除这个缺陷吗？</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2785"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2795"/>
         <source>Ok</source>
         <translation>确定</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2786"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2796"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -3607,23 +3615,23 @@
         <translation type="vanished">其它</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="841"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2812"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="851"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2822"/>
         <source>Display Mode</source>
         <translation>显示模式</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1304"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1314"/>
         <source>Mat. Atten:</source>
         <translation>衰减系数:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1305"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1315"/>
         <source>Delay:</source>
         <translation>延迟时间：</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1337"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1347"/>
         <source>dB/mm</source>
         <translation></translation>
     </message>
@@ -3632,7 +3640,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="361"/>
         <location filename="../ui/DopplerGroupTab.ui" line="487"/>
         <location filename="../ui/DopplerGroupTab.ui" line="592"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1349"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1359"/>
         <source>dB</source>
         <translation></translation>
     </message>
@@ -3641,7 +3649,7 @@
         <translation type="vanished">内部直径:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1415"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1425"/>
         <source>Outer Diameter:</source>
         <translation>外部直径:</translation>
     </message>
