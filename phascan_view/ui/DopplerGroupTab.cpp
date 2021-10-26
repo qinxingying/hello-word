@@ -1124,6 +1124,13 @@ void DopplerGroupTab::UpdateGroupConfig()
         ui->FocalLaw->hide();
         ui->GateSizingcurves->hide();
         ui->ValueComGain->setDisabled(true);
+
+        QStandardItem *items = model->item(1);
+        cnt = items->rowCount();
+        int i = 3;
+        while (i < items->rowCount()) {
+            items->takeRow(i);
+        }
     }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
     ui->ValueCoupleGain->setValue(m_pGroup->CoupleGain);
