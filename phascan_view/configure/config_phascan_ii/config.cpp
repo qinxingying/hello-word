@@ -1407,7 +1407,15 @@ void Config::convert_to_phascan_config(int groupId)
     targetGroup.point_qty     = currentGroup.m_sample.m_pointQty;
 
     /* Transceiver */
-    targetGroup.tx_rxmode1    = currentGroup.m_transceiver.m_txRxMode;
+    if (currentGroup.m_transceiver.m_txRxMode == 0) { //pe, pc different from I
+        targetGroup.tx_rxmode1 = 1;
+    } else if (currentGroup.m_transceiver.m_txRxMode == 1) {
+        targetGroup.tx_rxmode1 = 0;
+    } else {
+        targetGroup.tx_rxmode1    = currentGroup.m_transceiver.m_txRxMode;
+    }
+    targetGroup.receiver1       = currentGroup.m_transceiver.m_receiver;
+    targetGroup.pulser1       = currentGroup.m_transceiver.m_pulser;
     targetGroup.pulser_width1 = currentGroup.m_transceiver.m_pw;
     targetGroup.filter_pos1   = currentGroup.m_transceiver.m_filter;
     targetGroup.rectifier1    = currentGroup.m_transceiver.m_rectifier;

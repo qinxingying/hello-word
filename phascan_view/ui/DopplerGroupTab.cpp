@@ -141,6 +141,40 @@ void DopplerGroupTab::InitComBoxMaterialSelection()
 void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 {
     PROBE_CONFIG& _probe = m_pGroup->probe[bIsRx_ ? 1 : 0];
+    if (m_pGroup->eTxRxMode == setup_TX_RX_MODE_PE || m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
+        _probe = m_pGroup->probe[0];
+        if (m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
+            // T
+            ui->LabelProbeT_pri->hide();
+            ui->LabelProbeT_sec->hide();
+            ui->lineEdit_probeT_4->hide();
+
+            ui->label_2->hide();
+            ui->lineEdit_probeT_1->hide();
+            ui->lineEdit_probeT_2->hide();
+
+            ui->label_4->hide();
+            ui->lineEdit_probeT_5->hide();
+            ui->lineEdit_probeT_6->hide();
+            ui->LabelProbeT_Line4->hide();
+            // R
+            ui->LabelProbeT_pri_2->hide();
+            ui->LabelProbeT_sec_2->hide();
+            ui->lineEdit_probeR_4->hide();
+
+            ui->label_7->hide();
+            ui->lineEdit_probeR_1->hide();
+            ui->lineEdit_probeR_2->hide();
+
+            ui->label_9->hide();
+            ui->lineEdit_probeR_5->hide();
+            ui->lineEdit_probeR_6->hide();
+            ui->LabelProbeT_Line4_2->hide();
+
+            ui->label_3->setText(tr("Chip Size:"));
+            ui->label_8->setText(tr("Chip Size:"));
+        }
+    }
 
 	if(bIsRx_)
 	{
@@ -172,6 +206,36 @@ void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
 void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 {
     WEDGE_CONFIG& _wedge = m_pGroup->wedge[bIsRx_ ? 1 : 0];
+    if (m_pGroup->eTxRxMode == setup_TX_RX_MODE_PE || m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
+        _wedge = m_pGroup->wedge[0];
+        if (m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
+            // T
+            ui->lineEdit_wedgeT_5->hide();
+            ui->label_18->hide();
+            ui->label_12->hide();
+
+            ui->label_13->hide();
+            ui->lineEdit_wedgeT_3->hide();
+
+            ui->LabelWedgeT_Line1->hide();
+            ui->lineEdit_wedgeT_2->hide();
+            ui->LabelWedgeT_Line3->hide();
+            ui->lineEdit_wedgeT_4->hide();
+            // R
+            ui->label_22->hide();
+            ui->lineEdit_wedgeR_5->hide();
+            ui->label_23->hide();
+
+            ui->lineEdit_wedgeR_2->hide();
+            ui->LabelWedgeT_Line1_2->hide();
+
+            ui->label_21->hide();
+            ui->lineEdit_wedgeR_3->hide();
+
+            ui->LabelWedgeT_Line3_2->hide();
+            ui->lineEdit_wedgeR_4->hide();
+        }
+    }
 
 	if(bIsRx_)
 	{
@@ -182,6 +246,9 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 
         if(_wedge.eType){
             ui->lineEdit_wedgeR_3->setText("UT");
+
+            ui->label_11->setText(tr("Refracted Angle:"));
+            ui->label_20->setText(tr("Refracted Angle:"));
 
             ui->label_wedgeR_7->setText(tr("Reference Point:"));
             ui->label_wedgeR_8->setText(tr("Wedge Delay:"));
@@ -214,6 +281,9 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
 
         if(_wedge.eType){
             ui->lineEdit_wedgeT_3->setText(tr("UT"));
+
+            ui->label_11->setText(tr("Refracted Angle:"));
+            ui->label_20->setText(tr("Refracted Angle:"));
 
             ui->label_wedgeT_7->setText(tr("Reference Point:"));
             ui->label_wedgeT_8->setText(tr("Wedge Delay:"));
@@ -460,9 +530,11 @@ void DopplerGroupTab::UpdateStandard(int selectID,int ifadd)
 
     _field->setCurrentIndex(m_pGroup->ThicknessType[m_nGroupId]);
     int index = _field->currentIndex();
-    CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
-    CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
-    CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+    if(selectID != 4) {
+        CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
+        CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
+        CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+    }
     CUR_RES.Standard[m_nGroupId] = selectID;
     CUR_RES.Thickness[m_nGroupId] = _field->currentIndex();
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
@@ -545,9 +617,11 @@ void DopplerGroupTab::LoadStandardFormConifg()
     _field->setCurrentIndex(thinkness);
     int index = _field->currentIndex();
     if(m_pGroup->loadCurveData){
-        CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
-        CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
-        CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+        if(selectID != 4) {
+            CUR_RES.CurRL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][0];
+            CUR_RES.CurEL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][2];
+            CUR_RES.CurSL[m_nGroupId] = g_ValuedbStandard[selectID][_field->currentIndex()][1];
+        }
     }
     ui->ValueRL->setValue(CUR_RES.CurRL[m_nGroupId]);
     ui->ValueSL->setValue(CUR_RES.CurSL[m_nGroupId]);
@@ -1039,7 +1113,24 @@ void DopplerGroupTab::UpdateGroupConfig()
 	ParameterProcess* _process = ParameterProcess::Instance();
     if(m_pGroup->eTxRxMode == setup_TX_RX_MODE_TOFD)
     {
+        int cnt = ui->toolBox->count();
+        for (int i = 0; i < cnt; ++i) {
+            if (ui->toolBox->itemText(i) == tr("Focallaw") || ui->toolBox->itemText(i) == tr("Gate and Sizing Curves")) {
+                ui->toolBox->removeItem(i);
+                i   = -1;
+                cnt = ui->toolBox->count();
+            }
+        }
+        ui->FocalLaw->hide();
+        ui->GateSizingcurves->hide();
         ui->ValueComGain->setDisabled(true);
+
+        QStandardItem *items = model->item(1);
+        cnt = items->rowCount();
+        int i = 3;
+        while (i < items->rowCount()) {
+            items->takeRow(i);
+        }
     }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
     ui->ValueCoupleGain->setValue(m_pGroup->CoupleGain);
@@ -2900,7 +2991,7 @@ void DopplerGroupTab::on_ValueRL_valueChanged(double arg1)
 void DopplerGroupTab::on_ValueScannerSensitivity_valueChanged(double arg1)
 {
     if(!ui->ValueScannerSensitivity->hasFocus())  return ;
-    CUR_RES.CurSS[m_nGroupId] = arg1;
+    CUR_RES.CurSS[m_nGroupId] = ui->ValueScannerSensitivityGain->value() + arg1;
     CUR_RES.REF_Gain[m_nGroupId] = arg1;
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
     ParameterProcess* _process = ParameterProcess::Instance();

@@ -35,7 +35,7 @@
     <widget class="QToolBox" name="toolBox">
      <property name="minimumSize">
       <size>
-       <width>290</width>
+       <width>280</width>
        <height>0</height>
       </size>
      </property>
@@ -49,7 +49,7 @@
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>6</number>
      </property>
      <property name="tabSpacing">
       <number>6</number>
@@ -60,7 +60,7 @@
         <x>0</x>
         <y>0</y>
         <width>332</width>
-        <height>718</height>
+        <height>668</height>
        </rect>
       </property>
       <property name="minimumSize">
@@ -91,7 +91,7 @@
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>700</height>
+           <height>650</height>
           </size>
          </property>
          <property name="frameShape">
@@ -153,7 +153,7 @@
              </property>
              <property name="maximumSize">
               <size>
-               <width>310</width>
+               <width>300</width>
                <height>16777215</height>
               </size>
              </property>
@@ -1062,7 +1062,7 @@
             <widget class="QGroupBox" name="BoxPulserReceiver">
              <property name="maximumSize">
               <size>
-               <width>310</width>
+               <width>300</width>
                <height>16777215</height>
               </size>
              </property>
@@ -1077,20 +1077,20 @@
                <number>0</number>
               </property>
               <property name="rightMargin">
-               <number>0</number>
+               <number>10</number>
               </property>
               <property name="bottomMargin">
                <number>0</number>
               </property>
               <item>
-               <layout class="QGridLayout" name="gridLayout_17" columnstretch="1,1,0,1,1">
+               <layout class="QGridLayout" name="gridLayout_17" columnstretch="1,0,0,0">
                 <property name="leftMargin">
                  <number>0</number>
                 </property>
                 <property name="rightMargin">
                  <number>0</number>
                 </property>
-                <item row="0" column="3">
+                <item row="0" column="2">
                  <widget class="QLabel" name="LabelReceiver">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1118,7 +1118,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="4">
+                <item row="0" column="3">
                  <widget class="QSpinBox" name="ValueReceiver">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -1210,19 +1210,6 @@
                    <string>Pulser:</string>
                   </property>
                  </widget>
-                </item>
-                <item row="0" column="2">
-                 <spacer name="horizontalSpacer_5">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
                 </item>
                </layout>
               </item>
@@ -1479,7 +1466,7 @@
             <widget class="QGroupBox" name="groupBox_2">
              <property name="maximumSize">
               <size>
-               <width>310</width>
+               <width>300</width>
                <height>16777215</height>
               </size>
              </property>
@@ -1494,7 +1481,7 @@
                <number>0</number>
               </property>
               <property name="rightMargin">
-               <number>0</number>
+               <number>10</number>
               </property>
               <property name="bottomMargin">
                <number>0</number>
@@ -1765,7 +1752,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>330</width>
+           <width>16777215</width>
            <height>16777215</height>
           </size>
          </property>
@@ -1783,9 +1770,15 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>330</width>
-            <height>780</height>
+            <width>283</width>
+            <height>786</height>
            </rect>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_16" stretch="0,1,1,1,1,1">
            <property name="leftMargin">
@@ -5123,7 +5116,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>318</width>
+        <width>330</width>
         <height>1160</height>
        </rect>
       </property>
@@ -10190,8 +10183,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>330</width>
-        <height>769</height>
+        <width>280</width>
+        <height>800</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -10202,13 +10195,13 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>310</width>
+        <width>280</width>
         <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>330</width>
+        <width>280</width>
         <height>800</height>
        </size>
       </property>
@@ -10239,8 +10232,8 @@
         <widget class="QScrollArea" name="scrollAreaDisplay">
          <property name="minimumSize">
           <size>
-           <width>0</width>
-           <height>700</height>
+           <width>280</width>
+           <height>800</height>
           </size>
          </property>
          <property name="frameShape">
@@ -10254,19 +10247,31 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>330</width>
-            <height>769</height>
+            <width>290</width>
+            <height>786</height>
            </rect>
           </property>
           <property name="minimumSize">
            <size>
-            <width>300</width>
+            <width>290</width>
             <height>0</height>
            </size>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_25">
            <item>
             <widget class="QTreeView" name="treeView">
+             <property name="minimumSize">
+              <size>
+               <width>265</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>300</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="dragEnabled">
               <bool>true</bool>
              </property>
