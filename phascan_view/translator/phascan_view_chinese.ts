@@ -684,117 +684,117 @@
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished">报表设置</translation>
+        <translation>报表设置</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="27"/>
         <source>ProjectName</source>
-        <translation type="unfinished"></translation>
+        <translation>工程名称</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="37"/>
         <source>Client</source>
-        <translation type="unfinished"></translation>
+        <translation>委托单位</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="47"/>
         <source>SpecimenName</source>
-        <translation type="unfinished"></translation>
+        <translation>工件名称</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="57"/>
         <source>ReportNum</source>
-        <translation type="unfinished"></translation>
+        <translation>报告编号</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="67"/>
         <source>SpecimenNum</source>
-        <translation type="unfinished"></translation>
+        <translation>检件编号</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="81"/>
         <source>InspectionQuantity</source>
-        <translation type="unfinished"></translation>
+        <translation>检测数量</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="91"/>
         <source>InspectionScale</source>
-        <translation type="unfinished"></translation>
+        <translation>检测比例</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="101"/>
         <source>ConstructionOrganization</source>
-        <translation type="unfinished"></translation>
+        <translation>施工单位</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="111"/>
         <source>Specifications</source>
-        <translation type="unfinished"></translation>
+        <translation>规格</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="121"/>
         <source>WeldingMethod</source>
-        <translation type="unfinished"></translation>
+        <translation>焊接方法</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="131"/>
         <source>SlopeType</source>
-        <translation type="unfinished"></translation>
+        <translation>坡口型式</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="145"/>
         <source>HotDealingCondition</source>
-        <translation type="unfinished"></translation>
+        <translation>热处理状态</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="155"/>
         <source>TestSurface</source>
-        <translation type="unfinished"></translation>
+        <translation>检测面</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="165"/>
         <source>DetectionTime</source>
-        <translation type="unfinished"></translation>
+        <translation>检测时机</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="175"/>
         <source>OperationInstructionNum</source>
-        <translation type="unfinished"></translation>
+        <translation>操作指导书编号</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="185"/>
         <source>TestStandard</source>
-        <translation type="unfinished"></translation>
+        <translation>检测标准</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="195"/>
         <source>AcceptanceStandard</source>
-        <translation type="unfinished"></translation>
+        <translation>验收标准</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="205"/>
         <source>DetectionLevel</source>
-        <translation type="unfinished"></translation>
+        <translation>检测技术等级</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="215"/>
         <source>AcceptanceLevel</source>
-        <translation type="unfinished"></translation>
+        <translation>验收等级</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="225"/>
         <source>SurfaceCondition</source>
-        <translation type="unfinished"></translation>
+        <translation>表面状况</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="235"/>
         <source>CalibrationBlock</source>
-        <translation type="unfinished"></translation>
+        <translation>校准试块</translation>
     </message>
     <message>
         <location filename="../ui/dialog/dialogreportinfosetting.ui" line="245"/>
         <source>Couplant</source>
-        <translation type="unfinished"></translation>
+        <translation>耦合剂</translation>
     </message>
 </context>
 <context>
