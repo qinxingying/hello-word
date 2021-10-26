@@ -416,6 +416,7 @@ void Config::unpack_scan(const QVariantMap &map)
 
 void Config::unpack_probe(const QVariantMap &map)
 {
+    qDebug() << map;
     Paramters::Probe &probe = m_groups[m_currentGroupID].m_probe;
 
     probe.m_arrayMode     = static_cast<Paramters::Probe::ArrayMode> (map.value("ArrayMode", DEFAULT_ARRAY_MODE).toUInt());
@@ -1078,6 +1079,7 @@ void Config::unpack_thickness(const QVariantMap &map)
 
 void Config::unpack_tofd(const QVariantMap &map)
 {
+    qDebug() << map;
     m_groups[m_currentGroupID].m_tofd.m_PCS = map["PCS"].toFloat();
     m_groups[m_currentGroupID].m_tofd.m_RefPosition = map["RefPosition"].toFloat();
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""

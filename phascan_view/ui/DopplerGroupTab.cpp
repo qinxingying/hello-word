@@ -143,6 +143,37 @@ void DopplerGroupTab::UpdateProbeConfig(int bIsRx_)
     PROBE_CONFIG& _probe = m_pGroup->probe[bIsRx_ ? 1 : 0];
     if (m_pGroup->eTxRxMode == setup_TX_RX_MODE_PE || m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
         _probe = m_pGroup->probe[0];
+        if (m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
+            // T
+            ui->LabelProbeT_pri->hide();
+            ui->LabelProbeT_sec->hide();
+            ui->lineEdit_probeT_4->hide();
+
+            ui->label_2->hide();
+            ui->lineEdit_probeT_1->hide();
+            ui->lineEdit_probeT_2->hide();
+
+            ui->label_4->hide();
+            ui->lineEdit_probeT_5->hide();
+            ui->lineEdit_probeT_6->hide();
+            ui->LabelProbeT_Line4->hide();
+            // R
+            ui->LabelProbeT_pri_2->hide();
+            ui->LabelProbeT_sec_2->hide();
+            ui->lineEdit_probeR_4->hide();
+
+            ui->label_7->hide();
+            ui->lineEdit_probeR_1->hide();
+            ui->lineEdit_probeR_2->hide();
+
+            ui->label_9->hide();
+            ui->lineEdit_probeR_5->hide();
+            ui->lineEdit_probeR_6->hide();
+            ui->LabelProbeT_Line4_2->hide();
+
+            ui->label_3->setText(tr("Chip Size:"));
+            ui->label_8->setText(tr("Chip Size:"));
+        }
     }
 
 	if(bIsRx_)
@@ -177,6 +208,33 @@ void DopplerGroupTab::UpdateWedgeConfig(int bIsRx_)
     WEDGE_CONFIG& _wedge = m_pGroup->wedge[bIsRx_ ? 1 : 0];
     if (m_pGroup->eTxRxMode == setup_TX_RX_MODE_PE || m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
         _wedge = m_pGroup->wedge[0];
+        if (m_pGroup->eTxRxMode ==  setup_TX_RX_MODE_TOFD) {
+            // T
+            ui->lineEdit_wedgeT_5->hide();
+            ui->label_18->hide();
+            ui->label_12->hide();
+
+            ui->label_13->hide();
+            ui->lineEdit_wedgeT_3->hide();
+
+            ui->LabelWedgeT_Line1->hide();
+            ui->lineEdit_wedgeT_2->hide();
+            ui->LabelWedgeT_Line3->hide();
+            ui->lineEdit_wedgeT_4->hide();
+            // R
+            ui->label_22->hide();
+            ui->lineEdit_wedgeR_5->hide();
+            ui->label_23->hide();
+
+            ui->lineEdit_wedgeR_2->hide();
+            ui->LabelWedgeT_Line1_2->hide();
+
+            ui->label_21->hide();
+            ui->lineEdit_wedgeR_3->hide();
+
+            ui->LabelWedgeT_Line3_2->hide();
+            ui->lineEdit_wedgeR_4->hide();
+        }
     }
 
 	if(bIsRx_)
