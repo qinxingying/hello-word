@@ -181,6 +181,10 @@ void MainWindow::init_ui()
     ui->actionSave_Data->setDisabled(true);
     ui->actionSave_B_Scan_Data->setDisabled(true);
     ui->actionWord_Export->setVisible(true);
+    ui->actionReport_Add_One_Item->setVisible(false);
+    ui->actionReport_Del_One_Item->setVisible(false);
+    ui->actionSave_Report->setVisible(false);
+    ui->menuLanguage->menuAction()->setVisible(false);
     // init display widget list
     for(int i = 0 ; i < MAX_LIST_QTY ; i++)
     {
