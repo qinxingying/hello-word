@@ -1733,10 +1733,12 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
             gate.fStart       = rect.top();
             gate.fWidth       = rect.height();
             gate.nThreshold   = rect.left();
+            _pConfig->common.bUserConfigChanged = true;
         } else if (GATE_MODE_GATE_HORIZENTAL == ((DopplerGateItem*)pItem_)->GetDrawMode()) {
             gate.fStart       = rect.left();
             gate.fWidth       = rect.width();
             gate.nThreshold   = rect.top();
+            _pConfig->common.bUserConfigChanged = true;
         }
 
         DopplerGroupTab* _pGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(_nGroupId);
@@ -2203,6 +2205,8 @@ void MainWindow::slotSaveDefect()
 void MainWindow::saveDefectInfoToDataFile()
 {
     DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+    _pConfig->common.bSaveDefectInfoToDataFile = false;
+    _pConfig->common.bSaveUserConfigToDataFile = false;
 
     if (m_fileName != "" && _pConfig->DefectInfoIsSaved()) {
         QMessageBox msgBox;
@@ -2214,7 +2218,7 @@ void MainWindow::saveDefectInfoToDataFile()
         switch (ret) {
         case QMessageBox::Ok:
         {
-            _pConfig->SaveDefectInfoToDataFile();
+            _pConfig->common.bSaveDefectInfoToDataFile = true;
             break;
         }
         case QMessageBox::Cancel:
@@ -2222,6 +2226,28 @@ void MainWindow::saveDefectInfoToDataFile()
             break;
         }
     }
+    if (_pConfig->common.bUserConfigChanged) {
+        QMessageBox msgBox;
+        msgBox.setText(tr("Save gain or gate info to data file ?"));
+        //msgBox.setInformativeText();
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        int ret = msgBox.exec();
+        switch (ret) {
+        case QMessageBox::Ok:
+        {
+            _pConfig->common.bSaveUserConfigToDataFile = true;
+            break;
+        }
+        case QMessageBox::Cancel:
+        default:
+            break;
+        }
+    }
+    if (_pConfig->common.bSaveDefectInfoToDataFile || _pConfig->common.bSaveUserConfigToDataFile) {
+        _pConfig->SaveDefectInfoToDataFile();
+    }
+    _pConfig->common.bUserConfigChanged = false;
 }
 
 void MainWindow::slotModifyDefect(int groupId, DEFECT_INFO &defect)

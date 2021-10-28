@@ -1036,6 +1036,9 @@ struct COMMON_CONFIG
     bool                bDefectIdentifyStatus;      // 在分析状态
     bool                bDefectIdentifyStatusDone;  // 分析完成
     bool                bMarkDefectNotIdentifyArea;  // 标记是否在框选缺陷不识别区域
+    bool                bUserConfigChanged;
+    bool                bSaveUserConfigToDataFile;
+    bool                bSaveDefectInfoToDataFile;
 } ;
 
 struct DISPLAY_CONFIG

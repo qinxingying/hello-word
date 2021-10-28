@@ -162,6 +162,18 @@ struct coupleCScanGroupInfo{
     QVector<WDATA> data;      //储存耦合C扫数据
 };
 
+struct USER_CONFIG {
+    float               sensitivityGainAdd[setup_MAX_GROUP_QTY]; // 扫查灵敏度
+    float               surfaceGainAdd[setup_MAX_GROUP_QTY]; // 表面补偿
+    float               coupleGainAdd[setup_MAX_GROUP_QTY]; // 耦合监控增益补偿
+
+    GATE_CONFIG         gate[setup_MAX_GROUP_QTY][setup_GATE_MAX];
+    QRect      selectedNotToAnalysisAreas[16][setup_MAX_GROUP_QTY];    // 选择不识别缺陷区域,将画在S扫上,每组最多保存16个区域
+    QRectF     transformedNotToAnalysisAreas[16][setup_MAX_GROUP_QTY];// 转换坐标后的不识别缺陷区域
+
+    float               reserved[8][setup_MAX_GROUP_QTY];
+};
+
 class DopplerConfigure : public QObject
 {
 	Q_OBJECT
@@ -270,6 +282,7 @@ private:
     QString g_strColorThickness;
     QString g_strColorRectifier;
     bool m_defectIsSaved {false};
+    USER_CONFIG m_userConfig;
 
 public:
     QList<MATERIAL*>*	m_listMaterial;
