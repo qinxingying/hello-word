@@ -2228,7 +2228,7 @@ void MainWindow::saveDefectInfoToDataFile()
     }
     if (_pConfig->common.bUserConfigChanged) {
         QMessageBox msgBox;
-        msgBox.setText(tr("Save gain or gate info to data file ?"));
+        msgBox.setText(tr("Save gain and gate info to data file ?"));
         //msgBox.setInformativeText();
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Ok);
