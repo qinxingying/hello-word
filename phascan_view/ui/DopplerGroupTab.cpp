@@ -1146,7 +1146,8 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->ValueEL->blockSignals(false);
     ui->ComStandard->blockSignals(false);
     ui->ComThickness->blockSignals(false);
-    ui->ValueScannerSensitivityGain->setValue(CUR_RES.CurSS[m_nGroupId]);
+    ui->ValueScannerSensitivityGain->setValue(CUR_RES.CurSS[m_nGroupId] - CUR_RES.REF_Gain[m_nGroupId]);
+    ui->ValueScannerSensitivity->setValue(CUR_RES.REF_Gain[m_nGroupId]);
 	UpdateCurrentAngleCom();
 	UpdateSampleRange();
 	ui->ValueWedgeDelay->setValue(m_pGroup->nWedgeDelay / 1000.0);
@@ -1939,18 +1940,24 @@ void DopplerGroupTab::on_ValueGateStart_valueChanged(double)
 {
 	if(!ui->ValueGateStart->hasFocus())  return ;
 	GatePro();
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    _pConfig->common.bUserConfigChanged = true;
 }
 
 void DopplerGroupTab::on_ValueGateWidth_valueChanged(double)
 {
 	if(!ui->ValueGateWidth->hasFocus())  return ;
 	GatePro();
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    _pConfig->common.bUserConfigChanged = true;
 }
 
 void DopplerGroupTab::on_ValueGateHeight_valueChanged(double)
 {
 	if(!ui->ValueGateHeight->hasFocus())  return ;
 	GatePro();
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    _pConfig->common.bUserConfigChanged = true;
 }
 
 void DopplerGroupTab::on_ValueTopcWidth_valueChanged(double value)
@@ -2994,6 +3001,8 @@ void DopplerGroupTab::on_ValueScannerSensitivity_valueChanged(double arg1)
     CUR_RES.CurSS[m_nGroupId] = ui->ValueScannerSensitivityGain->value() + arg1;
     CUR_RES.REF_Gain[m_nGroupId] = arg1;
     ui->ValueComGain->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.REF_Gain[m_nGroupId]);
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    _pConfig->common.bUserConfigChanged = true;
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.Com_Gain[m_nGroupId]) ;
     ProcessDisplay _display ;
@@ -3030,6 +3039,8 @@ void DopplerGroupTab::on_ValueComGain_valueChanged(double arg1)
     if(!ui->ValueComGain->hasFocus())  return ;
     CUR_RES.Com_Gain[m_nGroupId] = arg1;
     ui->ValueScannerSensitivity->setMinimum(0-m_pGroup->fGain-m_pGroup->RefGain-CUR_RES.Com_Gain[m_nGroupId]);
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    _pConfig->common.bUserConfigChanged = true;
     ParameterProcess* _process = ParameterProcess::Instance();
     _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.REF_Gain[m_nGroupId]) ;
     ProcessDisplay _display ;
@@ -3108,6 +3119,8 @@ void DopplerGroupTab::on_ValueCouplingGainCom_valueChanged(double arg1)
 //    ui->ValueCouplingGainCom->setMinimum(0 - m_pGroup->fGain - m_pGroup->RefGain - CUR_RES.Couple_Com_Gain[m_nGroupId]);
 //    ParameterProcess* _process = ParameterProcess::Instance();
 //    _process->SetupRefGain(m_nGroupId , arg1 + CUR_RES.REF_Gain[m_nGroupId]) ;
+    DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
+    _pConfig->common.bUserConfigChanged = true;
     ProcessDisplay _display ;
     _display.UpdateAllViewCursorOfGroup(m_nGroupId);
     g_pMainWnd->RunDrawThreadOnce(true);

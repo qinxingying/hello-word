@@ -514,7 +514,7 @@ void DopplerConfigure::SaveDefectInfoToDataFile()
         defectCnt += GetDefectCnt(iGroup);
     }
 
-    if (defectCnt == 0) {
+    if (defectCnt == 0 && !common.bSaveUserConfigToDataFile) {
         file.close();
         return;
     }
@@ -527,7 +527,10 @@ void DopplerConfigure::SaveDefectInfoToDataFile()
         write.writeRawData((char*)&_nGroupQty , sizeof(int));
 
         for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
-            int _iDefectN = GetDefectCnt(iGroup);
+            int _iDefectN = 0;
+            if (common.bSaveDefectInfoToDataFile || !m_defectIsSaved) {
+                _iDefectN = GetDefectCnt(iGroup);
+            }
             write.writeRawData((char*)&_iDefectN , sizeof(int));
 
             for(int i = 0; i < _iDefectN; i++) {
@@ -549,7 +552,10 @@ void DopplerConfigure::SaveDefectInfoToDataFile()
         write.writeRawData((char*)&_nGroupQty , sizeof(int));
 
         for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
-            int _iDefectN = GetDefectCnt(iGroup);
+            int _iDefectN = 0;
+            if (common.bSaveDefectInfoToDataFile || !m_defectIsSaved) {
+                _iDefectN = GetDefectCnt(iGroup);
+            }
             write.writeRawData((char*)&_iDefectN , sizeof(int));
 
             for(int i = 0; i < _iDefectN; i++) {
@@ -566,6 +572,25 @@ void DopplerConfigure::SaveDefectInfoToDataFile()
             }
         }
     }
+
+    //
+    int userConfigSize = sizeof(USER_CONFIG);
+    if (common.bSaveUserConfigToDataFile) {
+        USER_CONFIG userConfig;
+        memcpy(userConfig.sensitivityGainAdd, CUR_RES.REF_Gain, sizeof(userConfig.sensitivityGainAdd));
+        memcpy(userConfig.surfaceGainAdd, CUR_RES.Com_Gain, sizeof(userConfig.surfaceGainAdd));
+        memcpy(userConfig.coupleGainAdd, CUR_RES.Couple_Com_Gain, sizeof(userConfig.coupleGainAdd));
+
+        for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+            memcpy(userConfig.gate[iGroup], group[iGroup].gate, sizeof(userConfig.gate[iGroup]));
+        }
+
+        write.writeRawData((char*)&userConfig, userConfigSize);
+    } else {
+        write.writeRawData((char*)&m_userConfig, userConfigSize);
+    }
+    //
+
     int flag = 0x20211011;
     write.writeRawData((char*)&flag , sizeof(int));
 
@@ -587,7 +612,7 @@ void DopplerConfigure::ReadDefectInfoFromDataFile()
     reader.skipRawData(m_pDataPos);
     int _sign;
     int ret = reader.readRawData((char*)&_sign , sizeof(int)) ;
-    if (ret) {
+    if (ret > 0) {
         ReleaseAllDefect();
     } else {
         file.close();
@@ -599,10 +624,9 @@ void DopplerConfigure::ReadDefectInfoFromDataFile()
     if(!_tmp->exists(m_szDefectPathName)) {
         _tmp->mkdir(m_szDefectPathName);
     }
-
+    int _nGroupQty;
     if(_sign == 0x15263748)	{
         loadDefectVersion = 1;
-        int _nGroupQty;
         reader.readRawData((char*)&_nGroupQty , sizeof(int));
 
         for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
@@ -622,7 +646,6 @@ void DopplerConfigure::ReadDefectInfoFromDataFile()
         }
     }else if(_sign == 0x15263749){
         loadDefectVersion = 2;
-        int _nGroupQty;
         reader.readRawData((char*)&_nGroupQty , sizeof(int));
 
         for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
@@ -643,6 +666,32 @@ void DopplerConfigure::ReadDefectInfoFromDataFile()
     }else{
         loadDefectVersion = 2;
     }
+    //
+    int userConfigSize = sizeof(USER_CONFIG);
+    //reader.readRawData((char*)&userConfigSize, sizeof(int));
+    if (userConfigSize != sizeof(USER_CONFIG)) {
+        file.close();
+        return;
+    }
+
+    ret = reader.readRawData((char*)&m_userConfig, userConfigSize);
+    if (userConfigSize != ret) {
+        file.close();
+        return;
+    }
+
+    memcpy(CUR_RES.REF_Gain, m_userConfig.sensitivityGainAdd, sizeof(m_userConfig.sensitivityGainAdd));
+    memcpy(CUR_RES.Com_Gain, m_userConfig.surfaceGainAdd, sizeof(m_userConfig.surfaceGainAdd));
+    memcpy(CUR_RES.Couple_Com_Gain, m_userConfig.coupleGainAdd, sizeof(m_userConfig.coupleGainAdd));
+
+    for(int iGroup = 0; iGroup < _nGroupQty; iGroup++) {
+        memcpy(group[iGroup].gate, m_userConfig.gate[iGroup], sizeof(m_userConfig.gate[iGroup]));
+
+        group[iGroup].fRefGain = CUR_RES.REF_Gain[iGroup] + CUR_RES.Com_Gain[iGroup];
+        CUR_RES.CurSS[iGroup] += CUR_RES.REF_Gain[iGroup];
+    }
+
+    //
     file.close();
 }
 
