@@ -1131,6 +1131,9 @@ void DopplerGroupTab::UpdateGroupConfig()
         while (i < items->rowCount()) {
             items->takeRow(i);
         }
+
+        ui->groupBox->hide();
+        ui->groupBoxComDisp->hide();
     }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
     ui->ValueCoupleGain->setValue(m_pGroup->CoupleGain);
