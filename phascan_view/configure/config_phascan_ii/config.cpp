@@ -1512,6 +1512,26 @@ void Config::convert_to_phascan_config(int groupId)
         targetLawInfo.Focal_type = 0;
         targetProbe.Elem_qty = currentProbe.m_priElemQty;
         targetProbe.Pitch    = 1000.0;
+
+        QStringList model;
+        QString tmp;
+        bool isNumber = false;
+        for (int i = 0; i < currentProbe.m_model.length(); ++i) {
+            if ((currentProbe.m_model[i] >= '0' && currentProbe.m_model[i] <= '9') || currentProbe.m_model[i] == '.' ) {
+                tmp.append(currentProbe.m_model[i]);
+                isNumber = true;
+            } else {
+                isNumber = false;
+            }
+            if (!isNumber && !tmp.isEmpty()) {
+                model << tmp;
+                tmp.clear();
+            }
+        }
+        if (model.count() == 2) {
+            targetProbe.Pitch = model[1].toFloat() * 1000.0;
+        }
+
         targetProbe.A4       = 1;
         targetProbe.A3       = 1000.0;
         targetLawInfo.Elem_qty        = currentScan.m_priApe;
