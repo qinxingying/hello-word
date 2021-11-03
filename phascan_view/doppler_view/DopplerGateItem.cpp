@@ -257,9 +257,18 @@ void DopplerGateItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void DopplerGateItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_mouseDownPos = event->pos();
-    DopplerGraphicsItem::mousePressEvent(event) ;
-    mouseMoveEvent(event) ;
+    switch (m_eMode)
+    {
+    case GATE_MODE_GATE_HORIZENTAL :
+    case GATE_MODE_GATE_VERTICAL:
+        m_mouseDownPos = event->pos();
+        DopplerGraphicsItem::mousePressEvent(event) ;
+        break;
+    default:
+        event->ignore();
+        break;
+    }
+
 }
 
 void DopplerGateItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -290,6 +299,8 @@ void DopplerGateItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
         }
         break;
     default:
+        unsetCursor();
+        setAcceptHoverEvents(false);
         break;
     }
 }
@@ -314,6 +325,8 @@ void DopplerGateItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
         }
         break;
     default:
+        unsetCursor();
+        setAcceptHoverEvents(false);
         break;
     }
 }
