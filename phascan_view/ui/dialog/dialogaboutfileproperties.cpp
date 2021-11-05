@@ -16,6 +16,12 @@ DialogAboutFileProperties::DialogAboutFileProperties(QWidget *parent) :
     ui->labelPhascanVersion->setText(pConfig->fileInfo.deviceVersion);
     ui->labelSN->setText(pConfig->fileInfo.deviceSN);
     ui->labelDateTime->setText(pConfig->fileInfo.date);
+
+    if (pConfig->fileInfo.fpgaPaVersion.isEmpty()) {
+        ui->labelFpgaCpuVersion->hide();
+        ui->label_3->hide();
+        ui->label->setText(tr("FPGA"));
+    }
 }
 
 DialogAboutFileProperties::~DialogAboutFileProperties()
