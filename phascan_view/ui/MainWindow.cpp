@@ -186,6 +186,9 @@ void MainWindow::init_ui()
     ui->actionSave_Report->setVisible(false);
     ui->menuLanguage->menuAction()->setVisible(false);
     ui->actionFile_Properties->setEnabled(true);
+    ui->actionSaveFile->setVisible(false);
+    ui->actionSave->setVisible(false);
+    ui->actionNew_Config->setVisible(false);
     // init display widget list
     for(int i = 0 ; i < MAX_LIST_QTY ; i++)
     {
