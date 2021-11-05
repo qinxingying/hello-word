@@ -369,7 +369,7 @@ struct DRAW_INFO_PACK
     unsigned char bScanMark[1024 * 256] ;
 };
 
-struct _ExtConfig
+typedef struct S_ExtConfig
 {
     unsigned char sscanMode;                    /* S扫二次翻转开关，叠加翻转、非叠加翻转、关 */
     double  firsOverLay[8];   /* 翻转时，工件厚度对应的第一条线 */
@@ -379,7 +379,7 @@ struct _ExtConfig
     /* 预留配置信息项 */
     int extInt[8 * 8];
     double extDouble[8 * 8];
-};
+} ExtConfig1;
 
 typedef struct S_DScanRange
 {
@@ -408,7 +408,24 @@ typedef struct S_CADInfo
     char name[CAD_FILE_NAME_SIZE];
 } CADInfo;
 
-typedef struct _ExtConfig2
+typedef struct S_FileInfo
+{
+    char seralNum[36];
+    char deviceType[16];
+    char cpuFPGA[12];
+    char paFPGA[12];
+    int year:16;
+    int mon:8;
+    int day:8;
+    int hour:8;
+    int min:8;
+    int sec:8;
+    int reserved:8;
+
+    char mark[4];
+} FileInfo;
+
+typedef struct S_ExtConfig2
 {
     unsigned char sscanMode;                    /* S扫二次翻转开关，叠加翻转、非叠加翻转、关 */
     double  firsOverLay[8];   /* 翻转时，工件厚度对应的第一条线 */
@@ -422,8 +439,23 @@ typedef struct _ExtConfig2
     CADInfo cadInfo[8];
     DScanRange dscanRange;
     StandardInfo standardInfo[8];
-    int extInt[125];
+    int extInt[103];
+    FileInfo fileInfo;
 } ExtConfig2;
+
+typedef struct S_ExtConfig3
+{
+    unsigned char sscanMode;
+    double  firsOverLay[8];
+    double  secondOverLay[8];
+    unsigned short cShadowWidth[8][2];
+    TOFDCalibration tofdCalibration[8];
+    unsigned char status[4];
+    CADInfo cadInfo[8];
+    int extInt[7];
+    int extDouble[106];
+    FileInfo fileInfo;
+} ExtConfig3;
 
 struct INSPEC_DATA_FILE
 {

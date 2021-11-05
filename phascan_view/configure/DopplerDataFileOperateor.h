@@ -22,6 +22,7 @@ public:
     GROUP_INFO*       GetGroupInfo(int nGroupId_)  ;
     bool GetCADExist(int nGroupId_);
     ExtConfig2*   GetExtConfig2();
+    FileInfo* GetFileInfo();
     void close();
 
 protected:
@@ -33,7 +34,9 @@ protected:
     qint64 m_mapdataSize;
     qint64 m_dataFilePos {0};
     int m_cadInfo[8];
-    ExtConfig2 m_extConfig;
+    ExtConfig1 m_extConfig1;
+    ExtConfig2 m_extConfig2;
+    ExtConfig3 m_extConfig3;
 signals:
 
 public slots:

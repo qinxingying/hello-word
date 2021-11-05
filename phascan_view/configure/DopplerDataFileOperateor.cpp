@@ -93,11 +93,16 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
             return -1;
         }
         if (Phascan_Version >=8) {
-            _nTmp = sizeof(_ExtConfig2);
-            ret = reader.readRawData((char*)&m_extConfig, _nTmp);
+            _nTmp = sizeof(ExtConfig2);
+            ret = reader.readRawData((char*)&m_extConfig2, _nTmp);
         } else {
-            _nTmp = sizeof(_ExtConfig);
-            ret = reader.skipRawData(_nTmp);
+            _nTmp = sizeof(ExtConfig1);
+            ret = reader.readRawData((char*)&m_extConfig3, _nTmp);
+            if (QString::fromLocal8Bit(m_extConfig3.fileInfo.mark,4) == "dpl") {
+
+            } else {
+                memcpy((void *)&m_extConfig1, (void *)&m_extConfig3, _nTmp);
+            }
         }
         if(ret != _nTmp){
             return -1;
@@ -111,7 +116,7 @@ int DopplerDataFileOperateor::LoadDataFile(QString& strPath_)
         for(int i = 0; i < 8; i++){
             cadTotalData += m_cadInfo[i];
         }
-        if(cadTotalData && fileSize < (m_cFileHead.size + m_cFileHead.reserved + sizeof(_ExtConfig) + sizeof(int) * 8 + cadTotalData)){
+        if(cadTotalData && fileSize < (m_cFileHead.size + m_cFileHead.reserved + sizeof(ExtConfig1) + sizeof(int) * 8 + cadTotalData)){
             return -1;
         }
         for(int i = 0; i < 8; i++){
@@ -188,7 +193,16 @@ bool DopplerDataFileOperateor::GetCADExist(int nGroupId_)
 
 ExtConfig2 *DopplerDataFileOperateor::GetExtConfig2()
 {
-    return &m_extConfig;
+    return &m_extConfig2;
+}
+
+FileInfo *DopplerDataFileOperateor::GetFileInfo()
+{
+    int Phascan_Version = m_cFileHead.version - m_cFileHead.size - m_cFileHead.reserved;
+    if (Phascan_Version >=8) {
+        return &m_extConfig2.fileInfo;
+    }
+    return &m_extConfig3.fileInfo;
 }
 
 void DopplerDataFileOperateor::close()

@@ -11,11 +11,11 @@ DialogAboutFileProperties::DialogAboutFileProperties(QWidget *parent) :
 
     this->setWindowTitle(tr("File Properties"));
     DopplerConfigure *pConfig = DopplerConfigure::Instance();
-    ui->labelFpgaPaVersion->setText(Config::instance()->getFpgaPaVersion());
-    ui->labelFpgaCpuVersion->setText(Config::instance()->getFpgaCpuVersion());
-    ui->labelPhascanVersion->setText(Config::instance()->getVersion());
-    ui->labelSN->setText(Config::instance()->getDeviceSN());
-    ui->labelDateTime->setText(pConfig->GetDataFileDateTime().toString("yyyy-MM-dd HH:mm:ss"));
+    ui->labelFpgaPaVersion->setText(pConfig->fileInfo.fpgaPaVersion);
+    ui->labelFpgaCpuVersion->setText(pConfig->fileInfo.fpgaCpuVersion);
+    ui->labelPhascanVersion->setText(pConfig->fileInfo.deviceVersion);
+    ui->labelSN->setText(pConfig->fileInfo.deviceSN);
+    ui->labelDateTime->setText(pConfig->fileInfo.date);
 }
 
 DialogAboutFileProperties::~DialogAboutFileProperties()

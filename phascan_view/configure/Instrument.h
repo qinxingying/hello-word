@@ -1072,6 +1072,14 @@ struct DISPLAY_CONFIG
     float TOPCWidth[setup_MAX_GROUP_QTY];                                                           //13. 如选择为投影C，需保存投影C扫描宽度的设置
 };
 
+struct S_FILE_INFO
+{
+    QString deviceVersion;
+    QString fpgaPaVersion;
+    QString fpgaCpuVersion;
+    QString deviceSN;
+    QString date;
+};
 
 #endif // INSTRUMENT_H
 

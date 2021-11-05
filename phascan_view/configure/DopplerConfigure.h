@@ -268,6 +268,7 @@ public:
 	COMMON_CONFIG		comTmp ;   //
 	GROUP_CONFIG		group[setup_MAX_GROUP_QTY+1] ;
 	FOCALLAW_RESULT		focallaw[setup_MAX_GROUP_QTY] ;
+    S_FILE_INFO           fileInfo;
 
     QList<coupleCScanGroupInfo> coupleCScanData;
     QVector<double> rasterOffset; //保存栅格扫查每个步进分辨率上的偏置,单位mm

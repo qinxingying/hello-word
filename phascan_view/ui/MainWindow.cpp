@@ -185,6 +185,7 @@ void MainWindow::init_ui()
     ui->actionReport_Del_One_Item->setVisible(false);
     ui->actionSave_Report->setVisible(false);
     ui->menuLanguage->menuAction()->setVisible(false);
+    ui->actionFile_Properties->setEnabled(true);
     // init display widget list
     for(int i = 0 ; i < MAX_LIST_QTY ; i++)
     {
@@ -1147,12 +1148,6 @@ void MainWindow::OpenFilePro(QString strFileName_)
         indexSliderh->setValue(0);
         m_iCurGroup = 0;
         ui->actionAided_Analysis->setEnabled(true);
-
-        if(Config::instance()->is_phascan_ii()) {
-            ui->actionFile_Properties->setEnabled(true);
-        } else {
-            ui->actionFile_Properties->setEnabled(false);
-        }
 
         ui->actionSave_Data->setEnabled(true);
         ui->actionSave_B_Scan_Data->setEnabled(true);

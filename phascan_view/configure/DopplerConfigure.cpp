@@ -470,14 +470,8 @@ int DopplerConfigure::OpenData(QString& path_)
 	m_pData = m_pDataFile->GetData();
     m_pDataSize = m_pDataFile->GetDataSize();
     m_pDataPos  = m_pDataFile->GetDataPos();
-//    GROUP_INFO *targetGroup;
-//    if(Config::instance()->is_phascan_ii()) {
-//        targetGroup = m_pDataFile->GetGroupInfo(0);
-//    } else {
-//        targetGroup = m_pDataFile->GetGroupInfo(0);
-//    }
+
     InitTOPCMerge();
-    //SIZING_CURVES &targetCurves = targetGroup->SizingCurves;
 
 	int _iMax = RectifyScanLength();
 	CreateShadowData(_iMax);
@@ -489,6 +483,31 @@ int DopplerConfigure::OpenData(QString& path_)
             free(group[i].TopCData.topcData);
         }
         memset( &group[i].TopCData, 0x00, sizeof(TOPC_DATA));
+    }
+
+    if (Config::instance()->is_phascan_ii()) {
+        QDateTime date = Config::instance()->getDataFileDate();
+        if (date.toString("yyyy") == "1970" || date.isNull()) {
+            QFileInfo fi = QFileInfo(m_szFileInUse);
+            date = fi.lastModified();
+        }
+        fileInfo.date           = date.toString("yyyy-MM-dd HH:mm:ss");
+        fileInfo.deviceSN       = Config::instance()->getDeviceSN();
+        fileInfo.deviceVersion  = Config::instance()->getVersion();
+        fileInfo.fpgaCpuVersion = Config::instance()->getFpgaCpuVersion();
+        fileInfo.fpgaPaVersion  = Config::instance()->getFpgaPaVersion();
+    } else {
+        FileInfo* info = m_pDataFile->GetFileInfo();
+        QString mon  = info->mon < 10 ? ("0" + QString::number(info->mon)) : QString::number(info->mon);
+        QString day  = info->day < 10 ? ("0" + QString::number(info->day)) : QString::number(info->day) ;
+        QString hour = info->hour < 10 ? ("0" + QString::number(info->hour)) : QString::number(info->hour) ;
+        QString min  = info->min < 10 ? ("0" + QString::number(info->min)) : QString::number(info->min) ;
+        QString sec  = info->sec < 10 ? ("0" + QString::number(info->sec)) : QString::number(info->sec) ;
+        fileInfo.date           = QString::number(info->year) + "-" + mon + "-" + day + " " + hour + ":" + min + ":" + sec;
+        fileInfo.deviceSN       = QString::fromLocal8Bit(info->seralNum);
+        fileInfo.deviceVersion  = QString::fromLocal8Bit(info->deviceType);
+        fileInfo.fpgaCpuVersion = QString::fromLocal8Bit(info->cpuFPGA);
+        fileInfo.fpgaPaVersion  = QString::fromLocal8Bit(info->paFPGA);
     }
 
     m_pReport->set_data_path(QFileInfo(path_).absolutePath());
