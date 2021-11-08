@@ -254,6 +254,7 @@ public:
 private:
     void CSourceTypeConvertI(int &type);
     void CSourceTypeConvertII(int &type);
+    void initUserConfig();
 protected:
 	explicit DopplerConfigure(QObject *parent = 0);
 	void OpenEvn() ;

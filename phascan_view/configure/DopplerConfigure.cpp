@@ -398,7 +398,18 @@ void DopplerConfigure::CSourceTypeConvertII(int &type)
        type = setup_CSCAN_POS_I;
     } else if (type == 3){
         type = setup_CSCAN_POS_AI;
-     }
+    }
+}
+
+void DopplerConfigure::initUserConfig()
+{
+    memcpy(m_userConfig.sensitivityGainAdd, CUR_RES.REF_Gain, sizeof(m_userConfig.sensitivityGainAdd));
+    memcpy(m_userConfig.surfaceGainAdd, CUR_RES.Com_Gain, sizeof(m_userConfig.surfaceGainAdd));
+    memcpy(m_userConfig.coupleGainAdd, CUR_RES.Couple_Com_Gain, sizeof(m_userConfig.coupleGainAdd));
+
+    for(int iGroup = 0; iGroup < common.nGroupQty; iGroup++) {
+        memcpy(m_userConfig.gate[iGroup], group[iGroup].gate, sizeof(m_userConfig.gate[iGroup]));
+    }
 }
 
 int DopplerConfigure::OpenConfig(QString& path_)
@@ -513,6 +524,7 @@ int DopplerConfigure::OpenData(QString& path_)
     m_pReport->set_data_path(QFileInfo(path_).absolutePath());
 	m_pReport->InitReportInfo();
 
+    initUserConfig();
     ReadDefectInfoFromDataFile();
     return 0;
 }
@@ -687,18 +699,12 @@ void DopplerConfigure::ReadDefectInfoFromDataFile()
     }
     //
     int userConfigSize = sizeof(USER_CONFIG);
-    //reader.readRawData((char*)&userConfigSize, sizeof(int));
-    if (userConfigSize != sizeof(USER_CONFIG)) {
-        file.close();
-        return;
-    }
-
     ret = reader.readRawData((char*)&m_userConfig, userConfigSize);
     if (userConfigSize != ret) {
-        file.close();
+        initUserConfig();
         return;
     }
-
+    //
     memcpy(CUR_RES.REF_Gain, m_userConfig.sensitivityGainAdd, sizeof(m_userConfig.sensitivityGainAdd));
     memcpy(CUR_RES.Com_Gain, m_userConfig.surfaceGainAdd, sizeof(m_userConfig.surfaceGainAdd));
     memcpy(CUR_RES.Couple_Com_Gain, m_userConfig.coupleGainAdd, sizeof(m_userConfig.coupleGainAdd));
