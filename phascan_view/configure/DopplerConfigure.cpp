@@ -516,7 +516,7 @@ int DopplerConfigure::OpenData(QString& path_)
         QString sec  = info->sec < 10 ? ("0" + QString::number(info->sec)) : QString::number(info->sec) ;
         fileInfo.date           = QString::number(info->year) + "-" + mon + "-" + day + " " + hour + ":" + min + ":" + sec;
         fileInfo.deviceSN       = QString::fromLocal8Bit(info->seralNum);
-        fileInfo.deviceVersion  = QString::fromLocal8Bit(info->deviceType);
+        fileInfo.deviceVersion  = QString::fromLocal8Bit(info->deviceVersion);
         fileInfo.fpgaCpuVersion = QString::fromLocal8Bit(info->cpuFPGA);
         fileInfo.fpgaPaVersion  = QString::fromLocal8Bit(info->paFPGA);
     }

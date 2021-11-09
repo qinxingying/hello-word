@@ -411,9 +411,10 @@ typedef struct S_CADInfo
 typedef struct S_FileInfo
 {
     char seralNum[36];
-    char deviceType[16];
+    char deviceVersion[16];
     char cpuFPGA[12];
     char paFPGA[12];
+    int commit;
     int year:16;
     int mon:8;
     int day:8;
@@ -439,7 +440,7 @@ typedef struct S_ExtConfig2
     CADInfo cadInfo[8];
     DScanRange dscanRange;
     StandardInfo standardInfo[8];
-    int extInt[103];
+    int extInt[102];
     FileInfo fileInfo;
 } ExtConfig2;
 
@@ -453,7 +454,7 @@ typedef struct S_ExtConfig3
     unsigned char status[4];
     CADInfo cadInfo[8];
     int extInt[7];
-    int extDouble[106];
+    int extDouble[105];
     FileInfo fileInfo;
 } ExtConfig3;
 
