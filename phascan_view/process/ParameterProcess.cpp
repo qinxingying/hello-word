@@ -2178,13 +2178,13 @@ double ParameterProcess::GetDetermineThreshold(int nGroupId_, DAC_MODE mode)
     float refAmp = CUR_RES.Ref_Amp[nGroupId_];
     switch (mode) {
     case setup_RL:
-        midx = pow(10.0, (CUR_RES.REF_Gain[nGroupId_] + CUR_RES.CurRL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0)*refAmp;
+        midx = pow(10.0, (CUR_RES.CurRL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0)*refAmp;
         break;
     case setup_EL:
-        midx = pow(10.0, (CUR_RES.REF_Gain[nGroupId_] + CUR_RES.CurEL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0)*refAmp;
+        midx = pow(10.0, (CUR_RES.CurEL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0)*refAmp;
         break;
     case setup_SL:
-        midx = pow(10.0, (CUR_RES.REF_Gain[nGroupId_] + CUR_RES.CurSL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0)*refAmp;
+        midx = pow(10.0, (CUR_RES.CurSL[nGroupId_] + CUR_RES.CurSS[nGroupId_])/20.0)*refAmp;
         break;
     default:
         break;
