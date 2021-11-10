@@ -15,6 +15,8 @@ InstrumentSettingWidget::InstrumentSettingWidget(QWidget *parent) :
 {
 	ui->setupUi(this);
     m_pConfig = DopplerConfigure::Instance();
+    ui->SliderCurrentScanPos->installEventFilter(this);
+
 	InitCommonConfig();
 }
 
@@ -262,6 +264,20 @@ void InstrumentSettingWidget::ResetEncoderSetting()
 	ParameterProcess* _process = ParameterProcess::Instance();
     int nEncoder = ui->ComEncoderTypeSetting->currentIndex();
     _process->SetupEncoderConfigure( nEncoder, &_encoder);
+}
+
+bool InstrumentSettingWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    if( watched == ui->SliderCurrentScanPos )
+    {
+        if( event->type() == QEvent::Wheel )
+        {
+            if (!ui->SliderCurrentScanPos->hasFocus()) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void InstrumentSettingWidget::on_ComScanType_currentIndexChanged(int index)

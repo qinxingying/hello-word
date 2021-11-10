@@ -37,6 +37,7 @@ protected:
     void UpdateScanRange() ;
     void ResetEncoderSetting();
 
+    bool eventFilter(QObject *watched, QEvent *event);
 private slots:
     void on_ComScanType_currentIndexChanged(int index);
     void on_ComEncoderType_currentIndexChanged(int index);
