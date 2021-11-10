@@ -2282,6 +2282,10 @@ void DopplerGroupTab::on_SpinBoxDepthCal_valueChanged(double)
 
 void DopplerGroupTab::on_BtnDepthCal_clicked()
 {
+    if (m_pGroup->eTravelMode == setup_TRAVEL_MODE_TIME) {
+        QMessageBox::information(this,tr("prompt"),tr("Please change travel mode to 'True Depth'!"));
+        return;
+    }
 	TOFD_PARA* _tofd = m_pConfig->GetTofdConfig(m_nGroupId);
 	_tofd->fDepthCal = ui->SpinBoxDepthCal->value();
 
