@@ -330,7 +330,7 @@ void AExportData::savePhaseReport(QString filePath, QString reportFormPath)
 
             QString angeleRange = QString::number(law.nAngleStartRefract / 10) + "~" + QString::number(law.nAngleStopRefract / 10);
             word.setBookmarkText("AngleRange", angeleRange);
-            word.setBookmarkText("AngleStep", QString::number(law.nAngleStepRefract));
+            word.setBookmarkText("AngleStep", QString::number(law.nAngleStepRefract / 10));
 
             if (law.eLawType == setup_LAW_TYPE_AZIMUTHAL) {
                 word.setBookmarkText("LawType", QString::fromLocal8Bit("扇形扫查"));
