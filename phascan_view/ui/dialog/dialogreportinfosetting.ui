@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>736</width>
-    <height>564</height>
+    <width>810</width>
+    <height>677</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,253 +15,305 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>30</number>
-     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="3,7">
      <item>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="ProjectName">
-         <property name="text">
-          <string>ProjectName</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="ProjectNameLine"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="clientlabel">
-         <property name="text">
-          <string>Client</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="ClientLine"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="specimenlabel">
-         <property name="text">
-          <string>SpecimenName</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="SpecimenNameLine"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="ReportNum">
-         <property name="text">
-          <string>ReportNum</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="ReportNumLine"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="SpecimenNum">
-         <property name="text">
-          <string>SpecimenNum</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="SpecimenNumLine">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="InspectionQuantity">
-         <property name="text">
-          <string>InspectionQuantity</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="InspectionQuantityLine"/>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="InspectionScale">
-         <property name="text">
-          <string>InspectionScale</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLineEdit" name="InspectionScaleLine"/>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="ConstructionOrganization">
-         <property name="text">
-          <string>ConstructionOrganization</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QLineEdit" name="ConstructionOrganizationLine"/>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="Specifications">
-         <property name="text">
-          <string>Specifications</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QLineEdit" name="SpecificationsLine"/>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="WeldingMethod">
-         <property name="text">
-          <string>WeldingMethod</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1">
-        <widget class="QLineEdit" name="WeldingMethodLine"/>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="SlopeType">
-         <property name="text">
-          <string>SlopeType</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <widget class="QLineEdit" name="SlopeTypeLine"/>
-       </item>
-      </layout>
+      <widget class="QListView" name="listView"/>
      </item>
      <item>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
-        <widget class="QLabel" name="HotDealingCondition">
-         <property name="text">
-          <string>HotDealingCondition</string>
-         </property>
-        </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>30</number>
+       </property>
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QLabel" name="ProjectName">
+           <property name="text">
+            <string>ProjectName</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="ProjectNameLine"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="clientlabel">
+           <property name="text">
+            <string>Client</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="ClientLine"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="specimenlabel">
+           <property name="text">
+            <string>SpecimenName</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="SpecimenNameLine"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="ReportNum">
+           <property name="text">
+            <string>ReportNum</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="ReportNumLine"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="SpecimenNum">
+           <property name="text">
+            <string>SpecimenNum</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="SpecimenNumLine">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="InspectionQuantity">
+           <property name="text">
+            <string>InspectionQuantity</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="InspectionQuantityLine"/>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="InspectionScale">
+           <property name="text">
+            <string>InspectionScale</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="InspectionScaleLine"/>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="ConstructionOrganization">
+           <property name="text">
+            <string>ConstructionOrganization</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QLineEdit" name="ConstructionOrganizationLine"/>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="Specifications">
+           <property name="text">
+            <string>Specifications</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QLineEdit" name="SpecificationsLine"/>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="WeldingMethod">
+           <property name="text">
+            <string>WeldingMethod</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QLineEdit" name="WeldingMethodLine"/>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="SlopeType">
+           <property name="text">
+            <string>SlopeType</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="QLineEdit" name="SlopeTypeLine"/>
+         </item>
+        </layout>
        </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="HotDealingConditionLine"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="TestSurface">
-         <property name="text">
-          <string>TestSurface</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="TestSurfaceLine"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="DetectionTime">
-         <property name="text">
-          <string>DetectionTime</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="DetectionTimeLine"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="OperationInstructionNum">
-         <property name="text">
-          <string>OperationInstructionNum</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="OperationInstructionNumLine"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="TestStandard">
-         <property name="text">
-          <string>TestStandard</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="TestStandardLine"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="AcceptanceStandard">
-         <property name="text">
-          <string>AcceptanceStandard</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="AcceptanceStandardLine"/>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="DetectionLevel">
-         <property name="text">
-          <string>DetectionLevel</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QLineEdit" name="DetectionLevelLine"/>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="AcceptanceLevel">
-         <property name="text">
-          <string>AcceptanceLevel</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QLineEdit" name="AcceptanceLevelLine"/>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="SurfaceCondition">
-         <property name="text">
-          <string>SurfaceCondition</string>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QLineEdit" name="SurfaceConditionLine"/>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="CalibrationBlock">
-         <property name="text">
-          <string>CalibrationBlock</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1">
-        <widget class="QLineEdit" name="CalibrationBlockLine"/>
-       </item>
-       <item row="10" column="0">
-        <widget class="QLabel" name="ProjectNameLine_13">
-         <property name="text">
-          <string>Couplant</string>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <widget class="QLineEdit" name="CouplantLine"/>
+       <item>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="HotDealingCondition">
+           <property name="text">
+            <string>HotDealingCondition</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="HotDealingConditionLine"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="TestSurface">
+           <property name="text">
+            <string>TestSurface</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="TestSurfaceLine"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="DetectionTime">
+           <property name="text">
+            <string>DetectionTime</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="DetectionTimeLine"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="OperationInstructionNum">
+           <property name="text">
+            <string>OperationInstructionNum</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="OperationInstructionNumLine"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="TestStandard">
+           <property name="text">
+            <string>TestStandard</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLineEdit" name="TestStandardLine"/>
+         </item>
+         <item row="5" column="0">
+          <widget class="QLabel" name="AcceptanceStandard">
+           <property name="text">
+            <string>AcceptanceStandard</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="1">
+          <widget class="QLineEdit" name="AcceptanceStandardLine"/>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="DetectionLevel">
+           <property name="text">
+            <string>DetectionLevel</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QLineEdit" name="DetectionLevelLine"/>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="AcceptanceLevel">
+           <property name="text">
+            <string>AcceptanceLevel</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QLineEdit" name="AcceptanceLevelLine"/>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="SurfaceCondition">
+           <property name="text">
+            <string>SurfaceCondition</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QLineEdit" name="SurfaceConditionLine"/>
+         </item>
+         <item row="9" column="0">
+          <widget class="QLabel" name="CalibrationBlock">
+           <property name="text">
+            <string>CalibrationBlock</string>
+           </property>
+          </widget>
+         </item>
+         <item row="9" column="1">
+          <widget class="QLineEdit" name="CalibrationBlockLine"/>
+         </item>
+         <item row="10" column="0">
+          <widget class="QLabel" name="ProjectNameLine_13">
+           <property name="text">
+            <string>Couplant</string>
+           </property>
+          </widget>
+         </item>
+         <item row="10" column="1">
+          <widget class="QLineEdit" name="CouplantLine"/>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="deleteBtn">
+       <property name="text">
+        <string>Delete</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="saveBtn">
+       <property name="text">
+        <string>Save</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="newBtn">
+       <property name="text">
+        <string>New</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="clearBtn">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

@@ -651,7 +651,6 @@ void DopplerConfigure::ReadDefectInfoFromDataFile()
     }
 
     QDir *_tmp = new QDir;
-    qDebug() << m_szDefectPathName;
     if(!_tmp->exists(m_szDefectPathName)) {
         _tmp->mkdir(m_szDefectPathName);
     }
