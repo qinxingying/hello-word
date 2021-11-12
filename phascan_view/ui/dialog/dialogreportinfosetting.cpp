@@ -7,6 +7,8 @@ DialogReportInfoSetting::DialogReportInfoSetting(QWidget *parent) :
     ui(new Ui::DialogReportInfoSetting)
 {
     ui->setupUi(this);
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Ok"));
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     m_model = new QFileSystemModel(this);
     QDir *tmp = new QDir;

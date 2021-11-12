@@ -692,114 +692,151 @@
         <translation>报表设置</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="27"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="32"/>
         <source>ProjectName</source>
         <translation>工程名称</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="37"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="42"/>
         <source>Client</source>
         <translation>委托单位</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="47"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="52"/>
         <source>SpecimenName</source>
         <translation>工件名称</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="57"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="62"/>
         <source>ReportNum</source>
         <translation>报告编号</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="67"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="72"/>
         <source>SpecimenNum</source>
         <translation>检件编号</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="81"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="86"/>
         <source>InspectionQuantity</source>
         <translation>检测数量</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="91"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="96"/>
         <source>InspectionScale</source>
         <translation>检测比例</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="101"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="106"/>
         <source>ConstructionOrganization</source>
         <translation>施工单位</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="111"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="116"/>
         <source>Specifications</source>
         <translation>规格</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="121"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="126"/>
         <source>WeldingMethod</source>
         <translation>焊接方法</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="131"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="136"/>
         <source>SlopeType</source>
         <translation>坡口型式</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="145"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="150"/>
         <source>HotDealingCondition</source>
         <translation>热处理状态</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="155"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="160"/>
         <source>TestSurface</source>
         <translation>检测面</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="165"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="170"/>
         <source>DetectionTime</source>
         <translation>检测时机</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="175"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="180"/>
         <source>OperationInstructionNum</source>
         <translation>操作指导书编号</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="185"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="190"/>
         <source>TestStandard</source>
         <translation>检测标准</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="195"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="200"/>
         <source>AcceptanceStandard</source>
         <translation>验收标准</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="205"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="210"/>
         <source>DetectionLevel</source>
         <translation>检测技术等级</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="215"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="220"/>
         <source>AcceptanceLevel</source>
         <translation>验收等级</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="225"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="230"/>
         <source>SurfaceCondition</source>
         <translation>表面状况</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="235"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="240"/>
         <source>CalibrationBlock</source>
         <translation>校准试块</translation>
     </message>
     <message>
-        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="245"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="250"/>
         <source>Couplant</source>
         <translation>耦合剂</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="268"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="275"/>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="282"/>
+        <source>New</source>
+        <translation>新建</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.ui" line="312"/>
+        <source>Clear</source>
+        <translation>清除</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.cpp" line="143"/>
+        <source>File name: </source>
+        <translation>文件名：</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.cpp" line="10"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.cpp" line="146"/>
+        <source>Ok</source>
+        <translation>确定</translation>
+    </message>
+    <message>
+        <location filename="../ui/dialog/dialogreportinfosetting.cpp" line="11"/>
+        <location filename="../ui/dialog/dialogreportinfosetting.cpp" line="147"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -1318,33 +1355,33 @@
         <translation type="vanished">普通钢</translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2145"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="2200"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2144"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2199"/>
         <source>/defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2250"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="2276"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2249"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2275"/>
         <source>/defectArea</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="2300"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2299"/>
         <source>DPL DEFECTS/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="674"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="693"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="2580"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="673"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="692"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2579"/>
         <source>/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../configure/DopplerConfigure.cpp" line="674"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="693"/>
-        <location filename="../configure/DopplerConfigure.cpp" line="2580"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="673"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="692"/>
+        <location filename="../configure/DopplerConfigure.cpp" line="2579"/>
         <source>.png</source>
         <translation type="unfinished"></translation>
     </message>
