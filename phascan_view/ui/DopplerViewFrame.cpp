@@ -93,6 +93,11 @@ void DopplerViewFrame::DropEventProcess(QDropEvent* event)
 		return ;
 	}
 
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+    GROUP_CONFIG& _group  = _pConfig->group[_nGroupId];
+    for(int j = 0; j <= setup_DISPLAY_MODE_S_LINEAR; j++){
+        _group.displaySize[j] = QSize(0,0);
+    }
     CreateDrawView(_nGroupId, _nId);
 }
 

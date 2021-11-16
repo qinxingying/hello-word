@@ -232,10 +232,25 @@ int ProcessDisplay::CreateViews_AH_BV(QWidget* pWidget_)
 	split->addWidget(_pView[1]) ;
 
 	//**************  set window sizes
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+
 	int _nHeight = pWidget_->width() ;
 	QList<int> _size ;
-	_size.append(_nHeight / 3);
-	_size.append(_nHeight - _nHeight / 3 - g_nSpliterWidth);
+    if (!_group.displaySize[setup_DISPLAY_MODE_A_H].isNull() && !_group.displaySize[setup_DISPLAY_MODE_B_V].isNull()) {
+        int h  = pWidget_->height() ;
+        int AH = _group.displaySize[setup_DISPLAY_MODE_A_H].height();
+        int BV = _group.displaySize[setup_DISPLAY_MODE_B_V].height();
+        if ((AH + BV) > h) {
+            _size.append(AH * h / (AH + BV));
+            _size.append(AH * h / (AH + BV) - g_nSpliterWidth);
+        } else {
+            _size.append(AH);
+            _size.append(BV);
+        }
+    } else {
+        _size.append(_nHeight / 3);
+        _size.append(_nHeight - _nHeight / 3 - g_nSpliterWidth);
+    }
 	split->setSizes(_size);
 	_layout->addWidget(split);
 	pWidget_->setLayout(_layout);
@@ -276,10 +291,24 @@ int ProcessDisplay::CreateViews_AV_BV(QWidget* pWidget_)
 	split->addWidget(_pView[1]) ;
 
 	//**************  set window sizes
+    GROUP_CONFIG& _group = m_pConfig->group[m_nGroupId];
+
 	int _nWidth = pWidget_->width() ;
 	QList<int> _size ;
-	_size.append(_nWidth / 3);
-	_size.append(_nWidth - _nWidth / 3 - g_nSpliterWidth);
+    if (!_group.displaySize[setup_DISPLAY_MODE_A_V].isNull() && !_group.displaySize[setup_DISPLAY_MODE_B_V].isNull()) {
+        int AV = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        int BV = _group.displaySize[setup_DISPLAY_MODE_B_V].width();
+        if ((AV + BV) > _nWidth) {
+            _size.append(AV * _nWidth / (AV + BV));
+            _size.append(AV * _nWidth / (AV + BV) - g_nSpliterWidth);
+        } else {
+            _size.append(AV);
+            _size.append(BV);
+        }
+    } else {
+        _size.append(_nWidth / 3);
+        _size.append(_nWidth - _nWidth / 3 - g_nSpliterWidth);
+    }
 	split->setSizes(_size);
 	_layout->addWidget(split);
 	pWidget_->setLayout(_layout);
@@ -362,16 +391,40 @@ int ProcessDisplay::CreateViews_S_AH(QWidget* pWidget_)
 	int _nHeight = pWidget_->height() ;
 	int _nHeightMin = _pView[0]->minimumHeight() ;
 	QList<int> _size ;
-	if(_nHeight > 3 * _nHeightMin)
-	{
-		_size.append(_nHeight- _nHeight /3 - g_nSpliterWidth);
-		_size.append(_nHeight / 3);
-	}
-	else
-	{
-		_size.append(_nHeight- _nHeightMin - g_nSpliterWidth);
-		_size.append(_nHeightMin );
-	}
+
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_H].isNull()) {
+        int SH = _group.displaySize[_eType].height();
+        int AH = _group.displaySize[setup_DISPLAY_MODE_A_H].height();
+        if ((SH + AH) > _nHeight) {
+            _size.append(SH * _nHeight / (SH + AH) - g_nSpliterWidth);
+            _size.append(AH * _nHeight / (SH + AH));
+        } else {
+            _size.append(SH);
+            _size.append(AH);
+        }
+    } else {
+        if(_nHeight > 3 * _nHeightMin)
+        {
+            _size.append(_nHeight- _nHeight /3 - g_nSpliterWidth);
+            _size.append(_nHeight / 3);
+        }
+        else
+        {
+            _size.append(_nHeight- _nHeightMin - g_nSpliterWidth);
+            _size.append(_nHeightMin );
+        }
+    }
 	split->setSizes(_size);
 	_layout->addWidget(split);
 	pWidget_->setLayout(_layout);
@@ -421,8 +474,31 @@ int ProcessDisplay::CreateViews_S_AV(QWidget* pWidget_)
 	//**************  set window sizes
 	int _nWidth = pWidget_->width() ;
 	QList<int> _size ;
-	_size.append(_nWidth- _nWidth /3 - g_nSpliterWidth);
-	_size.append(_nWidth / 3);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_V].isNull()) {
+        int S = _group.displaySize[_eType].width();
+        int A = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        if ((S + A) > _nWidth) {
+            _size.append(S * _nWidth / (S + A) - g_nSpliterWidth);
+            _size.append(A * _nWidth / (S + A));
+        } else {
+            _size.append(S);
+            _size.append(A);
+        }
+    } else {
+        _size.append(_nWidth- _nWidth /3 - g_nSpliterWidth);
+        _size.append(_nWidth / 3);
+    }
 	split->setSizes(_size);
 	_layout->addWidget(split);
 	pWidget_->setLayout(_layout);
@@ -663,18 +739,44 @@ int ProcessDisplay::CreateViews_S_AV_BV(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nWidthMin = _pView[0]->minimumWidth() ;
 	QList<int> _size ;
-	if(_nWidth > 4 * _nWidthMin)
-	{
-		_size.append( _nWidth - _nWidth / 4 - _nWidth/ 4 - g_nSpliterWidth * 2);
-		_size.append( _nWidth / 4);
-		_size.append( _nWidth / 4);
-	}
-	else
-	{
-		_size.append( _nWidth - _nWidthMin - _nWidthMin - g_nSpliterWidth * 2);
-		_size.append( _nWidthMin);
-		_size.append( _nWidthMin);
-	}
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_V].isNull() && !_group.displaySize[setup_DISPLAY_MODE_B_V].isNull()) {
+        int S = _group.displaySize[_eType].width();
+        int A = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        int B = _group.displaySize[setup_DISPLAY_MODE_B_V].width();
+        if ((S + A + B) > _nWidth) {
+            _size.append(S * _nWidth / (S + A + B)  - g_nSpliterWidth * 2);
+            _size.append(A * _nWidth / (S + A + B));
+            _size.append(B * _nWidth / (S + A + B));
+        } else {
+            _size.append(S);
+            _size.append(A);
+            _size.append(B);
+        }
+    } else {
+        if(_nWidth > 4 * _nWidthMin)
+        {
+            _size.append( _nWidth - _nWidth / 4 - _nWidth/ 4 - g_nSpliterWidth * 2);
+            _size.append( _nWidth / 4);
+            _size.append( _nWidth / 4);
+        }
+        else
+        {
+            _size.append( _nWidth - _nWidthMin - _nWidthMin - g_nSpliterWidth * 2);
+            _size.append( _nWidthMin);
+            _size.append( _nWidthMin);
+        }
+    }
 
 	split->setSizes(_size);
 	split->setCollapsible(0 , false);
@@ -743,13 +845,49 @@ int ProcessDisplay::CreateViews_S_AV_BH(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nHeight = pWidget_->height() ;
 	QList<int> _size ;
-	_size.append(_nWidth * 2/ 3);
-	_size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
-	split[1]->setSizes(_size);
-	_size.clear();
-	_size.append(_nHeight * 2 / 3);
-	_size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
-	split[0]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_B_H].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_A_V].isNull()) {
+        int SH = _group.displaySize[_eType].height();
+        int SW = _group.displaySize[_eType].height();
+        int A = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        int B = _group.displaySize[setup_DISPLAY_MODE_B_H].height();
+        if ((SH + B) > _nHeight || (SW + A) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + B));
+            _size.append(B * _nHeight / (SH + B) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + A));
+            _size.append(A * _nWidth / (SW + A) - g_nSpliterWidth);
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SH);
+            _size.append(B);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW);
+            _size.append(A);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth * 2/ 3);
+        _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight * 2 / 3);
+        _size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+    }
 	//**************  set window sizes
 	split[0]->setCollapsible(0 , false);
 	split[0]->setCollapsible(1 , false);
@@ -818,13 +956,49 @@ int ProcessDisplay::CreateViews_S_AH_BV(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nHeight = pWidget_->height() ;
 	QList<int> _size ;
-	_size.append(_nWidth * 2/ 3);
-	_size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
-	split[0]->setSizes(_size);
-	_size.clear();
-	_size.append(_nHeight * 2 / 3);
-	_size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
-	split[1]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_H].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_B_V].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int A = _group.displaySize[setup_DISPLAY_MODE_A_H].height();
+        int B = _group.displaySize[setup_DISPLAY_MODE_B_V].width();
+        if ((SH + A) > _nHeight || (SW + B) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + A));
+            _size.append(A * _nHeight / (SH + A) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + B));
+            _size.append(B * _nWidth / (SW + B) - g_nSpliterWidth);
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SH);
+            _size.append(A);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW);
+            _size.append(B);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth * 2/ 3);
+        _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight * 2 / 3);
+        _size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+    }
 	//**************  set window sizes
 	split[0]->setCollapsible(0 , false);
 	split[0]->setCollapsible(1 , false);
@@ -893,14 +1067,53 @@ int ProcessDisplay::CreateViews_S_AV_BH_CH(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nHeight = pWidget_->height() ;
 	QList<int> _size ;
-	_size.append(_nWidth * 2/ 3);
-	_size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
-	split[0]->setSizes(_size);
-	_size.clear();
-	_size.append(_nHeight / 2);
-	_size.append(_nHeight / 4);
-	_size.append(_nHeight - _nHeight / 2 - _nHeight / 4 - g_nSpliterWidth);
-	split[1]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_B_V].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_C_H].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_V].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int A = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        int B = _group.displaySize[setup_DISPLAY_MODE_B_V].height();
+        int C = _group.displaySize[setup_DISPLAY_MODE_C_H].height();
+        if ((SH + B + C) > _nHeight || (SW + A) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + B + C));
+            _size.append(B * _nHeight / (SH + B + C));
+            _size.append(C * _nHeight / (SH + B + C) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + A));
+            _size.append(A * _nWidth / (SW + A) - g_nSpliterWidth);
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SH);
+            _size.append(B);
+            _size.append(C);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW);
+            _size.append(A);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth * 2/ 3);
+        _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight / 2);
+        _size.append(_nHeight / 4);
+        _size.append(_nHeight - _nHeight / 2 - _nHeight / 4 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+    }
 	//**************  set window sizes
 	split[0]->setCollapsible(0 , false);
 	split[0]->setCollapsible(1 , false);
@@ -977,17 +1190,64 @@ int ProcessDisplay::CreateViews_S_AH_BH_CH(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nHeight = pWidget_->height() ;
 	QList<int> _size ;
-	_size.append(_nHeight * 3 / 4);
-	_size.append(_nHeight - _nHeight * 3 / 4 - g_nSpliterWidth);
-	split[0]->setSizes(_size);
-	_size.clear();
-	_size.append(_nHeight / 4);
-	_size.append(_nHeight - _nHeight / 4 - 2 * g_nSpliterWidth);
-	split[2]->setSizes(_size);
-	_size.clear();
-	_size.append(_nWidth / 2);
-	_size.append(_nWidth - _nWidth /2 -g_nSpliterWidth);
-	split[1]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_H].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_B_H].isNull() && !_group.displaySize[setup_DISPLAY_MODE_C_H].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int AH = _group.displaySize[setup_DISPLAY_MODE_A_H].height();
+        //int AW = _group.displaySize[setup_DISPLAY_MODE_A_H].height();
+        int BH = _group.displaySize[setup_DISPLAY_MODE_B_H].height();
+        int BW = _group.displaySize[setup_DISPLAY_MODE_B_H].width();
+        int C = _group.displaySize[setup_DISPLAY_MODE_C_H].height();
+        if ((SH + C) > _nHeight || (SW + BW) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + C));
+            _size.append(C * _nHeight / (SH + C) - g_nSpliterWidth);
+            split[0]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + BW));
+            _size.append(BW * _nWidth / (SW + BW) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(AH * _nHeight / (SH + C));
+            _size.append(BH * _nHeight / (SH + C) - 2 * g_nSpliterWidth);
+            split[2]->setSizes(_size);
+        } else {
+            _size.append(SW);
+            _size.append(BW);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(AH);
+            _size.append(BH);
+            split[2]->setSizes(_size);
+            _size.clear();
+            _size.append(SH);
+            _size.append(C);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nHeight * 3 / 4);
+        _size.append(_nHeight - _nHeight * 3 / 4 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight / 4);
+        _size.append(_nHeight - _nHeight / 4 - 2 * g_nSpliterWidth);
+        split[2]->setSizes(_size);
+        _size.clear();
+        _size.append(_nWidth / 2);
+        _size.append(_nWidth - _nWidth /2 -g_nSpliterWidth);
+        split[1]->setSizes(_size);
+    }
 	//**************  set window sizes
 	split[0]->setCollapsible(0 , false);
 	split[0]->setCollapsible(1 , false);
@@ -1060,14 +1320,53 @@ int ProcessDisplay::CreateViews_S_AH_BH_CV(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nHeight = pWidget_->height() ;
 	QList<int> _size ;
-	_size.append(_nWidth * 2/ 3);
-	_size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
-	split[0]->setSizes(_size);
-	_size.clear();
-	_size.append(_nHeight / 2);
-	_size.append(_nHeight / 4);
-	_size.append(_nHeight - _nHeight / 2 - _nHeight / 4 - g_nSpliterWidth);
-	split[1]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_H].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_B_H].isNull() && !_group.displaySize[setup_DISPLAY_MODE_C_V].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int AH = _group.displaySize[setup_DISPLAY_MODE_A_H].height();
+        int BH = _group.displaySize[setup_DISPLAY_MODE_B_H].height();
+        int C = _group.displaySize[setup_DISPLAY_MODE_C_V].width();
+        if ((SH + AH + BH) > _nHeight || (SW + C) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + AH + BH));
+            _size.append(AH * _nHeight / (SH + AH + BH));
+            _size.append(BH * _nHeight / (SH + AH + BH) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + C));
+            _size.append(C * _nWidth / (SW + C) - g_nSpliterWidth);
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SH);
+            _size.append(AH);
+            _size.append(BH);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW);
+            _size.append(C);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth * 2/ 3);
+        _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight / 2);
+        _size.append(_nHeight / 4);
+        _size.append(_nHeight - _nHeight / 2 - _nHeight / 4 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+    }
 	//**************  set window sizes
 	split[0]->setCollapsible(0 , false);
 	split[0]->setCollapsible(1 , false);
@@ -1136,13 +1435,49 @@ int ProcessDisplay::CreateViews_S_AV_CH(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nHeight = pWidget_->height() ;
 	QList<int> _size ;
-	_size.append(_nWidth * 2/ 3);
-	_size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
-	split[1]->setSizes(_size);
-	_size.clear();
-	_size.append(_nHeight * 2 / 3);
-	_size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
-	split[0]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_C_H].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_A_V].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int AW = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        int C = _group.displaySize[setup_DISPLAY_MODE_C_H].height();
+        if ((SH + C) > _nHeight || (SW + AW) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + C));
+            _size.append(C * _nHeight / (SH + C) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + AW));
+            _size.append(AW * _nWidth / (SW + AW) - g_nSpliterWidth);
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SH);
+            _size.append(C);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW);
+            _size.append(AW);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth * 2/ 3);
+        _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight * 2 / 3);
+        _size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+    }
 	//**************  set window sizes
 	split[0]->setCollapsible(0 , false);
 	split[0]->setCollapsible(1 , false);
@@ -1209,13 +1544,49 @@ int ProcessDisplay::CreateViews_S_AH_CV(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nHeight = pWidget_->height() ;
 	QList<int> _size ;
-	_size.append(_nWidth * 2/ 3);
-	_size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
-	split[1]->setSizes(_size);
-	_size.clear();
-	_size.append(_nHeight * 2 / 3);
-	_size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
-	split[0]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_C_V].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_A_H].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int AH = _group.displaySize[setup_DISPLAY_MODE_A_H].height();
+        int C = _group.displaySize[setup_DISPLAY_MODE_C_V].width();
+        if ((SH + AH) > _nHeight || (SW + C) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + AH));
+            _size.append(AH * _nHeight / (SH + AH) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + C));
+            _size.append(C * _nWidth / (SW + C) - g_nSpliterWidth);
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SH);
+            _size.append(AH);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW);
+            _size.append(C);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth * 2/ 3);
+        _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight * 2 / 3);
+        _size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+    }
 	//**************  set window sizes
 	split[0]->setCollapsible(0 , false);
 	split[0]->setCollapsible(1 , false);
@@ -1285,14 +1656,53 @@ int ProcessDisplay::CreateViews_S_AV_CH_CH(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nHeight = pWidget_->height() ;
 	QList<int> _size ;
-	_size.append(_nWidth * 2/ 3);
-	_size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
-	split[0]->setSizes(_size);
-	_size.clear();
-	_size.append(_nHeight / 2);
-	_size.append(_nHeight / 4);
-	_size.append(_nHeight - _nHeight / 2 - _nHeight / 4 - g_nSpliterWidth);
-	split[1]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_C_H].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_CC_H].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_V].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int AW = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        int CH = _group.displaySize[setup_DISPLAY_MODE_C_H].height();
+        int CCH = _group.displaySize[setup_DISPLAY_MODE_CC_H].height();
+        if ((SH + CH + CCH) > _nHeight || (SW + AW) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + CH + CCH));
+            _size.append(CH * _nHeight / (SH + CH + CCH));
+            _size.append(CCH * _nHeight / (SH + CH + CCH) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + AW));
+            _size.append(AW * _nWidth / (SW + AW) - g_nSpliterWidth);
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SH);
+            _size.append(CH);
+            _size.append(CCH);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW);
+            _size.append(AW);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth * 2/ 3);
+        _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight / 2);
+        _size.append(_nHeight / 4);
+        _size.append(_nHeight - _nHeight / 2 - _nHeight / 4 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+    }
 	//**************  set window sizes
 	split[0]->setCollapsible(0 , false);
 	split[0]->setCollapsible(1 , false);
@@ -1368,14 +1778,53 @@ int ProcessDisplay::CreateViews_S_AH_CV_CV(QWidget* pWidget_)
 	int _nWidth  = pWidget_->width()  ;
 	int _nHeight = pWidget_->height() ;
 	QList<int> _size ;
-	_size.append(_nWidth / 2);
-	_size.append(_nWidth / 4);
-	_size.append(_nWidth - _nWidth / 2 - _nWidth / 4 - 2 * g_nSpliterWidth);
-	split[0]->setSizes(_size);
-	_size.clear();
-	_size.append(_nHeight * 2 / 3);
-	_size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
-	split[1]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_H].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_C_V].isNull() && !_group.displaySize[setup_DISPLAY_MODE_CC_V].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int AH = _group.displaySize[setup_DISPLAY_MODE_A_H].height();
+        int CW = _group.displaySize[setup_DISPLAY_MODE_C_V].width();
+        int CCW = _group.displaySize[setup_DISPLAY_MODE_CC_V].width();
+        if ((SH + AH) > _nHeight || (SW + CW + CCW) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + AH));
+            _size.append(AH * _nHeight / (SH + AH) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + CW + CCW));
+            _size.append(CW * _nWidth / (SW + CW + CCW));
+            _size.append(CCW * _nWidth / (SW + CW + CCW) - 2 * g_nSpliterWidth);
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SH);
+            _size.append(AH);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW);
+            _size.append(CW);
+            _size.append(CCW);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth / 2);
+        _size.append(_nWidth / 4);
+        _size.append(_nWidth - _nWidth / 2 - _nWidth / 4 - 2 * g_nSpliterWidth);
+        split[0]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight * 2 / 3);
+        _size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+    }
 	//**************  set window sizes
 	split[0]->setCollapsible(0 , false);
 	split[0]->setCollapsible(1 , false);
@@ -1451,14 +1900,53 @@ int ProcessDisplay::CreateViews_S_AV_CH_BH(QWidget* pWidget_)
     int _nWidth  = pWidget_->width()  ;
     int _nHeight = pWidget_->height() ;
     QList<int> _size ;
-    _size.append(_nWidth * 2 / 3);
-    _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
-    split[0]->setSizes(_size);
-    _size.clear();
-    _size.append(_nHeight / 2);
-    _size.append(_nHeight / 4);
-    _size.append(_nHeight - _nHeight / 2 - _nHeight / 4 - g_nSpliterWidth);
-    split[1]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_V].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_C_H].isNull() && !_group.displaySize[setup_DISPLAY_MODE_B_V].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int AW = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        int CH = _group.displaySize[setup_DISPLAY_MODE_C_H].height();
+        int BH = _group.displaySize[setup_DISPLAY_MODE_B_V].height();
+        if ((SH + CH + BH) > _nHeight || (SW + AW) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + CH + BH));
+            _size.append(CH * _nHeight / (SH + CH + BH));
+            _size.append(BH * _nHeight / (SH + CH + BH) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + AW));
+            _size.append(AW * _nWidth / (SW + AW - g_nSpliterWidth));
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SW);
+            _size.append(AW);
+            split[0]->setSizes(_size);
+            _size.clear();
+            _size.append(SH);
+            _size.append(CH);
+            _size.append(BH);
+            split[1]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth * 2 / 3);
+        _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight / 2);
+        _size.append(_nHeight / 4);
+        _size.append(_nHeight - _nHeight / 2 - _nHeight / 4 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+    }
     //**************  set window sizes
     split[0]->setCollapsible(0 , false);
     split[0]->setCollapsible(1 , false);
@@ -1532,13 +2020,49 @@ int ProcessDisplay::CreateViews_S_AV_CH_N(QWidget* pWidget_)
     int _nWidth  = pWidget_->width()  ;
     int _nHeight = pWidget_->height() ;
     QList<int> _size ;
-    _size.append(_nWidth * 2 / 3);
-    _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
-    split[0]->setSizes(_size);
-    _size.clear();
-    _size.append(_nHeight * 2 / 3);
-    _size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
-    split[1]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
+
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_V].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_C_H].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int AW = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        int CH = _group.displaySize[setup_DISPLAY_MODE_C_H].height();
+        if ((SH + CH) > _nHeight || (SW + AW) > _nWidth) {
+            _size.append(SH * _nHeight / (SH + CH));
+            _size.append(CH * _nHeight / (SH + CH) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(SW * _nWidth / (SW + AW));
+            _size.append(AW * _nWidth / (SW + AW - g_nSpliterWidth));
+            split[0]->setSizes(_size);
+        } else {
+            _size.append(SW);
+            _size.append(AW);
+            split[0]->setSizes(_size);
+            _size.clear();
+            _size.append(SH);
+            _size.append(CH);
+            split[1]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nWidth * 2 / 3);
+        _size.append(_nWidth - _nWidth * 2 / 3 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+        _size.clear();
+        _size.append(_nHeight * 2 / 3);
+        _size.append(_nHeight - _nHeight * 2 / 3 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+    }
     //**************  set window sizes
     split[0]->setCollapsible(0 , false);
     split[0]->setCollapsible(1 , false);
@@ -1607,15 +2131,61 @@ int ProcessDisplay::CreateViews_S_AV_BH_CHH(QWidget* pWidget_)
     int _nWidth  = pWidget_->width()  ;
     int _nHeight = pWidget_->height() ;
     QList<int> _size ;
-    _size.append(_nHeight / 2);
-    _size.append(_nHeight - _nHeight / 2 - g_nSpliterWidth);
-    split[0]->setSizes(_size);
-    _size.clear();
-    _size.append(_nWidth * 2 / 3);
-    _size.append(_nWidth - _nWidth  * 2 / 3 - g_nSpliterWidth);
-    split[1]->setSizes(_size);
-    split[2]->setSizes(_size);
+    setup_DISPLAY_MODE _eType ;
+    if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH)
+    {
+        if(_group.law.eLawType == setup_LAW_TYPE_AZIMUTHAL)
+            _eType = setup_DISPLAY_MODE_S_ATHUMIZ  ;
+        else
+            _eType = setup_DISPLAY_MODE_S_LINEAR  ;
+    }
+    else
+        _eType = setup_DISPLAY_MODE_S_SOUNDPATH ;
 
+    if (!_group.displaySize[_eType].isNull() && !_group.displaySize[setup_DISPLAY_MODE_A_V].isNull()
+            && !_group.displaySize[setup_DISPLAY_MODE_C_H].isNull() && !_group.displaySize[setup_DISPLAY_MODE_B_V].isNull()) {
+        int SW = _group.displaySize[_eType].width();
+        int SH = _group.displaySize[_eType].height();
+        int AW = _group.displaySize[setup_DISPLAY_MODE_A_V].width();
+        int CH = _group.displaySize[setup_DISPLAY_MODE_C_H].height();
+        int CW = _group.displaySize[setup_DISPLAY_MODE_C_H].width();
+        int BH = _group.displaySize[setup_DISPLAY_MODE_B_V].height();
+        int BW = _group.displaySize[setup_DISPLAY_MODE_B_V].width();
+        if ((CH + BH) > _nHeight || (SW + CW) > _nWidth) {
+            _size.append(CH * _nHeight / (CH + BH));
+            _size.append(BH * _nHeight / (CH + BH) - g_nSpliterWidth);
+            split[0]->setSizes(_size);
+            _size.clear();
+            _size.append(CW * _nWidth / (SW + CW));
+            _size.append(SW * _nWidth / (SW + CW) - g_nSpliterWidth);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(BW * _nWidth / (AW + BW));
+            _size.append(AW * _nWidth / (AW + BW) - g_nSpliterWidth);
+            split[2]->setSizes(_size);
+        } else {
+            _size.append(CW);
+            _size.append(SW);
+            split[1]->setSizes(_size);
+            _size.clear();
+            _size.append(BW);
+            _size.append(AW);
+            split[2]->setSizes(_size);
+            _size.clear();
+            _size.append(CH);
+            _size.append(BH);
+            split[0]->setSizes(_size);
+        }
+    } else {
+        _size.append(_nHeight / 2);
+        _size.append(_nHeight - _nHeight / 2 - g_nSpliterWidth);
+        split[0]->setSizes(_size);
+        _size.clear();
+        _size.append(_nWidth * 2 / 3);
+        _size.append(_nWidth - _nWidth  * 2 / 3 - g_nSpliterWidth);
+        split[1]->setSizes(_size);
+        split[2]->setSizes(_size);
+    }
     //**************  set window sizes
     split[0]->setCollapsible(0 , false);
     split[0]->setCollapsible(1 , false);

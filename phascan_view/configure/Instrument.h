@@ -7,6 +7,7 @@
 #define INSTRUMENT_H
 
 #include "const.h"
+#include <QSize>
 
 enum setup_LANG
 {
@@ -860,7 +861,7 @@ typedef struct _Group
     RASTER_DATA             RasterData;
     STORE_SCAN_LAWID        storeScanLawId;
 
-
+    QSize                   displaySize[setup_DISPLAY_MODE_S_LINEAR + 1];
 }GROUP_CONFIG;
 //####################################################################################
 //#################				 COMMON DATA			 ######################

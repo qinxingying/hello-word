@@ -2915,6 +2915,12 @@ void MainWindow::on_actionSavePreferences_triggered()
         file.open(QIODevice::WriteOnly);
         QDataStream write(&file);
         write.writeRawData((char*)&buff, sizeof(DISPLAY_CONFIG));
+        for( int i = 0; i < _pConfig->common.nGroupQty; i++){
+            GROUP_CONFIG& _group  = _pConfig->group[i];
+            for(int j = 0; j <= setup_DISPLAY_MODE_S_LINEAR; j++){
+                write << _group.displaySize[j];
+            }
+        }
         file.close();
     }
 }
@@ -2972,6 +2978,13 @@ void MainWindow::on_actionLoadPreferences_triggered()
             _group.bShowGateI           = buff.bShowGateI[i] ;
             _group.TopCInfo.TOPCStatus  = buff.bTOPCStatus[i];
             _group.TopCInfo.TOPCWidth   = buff.TOPCWidth[i]  ;
+        }
+
+        for( int i = 0; i < _nGroupQty; i++){
+            GROUP_CONFIG& _group  = _pConfig->group[i];
+            for(int j = 0; j <= setup_DISPLAY_MODE_S_LINEAR; j++){
+                reader >> _group.displaySize[j];
+            }
         }
 
         for(int i = 0; i < _nGroupQty; i++){
@@ -3055,6 +3068,13 @@ void MainWindow::on_actionLoadRecommendedSettings_triggered()
         _group.bShowGateB           = false;
         _group.bShowGateI           = false;
         _group.TopCInfo.TOPCStatus  = _pConfig->AppEvn.bTopCStatus[i];
+    }
+
+    for( int i = 0; i < _nGroupQty; i++){
+        GROUP_CONFIG& _group  = _pConfig->group[i];
+        for(int j = 0; j <= setup_DISPLAY_MODE_S_LINEAR; j++){
+            _group.displaySize[j] = QSize(0,0);
+        }
     }
 
     for(int i = 0; i < _nGroupQty; i++){

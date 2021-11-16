@@ -767,6 +767,8 @@ void DopplerDataView::resizeEvent(QResizeEvent *event)
 void DopplerDataView::paintEvent(QPaintEvent* event)
 {
 	QWidget::paintEvent(event) ;
+    DopplerConfigure* _pConfig = DopplerConfigure::Instance() ;
+    _pConfig->group[m_nGroupId].displaySize[m_eDisplayMode] = this->size();
 }
 
 //void DopplerDataView::slotViewMouseRelease(QMouseEvent *event)
