@@ -74,6 +74,7 @@ void DopplerDrawSScanTrueDepth::UpdateDrawInfo()
 
 void DopplerDrawSScanTrueDepth::Draw (QImage *pImage_)
 {
+    if (pImage_->isNull()) return;
     int _nHeight	  = pImage_->height();
     int _nWidth	   = pImage_->width();
 
@@ -120,6 +121,7 @@ void DopplerDrawSScanTrueDepth::CreateMatrixBuff()
 	ReleaseMatrixBuff();
 
 	int _nSize = m_nWidth * m_nHeight  ;
+    qDebug("%s:[%s](%d), %d", __FILE__,__FUNCTION__,__LINE__, _nSize);
 
 	m_pDraw       =  (U8*)malloc(_nSize);
 	m_pAngleZoom  =  (U8*)malloc(_nSize);
@@ -643,12 +645,6 @@ void DopplerDrawSScanTrueDepth::DrawPixbuff(QImage* pImage_)
            m_xoffset= 0;
         }
        /*****************1:1比例显示*************/
-         Img2.resize(m_nHeight);//设置向量行-高
-         for(int j=0;j<Img2.size();j++)
-         {
-             Img2[j].resize(m_nWidth);//设置向量列-宽
-         }
-
          m_tempdata.resize(m_nHeight);//行-高
          for(int j=0;j<m_tempdata.size();j++)
          {

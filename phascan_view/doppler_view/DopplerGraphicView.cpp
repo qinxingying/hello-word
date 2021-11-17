@@ -562,6 +562,8 @@ void DopplerGraphicView::resizeEvent(QResizeEvent *event)
         }
 	}
 	_pParent->GetItemGroup()->UpdateItemsLawMarker();
+
+    m_bZoom  = false;
 	//***重绘画图区*********
 	//UpdateDrawing();
 }
@@ -1861,7 +1863,6 @@ void DopplerGraphicView::zoomAction(QRect rect_)
 	if(abs(rect_.height()) > 50 && abs(rect_.width()) > 50 )
 	{
         m_cZoomRect = mapToScene(rect_).boundingRect().toRect();
-		m_bZoom     = true;
 
         QSize _size = size();
 
@@ -1870,6 +1871,16 @@ void DopplerGraphicView::zoomAction(QRect rect_)
         //QRect sceneRect = mapToScene(rect_);
 		double _nScaleX = ((double)_size.width()) / rect_.width() ;
 		double _nScaleY =  ((double)_size.height()) / rect_.height() ;
+        QSize tmp = QSize( _size.width()*_nScaleX, _size.height()*_nScaleY);
+        QImage* pImage = new QImage(tmp , DPL_BASE_IMAGE_FORMATE) ;
+        if (pImage->isNull()) {
+            return;
+        } else {
+            delete pImage ;
+        }
+        if (tmp.width() * tmp.height() > 6000 * 6000) {
+            return;
+        }
         //qDebug()<<"_nScaleX"<<_nScaleX<<"_nScaleY"<<_nScaleY;
 		//_nScaleX = ((int)(_nScaleX * 100 )) / 100.0  ;
 		//_nScaleY = ((int)(_nScaleY * 100 )) / 100.0  ;
@@ -1880,7 +1891,7 @@ void DopplerGraphicView::zoomAction(QRect rect_)
 
         SetupMatrixScale(fabs(_nScaleX) , fabs(_nScaleY));
 
-
+        m_bZoom     = true;
 	}
 
 }
