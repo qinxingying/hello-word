@@ -278,6 +278,12 @@ void DopplerConfigure::OpenEvn()
     //AppEvn.bSAxisCursorSync		= false;
 	AppEvn.bRegStatus = false;
 
+    for( int i = 0; i < ENV_MAX_GROUP_QTY; i++){
+        GROUP_CONFIG& _group  = group[i];
+        for(int j = 0; j <= setup_DISPLAY_MODE_S_LINEAR; j++){
+            reader >> _group.displaySize[j];
+        }
+    }
 	file.close();
 }
 
@@ -285,16 +291,6 @@ void DopplerConfigure::SaveEvn()
 {
 	for(int i = 0 ; i < common.nGroupQty ; i++)
 	{
-//		if(group[i].eGroupMode == setup_GROUP_MODE_PA )
-//		{
-//            for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
-//                AppEvn.anMeasureSelection[0][j] = group[i].aeMeasureType[j];
-//            }
-//        }else{
-//            for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
-//                AppEvn.anMeasureSelection[1][j] = group[i].aeMeasureType[j];
-//            }
-//		}
         for( int j = 0; j < setup_MAX_MEASURE_QTY; j++){
             AppEvn.anMeasureSelection[i][j] = group[i].aeMeasureType[j];
         }
@@ -343,6 +339,13 @@ void DopplerConfigure::SaveEvn()
 	file.open (QIODevice::WriteOnly);
 	QDataStream write(&file);
     write.writeRawData((char*)&AppEvn, sizeof(SYSTEM_ENVIRMENT));
+
+    for( int i = 0; i < common.nGroupQty; i++){
+        GROUP_CONFIG& _group  = group[i];
+        for(int j = 0; j <= setup_DISPLAY_MODE_S_LINEAR; j++){
+            write << _group.displaySize[j];
+        }
+    }
     file.close();
 }
 
