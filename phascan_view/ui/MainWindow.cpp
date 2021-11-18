@@ -1400,6 +1400,7 @@ void MainWindow::updateAllDefectBox()
             _pLeftGroup->UpdateDefectValue();
         }
     }
+    ui->IndicationTable->updateDefectTable();
 }
 
 void MainWindow::DefectSign(DEFECT_SIGN_TYPE signType_)
@@ -1407,27 +1408,15 @@ void MainWindow::DefectSign(DEFECT_SIGN_TYPE signType_)
     DopplerConfigure* _pConfig =  DopplerConfigure::Instance();
     int _ret = _pConfig->DefectSign(m_iCurGroup, signType_);
 
+    if(_ret == 3) {
+        updateAllDefectBox();
+    }
     if(_ret >= 0 && !_pConfig->common.bDefectIdentifyStatus) {
         if(_ret == 3) {
             ProcessDisplay _process;
-            //GROUP_CONFIG* _pGroup = &_pConfig->group[m_iCurGroup];
-            //DopplerGroupTab* _pLeftGroup = (DopplerGroupTab*)ui->TabWidget_parameter->widget(m_iCurGroup);
-//            DopplerGroupTab* _pLeftGroup;
-//            for(int i = 0; i < _pConfig->common.nGroupQty; i++){
-//                _pLeftGroup = qobject_cast<DopplerGroupTab*>(ui->TabWidget_parameter->widget(i));
-//                if(_pLeftGroup){
-//                    _pLeftGroup->UpdateDefectBox();
-//                    _pLeftGroup->UpdateDefectValue();
-//                }
-//            }
-            updateAllDefectBox();
-
             int _index = _pConfig->m_dfParam[m_iCurGroup].index;
-            //bool _bTmp = _pGroup->bShowDefect;
-            //_pGroup->bShowDefect = false;
             _pConfig->m_nCutBmpNo[m_iCurGroup] = _index+1;
             _process.UpdateAllViewCursorOfGroup(m_iCurGroup);
-            //RunDrawThreadOnce(true);
             sleep(400);
 
             DEFECT_INFO* _pDfInfo = _pConfig->GetDefectPointer(m_iCurGroup, _index);
@@ -2278,7 +2267,7 @@ void MainWindow::slotModifyDefect(int groupId, DEFECT_INFO &defect)
     }
     DefectSign(DEFECT_SIGN_SAVE);
     group.storeScanLawId.status = false;
-    ui->IndicationTable->updateDefectTable();
+//    ui->IndicationTable->updateDefectTable();
 }
 
 /**
@@ -2806,7 +2795,7 @@ void MainWindow::on_actionSave_Defect_triggered()
     }
     DefectSign(DEFECT_SIGN_SAVE);
     _group.storeScanLawId.status = false;
-    ui->IndicationTable->updateDefectTable();
+//    ui->IndicationTable->updateDefectTable();
 }
 
 void MainWindow::on_actionLanguage_triggered()
