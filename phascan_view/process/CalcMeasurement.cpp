@@ -630,8 +630,8 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
         break;
     case FEILD_RL :
     {
-        int midy = _process->GetDetermineThreshold( nGroupId_, setup_RL);
-        if(midy == 0){
+        float midy = _process->GetDetermineThreshold( nGroupId_, setup_RL);
+        if(qFuzzyIsNull(midy)){
             ret = 1;
             break;
         }
@@ -642,8 +642,8 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
     }
     case FEILD_SL :
     {
-        int midy = _process->GetDetermineThreshold( nGroupId_, setup_SL);
-        if(midy == 0){
+        float midy = _process->GetDetermineThreshold( nGroupId_, setup_SL);
+        if(qFuzzyIsNull(midy)){
             ret = 1;
             break;
         }
@@ -655,8 +655,8 @@ int CalcMeasurement::Calc(int nGroupId_ ,int nLaw_ , FEILD_VALUE_INDEX eIndex_ ,
     }
     case FEILD_EL :
     {
-        int midy = _process->GetDetermineThreshold( nGroupId_, setup_EL);
-        if(midy == 0){
+        float midy = _process->GetDetermineThreshold( nGroupId_, setup_EL);
+        if(qFuzzyIsNull(midy)){
             ret = 1;
             break;
         }
