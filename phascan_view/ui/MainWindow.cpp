@@ -203,7 +203,6 @@ void MainWindow::init_ui()
     //m_nLawIdSel  = 0;
     m_nAlloff	 = 0;
     m_bCursorSel = true;
-    m_bParamBackMode = false;
     m_bDefectBackMode = false;
     SetDispTabText();
 
@@ -2854,6 +2853,7 @@ void MainWindow::on_actionSavePreferences_triggered()
             buff.bShowBScanMeasure[i] = _group.bShowBScanMeasure;
             buff.bShowCScanMeasure[i] = _group.bShowCScanMeasure;
             buff.bShowSScanMeasure[i] = _group.bShowSScanMeasure;
+            buff.bShowParamBack[i]    = _group.bShowParamBack;
 
             buff.bShowGateA[i]        = _group.bShowGateA;
             buff.bShowGateB[i]        = _group.bShowGateB;
@@ -2878,6 +2878,7 @@ void MainWindow::on_actionSavePreferences_triggered()
             buff.bShowBScanMeasure[i] = true;
             buff.bShowCScanMeasure[i] = true;
             buff.bShowSScanMeasure[i] = true;
+            buff.bShowParamBack[i]    = false;
             buff.anMeasureSelection[i][0]  = FEILD_A100;
             buff.anMeasureSelection[i][1]  = FEILD_DA;
             buff.anMeasureSelection[i][2]  = FEILD_ViA;
@@ -2961,6 +2962,7 @@ void MainWindow::on_actionLoadPreferences_triggered()
             _group.bShowBScanMeasure = buff.bShowBScanMeasure[i];
             _group.bShowCScanMeasure = buff.bShowCScanMeasure[i];
             _group.bShowSScanMeasure = buff.bShowSScanMeasure[i];
+            _group.bShowParamBack    = buff.bShowParamBack[i];
 
             _group.bShowGateA           = buff.bShowGateA[i] ;
             _group.bShowGateB           = buff.bShowGateB[i] ;
@@ -3052,6 +3054,7 @@ void MainWindow::on_actionLoadRecommendedSettings_triggered()
         _group.bShowBScanMeasure = false;
         _group.bShowCScanMeasure = false;
         _group.bShowSScanMeasure = true;
+        _group.bShowParamBack    = false;
 
         _group.bShowGateA           = true;
         _group.bShowGateB           = false;

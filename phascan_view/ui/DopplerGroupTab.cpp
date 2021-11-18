@@ -1295,7 +1295,7 @@ void DopplerGroupTab::UpdateGroupConfig()
     ui->checkSScanShow->setCheckState(m_pGroup->bShowSScanMeasure ? Qt::Checked : Qt::Unchecked);
 
 	//ui->CheckBackShow->setCheckState(g_pMainWnd->ParamBackMode() ? Qt::Checked : Qt::Unchecked );
-    //ui->CheckBackShow->setChecked(g_pMainWnd->ParamBackMode()); //放开程序崩溃
+    ui->CheckBackShow->setChecked(m_pGroup->bShowParamBack);
     ui->ComField1->setCurrentIndex(m_pGroup->aeMeasureType[0]);
 	ui->ComField2->setCurrentIndex(m_pGroup->aeMeasureType[1]);
 	ui->ComField3->setCurrentIndex(m_pGroup->aeMeasureType[2]);
@@ -2366,7 +2366,7 @@ void DopplerGroupTab::on_checkSScanShow_clicked(bool checked)
 void DopplerGroupTab::on_CheckBackShow_clicked(bool checked)
 {
 	if(!ui->CheckBackShow->hasFocus()) return ;
-	g_pMainWnd->SetParamBackMode(checked) ;
+    m_pConfig->group[m_nGroupId].bShowParamBack = checked;
 	g_pMainWnd->RunDrawThreadOnce(true);
 }
 

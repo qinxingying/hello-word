@@ -202,6 +202,7 @@ void DopplerConfigure::OpenEvn()
             AppEvn.bShowBScanMeasure[i] = true;
             AppEvn.bShowCScanMeasure[i] = true;
             AppEvn.bShowSScanMeasure[i] = true;
+            AppEvn.bShowParamBack[i]    = false;
 
             AppEvn.anMeasureType[i] = 0;
             AppEvn.anMeasureSelection[i][0]  = FEILD_A100;
@@ -269,6 +270,7 @@ void DopplerConfigure::OpenEvn()
         group[i].bShowBScanMeasure = AppEvn.bShowBScanMeasure[i];
         group[i].bShowCScanMeasure = AppEvn.bShowCScanMeasure[i];
         group[i].bShowSScanMeasure = AppEvn.bShowSScanMeasure[i];
+        group[i].bShowParamBack    = AppEvn.bShowParamBack[i];
         for(int j = 1; j < setup_CURSOR_MAX; j++){
             group[i].afCursor[j] = AppEvn.bCursor[i][j];
         }
@@ -318,6 +320,7 @@ void DopplerConfigure::SaveEvn()
         AppEvn.bShowBScanMeasure[i] = group[i].bShowBScanMeasure;
         AppEvn.bShowCScanMeasure[i] = group[i].bShowCScanMeasure;
         AppEvn.bShowSScanMeasure[i] = group[i].bShowSScanMeasure;
+        AppEvn.bShowParamBack[i]    = group[i].bShowParamBack;
 
         AppEvn.fMinThickness[i]     = group[i].fMinThickness;
         AppEvn.fMaxThickness[i]     = group[i].fMaxThickness;

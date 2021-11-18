@@ -831,6 +831,7 @@ typedef struct _Group
     bool                    bShowBScanMeasure;
     bool                    bShowCScanMeasure;
     bool                    bShowSScanMeasure;
+    bool                    bShowParamBack;
 	int						bShowCursor;
 	int						bShowWeldPart;
     int                     measuregateType[setup_MAX_MEASURE_QTY]; //测量闸门类型，measureGateStatus为true时读取显示此
@@ -1071,6 +1072,7 @@ struct DISPLAY_CONFIG
     int bShowGateI[setup_MAX_GROUP_QTY];                                                            //表示I闸门可见性
     bool  bTOPCStatus[setup_MAX_GROUP_QTY];                                                         //12.C扫描模式（false=角度C,true=投影C）
     float TOPCWidth[setup_MAX_GROUP_QTY];                                                           //13. 如选择为投影C，需保存投影C扫描宽度的设置
+    bool bShowParamBack[setup_MAX_GROUP_QTY];                                                       // 测量框黑色背景
 };
 
 struct S_FILE_INFO

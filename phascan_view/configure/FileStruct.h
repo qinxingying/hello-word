@@ -71,6 +71,7 @@ struct SYSTEM_ENVIRMENT
     float fMinThickness[ENV_MAX_GROUP_QTY];
     float fMaxThickness[ENV_MAX_GROUP_QTY];
     bool bTopCStatus[ENV_MAX_GROUP_QTY];
+    bool bShowParamBack[ENV_MAX_GROUP_QTY];
 };
 
 #endif // FILESTRUCT_H

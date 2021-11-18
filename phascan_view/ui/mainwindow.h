@@ -66,8 +66,6 @@ public:
     void fileMergePro(QStringList &fileNameLst);
     void OpenFilePro(QString strFileName_);
     void ScreenShot();
-    bool ParamBackMode(void) {return m_bParamBackMode;}
-    void SetParamBackMode(bool mode_) {m_bParamBackMode = mode_;}
     bool DefectBackMode(void) {return m_bDefectBackMode;}
     void SetDefectBackMode(bool mode_) {m_bDefectBackMode = mode_;}
     void UpdateCombinationDisplay();
@@ -152,7 +150,6 @@ private:
     int  m_nTBCnt;
     int  m_nAlloff;  //0值时表示只有一个组
     bool m_bCursorSel;
-    bool m_bParamBackMode;
     bool m_bDefectBackMode;
     setup_LANG m_currentLang;
 

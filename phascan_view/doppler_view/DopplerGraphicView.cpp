@@ -1605,7 +1605,7 @@ void DopplerGraphicView::DrawMeasureValue()
 
 	QBrush _brush(QColor(0,0,0));
 	_painter.setBackground(_brush);
-	if(g_pMainWnd->ParamBackMode()) {
+    if(_group.bShowParamBack) {
 		_painter.setBackgroundMode(Qt::OpaqueMode);
 	} else {
 		_painter.setBackgroundMode(Qt::TransparentMode);
