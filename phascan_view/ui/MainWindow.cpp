@@ -3200,12 +3200,14 @@ void MainWindow::on_actionAided_Analysis_triggered()
     //ui->toolBar->setEnabled(false);
     set_ToolBarStatus(false);  
     int curGrp = m_iCurGroup;
+    ui->TabWidget_parameter->blockSignals(true);
     for (int i = 0; i < ui->TabWidget_parameter->count(); ++i) {
         ui->TabWidget_parameter->setTabEnabled(i, false);
     }
     SetCurGroup(curGrp);
     ui->TabWidget_parameter->setTabEnabled(ui->TabWidget_parameter->indexOf(ui->IndicationTable), true);
     ui->TabWidget_parameter->setCurrentWidget(ui->IndicationTable);
+    ui->TabWidget_parameter->blockSignals(false);
 }
 
 void MainWindow::on_actionStop_Analysis_triggered()
