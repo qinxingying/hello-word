@@ -998,7 +998,7 @@ void DopplerDataView::slotZoomAction(QRectF rect)
     }
 
 	if(m_pItemsGroup) {
-//        m_pItemsGroup->UpdateItems();
+        m_pItemsGroup->UpdateItems();
 	}    
     m_pGraphicView->SetZoomAction( _marker2.first, _marker2.second, _marker1.first, _marker1.second);
 

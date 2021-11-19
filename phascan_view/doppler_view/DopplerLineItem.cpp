@@ -370,7 +370,7 @@ void DopplerLineItem::SetItemGeometry (QRectF& rect_)
 		m_nHeight = 0 ;
 
 		if(_pScene)
-			m_nWidth = _pScene->height() ;
+            m_nWidth = _pScene->width() ;
 		else
 			m_nWidth = 1000 ;
 
