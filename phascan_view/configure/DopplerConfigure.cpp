@@ -1318,12 +1318,15 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.fGain		  = _pGroupInfo->gainr / 100.0;			/* 增益 0 - 80 db  _STEP 0.01dB */
             _group.fRefGain	      = 0;
             _group.RefGain        = _pGroupInfo->gain / 100.0 - _pGroupInfo->gainr / 100.0;
+            if (!Config::instance()->is_phascan_ii()) {
+                _group.RefGain -= extConfig->standardInfo[i].coupleGain;
+            }
         }
 
         CUR_RES.REF_Gain[i]      = 0;
         CUR_RES.Com_Gain[i]      = 0;
         CUR_RES.Ref_Amp[i]       = 80;
-        CUR_RES.CurSS[i]         = _group.RefGain;
+        CUR_RES.CurSS[i]         = round(_group.RefGain);
 //        CUR_RES.Thickness[i]     = AppEvn.Thickness[i];
         _group.fSumGain	      = 20 * log10(_pGroupInfo->sum_gain / 16.0);
 		_group.bPointQtyAuto  = 0;
@@ -1517,7 +1520,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
             _group.CoupleMonitoringGain = Config::instance()->getCoupleMonitoringGain(i);
         } else {
             int lawQty = _process->GetGroupLawQty(i);
-            _group.CoupleGain = 0;
+            _group.CoupleGain = extConfig->standardInfo[i].coupleGain;
             _group.CoupleMonitoringGain = _pGroupInfo->gain_offset[lawQty] / 10;
         }
 

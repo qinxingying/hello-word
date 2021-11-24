@@ -392,7 +392,7 @@ typedef struct S_StandardInfo
     char EL;
     char SL;
     char RL;
-    char coupleGain;
+    char coupleGain;    //表面补偿
 } StandardInfo;
 
 typedef struct _tofd_calibration
