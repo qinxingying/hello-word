@@ -3105,6 +3105,10 @@ bool ParameterProcess::SscanPointMaptoLawAndindex(int nGroupId_, QPointF point, 
         return false;
     }
     lawId = buff / _nPointQty;
+    int max = _group.coupleMonitoringState ? m_pConfig->common.scanner.fLawStop - 1 : m_pConfig->common.scanner.fLawStop;
+    if (lawId > max) {
+        return false;
+    }
     pointIndex = buff % _nPointQty;
     return true;
 }
