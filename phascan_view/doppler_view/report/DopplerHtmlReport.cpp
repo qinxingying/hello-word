@@ -9,6 +9,7 @@
 #include <QDesktopServices>
 #include "../configure/config_phascan_ii/config.h"
 #include <QFileDialog>
+#include <QBuffer>
 
 #define TABLE_WIDTH	 800
 char tableWidth[256];
@@ -325,8 +326,18 @@ void DopplerHtmlReport::CreateDefectCell(int nGroupId_, int index_, DEFECT_INFO*
     QString _sourceImgName = m_strFolder  + QString("/") +
 							QString(QObject::tr(_pDfInfo->srtImageName)) +
 							QString(QObject::tr(".png"));
+    QImage image(_strImgPathName);
+    QByteArray ba;
+    QBuffer buf(&ba);
+    buf.open(QIODevice::WriteOnly);
+    if (!image.isNull()) {
+        image.save(&buf, "PNG");
+        fprintf(m_pFile,"\t\t<img src=\"%s\" width=%d>\n" , TOCHAR(QString("data:image/png;base64," + ba.toBase64())), TABLE_WIDTH);
+    }
+    buf.close();
+
 	QString _strDir = m_strReportDir + _sourceImgName ;
-	fprintf(m_pFile ,"\t\t<img src=\"%s\" width=%d>\n" ,  TOCHAR(_sourceImgName), TABLE_WIDTH);
+//	fprintf(m_pFile ,"\t\t<img src=\"%s\" width=%d>\n" ,  TOCHAR(_sourceImgName), TABLE_WIDTH);
 	fprintf(m_pFile ,"\t\t</br>\n");
 	CopyFileToPath(_strDir , _strImgPathName) ;
 }
@@ -583,7 +594,17 @@ void DopplerHtmlReport::CreateHeader()
     fprintf(m_pFile,"<table %s>\n", tableWidth);
 	fprintf(m_pFile,"<tr>\n");
     //fprintf(m_pFile,"<td align=left><img src = \"%s/logo.png\"></td>\n", TOCHAR(QString::fromUtf8(m_strFolder.toLocal8Bit().data())));
-    fprintf(m_pFile,"<td align=left><img src = \"%s/logo.png\"></td>\n", TOCHAR(m_strFolder));
+//    fprintf(m_pFile,"<td align=left><img src = \"%s/logo.png\"></td>\n", TOCHAR(m_strFolder));
+    QImage image(m_strReportDir + m_strFolder + "/logo.png");
+    QByteArray ba;
+    QBuffer buf(&ba);
+    buf.open(QIODevice::WriteOnly);
+    if (!image.isNull()) {
+        image.save(&buf, "PNG");
+        fprintf(m_pFile,"<td align=left><img src = \"%s\"></td>\n", TOCHAR(QString("data:image/png;base64," + ba.toBase64())));
+    }
+    buf.close();
+
     fprintf(m_pFile,"<td align=right><h1>%s</h1></td>\n", TOCHAR(strReportName));
 	fprintf(m_pFile,"</tr>\n");
 	fprintf(m_pFile,"<tr>\n");
