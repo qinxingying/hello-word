@@ -547,37 +547,38 @@ void WordBase::setSaveName(const QString &name)
 
 bool WordBase::saveToPdf(const QString &wordpathName, const QString &PdfpathName)
 {
-    if(wordpathName.isEmpty())false;
-        QAxObject *pWordApplication = new QAxObject();
-        bool flag = pWordApplication->setControl("kwps.Application");
-        if(!flag)
-        {
-            flag = pWordApplication->setControl("Word.Application");
-            if(!flag)
-            {
-                return false;
-            }
-        }
-        QAxObject *pWordDocuments= pWordApplication->querySubObject("Documents");
-        QVariant filename(wordpathName);
-        QVariant confirmconversions(false);
-        QVariant readonly(true);
-        QVariant addtorecentfiles(false);
-        QVariant passworddocument("");
-        QVariant passwordtemplate("");
-        QVariant revert(false);
-        //打开
-        QAxObject* doc = pWordDocuments->querySubObject("Open(const QVariant&, const QVariant&,const QVariant&, "
-                                                     "const QVariant&, const QVariant&, "
-                                                     "const QVariant&,const QVariant&)",
-                                                     filename,
-                                                     confirmconversions,
-                                                     readonly,
-                                                     addtorecentfiles,
-                                                     passworddocument,
-                                                     passwordtemplate,
-                                                     revert);
-    if(PdfpathName.isEmpty())false;
+    if(wordpathName.isEmpty()) return false;
+//    QAxObject *pWordApplication = new QAxObject();
+//    bool flag = pWordApplication->setControl("kwps.Application");
+//    if(!flag)
+//    {
+//        flag = pWordApplication->setControl("Word.Application");
+//        if(!flag)
+//        {
+//            return false;
+//        }
+//    }
+//    QAxObject *pWordDocuments= m_word->querySubObject("Documents");
+    QVariant filename(wordpathName);
+    QVariant confirmconversions(false);
+    QVariant readonly(true);
+    QVariant addtorecentfiles(false);
+    QVariant passworddocument("");
+    QVariant passwordtemplate("");
+    QVariant revert(false);
+    //打开
+    QAxObject* doc = m_documents->querySubObject("Open(const QVariant&, const QVariant&,const QVariant&, "
+                                                 "const QVariant&, const QVariant&, "
+                                                 "const QVariant&,const QVariant&)",
+                                                 filename,
+                                                 confirmconversions,
+                                                 readonly,
+                                                 addtorecentfiles,
+                                                 passworddocument,
+                                                 passwordtemplate,
+                                                 revert);
+    if(PdfpathName.isEmpty()) return false;
+
     QVariant OutputFileName(PdfpathName);
     QVariant ExportFormat(17);      //17是pdf
     QVariant OpenAfterExport(false); //保存后是否自动打开
@@ -587,9 +588,9 @@ bool WordBase::saveToPdf(const QString &wordpathName, const QString &PdfpathName
                                     ExportFormat,
                                     OpenAfterExport);
     //关闭
-   doc->dynamicCall("Close(boolean)", false);
-   m_word->dynamicCall("Quit()");//退出word
-   delete pWordApplication;
+//   doc->dynamicCall("Close(boolean)", false);
+//   m_word->dynamicCall("Quit()");//退出word
+//   delete pWordApplication;
    return true;
 }
 
