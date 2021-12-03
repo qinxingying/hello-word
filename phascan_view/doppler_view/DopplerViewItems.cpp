@@ -388,12 +388,18 @@ void DopplerViewItems::UpdateItemsCursor()
     if(tofdDepth){
         m_pCursor[0]->SetTofdPCS(true, pcs);
         m_pCursor[1]->SetTofdPCS(true, pcs);
+    } else {
+        m_pCursor[0]->SetTofdPCS(false, 0);
+        m_pCursor[1]->SetTofdPCS(false, 0);
     }
 
     m_pDataView->GetTofdDepth(tofdDepth, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
     if(tofdDepth){
         m_pCursor[2]->SetTofdPCS(true, pcs);
         m_pCursor[3]->SetTofdPCS(true, pcs);
+    } else {
+        m_pCursor[2]->SetTofdPCS(false, 0);
+        m_pCursor[3]->SetTofdPCS(false, 0);
     }
 
 	m_pCursor[0]->SetWndRect(m_pDataView->GetZoomRect());
