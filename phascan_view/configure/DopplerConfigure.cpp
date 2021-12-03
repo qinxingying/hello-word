@@ -2121,10 +2121,10 @@ void  DopplerConfigure::UpdateTofdConfig(int nGroupId_)
 
     if( Config::instance()->is_phascan_ii()){
         Config::instance()->getTofdData( nGroupId_, &_tofd.fPCS, &_tofd.fRefPoint);
-        _tofd.fWedgeSep = _tofd.fPCS - 2 *_tofd.fRefPoint;
         if (_group.bWedgeDelayCalib == 1) {
-            _tofd.fWedgeSep = _tofd.fPCS - 2 * _group.fCalibratedRefPoint  / 1000;
+            _tofd.fRefPoint = _group.fCalibratedRefPoint  / 1000;
         }
+        _tofd.fWedgeSep = _tofd.fPCS - 2 *_tofd.fRefPoint;
     }else{
         _tofd.fPCS			= _group.afBeamPos[254];
         _tofd.fRefPoint		=  (_tofd.fPCS - _group.afBeamPos[255]) / 2;
