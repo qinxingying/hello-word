@@ -1526,7 +1526,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         } else {
             _fCursor = _rect.left();
         }
-        if(_isnan(_fCursor))
+        if(_isnan(_fCursor) || _process->GetSampleStart(_nGroupId, _nLawId) > _fCursor)
         {
             return;
         }
@@ -1659,6 +1659,9 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         _pGroup->UpdateTofdParam();
 
         _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
+        if (_nItemId == setup_CURSOR_TFOD_LW) {
+            _proDispy.UpdateAllViewFrameOfGroup(_nGroupId);
+        }
         RunDrawThreadOnce(true);
 
         if(_nItemId == setup_CURSOR_S_REF||_nItemId == setup_CURSOR_S_MES)

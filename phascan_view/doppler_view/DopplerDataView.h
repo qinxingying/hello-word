@@ -79,6 +79,7 @@ public:
 	void SetRulerRange(double nStart_ , double nStop_ , double nSliderStart_ , double nSliderStop_ , DATA_VIEW_RULER eRuler_ ) ;
     void SetTofdDepth(bool tofdDepth, float pcs, DATA_VIEW_RULER eRuler_);
     void GetTofdDepth(bool &tofdDepth, float &pcs, DATA_VIEW_RULER eRuler_);
+    void SetTofdSampleStart(float sampleStart, DATA_VIEW_RULER eRuler_);
 	void GetRulerRange(double* nStart_, double* nStop_, double *nSliderStart_, double *nSliderStop_, DATA_VIEW_RULER eRuler_ ) ;
     void SetRulerColor(QColor* color , DATA_VIEW_RULER eRuler_ ) ;
     void SetRulerMarkerColor(QColor* color , DATA_VIEW_RULER eRuler_ ) ;

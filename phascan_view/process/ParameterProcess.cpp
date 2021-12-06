@@ -2283,9 +2283,14 @@ float ParameterProcess::CalculateTofdPcs(int nGroupId_)
 	return _pTofd->fPcs;
 }
 
+void ParameterProcess::SetTofdSampleStart(float sampleStart)
+{
+    m_tofdSampleStart = sampleStart;
+}
+
 double ParameterProcess::transTofdHalfSoundPathToDepth(double halfSoundPath, float pcs)
 {
-    float halfPcs = pcs / 2;
+    float halfPcs = m_tofdSampleStart/*pcs / 2*/;
     if(halfSoundPath > halfPcs){
         return qSqrt(qPow(halfSoundPath, 2) - qPow(halfPcs, 2));
     }else if(halfSoundPath < halfPcs){
@@ -2298,11 +2303,11 @@ double ParameterProcess::transTofdHalfSoundPathToDepth(double halfSoundPath, flo
 double ParameterProcess::transTofdDepthToHalfSoundPath(double depth, float pcs)
 {
     if(depth > 0){
-        return qSqrt(qPow( depth, 2) + qPow( pcs / 2, 2));
+        return qSqrt(qPow( depth, 2) + qPow( m_tofdSampleStart, 2));
     }else if(depth < 0){
-        return qSqrt(qPow(pcs / 2, 2) - qPow( -depth, 2));
+        return qSqrt(qPow(m_tofdSampleStart, 2) - qPow( -depth, 2));
     }else{
-        return pcs;
+        return 2 * m_tofdSampleStart;
     }
 }
 
@@ -2315,7 +2320,10 @@ float  ParameterProcess::GetTofdDepth(int nGroupId_ , float fCursorPos_)
 	float _fZero = _pTofd->fZero;
 	float  _T = DistMmToUs(nGroupId_ , fCursorPos_) + _fZero;
 
-	float _fDepth = TofdDepth(_pTofd, _T, fCursorPos_);
+    float _fDepth = TofdDepth(_pTofd, _T, fCursorPos_);
+    if(m_pConfig->group[nGroupId_].eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && m_pConfig->group[nGroupId_].eGroupMode != setup_GROUP_MODE_PA){
+        _fDepth = transTofdHalfSoundPathToDepth(fCursorPos_,0);
+    }
 
 	return _fDepth;
 }

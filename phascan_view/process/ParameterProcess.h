@@ -177,6 +177,7 @@ public:
     void UpdateTofdParam(int nGroupId_);
     float CalculateTofdProbeDelay(int nGroupId_);
     float CalculateTofdPcs(int nGroupId_);
+    void SetTofdSampleStart(float sampleStart);
     double transTofdHalfSoundPathToDepth(double halfSoundPath, float pcs);
     double transTofdDepthToHalfSoundPath(double depth, float pcs);
     float GetTofdDepth(int nGroupId_ , float fCursorPos);
@@ -262,6 +263,7 @@ protected:
     int m_cPosStart;
     int m_cPosStop;
     float m_cStep {1.0};
+    float m_tofdSampleStart;
 
 signals:
 

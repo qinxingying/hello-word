@@ -261,7 +261,8 @@ void DopplerViewItems::UpdateItemsLwBw()
 	m_pItemBw->SetScenceSize(m_pDataView->GetViewSize());
 
 	m_pItemLw->show() ;
-	m_pItemBw->show() ;
+//	m_pItemBw->show() ;
+    m_pItemBw->hide() ;
 }
 
 void DopplerViewItems::UpdateItemsGate()

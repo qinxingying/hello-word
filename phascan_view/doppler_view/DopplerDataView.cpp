@@ -185,6 +185,13 @@ void DopplerDataView::GetTofdDepth(bool &tofdDepth, float &pcs, DATA_VIEW_RULER 
     }
 }
 
+void DopplerDataView::SetTofdSampleStart(float sampleStart, DATA_VIEW_RULER eRuler_)
+{
+    if(m_pRulers[eRuler_]){
+        m_pRulers[eRuler_]->SetTofdSampleStart(sampleStart);
+    }
+}
+
 void DopplerDataView::GetRulerRange(double* nStart_ , double* nStop_ , double *nSliderStart_ , double *nSliderStop_ , DATA_VIEW_RULER eRuler_ )
 {
 	if(eRuler_ >= DATA_VIEW_RULER_MAX)  return ;

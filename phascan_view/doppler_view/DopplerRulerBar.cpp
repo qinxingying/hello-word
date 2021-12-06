@@ -32,6 +32,7 @@ DopplerRulerBar::DopplerRulerBar(QWidget *parent , RULER_BAR_TYPE eType_) :
 	m_strUnit =  QString("") ;
 	m_bSliderON = false;
 	m_bSliderDrag = false;
+    m_sampleStart = 0.0;
 	setAcceptDrops(false);
 	setMouseTracking(true);
 }
@@ -122,11 +123,11 @@ void DopplerRulerBar::paintEvent(QPaintEvent*)
 
 double DopplerRulerBar::calDepth(double soundPath)
 {
-    if(soundPath > m_PCS){
-        return qSqrt(qPow(soundPath / 2, 2) - qPow(m_PCS / 2, 2));
-    }else if(soundPath < m_PCS){
-        return 0 - qSqrt(qPow(m_PCS / 2, 2) - qPow(soundPath / 2, 2));
-    }else{
+    if(soundPath > 2 * m_sampleStart){
+        return qSqrt(qPow(soundPath / 2, 2) - qPow(2 * m_sampleStart / 2, 2));
+    }/*else if(soundPath < 2 * m_sampleStart){
+        return 0 - qSqrt(qPow(2 * m_sampleStart / 2, 2) - qPow(soundPath / 2, 2));
+    }else*/{
         return 0;
     }
 }
@@ -134,11 +135,11 @@ double DopplerRulerBar::calDepth(double soundPath)
 double DopplerRulerBar::transDepthToSoundPath(double depth)
 {
     if(depth > 0){
-        return qSqrt(qPow( depth, 2) + qPow(m_PCS / 2, 2)) * 2;
+        return qSqrt(qPow( depth, 2) + qPow(2 * m_sampleStart / 2, 2)) * 2;
     }else if(depth < 0){
-        return qSqrt(qPow(m_PCS / 2, 2) - qPow( -depth, 2)) * 2;
+        return qSqrt(qPow(2 * m_sampleStart / 2, 2) - qPow( -depth, 2)) * 2;
     }else{
-        return m_PCS;
+        return 2 * m_sampleStart;
     }
 }
 
@@ -410,13 +411,13 @@ void DopplerRulerBar::drawTofdBottomRuler(QPainter& painter)
     int i, _nStartIndex, _nPos, _nDirection;
     int _nWidth = width();
     int _nMarkQty = getRulerMarkQty(_nWidth);
-    double n_start = 2 * m_nStart;
+    double n_start = 2 * m_sampleStart;
     double n_end   = 2 * m_nEnd;
-    _nStart = calDepth(n_start);
+    _nStart = 0;//calDepth(n_start);
     _nStop  = calDepth(n_end);
     _nRange = fabs(_nStop - _nStart);
     double _nInterval = getRulerMarInterval(_nMarkQty , _nRange);
-    double _nPixelPerUnit = _nWidth / fabs(n_end - n_start);
+    double _nPixelPerUnit = _nWidth / fabs(n_end - 2 * m_nStart);
 
     int _nBaseLinePos =  g_nBaseLineOffset;
     int _nMinLineToptPos = _nBaseLinePos + g_nMinMarkerLength;
@@ -439,7 +440,7 @@ void DopplerRulerBar::drawTofdBottomRuler(QPainter& painter)
     QString _str;
     for(i = _nStartIndex ; _nCurrentPos < _nStop ; i++){
         _nCurrentPos = i * _nInterval;
-        _nPos = (transDepthToSoundPath(_nCurrentPos) - buff_start) * _nPixelPerUnit;
+        _nPos = (transDepthToSoundPath(_nCurrentPos) - 2 * m_nStart) * _nPixelPerUnit;
         if(_nDirection){
             _nPos  = _nWidth - _nPos - 1;
         }

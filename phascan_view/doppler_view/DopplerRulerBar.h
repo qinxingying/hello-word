@@ -1,4 +1,4 @@
-#ifndef DOPPLERRULERBAR_H
+﻿#ifndef DOPPLERRULERBAR_H
 #define DOPPLERRULERBAR_H
 
 #include <QWidget>
@@ -29,6 +29,7 @@ public:
 	void   ShowSlider(bool bDisp_) {m_bSliderON = bDisp_;}
     void   SetTofdStatus(bool tofdDepth, float pcs){ m_tofdDepth = tofdDepth; m_PCS = pcs;}
     void   GetTofdStatus(bool &tofdDepth, float &pcs){tofdDepth = m_tofdDepth; pcs = m_PCS;}
+    void   SetTofdSampleStart(float sampleStart){ m_sampleStart = sampleStart;}
 protected:
 	void   paintEvent(QPaintEvent *) ;
 	void   drawLeftRuler(QPainter& painter);
@@ -84,6 +85,7 @@ protected:
 	QString			m_strUnit ;
     bool            m_tofdDepth;
     float           m_PCS;
+    float           m_sampleStart;
 
 signals:
 	void signalRulerMoved(double nStart_, double nStop_) ;

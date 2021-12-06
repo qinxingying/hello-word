@@ -900,6 +900,11 @@ void DopplerGroupTab::SetWidgetInvalide()
 
     ui->ComColorLineColor->setDisabled(true);
     ui->ComColorLineSelection->setDisabled(true);
+
+    ui->BoxDepthCal->hide();
+    ui->LabelZeroOff->hide();
+    ui->SpinBoxZeroOff->hide();
+    ui->LabelCursorUnit3_6->hide();
 }
 
 #include <QStandardItemModel>

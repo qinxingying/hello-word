@@ -2619,6 +2619,8 @@ void ProcessDisplay::UpdateDataViewFrameAH(DopplerDataView* pWidget_, int nGroup
 		}
 	}
     if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
+        pWidget_->SetTofdSampleStart(_group.afCursor[setup_CURSOR_TFOD_LW], DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+        _process->SetTofdSampleStart(_group.afCursor[setup_CURSOR_TFOD_LW]);
         pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
     }else{
         pWidget_->SetTofdDepth(false, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
@@ -2663,6 +2665,8 @@ void ProcessDisplay::UpdateDataViewFrameAV(DopplerDataView* pWidget_ , int nGrou
 	}
 	//---------------
     if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
+        pWidget_->SetTofdSampleStart(_group.afCursor[setup_CURSOR_TFOD_LW], DopplerDataView::DATA_VIEW_RULER_LEFT);
+        _process->SetTofdSampleStart(_group.afCursor[setup_CURSOR_TFOD_LW]);
         pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
     }else{
         pWidget_->SetTofdDepth(false, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
@@ -2724,6 +2728,8 @@ void ProcessDisplay::UpdateDataViewFrameBH(DopplerDataView* pWidget_ , int nGrou
 //    _group.currentRangeStop = _fStop;
     float pcs = _pConfig->TOFD[nGroupId_].fPCS;
     if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
+        pWidget_->SetTofdSampleStart(_group.afCursor[setup_CURSOR_TFOD_LW], DopplerDataView::DATA_VIEW_RULER_BOTTOM);
+        _process->SetTofdSampleStart(_group.afCursor[setup_CURSOR_TFOD_LW]);
         pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
     }else{
        pWidget_->SetTofdDepth(false, pcs, DopplerDataView::DATA_VIEW_RULER_BOTTOM);
@@ -2771,6 +2777,8 @@ void ProcessDisplay::UpdateDataViewFrameBV(DopplerDataView* pWidget_ , int nGrou
 //    _group.currentRangeStop = _fStop;
     float pcs = _pConfig->TOFD[nGroupId_].fPCS;
     if(_group.eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _group.eGroupMode != setup_GROUP_MODE_PA){
+        pWidget_->SetTofdSampleStart(_group.afCursor[setup_CURSOR_TFOD_LW], DopplerDataView::DATA_VIEW_RULER_LEFT);
+        _process->SetTofdSampleStart(_group.afCursor[setup_CURSOR_TFOD_LW]);
         pWidget_->SetTofdDepth(true, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
     }else{
         pWidget_->SetTofdDepth(false, pcs, DopplerDataView::DATA_VIEW_RULER_LEFT);
