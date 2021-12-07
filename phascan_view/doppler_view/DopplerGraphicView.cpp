@@ -801,12 +801,12 @@ void DopplerGraphicView::keyPressEvent(QKeyEvent *event)
             DopplerConfigure* _pConfig = DopplerConfigure::Instance();
             ParameterProcess* _process = ParameterProcess::Instance();
             if(_pConfig->group[_iGroupId].storeScanLawId.status || (_pConfig->common.bDefectIdentifyStatus && _pConfig->common.bDefectIdentifyStatusDone)){
-                float scanPos = _pConfig->group[_iGroupId].storeScanLawId.scanPos;
-                _process->SetupScanPos(scanPos);
                 int lawId = _pConfig->group[_iGroupId].storeScanLawId.lawId;
                 if(lawId != _iLaw){
                     emit signalLawPosChange(_iGroupId, lawId, 0);
                 }
+                float scanPos = _pConfig->group[_iGroupId].storeScanLawId.scanPos;
+                _process->SetupScanPos(scanPos);
             }
         //}
         break;

@@ -35,9 +35,8 @@ void DataRefreshThread::run()
     QList<QWidget*>* _list = g_pMainWnd->GetCurrentDisplayTableWidgetList();
     if(!_list->count()) return ;
     // run once and get out
-    if(m_nRunOnce)
+    while(m_nRunOnce != 0)
     {
-        msleep(0);
         if(currentgroup == -1)
         {
 
@@ -50,17 +49,8 @@ void DataRefreshThread::run()
         }
         UpdateAllWidgetDrawing() ;
         m_nRunOnce -- ;
-        return ;
     }
-    m_bStop = false ;
-    while(!m_bStop)
-    {
-
-        UpdateAllWidgetDrawing() ;
-        msleep(1000) ;
-    }
-
-
+    return;
 }
 
 #include <configure/DopplerConfigure.h>
@@ -91,13 +81,11 @@ void DataRefreshThread::RunOnce(THREAD_RUN_MODE eMode_)
         UpdateAllWidgetDrawing() ;
     else
     {
-        while (isRunning()){
-
-        }
-        if(m_nRunOnce)
+        if (isRunning()){
+//            m_nRunOnce++;
+        } else {
             m_nRunOnce = 1;
-        else
-            m_nRunOnce = 2;
+        }
         start();
     }
 }
