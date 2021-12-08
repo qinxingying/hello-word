@@ -1526,7 +1526,7 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         } else {
             _fCursor = _rect.left();
         }
-        if(_isnan(_fCursor) || _process->GetSampleStart(_nGroupId, _nLawId) > _fCursor)
+        if(_isnan(_fCursor))
         {
             return;
         }

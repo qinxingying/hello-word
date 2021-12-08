@@ -304,7 +304,7 @@ void DopplerLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     int _x = _posScene.x() ;
     int _y = _posScene.y() ;
 
-    const int _nAdjustOff = 20;
+    const int _nAdjustOff = 0;
 
     if(_x < 0 - _nAdjustOff) {
         _posScene.setX(0 - _nAdjustOff);
