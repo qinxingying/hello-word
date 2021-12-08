@@ -364,6 +364,10 @@ void AExportData::savePhaseReport(QString filePath, QString reportFormPath)
         // defect
         int defectNum = 0;
         for(int i = 0; i < nGroupQty; i++){
+            GROUP_CONFIG&   group = pConfig->group[i];
+            if(group.eTxRxMode == setup_TX_RX_MODE_TOFD){
+                continue;
+            }
             defectNum += pConfig->GetDefectCnt(i);
         }
 
@@ -401,6 +405,16 @@ void AExportData::savePhaseReport(QString filePath, QString reportFormPath)
                     sortBuff[index_] = pDfInfo;
                     pDfInfo = pDfInfo->pNext;
                     index_++;
+                }
+            }
+            DEFECT_INFO *temp;
+            for(int i = 0; i < defectNum - 1; i++){
+                for(int j = 0; j < defectNum - 1 - i; j++){
+                    if(sortBuff[j]->dIndex > sortBuff[j+1]->dIndex){
+                        temp = sortBuff[j];
+                        sortBuff[j] = sortBuff[j+1];
+                        sortBuff[j+1] = temp;
+                    }
                 }
             }
 
@@ -469,6 +483,7 @@ void AExportData::savePhaseReport(QString filePath, QString reportFormPath)
                 word.setCellString(3,4+i*3,2, QString::fromLocal8Bit("备注："));
                 word.setCellFontBold(3,4+i*3,2, true);
             }
+            free(sortBuff);
         }
 
         word.setSaveName(filePath);
