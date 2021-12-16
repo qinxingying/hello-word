@@ -473,6 +473,7 @@ void Config::unpack_wedge(const QVariantMap &map)
     wedge.m_isDelayCalibrated  = map.value("IsDelayCalibrated", DEFAULT_WEDGE_REF_POINT).toBool();
     wedge.m_calibratedRefPoint = map.value("CalibratedRefPoint", DEFAULT_WEDGE_REF_POINT).toDouble();
     wedge.m_calibratedDelay    = 2 * map.value("CalibratedDelay", DEFAULT_WEDGE_REF_POINT).toDouble();
+    wedge.m_spacing       = map.value("Spacing").toDouble();
 
     qDebug() << "[" << __FUNCTION__ << "][" << __LINE__ << "]" << ""
              << " serial " << wedge.m_serial
@@ -493,7 +494,8 @@ void Config::unpack_wedge(const QVariantMap &map)
              << " ref pint " << wedge.m_refPoint
              << " IsDelayCalibrated " << wedge.m_isDelayCalibrated
              << " CalibratedRefPoint " << wedge.m_calibratedRefPoint
-             << " CalibratedDelay " << wedge.m_calibratedDelay;
+             << " CalibratedDelay " << wedge.m_calibratedDelay
+             << " Spacing " << wedge.m_spacing;
 }
 
 void Config::unpack_specimen(const QVariantMap &map)
@@ -903,10 +905,10 @@ void Config::getApertureSec( int groupId, unsigned int * apertureData)
     apertureData[3] = m_groups[groupId].m_focallawer.m_scan.m_secElemStep;
 }
 
-void Config::getTofdData( int groupId, float *PCS, float *RefPoint)
+void Config::getTofdData( int groupId, float *WedgeSep, float *RefPoint)
 {
-    *PCS = m_groups[groupId].m_tofd.m_PCS;
-    *RefPoint = m_groups[groupId].m_tofd.m_RefPosition;
+    *RefPoint = m_groups[groupId].m_wedge.m_refPoint;
+    *WedgeSep = m_groups[groupId].m_wedge.m_spacing;
 }
 
 void Config::getCalibratedData(int groupId, float *delay, float *refPoint)

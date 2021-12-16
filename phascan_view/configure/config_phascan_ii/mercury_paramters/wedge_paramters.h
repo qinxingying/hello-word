@@ -43,6 +43,7 @@ private:
     bool m_isDelayCalibrated;
     double m_calibratedDelay;
     double m_calibratedRefPoint;
+    double m_spacing;
 
     friend class Config;
 };

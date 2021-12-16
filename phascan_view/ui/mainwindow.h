@@ -187,6 +187,7 @@ private slots:
     void slotCursorScanChange(int groupId, bool orientation);
     void slotCursorUChange(int groupId, int lawId, bool orientation);
     void slotShowCursor(int groupId, bool status);
+    void slotShowDepthCalibration(int groupId, bool status);
     void slotShowDefect(int groupId, bool status);
     void slotCsanShowallChange(int groupId);
     void slotMeasureGate(int groupId);

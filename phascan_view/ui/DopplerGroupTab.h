@@ -50,6 +50,7 @@ public:
     void setTopcWidthValue(double value);
     void setThicknessValue(double value);
     void setShowCursorStatus(bool status);
+    void setShowDepthCalibration(bool status);
     void setShowDefectStatus(bool status);
     void setCscanShowallChange();
     void setMeasureEnable(bool status);
@@ -266,6 +267,8 @@ private slots:
     void on_ValuePartSizeh2_valueChanged(double arg1);
 
     void on_ValuePartSizea2_valueChanged(double arg1);
+
+    void on_checkDepthCal_clicked(bool checked);
 
 private:
     Ui::DopplerGroupTab *ui;

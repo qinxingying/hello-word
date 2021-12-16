@@ -51,6 +51,8 @@ protected:
     int m_nWidth, m_nHeight;
     int m_nId ;
     DopplerDataView* m_pDataView  ;
+    QPointF  m_mouseDownPos;
+    QPointF m_mouseDownScenePos;
 };
 
 #endif // DOPPLERGRAPHICSITEM_H

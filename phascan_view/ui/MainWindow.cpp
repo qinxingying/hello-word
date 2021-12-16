@@ -1658,10 +1658,24 @@ void MainWindow::slotItemMoved(DopplerDataView* pView_, DopplerGraphicsItem* pIt
         _pGroup->UpdateDefectValue();
         _pGroup->UpdateTofdParam();
 
-        _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
-        if (_nItemId == setup_CURSOR_TFOD_LW) {
-            _proDispy.UpdateAllViewFrameOfGroup(_nGroupId);
+        if (_nItemId == setup_CURSOR_TOFD_CAL) {
+            double _fStart =  _process->GetSampleStart(_nGroupId, _nLawId);
+            double sampleStart = _group.afCursor[setup_CURSOR_TOFD_CAL] - _group.fCalibratedSoundDepth + _fStart;
+            if (sampleStart > 0) {
+                _process->SetTofdSampleStart(_nGroupId, sampleStart);
+                _process->TofdCursorCalibration(_nGroupId);
+
+                _proDispy.UpdateAllViewFrameOfGroup(_nGroupId);
+            }
+            float tofdSoundDepth = _process->transTofdDepthToHalfSoundPath(_nGroupId, _group.fCalibratedTrueDepth);
+            _group.tofdAmendCal = _group.afCursor[_nItemId] - tofdSoundDepth;
+            if (sampleStart < 0) {
+                _group.tofdAmendCal = 0;
+            }
+            _group.afCursor[setup_CURSOR_TOFD_CAL] = tofdSoundDepth;
         }
+
+        _proDispy.UpdateAllViewCursorOfGroup(_nGroupId);
         RunDrawThreadOnce(true);
 
         if(_nItemId == setup_CURSOR_S_REF||_nItemId == setup_CURSOR_S_MES)
@@ -2082,6 +2096,11 @@ void MainWindow::slotShowCursor(int groupId, bool status)
 {
     m_pGroupList[groupId]->setShowCursorStatus(status);
 
+}
+
+void MainWindow::slotShowDepthCalibration(int groupId, bool status)
+{
+    m_pGroupList[groupId]->setShowDepthCalibration(status);
 }
 
 void MainWindow::slotShowDefect(int groupId, bool status)

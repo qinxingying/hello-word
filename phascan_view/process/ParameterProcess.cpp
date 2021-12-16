@@ -2230,13 +2230,13 @@ void ParameterProcess::TofdCursorCalibration(int nGroupId_)
 	TOFD_PARA*	 _pTofd = m_pConfig->GetTofdConfig(nGroupId_) ;
 	GROUP_CONFIG* _pGroup = &m_pConfig->group[nGroupId_]  ;
 
-	float _U1 = DistUsToMm(nGroupId_ , _pTofd->fZeroOff);
+//	float _U1 = DistUsToMm(nGroupId_ , _pTofd->fZeroOff);
 	float  _S = _pTofd->fLayerStart;
 	float  _E = _pTofd->fLayerEnd;
-	float  _A = _pTofd->fPCS / 2.0f;
+    float  _A = m_tofdSampleStart[nGroupId_];//_pGroup->fSampleStart /*_pTofd->fPCS / 2.0f*/;
 
-	float   _Lw = sqrt(_S*_S + _A*_A) + _U1;
-	float   _Bw = sqrt(_E*_E + _A*_A) + _U1;
+    float   _Lw = sqrt(_S*_S + _A*_A)/* + _U1*/;
+    float   _Bw = sqrt(_E*_E + _A*_A)/* + _U1*/;
 
 	if(_Lw < _pGroup->fSampleStart)
 		_Lw = _pGroup->fSampleStart;
@@ -2250,8 +2250,8 @@ void ParameterProcess::TofdCursorCalibration(int nGroupId_)
 	if(_Bw > _pGroup->fSampleStart + _pGroup->fSampleRange)
 		_Bw = _pGroup->fSampleStart + _pGroup->fSampleRange;
 
-	_pGroup->afCursor[setup_CURSOR_TFOD_LW] = _Lw;
-	_pGroup->afCursor[setup_CURSOR_TFOD_BW] = _Bw;
+    _pGroup->afCursor[setup_CURSOR_TFOD_LW] = _Lw;
+    _pGroup->afCursor[setup_CURSOR_TFOD_BW] = _Bw;
 }
 
 void ParameterProcess::UpdateTofdParam(int nGroupId_)
@@ -2283,14 +2283,14 @@ float ParameterProcess::CalculateTofdPcs(int nGroupId_)
 	return _pTofd->fPcs;
 }
 
-void ParameterProcess::SetTofdSampleStart(float sampleStart)
+void ParameterProcess::SetTofdSampleStart(int nGroupId_, float sampleStart)
 {
-    m_tofdSampleStart = sampleStart;
+    m_tofdSampleStart[nGroupId_] = sampleStart;
 }
 
-double ParameterProcess::transTofdHalfSoundPathToDepth(double halfSoundPath, float pcs)
+double ParameterProcess::transTofdHalfSoundPathToDepth(int nGroupId_, double halfSoundPath)
 {
-    float halfPcs = m_tofdSampleStart/*pcs / 2*/;
+    double halfPcs = m_tofdSampleStart[nGroupId_];
     if(halfSoundPath > halfPcs){
         return qSqrt(qPow(halfSoundPath, 2) - qPow(halfPcs, 2));
     }else if(halfSoundPath < halfPcs){
@@ -2300,14 +2300,14 @@ double ParameterProcess::transTofdHalfSoundPathToDepth(double halfSoundPath, flo
     }
 }
 
-double ParameterProcess::transTofdDepthToHalfSoundPath(double depth, float pcs)
+double ParameterProcess::transTofdDepthToHalfSoundPath(int nGroupId_, double depth)
 {
     if(depth > 0){
-        return qSqrt(qPow( depth, 2) + qPow( m_tofdSampleStart, 2));
+        return qSqrt(qPow( depth, 2) + qPow( m_tofdSampleStart[nGroupId_], 2));
     }else if(depth < 0){
-        return qSqrt(qPow(m_tofdSampleStart, 2) - qPow( -depth, 2));
+        return qSqrt(qPow(m_tofdSampleStart[nGroupId_], 2) - qPow( -depth, 2));
     }else{
-        return 2 * m_tofdSampleStart;
+        return m_tofdSampleStart[nGroupId_];
     }
 }
 
@@ -2322,7 +2322,7 @@ float  ParameterProcess::GetTofdDepth(int nGroupId_ , float fCursorPos_)
 
     float _fDepth = TofdDepth(_pTofd, _T, fCursorPos_);
     if(m_pConfig->group[nGroupId_].eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && m_pConfig->group[nGroupId_].eGroupMode != setup_GROUP_MODE_PA){
-        _fDepth = transTofdHalfSoundPathToDepth(fCursorPos_,0);
+        _fDepth = transTofdHalfSoundPathToDepth(nGroupId_, fCursorPos_);
     }
 
 	return _fDepth;
@@ -3244,7 +3244,12 @@ float ParameterProcess::GetLawAngle(int nGroupId_ , int nLawId_)
 	else
 		ret = _law.nAngleStartRefract / 10.0 ;
 
-	return ret;
+    return ret;
+}
+
+float ParameterProcess::GetSampleStart(int nGroupId_)
+{
+    return m_tofdSampleStart[nGroupId_];
 }
 
 float ParameterProcess::GetSampleStart(int nGroupId_ , int nLawId_)

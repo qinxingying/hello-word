@@ -196,7 +196,7 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 	{
 	case LINE_VERTICAL:
         if(m_tofdDepth){
-            buff = _pProcess->transTofdHalfSoundPathToDepth( m_Geometry.left(), m_pcs);
+            buff = _pProcess->transTofdHalfSoundPathToDepth(m_pDataView->GetGroupId(), m_Geometry.left());
         }else{
             buff = m_Geometry.left();
         }
@@ -207,7 +207,7 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 //        _W = 20;
 //        _H = 10;
 
-		if(m_nId % 2 == 0)	_y = _y0 + 2;
+        if(m_nId % 2 == 0)	_y = _y0 + 2;
 		else				_y = _y0 + _iHeight - (_H - 4);
 
 		if(_ptScene.x() > center.x())	_x = - (_W + 4);
@@ -215,7 +215,7 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 		break;
 	case LINE_HORIZENTAL:
         if(m_tofdDepth){
-            buff = _pProcess->transTofdHalfSoundPathToDepth( m_Geometry.top(), m_pcs);
+            buff = _pProcess->transTofdHalfSoundPathToDepth(m_pDataView->GetGroupId(), m_Geometry.top());
         }else{
             buff = m_Geometry.top();
         }
@@ -260,7 +260,9 @@ void DopplerLineItem::DrawLabel(QPainter *painter)
 void DopplerLineItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     DopplerGraphicsItem::mousePressEvent(event);
-    mouseMoveEvent(event) ;
+//    m_mouseDownPos = event->scenePos();
+//    m_mouseDownScenePos =  this->scenePos();
+//    mouseMoveEvent(event) ;
 }
 void DopplerLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
@@ -292,14 +294,15 @@ void DopplerLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 		m_rect.setBottom(_fY + g_nRectSize);
 	}*/
 	setSelected(false);
-	update();
+    update();
 }
 void DopplerLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if(!m_eMoveType)  return ;
 
     QPointF  _posItem = event->pos()  ;
-    QPointF _posScene = event->scenePos() ;
+
+    QPointF _posScene = event->scenePos();
 
     int _x = _posScene.x() ;
     int _y = _posScene.y() ;
@@ -339,6 +342,7 @@ void DopplerLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         break;
     case LINE_MOVE_HORIZENTAL:
         _posScene.setY(0.0);
+        _posScene.setX(_posScene.x());
         _posItem.setX(0);
         break;
     default:

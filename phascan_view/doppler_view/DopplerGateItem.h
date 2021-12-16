@@ -46,7 +46,6 @@ protected:
 	QColor			m_cColor ;
     QVector<QPointF> m_gateStart;
     QVector<QPointF> m_gateEnd;
-    QPointF  m_mouseDownPos;
 };
 
 #endif // DOPPLERGATEITEM_H

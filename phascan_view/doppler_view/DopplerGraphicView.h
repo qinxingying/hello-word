@@ -68,6 +68,7 @@ private slots:
     void setDataMode(bool status);
     void setShowCursor(bool status);
     void setShowDefect(bool status);
+    void setShowDepthCal(bool status);
     void showCoupleInScanA(bool status);
 private:
     void backNoZoom();
@@ -107,10 +108,12 @@ private:
     QAction *m_selectMeasureMethod;
     QMenu *m_contextMenu;
     QMenu *m_defectMenu;
+    QAction *m_showDepthCalibration;
     QActionGroup *m_defectActions;
 
     QRect m_selectedArea;
     bool m_isDrawSelectArea {false};
+    bool m_mouseMove {false};
 signals:
     void signalViewChanged(QRectF rect)  ;
     void signalUpdateDrawing();
@@ -127,6 +130,7 @@ signals:
     void signalNotifyOtherView(QPoint startPos, QPoint endPos, bool zoomStatus);
     void signalShowCursor(int groupId, bool status);
     void signalShowDefect(int groupId, bool status);
+    void signalShowDepthCal(int groupId, bool status);
     void signalCscanShowallChange(int groupId);
     void signalMeasureGate(int groupId);
     void signalMarkNextDefect();

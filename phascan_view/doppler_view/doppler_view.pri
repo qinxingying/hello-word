@@ -15,7 +15,8 @@ HEADERS += \
     $$PWD/DopplerTitleBar.h \
     $$PWD/DopplerViewItems.h \
     $$PWD/dopplercscanlinemark.h \
-    $$PWD/DopplerCoupleBar.h
+    $$PWD/DopplerCoupleBar.h \
+    $$PWD/DopplerCalibrationItem.h
 
 SOURCES += \
     $$PWD/report/DopplerHtmlReport.cpp \
@@ -32,4 +33,5 @@ SOURCES += \
     $$PWD/DopplerTitleBar.cpp \
     $$PWD/DopplerViewItems.cpp \
     $$PWD/dopplercscanlinemark.cpp \
-    $$PWD/DopplerCoupleBar.cpp
+    $$PWD/DopplerCoupleBar.cpp \
+    $$PWD/DopplerCalibrationItem.cpp

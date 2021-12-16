@@ -657,6 +657,7 @@ enum setup_CURSOR_TYPE
 	setup_CURSOR_TFOD_LW ,
 	setup_CURSOR_TFOD_BW ,
     setup_CURSOR_C_ANGLE ,
+    setup_CURSOR_TOFD_CAL ,
 	setup_CURSOR_MAX
 } ;
 
@@ -819,6 +820,9 @@ typedef struct _Group
 	int						bSensationCalib;
     float                   fCalibratedDelay;
     float                   fCalibratedRefPoint;
+    float                   fCalibratedSoundDepth;
+    float                   fCalibratedTrueDepth;
+    float                   tofdAmendCal;
 
 	float					afGainOffset[setup_MAX_GROUP_LAW_QTY];
 	unsigned int			anBeamDelay[setup_MAX_GROUP_LAW_QTY];
@@ -848,6 +852,7 @@ typedef struct _Group
     int						bShowDefect;
     bool                    bWeldRemainingHeight;
     bool                    bShowCurrentDefect;
+    bool                    bShowDepthCal;
 
 	LAW_CONFIG				law;
 	GATE_CONFIG				gate[setup_GATE_MAX] ;

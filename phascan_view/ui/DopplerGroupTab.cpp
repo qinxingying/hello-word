@@ -657,6 +657,12 @@ void DopplerGroupTab::setShowCursorStatus(bool status)
     on_CheckCursorShow_clicked(status);
 }
 
+void DopplerGroupTab::setShowDepthCalibration(bool status)
+{
+    ui->checkDepthCal->setChecked(status);
+    on_checkDepthCal_clicked(status);
+}
+
 void DopplerGroupTab::setShowDefectStatus(bool status)
 {
     ui->CheckDefectShow->setChecked(status);
@@ -901,7 +907,7 @@ void DopplerGroupTab::SetWidgetInvalide()
     ui->ComColorLineColor->setDisabled(true);
     ui->ComColorLineSelection->setDisabled(true);
 
-    ui->BoxDepthCal->hide();
+//    ui->BoxDepthCal->hide();
     ui->LabelZeroOff->hide();
     ui->SpinBoxZeroOff->hide();
     ui->LabelCursorUnit3_6->hide();
@@ -1025,7 +1031,7 @@ void DopplerGroupTab::UpdateCursorValue()
     ParameterProcess* _process = ParameterProcess::Instance();
 	TOFD_PARA* _tofd = m_pConfig->GetTofdConfig(m_nGroupId);
     _process->GetTofdDepth(m_nGroupId, 1, &_tofd->fDepthCal);
-	ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
+//	ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
 }
 
 void DopplerGroupTab::UpdateDefectBox()
@@ -2245,7 +2251,7 @@ void DopplerGroupTab::on_SpinBoxZeroOff_valueChanged(double)
 	g_pMainWnd->RunDrawThreadOnce(true);
 
 	_process->GetTofdDepth(m_nGroupId , 1 , &_tofd->fDepthCal);
-	ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
+//	ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
 }
 
 void DopplerGroupTab::on_SpinBoxDepthStart_valueChanged(double)
@@ -2281,30 +2287,40 @@ void DopplerGroupTab::on_SpinBoxDepthEnd_valueChanged(double)
 void DopplerGroupTab::on_SpinBoxDepthCal_valueChanged(double)
 {
 	if(!ui->SpinBoxDepthCal->hasFocus()) return ;
-	TOFD_PARA* _tofd = m_pConfig->GetTofdConfig(m_nGroupId);
-	_tofd->fDepthCal = ui->SpinBoxDepthCal->value();
+    ParameterProcess* _process = ParameterProcess::Instance() ;
+    float tofdSoundDepth = _process->transTofdDepthToHalfSoundPath(m_nGroupId, ui->SpinBoxDepthCal->value());
+    float amend = qFuzzyIsNull(m_pGroup->afCursor[setup_CURSOR_TOFD_CAL]) ? 0 : m_pGroup->afCursor[setup_CURSOR_TOFD_CAL] - tofdSoundDepth;
+    m_pGroup->afCursor[setup_CURSOR_TOFD_CAL] = tofdSoundDepth;
+    if (qFuzzyIsNull(m_pGroup->fCalibratedSoundDepth)) {
+        m_pGroup->fCalibratedSoundDepth = tofdSoundDepth;
+    } else {
+        m_pGroup->fCalibratedSoundDepth -= amend;
+    }
+    m_pGroup->fCalibratedTrueDepth  = ui->SpinBoxDepthCal->value();
+    ProcessDisplay _display ;
+    _display.UpdateAllViewCursorOfGroup(m_nGroupId);
 }
 
 void DopplerGroupTab::on_BtnDepthCal_clicked()
 {
-    if (m_pGroup->eTravelMode == setup_TRAVEL_MODE_TIME) {
-        QMessageBox::information(this,tr("prompt"),tr("Please change travel mode to 'True Depth'!"));
-        return;
-    }
-	TOFD_PARA* _tofd = m_pConfig->GetTofdConfig(m_nGroupId);
-	_tofd->fDepthCal = ui->SpinBoxDepthCal->value();
+//    if (m_pGroup->eTravelMode == setup_TRAVEL_MODE_TIME) {
+//        QMessageBox::information(this,tr("prompt"),tr("Please change travel mode to 'True Depth'!"));
+//        return;
+//    }
+//	TOFD_PARA* _tofd = m_pConfig->GetTofdConfig(m_nGroupId);
+//	_tofd->fDepthCal = ui->SpinBoxDepthCal->value();
 
-	ParameterProcess* _process = ParameterProcess::Instance();
-	_process->TofdDepthCalibration(m_nGroupId);
+//	ParameterProcess* _process = ParameterProcess::Instance();
+//	_process->TofdDepthCalibration(m_nGroupId);
 
-	ProcessDisplay _display ;
-	_display.UpdateAllViewOfGroup(m_nGroupId);
-	g_pMainWnd->RunDrawThreadOnce(true);
+//	ProcessDisplay _display ;
+//	_display.UpdateAllViewOfGroup(m_nGroupId);
+//	g_pMainWnd->RunDrawThreadOnce(true);
 
-    _process->GetTofdDepth(m_nGroupId, 1, &_tofd->fDepthCal);
-    ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
+//    _process->GetTofdDepth(m_nGroupId, 1, &_tofd->fDepthCal);
+//    ui->SpinBoxDepthCal->setValue(_tofd->fDepthCal);
 
-	ui->SpinBoxZeroOff->setValue(_tofd->fZeroOff);
+//	ui->SpinBoxZeroOff->setValue(_tofd->fZeroOff);
 }
 
 //void DopplerGroupTab::on_CheckPartFileShow_clicked(bool checked)
@@ -3269,3 +3285,10 @@ void DopplerGroupTab::on_ValuePartSizea2_valueChanged(double arg1)
 }
 
 
+
+void DopplerGroupTab::on_checkDepthCal_clicked(bool checked)
+{
+    m_pGroup->bShowDepthCal = checked;
+    ProcessDisplay _display;
+    _display.UpdateAllViewOverlay();
+}

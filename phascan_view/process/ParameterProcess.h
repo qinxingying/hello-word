@@ -177,9 +177,9 @@ public:
     void UpdateTofdParam(int nGroupId_);
     float CalculateTofdProbeDelay(int nGroupId_);
     float CalculateTofdPcs(int nGroupId_);
-    void SetTofdSampleStart(float sampleStart);
-    double transTofdHalfSoundPathToDepth(double halfSoundPath, float pcs);
-    double transTofdDepthToHalfSoundPath(double depth, float pcs);
+    void SetTofdSampleStart(int nGroupId_, float sampleStart);
+    double transTofdHalfSoundPathToDepth(int nGroupId_, double halfSoundPath);
+    double transTofdDepthToHalfSoundPath(int nGroupId_, double depth);
     float GetTofdDepth(int nGroupId_ , float fCursorPos);
     int  GetTofdDepth(int nGroupId_ , int ID_ , float* fValue_) ;
     void FittedCurveGetPoints(int nGroupId_, float fPrecX_, float fPrecY_, float fTX0_, int iDots_, float scaleH, float scaleV, QPointF* pPoints_);
@@ -225,6 +225,7 @@ public:
 
 
     float GetLawAngle(int nGroupId_ , int nLawId_) ;
+    float GetSampleStart(int nGroupId_) ;
     float GetSampleStart(int nGroupId_ , int nLawId_) ;
     float GetSampleRange(int nGroupId_ , int nLawId_) ;
     float GetSampleStartSoundpath(int nGroupId_) ;
@@ -260,10 +261,7 @@ protected:
     DopplerConfigure* m_pConfig;
 	float m_fBScanOff[8];
 	float m_fCScanOff[8];
-    int m_cPosStart;
-    int m_cPosStop;
-    float m_cStep {1.0};
-    float m_tofdSampleStart;
+    float m_tofdSampleStart[8];
 
 signals:
 

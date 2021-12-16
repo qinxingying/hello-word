@@ -4,6 +4,7 @@
 #include <QtMath>
 #include <QDragEnterEvent>
 #include<QDebug>
+
 const int g_nBaseLineOffset = 3 ;
 const int g_nMinMarkerLength= 3 ;
 const int g_nMidMarkerLength= 5 ;
@@ -124,10 +125,8 @@ void DopplerRulerBar::paintEvent(QPaintEvent*)
 double DopplerRulerBar::calDepth(double soundPath)
 {
     if(soundPath > 2 * m_sampleStart){
-        return qSqrt(qPow(soundPath / 2, 2) - qPow(2 * m_sampleStart / 2, 2));
-    }/*else if(soundPath < 2 * m_sampleStart){
-        return 0 - qSqrt(qPow(2 * m_sampleStart / 2, 2) - qPow(soundPath / 2, 2));
-    }else*/{
+        return qSqrt(qPow(soundPath / 2, 2) - qPow( m_sampleStart , 2));
+    } else{
         return 0;
     }
 }
@@ -135,9 +134,9 @@ double DopplerRulerBar::calDepth(double soundPath)
 double DopplerRulerBar::transDepthToSoundPath(double depth)
 {
     if(depth > 0){
-        return qSqrt(qPow( depth, 2) + qPow(2 * m_sampleStart / 2, 2)) * 2;
+        return qSqrt(qPow( depth, 2) + qPow(m_sampleStart, 2)) * 2;
     }else if(depth < 0){
-        return qSqrt(qPow(2 * m_sampleStart / 2, 2) - qPow( -depth, 2)) * 2;
+        return qSqrt(qPow( m_sampleStart, 2) - qPow( -depth, 2)) * 2;
     }else{
         return 2 * m_sampleStart;
     }
@@ -408,12 +407,13 @@ void DopplerRulerBar::drawTofdBottomRuler(QPainter& painter)
 {
     if(m_nStart == m_nEnd)	 return;
     double _nStart, _nStop, _nCurrentPos, _nRange, buff_start;
-    int i, _nStartIndex, _nPos, _nDirection;
+    int i, _nStartIndex, _nDirection;
+    float _nPos;
     int _nWidth = width();
     int _nMarkQty = getRulerMarkQty(_nWidth);
-    double n_start = 2 * m_sampleStart;
+    double n_start = 2 * m_nStart;
     double n_end   = 2 * m_nEnd;
-    _nStart = 0;//calDepth(n_start);
+    _nStart = calDepth(n_start);
     _nStop  = calDepth(n_end);
     _nRange = fabs(_nStop - _nStart);
     double _nInterval = getRulerMarInterval(_nMarkQty , _nRange);
@@ -440,7 +440,7 @@ void DopplerRulerBar::drawTofdBottomRuler(QPainter& painter)
     QString _str;
     for(i = _nStartIndex ; _nCurrentPos < _nStop ; i++){
         _nCurrentPos = i * _nInterval;
-        _nPos = (transDepthToSoundPath(_nCurrentPos) - 2 * m_nStart) * _nPixelPerUnit;
+        _nPos = (transDepthToSoundPath(_nCurrentPos) - buff_start) * _nPixelPerUnit;
         if(_nDirection){
             _nPos  = _nWidth - _nPos - 1;
         }

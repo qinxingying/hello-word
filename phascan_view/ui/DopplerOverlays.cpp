@@ -80,6 +80,11 @@ void DopplerOverlays::CreateOverlaysAH()
 			_pItemGroup->SetLwBwPos(_group.afCursor[setup_CURSOR_TFOD_LW], _group.afCursor[setup_CURSOR_TFOD_BW]);
 			_pItemGroup->SetLwBwId(setup_CURSOR_TFOD_LW, setup_CURSOR_TFOD_BW);
 		}
+        if(_group.bShowDepthCal) {
+            _pItemGroup->EnableItems(OVERLAYS_CALIBRATION);
+            _pItemGroup->SetCalibrationPos(_group.afCursor[setup_CURSOR_TOFD_CAL]);
+            _pItemGroup->SetCalibrationId(setup_CURSOR_TOFD_CAL);
+        }
 	}
 	//-------------------------------------------------------------------
 
@@ -146,6 +151,11 @@ void DopplerOverlays::CreateOverlaysAV()
 			_pItemGroup->SetLwBwPos(_group.afCursor[setup_CURSOR_TFOD_LW], _group.afCursor[setup_CURSOR_TFOD_BW]);
 			_pItemGroup->SetLwBwId(setup_CURSOR_TFOD_LW, setup_CURSOR_TFOD_BW);
 		}
+        if(_group.bShowDepthCal) {
+            _pItemGroup->EnableItems(OVERLAYS_CALIBRATION);
+            _pItemGroup->SetCalibrationPos(_group.afCursor[setup_CURSOR_TOFD_CAL]);
+            _pItemGroup->SetCalibrationId(setup_CURSOR_TOFD_CAL);
+        }
 	}
     if(_group.eTxRxMode != setup_TX_RX_MODE_TOFD)
     {
@@ -233,6 +243,11 @@ void DopplerOverlays::CreateOverlaysBH()
 			_pItemGroup->SetLwBwPos(_group.afCursor[setup_CURSOR_TFOD_LW], _group.afCursor[setup_CURSOR_TFOD_BW]);
 			_pItemGroup->SetLwBwId(setup_CURSOR_TFOD_LW, setup_CURSOR_TFOD_BW);
 		}
+        if(_group.bShowDepthCal) {
+            _pItemGroup->EnableItems(OVERLAYS_CALIBRATION);
+            _pItemGroup->SetCalibrationPos(_group.afCursor[setup_CURSOR_TOFD_CAL]);
+            _pItemGroup->SetCalibrationId(setup_CURSOR_TOFD_CAL);
+        }
 	}
     if(_group.eTxRxMode != setup_TX_RX_MODE_TOFD)
     {
@@ -323,6 +338,11 @@ void DopplerOverlays::CreateOverlaysBV()
 			_pItemGroup->SetLwBwPos(_group.afCursor[setup_CURSOR_TFOD_LW], _group.afCursor[setup_CURSOR_TFOD_BW]);
 			_pItemGroup->SetLwBwId(setup_CURSOR_TFOD_LW, setup_CURSOR_TFOD_BW);
 		}
+        if(_group.bShowDepthCal) {
+            _pItemGroup->EnableItems(OVERLAYS_CALIBRATION);
+            _pItemGroup->SetCalibrationPos(_group.afCursor[setup_CURSOR_TOFD_CAL]);
+            _pItemGroup->SetCalibrationId(setup_CURSOR_TOFD_CAL);
+        }
 	}
 	//-------------------------------------------------------------------
     if(_group.eTxRxMode != setup_TX_RX_MODE_TOFD)

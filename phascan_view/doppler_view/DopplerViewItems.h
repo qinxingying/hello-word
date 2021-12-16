@@ -12,6 +12,7 @@
 #include "DopplerLawMarker.h"
 #include "DopplerParabolaItem.h"
 #include "DopplerDefectItem.h"
+#include "DopplerCalibrationItem.h"
 
 enum OVERLAYS
 {
@@ -29,6 +30,7 @@ enum OVERLAYS
     OVERLAYS_TOPC_WIDTH        = 0x0400,
     OVERLAYS_C_WELD_BORDER     = 0x0800,
     OVERLAYS_NEWDEFECT         = 0x1000,
+    OVERLAYS_CALIBRATION       = 0x2000,
     OVERLAYS_ALL               = 0xFFFF
 } ;
 
@@ -48,6 +50,7 @@ public:
 	void UpdateItemsDefect();
     void SetItemDefect(int id);
 	void UpdateItemsLwBw();
+    void UpdateItemCalibration();
     void UpdateItemsCursor();
 	void UpdateItemsLawMarker() ;
     void UpdateItemsLawMarkerCScan() ;
@@ -68,6 +71,8 @@ public:
     void SetParabolaScale(float scaleH, float scaleV);
 	void SetLwBwPos(float fLw_ , float fBw_);
 	void SetLwBwId(int iLwId_ , int iBwId_);
+    void SetCalibrationPos(float fCalPos_);
+    void SetCalibrationId(int iCalibrationId_);
 	void SetDefect(int index_ , QRectF rect_);
 	void SetDefectIndex(int index_);
 	void ClearDefect();
@@ -125,6 +130,7 @@ protected:
 	DopplerDefectItem*   m_pDefect[DEFECT_SIGN_MAX];
 	DopplerCalibrationMark*  m_pItemLw    ;
 	DopplerCalibrationMark*  m_pItemBw    ;
+    DopplerCalibrationItem*  m_pItemCaiblration;
 	DopplerGateItem*     m_pGate[3]   ;
 	DopplerLineItem*     m_pCursor[4] ;
     DopplerLawMarker*    m_pLawMarker ;
@@ -137,8 +143,10 @@ protected:
 
 	float m_fLW;
 	float m_fBW;
+    float m_fCalibrationPos;
 	int   m_iLwId;
 	int   m_iBwId;
+    int   m_iCalibrationbId;
 	QRectF m_rcDefect[DEFECT_SIGN_MAX];
 	int    m_iDefectId[DEFECT_SIGN_MAX];
 	int    m_iDefectIndex;

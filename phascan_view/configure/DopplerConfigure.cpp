@@ -1868,6 +1868,11 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
 
 		_group.afCursor[setup_CURSOR_TFOD_LW] = _group.fSampleStart + _group.fSampleRange  / 10;
 		_group.afCursor[setup_CURSOR_TFOD_BW] = _group.fSampleStart + 9 * _group.fSampleRange / 10;
+        _group.afCursor[setup_CURSOR_TOFD_CAL] = _group.fSampleStart;
+        _group.fCalibratedSoundDepth = _group.fSampleStart;
+        _group.fCalibratedTrueDepth = 0.0;
+        _group.tofdAmendCal = 0.0;
+        _group.bShowDepthCal = false;
 
         LAW_CONFIG _law = _group.law ;
         float _fAngleStart = _law.nAngleStartRefract / 10.0 ;
@@ -1897,6 +1902,7 @@ void DopplerConfigure::OldGroupToGroup(DopplerDataFileOperateor* pConf_)
         }
         memset( &_group.RasterData, 0x00, sizeof(RASTER_DATA));
 
+        _process->SetTofdSampleStart(i, _group.fSampleStart);
 		_process->TofdCursorCalibration(i);
 
         if(m_defect[i] == NULL){
@@ -2120,11 +2126,11 @@ void  DopplerConfigure::UpdateTofdConfig(int nGroupId_)
 	_tofd.fWedgeSep		=  _group.afBeamPos[255] ;
 
     if( Config::instance()->is_phascan_ii()){
-        Config::instance()->getTofdData( nGroupId_, &_tofd.fPCS, &_tofd.fRefPoint);
+        Config::instance()->getTofdData( nGroupId_, &_tofd.fWedgeSep, &_tofd.fRefPoint);
         if (_group.bWedgeDelayCalib == 1) {
             _tofd.fRefPoint = _group.fCalibratedRefPoint  / 1000;
         }
-        _tofd.fWedgeSep = _tofd.fPCS - 2 *_tofd.fRefPoint;
+        _tofd.fPCS = _tofd.fWedgeSep + 2 *_tofd.fRefPoint;
     }else{
         _tofd.fPCS			= _group.afBeamPos[254];
         _tofd.fRefPoint		=  (_tofd.fPCS - _group.afBeamPos[255]) / 2;

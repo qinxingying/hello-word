@@ -185,7 +185,7 @@ void DopplerDataView::GetTofdDepth(bool &tofdDepth, float &pcs, DATA_VIEW_RULER 
     }
 }
 
-void DopplerDataView::SetTofdSampleStart(float sampleStart, DATA_VIEW_RULER eRuler_)
+void DopplerDataView::SetTofdSampleStart(double sampleStart, DATA_VIEW_RULER eRuler_)
 {
     if(m_pRulers[eRuler_]){
         m_pRulers[eRuler_]->SetTofdSampleStart(sampleStart);
@@ -578,7 +578,7 @@ QPointF DopplerDataView::TranslateTofdToScenePlan(QPointF* pPos_)
     if(tofdDepth){
         //_nVStart = _pProcess->transTofdHalfSoundPathToDepth( _nVStart, pcs);
         //_nVStop  = _pProcess->transTofdHalfSoundPathToDepth( _nVStop, pcs);
-        _fY = _pProcess->transTofdDepthToHalfSoundPath( _fY, pcs);
+        _fY = _pProcess->transTofdDepthToHalfSoundPath(m_nGroupId, _fY);
     }
 
     double _nHStart = RulerRange[DATA_VIEW_RULER_BOTTOM].first;
@@ -588,7 +588,7 @@ QPointF DopplerDataView::TranslateTofdToScenePlan(QPointF* pPos_)
     if(tofdDepth){
         //_nHStart = _pProcess->transTofdHalfSoundPathToDepth( _nHStart, pcs);
         //_nHStop  = _pProcess->transTofdHalfSoundPathToDepth( _nHStop, pcs);
-        _fX = _pProcess->transTofdDepthToHalfSoundPath( _fX, pcs);
+        _fX = _pProcess->transTofdDepthToHalfSoundPath(m_nGroupId, _fX);
     }
 
     int _nSceneWidth  = m_pGraphicView->GetSceneSize().width();
@@ -649,7 +649,7 @@ void DopplerDataView::CreateComponent()
 					RulerRange[DATA_VIEW_RULER_LEFT].second,
 					SliderRange[DATA_VIEW_RULER_LEFT].first,
 					SliderRange[DATA_VIEW_RULER_LEFT].second);
-		_nWidth -= m_pRulers[DATA_VIEW_RULER_LEFT]->width() ;
+        _nWidth -= m_pRulers[DATA_VIEW_RULER_LEFT]->width() ;
 	}
 
 	if(m_eComponent & DATA_VIEW_COMPONENT_RIGHTRULER)
@@ -661,7 +661,7 @@ void DopplerDataView::CreateComponent()
 					RulerRange[DATA_VIEW_RULER_RIGHT].second,
 					SliderRange[DATA_VIEW_RULER_RIGHT].first,
 					SliderRange[DATA_VIEW_RULER_RIGHT].second);
-		_nWidth -= m_pRulers[DATA_VIEW_RULER_RIGHT]->width() ;
+        _nWidth -= m_pRulers[DATA_VIEW_RULER_RIGHT]->width() ;
 	}
 
 	if(m_eComponent & DATA_VIEW_COMPONENT_BOTTOMRULER)
@@ -1068,7 +1068,7 @@ void DopplerDataView::slotItemMoved(DopplerGraphicsItem* item_)
 	QPointF _pos1 = item_->GetItemScenePos()  ;
 	QPointF _pos2 = PixTransferToReal(_pos1)  ;
 	QRectF _rect = item_->GetItemGeometryReal();
-	_rect = QRectF(_pos2.x() , _pos2.y() , _rect.width() , _rect.height())  ;
+    _rect = QRectF(_pos2.x() , _pos2.y() , _rect.width() , _rect.height())  ;
     int _nItemType = item_->GetItemType();
     int _nItemId = item_->GetItemId();
     if(_nItemType == DOPPLER_GRAPHICS_ITEM_CURSOR && _nItemId == setup_CURSOR_C_ANGLE){
@@ -1145,8 +1145,8 @@ void DopplerDataView::GetCScanTopcDis(bool &topc, bool &topcMerge)
 *****************************************************************************/
 QPointF DopplerDataView::PixTransferToReal(QPointF& pos_)
 {
-	double _nPosX = pos_.x() ;
-	double _nPosY = pos_.y() ;
+    double _nPosX = pos_.x() ;
+    double _nPosY = pos_.y() ;
 
 	double _nVStart = RulerRange[DATA_VIEW_RULER_LEFT].first  ;
 	double _nVStop  = RulerRange[DATA_VIEW_RULER_LEFT].second ;
@@ -1156,8 +1156,8 @@ QPointF DopplerDataView::PixTransferToReal(QPointF& pos_)
 	double _nHStop  = RulerRange[DATA_VIEW_RULER_BOTTOM].second ;
 	double _nHWidth = _nHStop - _nHStart ;
 
-	int _nSceneWidth = m_pGraphicView->GetSceneSize().width()  ;
-	int _nSceneHeight= m_pGraphicView->GetSceneSize().height() ;
+    int _nSceneWidth = m_pGraphicView->GetSceneSize().width()  ;
+    int _nSceneHeight= m_pGraphicView->GetSceneSize().height() ;
 
 	_nPosX  = _nHWidth * _nPosX / _nSceneWidth +  _nHStart  ;
 	_nPosY  = _nVHeight* _nPosY / _nSceneHeight + _nVStart  ;

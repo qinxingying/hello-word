@@ -34,6 +34,7 @@ static const QColor COLOR_WELD		 = QColor(180 , 180 , 180) ;
 static const QColor COLOR_THICKNESS	= QColor(128 , 128 , 128) ;
 static const QColor COLOR_SCAN_MARKER  = QColor(0 , 0 , 0  ) ;
 
+static const QColor COLOR_CAL  =  QColor(255 , 0, 0)   ;
 
 DopplerViewItems::DopplerViewItems(QObject *parent) :
 	QObject(parent)
@@ -50,9 +51,11 @@ DopplerViewItems::DopplerViewItems(QObject *parent) :
 	m_fBW = 10;
 	m_iLwId = 0;
 	m_iBwId = 1;
+    m_iCalibrationbId = 0;
 
 	m_pItemLw = NULL;
 	m_pItemBw = NULL;
+    m_pItemCaiblration = NULL;
 	//---------------------------------------
     memset((void*)m_pGate, 0, 3 * sizeof(void *)) ;
     memset((void*)m_pCursor, 0, 4 * sizeof(void *)) ;
@@ -85,6 +88,9 @@ DopplerViewItems::~DopplerViewItems()
 
 	m_pItemLw = NULL;
 	m_pItemBw = NULL;
+
+    if(m_pItemCaiblration) delete m_pItemCaiblration ;
+    m_pItemCaiblration = NULL;
 	//---------------------------------------
 	for(i = 0 ; i < 3 ; i++)
 	{
@@ -148,6 +154,7 @@ void DopplerViewItems::UpdateItems()
     UpdateItemsWeldBorder();
     UpdateItemsTOPCWidth();
 	UpdateItemsWeld() ;
+    UpdateItemCalibration();
 }
 
 void DopplerViewItems::UpdateItemsDefect()
@@ -210,10 +217,10 @@ void DopplerViewItems::UpdateItemsLwBw()
 	if(_eDisplay == setup_DISPLAY_MODE_A_H || _eDisplay == setup_DISPLAY_MODE_B_H)
 	{
 		_nLineType = DopplerLineItem::LINE_VERTICAL;
-		_nMoveType = DopplerLineItem::LINE_MOVE_HORIZENTAL;
+//		_nMoveType = DopplerLineItem::LINE_MOVE_HORIZENTAL;
 	} else if(_eDisplay == setup_DISPLAY_MODE_A_V || _eDisplay == setup_DISPLAY_MODE_B_V) {
 		_nLineType = DopplerLineItem::LINE_HORIZENTAL;
-		_nMoveType = DopplerLineItem::LINE_MOVE_VERTICAL;
+//		_nMoveType = DopplerLineItem::LINE_MOVE_VERTICAL;
 	} else {
 		int _nShow = (int)m_eShow;
 		_nShow &= ~OVERLAYS_LW_BW;
@@ -229,6 +236,7 @@ void DopplerViewItems::UpdateItemsLwBw()
 		m_pItemLw->SetItemType(DOPPLER_GRAPHICS_ITEM_CURSOR ) ;
 		m_pItemLw->SetLineType(_nLineType);
 		m_pItemLw->SetMoveType(_nMoveType);
+        m_pItemLw->SetDataView(m_pDataView);
 		m_pDataView->AddOverlayItems(m_pItemLw);
 	}
 
@@ -238,6 +246,7 @@ void DopplerViewItems::UpdateItemsLwBw()
 		m_pItemBw->SetItemType(DOPPLER_GRAPHICS_ITEM_CURSOR ) ;
 		m_pItemBw->SetLineType(_nLineType);
 		m_pItemBw->SetMoveType(_nMoveType);
+        m_pItemBw->SetDataView(m_pDataView);
 		m_pDataView->AddOverlayItems(m_pItemBw);
 	}
 
@@ -261,8 +270,59 @@ void DopplerViewItems::UpdateItemsLwBw()
 	m_pItemBw->SetScenceSize(m_pDataView->GetViewSize());
 
 	m_pItemLw->show() ;
-//	m_pItemBw->show() ;
-    m_pItemBw->hide() ;
+    m_pItemBw->show() ;
+}
+
+void DopplerViewItems::UpdateItemCalibration()
+{
+    if(!(m_eShow & OVERLAYS_CALIBRATION))
+    {
+        if(m_pItemCaiblration)	m_pItemCaiblration->hide() ;
+        return ;
+    }
+
+    setup_DISPLAY_MODE _eDisplay = (setup_DISPLAY_MODE)m_pDataView->GetDataViewDrawType();
+    DopplerLineItem::LINE_TYPE	  _nLineType = DopplerLineItem::LINE_FREE;
+    DopplerLineItem::LINE_MOVE_TYPE _nMoveType = DopplerLineItem::LINE_MOVE_NO;
+
+    if(_eDisplay == setup_DISPLAY_MODE_A_H || _eDisplay == setup_DISPLAY_MODE_B_H)
+    {
+        _nLineType = DopplerLineItem::LINE_VERTICAL;
+        _nMoveType = DopplerLineItem::LINE_MOVE_HORIZENTAL;
+    } else if(_eDisplay == setup_DISPLAY_MODE_A_V || _eDisplay == setup_DISPLAY_MODE_B_V) {
+        _nLineType = DopplerLineItem::LINE_HORIZENTAL;
+        _nMoveType = DopplerLineItem::LINE_MOVE_VERTICAL;
+    } else {
+        int _nShow = (int)m_eShow;
+        _nShow &= ~OVERLAYS_CALIBRATION;
+        m_eShow = (OVERLAYS)_nShow;
+        if(m_pItemCaiblration)	m_pItemCaiblration->hide() ;
+        return;
+    }
+
+    if(!m_pItemCaiblration)
+    {
+        m_pItemCaiblration = new DopplerCalibrationItem(COLOR_CAL);
+        m_pItemCaiblration->SetItemType(DOPPLER_GRAPHICS_ITEM_CURSOR ) ;
+        m_pItemCaiblration->SetLineType(_nLineType);
+        m_pItemCaiblration->SetMoveType(_nMoveType);
+        m_pItemCaiblration->SetDataView(m_pDataView);
+        m_pDataView->AddOverlayItems(m_pItemCaiblration);
+    }
+
+    m_pItemCaiblration->SetItemId(m_iCalibrationbId);
+//----------------------------
+    QRectF _rc(0 , 0 , 0 , 0);
+    if(_nLineType == DopplerLineItem::LINE_VERTICAL) {
+        _rc.setLeft(m_fCalibrationPos);
+    } else {
+        _rc.setTop (m_fCalibrationPos);
+    }
+
+    m_pDataView->SetItemGeometry(m_pItemCaiblration, _rc );
+
+    m_pItemCaiblration->SetScenceSize(m_pDataView->GetViewSize());
+    m_pItemCaiblration->show() ;
 }
 
 void DopplerViewItems::UpdateItemsGate()
@@ -653,8 +713,8 @@ void DopplerViewItems::UpdateItemsThickness()
     }
     ParameterProcess* _pProcess = ParameterProcess::Instance();
     if(tofdDepth){
-        double depthStart = _pProcess->transTofdHalfSoundPathToDepth( _fStart, pcs);
-        double depthEnd   = _pProcess->transTofdHalfSoundPathToDepth( _fStop, pcs);
+        double depthStart = _pProcess->transTofdHalfSoundPathToDepth(m_pDataView->GetGroupId(), _fStart);
+        double depthEnd   = _pProcess->transTofdHalfSoundPathToDepth(m_pDataView->GetGroupId(), _fStop);
         if(depthStart > depthEnd){
             double _fTmp = depthEnd;
             depthEnd = depthStart;
@@ -889,7 +949,17 @@ void DopplerViewItems::SetLwBwPos(float fLw_ , float fBw_)
 void DopplerViewItems::SetLwBwId(int iLwId_ , int iBwId_)
 {
 	m_iLwId = iLwId_;
-	m_iBwId = iBwId_;
+    m_iBwId = iBwId_;
+}
+
+void DopplerViewItems::SetCalibrationPos(float fCalPos_)
+{
+    m_fCalibrationPos = fCalPos_;
+}
+
+void DopplerViewItems::SetCalibrationId(int iCalibrationId_)
+{
+    m_iCalibrationbId = iCalibrationId_;
 }
 
 void DopplerViewItems::SetDefect(int index_ , QRectF rect_)

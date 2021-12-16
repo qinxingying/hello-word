@@ -226,6 +226,7 @@ DopplerGraphicView::DopplerGraphicView(QWidget *parent , QSize size_) :
     connect(this, SIGNAL(signalCursorUChange(int,int,bool)), g_pMainWnd, SLOT(slotCursorUChange(int,int,bool)));
     connect(this, SIGNAL(signalShowCursor(int,bool)), g_pMainWnd, SLOT(slotShowCursor(int,bool)));
     connect(this, SIGNAL(signalShowDefect(int,bool)), g_pMainWnd, SLOT(slotShowDefect(int,bool)));
+    connect(this, SIGNAL(signalShowDepthCal(int,bool)), g_pMainWnd, SLOT(slotShowDepthCalibration(int,bool)));
     connect(this, SIGNAL(signalCscanShowallChange(int)), g_pMainWnd, SLOT(slotCsanShowallChange(int)));
     connect(this, SIGNAL(signalMeasureGate(int)), g_pMainWnd, SLOT(slotMeasureGate(int)));
     connect(this, SIGNAL(signalMarkNextDefect()), g_pMainWnd, SLOT(slotMarkNextDefect()));
@@ -638,6 +639,18 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
                 m_defectMenu->addAction(m_defectActions->addAction(m_showCurrentDefect));
                 break;
             }
+            case setup_DISPLAY_MODE_A_H:
+            case setup_DISPLAY_MODE_A_V:
+            case setup_DISPLAY_MODE_B_H:
+            case setup_DISPLAY_MODE_B_V:{
+                if(_pConfig->group[_iGroupId].eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _pConfig->group[_iGroupId].eGroupMode != setup_GROUP_MODE_PA){
+                    bool status = _pConfig->group[_iGroupId].bShowDepthCal;
+                    m_showDepthCalibration->blockSignals(true);
+                    m_showDepthCalibration->setChecked( status);
+                    m_showDepthCalibration->blockSignals(false);
+                    m_showDepthCalibration->setText(tr("Show Depth Calibration"));
+                }
+            }
             default:
                 break;
             }
@@ -666,6 +679,10 @@ void DopplerGraphicView::mousePressEvent(QMouseEvent *event)
                 } else {
                     m_contextMenu->addMenu(m_defectMenu);
                 }
+            }
+
+            if(_pConfig->group[_iGroupId].eTravelMode == setup_TRAVEL_MODE_TRUE_DEPTH && _pConfig->group[_iGroupId].eGroupMode != setup_GROUP_MODE_PA){
+                m_contextMenu->addAction(m_showDepthCalibration);
             }
 
             m_contextMenu->exec(event->globalPos());
@@ -745,6 +762,7 @@ void DopplerGraphicView::mouseMoveEvent(QMouseEvent *event)
 	if(!list.empty() && m_bItemSelected)
 	{
 		DopplerGraphicsItem* _item = (DopplerGraphicsItem*)list.at(0) ;
+        m_mouseMove = true;
 		emit signalItemMoved(_item) ;
 	}
 }
@@ -1458,8 +1476,19 @@ void DopplerGraphicView::mouseReleaseEvent(QMouseEvent *event)
 			QList<QGraphicsItem*> list = m_pScene->selectedItems();
 			if(!list.empty())
 			{
-				DopplerGraphicsItem* _item = (DopplerGraphicsItem*)list.at(0) ;
-				emit signalItemMoved(_item) ;
+                DopplerGraphicsItem* _item = (DopplerGraphicsItem*)list.at(0) ;
+//				emit signalItemMoved(_item) ;
+                if (_item->GetItemId() == setup_CURSOR_TOFD_CAL) {
+                    DopplerConfigure* _pConfig = DopplerConfigure::Instance();
+                    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+                    int _iGroupId, _iLaw, _iDisplay;
+                    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+
+                    if (m_mouseMove) {
+                        _pConfig->group[_iGroupId].fCalibratedSoundDepth -= _pConfig->group[_iGroupId].tofdAmendCal;
+                    }
+                    m_mouseMove = false;
+                }
 			}
 		}
 	}
@@ -1982,6 +2011,14 @@ void DopplerGraphicView::setShowDefect(bool status)
     signalShowDefect(_iGroupId, status);
 }
 
+void DopplerGraphicView::setShowDepthCal(bool status)
+{
+    DopplerDataView* _pParent = (DopplerDataView*)parentWidget();
+    int _iGroupId, _iLaw, _iDisplay;
+    _pParent->GetDataViewConfigure(&_iGroupId, &_iLaw, &_iDisplay);
+    signalShowDepthCal(_iGroupId, status);
+}
+
 /**
  * @brief DopplerGraphicView::showCoupleInScanA 在A扫中显示耦合监控曲线
  * @param status
@@ -2135,6 +2172,11 @@ void DopplerGraphicView::creatActionAndMenu()
     connect(m_selectMeasureMethod, &QAction::triggered, this, [=] {
         g_pMainWnd->selectDefectMeasureMethod();
     });
+
+    m_showDepthCalibration = new QAction(tr("Show Depth Calibration"), this);
+    m_showDepthCalibration->setCheckable( true);
+    m_showDepthCalibration->setChecked( false);
+    connect(m_showDepthCalibration, &QAction::toggled, this, &DopplerGraphicView::setShowDepthCal);
 
 //    m_contextMenu->addAction(m_scaleRecover);
 //    m_contextMenu->addAction(m_dataMode);
