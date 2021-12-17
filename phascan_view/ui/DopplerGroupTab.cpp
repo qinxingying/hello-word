@@ -1143,7 +1143,17 @@ void DopplerGroupTab::UpdateGroupConfig()
             items->takeRow(i);
         }
 
-        ui->groupBox->hide();
+//        ui->groupBox->hide();
+        for (int i = 0; i < ui->formLayout->count(); ++i) {
+            ui->formLayout->itemAt(i)->widget()->hide();
+        }
+        ui->LabelCScanThickness->hide();
+        for (int i = 0; i < ui->horizontalLayout_9->count(); ++i) {
+            ui->horizontalLayout_9->itemAt(i)->widget()->hide();
+        }
+        for (int i = 0; i < ui->horizontalLayout_26->count(); ++i) {
+            ui->horizontalLayout_26->itemAt(i)->widget()->hide();
+        }
         ui->groupBoxComDisp->hide();
     }
 	ui->ValueGain->setValue(m_pGroup->fGain) ;
