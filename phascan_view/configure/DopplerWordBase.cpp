@@ -298,7 +298,7 @@ void WordBase::setRowAlignment(int tableIndex,int row,int flag)
 	{
 		return;
 	}
-	Row->querySubObject("Alignment(int)",flag);
+//	Row->querySubObject("Alignment(int)",flag);
 	if(flag == 0)
 	{
 		range->querySubObject("ParagraphFormat")->setProperty("Alignment","wdAlignParagraphCenter");

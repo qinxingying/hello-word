@@ -372,21 +372,21 @@ void AExportData::savePhaseReport(QString filePath, QString reportFormPath)
         }
 
         if (defectNum > 1) {
-            word.addTableRow(3,4,(defectNum-1)*3/* + 1*/);
+            word.addTableRow(3,5,(defectNum-1)*4/* + 1*/);
         }
         for (int i = 1; i <= defectNum; i ++) {
-            word.MergeCells(3,4+(i-1)*3,1, 4+(i-1)*3,12);
-            word.MergeCells(3,4+(i-1)*3,2,4+(i-1)*3,3);
+            word.setRowAlignment(3,4+(i-1)*4,3);
+            word.setRowAlignment(3,5+(i-1)*4,3);
         }
 
-//        word.MergeCells(3,(defectNum-1)*3 + 5,1,(defectNum-1)*3 + 5,5);
-//        word.MergeCells(3,(defectNum-1)*3 + 5,2,(defectNum-1)*3 + 5,5);
-//        word.MergeCells(3,(defectNum-1)*3 + 5,3,(defectNum-1)*3 + 5,7);
+        for (int i = 1; i <= defectNum; i ++) {
+            word.MergeCells(3,4+(i-1)*4,1, 4+(i-1)*4,12);
+            word.MergeCells(3,5+(i-1)*4,1, 5+(i-1)*4,12);
+            word.MergeCells(3,4+(i-1)*4,1, 5+(i-1)*4,1);
 
-//        word.setRowHeight(3,(defectNum-1)*3 + 5,70);
-//        word.setCellString(3, (defectNum-1)*3 + 5, 1, QString::fromLocal8Bit("检测人员：                      \n\n级别：          日期："));
-//        word.setCellFontBold(3, (defectNum-1)*3 + 5, 1,true);
-
+            word.MergeCells(3,4+(i-1)*4,2,4+(i-1)*4,3);
+            word.MergeCells(3,5+(i-1)*4,2,5+(i-1)*4,3);
+        }
 
         if (defectNum > 19) {
             word.addTableRow(2,23,19*(defectNum / 19));
@@ -450,19 +450,19 @@ void AExportData::savePhaseReport(QString filePath, QString reportFormPath)
                 }
 
                 // table
-                word.setCellString(3,2+i*3, 1, QString::fromLocal8Bit("缺陷 序号"));
-                word.setCellFontBold(3,2+i*3, 1,true);
+                word.setCellString(3,2+i*4, 1, QString::fromLocal8Bit("缺陷 序号"));
+                word.setCellFontBold(3,2+i*4, 1,true);
                 for (int f = 0; f < qMin(strSzField.count(),13); f++) {
                     word.setCellString(2,4, 2+f, strSzField[f]);
-                    word.setCellString(3,2+i*3, 2+f, strSzField[f]);
-                    word.setCellFontBold(3,2+i*3, 2+f, true);
+                    word.setCellString(3,2+i*4, 2+f, strSzField[f]);
+                    word.setCellFontBold(3,2+i*4, 2+f, true);
                 }
 
 //                word.setCellString(2,5 + i,1,index);
-                word.setCellString(3,3+i*3, 1,index);
+                word.setCellString(3,3+i*4, 1,index);
                 for (int n = 0; n < qMin(strMeasure.count(),13); n++) {
                     word.setCellString(2,5+i, 2+n, strMeasure[n]);
-                    word.setCellString(3,3+i*3, 2+n, strMeasure[n]);
+                    word.setCellString(3,3+i*4, 2+n, strMeasure[n]);
                 }
 
                 // table 3
@@ -476,12 +476,12 @@ void AExportData::savePhaseReport(QString filePath, QString reportFormPath)
                 QString strDir = pReport->getReportDir() + sourceImgName ;
                 pReport->CopyFileToPath(strDir , strImgPathName);
 
-                word.insertBookMark(3,4+i*3,1,QString("defect%1").arg(i+1));
+                word.insertBookMark(3,4+i*4,1,QString("defect%1").arg(i+1));
                 word.createHyperLink(2,5 + i,1,QString(index), QString("defect%1").arg(i+1));
 
-                word.insertCellPic(3,4+i*3,1,strDir);
-                word.setCellString(3,4+i*3,2, QString::fromLocal8Bit("备注："));
-                word.setCellFontBold(3,4+i*3,2, true);
+                word.insertCellPic(3,4+i*4,1,strDir);
+                word.setCellString(3,4+i*4,2, QString::fromLocal8Bit("备注："));
+                word.setCellFontBold(3,4+i*4,2, true);
             }
             free(sortBuff);
         }
