@@ -1389,73 +1389,73 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="851"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="854"/>
         <source>Store Current LawId and ScanPos ?</source>
         <translation>保存当前角度轴位置和扫查轴位置？</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1145"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1153"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1167"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1148"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1156"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1170"/>
         <source>No Defect Found</source>
         <translation>未发现缺陷</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1011"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1078"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1172"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1014"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1081"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1175"/>
         <source>Range too Small</source>
         <translation>范围太小</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="616"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2167"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2170"/>
         <source>Select Method</source>
         <translation>选择测量方法</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="617"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2161"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2164"/>
         <source>Start Analysis</source>
         <translation>开始分析</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="618"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2145"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2148"/>
         <source>Show Current Defect</source>
         <translation>显示当前缺陷</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="619"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2134"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2137"/>
         <source>Show All Defect</source>
         <translation>显示所有缺陷</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="651"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2173"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2176"/>
         <source>Show Depth Calibration</source>
         <translation>深度校准</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="903"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="906"/>
         <source>Exit automatic analysing?</source>
         <translation>是否退出自动分析模式？</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1011"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1078"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1172"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1014"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1081"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1175"/>
         <source>Please Selected More Wider Range</source>
         <translation>请扩大选择范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1176"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1179"/>
         <source>Out of Range</source>
         <translation>超过范围</translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1176"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1179"/>
         <source>Please Selected in C Scan View</source>
         <translation>请不要超过C扫视图</translation>
     </message>
@@ -1466,26 +1466,26 @@
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="612"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2116"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2119"/>
         <source>Data Mode</source>
         <translation>数据模式</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="613"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2122"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2125"/>
         <source>Show Cursor</source>
         <translation>测量光标</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="614"/>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="637"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2128"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2131"/>
         <source>Show Defect</source>
         <translation>缺陷显示</translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="615"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2156"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2159"/>
         <source>Show Couple</source>
         <translation>耦合监控</translation>
     </message>
@@ -2487,9 +2487,8 @@
         <translation>分层终点:</translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8208"/>
         <source>LW / BW</source>
-        <translation>直通波/底波</translation>
+        <translation type="vanished">直通波/底波</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="7926"/>
@@ -2795,6 +2794,11 @@
         <translation>背景</translation>
     </message>
     <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="8208"/>
+        <source>Depth Start / End:</source>
+        <translation type="unfinished">分层起点 / 终点</translation>
+    </message>
+    <message>
         <location filename="../ui/DopplerGroupTab.ui" line="9781"/>
         <source>Display</source>
         <translation>显示</translation>
@@ -3012,6 +3016,10 @@
         <location filename="../ui/DopplerGroupTab.ui" line="7854"/>
         <source>CAD DXF File</source>
         <translation>CAD DXF 文件</translation>
+    </message>
+    <message>
+        <source>Depth Start/End:</source>
+        <translation type="vanished">分层起点/终点</translation>
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="8364"/>

@@ -1166,73 +1166,73 @@
 <context>
     <name>DopplerGraphicView</name>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="851"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="854"/>
         <source>Store Current LawId and ScanPos ?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1145"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1153"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1167"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1148"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1156"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1170"/>
         <source>No Defect Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1011"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1078"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1172"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1014"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1081"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1175"/>
         <source>Range too Small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="616"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2167"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2170"/>
         <source>Select Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="617"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2161"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2164"/>
         <source>Start Analysis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="618"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2145"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2148"/>
         <source>Show Current Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="619"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2134"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2137"/>
         <source>Show All Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="651"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2173"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2176"/>
         <source>Show Depth Calibration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="903"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="906"/>
         <source>Exit automatic analysing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1011"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1078"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1172"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1014"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1081"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1175"/>
         <source>Please Selected More Wider Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1176"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1179"/>
         <source>Out of Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1176"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="1179"/>
         <source>Please Selected in C Scan View</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1243,26 +1243,26 @@
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="612"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2116"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2119"/>
         <source>Data Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="613"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2122"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2125"/>
         <source>Show Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="614"/>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="637"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2128"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2131"/>
         <source>Show Defect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../doppler_view/DopplerGraphicView.cpp" line="615"/>
-        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2156"/>
+        <location filename="../doppler_view/DopplerGraphicView.cpp" line="2159"/>
         <source>Show Couple</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2463,11 +2463,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.ui" line="8208"/>
-        <source>LW / BW</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/DopplerGroupTab.ui" line="7926"/>
         <source>Depth Calibration</source>
         <translation type="unfinished"></translation>
@@ -2846,6 +2841,11 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="10099"/>
         <source>C Scan Show All:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/DopplerGroupTab.ui" line="8208"/>
+        <source>Depth Start / End:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

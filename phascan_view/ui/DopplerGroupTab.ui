@@ -6743,7 +6743,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-501</y>
+        <y>-360</y>
         <width>330</width>
         <height>1100</height>
        </rect>
@@ -8205,7 +8205,7 @@
                 <item row="0" column="0">
                  <widget class="QLabel" name="LabelShowLwBw">
                   <property name="text">
-                   <string>LW / BW</string>
+                   <string>Depth Start / End:</string>
                   </property>
                  </widget>
                 </item>

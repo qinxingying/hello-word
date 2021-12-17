@@ -492,6 +492,7 @@ DopplerCalibrationMark::DopplerCalibrationMark(const QColor& cColor_) : DopplerL
 
 void DopplerCalibrationMark::paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* /*widget*/)
 {
+    ParameterProcess* _pProcess = ParameterProcess::Instance();
     //******** to change the background color of when mouse is rect
     QColor fillColor = (option->state & QStyle::State_Selected) ? m_cColor.dark(50) : m_cColor;
     if (option->state & QStyle::State_MouseOver)
@@ -534,11 +535,9 @@ void DopplerCalibrationMark::paint (QPainter *painter, const QStyleOptionGraphic
     painter->setPen(_NewPen);
     painter->drawLine(0, 0 , m_nWidth , m_nHeight );
 
-    switch(m_nId)
-    {
-    case setup_CURSOR_TFOD_LW:	DrawLabel(painter, (char*)"LW");	break;
-    case setup_CURSOR_TFOD_BW:	DrawLabel(painter, (char*)"BW");	break;
-    }
+    QString _str;
+    double buff = _pProcess->transTofdHalfSoundPathToDepth(m_pDataView->GetGroupId(),  m_Geometry.left());
+    DrawLabel(painter, _str.sprintf("%.1f", buff).toLocal8Bit().data());
 
     painter->restore();
 }
