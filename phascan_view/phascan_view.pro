@@ -32,7 +32,7 @@ SOURCES += main.cpp
 HEADERS += stable.h\
     version.h
 
-
+VERRSON=1.4.8;
 QMAKE_CXXFLAGS += /MP
 PRECOMPILED_HEADER = stable.h
 

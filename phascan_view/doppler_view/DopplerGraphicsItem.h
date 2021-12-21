@@ -13,7 +13,6 @@
 #include <QGraphicsObject>
 #include <QRectF>
 
-
 enum DOPPLER_GRAPHICS_ITEM_TYPE
 {
     DOPPLER_GRAPHICS_ITEM_GATE  = 0  ,

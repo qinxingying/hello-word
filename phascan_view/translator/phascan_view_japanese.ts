@@ -1347,7 +1347,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="9655"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10262"/>
         <location filename="../ui/DopplerGroupTab.ui" line="10316"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1444"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1454"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1998,7 +1998,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="4964"/>
         <location filename="../ui/DopplerGroupTab.ui" line="7161"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9648"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1517"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1527"/>
         <source>Width:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2145,8 +2145,8 @@
         <location filename="../ui/DopplerGroupTab.ui" line="6587"/>
         <location filename="../ui/DopplerGroupTab.ui" line="6638"/>
         <location filename="../ui/DopplerGroupTab.ui" line="6689"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1413"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1414"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1423"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1424"/>
         <source>Ref Amplitude:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2169,7 +2169,7 @@
         <location filename="../ui/DopplerGroupTab.ui" line="6727"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8737"/>
         <location filename="../ui/DopplerGroupTab.ui" line="8800"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1429"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1439"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2222,8 +2222,8 @@
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="7101"/>
         <location filename="../ui/DopplerGroupTab.ui" line="9380"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1516"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1520"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1526"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1530"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2755,8 +2755,8 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.ui" line="9955"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1515"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1519"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1525"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1529"/>
         <source>Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3325,52 +3325,52 @@
     </message>
     <message>
         <location filename="../ui/DopplerGroupTab.cpp" line="926"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2938"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2948"/>
         <source>Display Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1410"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1420"/>
         <source>Mat. Atten:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1411"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1421"/>
         <source>Delay:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1443"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1453"/>
         <source>dB/mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1546"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1556"/>
         <source>Main_Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1547"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1557"/>
         <source>Slave_Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2907"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2917"/>
         <source>Number %1 defect will be deleted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2908"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2918"/>
         <source>Are you sure to delete this defect?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2911"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2921"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="2912"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="2922"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3379,12 +3379,12 @@
         <location filename="../ui/DopplerGroupTab.ui" line="367"/>
         <location filename="../ui/DopplerGroupTab.ui" line="493"/>
         <location filename="../ui/DopplerGroupTab.ui" line="598"/>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1455"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1465"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/DopplerGroupTab.cpp" line="1521"/>
+        <location filename="../ui/DopplerGroupTab.cpp" line="1531"/>
         <source>Outer Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
