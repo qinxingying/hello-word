@@ -64,7 +64,9 @@ protected:
         GATE_I = 12
     };
     inline void GetPixValueInfo(int nScanPos_, GATE_TYPE eGate_, U32* pBuff_);
+
     inline void GetPixValuePos(U32* pBuff_, U32* pBuff2_, float GainScale_);
+
     inline void GetPixValueDistance(U32* pBuff1_ , U32* pBuff2_, float GainScale_);
 
 	virtual void DrawGateAmplitude (QImage* pImage_ , GATE_TYPE eGate_) ;
